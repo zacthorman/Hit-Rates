@@ -82,13 +82,7 @@ TOURNAMENTS = {
     "bundesliga": 35,
     "ligue_1": 34,
     "champions_league": 7,
-    # The competition's own name has UEFA on the front of it, and writing it
-    # that way squashed to "uefachampionsleague", matched nothing, and the
-    # league was skipped in silence. Same failure as the LaLiga one below,
-    # found the same way: by its absence from a finished report.
-    "uefa_champions_league": 7,
     "europa_league": 679,
-    "uefa_europa_league": 679,
     "mls": 242,
     "major_league_soccer": 242,
     # Brazil's top flight is also called Serie A, and "serie_a" above is

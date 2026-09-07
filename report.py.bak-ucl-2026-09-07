@@ -869,20 +869,6 @@ function sampleMix(teamIndex) {
   };
 }
 
-/* Whether this fixture pairs clubs from different domestic leagues.
-
-   In a Champions League tie both clubs' records are domestic, because that is
-   all that exists: eight European matches a season at most, none of them on
-   matchday one. The mismatch filter below is built for the opposite problem,
-   a promoted club carrying a Championship record into the Premier League, and
-   applied here it throws away every row on the page and leaves a report that
-   looks blank rather than caveated. So the filter is switched off for these,
-   and the warning is left switched on. Older reports predate the flag and
-   re-render without it, which reads as false and keeps the old behaviour. */
-function isCrossLeague(fx) {
-  return !!(fx && fx.fixture && fx.fixture.crossLeague);
-}
-
 function mismatchWarning() {
   const notes = [];
   DATA.records.forEach((rows, i) => {
@@ -903,10 +889,6 @@ function mismatchWarning() {
     A record set in another competition can be perfectly true and still a poor
     guide, because the hit rate carries no memory of who it was set against.
     Treat anything at 90% or 100% here with real suspicion.
-    ${isCrossLeague(DATA) ? `<br><br>Expected here, not a fault in the data:
-    the two clubs come from different leagues, so domestic form is the only
-    sample either of them has. Rows are kept rather than filtered out, but
-    they score nothing for context and carry no opponent-adjusted price.` : ""}
   </div>`;
 }
 
@@ -1538,7 +1520,7 @@ function scanLines(minSample) {
           // Skip teams whose record was built in another competition. This
           // is the Coventry case: a true 100% that will not survive contact
           // with the division they are actually playing in.
-          if (!includeMismatched && !isCrossLeague(fx)) {
+          if (!includeMismatched) {
             const sample = records.slice(-games);
             const matching = sample.filter(
               r => (r.competition || "?") === fx.fixture.competition
@@ -2242,7 +2224,7 @@ function scanMatchups(minSample) {
           // Same guard as the standout scan: a promoted club's record is
           // true and useless, and this is the exact fixture where pairing it
           // with a Premier League defence produces a beautiful wrong answer.
-          if (!includeMismatched && !isCrossLeague(fx)) {
+          if (!includeMismatched) {
             const bad = [fx.records[side], fx.records[1 - side]].some(recs => {
               const sample = recs.slice(-games);
               const ok = sample.filter(
