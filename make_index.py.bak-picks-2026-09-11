@@ -28,57 +28,8 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 
-import weekend
-
 ROOT = Path(__file__).parent
 REPORTS = ROOT / "reports"
-
-
-_PAYLOADS: dict[Path, dict] = {}
-
-
-def read_payload(path: Path) -> dict:
-    """The parsed `const ALL` object out of one report, read at most once.
-
-    These files run to twenty-odd megabytes and both the fixture list and the
-    weekend picks need them, so parsing per caller would double the build time
-    of the index for no reason.
-    """
-    if path in _PAYLOADS:
-        return _PAYLOADS[path]
-
-    data: dict = {}
-    try:
-        text = path.read_text(encoding="utf-8")
-    except OSError:
-        text = ""
-    if text:
-        payload = re.search(r"const ALL = (\{.*?\});\n", text, re.S)
-        if payload:
-            try:
-                data = json.loads(payload.group(1))
-            except json.JSONDecodeError:
-                data = {}
-    _PAYLOADS[path] = data
-    return data
-
-
-def read_entries(path: Path) -> list[tuple[dict, dict]]:
-    """Full fixture entries plus the metadata the picks need to name them."""
-    out = []
-    for entry in read_payload(path).get("fixtures", []):
-        fixture = entry.get("fixture", {})
-        if not fixture.get("home") or not fixture.get("away"):
-            continue
-        out.append((entry, {
-            "id": fixture.get("id"),
-            "home": fixture["home"],
-            "away": fixture["away"],
-            "competition": fixture.get("competition", "Football"),
-            "kickoff": fixture.get("kickoff") or 0,
-            "report": path.name,
-        }))
-    return out
 
 
 def read_fixtures(path: Path) -> list[dict]:
@@ -89,7 +40,19 @@ def read_fixtures(path: Path) -> list[dict]:
     near the top. That was a real bug here once, and the symptom was every
     report being listed under its filename.
     """
-    data = read_payload(path)
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError:
+        return []
+
+    payload = re.search(r"const ALL = (\{.*?\});\n", text, re.S)
+    if not payload:
+        return []
+
+    try:
+        data = json.loads(payload.group(1))
+    except json.JSONDecodeError:
+        return []
 
     out = []
     for entry in data.get("fixtures", []):
@@ -173,29 +136,9 @@ def main() -> None:
     # browser cache on the links below.
     stamp = str(int(max((p.stat().st_mtime for p in files), default=0)))
 
-    # The three picks, read across every report rather than per league. Built
-    # from data already inside those files, so this adds no network calls and
-    # cannot be the thing that breaks a publish.
-    entries: list[tuple[dict, dict]] = []
-    entry_seen: set[tuple] = set()
-    for path in freshest:
-        for entry, meta in read_entries(path):
-            key = (meta["home"], meta["away"], meta["kickoff"])
-            if key in entry_seen:
-                continue
-            entry_seen.add(key)
-            entries.append((entry, meta))
-
-    try:
-        chosen = weekend.picks(entries, days=7)
-    except Exception as exc:                       # never lose the index to this
-        print(f"  picks failed, index built without them: "
-              f"{type(exc).__name__}: {exc}")
-        chosen = None
-
     payload = json.dumps(
         {"fixtures": fixtures, "competitions": competitions,
-         "built": generated, "stamp": stamp, "picks": chosen},
+         "built": generated, "stamp": stamp},
         separators=(",", ":"),
     )
 
@@ -205,12 +148,6 @@ def main() -> None:
 
     print(f"Indexed {len(fixtures)} fixture(s) across {len(competitions)} "
           f"competition(s) into {out}")
-    if chosen and chosen.get("single"):
-        one = chosen["single"]
-        print(f"  pick of the week: {one['team']} "
-              f"{'over' if one['over'] else 'under'} {one['line']} "
-              f"{one['stat'].lower()} at {one['fair']:.2f} "
-              f"({one['hits']}/{one['total']})")
     for competition in competitions:
         count = sum(1 for f in fixtures if f["competition"] == competition)
         print(f"  {competition}: {count}")
@@ -261,21 +198,6 @@ PAGE = """<!DOCTYPE html>
   }
 }
 * { box-sizing: border-box; }
-.picks { display: grid; gap: 12px; margin: 18px 0 26px;
-         grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-.pick { background: var(--raised); border: 1px solid var(--border);
-        border-radius: 10px; padding: 14px 16px; }
-.pick h2 { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
-           color: var(--muted); margin: 0 0 10px; font-weight: 600; }
-.pick .sel { font-size: 1.02rem; font-weight: 600; line-height: 1.35; }
-.pick .where { color: var(--muted); font-size: 0.85rem; margin-top: 3px; }
-.pick .odds { margin-top: 10px; font-size: 0.92rem; }
-.pick .odds b { font-size: 1.12rem; }
-.pick ol { margin: 8px 0 0; padding-left: 18px; font-size: 0.88rem; line-height: 1.5; }
-.pick .note { margin-top: 11px; padding-top: 10px; border-top: 1px solid var(--grid);
-              color: var(--muted); font-size: 0.78rem; line-height: 1.45; }
-.pick .warn-num { color: var(--today); font-weight: 600; }
-.pick.none { color: var(--muted); font-size: 0.88rem; }
 body {
   margin: 0; padding: 34px 18px 60px;
   background: var(--page); color: var(--text);
@@ -354,8 +276,6 @@ footer { margin-top: 26px; color: var(--muted); font-size: 12.5px; }
   <h1>Football hit rates</h1>
   <p class="sub">Every upcoming fixture, soonest first. Tap one for team and
      player hit rates.</p>
-
-  <div id="picks"></div>
 
   <div class="filters" id="filters"></div>
   <div id="list"></div>
@@ -493,82 +413,6 @@ document.getElementById("footer").textContent =
   `Built ${DATA.built}. Each report is a snapshot: the numbers are frozen at ` +
   `the moment it was generated. Times are shown in your own timezone.`;
 
-/* The three picks. Everything here is decided at build time rather than in the
-   browser, because a pick of the week that changes when you nudge a slider is
-   not a pick, it is a search. */
-const fmtOdds = v => (v === null || v === undefined || !isFinite(v)) ? "\u2014" : v.toFixed(2);
-const legText = l =>
-  `${l.over ? "over" : "under"} ${l.line} ${l.stat.toLowerCase()}` +
-  (l.period === "ALL" ? "" : ` (${l.period === "1ST" ? "1st half" : "2nd half"})`);
-
-function renderPicks() {
-  const box = document.getElementById("picks");
-  const p = DATA.picks;
-  if (!box || !p) return;
-
-  const cards = [];
-  const s = p.single;
-  if (s) {
-    cards.push(`<div class="pick">
-      <h2>Best bet &middot; ${fmtOdds(p.floor)}+ only</h2>
-      <div class="sel">${escapeHtml(s.team)} ${escapeHtml(legText(s))}</div>
-      <div class="where">${escapeHtml(s.fixture.home)} v ${escapeHtml(s.fixture.away)}
-        &middot; ${escapeHtml(s.fixture.competition)}</div>
-      <div class="odds">Record <b>${s.hits}/${s.total}</b>${s.venue ? " at " + s.venue : ""}
-        &middot; fair <b>${fmtOdds(s.fair)}</b>, hold out for ${fmtOdds(s.need)}</div>
-      <div class="note">Picked from ${s.consideredGroups} distinct questions across the
-        round, so the evidence bar is raised accordingly: the plain 95% floor of
-        ${(s.evidence * 100).toFixed(0)}% becomes
-        <span class="warn-num">${(s.adjusted * 100).toFixed(0)}%</span> once that
-        searching is paid for. Asking for ${fmtOdds(p.floor)}+ caps the chance at
-        50%, so a long price and strong evidence pull against each other here.</div>
-    </div>`);
-  }
-
-  const a = p.acca;
-  if (a) {
-    cards.push(`<div class="pick">
-      <h2>Best acca</h2>
-      <div class="odds" style="margin-top:0">Combined fair price
-        <b>${fmtOdds(a.combined)}</b>${a.short
-          ? ` &middot; short of ${fmtOdds(a.target)}` : ""}</div>
-      <ol>${a.legs.map(l => `<li>${escapeHtml(l.team)} ${escapeHtml(legText(l))}
-        &mdash; ${l.hits}/${l.total}, ${fmtOdds(l.fair)}</li>`).join("")}</ol>
-      <div class="note">One leg per match, so no two legs ride on the same game.
-        ${a.short ? "Reaching the target would have meant taking worse legs. " : ""}
-        These are fair prices, not offers &mdash; a bookmaker has to beat every one
-        of them for the multiple to be worth taking, and the margin compounds.</div>
-    </div>`);
-  }
-
-  const b = p.builder;
-  if (b) {
-    const over = 100 * (b.naive / b.fair - 1);
-    cards.push(`<div class="pick">
-      <h2>Best bet builder</h2>
-      <div class="sel">${escapeHtml(b.team)}</div>
-      <div class="where">${escapeHtml(b.fixture.home)} v ${escapeHtml(b.fixture.away)}
-        &middot; ${escapeHtml(b.fixture.competition)}</div>
-      <ol>${b.legs.map(l => `<li>${escapeHtml(legText(l))}
-        &mdash; ${l.hits}/${l.total} on its own</li>`).join("")}</ol>
-      <div class="odds">All three landed together <b>${b.hits}/${b.total}</b>
-        &middot; fair <b>${fmtOdds(b.fair)}</b>, hold out for ${fmtOdds(b.need)}</div>
-      <div class="note">Priced by counting the matches where every leg landed, not by
-        multiplying them. Multiplying would have said ${fmtOdds(b.naive)}
-        &mdash; <span class="warn-num">${over.toFixed(0)}% longer than the record
-        supports</span>. Same-team legs move together, so the product always
-        flatters a builder. That is why the shops like them.</div>
-    </div>`);
-  }
-
-  if (!cards.length) {
-    cards.push(`<div class="pick none">Nothing cleared the bar this round.</div>`);
-  }
-
-  box.innerHTML = `<div class="picks">${cards.join("")}</div>`;
-}
-
-renderPicks();
 renderFilters();
 renderList();
 </script>
