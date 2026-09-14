@@ -444,48 +444,12 @@ MIN_MINUTES = 45
 # adjustment is borrowed from the team projection for the matching stat,
 # because there is no per-player projection and inventing one from a handful
 # of appearances would be noise wearing a decimal point.
-FOOTBALL_STAT_TO_TEAM = {
+PLAYER_STAT_TO_TEAM = {
     "Shots": "Total shots",
     "Shots on target": "Shots on target",
     "Tackles": "Tackles",
     "Fouls": "Fouls",
     "Goals": "Goals",
-
-}
-
-GRIDIRON_STAT_TO_TEAM = {
-    # --- American football -------------------------------------------------
-    # The own-team market whose volume drives the player's number. Only the
-    # offensive ones have an honest pairing: a receiver's yards ride on the
-    # team's passing game, a back's carries on the team's carries. Sacks and
-    # tackles are driven by how often the OPPOSITION runs a play, and there is
-    # no own-team market for that, so they are deliberately absent and their
-    # adjustment stays neutral. Inventing a pairing to let them through the
-    # scan would be a lie told to a gate.
-    "Passing yards": "Net yards passing",
-    "Passing attempts": "Net yards passing",
-    "Passing completions": "First downs by passing",
-    "Passing touchdowns": "Passing touchdowns",
-    "Passing interceptions": "Interceptions thrown",
-    "Rushing yards": "Rushing yards",
-    "Rushing attempts": "Rushing attempts",
-    "Rushing touchdowns": "Touchdowns",
-    "Receiving yards": "Net yards passing",
-    "Receiving receptions": "First downs by passing",
-    "Receiving targets": "First downs by passing",
-    "Receiving touchdowns": "Passing touchdowns",
-    "Kicking total points": "Points",
-    "Kicking fg made": "Field goals",
-}
-
-# The union, which is what report.py's JS mirrors and verify.py cross-checks.
-PLAYER_STAT_TO_TEAM = {**FOOTBALL_STAT_TO_TEAM, **GRIDIRON_STAT_TO_TEAM}
-
-# What the player scan will look at, per sport. Deliberately not the same
-# thing as the map above: see the note beside PLAYER_SCAN_ALLOW in report.py.
-STAT_TO_TEAM_BY_SPORT = {
-    "football": FOOTBALL_STAT_TO_TEAM,
-    "american-football": GRIDIRON_STAT_TO_TEAM,
 }
 
 # Two full appearances' worth of prior evidence, in minutes. At one full
@@ -508,25 +472,10 @@ def appearances(played, stat, zero_fill=frozenset()):
     already exists twice, in hitrates.py and in report.py's JS, and
     verify.py polices that pair. A third copy would be a third thing to
     drift. Callers hand in hitrates.PLAYER_ZERO_FILL.
-   
-    The minutes gate only applies where minutes are reported.
-
-    It exists to keep a 45-minute cameo out of a per-match average, which is
-    right for football. American football has no equivalent figure and
-    SofaScore sends 0 for every player, so the gate silently discarded every
-    NFL record: Justin Jefferson had twenty games of receiving yards on file
-    and not one of them survived. Where no game in the sample reports minutes,
-    appearing in the box score is the appearance test instead, which is the
-    same thing the feed already uses to say a man did not play -- an empty
-    stats block.
     """
     out = []
-    gated = any((g.get("minutes") or 0) > 0 for g in played)
     for g in played:
-        if gated:
-            if (g.get("minutes") or 0) < MIN_MINUTES:
-                continue
-        elif not (g.get("stats") or {}):
+        if (g.get("minutes") or 0) < MIN_MINUTES:
             continue
         value = g.get("stats", {}).get(stat)
         if value is None and stat in zero_fill:

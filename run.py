@@ -429,6 +429,30 @@ def _fixture_referee(event: dict) -> dict | None:
         return None
 
 
+def _sample_age(records: list, event: dict) -> int | None:
+    """Days from the most recent match in either team's form to kick-off."""
+    kickoff = event.get("startTimestamp")
+    if not kickoff:
+        return None
+
+    newest = None
+    for team_records in records:
+        for record in team_records:
+            date = record.get("date")
+            if not date:
+                continue
+            if newest is None or date > newest:
+                newest = date
+
+    if not newest:
+        return None
+    try:
+        last = datetime.fromisoformat(newest).replace(tzinfo=timezone.utc)
+    except ValueError:
+        return None
+    return max(0, int((datetime.fromtimestamp(kickoff, tz=timezone.utc) - last).days))
+
+
 def build_fixture(
     event: dict, games: int, players: bool, h2h: bool = False,
     adjust: bool = False, all_stats: bool = False, tiers: bool = False,
@@ -444,6 +468,8 @@ def build_fixture(
     if unique_id is None:
         print("  no competition id on this fixture, using all finished matches")
 
+    sport = ((tournament.get("category") or {})
+              .get("sport") or {}).get("slug") or "football"
     cross_league = unique_id in CROSS_LEAGUE_COMPETITIONS
     if cross_league:
         print("  cross-league competition: form drawn from all competitions")
@@ -454,6 +480,7 @@ def build_fixture(
             team_name=team["name"],
             tournament_id=None if cross_league else unique_id,
             limit=games,
+            sport=sport,
         )
         for team in (home, away)
     ]
@@ -462,7 +489,7 @@ def build_fixture(
         print("  no statistics for either team, skipping this fixture")
         return None
 
-    names = hitrates.stat_names(*records, bettable_only=not all_stats)
+    names = hitrates.stat_names(*records, bettable_only=not all_stats, sport=sport)
     lines = hitrates.suggest_lines(records, names)
 
     kickoff = ""
@@ -485,6 +512,23 @@ def build_fixture(
             # The report reads this to stop its own mismatch filter throwing
             # away every row on the page.
             "crossLeague": cross_league,
+            # Days between the newest match in the sample and this kick-off.
+            #
+            # A hit rate says nothing about when it was set, and the page had
+            # no way to tell a record built last Tuesday from one built last
+            # February. That distinction is the whole story for a season
+            # opener: an NFL side coming into week one has not played a
+            # competitive down since January, with a roster and a coordinator
+            # that have both moved since. Measured rather than hardcoded per
+            # sport, because a club returning from a winter break has the same
+            # problem in a milder form and deserves the same warning.
+            "staleDays": _sample_age(records, event),
+            # Which sport, straight from the feed. The index groups by this,
+            # and until every report carries it that grouping falls back to
+            # sniffing the stat names, which works only because football and
+            # American football share none of them.
+            "sport": ((tournament.get("category") or {})
+                      .get("sport") or {}).get("slug") or "football",
         },
         "teams": [
             # The id matters as much as the name. A record stores the
@@ -659,7 +703,9 @@ def build_fixture(
             entry["h2h"] = h2h_records
             # H2H needs its own lines: two teams meeting each other produce
             # different numbers from their form against everyone else.
-            h2h_names = hitrates.stat_names(*h2h_records, bettable_only=not all_stats)
+            h2h_names = hitrates.stat_names(*h2h_records,
+                                            bettable_only=not all_stats,
+                                            sport=sport)
             entry["h2hStats"] = h2h_names
             entry["h2hLines"] = hitrates.suggest_lines(h2h_records, h2h_names)
         else:
@@ -671,14 +717,15 @@ def build_fixture(
             hitrates.player_form(
                 team_id=team["id"],
                 team_name=team["name"],
-                tournament_id=unique_id,
+                tournament_id=None if cross_league else unique_id,
                 limit=games,
+                sport=sport,
             )
             for team in (home, away)
         ]
         entry["players"] = player_records
         entry["playerStats"] = hitrates.player_stat_names(
-            *player_records, bettable_only=not all_stats
+            *player_records, bettable_only=not all_stats, sport=sport
         )
         entry["playerLines"] = hitrates.suggest_player_lines(
             player_records, entry["playerStats"]

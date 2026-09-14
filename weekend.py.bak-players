@@ -140,84 +140,6 @@ def legs_for(entry, meta):
     return out
 
 
-MIN_PLAYER_SAMPLE = 10
-
-# Mirrors model.MIN_MINUTES. Only applied where the sport reports minutes at
-# all: American football sends 0 for everyone, and gating on it threw away
-# every NFL record in the file.
-MIN_MINUTES = 45
-
-
-def _played(games):
-    """A player's real appearances, by whichever test the sport supports."""
-    if any((g.get("minutes") or 0) > 0 for g in games):
-        return [g for g in games if (g.get("minutes") or 0) >= MIN_MINUTES]
-    return [g for g in games if g.get("stats")]
-
-
-def player_legs_for(entry, meta):
-    """Every priceable player prop on one fixture, both directions.
-
-    No venue split here, unlike the team legs. A player's record is already
-    the thinnest sample on the page, and halving it to honour home and away
-    buys a little relevance for a lot of noise.
-
-    The lines come from the report, which sets one line per stat across both
-    squads rather than per player. That is fine for ranking and wrong for
-    staking: twenty-one and a half receiving yards is a different proposition
-    for a first-choice receiver than for a rookie, so the price to beat is the
-    book's line, not this one.
-    """
-    out = []
-    lines = entry.get("playerLines") or {}
-    teams = entry.get("teams") or []
-    cross = bool(entry.get("fixture", {}).get("crossLeague"))
-
-    for team_index, records in enumerate(entry.get("players") or []):
-        if team_index >= len(teams):
-            continue
-        team = teams[team_index]
-
-        by_player: dict[str, list] = {}
-        for record in records:
-            name = record.get("player")
-            if name:
-                by_player.setdefault(name, []).append(record)
-
-        for name, games in by_player.items():
-            played = _played(games)
-            if len(played) < MIN_PLAYER_SAMPLE:
-                continue
-            position = played[0].get("position")
-
-            for stat, line in lines.items():
-                values = [g["stats"][stat] for g in played
-                          if (g.get("stats") or {}).get(stat) is not None]
-                if len(values) < MIN_PLAYER_SAMPLE:
-                    continue
-
-                over_hits = sum(1 for v in values if v > line)
-                for over in (True, False):
-                    hits = over_hits if over else len(values) - over_hits
-                    if hits == 0:
-                        continue
-                    price = model.price(line, over, None, values, hits, len(values))
-                    if not math.isfinite(price["fair"]):
-                        continue
-                    out.append({
-                        "fixture": meta, "team": team.get("name"),
-                        "teamIndex": team_index, "player": name,
-                        "position": position, "period": "ALL", "stat": stat,
-                        "line": line, "over": over, "hits": hits,
-                        "total": len(values), "venue": None,
-                        "fair": price["fair"], "need": price["need"],
-                        "p": price["p"], "source": price["source"],
-                        "evidence": model.wilson_low(hits, len(values)),
-                        "crossLeague": cross,
-                    })
-    return out
-
-
 def _leg_landed(record, period, stat, line, over):
     v = (record.get("stats", {}).get(period) or {}).get(stat)
     if v is None:
@@ -307,7 +229,6 @@ def _leg_public(leg):
         "team": leg["team"], "period": leg["period"], "stat": leg["stat"],
         "line": leg["line"], "over": leg["over"], "hits": leg["hits"],
         "total": leg["total"], "fair": leg["fair"], "venue": leg["venue"],
-        "player": leg.get("player"), "position": leg.get("position"),
     }
 
 
@@ -370,15 +291,7 @@ def selection_z(groups: int) -> float:
 
 
 def group_count(legs) -> int:
-    """Distinct questions asked, which is what the evidence bar is scaled to.
-
-    The player has to be in the key. Without it every receiver on a roster
-    counts as one question about receiving yards, the adjustment comes out far
-    too soft, and the headline pick is whichever squad member got the kindest
-    fifteen games.
-    """
-    return len({(l["fixture"]["id"], l["teamIndex"], l.get("player"), l["stat"])
-                for l in legs})
+    return len({(l["fixture"]["id"], l["teamIndex"], l["stat"]) for l in legs})
 
 
 def best_single(legs):
@@ -512,7 +425,6 @@ def picks(entries, days=7, now=None):
         legs = []
         for entry, meta in group:
             legs.extend(legs_for(entry, meta))
-            legs.extend(player_legs_for(entry, meta))
         out["sports"].append({
             "sport": sport,
             "label": SPORT_LABELS.get(sport, sport.replace("-", " ").title()),

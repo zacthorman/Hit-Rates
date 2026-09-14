@@ -30,7 +30,6 @@ import tempfile
 from pathlib import Path
 
 import hitrates
-import markets
 import model
 import report
 
@@ -53,14 +52,10 @@ TOLERANCE = 1e-9
 
 def extract_js() -> str:
     """The maths functions out of report.py's JS, with no DOM in sight."""
-    js = _resolved_js()
+    js = report.JS
     wanted = ["logGamma", "poissonCdf", "negBinCdf", "logChoose", "binomCdf",
               "dispersion", "predictiveRatio", "probOver", "wilsonLow",
-              "calibrate", "calibratePlayer",
-              # appearances() calls this to decide whether the sport reports
-              # minutes at all, so the harness needs it or node dies on a
-              # ReferenceError rather than on anything to do with the maths.
-              "reportsMinutes", "appearances",
+              "calibrate", "calibratePlayer", "appearances",
               "positionPrior", "pricePlayer", "gateRate"]
 
     out = []
@@ -148,54 +143,6 @@ console.log(JSON.stringify(out));
     return json.loads(result.stdout)
 
 
-def _resolved_js() -> str:
-    """report.JS with its placeholders filled, as the renderer fills them.
-
-    ZERO_FILL became per-sport, so the JS carries __ZERO_FILL__ rather than a
-    literal. Everything here that reads or evaluates the JS has to substitute
-    first, or it is checking a template rather than the page anyone sees.
-    Football is used because that is the set this file cross-checks.
-    """
-    return report.JS.replace(
-        "__ZERO_FILL__", json.dumps(sorted(hitrates.PLAYER_ZERO_FILL)))
-
-
-def check_sport_separation() -> None:
-    """The two sports' market vocabularies stay disjoint.
-
-    A single merged set put "Shots", "Goals", "Assists" and "Saves" on an NFL
-    page as bettable markets, every one of them reading zero, because the
-    football zero-fill writes those keys into any player record it touches.
-    Bets that cannot occur, priced off a column of noughts. The sets being
-    disjoint is what stops that, in both directions, so it is worth asserting
-    rather than assuming.
-    """
-    team_overlap = markets.FOOTBALL_STATS & markets.GRIDIRON_STATS
-    player_overlap = markets.FOOTBALL_PLAYER_STATS & markets.GRIDIRON_PLAYER_STATS
-    if team_overlap or player_overlap:
-        print("football and gridiron market sets overlap:")
-        for name in sorted(team_overlap):
-            print(f"  team:   {name}")
-        for name in sorted(player_overlap):
-            print(f"  player: {name}")
-        sys.exit(1)
-
-    # And the fill sets resolve the way report.py resolves them.
-    gridiron_fill = markets.ZERO_FILL_BY_SPORT.get("american-football")
-    if gridiron_fill is None or gridiron_fill:
-        print("American football should fill nothing: its box score already "
-              f"sends every key, got {gridiron_fill!r}")
-        sys.exit(1)
-
-    if "__ZERO_FILL__" not in report.JS:
-        print("report.py's JS no longer carries the __ZERO_FILL__ placeholder, "
-              "so the per-sport fill is not reaching the page")
-        sys.exit(1)
-
-    print(f"sports disjoint: {len(markets.FOOTBALL_STATS)} football and "
-          f"{len(markets.GRIDIRON_STATS)} gridiron team markets, no overlap")
-
-
 def check_zero_fill() -> None:
     """The zero-fill set exists in both copies and they agree.
 
@@ -212,8 +159,7 @@ def check_zero_fill() -> None:
     """
     py = set(hitrates.PLAYER_ZERO_FILL)
 
-    match = re.search(r"const ZERO_FILL = new Set\(\[(.*?)\]\);",
-                      _resolved_js(), re.S)
+    match = re.search(r"const ZERO_FILL = new Set\(\[(.*?)\]\);", report.JS, re.S)
     if not match:
         raise SystemExit("could not find ZERO_FILL in report.py's JS")
     js = set(re.findall(r'"([^"]+)"', match.group(1)))
@@ -401,7 +347,7 @@ def check_slip_input() -> None:
     schedule a full slipView(), and the combined-price panel must live in its
     own element so it can refresh without touching the table.
     """
-    js = _resolved_js()
+    js = report.JS
 
     handler = re.search(
         r'getElementById\("slip"\)\.addEventListener\("input".*?\n\}\);',
@@ -446,7 +392,7 @@ def check_new_panels() -> None:
     between the two fails silently: the function exists, nothing calls it, and
     the panel is simply blank. That is hard to notice and easy to ship.
     """
-    js = _resolved_js()
+    js = report.JS
     # The page markup is assembled inside write_report() rather than held in a
     # module constant, so the file's own source is the reliable place to look
     # for an element id.
@@ -532,7 +478,7 @@ def check_player_gate() -> None:
     And either scan could stop calling the gate while both files still
     compile, which is how the old raw floor would sneak back in.
     """
-    js = _resolved_js()
+    js = report.JS
 
     match = re.search(r"const PLAYER_SCAN_EXCLUDE = new Set\(\[(.*?)\]\);", js)
     if not match:
@@ -783,7 +729,6 @@ console.log(JSON.stringify(out));
 
 def main() -> None:
     check_zero_fill()
-    check_sport_separation()
     check_player_stat_map()
     check_player_gate()
     check_slip_input()

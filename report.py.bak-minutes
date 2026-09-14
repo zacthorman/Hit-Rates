@@ -17,9 +17,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-import hitrates
 import markets
-import model
 
 CSS = """
 :root {
@@ -1647,43 +1645,7 @@ const PLAYER_STAT_TO_TEAM = {
   "Tackles": "Tackles",
   "Fouls": "Fouls",
   "Goals": "Goals",
-
-  // --- American football -------------------------------------------------
-  // The own-team market whose volume drives the player's number. Only the
-  // offensive ones have an honest pairing: a receiver's yards ride on the
-  // team's passing game, a back's carries on the team's carries. Sacks and
-  // tackles are driven by how often the OPPOSITION runs a play, and there is
-  // no own-team market for that, so they are deliberately absent and their
-  // adjustment stays neutral. Inventing a pairing to let them through the
-  // scan would be a lie told to a gate.
-  "Passing yards": "Net yards passing",
-  "Passing attempts": "Net yards passing",
-  "Passing completions": "First downs by passing",
-  "Passing touchdowns": "Passing touchdowns",
-  "Passing interceptions": "Interceptions thrown",
-  "Rushing yards": "Rushing yards",
-  "Rushing attempts": "Rushing attempts",
-  "Rushing touchdowns": "Touchdowns",
-  "Receiving yards": "Net yards passing",
-  "Receiving receptions": "First downs by passing",
-  "Receiving targets": "First downs by passing",
-  "Receiving touchdowns": "Passing touchdowns",
-  "Kicking total points": "Points",
-  "Kicking fg made": "Field goals",
 };
-
-/* Which player markets the scan will consider at all.
-
-   Separate from the map above on purpose. That map answers "what team volume
-   drives this player's number", and playerAdjustment already returns a
-   neutral 1 when there is no answer. Using it as the eligibility gate as well
-   conflated the two, and the cost was that every NFL prop bailed out on the
-   first line of the scan: no pairing, no bet, however good the record. A
-   sacks record is perfectly scannable; what it is not is adjustable, because
-   sacks ride on how often the opposition runs a play and no own-team market
-   measures that. Injected per sport so football's list is exactly what it
-   always was. */
-const PLAYER_SCAN_ALLOW = new Set(__PLAYER_SCAN_ALLOW__);
 
 function playerAdjustment(stat, teamIndex, fx = DATA) {
   const teamStat = PLAYER_STAT_TO_TEAM[stat];
@@ -1744,27 +1706,12 @@ const MIN_MINUTES = 45;      // below this it is a cameo, not an appearance
    Reports built before this was found still have the gaps in their data, so
    the fill happens here too rather than only at fetch time, and they are
    corrected by a re-render without refetching anything. */
-const ZERO_FILL = new Set(__ZERO_FILL__);
-
-/* The minutes gate only applies where minutes are reported.
-
-   It keeps a 45-minute cameo out of a per-match average, which is right for
-   football. American football has no equivalent figure and SofaScore sends 0
-   for every player, so the gate silently discarded every NFL record: Justin
-   Jefferson had twenty games of receiving yards on file and not one survived.
-   Where nothing in the sample reports minutes, appearing in the box score is
-   the appearance test instead -- the same signal the feed already uses to say
-   a man did not play, which is an empty stats block. */
-function reportsMinutes(played) {
-  return played.some(g => (g.minutes || 0) > 0);
-}
+const ZERO_FILL = new Set(["Shots", "Shots on target", "Goals", "Assists",
+                           "Tackles", "Fouls", "Fouled", "Saves"]);
 
 function appearances(played, stat) {
-  const gated = reportsMinutes(played);
   return played
-    .filter(g => gated
-      ? (g.minutes || 0) >= MIN_MINUTES
-      : Object.keys(g.stats || {}).length > 0)
+    .filter(g => (g.minutes || 0) >= MIN_MINUTES)
     .map(g => {
       let value = g.stats[stat];
       if ((value === undefined || value === null) && ZERO_FILL.has(stat)) value = 0;
@@ -2518,7 +2465,7 @@ function scanPlayerBets(minSample) {
       const meetings = meetingIds(teamIndex, fx);
 
       (fx.playerStats || []).forEach(stat => {
-        if (!PLAYER_SCAN_ALLOW.has(stat)) return;
+        if (!PLAYER_STAT_TO_TEAM[stat]) return;
         if (PLAYER_SCAN_EXCLUDE.has(stat)) return;
         const line = (fx.playerLines || {})[stat];
         if (line === undefined) return;
@@ -4159,7 +4106,7 @@ function fillFixtures() {
    event id rather than a position means the link survives a rebuild that
    reorders or drops fixtures, which happens every week. */
 function applyDeepLink() {
-  const match = /^#e(\\d+)$/.exec(location.hash || "");
+  const match = /^#e(\d+)$/.exec(location.hash || "");
   if (!match) return false;
 
   const wanted = parseInt(match[1], 10);
@@ -4513,23 +4460,7 @@ def build_html(payload: dict) -> str:
     names = [team["name"] for team in first["teams"]]
 
     generated = datetime.now(timezone.utc).strftime("%d %b %Y, %H:%M UTC")
-    # One report is one competition, so one sport. Both of these used to be
-    # the football sets regardless, which is how "Shots" and "Assists" ended
-    # up as markets on an NFL page reading zero all the way down.
-    sport = ((payload["fixtures"][0].get("fixture") or {}).get("sport")
-             or "football") if payload.get("fixtures") else "football"
-    bettable = json.dumps(sorted(markets.stats_for(sport)
-                                 | markets.player_stats_for(sport)))
-    fill = markets.ZERO_FILL_BY_SPORT.get(sport)
-    if fill is None:
-        fill = hitrates.PLAYER_ZERO_FILL
-    zero_fill = json.dumps(sorted(fill))
-    # Football keeps exactly the five it has always scanned; gridiron gets the
-    # lot, since none of them have a team pairing to be gated on.
-    allow = (sorted(markets.player_stats_for(sport))
-             if sport == "american-football"
-             else sorted(model.FOOTBALL_STAT_TO_TEAM))
-    scan_allow = json.dumps(allow)
+    bettable = json.dumps(sorted(markets.BETTABLE_STATS))
     count = len(payload["fixtures"])
     scope = f"{count} fixtures" if count > 1 else "1 fixture"
 
@@ -4866,7 +4797,7 @@ def build_html(payload: dict) -> str:
 </footer>
 
 </div>
-<script>{JS.replace("__PAYLOAD__", json.dumps(payload)).replace("__BETTABLE__", bettable).replace("__ZERO_FILL__", zero_fill).replace("__PLAYER_SCAN_ALLOW__", scan_allow)}</script>
+<script>{JS.replace("__PAYLOAD__", json.dumps(payload)).replace("__BETTABLE__", bettable)}</script>
 </body>
 </html>
 """

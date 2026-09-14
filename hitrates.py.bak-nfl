@@ -17,7 +17,6 @@ from __future__ import annotations
 import statistics as stats_lib
 from datetime import datetime, timezone
 
-import markets
 import sofascore_api as api
 
 # The market definitions live in markets.py, which imports nothing, so the
@@ -103,13 +102,7 @@ def _match_date(event: dict) -> str:
 def _is_friendly(event: dict) -> bool:
     name = event.get("tournament", {}).get("name", "").lower()
     slug = event.get("tournament", {}).get("slug", "").lower()
-    # Preseason is a friendly that sells tickets. NFL preseason sits in the
-    # same feed as the real thing under its own tournament (9465), starters
-    # play a series and leave, and a hit rate built on it is worse than no
-    # hit rate because it looks like a full sample.
-    return ("friendly" in name or "friendly" in slug
-            or "preseason" in name or "pre-season" in name
-            or "preseason" in slug or "pre-season" in slug)
+    return "friendly" in name or "friendly" in slug
 
 
 def collect_events(
@@ -203,7 +196,6 @@ def team_form(
     limit: int = 10,
     verbose: bool = True,
     before: float | None = None,
-    sport: str = "football",
 ) -> list[dict]:
     """Build one record per match for a team, newest last.
 
@@ -285,12 +277,8 @@ def team_form(
         # which is what makes over 1.5 team goals, and the whole for-versus-
         # against matchup, work without a special case everywhere downstream.
         # Full match only, because the half-time score is a separate call.
-        # Called Points where the sport calls them points. The figure is the
-        # same scoreline either way, but "Goals 21.5" on an NFL page is a
-        # football word on a gridiron market and reads as a bug.
-        scored = "Points" if sport == "american-football" else "Goals"
-        records[-1]["stats"].setdefault("ALL", {})[scored] = float(goals_for)
-        records[-1]["against"].setdefault("ALL", {})[scored] = float(goals_against)
+        records[-1]["stats"].setdefault("ALL", {})["Goals"] = float(goals_for)
+        records[-1]["against"].setdefault("ALL", {})["Goals"] = float(goals_against)
 
         if verbose:
             periods = "/".join(sorted(match_stats, key=list(PERIODS).index))
@@ -380,7 +368,7 @@ def _pretty(key: str) -> str:
     return out[:1].upper() + out[1:]
 
 
-def _player_stat_values(raw: dict, zero_fill=PLAYER_ZERO_FILL) -> dict[str, float]:
+def _player_stat_values(raw: dict) -> dict[str, float]:
     """One player's statistics block as {readable name: value}.
 
     Shared by player_form and previous_club_form, so a player's numbers are
@@ -409,7 +397,7 @@ def _player_stat_values(raw: dict, zero_fill=PLAYER_ZERO_FILL) -> dict[str, floa
         values[PLAYER_STAT_NAMES.get(key, _pretty(key))] = float(value)
 
     if values:
-        for name in zero_fill:
+        for name in PLAYER_ZERO_FILL:
             values.setdefault(name, 0.0)
 
     return values
@@ -423,7 +411,6 @@ def player_form(
     verbose: bool = True,
     current_squad_only: bool = True,
     before: float | None = None,
-    sport: str = "football",
 ) -> list[dict]:
     """One record per player per match, for a team's recent matches.
 
@@ -431,13 +418,6 @@ def player_form(
     player per game, rather than one row per game. Grouping happens later,
     which keeps the venue and last-N filters working the same way.
     """
-    # Football fills absent keys with zero because the feed omits them; an
-    # American football box score already sends every key, so filling there
-    # would invent football markets on a gridiron page.
-    fill = markets.ZERO_FILL_BY_SPORT.get(sport, PLAYER_ZERO_FILL)
-    if fill is None:
-        fill = PLAYER_ZERO_FILL
-
     events = collect_events(
         team_id, tournament_id, team_name=team_name, verbose=verbose, before=before
     )[-limit:]
@@ -486,7 +466,7 @@ def player_form(
 
             # The renaming and the zero-fill both live in the shared helper;
             # the reasoning, Truffert included, lives on its docstring.
-            values = _player_stat_values(raw, zero_fill=fill)
+            values = _player_stat_values(raw)
             if not values:
                 continue
 
@@ -706,8 +686,7 @@ def previous_club_form(
 
 
 def player_stat_names(
-    *record_lists: list[dict], bettable_only: bool = True,
-    sport: str = "football",
+    *record_lists: list[dict], bettable_only: bool = True
 ) -> list[str]:
     """Every player stat present, the useful ones first."""
     found = set()
@@ -716,7 +695,7 @@ def player_stat_names(
             found.update(record["stats"].keys())
 
     if bettable_only:
-        found = found & markets.player_stats_for(sport)
+        found = found & BETTABLE_PLAYER_STATS
 
     ordered = [name for name in PLAYER_STAT_ORDER if name in found]
     ordered += sorted(found - set(ordered))
@@ -977,8 +956,7 @@ def head_to_head(
 
 
 def stat_names(
-    *record_lists: list[dict], bettable_only: bool = True,
-    sport: str = "football",
+    *record_lists: list[dict], bettable_only: bool = True
 ) -> dict[str, list[str]]:
     """Stats present in each period, as {period: [names]}.
 
@@ -996,10 +974,7 @@ def stat_names(
     for period, found in per_period.items():
         found = found - SKIP_STATS
         if bettable_only:
-            # Per sport, never the union. A merged set offered "Shots" and
-            # "Assists" on an NFL page, sitting at zero, because the football
-            # zero-fill had written them into every record it touched.
-            found = found & markets.stats_for(sport)
+            found = found & BETTABLE_STATS
         if not found:
             continue
         ordered = [name for name in PREFERRED_STATS if name in found]

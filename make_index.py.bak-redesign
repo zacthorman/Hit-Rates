@@ -106,7 +106,6 @@ def read_fixtures(path: Path) -> list[dict]:
                 "report": path.name,
                 # Enough to show what the report actually carries, so you know
                 # before clicking whether the player tables are in there.
-                "sport": weekend.sport_of(entry),
                 "players": bool(entry.get("players")),
                 "adjusted": bool(entry.get("projection") or entry.get("tierProjection")),
             }
@@ -206,12 +205,9 @@ def main() -> None:
 
     print(f"Indexed {len(fixtures)} fixture(s) across {len(competitions)} "
           f"competition(s) into {out}")
-    for block in (chosen or {}).get("sports", []):
-        one = block.get("single")
-        if not one:
-            continue
-        who = one.get("player") or one["team"]
-        print(f"  {block['label']} pick of the week: {who} "
+    if chosen and chosen.get("single"):
+        one = chosen["single"]
+        print(f"  pick of the week: {one['team']} "
               f"{'over' if one['over'] else 'under'} {one['line']} "
               f"{one['stat'].lower()} at {one['fair']:.2f} "
               f"({one['hits']}/{one['total']})")
@@ -265,47 +261,21 @@ PAGE = """<!DOCTYPE html>
   }
 }
 * { box-sizing: border-box; }
-.bar { display: flex; align-items: center; gap: 10px; margin: 20px 0 12px;
-       flex-wrap: wrap; }
-.sports { display: flex; gap: 4px; background: var(--grid); padding: 3px;
-          border-radius: 9px; }
-.sports button { border: 0; background: none; padding: 7px 16px; border-radius: 7px;
-                 font: inherit; font-weight: 600; font-size: 0.88rem;
-                 color: var(--muted); cursor: pointer; }
-.sports button[aria-pressed="true"] { background: var(--raised); color: var(--text);
-                                      box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
-.picks-btn { margin-left: auto; border: 1px solid var(--border); background: var(--raised);
-             color: var(--text); padding: 7px 14px; border-radius: 7px; font: inherit;
-             font-size: 0.85rem; font-weight: 600; cursor: pointer; }
-.picks-btn[aria-expanded="true"] { background: var(--accent); color: var(--on-accent);
-                                   border-color: var(--accent); }
-.picks { display: grid; gap: 10px; margin: 0 0 22px;
-         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.picks { display: grid; gap: 12px; margin: 18px 0 26px;
+         grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 .pick { background: var(--raised); border: 1px solid var(--border);
-        border-radius: 10px; padding: 13px 15px; font-size: 0.9rem; }
-.pick h2 { font-size: 0.68rem; letter-spacing: 0.07em; text-transform: uppercase;
-           color: var(--muted); margin: 0 0 8px; font-weight: 600; }
-.pick .sel { font-size: 0.97rem; font-weight: 600; line-height: 1.35; }
-.pick .where { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
-.pick .odds { margin-top: 8px; }
-.pick .odds b { font-size: 1.05rem; }
-.pick ol { margin: 7px 0 0; padding-left: 17px; font-size: 0.85rem; line-height: 1.45; }
-.pick details { margin-top: 9px; }
-.pick summary { color: var(--muted); font-size: 0.78rem; cursor: pointer;
-                list-style: none; }
-.pick summary::-webkit-details-marker { display: none; }
-/* Drawn rather than typed. The chevron characters rendered as a missing-glyph
-   box on a machine without the font, and a marker that might not exist is
-   worse than one made of borders, which always does. */
-.pick summary::before { content: ""; display: inline-block; width: 0; height: 0;
-  border-left: 4px solid currentColor; border-top: 3.5px solid transparent;
-  border-bottom: 3.5px solid transparent; margin-right: 6px;
-  transform-origin: 30% 50%; transition: transform 0.15s ease; }
-.pick details[open] summary::before { transform: rotate(90deg); }
-.pick details p { color: var(--muted); font-size: 0.78rem; line-height: 1.45;
-                  margin: 6px 0 0; }
-.pick .flag { color: var(--today); font-weight: 600; }
-.pick.none { color: var(--muted); }
+        border-radius: 10px; padding: 14px 16px; }
+.pick h2 { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+           color: var(--muted); margin: 0 0 10px; font-weight: 600; }
+.pick .sel { font-size: 1.02rem; font-weight: 600; line-height: 1.35; }
+.pick .where { color: var(--muted); font-size: 0.85rem; margin-top: 3px; }
+.pick .odds { margin-top: 10px; font-size: 0.92rem; }
+.pick .odds b { font-size: 1.12rem; }
+.pick ol { margin: 8px 0 0; padding-left: 18px; font-size: 0.88rem; line-height: 1.5; }
+.pick .note { margin-top: 11px; padding-top: 10px; border-top: 1px solid var(--grid);
+              color: var(--muted); font-size: 0.78rem; line-height: 1.45; }
+.pick .warn-num { color: var(--today); font-weight: 600; }
+.pick.none { color: var(--muted); font-size: 0.88rem; }
 body {
   margin: 0; padding: 34px 18px 60px;
   background: var(--page); color: var(--text);
@@ -381,15 +351,11 @@ footer { margin-top: 26px; color: var(--muted); font-size: 12.5px; }
 </head>
 <body>
 <div class="wrap">
-  <h1>Hit rates</h1>
+  <h1>Football hit rates</h1>
+  <p class="sub">Every upcoming fixture, soonest first. Tap one for team and
+     player hit rates.</p>
 
-  <div class="bar">
-    <div class="sports" id="sports"></div>
-    <button type="button" class="picks-btn" id="picks-btn"
-            aria-expanded="false">Picks of the week</button>
-  </div>
-
-  <div id="picks" hidden></div>
+  <div id="picks"></div>
 
   <div class="filters" id="filters"></div>
   <div id="list"></div>
@@ -402,21 +368,6 @@ const DATA = __PAYLOAD__;
 
 let competition = "all";
 let query = "";
-let sport = null;          // set on first render to whichever has most fixtures
-
-const SPORT_LABELS = { "football": "Football", "american-football": "NFL" };
-
-/* Sports present, busiest first. Two codes on one page need separating before
-   anything else: the league chips, the fixture list and the picks all mean
-   something different depending on which you are looking at. */
-function sportsPresent() {
-  const counts = {};
-  DATA.fixtures.forEach(f => {
-    const key = f.sport || "football";
-    counts[key] = (counts[key] || 0) + 1;
-  });
-  return Object.entries(counts).sort((a, b) => b[1] - a[1]);
-}
 
 /* Day headings read better as "Today" and "Tomorrow" than as a date, and the
    comparison has to be on calendar days in the reader's own timezone rather
@@ -446,49 +397,19 @@ function timeLabel(ts) {
 }
 
 function matches(f) {
-  if (sport && (f.sport || "football") !== sport) return false;
   if (competition !== "all" && f.competition !== competition) return false;
   if (!query) return true;
   const hay = `${f.home} ${f.away} ${f.competition}`.toLowerCase();
   return hay.includes(query);
 }
 
-function renderSports() {
-  const present = sportsPresent();
-  if (!sport) sport = present.length ? present[0][0] : "football";
-
-  const box = document.getElementById("sports");
-  if (present.length < 2) { box.innerHTML = ""; return; }
-
-  box.innerHTML = present.map(([key, n]) =>
-    `<button type="button" data-sport="${escapeAttr(key)}"
-      aria-pressed="${key === sport}">${escapeHtml(SPORT_LABELS[key] || key)}</button>`
-  ).join("");
-
-  box.querySelectorAll("[data-sport]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      sport = btn.dataset.sport;
-      competition = "all";
-      renderSports();
-      renderPicks();
-      renderFilters();
-      renderList();
-    });
-  });
-}
-
 function renderFilters() {
-  // Only the leagues that belong to the sport on screen, so the row is four
-  // chips rather than ten wrapping onto two lines with the NFL buried in it.
-  const mine = DATA.fixtures.filter(f => (f.sport || "football") === sport);
-  const comps = [...new Set(mine.map(f => f.competition))].sort();
-  const counts = { all: mine.length };
-  comps.forEach(c => {
-    counts[c] = mine.filter(f => f.competition === c).length;
+  const counts = { all: DATA.fixtures.length };
+  DATA.competitions.forEach(c => {
+    counts[c] = DATA.fixtures.filter(f => f.competition === c).length;
   });
-  if (competition !== "all" && !comps.includes(competition)) competition = "all";
 
-  const chips = ["all"].concat(comps).map(c => {
+  const chips = ["all"].concat(DATA.competitions).map(c => {
     const label = c === "all" ? "All" : c;
     return `<button type="button" class="chip" data-comp="${escapeAttr(c)}"
       aria-pressed="${c === competition}">${escapeHtml(label)}<span class="n">${counts[c]}</span></button>`;
@@ -572,102 +493,81 @@ document.getElementById("footer").textContent =
   `Built ${DATA.built}. Each report is a snapshot: the numbers are frozen at ` +
   `the moment it was generated. Times are shown in your own timezone.`;
 
-/* The three picks, for whichever sport is on screen.
-
-   Decided at build time, not in the browser: a pick of the week that moves
-   when you nudge a slider is a search, not a pick. Kept behind a button
-   because it is a sidebar to the fixture list, not the point of the page. */
-const fmtOdds = v => (v === null || v === undefined || !isFinite(v))
-  ? "\u2014" : v.toFixed(2);
-
-const half = p => p === "1ST" ? " (1st half)" : p === "2ND" ? " (2nd half)" : "";
-
-function legText(l) {
-  const market = `${l.over ? "over" : "under"} ${l.line} ${l.stat.toLowerCase()}`;
-  return l.player
-    ? `${escapeHtml(l.player)} ${market}${half(l.period)}`
-    : `${escapeHtml(l.team)} ${market}${half(l.period)}`;
-}
-
-function note(summary, body) {
-  return `<details><summary>${summary}</summary><p>${body}</p></details>`;
-}
+/* The three picks. Everything here is decided at build time rather than in the
+   browser, because a pick of the week that changes when you nudge a slider is
+   not a pick, it is a search. */
+const fmtOdds = v => (v === null || v === undefined || !isFinite(v)) ? "\u2014" : v.toFixed(2);
+const legText = l =>
+  `${l.over ? "over" : "under"} ${l.line} ${l.stat.toLowerCase()}` +
+  (l.period === "ALL" ? "" : ` (${l.period === "1ST" ? "1st half" : "2nd half"})`);
 
 function renderPicks() {
   const box = document.getElementById("picks");
-  const all = DATA.picks && DATA.picks.sports;
-  if (!box || !all) return;
+  const p = DATA.picks;
+  if (!box || !p) return;
 
-  const p = all.find(x => x.sport === sport);
-  const floor = DATA.picks.floor;
   const cards = [];
-
-  if (p && p.single) {
-    const s = p.single;
+  const s = p.single;
+  if (s) {
     cards.push(`<div class="pick">
-      <h2>Best bet &middot; ${fmtOdds(floor)}+</h2>
-      <div class="sel">${legText(s)}</div>
-      <div class="where">${escapeHtml(s.fixture.home)} v ${escapeHtml(s.fixture.away)}</div>
-      <div class="odds"><b>${s.hits}/${s.total}</b>${s.venue ? " " + s.venue : ""}
+      <h2>Best bet &middot; ${fmtOdds(p.floor)}+ only</h2>
+      <div class="sel">${escapeHtml(s.team)} ${escapeHtml(legText(s))}</div>
+      <div class="where">${escapeHtml(s.fixture.home)} v ${escapeHtml(s.fixture.away)}
+        &middot; ${escapeHtml(s.fixture.competition)}</div>
+      <div class="odds">Record <b>${s.hits}/${s.total}</b>${s.venue ? " at " + s.venue : ""}
         &middot; fair <b>${fmtOdds(s.fair)}</b>, hold out for ${fmtOdds(s.need)}</div>
-      ${note("how solid is this?",
-        `Chosen from ${s.consideredGroups} separate questions this round, so the
-         bar rises to match: a plain 95% floor of ${(s.evidence * 100).toFixed(0)}%
-         becomes <span class="flag">${(s.adjusted * 100).toFixed(0)}%</span> once
-         that searching is paid for. Asking for ${fmtOdds(floor)}+ caps the chance
-         at 50%, so price and evidence pull against each other here.`)}
+      <div class="note">Picked from ${s.consideredGroups} distinct questions across the
+        round, so the evidence bar is raised accordingly: the plain 95% floor of
+        ${(s.evidence * 100).toFixed(0)}% becomes
+        <span class="warn-num">${(s.adjusted * 100).toFixed(0)}%</span> once that
+        searching is paid for. Asking for ${fmtOdds(p.floor)}+ caps the chance at
+        50%, so a long price and strong evidence pull against each other here.</div>
     </div>`);
   }
 
-  if (p && p.acca) {
-    const a = p.acca;
+  const a = p.acca;
+  if (a) {
     cards.push(`<div class="pick">
       <h2>Best acca</h2>
-      <div class="sel">${a.legs.length} legs &middot; ${fmtOdds(a.combined)}</div>
-      <ol>${a.legs.map(l => `<li>${legText(l)} &mdash; ${l.hits}/${l.total},
-        ${fmtOdds(l.fair)}</li>`).join("")}</ol>
-      ${note("read this first",
-        `One leg per match, so nothing rides twice on the same game.
-         ${a.short ? `Short of the ${fmtOdds(a.target)} target &mdash; reaching it
-         would have meant worse legs. ` : ""}These are fair prices, not offers: a
-         book has to beat every one for the multiple to be worth taking, and the
-         margin compounds with each leg.`)}
+      <div class="odds" style="margin-top:0">Combined fair price
+        <b>${fmtOdds(a.combined)}</b>${a.short
+          ? ` &middot; short of ${fmtOdds(a.target)}` : ""}</div>
+      <ol>${a.legs.map(l => `<li>${escapeHtml(l.team)} ${escapeHtml(legText(l))}
+        &mdash; ${l.hits}/${l.total}, ${fmtOdds(l.fair)}</li>`).join("")}</ol>
+      <div class="note">One leg per match, so no two legs ride on the same game.
+        ${a.short ? "Reaching the target would have meant taking worse legs. " : ""}
+        These are fair prices, not offers &mdash; a bookmaker has to beat every one
+        of them for the multiple to be worth taking, and the margin compounds.</div>
     </div>`);
   }
 
-  if (p && p.builder) {
-    const b = p.builder;
+  const b = p.builder;
+  if (b) {
     const over = 100 * (b.naive / b.fair - 1);
     cards.push(`<div class="pick">
-      <h2>Best builder</h2>
+      <h2>Best bet builder</h2>
       <div class="sel">${escapeHtml(b.team)}</div>
-      <div class="where">${escapeHtml(b.fixture.home)} v ${escapeHtml(b.fixture.away)}</div>
-      <ol>${b.legs.map(l => `<li>${legText(l)} &mdash; ${l.hits}/${l.total}
-        alone</li>`).join("")}</ol>
-      <div class="odds">together <b>${b.hits}/${b.total}</b>
-        &middot; fair <b>${fmtOdds(b.fair)}</b></div>
-      ${note("why not just multiply the legs?",
-        `Multiplying would say ${fmtOdds(b.naive)} &mdash;
-         <span class="flag">${over.toFixed(0)}% longer than the record supports</span>.
-         Same-team legs move together, so the product always flatters a builder.
-         This is priced by counting the matches where every leg actually landed.`)}
+      <div class="where">${escapeHtml(b.fixture.home)} v ${escapeHtml(b.fixture.away)}
+        &middot; ${escapeHtml(b.fixture.competition)}</div>
+      <ol>${b.legs.map(l => `<li>${escapeHtml(legText(l))}
+        &mdash; ${l.hits}/${l.total} on its own</li>`).join("")}</ol>
+      <div class="odds">All three landed together <b>${b.hits}/${b.total}</b>
+        &middot; fair <b>${fmtOdds(b.fair)}</b>, hold out for ${fmtOdds(b.need)}</div>
+      <div class="note">Priced by counting the matches where every leg landed, not by
+        multiplying them. Multiplying would have said ${fmtOdds(b.naive)}
+        &mdash; <span class="warn-num">${over.toFixed(0)}% longer than the record
+        supports</span>. Same-team legs move together, so the product always
+        flatters a builder. That is why the shops like them.</div>
     </div>`);
   }
 
-  box.innerHTML = cards.length
-    ? `<div class="picks">${cards.join("")}</div>`
-    : `<div class="picks"><div class="pick none">Nothing cleared the bar for
-       ${escapeHtml(SPORT_LABELS[sport] || sport)} this round.</div></div>`;
+  if (!cards.length) {
+    cards.push(`<div class="pick none">Nothing cleared the bar this round.</div>`);
+  }
+
+  box.innerHTML = `<div class="picks">${cards.join("")}</div>`;
 }
 
-document.getElementById("picks-btn").addEventListener("click", e => {
-  const box = document.getElementById("picks");
-  const open = box.hidden;
-  box.hidden = !open;
-  e.currentTarget.setAttribute("aria-expanded", String(open));
-});
-
-renderSports();
 renderPicks();
 renderFilters();
 renderList();
