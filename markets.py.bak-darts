@@ -183,40 +183,6 @@ BASKETBALL_PLAYER_STATS = {
 BASKETBALL_UNCONFIRMED = True
 
 
-# --------------------------------------------------------------------- darts
-#
-# Read off the feed with check_sport.py. Three things about darts shaped this:
-#
-# There is no lineups endpoint at all -- it 404s -- so there are no player
-# statistics and there is no squad. That is not a gap, it is the sport: a
-# darts match is one thrower against another, so the "team" IS the player and
-# every market is a team market. DARTS_PLAYER_STATS is deliberately empty.
-#
-# There is no standings table either, because a World Championship is a
-# bracket. run.py's --league path starts from a league table and will not work
-# here; --teams with ids, or --search by name, is the way in.
-#
-# And "Checkouts accuracy" arrives as "10/31 (32%)", which _as_number reduces
-# to 10 -- checkouts hit, not the percentage. That is the half worth keeping,
-# but it is a count of successful doubles rather than the accuracy figure the
-# name suggests, so it is left out rather than quoted under a misleading name.
-DARTS_STATS = {
-    "Thrown 180",          # Total 180s, Most 180s
-    "Average 3 darts",     # 3-Dart Average Over/Under
-    "Highest checkout",    # Highest Checkout Over/Under
-    "Checkouts over 100",  # 100+ Checkout in match
-}
-
-# In the feed and not on the board, as far as I can tell: "Thrown over 140"
-# and "Thrown over 100" are counts of high scores that bet365 does not price
-# as standalone markets, and "Checkouts accuracy" is the count described
-# above. Same rule as the first NFL list -- a market you cannot get a price on
-# is worse than useless, because it is another combination for the scan to
-# trawl and another chance for a fluke to look like a finding. Correct this
-# against a live coupon when there is a match on.
-DARTS_PLAYER_STATS: frozenset = frozenset()
-
-
 # Which vocabulary belongs to which sport.
 #
 # Keeping these apart is not tidiness. A merged set put "Shots", "Goals",
@@ -228,7 +194,6 @@ BY_SPORT = {
     "football": (FOOTBALL_STATS, FOOTBALL_PLAYER_STATS),
     "american-football": (GRIDIRON_STATS, GRIDIRON_PLAYER_STATS),
     "basketball": (BASKETBALL_STATS, BASKETBALL_PLAYER_STATS),
-    "darts": (DARTS_STATS, DARTS_PLAYER_STATS),
 }
 
 # Football fills these with zero when the key is absent, because SofaScore
@@ -240,7 +205,6 @@ ZERO_FILL_BY_SPORT = {
     "football": None,          # resolved to hitrates.PLAYER_ZERO_FILL by callers
     "american-football": frozenset(),
     "basketball": frozenset(),  # box score sends every key, zeros included
-    "darts": frozenset(),       # no player records at all to fill
 }
 
 

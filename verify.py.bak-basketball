@@ -62,10 +62,6 @@ def extract_js() -> str:
               # minutes at all, so the harness needs it or node dies on a
               # ReferenceError rather than on anything to do with the maths.
               "reportsMinutes", "appearances",
-              # The record-only branch is calibrated now, and pricePlayer
-              # calls both of these. Without them node dies on a
-              # ReferenceError before it reaches any maths.
-              "smoothRate", "calibrateRecord",
               "positionPrior", "pricePlayer", "gateRate"]
 
     out = []
@@ -100,17 +96,6 @@ def extract_js() -> str:
         raise SystemExit(
             "could not find the player calibration constants in report.py's JS")
 
-    # The record-branch smoothing and its per-sport curve, by name for the
-    # same reason as the others: a refit that edits report.py must not leave
-    # this comparing against numbers nobody uses any more.
-    record_cal = re.search(
-        r"const RECORD_SMOOTHING = [\d.]+;\s*\n"
-        r"const SPORT = .*?;\s*\n"
-        r"const RECORD_CALIBRATION = \{.*?\};", js, re.S)
-    if not record_cal:
-        raise SystemExit(
-            "could not find the record calibration constants in report.py's JS")
-
     # The player-pricing constants, again by name. POOL_K is written as an
     # expression (2 * 90) in the JS and stays one here: node evaluates it
     # exactly as the page does, so a change to either factor flows through.
@@ -132,7 +117,6 @@ def extract_js() -> str:
 
     return (constants.group(0) + "\n" + prior.group(0) + "\n"
             + cal.group(0) + "\n" + player_cal.group(0) + "\n"
-            + record_cal.group(0) + "\n"
             + "\n".join(player_bits) + "\n"
             + "\n".join(out))
 
@@ -173,10 +157,8 @@ def _resolved_js() -> str:
     first, or it is checking a template rather than the page anyone sees.
     Football is used because that is the set this file cross-checks.
     """
-    return (report.JS
-            .replace("__ZERO_FILL__", json.dumps(sorted(hitrates.PLAYER_ZERO_FILL)))
-            .replace("__MIN_MINUTES__", str(model.MIN_MINUTES))
-            .replace("__SPORT__", json.dumps("football")))
+    return report.JS.replace(
+        "__ZERO_FILL__", json.dumps(sorted(hitrates.PLAYER_ZERO_FILL)))
 
 
 def check_alt_lines() -> None:
@@ -217,22 +199,8 @@ def check_alt_lines() -> None:
     if parlay._grid("Receiving receptions", [0, 1, 2, 3])[:3] != [1.0, 2.0, 3.0]:
         print("counting stats should ladder in whole numbers")
         sys.exit(1)
-    if parlay._grid("Rushing yards", [0, 12]) != [5.0, 10.0]:
-        print("yardage should ladder in fives, and stop at the top of the record")
-        sys.exit(1)
-
-    # And open out to tens above the coarse threshold, because a coupon carries
-    # 75+ rushing yards and does not carry 85+.
-    high = parlay._grid("Rushing yards", [0, 120])
-    if 45.0 not in high or 50.0 not in high:
-        print("the fine rungs below fifty are missing")
-        sys.exit(1)
-    if 55.0 in high or 85.0 in high:
-        print(f"rungs nobody sells are still on the ladder: "
-              f"{[r for r in high if r % 10 and r > 50]}")
-        sys.exit(1)
-    if 60.0 not in high or 100.0 not in high:
-        print("the ten-yard rungs above fifty are missing")
+    if parlay._grid("Rushing yards", [0, 12])[:3] != [5.0, 10.0, 15.0]:
+        print("yardage should ladder in fives")
         sys.exit(1)
 
     # Minutes is in football's market list and is not a market.
@@ -313,82 +281,39 @@ def check_parlay_joint() -> None:
 
 
 def check_sport_separation() -> None:
-    """Each sport's markets stay its own, now that their names can collide.
+    """The two sports' market vocabularies stay disjoint.
 
-    The original rule was that no two sports shared a market name, and with
-    two sports that held. With three it cannot: gridiron and basketball both
-    have "Points" and "Field goals", football and basketball both have
-    "Assists", and in every case the two mean entirely different things. A
-    check that demanded disjointness would now demand the wrong thing, so this
-    asserts what actually keeps them apart.
-
-    The real invariant is about the zero-fill. The bug this exists to catch was
-    "Shots", "Goals", "Assists" and "Saves" appearing as NFL markets reading
-    zero, because football's fill writes those keys into any player record it
-    touches. That cannot happen while every fill set contains only names its
-    own sport prices: then a fill can invent a zero for a market that sport
-    already sells, and never for another sport's.
-
-    The collisions themselves are still worth pinning down. A new one is not
-    automatically wrong, but it should be a decision rather than a surprise,
-    so the known set is listed and anything else fails.
+    A single merged set put "Shots", "Goals", "Assists" and "Saves" on an NFL
+    page as bettable markets, every one of them reading zero, because the
+    football zero-fill writes those keys into any player record it touches.
+    Bets that cannot occur, priced off a column of noughts. The sets being
+    disjoint is what stops that, in both directions, so it is worth asserting
+    rather than assuming.
     """
-    sets = {
-        "football": (markets.FOOTBALL_STATS, markets.FOOTBALL_PLAYER_STATS),
-        "american-football": (markets.GRIDIRON_STATS, markets.GRIDIRON_PLAYER_STATS),
-        "basketball": (markets.BASKETBALL_STATS, markets.BASKETBALL_PLAYER_STATS),
-        "darts": (markets.DARTS_STATS, markets.DARTS_PLAYER_STATS),
-    }
+    team_overlap = markets.FOOTBALL_STATS & markets.GRIDIRON_STATS
+    player_overlap = markets.FOOTBALL_PLAYER_STATS & markets.GRIDIRON_PLAYER_STATS
+    if team_overlap or player_overlap:
+        print("football and gridiron market sets overlap:")
+        for name in sorted(team_overlap):
+            print(f"  team:   {name}")
+        for name in sorted(player_overlap):
+            print(f"  player: {name}")
+        sys.exit(1)
 
-    # 1. No sport's zero-fill may write a key it does not itself price.
-    for sport, (_, player_markets) in sets.items():
-        fill = markets.ZERO_FILL_BY_SPORT.get(sport)
-        if fill is None:
-            fill = hitrates.PLAYER_ZERO_FILL
-        stray = set(fill) - set(player_markets)
-        if stray:
-            print(f"{sport}'s zero-fill writes markets it does not price: {sorted(stray)}")
-            print("that is exactly how football's fill put Shots and Goals on "
-                  "an NFL page reading zero")
-            sys.exit(1)
-
-    # 2. Known, deliberate collisions. Anything else is a surprise.
-    expected = {
-        ("american-football", "basketball", "team"): {"Field goals", "Points"},
-        ("football", "basketball", "player"): {"Assists", "Minutes"},
-    }
-    names = list(sets)
-    for i, first in enumerate(names):
-        for second in names[i + 1:]:
-            for kind, index in (("team", 0), ("player", 1)):
-                shared = set(sets[first][index]) & set(sets[second][index])
-                want = expected.get((first, second, kind), set())
-                if shared != want:
-                    print(f"{first} and {second} {kind} markets overlap in a way "
-                          f"nobody decided on:")
-                    for name in sorted(shared - want):
-                        print(f"  unexpected: {name}")
-                    for name in sorted(want - shared):
-                        print(f"  expected but gone: {name}")
-                    sys.exit(1)
-
-    # 3. Each accessor hands back its own sport's set and nobody else's.
-    for sport, (team_markets, player_markets) in sets.items():
-        if markets.stats_for(sport) is not team_markets:
-            print(f"stats_for({sport!r}) is not that sport's team set")
-            sys.exit(1)
-        if markets.player_stats_for(sport) is not player_markets:
-            print(f"player_stats_for({sport!r}) is not that sport's player set")
-            sys.exit(1)
+    # And the fill sets resolve the way report.py resolves them.
+    gridiron_fill = markets.ZERO_FILL_BY_SPORT.get("american-football")
+    if gridiron_fill is None or gridiron_fill:
+        print("American football should fill nothing: its box score already "
+              f"sends every key, got {gridiron_fill!r}")
+        sys.exit(1)
 
     if "__ZERO_FILL__" not in report.JS:
         print("report.py's JS no longer carries the __ZERO_FILL__ placeholder, "
               "so the per-sport fill is not reaching the page")
         sys.exit(1)
 
-    shared_total = sum(len(v) for v in expected.values())
-    print(f"sports separated: {len(sets)} vocabularies, {shared_total} names "
-          f"shared by design, no fill crosses a sport")
+    print(f"sports disjoint: {len(markets.FOOTBALL_STATS)} football and "
+          f"{len(markets.GRIDIRON_STATS)} gridiron team markets, no overlap")
 
 
 def check_zero_fill() -> None:

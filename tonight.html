@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tonight</title>
+<style>
+:root { --bg:#fcfcfb; --fg:#0b0b0b; --muted:#75736e; --line:rgba(11,11,11,.12); --accent:#d03b3b; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#141413; --fg:#fff; --muted:#908e88; --line:rgba(255,255,255,.14); }
+}
+* { box-sizing:border-box; }
+body { margin:0; padding:20px 16px 60px; background:var(--bg); color:var(--fg);
+  font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  max-width:760px; margin-inline:auto; }
+h1 { font-size:22px; margin:0 0 4px; }
+h2 { font-size:18px; margin:32px 0 2px; }
+h3 { font-size:14px; text-transform:uppercase; letter-spacing:.06em;
+  color:var(--muted); margin:20px 0 6px; font-weight:600; }
+section { border-top:1px solid var(--line); padding-top:4px; }
+.comp, .sub { color:var(--muted); font-size:13px; }
+.stamp { color:var(--muted); font-size:13px; margin:0 0 8px; }
+.legs { margin:6px 0; padding-left:20px; }
+.legs li { margin:3px 0; }
+.price { font-size:14px; margin:6px 0 0; }
+.none { color:var(--muted); font-size:14px; }
+table { width:100%; border-collapse:collapse; font-size:14px; margin-top:4px; }
+th, td { text-align:left; padding:6px 4px; border-bottom:1px solid var(--line); }
+th { color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase;
+  letter-spacing:.04em; }
+.n { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.warn { border-left:3px solid var(--accent); padding:10px 14px; margin:16px 0;
+  font-size:13.5px; color:var(--muted); }
+</style></head><body>
+<h1>Tonight</h1>
+<p class="stamp">the next 8 hours &middot; page made Tue 22 Sep, 07:21 BST &middot; numbers from reports built Mon 21 Sep, 23:02 BST</p>
+<div class="warn">
+Fair and Need are what the record implies, not what anyone is offering.
+<b>Need</b> is the price the evidence supports once the sample size is paid for,
+and it is the one to bet off. Neither includes the bookmaker's margin, which
+runs 5&ndash;8% a market and compounds with every leg you add.
+</div>
+<p class='none'>Nothing kicks off in the next 8 hours. The reports were built Mon 21 Sep, 23:02 BST.</p>
+<div class="warn">
+A multiple is worse than its legs. The margin compounds, the legs in one round
+are correlated, and the shop sells accumulators because they are the most
+profitable thing on the counter. The same-game prices above already carry that
+discount; the cross-game ones do not, and are therefore optimistic.
+</div>
+</body></html>

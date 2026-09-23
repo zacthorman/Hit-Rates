@@ -28,7 +28,6 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 
-import picker
 import weekend
 
 ROOT = Path(__file__).parent
@@ -126,11 +125,7 @@ def main() -> None:
     if not REPORTS.exists():
         raise SystemExit("No reports/ folder yet. Build a report first.")
 
-    # The picker pages live in the same folder and are not fixture reports.
-    # Left in, they get scanned for fixtures, find none, and the build ends by
-    # announcing that nine files have no upcoming games and could be pruned.
-    files = [f for f in sorted(REPORTS.glob("*.html"))
-             if not f.name.startswith(("pick-", "_"))]
+    files = sorted(REPORTS.glob("*.html"))
     if not files:
         raise SystemExit("No reports found in reports/.")
 
@@ -209,14 +204,6 @@ def main() -> None:
     out = ROOT / "index.html"
     out.write_text(page, encoding="utf-8")
 
-    # The picker reads the same reports this index just read, so building it
-    # here is what stops the two drifting: a report rebuilt without its picker
-    # page is a fixture list linking to yesterday's numbers.
-    try:
-        picker.main([])
-    except Exception as exc:
-        print(f"  picker pages not rebuilt: {type(exc).__name__}: {exc}")
-
     print(f"Indexed {len(fixtures)} fixture(s) across {len(competitions)} "
           f"competition(s) into {out}")
     for block in (chosen or {}).get("sports", []):
@@ -224,17 +211,10 @@ def main() -> None:
         if not one:
             continue
         who = one.get("player") or one["team"]
-        # Ladder legs read the way the coupon writes them, same as the page.
-        # This line is the only sight of the pick most runs get, and printing
-        # "over 4.5 receiving receptions" for a bet the card calls "5+" is how
-        # you end up doubting a fix that landed.
-        if one.get("alt"):
-            market = f"{one['threshold']:.0f}+ {one['stat'].lower()}"
-        else:
-            direction = "over" if one["over"] else "under"
-            market = f"{direction} {one['line']} {one['stat'].lower()}"
-        print(f"  {block['label']} pick of the week: {who} {market} "
-              f"at {one['fair']:.2f} ({one['hits']}/{one['total']})")
+        print(f"  {block['label']} pick of the week: {who} "
+              f"{'over' if one['over'] else 'under'} {one['line']} "
+              f"{one['stat'].lower()} at {one['fair']:.2f} "
+              f"({one['hits']}/{one['total']})")
     for competition in competitions:
         count = sum(1 for f in fixtures if f["competition"] == competition)
         print(f"  {competition}: {count}")
@@ -294,7 +274,6 @@ PAGE = """<!DOCTYPE html>
                  color: var(--muted); cursor: pointer; }
 .sports button[aria-pressed="true"] { background: var(--raised); color: var(--text);
                                       box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
-a.picks-btn { text-decoration: none; display: inline-flex; align-items: center; }
 .picks-btn { margin-left: auto; border: 1px solid var(--border); background: var(--raised);
              color: var(--text); padding: 7px 14px; border-radius: 7px; font: inherit;
              font-size: 0.85rem; font-weight: 600; cursor: pointer; }
@@ -406,7 +385,6 @@ footer { margin-top: 26px; color: var(--muted); font-size: 12.5px; }
 
   <div class="bar">
     <div class="sports" id="sports"></div>
-    <a class="picks-btn" href="tonight.html">Tonight &rarr;</a>
     <button type="button" class="picks-btn" id="picks-btn"
             aria-expanded="false">Picks of the week</button>
   </div>
@@ -594,7 +572,7 @@ document.getElementById("footer").textContent =
   `Built ${DATA.built}. Each report is a snapshot: the numbers are frozen at ` +
   `the moment it was generated. Times are shown in your own timezone.`;
 
-/* The picks, for whichever sport is on screen.
+/* The three picks, for whichever sport is on screen.
 
    Decided at build time, not in the browser: a pick of the week that moves
    when you nudge a slider is a search, not a pick. Kept behind a button
@@ -605,12 +583,7 @@ const fmtOdds = v => (v === null || v === undefined || !isFinite(v))
 const half = p => p === "1ST" ? " (1st half)" : p === "2ND" ? " (2nd half)" : "";
 
 function legText(l) {
-  /* Alt lines read the way a book writes them. "50+ receiving yards" and
-     "over 49.5 receiving yards" are the same bet, and only one of them is
-     what you would go looking for on the coupon. */
-  const market = l.alt
-    ? `${l.threshold}+ ${l.stat.toLowerCase()}`
-    : `${l.over ? "over" : "under"} ${l.line} ${l.stat.toLowerCase()}`;
+  const market = `${l.over ? "over" : "under"} ${l.line} ${l.stat.toLowerCase()}`;
   return l.player
     ? `${escapeHtml(l.player)} ${market}${half(l.period)}`
     : `${escapeHtml(l.team)} ${market}${half(l.period)}`;
@@ -678,35 +651,6 @@ function renderPicks() {
          <span class="flag">${over.toFixed(0)}% longer than the record supports</span>.
          Same-team legs move together, so the product always flatters a builder.
          This is priced by counting the matches where every leg actually landed.`)}
-    </div>`);
-  }
-
-  if (p && p.parlay) {
-    const g = p.parlay;
-    const gap = 100 * (g.naive / g.fair - 1);
-    const sides = g.sides.map(s =>
-      `${escapeHtml(s.team)} legs together <b>${s.hits}/${s.total}</b>`).join(" &middot; ");
-    cards.push(`<div class="pick">
-      <h2>Same-game parlay</h2>
-      <div class="sel">${g.legs.length} legs &middot; ${fmtOdds(g.fair)}</div>
-      <div class="where">${escapeHtml(g.fixture.home)} v ${escapeHtml(g.fixture.away)}</div>
-      <ol>${g.legs.map(l => `<li>${legText(l)} &mdash; ${l.hits}/${l.total}
-        alone</li>`).join("")}</ol>
-      <div class="odds">${sides} &middot; fair <b>${fmtOdds(g.fair)}</b>,
-        hold out for ${fmtOdds(g.need)}</div>
-      ${note("how is this priced?",
-        `Legs on the same team are counted together, out of the matches that
-         carried all of them, so nothing assumes they are independent &mdash;
-         multiplying them would have said ${fmtOdds(g.naive)}, ${gap >= 0
-         ? `<span class="flag">${gap.toFixed(0)}% longer than the record supports</span>`
-         : `${Math.abs(gap).toFixed(0)}% shorter than the record supports`}.
-         ${g.crossTeam ? `The two sides share no matches outside a head to head,
-         so their rates are multiplied rather than counted. Overs in one game
-         drift up together with the pace, so that product slightly understates
-         the real chance and quotes a price a shade longer than the truth.
-         ` : ""}Lines are the biggest number each man clears at least 65% of the
-         time, picked by fixing the rate and reading off the line rather than
-         hunting the ladder for the rung that flatters him.`)}
     </div>`);
   }
 

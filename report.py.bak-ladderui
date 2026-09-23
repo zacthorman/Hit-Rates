@@ -20,7 +20,6 @@ from pathlib import Path
 import hitrates
 import markets
 import model
-import parlay
 
 CSS = """
 :root {
@@ -374,90 +373,6 @@ select { max-width: 100%; min-width: 0; text-overflow: ellipsis; }
 .score.poor { color: var(--miss); }
 .breakdown { font-size: 12px; color: var(--muted); margin-top: 5px; }
 .breakdown span { white-space: nowrap; margin-right: 10px; }
-/* Usage: what feeds the bet, and whether it is drying up. */
-.usage {
-  font-size: 11.5px; font-weight: 600; letter-spacing: .01em;
-  padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border);
-  white-space: nowrap;
-}
-.usage-flat { color: var(--muted); }
-.usage-up { color: var(--hit); border-color: color-mix(in srgb, var(--hit) 40%, transparent); }
-.usage-down { color: var(--miss); border-color: color-mix(in srgb, var(--miss) 45%, transparent); }
-.usage b { font-weight: 700; }
-
-/* How soft or tough this defence is to the position, at a glance. */
-.mu-rank {
-  display: inline-block; font-size: 11px; font-weight: 700;
-  letter-spacing: .02em; padding: 2px 7px; border-radius: 999px;
-  border: 1px solid var(--border); white-space: nowrap; vertical-align: middle;
-}
-.mu-soft { color: var(--hit); border-color: color-mix(in srgb, var(--hit) 45%, transparent); }
-.mu-tough { color: var(--miss); border-color: color-mix(in srgb, var(--miss) 45%, transparent); }
-.mu-middling { color: var(--muted); }
-.half-num .mu-rank { margin-left: 6px; font-size: 10.5px; }
-
-
-/* ---- the bar: one number that says whether a bet earns a slip place ---- */
-.order-note {
-  font-size: 13px; color: var(--text-secondary);
-  border-left: 2px solid var(--border); padding: 2px 0 2px 12px;
-  margin: 0 0 16px;
-}
-.order-note code {
-  font-size: 12px; background: var(--surface-1);
-  border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px;
-}
-.pick-score {
-  font-variant-numeric: tabular-nums; font-weight: 600;
-  border-radius: 999px; padding: 2px 9px; font-size: 12px;
-  border: 1px solid var(--border);
-}
-.pick-score.pass { color: var(--hit); border-color: color-mix(in srgb, var(--hit) 40%, transparent); }
-.pick-score.fail { color: var(--muted); }
-.bar-chip {
-  margin-top: 6px; font-size: 11.5px; font-weight: 600;
-  letter-spacing: 0.02em; text-transform: lowercase;
-}
-.bar-chip.pass { color: var(--hit); }
-.bar-chip.fail { color: var(--miss); }
-.breakdown .unscored { color: var(--miss); }
-.score sup { font-size: 13px; color: var(--muted); font-weight: 500; }
-
-.slip-bar-summary {
-  border: 1px solid var(--border); border-radius: 10px;
-  padding: 12px 15px; margin: 0 0 14px;
-  font-size: 13.5px; color: var(--text-secondary);
-}
-.slip-bar-summary.is-warn { border-left: 3px solid var(--miss); }
-.slip-bar-summary.is-ok { border-left: 3px solid var(--hit); }
-.slip-bar-summary strong { color: var(--text-primary); }
-.slip-bar-summary .pos { display: block; margin: 5px 0 0; }
-
-.rec-bar { font-size: 12.5px; margin: 10px 0 12px; }
-.rec-bar.is-ok { color: var(--muted); }
-.rec-bar.is-warn { color: var(--miss); }
-
-tr.swap-row > td { padding-top: 0; border-top: 0; }
-tr.swap-row[hidden] { display: none; }
-.swap-none { font-size: 13px; color: var(--muted); padding: 2px 0 10px; }
-.swap-has {
-  border-left: 2px solid var(--miss); padding: 4px 0 8px 12px;
-  margin-bottom: 8px;
-}
-.swap-head { font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; }
-.swap-list { list-style: none; margin: 0; padding: 0; }
-.swap-list li {
-  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-  padding: 6px 0; border-top: 1px solid var(--border);
-}
-.swap-leg { font-weight: 600; color: var(--text-primary); font-size: 13.5px; }
-.swap-meta { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.swap-score {
-  margin-left: auto; font-variant-numeric: tabular-nums;
-  font-weight: 700; color: var(--hit);
-}
-.swap-list .add-btn { flex: 0 0 auto; }
-
 .add-btn {
   border: 1px solid var(--border); background: var(--control-bg);
   color: var(--text-secondary); border-radius: 7px;
@@ -786,207 +701,6 @@ footer { margin-top: 22px; color: var(--muted); font-size: 13px; }
   .ptable tbody td:last-child { padding-bottom: 14px; border-bottom: 1px solid var(--grid); }
   .ptable .num::before { content: attr(data-label) ": "; color: var(--muted); }
 }
-
-.ladder { margin: 10px 14px 12px; }
-.ladder summary { cursor: pointer; font-size: 12px; color: var(--muted);
-  padding: 4px 0; }
-.ladder summary:hover { color: var(--fg); }
-.ladder-table { width: 100%; border-collapse: collapse; margin-top: 6px;
-  font-variant-numeric: tabular-nums; font-size: 12px; }
-.ladder-table th { text-align: left; font-weight: 500; color: var(--muted);
-  padding: 3px 8px 3px 0; border-bottom: 1px solid var(--border); }
-.ladder-table td { padding: 3px 8px 3px 0; border-bottom: 1px solid var(--border); }
-.ladder-table td.rung { font-weight: 600; }
-.ladder-table td.rung-need { color: var(--muted); }
-.ladder-table tr.rung-here { background: var(--raised); }
-.ladder-table tr.rung-here td { border-bottom-color: var(--accent); }
-.ladder-note { font-size: 11px; color: var(--muted); margin: 8px 0 0;
-  line-height: 1.5; }
-
-
-/* ---------------------------------------------------------------- restyle
-   A quieter shell around exactly the same information.
-
-   Appended rather than edited in, so every rule above still says what it said
-   and this can be deleted in one block if it turns out worse. Nothing here
-   changes markup or behaviour: it is spacing, weight and contrast only.
-
-   The charts are deliberately untouched. Their red and green are not
-   decoration -- a hit is a filled dot above the line and a miss a hollow one
-   below, so the pair survives greyscale and red-green colour blindness, and
-   the contrast was chosen to clear 3:1 on both surfaces. Calming those would
-   be undoing work that was done for a reason. */
-
-/* Tabs: one segmented control rather than five separate buttons. */
-.tabs {
-  display: inline-flex; flex-wrap: wrap; gap: 2px; margin-bottom: 18px;
-  background: var(--tint); border-radius: 10px; padding: 3px;
-}
-.tabs button {
-  border: 0; background: none; color: var(--text-secondary);
-  font-size: 14px; font-weight: 500; padding: 7px 15px; border-radius: 8px;
-}
-.tabs button:hover { color: var(--text-primary); }
-.tabs button[aria-selected="true"] {
-  background: var(--surface-1); color: var(--text-primary); font-weight: 600;
-  border-color: transparent; box-shadow: 0 1px 2px rgba(11,11,11,.08);
-}
-
-/* Header furniture: present, not shouting. */
-.back {
-  font-size: 13.5px; font-weight: 500; padding: 7px 13px 7px 11px;
-  border-radius: 99px; box-shadow: none; color: var(--text-secondary);
-}
-.back:hover { color: var(--text-primary); }
-.back-bar { padding: 12px 0 8px; margin: -12px 0 6px; }
-h1 { letter-spacing: -0.025em; }
-.controls {
-  gap: 10px 18px; padding: 10px 14px; border-radius: 10px;
-  background: none; border-color: var(--grid);
-}
-.controls + .controls { margin-top: 6px; }
-.control-label { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
-
-/* Rows: the market is the anchor, the percentage supports it. Both were
-   competing at 24px against a 15px label. */
-.stat-row { padding: 13px 18px; gap: 18px; }
-.stat-label { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
-.pct { font-size: 19px; font-weight: 650; }
-.stat-row.strong .pct { font-size: 19px; }
-.frac { font-size: 12px; }
-.bar { height: 5px; margin-top: 6px; }
-.seq { font-size: 12px; color: var(--muted); }
-
-/* The long explanations sit under everything and are read once. */
-.note { font-size: 12.5px; line-height: 1.6; }
-
-
-/* The collapsed explanations. Quiet when shut, readable when open. */
-.caution { padding: 0; border: 0; background: none; }
-details.tuck { border: 1px solid var(--grid); border-radius: 10px;
-  background: var(--tint); margin: 0 0 14px; }
-details.tuck > summary { cursor: pointer; list-style: none; padding: 10px 14px;
-  font-size: 13px; font-weight: 600; color: var(--text-secondary);
-  display: flex; align-items: center; gap: 8px; }
-details.tuck > summary::-webkit-details-marker { display: none; }
-details.tuck > summary::before { content: "?"; display: inline-flex;
-  align-items: center; justify-content: center; width: 17px; height: 17px;
-  border-radius: 50%; border: 1px solid var(--baseline); font-size: 11px;
-  font-weight: 600; flex: none; }
-details.tuck > summary:hover { color: var(--text-primary); }
-details.tuck[open] > summary { border-bottom: 1px solid var(--grid); }
-details.tuck > div { padding: 12px 14px 14px; font-size: 13px; line-height: 1.65;
-  color: var(--text-secondary); }
-
-/* Steppers you can actually hit. 28px was a target for a mouse on a good day
-   and nothing at all on a phone; 34px with a real hover state is a control. */
-.stepper { gap: 6px; }
-.stepper button {
-  width: 34px; height: 34px; border-radius: 9px; font-size: 18px;
-  color: var(--text-primary); border-color: var(--grid);
-  transition: background .12s, border-color .12s, transform .06s;
-}
-.stepper button:hover { background: var(--tint); border-color: var(--baseline); }
-.stepper button:active { transform: scale(.94); }
-.stepper input {
-  height: 34px; width: 74px; font-size: 15px; font-weight: 600;
-  border-radius: 9px; border-color: var(--grid);
-}
-.stepper input:focus { outline: none; border-color: var(--text-primary); }
-
-/* Selects: one caret, drawn, so every browser shows the same control. */
-select, .num-input {
-  height: 38px; border-radius: 10px; border-color: var(--grid);
-  padding: 0 34px 0 12px; font-size: 14px;
-  appearance: none; -webkit-appearance: none;
-  background-image:
-    linear-gradient(45deg, transparent 50%, currentColor 50%),
-    linear-gradient(135deg, currentColor 50%, transparent 50%);
-  background-position: calc(100% - 18px) 52%, calc(100% - 13px) 52%;
-  background-size: 5px 5px, 5px 5px;
-  background-repeat: no-repeat;
-  transition: border-color .12s;
-}
-select:hover, .num-input:hover { border-color: var(--baseline); }
-select:focus, .num-input:focus { outline: none; border-color: var(--text-primary); }
-.num-input { background-image: none; padding-right: 12px; }
-
-/* The board reads as cards, like the picks do, rather than one ruled sheet. */
-.board { border: 0; background: none; padding: 0; }
-.stat-row {
-  background: var(--surface-1); border: 1px solid var(--grid);
-  border-radius: 12px; margin-bottom: 6px;
-  transition: border-color .12s, box-shadow .12s;
-}
-.stat-row:hover { border-color: var(--baseline);
-  box-shadow: 0 1px 2px rgba(11,11,11,.05); }
-.stat-row.strong { background: var(--tint); }
-
-
-/* The dropdown that replaces the operating system's. */
-.combo { position: relative; display: inline-block; min-width: 0; max-width: 100%; }
-.combo > select { position: absolute; opacity: 0; pointer-events: none;
-  width: 100%; height: 100%; left: 0; top: 0; }
-.combo-btn {
-  display: inline-flex; align-items: center; gap: 10px; width: 100%;
-  height: 38px; padding: 0 12px; border-radius: 10px;
-  border: 1px solid var(--grid); background: var(--control-bg);
-  color: var(--text-primary); font: inherit; font-size: 14px; cursor: pointer;
-  transition: border-color .12s, background .12s;
-}
-.combo-btn:hover { border-color: var(--baseline); }
-.combo-btn[aria-expanded="true"] { border-color: var(--text-primary); }
-.combo-btn:disabled { opacity: .5; cursor: default; }
-.combo-val { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.combo-caret { margin-left: auto; flex: none; width: 0; height: 0;
-  border-left: 4px solid transparent; border-right: 4px solid transparent;
-  border-top: 5px solid var(--muted); }
-.combo-pop {
-  position: absolute; z-index: 60; left: 0; min-width: 100%; top: calc(100% + 5px);
-  background: var(--surface-1); border: 1px solid var(--grid); border-radius: 11px;
-  box-shadow: 0 2px 6px rgba(11,11,11,.08), 0 16px 40px -20px rgba(11,11,11,.4);
-  overflow: hidden; max-width: 90vw;
-}
-.combo-search { width: 100%; border: 0; border-bottom: 1px solid var(--grid);
-  background: none; color: var(--text-primary); font: inherit; font-size: 14px;
-  padding: 10px 12px; }
-.combo-search:focus { outline: none; }
-.combo-list { max-height: 300px; overflow: auto; padding: 5px; }
-.combo-item { display: block; width: 100%; text-align: left; border: 0;
-  background: none; color: inherit; font: inherit; font-size: 14px;
-  padding: 8px 10px; border-radius: 7px; cursor: pointer;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.combo-item:hover { background: var(--tint); }
-.combo-item.on { background: var(--tint); font-weight: 600; }
-.combo-none { color: var(--muted); font-size: 13px; padding: 12px; }
-
-
-/* Number fields with buttons you can hit, and no operating-system spinner
-   anywhere on the page. */
-input[type=number] { -moz-appearance: textfield; }
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
-  -webkit-appearance: none; margin: 0;
-}
-.numwrap { display: inline-flex; align-items: center; gap: 4px; }
-.numwrap input {
-  text-align: center; border-radius: 9px; border-color: var(--grid);
-  height: 34px; font-weight: 600; font-size: 15px;
-  padding: 0 6px; min-width: 62px; width: 62px;
-}
-.numwrap input:focus { outline: none; border-color: var(--text-primary); }
-.numbtn {
-  width: 34px; height: 34px; flex: none; padding: 0;
-  border: 1px solid var(--grid); background: var(--control-bg);
-  color: var(--text-primary); border-radius: 9px;
-  font: inherit; font-size: 18px; line-height: 1; cursor: pointer;
-  display: inline-flex; align-items: center; justify-content: center;
-  transition: background .12s, border-color .12s, transform .06s;
-  user-select: none; -webkit-user-select: none; touch-action: manipulation;
-}
-.numbtn:hover { background: var(--tint); border-color: var(--baseline); }
-.numbtn:active { transform: scale(.94); }
-.price-input { width: 74px; min-width: 74px; }
 """
 
 JS = """
@@ -996,37 +710,10 @@ let DATA = ALL.fixtures[0];
 let SUGGESTED = {};
 let SUGGESTED_H2H = {};
 
-/* The whole record, not the last ten.
-   Ten appearances cannot tell 70% from 45%, so the Wilson bound stays wide
-   and `need` lands around 2.2 on bets a book prices at 1.4 -- which is to say
-   nothing in the file was backable. Doubling the sample moves the median
-   `need` from 2.21 to 1.91 and the tightest from 1.68 to 1.31. Recency still
-   matters, and the 5 / 10 buttons are there for it. */
-let games = 99;
+let games = 10;
 let venue = "all";
 let tier  = "all";
 let tab = "team";
-
-/* Player bets and team bets are two different products and were being ranked
-   against each other in one list.
-
-   They are not comparable. A player prop is on every bookmaker's app; a
-   second-half throw-in line exists on one book in one competition, which
-   makes it a niche bet however good the number is. Mixed together, whichever
-   kind happened to score higher took the slots and the other disappeared off
-   the bottom -- so the list answered "what is the best bet here" when the
-   question actually being asked is "what is the best player bet" or "what is
-   the best team bet", separately, because you would place them differently.
-
-   One panel, two tabs, one variable. Cloning the panel would mean two copies
-   of the controls, the slip, the order buttons and the recommender, and two
-   places to fix everything from now on. */
-let bestKind = "player";       // "player" | "team"
-
-/* Both Best tabs open the same panel. */
-function panelFor(target) {
-  return target === "best-player" || target === "best-team" ? "best" : target;
-}
 let period = "ALL";
 let scope = "core";
 let sort = "default";
@@ -1115,33 +802,6 @@ function filtered(records) {
 function opponentIdFor(teamIndex, fx = DATA) {
   const other = fx.teams[1 - teamIndex];
   return other && other.id !== undefined && other.id !== null ? other.id : null;
-}
-
-/* A player's own records against this opponent.
-
-   Prefers `h2hPlayers`, which a build with --h2h and --players fetches
-   specifically: lineups for every previous meeting the deeper search found,
-   whether or not it falls inside the form window. Falls back to filtering the
-   form records by meeting, which is all older reports have.
-
-   The fallback is the thing this exists to get away from. Lineups are fetched
-   per match, and only form matches were ever fetched, so a player's record
-   "against this opponent" could only contain meetings inside the last N
-   games. Two NFL clubs in different divisions meet once in twenty, so every
-   card read 1/1 -- a head-to-head with the head-to-heads left out, which
-   looks like a thin record rather than the unasked question it was. */
-function h2hPlayerRecords(teamIndex, fx, name) {
-  const deep = (fx.h2hPlayers || [])[teamIndex];
-  if (!Array.isArray(deep) || !deep.length) return null;
-  const mine = deep.filter(r => r.player === name);
-  /* Null, not an empty array.
-     An empty array is truthy in JavaScript, so returning one made the caller
-     treat "this player does not appear in the deep set" as "the deep set is
-     the answer, and the answer is nothing" -- and the form window's meetings
-     were never consulted. A player who is missing from the deeper fetch
-     because a single lineup 404'd, or because he was not in the squad list
-     when it was read, would silently lose a head-to-head he actually has. */
-  return mine.length ? mine : null;
 }
 
 /* Match ids in which this team faced the other one, across everything
@@ -1624,12 +1284,7 @@ function binomTail(n, k) {
 function fairOdds(p) { return p > 0 ? 1 / p : Infinity; }
 
 function fmtOdds(o) {
-  // null has to be caught before isFinite, which says a null is finite --
-  // it coerces to zero -- and then toFixed is called on nothing and the
-  // whole panel dies. A leg that has never landed once legitimately has no
-  // price, and "\u2014" says that without taking the page down with it.
-  if (o === null || o === undefined) return "\u2014";
-  if (typeof o !== "number" || !isFinite(o)) return "n/a";
+  if (!isFinite(o)) return "n/a";
   return o >= 10 ? o.toFixed(0) : o.toFixed(2);
 }
 
@@ -1860,9 +1515,8 @@ function priceRow(r) {
     };
   }
 
-  const recordP = calibrateRecord(smoothRate(r.k, r.n), "team");
   return {
-    p: recordP, fair: fairOdds(recordP), need: fairOdds(r.score),
+    p: r.k / r.n, fair: fairOdds(r.k / r.n), need: fairOdds(r.score),
     expected: undefined, source: "record",
     recordFair: fairOdds(r.k / r.n), recordNeed: fairOdds(r.score),
   };
@@ -2207,35 +1861,8 @@ const POOL_SPREAD = 0.5;
    path. This is the exact mirror of calibrate_player() in model.py --
    change one, run verify.py, change the other. Refit if `games` in
    update.json, MIN_MINUTES, or the player pricing maths changes. */
-const PLAYER_CALIBRATION_A = -0.0227;
-const PLAYER_CALIBRATION_B = 0.4454;
-
-/* The record-only branch, which until now was quoted raw.
-
-   Mirrors RECORD_SMOOTHING / RECORD_CALIBRATION in model.py -- verify.py
-   checks the two agree. The reasoning lives on the Python side; the short
-   version is that k/n hits exactly 1.0 on a perfect record, 2,214 gridiron
-   bets were quoted at a probability of one, and one in six of them lost. */
-const RECORD_SMOOTHING = 0.5;
-const SPORT = __SPORT__;
-const RECORD_CALIBRATION = {
-  "american-football|team":   [0.0865, 0.5060],
-  "american-football|player": [-0.1550, 0.8236],
-  "football|team":            [0.0177, 0.2806],
-};
-
-function smoothRate(hits, total) {
-  if (total <= 0) return 0;
-  return (hits + RECORD_SMOOTHING) / (total + 2 * RECORD_SMOOTHING);
-}
-
-function calibrateRecord(p, kind) {
-  const fit = RECORD_CALIBRATION[`${SPORT}|${kind}`];
-  if (!fit) return p;
-  p = Math.min(1 - 1e-9, Math.max(1e-9, p));
-  const z = fit[0] + fit[1] * Math.log(p / (1 - p));
-  return 1 / (1 + Math.exp(-z));
-}
+const PLAYER_CALIBRATION_A = -0.0045;
+const PLAYER_CALIBRATION_B = 0.6425;
 
 function calibratePlayer(p) {
   p = Math.min(1 - 1e-9, Math.max(1e-9, p));
@@ -2325,7 +1952,7 @@ function pricePlayer(apps, line, over, adjustment, prior) {
     // member with no minutes gets no price on purpose -- a number built
     // entirely from team-mates would sit on the page looking like his,
     // and it is not.
-    const p = calibrateRecord(smoothRate(hits, n), "player");
+    const p = n ? hits / n : 0;
     return { p, fair: fairOdds(p), need: fairOdds(wilsonLow(hits, n)),
              expected: undefined, source: "record", hits, n };
   }
@@ -2333,7 +1960,7 @@ function pricePlayer(apps, line, over, adjustment, prior) {
   // Rate per 90, then scaled to the minutes he is likely to get. Median
   // rather than mean minutes, so one early substitution does not decide it.
   if (totalMinutes <= 0 || totalValue <= 0) {
-    const p = calibrateRecord(smoothRate(hits, n), "player");
+    const p = hits / n;
     return { p, fair: fairOdds(p), need: fairOdds(wilsonLow(hits, n)),
              expected: undefined, source: "record", hits, n };
   }
@@ -2405,36 +2032,7 @@ function pricePlayer(apps, line, over, adjustment, prior) {
    until it has been backtested. This is shown beside the numbers, not fed
    into them. */
 
-/* What to call a position class in English.
-
-   Football's four are all SofaScore gives for that sport, and they are coarse
-   enough to be a stated limitation: there is no winger, no left or right, so
-   "right wingers facing Villa" is not expressible.
-
-   Gridiron is the opposite case and it is the reason this now exists per
-   sport. The feed reports QB, RB, WR, TE, CB, SAF and the rest -- exactly the
-   granularity the question needs. "How does this defence do against running
-   backs" is a real, answerable question with a real betting consequence, and
-   until now the page could not ask it, because these names were not in this
-   object and matchupProfile bailed out on the first line. */
-const POSITION_NAME = {
-  // Football.
-  G: "goalkeepers", D: "defenders", M: "midfielders", F: "forwards",
-  // Gridiron, offence.
-  QB: "quarterbacks", RB: "running backs", FB: "fullbacks",
-  WR: "wide receivers", TE: "tight ends",
-  T: "tackles", C: "centers", OL: "offensive linemen",
-  K: "kickers", P: "punters", LS: "long snappers",
-  // Gridiron, defence. Kept so a defensive record is still labelled
-  // correctly wherever one is shown, even though no defensive market is
-  // proposed as a bet.
-  CB: "cornerbacks", SAF: "safeties", DB: "defensive backs",
-  LB: "linebackers", OLB: "outside linebackers",
-  DE: "defensive ends", DT: "defensive tackles", DL: "defensive linemen",
-  // Basketball.
-  PG: "point guards", SG: "shooting guards", SF: "small forwards",
-  PF: "power forwards",
-};
+const POSITION_NAME = { G: "goalkeepers", D: "defenders", M: "midfielders", F: "forwards" };
 
 /* What to look up for each player stat, and on whose side.
 
@@ -2473,30 +2071,6 @@ const MATCHUP_PAIRING = {
   "Saves":           { mode: "conceded", stat: "Saves" },
   "Fouls":           { mode: "own", stat: "Fouled", positions: FOULS_ON },
   "Fouled":          { mode: "own", stat: "Fouls", positions: FOULED_BY },
-
-  /* Gridiron. The whole reason this concept is worth having.
-     A defence that has been giving up yards to running backs all season is
-     the single most useful thing you can know about a running back's line
-     this week, and unlike football's four position classes, the feed's RB /
-     WR / TE / QB are precise enough for the answer to mean something. Same
-     position, same stat, drawn from the opponent's matches. */
-  "Rushing yards":        { mode: "conceded", stat: "Rushing yards" },
-  "Rushing attempts":     { mode: "conceded", stat: "Rushing attempts" },
-  "Receiving yards":      { mode: "conceded", stat: "Receiving yards" },
-  "Receiving receptions": { mode: "conceded", stat: "Receiving receptions" },
-  "Passing yards":        { mode: "conceded", stat: "Passing yards" },
-  "Passing attempts":     { mode: "conceded", stat: "Passing attempts" },
-  "Passing completions":  { mode: "conceded", stat: "Passing completions" },
-  "Passing touchdowns":   { mode: "conceded", stat: "Passing touchdowns" },
-  "Rushing and receiving yards": { mode: "conceded", stat: "Rushing and receiving yards" },
-  "Passing and rushing yards":   { mode: "conceded", stat: "Passing and rushing yards" },
-  "Anytime touchdown":    { mode: "conceded", stat: "Anytime touchdown" },
-
-  /* Basketball. Positions are G / F / C, which is coarse, but a team that
-     gets scored on by guards is a real and stable property. */
-  "Points":               { mode: "conceded", stat: "Points" },
-  "Rebounds":             { mode: "conceded", stat: "Rebounds" },
-  "Three pointers made":  { mode: "conceded", stat: "Three pointers made" },
 };
 
 /* Fewer matches with data than this and the profile is marked thin. Three
@@ -2588,263 +2162,30 @@ function matchupProfile(fx, oppIndex, playerPos, stat, line, window, windowKey) 
   let covered = 0;
   windowIds.forEach(id => { if (withData.has(id)) covered++; });
 
-  /* The appearance test has to be the sport's, not football's.
-
-     This used to be a bare `minutes < MIN_MINUTES` and that one line is why
-     none of this worked for American football: the box score reports zero
-     minutes for every player, so the filter discarded the entire pool and
-     every gridiron profile came back empty -- silently, looking exactly like
-     a sport with no data rather than a test that could not pass. Same rule as
-     appearances() above: gate on minutes where minutes are reported, and on
-     the presence of a stats block where they are not. */
-  const inWindow = pool.filter(g => windowIds.has(g.match_id));
-  const gated = reportsMinutes(inWindow);
-
   let n = 0, hits = 0, total = 0, minutes = 0;
   const matches = new Set();
-  inWindow.forEach(g => {
-    if (gated ? (g.minutes || 0) < MIN_MINUTES
-              : !Object.keys(g.stats || {}).length) return;
+  pool.forEach(g => {
+    if (!windowIds.has(g.match_id)) return;
+    if ((g.minutes || 0) < MIN_MINUTES) return;
     let v = (g.stats || {})[pairing.stat];
     if ((v === undefined || v === null) && ZERO_FILL.has(pairing.stat)) v = 0;
     if (v === undefined || v === null) return;
-    n++; total += v; minutes += (g.minutes || 0);
+    n++; total += v; minutes += g.minutes;
     if (v > line) hits++;
     matches.add(g.match_id);
   });
 
-  /* Per 90 where there are minutes, per appearance where there are not.
-
-     Football needs the per-90: a substitute's twenty minutes would otherwise
-     read as a forward who never shoots. Gridiron has no minutes at all, and
-     per appearance is the right unit there anyway -- "receptions per game
-     allowed to wide receivers" is how the question is actually asked. The
-     unit is carried on the profile so the label can say which one it is
-     rather than printing a per-game figure under a "per 90" heading. */
-  const rate = n ? (minutes > 0 ? (total / minutes) * 90 : total / n) : null;
-
   const profile = {
     mode: pairing.mode, stat: pairing.stat, pos, posName: POSITION_NAME[pos],
-    team: opp.name, teamId: opp.id, line,
+    team: opp.name, line,
     n, hits, matches: matches.size,
     share: n ? hits / n : null,
-    per90: rate,
-    unit: minutes > 0 ? "per 90" : "per game",
+    per90: minutes > 0 ? (total / minutes) * 90 : null,
     windowMatches: window.length, covered,
     thin: matches.size < MATCHUP_MIN_MATCHES,
   };
   MATCHUP_CACHE.set(cacheKey, profile);
   return profile;
-}
-
-/* ------------------------------------------------------------- usage
-//
-   What a player's record cannot tell you: whether he still gets the ball.
-
-   Every number on a player card counts what he DID. None of them count what
-   he was GIVEN the chance to do, and for a receiver those are different
-   questions with the same answer only while his role holds. A tight end with
-   14 receptions from 15 games looks like a lock at 1+ until the game he sees
-   one target all afternoon, and nothing on the page moved beforehand, because
-   nothing on the page was watching the thing that changed.
-
-   Target share is that missing number, and it was already in the payload:
-   `Receiving targets` sits on every gridiron player record, so a man's share
-   of his team's targets in a match is a sum over team-mates and a division.
-   No refetch, no new endpoint.
-
-   Each market is paired with the opportunity that feeds it. Receptions and
-   receiving yards come from targets; rushing yards come from carries; a
-   quarterback's numbers come from attempts. A market with no opportunity stat
-   behind it simply gets none, rather than a fabricated one. */
-const OPPORTUNITY = {
-  "Receiving receptions":        "Receiving targets",
-  "Receiving yards":             "Receiving targets",
-  "Anytime touchdown":           "Receiving targets",
-  "Rushing and receiving yards": "Receiving targets",
-  "Rushing yards":               "Rushing attempts",
-  "Rushing attempts":            "Rushing attempts",
-  "Passing yards":               "Passing attempts",
-  "Passing touchdowns":          "Passing attempts",
-  "Passing completions":         "Passing attempts",
-  "Passing and rushing yards":   "Passing attempts",
-};
-
-/* How many recent matches count as "lately". Three is a compromise: fewer is
-   one bad afternoon, more and a role change three weeks ago stops showing. */
-const USAGE_RECENT = 3;
-
-function usageProfile(fx, teamIndex, name, stat, window) {
-  const feeds = OPPORTUNITY[stat];
-  if (!feeds) return null;
-  const records = (fx.players || [])[teamIndex] || [];
-  if (!records.length) return null;
-
-  const ids = new Set(window.map(m => m.id));
-  const teamTotal = new Map();   // match id -> the squad's total
-  const his = new Map();         // match id -> his own
-  records.forEach(r => {
-    if (!ids.has(r.match_id)) return;
-    const v = (r.stats || {})[feeds];
-    if (v === undefined || v === null) return;
-    teamTotal.set(r.match_id, (teamTotal.get(r.match_id) || 0) + v);
-    if (r.player === name) his.set(r.match_id, v);
-  });
-  if (!his.size) return null;
-
-  // Oldest first, so "recent" means the end of the list.
-  const order = [...his.keys()].sort((a, b) => {
-    const ia = window.findIndex(m => m.id === a);
-    const ib = window.findIndex(m => m.id === b);
-    return ia - ib;
-  });
-  const shares = order
-    .map(id => {
-      const tot = teamTotal.get(id) || 0;
-      return tot > 0 ? his.get(id) / tot : null;
-    })
-    .filter(x => x !== null);
-  if (!shares.length) return null;
-
-  const mean = xs => xs.reduce((s, x) => s + x, 0) / xs.length;
-  const recent = shares.slice(-USAGE_RECENT);
-  const prior = shares.slice(0, -USAGE_RECENT);
-
-  const opportunities = order.map(id => his.get(id));
-  return {
-    feeds,
-    n: shares.length,
-    share: mean(shares),
-    recent: mean(recent),
-    prior: prior.length >= 2 ? mean(prior) : null,
-    last: opportunities[opportunities.length - 1],
-    perGame: mean(opportunities),
-    recentOpps: opportunities.slice(-USAGE_RECENT),
-  };
-}
-
-/* The one-line read, and a warning when the thing that feeds the bet is
-   drying up. A falling share is the only forward-looking signal here -- the
-   record is entirely backward-looking by construction. */
-function usageNote(u) {
-  if (!u) return "";
-  const word = u.feeds === "Receiving targets" ? "target share"
-             : u.feeds === "Rushing attempts" ? "carry share"
-             : "attempt share";
-  const pct = x => `${Math.round(x * 100)}%`;
-  let trend = "", cls = "usage-flat";
-  if (u.prior !== null && u.prior > 0) {
-    const ratio = u.recent / u.prior;
-    if (ratio <= 0.6) { trend = ` &mdash; down from ${pct(u.prior)}`; cls = "usage-down"; }
-    else if (ratio >= 1.4) { trend = ` &mdash; up from ${pct(u.prior)}`; cls = "usage-up"; }
-  }
-  const dry = u.recentOpps.every(v => v <= 1);
-  return `<span class="usage ${cls}" title="His share of the squad's ${
-    u.feeds.toLowerCase()} over this window, and over the last ${USAGE_RECENT} matches. A record counts what he did; this counts what he was given the chance to do.">${
-    word} ${pct(u.recent)}${trend}${
-    dry ? ` &middot; <b>${u.recentOpps.join(", ")} in the last ${u.recentOpps.length}</b>` : ""}</span>`;
-}
-
-/* Where this defence sits against every other one in the file.
-
-   The profile on its own is a number without a scale. "36.2 rushing yards per
-   game to running backs" means nothing until you know whether that is the
-   softest run defence in the league or the hardest, and that is the whole
-   substance of the idea: a good running back against a defence that has been
-   giving up yards to running backs all season is a different bet from the
-   same back against the best run defence in the file, and the line you should
-   be taking is different too.
-
-   So every team in the index is rated on the same stat for the same position,
-   over everything the file holds for them, and the opponent is placed in that
-   order. Whole file rather than a window, deliberately: the teams have to be
-   measured over the same thing to be comparable, and a per-fixture window
-   would rank each defence over a different set of matches.
-
-   Teams with too little data are left out of the ranking rather than counted
-   as zero, which would make an unseen defence look like the best in the
-   league. If fewer than four teams qualify there is no league to compare to
-   and this returns null, because a "2nd softest of 3" is not a fact. */
-const MATCHUP_RANK_CACHE = new Map();
-const MATCHUP_RANK_MIN_APPS = 6;
-const MATCHUP_RANK_MIN_TEAMS = 4;
-
-function matchupRank(m) {
-  if (!m || !m.n || m.per90 === null || m.per90 === undefined) return null;
-  const key = `${m.pos}|${m.stat}`;
-  let table = MATCHUP_RANK_CACHE.get(key);
-
-  if (!table) {
-    const idx = matchupIndex();
-    const source = m.mode === "own" ? idx.own : idx.conceded;
-    const rates = [];
-    source.forEach((byPos, teamId) => {
-      const pool = byPos.get(m.pos) || [];
-      const gated = reportsMinutes(pool);
-      let n = 0, total = 0, minutes = 0;
-      pool.forEach(g => {
-        if (gated ? (g.minutes || 0) < MIN_MINUTES
-                  : !Object.keys(g.stats || {}).length) return;
-        let v = (g.stats || {})[m.stat];
-        if ((v === undefined || v === null) && ZERO_FILL.has(m.stat)) v = 0;
-        if (v === undefined || v === null) return;
-        n++; total += v; minutes += (g.minutes || 0);
-      });
-      if (n < MATCHUP_RANK_MIN_APPS) return;
-      rates.push({ teamId, rate: minutes > 0 ? (total / minutes) * 90 : total / n });
-    });
-    rates.sort((a, b) => b.rate - a.rate);      // most allowed first
-    table = rates;
-    MATCHUP_RANK_CACHE.set(key, table);
-  }
-
-  if (table.length < MATCHUP_RANK_MIN_TEAMS) return null;
-  const mid = table[Math.floor(table.length / 2)].rate;
-
-  /* Look the team up in the table, rather than slotting its windowed rate
-     into it.
-
-     The first version compared the profile's rate -- computed over the
-     window on screen -- against a table computed over the whole file, and
-     the two are not the same measurement. The result was that almost every
-     defence in the NFL file came out "tough", several of them 31st of 32 at
-     once, which is arithmetically impossible and was the tell. Comparing a
-     number from one population against the ranks of another is not a
-     ranking, it is a category error with a percentage sign on it.
-
-     The table is the comparison, so the team's place in it is read directly.
-     The windowed figure still prints beside the badge, and where the two
-     disagree that is real information about recent form rather than an
-     artefact. */
-  const at = table.findIndex(r => r.teamId === m.teamId);
-  if (at < 0) return null;
-  const place = at + 1;
-  const rate = table[at].rate;
-
-  const share = (place - 1) / (table.length - 1);   // 0 = softest, 1 = toughest
-  const verdict = share <= 0.33 ? "soft" : share >= 0.67 ? "tough" : "middling";
-  return {
-    place, of: table.length, verdict, rate,
-    versusMid: mid > 0 ? rate / mid : null,
-  };
-}
-
-/* The rank as a short badge: what it is, and how far from the middle. */
-function matchupBadge(m) {
-  const r = matchupRank(m);
-  if (!r) return "";
-  const pct = r.versusMid ? Math.round((r.versusMid - 1) * 100) : null;
-  const gap = pct === null || Math.abs(pct) < 3 ? "about the league median"
-            : `${Math.abs(pct)}% ${pct > 0 ? "above" : "below"} the median`;
-  const word = r.verdict === "soft" ? `${r.place}${ordinal(r.place)} softest`
-             : r.verdict === "tough" ? `${r.of - r.place + 1}${ordinal(r.of - r.place + 1)} toughest`
-             : `${r.place}${ordinal(r.place)} of ${r.of}`;
-  return `<span class="mu-rank mu-${r.verdict}" title="Of the ${r.of} teams in this file with enough data on this position and stat, ${gap}.">${word} of ${r.of}</span>`;
-}
-
-function ordinal(n) {
-  const s = ["th", "st", "nd", "rd"], v = n % 100;
-  return s[(v - 20) % 10] || s[v] || s[0];
 }
 
 /* Who was measured, against whom, in one line of English. */
@@ -2883,14 +2224,13 @@ function matchupCell(m) {
   const pct = Math.round(m.share * 100);
   return `<td class="mu${m.thin ? " mu-thin" : ""}" data-label="Matchup">
     <div class="mu-fig"><b>${pct}%</b> over ${m.line}</div>
-    <div class="mu-rate">${m.per90.toFixed(1)} ${m.unit || "per 90"}</div>${
+    <div class="mu-rate">${m.per90.toFixed(1)} per 90</div>${
     m.thin
       ? `<div class="mu-fig"><span class="tag-thin" title="Only ${m.matches} match${
           m.matches === 1 ? "" : "es"} with player data for this position in
           this window. Too few to lean on.">thin: ${m.matches} match${
           m.matches === 1 ? "" : "es"}</span></div>`
       : ""}
-    <div class="mu-fig">${matchupBadge(m)}</div>
     <div class="mu-note">${escapeHtml(matchupLabel(m))} &middot; ${matchupSample(m)}</div>
   </td>`;
 }
@@ -2908,10 +2248,10 @@ function matchupHalf(m, teamIndex) {
   const pct = Math.round(m.share * 100);
   return `<div class="half${m.thin ? " mu-thin" : ""}">
     <span class="half-label">${escapeHtml(matchupLabel(m))}, over ${m.line}</span>
-    <span class="half-num">${pct}% ${matchupBadge(m)}</span>
+    <span class="half-num">${pct}%</span>
     <div class="bar"><div class="fill" style="width:${pct}%;
          background:var(${VARS[1 - teamIndex]})"></div></div>
-    <span class="mu-seq">${m.per90.toFixed(1)} ${m.unit || "per 90"} &middot; ${matchupSample(m)}${
+    <span class="mu-seq">${m.per90.toFixed(1)} per 90 &middot; ${matchupSample(m)}${
       m.thin ? ` &middot; <b>thin: ${m.matches} match${m.matches === 1 ? "" : "es"}</b>` : ""}</span>
   </div>`;
 }
@@ -3162,64 +2502,6 @@ function scanMatchups(minSample) {
    surfacing the case above. Pricing goes through pricePlayer, the same
    minutes-aware path as the Players tab, never the team model. */
 
-/* The whole ladder for one player, not just the rung the scan chose.
-
-   The scan picks one number. A coupon may not carry that exact number, and
-   the rung above or below is often the one worth taking -- and the only way
-   to know is to see the record at every rung side by side. This is the table
-   that was being pasted into chat by hand; it belongs on the page.
-
-   Built from the row's own values, so it honours whatever the filters are
-   set to: change the window to last 5, or to home games only, and the ladder
-   re-reads with it. That matters more than it sounds. A leg that looks like
-   1.43 across twenty games and 1.80 in away games is the difference between
-   a bet and a mistake, and the venue split is one click away here. */
-function ladderTable(stat, values, chosen) {
-  const n = values.length;
-  if (!n) return "";
-  const all = ladderRungs(stat, values).map(threshold => {
-    const hits = values.filter(v => v >= threshold).length;
-    return { threshold, hits, rate: hits / n };
-  }).filter(r => r.hits > 0 && r.rate < 1 && r.rate >= 0.2);
-
-  /* One row per distinct record, at the highest line that achieves it.
-
-     Gibbs clears 70 and 80 in the same seven games, because he has never
-     landed between them -- so listing both is one fact printed twice, and the
-     only sane answer is the bigger number. Collapsing also kills the tail,
-     where six consecutive rungs all read 1/10 and none of them is a bet.
-     Rungs below a one-in-five rate are dropped for the same reason. */
-  const rungs = all.filter((r, i) =>
-    i === all.length - 1 || all[i + 1].hits !== r.hits);
-  if (!rungs.length) return "";
-
-  const rows = rungs.map(r => {
-    // The scan's rung may have been collapsed into the row above it, so mark
-    // whichever row actually covers it rather than only an exact match.
-    const here = chosen !== null && r.threshold >= chosen
-      && !rungs.some(o => o.threshold >= chosen && o.threshold < r.threshold);
-    return `<tr${here ? ' class="rung-here"' : ""}>
-      <td class="rung">${r.threshold}+</td>
-      <td>${r.hits}/${n}</td>
-      <td>${Math.round(r.rate * 100)}%</td>
-      <td><b>${fmtOdds(1 / r.rate)}</b></td>
-      <td class="rung-need">${fmtOdds(1 / wilsonLow(r.hits, n))}</td>
-    </tr>`;
-  }).join("");
-
-  return `<details class="ladder"><summary>every line on the ladder</summary>
-    <table class="ladder-table">
-      <thead><tr><th>line</th><th>record</th><th>rate</th><th>fair</th>
-        <th>hold out for</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
-    <p class="ladder-note">Fair is one over the rate and is break-even, not an
-      edge: back a rung only where the book pays more than it. Hold out for is
-      the same price once the sample size is paid for. The highlighted row is
-      the one the scan chose. Change the window or venue in Filters and this
-      re-reads with it.</p></details>`;
-}
-
 /* The rungs a book actually posts, and the one worth quoting for a player.
 
    Mirrors parlay.py. The scan used to take its line from fx.playerLines --
@@ -3246,23 +2528,10 @@ const SCAN_FLOOR = 0.65;     // the rate the rung has to clear
 const SCAN_GUARD = 0.35;
 const SCAN_MEDIAN_SHARE = 0.6;  // a rung far below his own median is not a bet
 
-/* Markets scored on a scale where whole numbers from one would be absurd: a
-   ninety-average darts player would get ninety rungs, eighty-nine of them
-   certainties. Mirrors COARSE_GRIDS in parlay.py -- [floor, step]. */
-const COARSE_GRIDS = {
-  "Average 3 darts": [70, 2],
-  "Highest checkout": [40, 10],
-};
-
 function ladderRungs(stat, values) {
   const top = values.length ? Math.max(...values) : 0;
   if (top <= 0) return [];
   const rungs = [];
-  const coarse = COARSE_GRIDS[stat];
-  if (coarse) {
-    for (let t = coarse[0]; t <= Math.floor(top); t += coarse[1]) rungs.push(t);
-    return rungs;
-  }
   if (/yards/i.test(stat)) {
     for (let t = 5; t < 50; t += 5) rungs.push(t);
     for (let t = 50; t <= top + 10; t += 10) rungs.push(t);
@@ -3328,34 +2597,10 @@ function gateRate(hits, total, base) {
   return (hits + GATE_PRIOR_APPS * base) / (total + GATE_PRIOR_APPS);
 }
 
-/* How many rows one fixture may contribute to the player shortlist.
-
-   Three was the right number when player rows and team matchups shared a
-   single list: the cap existed so a squad of fifty could not swamp the team
-   bets, and three per fixture was the price of admission to somebody else's
-   tab.
-
-   Players have their own tab now, so there is nothing left to swamp, and
-   three was actively hiding good bets. Courtland Sutton is the case that
-   showed it: his 4+ receptions is 7 from 10, which clears every gate, and he
-   was nowhere on the page because three Broncos rows had already been taken.
-
-   Still capped rather than unlimited, because one fixture filling the whole
-   round's list is its own kind of useless, and because a squad's worth of
-   rows off one game is a lot of nearly-identical bets. The per-competition
-   limit above still governs how many are actually shown. */
-const PLAYER_SCAN_CAP = 8;
+const PLAYER_SCAN_CAP = 3;
 
 function scanPlayerBets(minSample) {
   const found = [];
-
-  /* Every player row the scan actually looked at, before the per-player and
-     per-fixture caps thin it out. The "this scan looked at N combinations"
-     warning is about how many questions were asked, not how many answers
-     survived, so the count has to be taken here. Reporting the team scan's
-     count on this tab, which an earlier version did, was quietly describing
-     a different experiment. */
-  let combos = 0;
 
   scanFixtures().forEach(([fx, fxIndex]) => {
     if (!Array.isArray(fx.players) || !fx.players.some(r => r.length)) return;
@@ -3363,10 +2608,9 @@ function scanPlayerBets(minSample) {
     if (scanScope !== "fixture" && !showPast
         && (fx.fixture.kickoff || 0) <= now) return;
 
-    const keep = [];
+    const fxRows = [];
 
     fx.players.forEach((records, teamIndex) => {
-      const fxRows = [];
       // The same match window the team scan uses, venue pooled: a player's
       // ten-appearance sample does not survive being halved by venue.
       const allowed = new Set(fx.records[teamIndex].slice(-games).map(m => m.id));
@@ -3420,15 +2664,12 @@ function scanPlayerBets(minSample) {
           if (gateRate(hits, vals.length, base) < MATCHUP_FLOOR) return;
 
           let vs = null;
-          const deepVs = h2hPlayerRecords(teamIndex, fx, name);
-          const vsSource = deepVs || (meetings
-            ? played.filter(g => meetings.has(g.match_id)) : null);
-          if (vsSource && vsSource.length) {
-            const vsApps = appearances(vsSource, stat);
+          if (meetings) {
+            const vsApps = appearances(
+              played.filter(g => meetings.has(g.match_id)), stat);
             if (vsApps.length) {
               vs = { k: vsApps.filter(a => a.value > line).length,
-                     n: vsApps.length,
-                     deep: !!deepVs };
+                     n: vsApps.length };
             }
           }
 
@@ -3461,45 +2702,31 @@ function scanPlayerBets(minSample) {
             vs,
             vsAgrees: vs ? vs.k / vs.n >= MATCHUP_FLOOR : null,
             matchup,
-            // What feeds the bet, over the same window as the record.
-            usage: usageProfile(fx, teamIndex, name, stat,
-                                (fx.records[teamIndex] || []).slice(-games)),
             price,
           });
-          combos++;
         });
       });
-
-      /* One row per player, confirmed head-to-heads first, then evidence. A
-         versus-opponent record only counts as confirmation on more than one
-         meeting, and only when the meetings themselves point the right way.
-
-         Capped per squad, not per fixture. The cap used to sit outside this
-         loop, so both teams' players competed for the same few slots and the
-         better-supported squad took the lot. Courtland Sutton is the case:
-         8th of Denver's 9 qualifying players, comfortably inside a cap of
-         eight, and absent from the page because Jacksonville's list was in
-         the queue ahead of him. A fixture's shortlist showing one team's
-         players is not a shortlist for that fixture. */
-      const confirmed = r => (r.vsAgrees === true && r.vs.n > 1) ? 1 : 0;
-      const bestByPlayer = new Map();
-      fxRows.forEach(r => {
-        const held = bestByPlayer.get(r.player);
-        if (!held
-            || confirmed(r) > confirmed(held)
-            || (confirmed(r) === confirmed(held) && r.score > held.score)) {
-          bestByPlayer.set(r.player, r);
-        }
-      });
-      const ranked = [...bestByPlayer.values()].sort((a, b) =>
-        (confirmed(b) - confirmed(a)) || (b.score - a.score));
-      keep.push(...ranked.slice(0, PLAYER_SCAN_CAP));
     });
 
-    found.push(...keep);
+    // One row per player, confirmed head-to-heads first, then evidence. A
+    // versus-opponent record only counts as confirmation on more than one
+    // meeting, and only when the meetings themselves point the right way.
+    const confirmed = r => (r.vsAgrees === true && r.vs.n > 1) ? 1 : 0;
+    const bestByPlayer = new Map();
+    fxRows.forEach(r => {
+      const held = bestByPlayer.get(r.player);
+      if (!held
+          || confirmed(r) > confirmed(held)
+          || (confirmed(r) === confirmed(held) && r.score > held.score)) {
+        bestByPlayer.set(r.player, r);
+      }
+    });
+    const ranked = [...bestByPlayer.values()].sort((a, b) =>
+      (confirmed(b) - confirmed(a)) || (b.score - a.score));
+    found.push(...ranked.slice(0, PLAYER_SCAN_CAP));
   });
 
-  return { found, combos };
+  return found;
 }
 
 /* ----------------------------------------------------- recommended slip
@@ -3526,30 +2753,10 @@ function recommendedSlip() {
   const target = parseFloat(document.getElementById("rtarget")?.value) || 3.0;
   const wanted = Math.max(2, parseInt(document.getElementById("rlegs")?.value, 10) || 3);
 
-  const priceable = (window.__pool || window.__best || []).filter(r => {
+  const pool = (window.__best || []).filter(r => {
     const pr = r.price || priceRow(r);
     return isFinite(pr.fair) && pr.fair > 1.05 && !pr.conflict;
   });
-
-  /* The bar applies here too, or it is only half a standard: a suggested slip
-     built from legs you would reject by hand is not a suggestion, it is a
-     different opinion wearing the same panel.
-   
-     It cannot be absolute, though. Set the bar high enough and nothing clears
-     it, and a panel that goes blank tells you less than a panel that says why.
-     So the bar filters when it leaves enough to build with, and otherwise
-     stands down and says it has. */
-  const bar = slipBar();
-  const above = priceable.filter(r => scorePick(r, 0).shown >= bar);
-  const wantedNow = Math.max(2, parseInt(document.getElementById("rlegs")?.value, 10) || 3);
-  const barHeld = above.length >= Math.max(2, wantedNow);
-  const pool = barHeld ? above : priceable;
-  const barNote = barHeld
-    ? `Every leg here scores ${bar} or better before a price is typed.`
-    : `Only ${above.length} selection${above.length === 1 ? "" : "s"} on the
-       board score ${bar} or better, which is not enough for ${wantedNow} legs,
-       so this is built from the whole qualifying set. Lower the bar, or widen
-       Scope to the whole round, if you want it honoured.`;
 
   if (pool.length < 2) {
     box.innerHTML = `<div class="caution"><strong>No slip to suggest.</strong>
@@ -3578,74 +2785,22 @@ function recommendedSlip() {
   // One leg per team per stat, so the slip is not three ways of betting on the
   // same thing happening. Correlated legs are the standard way a multiple
   // looks better than it is.
-  // One leg per team per stat, so the slip is not three ways of betting on
-  // the same thing happening. Best-evidenced wins the slot.
-  const bestByKey = new Map();
-  pool.forEach(r => {
-    const key = `${r.fixtureIndex}|${r.teamIndex}|${r.stat}`;
-    const held = bestByKey.get(key);
-    if (!held || byEvidence(r, held) < 0) bestByKey.set(key, r);
-  });
-
-  /* Search the combinations rather than picking greedily.
-
-     The old version took the best-evidenced legs clearing their share of the
-     target and filled any gap with the longest prices on the board. That is
-     fine while enough legs clear the share, and silently gives up once they
-     do not: raise the target past the point where `wanted` legs each pay
-     target^(1/wanted) and it stops following you, because no single leg it
-     reaches for can make up the difference.
-
-     A combination can. One leg at 3.00 and two at 1.40 pay 5.88 between them
-     while none of the three clears 1.75 on its own, and greedy never sees it.
-     So: rank the pool, keep the plausible top of it, and walk every
-     combination of the right size. Of those that clear the target, take the
-     best-evidenced; if none do, take the longest-priced so the shortfall is
-     as small as the board allows. Twenty-eight legs choose three is four
-     thousand combinations, which is nothing. */
-  /* The candidates: the best-evidenced legs and the longest-priced ones.
-
-     Ranking on one blended score and keeping the top slice quietly caps how
-     far the slip can reach. Evidence and price pull in opposite directions,
-     so a list ordered by any mixture of them holds the middle and throws away
-     both ends -- and the long end is exactly what a high target needs. Taking
-     the head of both lists keeps the shape of the board: the near-certainties
-     that carry a slip and the prices that get it to the number. */
-  const unique = [...bestByKey.values()];
-  const cap = wanted >= 5 ? 14 : 18;
-  const byEv = unique.slice().sort((a, b) => wilsonLow(b.k, b.n) - wilsonLow(a.k, a.n));
-  const byPrice = unique.slice().sort((a, b) => fairOf(b) - fairOf(a));
-  const ranked = [...new Set([...byEv.slice(0, cap), ...byPrice.slice(0, cap)])];
-
-  const evidenceOf = r => wilsonLow(r.k, r.n);
-  let bestHit = null, bestMiss = null;
-
-  const walk = (start, chosen, price, score) => {
-    if (chosen.length === wanted) {
-      const cand = { legs: chosen.slice(), price, score };
-      if (price >= target) {
-        if (!bestHit || cand.score > bestHit.score) bestHit = cand;
-      } else if (!bestMiss || cand.price > bestMiss.price) {
-        bestMiss = cand;
-      }
-      return;
-    }
-    // Nothing left to reach the target with: every remaining leg is shorter
-    // than this one, so the best this branch can still pay is bounded.
-    for (let i = start; i < ranked.length; i++) {
-      const r = ranked[i];
-      chosen.push(r);
-      walk(i + 1, chosen, price * fairOf(r), score + evidenceOf(r));
-      chosen.pop();
+  const legs = [];
+  const used = new Set();
+  const take = candidates => {
+    for (const r of candidates) {
+      if (legs.length >= wanted) return;
+      const key = `${r.fixtureIndex}|${r.teamIndex}|${r.stat}`;
+      if (used.has(key)) continue;
+      used.add(key);
+      legs.push(r);
     }
   };
-  if (ranked.length >= wanted) walk(0, [], 1, 0);
 
-  const picked = bestHit || bestMiss;
-  const legs = picked ? picked.legs.slice() : ranked.slice(0, wanted);
-
-  // Longest price last reads better in a list: the certainties set it up.
-  legs.sort((a, b) => fairOf(a) - fairOf(b));
+  // Legs that pull their weight first, then anything else to make up the
+  // count, longest price first so the shortfall is as small as it can be.
+  take(pool.filter(r => fairOf(r) >= perLeg).sort(byEvidence));
+  take(pool.slice().sort((a, b) => fairOf(b) - fairOf(a)));
 
   window.__recLegs = legs;
   const combined = legs.reduce((acc, r) => acc * (r.price || priceRow(r)).fair, 1);
@@ -3665,14 +2820,11 @@ function recommendedSlip() {
     <strong>Suggested ${legs.length}-leg slip.</strong>
     Fair combined price <strong>${fmtOdds(combined)}</strong>
     ${short
-      ? `, which is short of your ${fmtOdds(target)} target &mdash; the longest
-         ${wanted} legs that qualify here do not multiply that far. Only
-         ${pool.length} selection${pool.length === 1 ? "" : "s"} clear the
-         current filters, so widen Scope to the whole round, drop Min each
-         side, or ask for more legs.`
+      ? `, which is short of your ${fmtOdds(target)} target. These are the
+         best-supported legs available; reaching ${fmtOdds(target)} would mean
+         taking worse ones.`
       : `, against your ${fmtOdds(target)} target.`}
     <ol class="rec-legs">${rows}</ol>
-    <div class="rec-bar ${barHeld ? "is-ok" : "is-warn"}">${barNote}</div>
     <button type="button" class="add-btn" id="rec-add">Add these to my slip</button>
     <br><br>
     These are fair prices, not offers. You need a bookmaker to beat every one of
@@ -3683,110 +2835,27 @@ function recommendedSlip() {
 }
 
 
-/* The probability a row lands, however it was priced. Player rows are priced
-   through a different path and do not all carry `p`, so the fair price is the
-   fallback -- it is one over the same number. */
-function probOf(r) {
-  const pr = r.price || priceRow(r);
-  if (pr && isFinite(pr.p) && pr.p > 0) return pr.p;
-  if (pr && isFinite(pr.fair) && pr.fair > 1) return 1 / pr.fair;
-  return r.n > 0 ? r.k / r.n : 0;
-}
-
-/* Value, in probability points: how much the matchup moves the number.
-
-   This is the only edge signal the tool actually holds. The record is roughly
-   what a book prices off; the opponent-adjusted projection knows who the
-   opponent is, and where it says a bet lands more often than the raw form
-   does, the price on offer is too long. That is value. A long price on its
-   own is not -- it is just a bet that loses more often.
-
-   Zero when nothing disagrees with the record, which is the honest answer
-   rather than a flattering one: with no projection behind a row there is no
-   second opinion, so there is no edge to claim. Those rows sink to the bottom
-   of this ordering and the panel says why. */
-function valueEdge(r) {
-  const pr = r.price || priceRow(r);
-  if (!pr || !isFinite(pr.p) || r.n <= 0) return 0;
-  if (pr.source !== "model" && pr.source !== "blend") return 0;
-  return pr.p - r.k / r.n;
-}
-
-function slipBar() {
-  const el = document.getElementById("bbar");
-  const v = el ? parseInt(el.value, 10) : 60;
-  return isFinite(v) ? Math.max(0, Math.min(100, v)) : 60;
-}
-
 function bestBetsView() {
-  const cardBar = slipBar();
   const minSample = parseInt(document.getElementById("bmin").value, 10) || 4;
   const limit = parseInt(document.getElementById("btop").value, 10) || 10;
   MATCHUP_FLOOR = Math.min(1, Math.max(0.3,
     (parseInt(document.getElementById("bfloor").value, 10) || 50) / 100));
-  /* One scan or the other, never both in one list.
-     See the note beside `bestKind`: a player prop and a team line are not
-     competing for the same slot because you would not place them in the same
-     place. The team scan still reports its combination count and skip count
-     on the player tab, because the multiple-comparisons warning is about how
-     many questions the page asked, and on the player tab that is the player
-     scan's own count. */
-  let found, combos, skipped = 0;
-  if (bestKind === "team") {
-    ({ found, combos, skipped } = scanMatchups(minSample));
-  } else {
-    ({ found, combos } = scanPlayerBets(minSample));
-  }
-  /* The quality gate.
+  let { found, combos, skipped } = scanMatchups(minSample);
 
-     A hit rate on its own decides nothing. "19 from 20" is a magnificent
-     record and a terrible bet, because the price that record justifies once
-     the sample size is paid for is 1.31 and a bookmaker pays 1.10. `need` is
-     where the two meet, so `need` is what a shortlist has to be cut on --
-     everything above the bar is a bet you cannot get a price for, however
-     good the number beside it looks.
-
-     Measured rather than guessed: over a 267-row NFL pool the median need is
-     1.91 and the quartiles are 1.71 and 2.17, so a bar of 2.00 keeps a little
-     over half and throws out the tail that was never backable. Raise it to
-     see more, lower it to see only the tight ones. */
-  const needCap = parseFloat(document.getElementById("bneed")?.value) || 99;
-  const beforeCap = found.length;
-  found = found.filter(r => {
-    const pr = r.price || priceRow(r);
-    return isFinite(pr.need) && pr.need <= needCap;
-  });
-  const cutByNeed = beforeCap - found.length;
-
-  /* One row per bet, not one per fixture it appears in.
-     A club sitting in two upcoming fixtures in the same file carries its
-     squad under both, so "Tre Tucker 2+ receptions" was listed twice. Keep
-     the one that kicks off first, which is the one you can still back. */
-  const byBet = new Map();
-  found.forEach(r => {
-    const key = `${r.player || r.team}|${r.stat}|${r.line}|${r.over}`;
-    const held = byBet.get(key);
-    if (!held || (r.kickoff || 0) < (held.kickoff || 0)) byBet.set(key, r);
-  });
-  found = [...byBet.values()];
-
-  found = found.slice().sort((a, b) => b.score - a.score);
+  // Player rows ride along in the same pool, already priced through
+  // pricePlayer. The sort is stable, so among equal scores the team scan's
+  // own tiebreaks survive the merge.
+  found = found.concat(scanPlayerBets(minSample))
+               .sort((a, b) => b.score - a.score);
 
   const periodName = p => (ALL.periods && ALL.periods[p]) || p;
   const target = document.getElementById("bestbets");
 
   if (!found.length) {
-    target.innerHTML = bestKind === "team"
-      ? `<p class="empty">No matchup in
-        ${scanScope === "fixture" ? "this fixture" : "this round"} had both halves
-        at ${Math.round(MATCHUP_FLOOR * 100)}% or better on at least ${minSample}
-        matches each. Lower "Min each side", or widen the scope.</p>`
-      : `<p class="empty">No player in
-        ${scanScope === "fixture" ? "this fixture" : "this round"} cleared
-        ${Math.round(MATCHUP_FLOOR * 100)}% on at least ${minSample}
-        appearances in a market the scan prices. Lower "Min each side", widen
-        the scope, or check the report was built with --players: without them
-        there are no player rows to find.</p>`;
+    target.innerHTML = `<p class="empty">No matchup in
+      ${scanScope === "fixture" ? "this fixture" : "this round"} had both halves
+      at ${Math.round(MATCHUP_FLOOR * 100)}% or better on at least ${minSample}
+      matches each. Lower "Min each side", or widen the scope.</p>`;
     window.__best = [];
     recommendedSlip();
     return;
@@ -3814,41 +2883,10 @@ function bestBetsView() {
     return;
   }
 
-  /* These used to be three views of one number. "Most likely" sorted by
-     `need` ascending and `need` is one over the Wilson lower bound -- which is
-     exactly what the incoming sort on `score` already does, so Evidence and
-     Most likely returned the same list in the same order. "Best price" sorted
-     the other way, which is not a third opinion, it is the first one upside
-     down: the longest prices among a set that has already passed the evidence
-     gate are simply its weakest members. Pressing the buttons did nothing you
-     would notice, and when it did, it was wrong.
-
-     Three different questions, three different quantities:
-
-       Evidence     the Wilson lower bound. What survives paying for the
-                    sample size. Small samples are punished.
-       Most likely  the calibrated probability itself. What lands most often,
-                    sample size not charged for, so a thin 3/3 can lead.
-       Best value   how far the opponent-adjusted projection sits above the
-                    raw record. A book prices off form; the projection is the
-                    part it is slower to see, and a bet the matchup likes more
-                    than the form does is one whose price is too big. */
-  if (order === "likely") {
-    found.sort((a, b) => probOf(b) - probOf(a));
-  } else if (order === "value") {
-    /* Value, once the gate has already done the evidence.
-       Ranking on evidence alone puts "1+ receiving receptions, 14 from 15" at
-       the top: an outstanding record, a 1.07 fair price, and nothing you
-       would ever back. Everything reaching this point has cleared the hit
-       rate floor and the need cap, so the remaining question is simply how
-       much it pays -- the longest price that the evidence still supports.
-       Where the projection does disagree with the record, that edge breaks
-       the tie, because it is the only genuine market signal here. */
-    const fairOf = r => {
-      const pr = r.price || priceRow(r);
-      return isFinite(pr.fair) ? pr.fair : 0;
-    };
-    found.sort((a, b) => (fairOf(b) - fairOf(a)) || (valueEdge(b) - valueEdge(a)));
+  if (order !== "evidence") {
+    found.sort((a, b) => order === "likely"
+      ? a.price.need - b.price.need
+      : b.price.need - a.price.need);
   }
 
   // Grouped by competition, because "top three this gameweek" means three
@@ -3860,13 +2898,7 @@ function bestBetsView() {
   });
 
   const shown = [];
-  // Everything that qualified, before the per-competition display cap. The
-  // cards are a shortlist to read; the slip builder should be choosing from
-  // the whole qualifying set, or raising the target just runs it out of legs
-  // that the cap happened to keep.
-  const qualifying = [];
   const blocks = [...byComp.entries()].map(([comp, rows]) => {
-    rows.forEach(r => qualifying.push(r));
     const picks = rows.slice(0, limit);
     const cards = picks.map(r => {
       const i = shown.push(r) - 1;
@@ -3876,40 +2908,25 @@ function bestBetsView() {
       const price = r.player ? r.price : priceRow(r);
       r.price = price;                      // the slip reads this back
 
-      // The same score the slip will give it, so the bar is visible before
-      // you add anything rather than only afterwards. No price typed here,
-      // so it is the provisional number and says so.
-      const cardScore = scorePick(r, 0);
-      const cardPass = cardScore.shown >= cardBar;
-      const scoreChip = `<span class="pick-score ${cardPass ? "pass" : "fail"}"
-        title="Provisional score out of 100 -- evidence, model agreement and
-        context. Value is the other 45 points and needs the price you have been
-        offered, so type it on the slip. Your bar is ${cardBar}.">score
-        ${cardScore.shown}</span>`;
-
       if (r.player) {
         const fmtV = v => (Number.isInteger(v) ? v : v.toFixed(1));
         let vsHalf;
         if (r.vs) {
           const small = r.vs.n < 3;
           vsHalf = `<div class="half">
-            <span class="half-label">v ${escapeHtml(r.opponent)}, ${
-              r.vs.deep ? "previous meetings" : "meetings in this window"}</span>
+            <span class="half-label">v ${escapeHtml(r.opponent)}, all meetings</span>
             <span class="half-num">${r.vs.k}/${r.vs.n}</span>
             <div class="bar"><div class="fill" style="width:${(r.vs.k / r.vs.n) * 100}%;
                  background:var(${VARS[r.teamIndex]})"></div></div>
-            <span class="seq">${
-              small ? `only ${r.vs.n} meeting${r.vs.n === 1 ? "" : "s"} with player data`
-              : r.vs.deep ? `${r.vs.n} appearance${r.vs.n === 1 ? "" : "s"} against them`
-              : `${r.vs.n} inside the last ${games === 99 ? "" : games + " "}matches &mdash; rebuild with --h2h --players for the full history`}</span>
+            <span class="seq">${small
+              ? `only ${r.vs.n} meeting${r.vs.n === 1 ? "" : "s"} with player data`
+              : ""}</span>
           </div>`;
         } else {
           vsHalf = `<div class="half">
             <span class="half-label">v ${escapeHtml(r.opponent)}</span>
             <span class="half-num">&mdash;</span>
-            <span class="seq">${(r.fx && r.fx.h2hPlayers) || false
-              ? "no previous meeting has player data"
-              : "no meetings with player data &mdash; rebuild with --h2h --players"}</span>
+            <span class="seq">no meetings with player data in this report</span>
           </div>`;
         }
 
@@ -3945,8 +2962,6 @@ function bestBetsView() {
 
           <div class="pick-foot">
             <span><b>${r.k}/${r.n}</b> in form</span>
-            ${usageNote(r.usage)}
-            ${scoreChip}
             <span>fair <b>${fmtOdds(price.fair)}</b></span>
             <span class="need-cell">need <b>${fmtOdds(price.need)}</b>
               ${price.source === "model"
@@ -3971,7 +2986,6 @@ function bestBetsView() {
               data-in="${SLIP.some(s => s.key === rowKey(r)) ? 1 : 0}">
               ${SLIP.some(s => s.key === rowKey(r)) ? "Added" : "Add"}</button>
           </div>
-          ${ladderTable(r.stat, r.vals, r.alt ? r.threshold : null)}
         </div>`;
       }
       const fair = price.fair;
@@ -4019,7 +3033,6 @@ function bestBetsView() {
 
         <div class="pick-foot">
           <span><b>${r.k}/${r.n}</b> combined</span>
-          ${scoreChip}
           <span>fair <b>${fmtOdds(fair)}</b></span>
           <span class="need-cell">need <b>${fmtOdds(need)}</b>
             ${price.source === "model"
@@ -4043,50 +3056,20 @@ function bestBetsView() {
   }).join("");
 
   window.__best = shown;
-  window.__pool = qualifying;
   recommendedSlip();
 
   const weakest = shown[shown.length - 1];
   const expected = combos * binomTail(weakest.n, weakest.k);
 
-  /* Say which question the list is answering. Three buttons that silently
-     reorder a list are indistinguishable from three buttons that do nothing,
-     which is roughly what the old ones did. */
-  const noProjection = order === "value" &&
-    !found.some(r => Math.abs(valueEdge(r)) > 0.001);
-  const ORDER_NOTES = {
-    evidence: `Ordered by <strong>evidence</strong>: the bottom of the 95%
-      interval, so a long record beats a short hot streak. The safest reading
-      of what is here, and the one that ignores price entirely.`,
-    likely: `Ordered by <strong>how often it lands</strong>: the calibrated
-      probability itself, with no charge for sample size. A perfect three from
-      three can lead this list, so read the record beside each one &mdash; that
-      is the difference between this order and Evidence, and the reason both
-      exist.`,
-    value: noProjection
-      ? `Ordered by <strong>value</strong>, but nothing here has an
-         opponent-adjusted projection behind it, so there is no second opinion
-         to disagree with the record and no edge to rank on. This list is
-         unchanged from Evidence. Build with <code>--adjust</code> to fit the
-         ratings and this order starts working.`
-      : `Ordered by <strong>value</strong>: how far the opponent-adjusted
-         projection sits above the raw record. A book prices mostly off form;
-         the projection knows who the opponent is. Where it says a bet lands
-         more often than the form does, the price on offer is too long &mdash;
-         and that, not a long price on its own, is what value means.`,
-  };
-  const orderNote =
-    `<div class="order-note">${ORDER_NOTES[order] || ORDER_NOTES.evidence}</div>`;
-
   target.innerHTML = `
     <div class="caution">
-      ${bestKind === "team" ? `<strong>What this is.</strong> Both halves of the fixture pointing the
+      <strong>What this is.</strong> Both halves of the fixture pointing the
       same way: the team's own record at this venue, and what their opponent
       concedes at theirs. Two records agreeing is stronger evidence than one
       record twice as long, because they can fail independently. Both halves
       must clear ${Math.round(MATCHUP_FLOOR * 100)}% on their own before a
-      pairing is scored at all, so a 10/10 cannot drag a 3/10 into the list.`
-        : `<strong>What this is.</strong>
+      pairing is scored at all, so a 10/10 cannot drag a 3/10 into the list.
+      ${found.some(r => r.player) ? `<br><br><strong>Player rows.</strong>
       The picks marked "player" are one record, not two: a single player's
       own appearances, priced through the same per-90 minutes model as the
       Players tab. Where the data allows it, the card also shows his record
@@ -4103,7 +3086,7 @@ function bestBetsView() {
       players of his position class, or for fouls what the players he will be
       marking have drawn, over the same match window, with the sample and
       coverage printed. Position is only G, D, M or F, so it cannot tell a
-      winger from a striker. It is context and moves no price.`}
+      winger from a striker. It is context and moves no price.` : ""}
       <br><br>
       <strong>What it is not.</strong> This scan looked at
       <strong>${combos}</strong> combinations, and
@@ -4117,17 +3100,12 @@ function bestBetsView() {
       what the bookmaker is offering, and the price is the entire bet.
       ${skipped ? `<br><br><strong>${skipped}</strong> pairings were left out
         because one side's record was built in a different competition.` : ""}
-      ${cutByNeed ? `<br><br><strong>${cutByNeed}</strong> qualifying record${
-        cutByNeed === 1 ? " was" : "s were"} dropped for needing a price longer
-        than ${needCap.toFixed(2)}. They are real records; they are not bets,
-        because no bookmaker pays what the evidence behind them demands.` : ""}
       ${contradictory ? `<br><br><strong>${contradictory}</strong> more were
         dropped because the count model and the raw record contradicted each
         other beyond what either one's uncertainty allows. When those two
         disagree that badly, one of them is wrong and there is no way to tell
         which from here.` : ""}
     </div>
-    ${orderNote}
     ${blocks}`;
 }
 
@@ -4238,23 +3216,8 @@ const SLIP = [];
 function scorePick(r, price) {
   const parts = {};
 
-  /* Every one of these used to saturate, and a score that is always 100 is
-     not a score. Value maxed out at fifteen per cent above `need`, which is
-     an ordinary price rather than a good one. Evidence maxed at fourteen
-     matches, and a team matchup routinely has twenty. Agreement and context
-     were each all-or-nothing. On a real Premier League report the whole board
-     came back at 100 out of 100, so a bar set anywhere passed everything and
-     told you nothing.
-
-     Each part is now a curve over the range the number actually occupies. */
-
-  const clamp01 = x => Math.max(0, Math.min(1, x));
-
-  // Value: how far the price beats what the evidence supports. Zero without a
-  // price, because without one there is nothing to judge -- and zero at `need`
-  // itself, because `need` is break-even, not profit. Full marks at double it:
-  // log-spaced, so the middle of the range is where most bets land rather than
-  // all crowded against the ceiling.
+  // Value: how far the price beats what the evidence supports. Zero without
+  // a price, because without one there is nothing to judge.
   if (!price || price <= 1) {
     parts.value = 0;
   } else {
@@ -4265,131 +3228,33 @@ function scorePick(r, price) {
     // beat it. Score the value at zero and let the evidence and agreement
     // parts speak instead.
     const ratio = (isFinite(need) && need > 0) ? price / need : 0;
-    parts.value = ratio > 1
-      ? Math.round(45 * clamp01(Math.log(ratio) / Math.log(2)))
-      : 0;
+    parts.value = Math.max(0, Math.min(45,
+      Math.round((ratio - 0.85) * 150) || 0));
   }
 
-  // Evidence: not the sample size but what the sample supports, which is the
-  // Wilson lower bound -- it already charges for a short record. Half of the
-  // interval's bottom is no evidence at all; 85% is as much as ten or twenty
-  // matches can ever show.
-  const low = wilsonLow(r.k, r.n);
-  parts.evidence = Math.round(25 * clamp01((low - 0.50) / 0.35));
+  // Evidence: how much data sits behind it.
+  parts.evidence = Math.max(0, Math.min(25, Math.round((r.n - 4) * 2.5)));
 
-  // Agreement: does the opponent-adjusted projection point the same way, and
-  // by how much? A projection sitting a whisker the right side of the line is
-  // not the same evidence as one sitting a third of the way clear of it, and
-  // scoring them both fifteen said it was.
+  // Agreement: does the opponent-adjusted projection point the same way?
   const proj = ((ALL.fixtures[r.fixtureIndex].projection || {})[r.period] || {})[r.stat];
   if (proj === undefined) {
     parts.agreement = 7;                      // unknown, so neither rewarded nor punished
   } else {
     const expected = proj[r.teamIndex];
     const agrees = r.over ? expected > r.line : expected < r.line;
-    const margin = Math.abs(expected - r.line) / Math.max(0.5, Math.abs(r.line));
-    parts.agreement = agrees ? Math.round(15 * clamp01(margin / 0.30)) : 0;
+    parts.agreement = agrees ? 15 : 0;
   }
 
   // Context: was the record built against the right standard of opposition?
-  // Graded, for the same reason as agreement: 59% of a sample in the right
-  // competition and 0% of it were both scored zero.
   const fx = ALL.fixtures[r.fixtureIndex];
   const sample = fx.records[r.teamIndex].slice(-games);
   const matching = sample.filter(
     x => (x.competition || "?") === fx.fixture.competition
   ).length;
-  const coverage = sample.length ? matching / sample.length : 0;
-  parts.context = Math.round(15 * clamp01((coverage - 0.30) / 0.60));
+  parts.context = sample.length && matching / sample.length >= 0.6 ? 15 : 0;
 
   const total = parts.value + parts.evidence + parts.agreement + parts.context;
-
-  /* Without a price, value is not zero. It is unknown.
-
-     Scoring it zero capped every un-priced leg at 55 out of 100, so a bar set
-     anywhere sensible rejected the entire board until a price had been typed
-     into every row -- which reads as the bar being broken rather than as the
-     bar working. So when there is no price the three parts that *can* be
-     judged are rescaled to a hundred and the number is marked provisional.
-     Type a price and the real score takes over, usually downwards, which is
-     the correct direction for a surprise. */
-  const priced = !!(price && price > 1);
-  const shown = priced ? total : Math.round((total / 55) * 100);
-  return { total, parts, priced, shown };
-}
-
-/* A better leg of the same shape, for a leg that has missed the bar.
-
-   "Better" has to be judged at the same price, or the comparison collapses
-   into "something longer" and the slip gets worse one swap at a time. So each
-   candidate is scored against the price you were quoted for the leg it would
-   replace. With no price typed, the fair prices have to be close instead: a
-   1.20 quietly swapped for a 4.00 is not the slip you asked for, however well
-   the 4.00 scores.
-
-   Correlation is the other half. A replacement that doubles up on a team and
-   stat already in the slip is not a second bet, it is the same bet twice at
-   multiplied odds, which is how a multiple comes to look better than it is. */
-/* Which replacement has already been offered under which leg.
-
-   Two legs failing the bar at a similar price nominate the same replacement,
-   because it is simply the best thing on the board in that bracket -- and a
-   panel that offers you one bet twice is inviting you to put it on twice.
-   Keyed by slip position so a single row can be rewritten in place (the price
-   handler does exactly that) without disturbing the others' offers or
-   excluding itself from its own. */
-const SWAP_OFFERED = new Map();
-
-function alternativesFor(entry, index, count = 2) {
-  const pool = window.__pool || window.__best || [];
-  if (!pool.length) return [];
-
-  SWAP_OFFERED.delete(index);
-  const elsewhere = new Set();
-  SWAP_OFFERED.forEach(keys => keys.forEach(k => elsewhere.add(k)));
-
-  const current = scorePick(entry.row, entry.price);
-  const bar = slipBar();
-  const fairOfRow = r => (r.price || priceRow(r)).fair;
-  const mine = fairOfRow(entry.row);
-
-  // Everything the rest of the slip already commits to.
-  const taken = new Set(SLIP.map(s => s.key));
-  const committed = new Set(SLIP.filter((s, i) => i !== index)
-    .map(s => `${s.row.fixtureIndex}|${s.row.teamIndex}|${s.row.stat}`));
-
-  const out = [];
-  pool.forEach(r => {
-    if (taken.has(rowKey(r))) return;
-    if (elsewhere.has(rowKey(r))) return;
-    if (committed.has(`${r.fixtureIndex}|${r.teamIndex}|${r.stat}`)) return;
-
-    const fair = fairOfRow(r);
-    if (!isFinite(fair) || fair <= 1.05) return;
-    // Same price bracket, so the slip still reaches the number it was built
-    // for. Wider when a price has been typed, because then the score is
-    // judging the price directly and the bracket only has to stop absurdities.
-    const lo = entry.price > 1 ? 0.6 : 0.75;
-    const hi = entry.price > 1 ? 1.8 : 1.35;
-    if (isFinite(mine) && (fair < mine * lo || fair > mine * hi)) return;
-
-    const s = scorePick(r, entry.price);
-    if (s.shown < bar || s.shown <= current.shown) return;
-    out.push({ row: r, score: s });
-  });
-
-  out.sort((a, b) => b.score.shown - a.score.shown);
-  const chosen = out.slice(0, count);
-  SWAP_OFFERED.set(index, chosen.map(a => rowKey(a.row)));
-  return chosen;
-}
-
-/* One line describing a selection, for the swap suggestions. */
-function legLabel(r) {
-  const what = r.player
-    ? `${r.player} ${r.alt ? r.threshold + "+" : (r.over ? "over " : "under ") + r.line} ${r.stat.toLowerCase()}`
-    : `${r.team} ${r.over ? "over" : "under"} ${r.line} ${r.stat.toLowerCase()}`;
-  return escapeHtml(what);
+  return { total, parts };
 }
 
 /* The combined-price panel, as its own function so it can be refreshed when a
@@ -4432,91 +3297,6 @@ function updateSlipTotals() {
 }
 
 
-/* What a slip leg is worth, with the record as the floor.
-
-   The slip was printing "n/a" for legs whose model price came back
-   non-finite, which is the one thing it must never do: the record is sitting
-   right there. Nine times in twenty is a 45% chance and 45% is 2.22 -- that
-   arithmetic needs no model and cannot fail.
-
-   So the model price is used when it exists and the record answers when it
-   does not. The only honest "n/a" left is a leg that has never landed once:
-   zero from twenty says the price is longer than twenty, and how much longer
-   is not something twenty matches can tell you.
-
-   fair  = one over the strike rate. What the record alone implies.
-   need  = one over the bottom of the 95% interval. What the evidence
-           supports once the sample size is paid for, and the number to bet
-           off, because ten matches cannot tell 80% from 55%. */
-function slipPrice(r) {
-  const held = r.price || priceRow(r);
-  const k = r.k, n = r.n;
-  const out = {
-    fair: held && isFinite(held.fair) ? held.fair : null,
-    need: held && isFinite(held.need) ? held.need : null,
-    source: held && held.source ? held.source : "record",
-  };
-  if (out.fair === null && n > 0 && k > 0) { out.fair = n / k; out.source = "record"; }
-  if (out.need === null && n > 0 && k > 0) {
-    const low = wilsonLow(k, n);
-    out.need = low > 0 ? 1 / low : null;
-    out.source = "record";
-  }
-  return out;
-}
-
-/* The score as it should read: a number, and a mark when forty-five of its
-   hundred points could not be judged because no price has been typed yet. */
-function scoreText(sc) {
-  return sc.priced ? String(sc.shown)
-    : `${sc.shown}<sup title="Provisional: value is 45 of the 100 points and ` +
-      `cannot be scored until you type the price you have been offered. This ` +
-      `is the other 55 rescaled, and it will usually fall once a real price ` +
-      `goes in.">?</sup>`;
-}
-
-function breakdownText(sc) {
-  const p = sc.parts;
-  return (sc.priced
-      ? `<span>value ${p.value}/45</span>`
-      : `<span class="unscored">value &mdash;/45 &middot; no price yet</span>`)
-    + `<span>evidence ${p.evidence}/25</span>`
-    + `<span>model ${p.agreement}/15</span>`
-    + `<span>context ${p.context}/15</span>`;
-}
-
-/* What to do about a leg that has missed the bar. */
-function swapBlock(entry, i) {
-  const bar = slipBar();
-  const sc = scorePick(entry.row, entry.price);
-  if (sc.shown >= bar) return "";
-
-  const alts = alternativesFor(entry, i);
-  if (!alts.length) {
-    return `<div class="swap-none">Scores ${sc.shown}, under your bar of
-      ${bar}${sc.priced ? "" : " on the provisional number"}. Nothing else on
-      the board beats it at a similar price, so the choice is to take it
-      knowing what it is, drop it, or lower the bar.</div>`;
-  }
-
-  const options = alts.map(a => `<li>
-    <span class="swap-leg">${legLabel(a.row)}</span>
-    <span class="swap-meta">${a.row.k}/${a.row.n} &middot;
-      fair ${fmtOdds((a.row.price || priceRow(a.row)).fair)} &middot;
-      needs ${fmtOdds((a.row.price || priceRow(a.row)).need)}</span>
-    <span class="swap-score">${a.score.shown}</span>
-    <button type="button" class="add-btn" data-swap="${i}"
-      data-swap-key="${escapeHtml(rowKey(a.row))}">Swap in</button>
-  </li>`).join("");
-
-  return `<div class="swap-has">
-    <div class="swap-head">Scores ${sc.shown}, under your bar of ${bar}.
-      ${alts.length === 1 ? "This one is" : "These are"} stronger at about the
-      same price${entry.price > 1 ? `, judged at the ${fmtOdds(entry.price)} you were quoted` : ""}:</div>
-    <ol class="swap-list">${options}</ol>
-  </div>`;
-}
-
 function slipView() {
   const el = document.getElementById("slip");
 
@@ -4527,43 +3307,32 @@ function slipView() {
     return;
   }
 
-  const bar = slipBar();
-  let clearing = 0;
-  SWAP_OFFERED.clear();
-
   const rows = SLIP.map((entry, i) => {
     const r = entry.row;
-    const sc = scorePick(r, entry.price);
-    const pass = sc.shown >= bar;
-    if (pass) clearing += 1;
-    const cls = pass ? "good" : (sc.shown < bar - 20 ? "poor" : "");
+    const { total, parts } = scorePick(r, entry.price);
+    const cls = total >= 65 ? "good" : total < 40 ? "poor" : "";
 
     return `<tr data-slip="${i}">
       <td class="player-name">${r.player ? `${r.player} ${r.stat.toLowerCase()}` : r.stat}
         <span class="pos">${r.player ? "player" : (ALL.periods || {})[r.period] || r.period}</span>
         <span class="sub-line">${r.player ? r.team : r.team} &middot;
           ${r.over ? "Over" : "Under"} ${r.line} &middot; ${r.fixture}</span></td>
-      <td class="num" data-label="Record">${r.k}/${r.n}
-        <span class="pos">${r.n ? Math.round((r.k / r.n) * 100) + "%" : ""}</span></td>
-      <td class="odds" data-label="Fair">${fmtOdds(slipPrice(r).fair)}</td>
-      <td class="odds odds-min" data-label="Need">${fmtOdds(slipPrice(r).need)}</td>
+      <td class="num" data-label="Record">${r.k}/${r.n}</td>
+      <td class="odds" data-label="Need">${fmtOdds((r.price || priceRow(r)).need)}</td>
       <td data-label="Your price">
         <input class="price-input" type="number" step="0.05" min="1.01"
                value="${entry.price || ""}" data-slip-price
                aria-label="Price for ${r.stat}"></td>
       <td data-label="Score">
-        <div class="score ${cls}">${scoreText(sc)}</div>
-        <div class="breakdown">${breakdownText(sc)}</div>
-        <div class="bar-chip ${pass ? "pass" : "fail"}"
-             title="Your bar is ${bar}. ${pass
-               ? "This clears it."
-               : "This does not, so a replacement is suggested below."}">
-          ${pass ? "clears " + bar : "below " + bar}</div>
+        <div class="score ${cls}">${total}</div>
+        <div class="breakdown">
+          <span>value ${parts.value}/45</span>
+          <span>evidence ${parts.evidence}/25</span>
+          <span>model ${parts.agreement}/15</span>
+          <span>context ${parts.context}/15</span>
+        </div>
       </td>
       <td><button type="button" class="add-btn" data-remove="${i}">Remove</button></td>
-    </tr>
-    <tr class="swap-row" data-swap-for="${i}"${pass ? " hidden" : ""}>
-      <td colspan="7">${swapBlock(entry, i)}</td>
     </tr>`;
   }).join("");
 
@@ -4571,24 +3340,10 @@ function slipView() {
   const priced = SLIP.filter(s => s.price > 1);
   const combo = comboPanel(priced);
 
-  const short = SLIP.length - clearing;
-  const summary = `<div class="slip-bar-summary ${short ? "is-warn" : "is-ok"}">
-    <strong>${clearing} of ${SLIP.length}</strong>
-    leg${SLIP.length === 1 ? "" : "s"} clear your bar of ${bar}.
-    ${short
-      ? `The ${short === 1 ? "one that does not has" : short + " that do not have"}
-         a replacement suggested underneath ${short === 1 ? "it" : "them"}.`
-      : `Nothing here is being carried by the rest.`}
-    <span class="pos">A leg with no price typed is scored provisionally on the
-      55 points that do not need one.</span>
-  </div>`;
-
-  el.innerHTML = `${summary}<div id="slip-combo">${combo}</div>
+  el.innerHTML = `<div id="slip-combo">${combo}</div>
     <div class="board"><table class="ptable">
       <thead><tr>
-        <th>Selection</th><th>Record</th>
-        <th title="One over the strike rate: what the record alone implies">Fair</th>
-        <th title="One over the bottom of the 95% interval: what the evidence supports once the sample size is paid for">Need</th>
+        <th>Selection</th><th>Record</th><th>Need</th>
         <th>Your price</th><th>Score</th><th></th>
       </tr></thead>
       <tbody>${rows}</tbody>
@@ -5309,38 +4064,20 @@ function applyFixture() {
   render();
   if (tab === "players") playerView();
   if (tab === "standout") standoutView();
-  if (onBest()) bestBetsView();
+  if (tab === "best") bestBetsView();
 }
 
 function switchTab(target) {
   tab = target;
-  if (target === "best-player") bestKind = "player";
-  if (target === "best-team") bestKind = "team";
-  /* Player bets open on value, team bets on evidence.
-     A player shortlist ordered by evidence is a list of near-certainties
-     paying 1.05, which is not what anybody opens the tab for. */
-  if (target === "best-player" || target === "best-team") {
-    const want = target === "best-player" ? "value" : "evidence";
-    document.querySelectorAll("[data-border]").forEach(btn =>
-      btn.setAttribute("aria-pressed", btn.dataset.border === want));
-  }
-  const panel = panelFor(target);
   document.querySelectorAll("[data-tab]").forEach(b =>
     b.setAttribute("aria-selected", b.dataset.tab === target));
   document.querySelectorAll(".panel").forEach(p =>
-    p.hidden = p.dataset.panel !== panel);
+    p.hidden = p.dataset.panel !== target);
   if (target === "players") playerView();
   else document.querySelector(".wrap").classList.remove("wide");
   if (target === "standout") standoutView();
-  if (panel === "best") bestBetsView();
+  if (target === "best") bestBetsView();
   if (target === "slip") slipView();
-}
-
-/* Is a Best tab the one on screen? Everything that used to test
-   `tab === "best"` has to ask this instead, or a control change on the
-   Players tab silently stops refreshing the cards. */
-function onBest() {
-  return tab === "best-player" || tab === "best-team";
 }
 
 /* ---------------------------------------------------------------- wiring */
@@ -5414,7 +4151,7 @@ segment("games", v => {
   render();
   if (tab === "players") playerView();
   if (tab === "standout") standoutView();
-  if (onBest()) bestBetsView();
+  if (tab === "best") bestBetsView();
 });
 segment("border", () => bestBetsView());
 segment("scope2", v => {
@@ -5621,18 +4358,11 @@ document.getElementById("include-mismatched").addEventListener("click", e => {
 // The best-bets controls and its own Add button. Picks added here have no
 // price box beside them, because a matchup card is a shortlist entry rather
 // than a priced bet: you type the price in on the slip.
-["bmin", "btop", "bneed"].forEach(id =>
+["bmin", "btop"].forEach(id =>
   document.getElementById(id).addEventListener("input", () => {
     clearTimeout(standoutTimer);
     standoutTimer = setTimeout(bestBetsView, 140);
   }));
-
-/* The bar is one setting read by three places: the cards, the suggested slip
-   and your own slip. Changing it has to reach all of them. */
-document.getElementById("bbar")?.addEventListener("input", () => {
-  clearTimeout(standoutTimer);
-  standoutTimer = setTimeout(() => { bestBetsView(); slipView(); }, 140);
-});
 
 document.getElementById("players").addEventListener("click", e => {
   const btn = e.target.closest("button[data-padd]");
@@ -5686,22 +4416,6 @@ document.getElementById("standout").addEventListener("click", e => {
 });
 
 document.getElementById("slip").addEventListener("click", e => {
-  const swap = e.target.closest("button[data-swap]");
-  if (swap) {
-    const i = parseInt(swap.dataset.swap, 10);
-    const key = swap.dataset.swapKey;
-    const row = (window.__pool || window.__best || []).find(r => rowKey(r) === key);
-    if (!row || !SLIP[i]) return;
-    // The quoted price belonged to the leg being replaced, not to this one,
-    // so it does not come along. Carrying it over would score the new leg
-    // against a price nobody has offered for it.
-    SLIP[i] = { key, row, price: 0 };
-    slipView();
-    bestBetsView();
-    standoutView();
-    return;
-  }
-
   const btn = e.target.closest("button[data-remove]");
   if (!btn) return;
   SLIP.splice(parseInt(btn.dataset.remove, 10), 1);
@@ -5726,45 +4440,20 @@ document.getElementById("slip").addEventListener("input", e => {
 
      Only the score and its breakdown depend on the price, so only those are
      rewritten. Nothing touches the input, so typing is never interrupted. */
-  const bar = slipBar();
-  const sc = scorePick(SLIP[i].row, SLIP[i].price);
-  const pass = sc.shown >= bar;
-
+  const { total, parts } = scorePick(SLIP[i].row, SLIP[i].price);
   const score = row.querySelector(".score");
   if (score) {
-    score.innerHTML = scoreText(sc);
-    score.className = "score " + (pass ? "good" : (sc.shown < bar - 20 ? "poor" : ""));
+    score.textContent = total;
+    score.className = "score " + (total >= 65 ? "good" : total < 40 ? "poor" : "");
   }
   const breakdown = row.querySelector(".breakdown");
-  if (breakdown) breakdown.innerHTML = breakdownText(sc);
-
-  const chip = row.querySelector(".bar-chip");
-  if (chip) {
-    chip.className = "bar-chip " + (pass ? "pass" : "fail");
-    chip.textContent = pass ? `clears ${bar}` : `below ${bar}`;
+  if (breakdown) {
+    breakdown.innerHTML =
+      `<span>value ${parts.value}/45</span>` +
+      `<span>evidence ${parts.evidence}/25</span>` +
+      `<span>model ${parts.agreement}/15</span>` +
+      `<span>context ${parts.context}/15</span>`;
   }
-
-  /* The replacement suggestions depend on the price too -- a leg that looked
-     thin at 1.80 is a different proposition at 2.60, and so are the legs that
-     would beat it. Rewritten in place for the same reason as the score: this
-     row holds the field being typed into and must not be rebuilt. */
-  const swapRow = row.parentNode &&
-    row.parentNode.querySelector(`tr[data-swap-for="${i}"]`);
-  if (swapRow) {
-    swapRow.hidden = pass;
-    const cell = swapRow.querySelector("td");
-    if (cell) cell.innerHTML = pass ? "" : swapBlock(SLIP[i], i);
-  }
-
-  const summary = document.querySelector(".slip-bar-summary");
-  if (summary) {
-    const clearing = SLIP.filter(s => scorePick(s.row, s.price).shown >= bar).length;
-    const strong = summary.querySelector("strong");
-    if (strong) strong.textContent = `${clearing} of ${SLIP.length}`;
-    summary.className = "slip-bar-summary " +
-      (clearing < SLIP.length ? "is-warn" : "is-ok");
-  }
-
   updateSlipTotals();
 });
 
@@ -5929,249 +4618,6 @@ function updateFilterSummary() {
 updateFilterSummary();
 
 applyFixture();
-
-
-/* ------------------------------------------------------- tucking the prose
-
-   Every panel opens with a block of explanation -- what the scan is, what
-   fair and need mean, why a hit rate is not an edge. It is all true and it
-   all matters once, and then it sits between you and the numbers forever.
-
-   So it collapses. The leading bold sentence becomes the summary, the rest
-   goes behind it, and anyone who wants the argument can have it in a click.
-
-   Done here rather than in the seven places that build these blocks, because
-   seven edits to working render code to achieve one thing is how you break
-   one of them. An observer catches whatever any panel renders, now or later,
-   and the data-tuck flag stops it reacting to its own work. */
-function tuckProse(root) {
-  // .note catches the long footers under each board -- the paragraph about
-  // dashed lines, shaded rows and what "proj" means -- which is the same kind
-  // of read-once prose as the .caution blocks and just as permanent.
-  const SEL = ".caution:not([data-tuck]), .note:not([data-tuck])";
-  (root || document).querySelectorAll(SEL).forEach(el => {
-    el.setAttribute("data-tuck", "1");
-    if (el.textContent.trim().length < 240) return;
-
-    // Prose only. Some of these blocks carry the thing itself rather than an
-    // explanation of it -- the suggested slip is a .caution with a table and
-    // Add buttons in it -- and folding those away hides a feature rather than
-    // tidying a paragraph. Anything with structure or a control stays open.
-    if (el.querySelector("table, ol, ul, button, input, select, .pick")) return;
-
-    const lead = el.querySelector("strong");
-    // Doubled backslash on purpose: the whole JS block is an ordinary Python
-    // string, so a lone backslash-s in it is an invalid escape. It survives
-    // today only because Python passes unknown escapes through unchanged,
-    // with a warning that becomes an error in a future version -- at which
-    // point this file stops importing at all.
-    let title = lead ? lead.textContent.trim().replace(/[.:]\\s*$/, "") : "";
-    if (lead && title) lead.remove();
-    if (!title) title = "How to read this board";
-
-    const box = document.createElement("details");
-    box.className = "tuck";
-    const head = document.createElement("summary");
-    head.textContent = title;
-    box.appendChild(head);
-    const body = document.createElement("div");
-    while (el.firstChild) body.appendChild(el.firstChild);
-    box.appendChild(body);
-    el.appendChild(box);
-  });
-}
-new MutationObserver(() => tuckProse()).observe(
-  document.body, { childList: true, subtree: true });
-tuckProse();
-
-
-/* ------------------------------------------------------------- dropdowns
-
-   A native select cannot be styled where it matters. The closed box takes
-   CSS; the list that drops out of it is drawn by the operating system, which
-   is why it arrives as a blue slab that belongs to nothing else on the page.
-
-   So the real select stays exactly where it is, keeps its name, its value and
-   every listener already attached to it, and is covered by a button and a
-   panel that can be styled. Choosing an option writes back to the select and
-   fires the same change event it would have fired itself, so nothing
-   downstream knows the difference. If this script fails the select is still
-   there and still works, which is the whole reason for doing it this way
-   round rather than replacing it.
-
-   A search box appears past twelve options, because that is roughly where
-   scanning a squad list stops being quicker than typing three letters. */
-function enhanceSelects(root) {
-  (root || document).querySelectorAll("select:not([data-combo])").forEach(sel => {
-    sel.setAttribute("data-combo", "1");
-
-    const wrap = document.createElement("div");
-    wrap.className = "combo";
-    sel.parentNode.insertBefore(wrap, sel);
-    wrap.appendChild(sel);
-
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "combo-btn";
-    btn.setAttribute("aria-haspopup", "listbox");
-    btn.setAttribute("aria-expanded", "false");
-    wrap.appendChild(btn);
-
-    const pop = document.createElement("div");
-    pop.className = "combo-pop";
-    pop.hidden = true;
-    wrap.appendChild(pop);
-
-    const label = () => {
-      const o = sel.options[sel.selectedIndex];
-      btn.innerHTML = `<span class="combo-val"></span><span class="combo-caret"></span>`;
-      btn.firstChild.textContent = o ? o.textContent : "";
-      btn.disabled = sel.disabled;
-    };
-
-    const close = () => {
-      pop.hidden = true;
-      btn.setAttribute("aria-expanded", "false");
-    };
-
-    const open = () => {
-      const many = sel.options.length > 12;
-      pop.innerHTML = "";
-      if (many) {
-        const box = document.createElement("input");
-        box.type = "search";
-        box.placeholder = "Search";
-        box.className = "combo-search";
-        pop.appendChild(box);
-        box.addEventListener("input", () => paint(box.value));
-        setTimeout(() => box.focus(), 0);
-      }
-      const list = document.createElement("div");
-      list.className = "combo-list";
-      pop.appendChild(list);
-
-      function paint(filter) {
-        const want = (filter || "").trim().toLowerCase();
-        list.innerHTML = "";
-        let shown = 0;
-        [...sel.options].forEach(o => {
-          if (want && !o.textContent.toLowerCase().includes(want)) return;
-          shown++;
-          const item = document.createElement("button");
-          item.type = "button";
-          item.className = "combo-item" + (o.selected ? " on" : "");
-          item.textContent = o.textContent;
-          item.addEventListener("click", () => {
-            sel.value = o.value;
-            sel.dispatchEvent(new Event("change", { bubbles: true }));
-            label();
-            close();
-          });
-          list.appendChild(item);
-        });
-        if (!shown) {
-          const none = document.createElement("div");
-          none.className = "combo-none";
-          none.textContent = "Nothing matches";
-          list.appendChild(none);
-        }
-      }
-      paint("");
-      pop.hidden = false;
-      btn.setAttribute("aria-expanded", "true");
-      const on = list.querySelector(".combo-item.on");
-      if (on) on.scrollIntoView({ block: "nearest" });
-    };
-
-    btn.addEventListener("click", e => {
-      e.stopPropagation();
-      document.querySelectorAll(".combo-pop:not([hidden])").forEach(p => {
-        if (p !== pop) { p.hidden = true;
-          p.parentNode.querySelector(".combo-btn").setAttribute("aria-expanded", "false"); }
-      });
-      pop.hidden ? open() : close();
-    });
-    pop.addEventListener("click", e => e.stopPropagation());
-    sel.addEventListener("change", label);
-    label();
-  });
-}
-document.addEventListener("click", () => {
-  document.querySelectorAll(".combo-pop:not([hidden])").forEach(p => {
-    p.hidden = true;
-    const b = p.parentNode.querySelector(".combo-btn");
-    if (b) b.setAttribute("aria-expanded", "false");
-  });
-});
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") {
-    document.querySelectorAll(".combo-pop:not([hidden])").forEach(p => { p.hidden = true; });
-  }
-});
-new MutationObserver(() => enhanceSelects()).observe(
-  document.body, { childList: true, subtree: true });
-enhanceSelects();
-
-
-/* ---------------------------------------------------------- number inputs
-
-   The browser's own spinner is two arrows about six pixels tall, stacked, in
-   the corner of the field. It is the smallest hit target on the page by a
-   distance and on a phone it does not exist at all. The line controls already
-   had real buttons; every other number on the page -- target price, minimum
-   matches, your price -- still had the operating system's.
-
-   Same approach as the dropdowns: the input keeps its type, its step, its min
-   and max and every listener on it, and gets a button either side that calls
-   stepUp and stepDown so the browser still enforces the bounds. Holding one
-   repeats, because nudging a price from 1.01 to 2.40 a click at a time is not
-   a control, it is a punishment.
-
-   Anything already inside a .stepper is left alone -- it has buttons. */
-function enhanceNumbers(root) {
-  (root || document).querySelectorAll(
-      "input[type=number]:not([data-spin])").forEach(input => {
-    input.setAttribute("data-spin", "1");
-    if (input.closest(".stepper")) return;
-
-    const wrap = document.createElement("div");
-    wrap.className = "numwrap";
-    input.parentNode.insertBefore(wrap, input);
-
-    const make = (dir, glyph, title) => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "numbtn";
-      b.textContent = glyph;
-      b.title = title;
-      b.tabIndex = -1;
-
-      let timer = null, hold = null;
-      const bump = () => {
-        if (input.disabled) return;
-        dir > 0 ? input.stepUp() : input.stepDown();
-        input.dispatchEvent(new Event("input", { bubbles: true }));
-        input.dispatchEvent(new Event("change", { bubbles: true }));
-      };
-      const stop = () => { clearTimeout(hold); clearInterval(timer); timer = hold = null; };
-      b.addEventListener("pointerdown", e => {
-        e.preventDefault();
-        bump();
-        hold = setTimeout(() => { timer = setInterval(bump, 80); }, 420);
-      });
-      ["pointerup", "pointerleave", "pointercancel"].forEach(ev =>
-        b.addEventListener(ev, stop));
-      return b;
-    };
-
-    wrap.appendChild(make(-1, "−", "Down"));
-    wrap.appendChild(input);
-    wrap.appendChild(make(1, "+", "Up"));
-  });
-}
-new MutationObserver(() => enhanceNumbers()).observe(
-  document.body, { childList: true, subtree: true });
-enhanceNumbers();
 """
 
 
@@ -6192,31 +4638,11 @@ def build_html(payload: dict) -> str:
     if fill is None:
         fill = hitrates.PLAYER_ZERO_FILL
     zero_fill = json.dumps(sorted(fill))
-    # What the Best players scan is allowed to propose.
-    #
-    # Gridiron used to get the lot, on the reasoning that none of its markets
-    # have a team pairing to gate on. True, and the wrong gate: giving it
-    # everything meant the NFL shortlist filled up with "Dondrea Tillman 1+
-    # defensive assist tackles" and "Pat Surtain II 3+ defensive combine
-    # tackles", which are real records of things no bookmaker prices. Eleven
-    # gridiron markets ladder and six do not, and the six were crowding out
-    # the eleven -- the same failure as the first NFL market list, one level
-    # down.
-    #
-    # Basketball was worse and silent. It fell through to football's
-    # adjustment map, so the scan went looking for Shots and Goals in records
-    # that have Points and Rebounds, found nothing, and showed an empty tab
-    # with no indication anything was wrong.
-    #
-    # So: a market has to be one the sport sells AND one sold as a ladder.
-    # Football is left on its own list deliberately -- those five are what it
-    # has always scanned, they are all laddered anyway, and widening it is a
-    # change to make on purpose with a backtest, not as a side effect of
-    # fixing the other two.
-    if sport == "football":
-        allow = sorted(model.FOOTBALL_STAT_TO_TEAM)
-    else:
-        allow = sorted(set(markets.player_stats_for(sport)) & parlay.LADDERED)
+    # Football keeps exactly the five it has always scanned; gridiron gets the
+    # lot, since none of them have a team pairing to be gated on.
+    allow = (sorted(markets.player_stats_for(sport))
+             if sport == "american-football"
+             else sorted(model.FOOTBALL_STAT_TO_TEAM))
     scan_allow = json.dumps(allow)
     min_minutes = json.dumps(model.min_minutes_for(sport))
     count = len(payload["fixtures"])
@@ -6288,8 +4714,8 @@ def build_html(payload: dict) -> str:
         <span class="control-label">Matches</span>
         <div class="seg">
           <button type="button" data-games="5" aria-pressed="false">5</button>
-          <button type="button" data-games="10" aria-pressed="false">10</button>
-          <button type="button" data-games="99" aria-pressed="true">All</button>
+          <button type="button" data-games="10" aria-pressed="true">10</button>
+          <button type="button" data-games="99" aria-pressed="false">All</button>
         </div>
       </div>
 
@@ -6378,8 +4804,7 @@ def build_html(payload: dict) -> str:
 <div class="tabs" role="tablist">
   <button type="button" data-tab="team" aria-selected="true">Team stats</button>
   <button type="button" data-tab="players" aria-selected="false">Players</button>
-  <button type="button" data-tab="best-player" aria-selected="false">Best players</button>
-  <button type="button" data-tab="best-team" aria-selected="false">Best teams</button>
+  <button type="button" data-tab="best" aria-selected="false">Best bets</button>
   <button type="button" data-tab="standout" aria-selected="false">Standout lines</button>
   <button type="button" data-tab="slip" aria-selected="false">My slip<span id="slip-count"></span></button>
 </div>
@@ -6450,13 +4875,8 @@ def build_html(payload: dict) -> str:
     </div>
     <div class="control-group">
       <span class="control-label">Min each side</span>
-      <input class="num-input" id="bfloor" type="number" step="5" min="30" max="100" value="65"
+      <input class="num-input" id="bfloor" type="number" step="5" min="30" max="100" value="50"
              aria-label="Minimum hit rate on each side, per cent">
-    </div>
-    <div class="control-group">
-      <span class="control-label">Max need</span>
-      <input class="num-input" id="bneed" type="number" step="0.1" min="1.05" max="10"
-             value="2" aria-label="Drop anything needing a longer price than this">
     </div>
     <div class="control-group">
       <span class="control-label">Order</span>
@@ -6465,8 +4885,8 @@ def build_html(payload: dict) -> str:
                 title="Strongest combined record first">Evidence</button>
         <button type="button" data-border="likely" aria-pressed="false"
                 title="Shortest price first: the biggest mismatches">Most likely</button>
-        <button type="button" data-border="value" aria-pressed="false"
-                title="Where the matchup says this lands more often than the raw form does, so the price on offer is too big">Best value</button>
+        <button type="button" data-border="price" aria-pressed="false"
+                title="Longest price first: the ones that actually pay">Best price</button>
       </div>
     </div>
   </div>
@@ -6475,19 +4895,13 @@ def build_html(payload: dict) -> str:
   <div class="controls" id="rec-controls">
     <div class="control-group">
       <span class="control-label">Target price</span>
-      <input class="num-input" id="rtarget" type="number" step="0.5" min="1.5" max="50"
+      <input class="num-input" id="rtarget" type="number" step="0.5" min="1.2" max="50"
              value="3.0" aria-label="Minimum combined price">
     </div>
     <div class="control-group">
       <span class="control-label">Legs</span>
       <input class="num-input" id="rlegs" type="number" step="1" min="2" max="6"
              value="3" aria-label="How many legs">
-    </div>
-    <div class="control-group">
-      <span class="control-label">Min score</span>
-      <input class="num-input" id="bbar" type="number" step="5" min="0" max="100"
-             value="60"
-             aria-label="Minimum score for a bet to earn a place in the slip">
     </div>
   </div>
 
@@ -6567,7 +4981,7 @@ def build_html(payload: dict) -> str:
 </footer>
 
 </div>
-<script>{JS.replace("__PAYLOAD__", json.dumps(payload)).replace("__BETTABLE__", bettable).replace("__ZERO_FILL__", zero_fill).replace("__PLAYER_SCAN_ALLOW__", scan_allow).replace("__MIN_MINUTES__", min_minutes).replace("__SPORT__", json.dumps(sport))}</script>
+<script>{JS.replace("__PAYLOAD__", json.dumps(payload)).replace("__BETTABLE__", bettable).replace("__ZERO_FILL__", zero_fill).replace("__PLAYER_SCAN_ALLOW__", scan_allow).replace("__MIN_MINUTES__", min_minutes)}</script>
 </body>
 </html>
 """

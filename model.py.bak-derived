@@ -254,7 +254,6 @@ def price(
     values: list[float],
     hits: int,
     total: int,
-    sport: str = "football",
 ) -> dict:
     """Probability, fair price and the price to insist on.
 
@@ -268,13 +267,9 @@ def price(
     record_need = 1 / wilson_low(hits, total) if wilson_low(hits, total) > 0 else math.inf
 
     if expected is None or expected <= 0 or len(values) < 3:
-        # Smoothed, then calibrated for this sport. The raw k/n it used to
-        # quote reached 1.0 on a perfect record and was never corrected at
-        # all -- see RECORD_CALIBRATION for what that cost.
-        quoted = calibrate_record(smooth_rate(hits, total), sport, "team")
         return {
-            "p": quoted,
-            "fair": 1 / quoted if quoted > 0 else math.inf,
+            "p": record_p,
+            "fair": 1 / record_p if record_p > 0 else math.inf,
             "need": record_need,
             "expected": None,
             "source": "record",
@@ -363,70 +358,8 @@ def price(
 # stays raw for the same reason the team path leaves it raw. Refit if the
 # form window (`games` in update.json), MIN_MINUTES, or the player pricing
 # maths changes, exactly as with the team constants.
-PLAYER_CALIBRATION_A = -0.0227
-PLAYER_CALIBRATION_B = 0.4454
-
-
-# ------------------------------------------------- the record-only branch
-#
-# Until now this branch was quoted raw and uncalibrated, on the reasoning
-# that it never goes through the count model and already flags itself blunt.
-# The backtest says that reasoning cost more than it saved, and for one sport
-# it cost everything: EVERY American football bet is priced here -- 1,090 team
-# bets and 9,673 player bets, without a single count-model row between them --
-# so "not calibrated" meant the entire sport was uncorrected. It said 81.2%
-# and landed 68.3%.
-#
-# Two things were wrong, and the first is the worse one.
-#
-# A raw hit rate is k/n, and k/n is exactly 1.0 when a player has never
-# missed. 2,214 NFL player bets were quoted at a probability of one. That is
-# not a confident estimate, it is a claim that the bet cannot lose, and one in
-# six of them lost. No amount of scaling repairs a mass sitting on the
-# boundary -- the fit diverges, because there is no finite number you can
-# multiply a certainty by to make it uncertain.
-#
-# So the rate is smoothed before anything else touches it. Jeffreys: half an
-# imaginary success and half an imaginary failure, which turns 20/20 into
-# 20.5/21 and can never reach zero or one. It is the standard prior for
-# exactly this and it costs a perfect record almost nothing at n=20 while
-# stopping a 3/3 from claiming certainty.
-#
-# Then the usual Platt curve on top, fitted per sport, because the two do not
-# share a shape: gridiron needed b=0.82 and football's team records b=0.28.
-RECORD_SMOOTHING = 0.5
-
-RECORD_CALIBRATION = {
-    # (sport, kind): (a, b), fitted on settled backtest bets.
-    ("american-football", "team"):   (0.0865, 0.5060),   # 1,090 bets
-    ("american-football", "player"): (-0.1550, 0.8236),  # 5,645 bets
-    ("football", "team"):            (0.0177, 0.2806),   # 306 bets
-}
-
-
-def smooth_rate(hits: int, total: int) -> float:
-    """A hit rate that cannot claim certainty. See RECORD_CALIBRATION."""
-    if total <= 0:
-        return 0.0
-    return (hits + RECORD_SMOOTHING) / (total + 2 * RECORD_SMOOTHING)
-
-
-def calibrate_record(p: float, sport: str = "football",
-                     kind: str = "team") -> float:
-    """Smoothed record rate -> what bets stated like it actually landed at.
-
-    Returns p unchanged where no fit exists for that sport and kind, which is
-    honest rather than convenient: borrowing another sport's curve is exactly
-    the mistake that left gridiron quoting football's numbers in the first
-    place.
-    """
-    fit = RECORD_CALIBRATION.get((sport, kind))
-    if not fit:
-        return p
-    a, b = fit
-    p = min(1 - 1e-9, max(1e-9, p))
-    z = a + b * math.log(p / (1 - p))
-    return 1 / (1 + math.exp(-z))
+PLAYER_CALIBRATION_A = -0.0045
+PLAYER_CALIBRATION_B = 0.6425
 
 
 def calibrate_player(p: float) -> float:
@@ -507,27 +440,6 @@ def gate_rate(hits: int, total: int, base: float) -> float:
 # nine-minute run-out must not sit in his sample as a loss either.
 MIN_MINUTES = 45
 
-# How many minutes make an appearance, per sport.
-#
-# Forty-five is a number about ninety-minute games, not a number about sport.
-# An NBA rotation player logging twenty-two minutes has played a full shift,
-# and judging him against forty-five would have thrown away the entire
-# basketball file -- the same failure as the gridiron one above, arriving from
-# the opposite direction: there the gate binned everything because no minutes
-# were reported, here it would bin everything because the minutes are real but
-# smaller. Twelve is a quarter, which is enough to separate a rotation player
-# from garbage time.
-MIN_MINUTES_BY_SPORT = {
-    "football": 45,
-    "basketball": 12,
-}
-
-
-def min_minutes_for(sport: str) -> int:
-    """The appearance floor for one sport, falling back to football's."""
-    return MIN_MINUTES_BY_SPORT.get(sport, MIN_MINUTES)
-
-
 # Which team market stands behind each player stat. A player line's opponent
 # adjustment is borrowed from the team projection for the matching stat,
 # because there is no per-player projection and inventing one from a handful
@@ -564,64 +476,16 @@ GRIDIRON_STAT_TO_TEAM = {
     "Receiving touchdowns": "Passing touchdowns",
     "Kicking total points": "Points",
     "Kicking fg made": "Field goals",
-
-    # Derived markets. Anytime Touchdown rides on how many the team scores,
-    # which is the honest pairing and the one bet365's own price moves with.
-    # Passing and Rushing Yards is dominated by the passing half for every
-    # quarterback who is not a running threat, so it pairs there.
-    #
-    # Rushing and Receiving Yards is deliberately absent. It straddles the
-    # running game and the passing game, the mix is different for a back and
-    # a slot receiver, and no single own-team market drives it. Same rule as
-    # sacks and tackles: no honest pairing, no adjustment, rather than a
-    # made-up one to get it through the gate.
-    "Anytime touchdown": "Touchdowns",
-    "Passing and rushing yards": "Net yards passing",
-}
-
-BASKETBALL_STAT_TO_TEAM = {
-    # --- basketball ---------------------------------------------------------
-    # Straightforward for once: a player's points ride on how many the team
-    # scores, his rebounds on how many the team takes. The one derived pairing
-    # worth stating is that the combination props follow their dominant half --
-    # points-rebounds-assists is mostly points, and pricing it off the team's
-    # assists would be a pairing chosen to look clever.
-    "Points": "Points",
-    "Rebounds": "Rebounds",
-    "Assists": "Assists",
-    "Three pointers made": "3 pointers",
-    "Steals": "Steals",
-    "Blocks": "Blocks",
-    "Turnovers": "Turnovers",
-    "Points rebounds and assists": "Points",
-    "Points and rebounds": "Points",
-    "Points and assists": "Points",
-    "Rebounds and assists": "Rebounds",
-
-    # Steals and blocks is deliberately absent, same rule as sacks and as
-    # rushing-and-receiving yards: it straddles two team markets, neither of
-    # which drives it, and inventing a pairing to get it through the gate
-    # would be a lie told to a gate.
 }
 
 # The union, which is what report.py's JS mirrors and verify.py cross-checks.
-PLAYER_STAT_TO_TEAM = {**FOOTBALL_STAT_TO_TEAM, **GRIDIRON_STAT_TO_TEAM,
-                       **BASKETBALL_STAT_TO_TEAM}
+PLAYER_STAT_TO_TEAM = {**FOOTBALL_STAT_TO_TEAM, **GRIDIRON_STAT_TO_TEAM}
 
 # What the player scan will look at, per sport. Deliberately not the same
 # thing as the map above: see the note beside PLAYER_SCAN_ALLOW in report.py.
-# Darts has no player markets to adjust, because it has no players in the
-# feed's sense: the two men are the two teams, their numbers are the team
-# numbers, and there is no lineup endpoint at all. An empty map is the honest
-# answer rather than a missing key, which would silently fall back to
-# football's and look up "Shots".
-DARTS_STAT_TO_TEAM: dict[str, str] = {}
-
 STAT_TO_TEAM_BY_SPORT = {
     "football": FOOTBALL_STAT_TO_TEAM,
     "american-football": GRIDIRON_STAT_TO_TEAM,
-    "basketball": BASKETBALL_STAT_TO_TEAM,
-    "darts": DARTS_STAT_TO_TEAM,
 }
 
 # Two full appearances' worth of prior evidence, in minutes. At one full
@@ -637,7 +501,7 @@ POOL_K = 2 * 90
 POOL_SPREAD = 0.5
 
 
-def appearances(played, stat, zero_fill=frozenset(), min_minutes=MIN_MINUTES):
+def appearances(played, stat, zero_fill=frozenset()):
     """A player's usable records for one stat: real minutes, value resolved.
 
     The zero-fill set is passed in rather than owned here because the list
@@ -660,7 +524,7 @@ def appearances(played, stat, zero_fill=frozenset(), min_minutes=MIN_MINUTES):
     gated = any((g.get("minutes") or 0) > 0 for g in played)
     for g in played:
         if gated:
-            if (g.get("minutes") or 0) < min_minutes:
+            if (g.get("minutes") or 0) < MIN_MINUTES:
                 continue
         elif not (g.get("stats") or {}):
             continue
@@ -709,7 +573,7 @@ def position_prior(by_player, position, stat, exclude_name, zero_fill=frozenset(
     }
 
 
-def price_player(apps, line, over, adjustment, prior, sport="football"):
+def price_player(apps, line, over, adjustment, prior):
     """Probability, fair price and the price to insist on, for a player line.
 
     Three sources, in the same order the JS tries them. Under three
@@ -729,7 +593,7 @@ def price_player(apps, line, over, adjustment, prior, sport="football"):
     total_value = sum(values)
 
     def record_only():
-        p = calibrate_record(smooth_rate(hits, n), sport, "player")
+        p = hits / n if n else 0.0
         low = wilson_low(hits, n)
         return {
             "p": p,

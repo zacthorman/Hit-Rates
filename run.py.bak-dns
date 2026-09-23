@@ -53,8 +53,8 @@ def describe(event: dict) -> str:
     )
 
 
-def do_search(query: str, sport: str = "football") -> None:
-    teams = api.search_teams(query, None if sport == "any" else sport)
+def do_search(query: str) -> None:
+    teams = api.search_teams(query)
     if not teams:
         print(
             f"\nNothing found for '{query}'.\n\n"
@@ -708,26 +708,6 @@ def build_fixture(
                                             sport=sport)
             entry["h2hStats"] = h2h_names
             entry["h2hLines"] = hitrates.suggest_lines(h2h_records, h2h_names)
-
-            # Player numbers for those same meetings.
-            #
-            # Without this the player head-to-head block can only see
-            # meetings that happen to sit inside the form window, because
-            # lineups are fetched per match and only form matches were ever
-            # fetched. Two clubs in different NFL divisions meet once in
-            # twenty games, so every card read "1/1" and looked like a thin
-            # record when it was really an unasked question.
-            #
-            # Needs --players: without it there is nothing on the page to
-            # show these against.
-            if players:
-                entry["h2hPlayers"] = hitrates.player_head_to_head(
-                    event_id=event["id"], home_id=home["id"], away_id=away["id"],
-                    home_name=home.get("name", ""), away_name=away.get("name", ""),
-                    limit=games,
-                    before=event.get("startTimestamp") or None,
-                    sport=sport,
-                )
         else:
             print("  no head to head data, skipping that view")
 
@@ -1079,13 +1059,6 @@ def main() -> None:
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("--search", help="find a team id by name")
-    parser.add_argument(
-        "--sport", default="football",
-        help="which sport --search and --names look in: football (the "
-             "default), american-football, basketball, darts, or 'any'. A "
-             "darts competitor is a person, and searching for one while the "
-             "filter says football returns nothing at all",
-    )
     parser.add_argument("--team", type=int, help="team id, from --search")
     parser.add_argument("--teams", help="comma-separated team ids, next fixture of each")
     parser.add_argument(
@@ -1148,7 +1121,7 @@ def main() -> None:
         return
 
     if args.search:
-        do_search(args.search, args.sport)
+        do_search(args.search)
         return
 
     # Several divisions in one go. Each gets its own report rather than one
@@ -1222,24 +1195,9 @@ def main_for(args) -> None:
         print(f"Reading the {args.league} team list...")
         ids = api.tournament_team_ids(tournament_id)
         if not ids:
-            # An empty team list has two completely different causes that look
-            # identical from here, and the old message asserted the wrong one.
-            # If the last request never reached SofaScore, the endpoint is
-            # fine and the network was not -- telling someone to go rewrite
-            # check.py for a DNS blip wastes an evening.
-            dropped = api.last_transport_error()
-            if dropped:
-                raise SystemExit(
-                    f"\nCouldn't reach SofaScore at all ({dropped}) while reading "
-                    f"the team list.\nNothing is wrong with the endpoint: the "
-                    f"request never left the machine.\n"
-                    "\nCheck the connection and run the same command again. If the "
-                    "machine\nhad just woken up, that is usually all it was."
-                )
             raise SystemExit(
-                "\nCouldn't read the team list. The request got through and came "
-                "back empty,\nso that endpoint may have moved, the same way the "
-                "fixtures one did.\nAdd these to check.py and run it:\n"
+                "\nCouldn't read the team list. That endpoint may have moved,\n"
+                "the same way the fixtures one did. Add these to check.py and run it:\n"
                 f"  unique-tournament/{tournament_id}/seasons\n"
                 f"  unique-tournament/{tournament_id}/season/SEASON_ID/standings/total\n"
                 "\nIn the meantime --teams with a comma-separated list still works."

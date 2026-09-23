@@ -62,10 +62,6 @@ def extract_js() -> str:
               # minutes at all, so the harness needs it or node dies on a
               # ReferenceError rather than on anything to do with the maths.
               "reportsMinutes", "appearances",
-              # The record-only branch is calibrated now, and pricePlayer
-              # calls both of these. Without them node dies on a
-              # ReferenceError before it reaches any maths.
-              "smoothRate", "calibrateRecord",
               "positionPrior", "pricePlayer", "gateRate"]
 
     out = []
@@ -100,17 +96,6 @@ def extract_js() -> str:
         raise SystemExit(
             "could not find the player calibration constants in report.py's JS")
 
-    # The record-branch smoothing and its per-sport curve, by name for the
-    # same reason as the others: a refit that edits report.py must not leave
-    # this comparing against numbers nobody uses any more.
-    record_cal = re.search(
-        r"const RECORD_SMOOTHING = [\d.]+;\s*\n"
-        r"const SPORT = .*?;\s*\n"
-        r"const RECORD_CALIBRATION = \{.*?\};", js, re.S)
-    if not record_cal:
-        raise SystemExit(
-            "could not find the record calibration constants in report.py's JS")
-
     # The player-pricing constants, again by name. POOL_K is written as an
     # expression (2 * 90) in the JS and stays one here: node evaluates it
     # exactly as the page does, so a change to either factor flows through.
@@ -132,7 +117,6 @@ def extract_js() -> str:
 
     return (constants.group(0) + "\n" + prior.group(0) + "\n"
             + cal.group(0) + "\n" + player_cal.group(0) + "\n"
-            + record_cal.group(0) + "\n"
             + "\n".join(player_bits) + "\n"
             + "\n".join(out))
 
@@ -175,8 +159,7 @@ def _resolved_js() -> str:
     """
     return (report.JS
             .replace("__ZERO_FILL__", json.dumps(sorted(hitrates.PLAYER_ZERO_FILL)))
-            .replace("__MIN_MINUTES__", str(model.MIN_MINUTES))
-            .replace("__SPORT__", json.dumps("football")))
+            .replace("__MIN_MINUTES__", str(model.MIN_MINUTES)))
 
 
 def check_alt_lines() -> None:
@@ -337,7 +320,6 @@ def check_sport_separation() -> None:
         "football": (markets.FOOTBALL_STATS, markets.FOOTBALL_PLAYER_STATS),
         "american-football": (markets.GRIDIRON_STATS, markets.GRIDIRON_PLAYER_STATS),
         "basketball": (markets.BASKETBALL_STATS, markets.BASKETBALL_PLAYER_STATS),
-        "darts": (markets.DARTS_STATS, markets.DARTS_PLAYER_STATS),
     }
 
     # 1. No sport's zero-fill may write a key it does not itself price.

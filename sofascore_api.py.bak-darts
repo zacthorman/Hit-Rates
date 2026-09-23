@@ -105,13 +105,6 @@ TOURNAMENTS = {
     "brasileirao": 325,
     "brasileirao_serie_a": 325,
     "brazil_serie_a": 325,
-    # Darts. A knockout with no league table, so --league only works through
-    # the season-fixtures fallback in tournament_team_ids below. It is also
-    # seasonal in the strictest sense: the World Championship is played across
-    # Christmas and is a dead id for ten months of the year.
-    "pdc_world_championship": 616,
-    "world_darts_championship": 616,
-    "darts": 616,
 }
 
 def tournament_id_for(name: str) -> int | None:
@@ -393,13 +386,6 @@ def tournament_team_ids(tournament_id: int, season_id: int | None = None) -> lis
         max_age_hours=24,
     )
 
-    # A knockout has no table. Darts, cups and the Champions League since 2024
-    # all 404 here, and returning nothing made --league silently useless for
-    # every one of them -- it looked like the competition had no teams rather
-    # than no table. The fixtures know who is in it, so read them instead.
-    if not (data or {}).get("standings"):
-        return _team_ids_from_fixtures(tournament_id, season_id)
-
     # De-duplicated, because a competition can describe itself several ways.
     #
     # A football league returns one table and this never mattered. The NFL
@@ -418,31 +404,6 @@ def tournament_team_ids(tournament_id: int, season_id: int | None = None) -> lis
     return ids
 
 
-def _team_ids_from_fixtures(tournament_id: int, season_id: int) -> list[int]:
-    """Everyone who has played or is due to play in a competition with no table.
-
-    Both directions, because a knockout early in its run has almost nothing
-    finished and one late in its run has almost nothing left. Order is by first
-    appearance, which for a seeded draw is roughly seeding order and is as good
-    a default as anything.
-    """
-    ids: list[int] = []
-    seen: set[int] = set()
-    for direction in ("last", "next"):
-        data = get_json(
-            f"unique-tournament/{tournament_id}/season/{season_id}"
-            f"/events/{direction}/0",
-            max_age_hours=6,
-        )
-        for event in (data or {}).get("events", []):
-            for side in ("homeTeam", "awayTeam"):
-                team = event.get(side) or {}
-                if isinstance(team.get("id"), int) and team["id"] not in seen:
-                    seen.add(team["id"])
-                    ids.append(team["id"])
-    return ids
-
-
 def team_next_events(team_id: int, page: int = 0) -> list[dict]:
     """A team's upcoming fixtures, soonest first."""
     data = get_json(f"team/{team_id}/events/next/{page}", max_age_hours=6)
@@ -454,24 +415,17 @@ def team_near_events(team_id: int) -> dict:
     return get_json(f"team/{team_id}/near-events", max_age_hours=6) or {}
 
 
-def _looks_like_team(node: dict, sport: str = "football") -> bool:
-    """Does this node look like a competitor in the sport being searched for?
-
-    The sport filter used to be the literal string "football", which is why
-    nfl_teams.py exists: --search answered an NFL query with soccer clubs, so
-    the ids had to be written out by hand. Darts would have hit the same wall,
-    and a darts "team" is a man. None means take anything team-shaped.
-    """
+def _looks_like_team(node: dict) -> bool:
     return (
         isinstance(node.get("id"), int)
         and isinstance(node.get("name"), str)
         and "slug" in node
         and "sport" in node
-        and (sport is None or node.get("sport", {}).get("slug") == sport)
+        and node.get("sport", {}).get("slug") == "football"
     )
 
 
-def _harvest_teams(node, found: dict, sport: str = "football") -> None:
+def _harvest_teams(node, found: dict) -> None:
     """Walk an arbitrary JSON tree collecting anything shaped like a team.
 
     The search endpoint's response shape is not documented and has changed
@@ -479,21 +433,19 @@ def _harvest_teams(node, found: dict, sport: str = "football") -> None:
     Slower, but it survives them rearranging things.
     """
     if isinstance(node, dict):
-        if _looks_like_team(node, sport):
+        if _looks_like_team(node):
             found.setdefault(node["id"], node)
         for value in node.values():
-            _harvest_teams(value, found, sport)
+            _harvest_teams(value, found)
     elif isinstance(node, list):
         for item in node:
-            _harvest_teams(item, found, sport)
+            _harvest_teams(item, found)
 
 
-def search_teams(query: str, sport: str = "football") -> list[dict]:
-    """Find teams by name, so you don't have to know ids.
+def search_teams(query: str) -> list[dict]:
+    """Find football teams by name, so you don't have to know ids.
 
-    Tries a few known search paths and uses whichever answers. Defaults to
-    football so every existing caller behaves exactly as before; pass another
-    sport slug, or None for all of them.
+    Tries a few known search paths and uses whichever answers.
     """
     candidates = [
         f"search/teams?q={query}&page=0",
@@ -506,7 +458,7 @@ def search_teams(query: str, sport: str = "football") -> list[dict]:
         if not data:
             continue
         found: dict[int, dict] = {}
-        _harvest_teams(data, found, sport)
+        _harvest_teams(data, found)
         if found:
             return list(found.values())
 

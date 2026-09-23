@@ -1,0 +1,534 @@
+"""Same-game parlays with alt lines, built the way the tipsters write them.
+
+Two things the rest of the tool could not express, both of which every
+screenshot of a posted parlay is made of:
+
+Alt lines. The report suggests one line per stat, shared across both squads,
+and asks whether a player goes over it. A book sells a ladder -- 40+, 50+,
+60+ receiving yards -- and a tipster picks the rung. Scanning the ladder for
+the best-looking rate would be the worst kind of multiple comparison, because
+the rungs are nested and the best one is always the luckiest one. So the
+question is inverted: fix the confidence, read off the line. `alt_threshold`
+returns the biggest number a player clears at a stated rate, which is one
+answer per player and stat rather than a search over rungs, and it is the
+same shape as what a tipster actually writes down.
+
+Correlation. A same-game parlay is legs that move together, which is the whole
+reason the shops push them and the whole reason multiplying the legs overprices
+them. Legs on the same team are counted jointly out of the matches that carry
+all of them -- no independence assumption at all, same rule as the team
+builder. Across the two teams the counts cannot be joined, because the sides
+share no matches outside a head to head, so the two joint rates are multiplied.
+That assumption is stated rather than hidden, and it errs the right way: two
+overs in the same game are mildly positively correlated through pace and game
+total, so multiplying understates the true joint probability, which quotes a
+fair price slightly longer than the truth. Demanding a little more from the
+book than strictly necessary is the direction that does not cost money.
+
+What this cannot do: the first-quarter parlays. SofaScore returns American
+football statistics under period ALL and nothing else -- 146 cached NFL match
+files, every one of them a single block -- so there is no first-quarter record
+to build a rate from. Not a gap worth faking with a fraction of the full game.
+"""
+
+from __future__ import annotations
+
+import itertools
+import math
+
+import markets
+import model
+import weekend
+
+# A player needs this many appearances before any alt line is drawn from him.
+MIN_SAMPLE = 10
+
+# The rate a leg has to clear at its threshold. 0.65 is roughly where a
+# tipster's legs sit: short enough that four of them still pay, long enough
+# that the parlay is not four certainties multiplying to 1.4.
+#
+# This is the raw rate, deliberately, and the Wilson bound is a separate and
+# much lower guard below. Pinning the threshold to a lower bound instead
+# sounds stricter and is useless: at seventeen games a 0.65 bound needs a real
+# rate above eighty per cent, so every leg came back a near-certainty priced
+# at 1.05 and four of them paid 1.2. The bound's job here is to throw out a
+# thin sample, not to choose the rung.
+LEG_FLOOR = 0.65
+
+# Below this lower bound the rate is not evidence, whatever it reads.
+LEG_GUARD = 0.45
+
+# The same ladder, read for a headline single instead of a parlay leg.
+#
+# A single has to pay the 2.00 floor, and fair price is one over the rate, so
+# it has to be a rung the player clears about half the time -- the opposite end
+# of the ladder from a parlay leg. Reading it at the parlay's floor is what put
+# "Gibbs over 35.5 rushing and receiving yards" on the front page: a line built
+# from the squad-wide median, for a man whose own median is a hundred and two,
+# which a book would price at about 1.02 if it bothered to price it at all.
+#
+# The guard drops with the floor because it has to. At twenty games a rung
+# hit exactly half the time has a Wilson lower bound near 0.30, so 0.45 would
+# reject every single on the board. The real filtering for a headline pick is
+# the selection-adjusted bound in weekend.best_single, which is far stricter
+# than anything here; this only throws out a rung with no sample behind it.
+SINGLE_FLOOR = 0.50
+SINGLE_GUARD = 0.25
+
+# Legs in a parlay, and the joint count a side needs before it is quotable.
+PARLAY_LEGS = 4
+MIN_JOINT = 4
+
+# Candidate legs per team. One per player: a parlay of Walker's rushing yards
+# and Walker's receptions is one opinion sold as two, and it is exactly the
+# leg pair whose correlation is strongest.
+POOL_PER_TEAM = 5
+
+# A leg has to pay something before it is worth a slot. Without this the pool
+# fills with one-or-more-receptions and one-or-more-tackles at 1.05 apiece --
+# all perfectly true, and four of them multiply to 1.2. Same shape as the
+# accumulator: legs that carry their share first, best-evidenced among those.
+MIN_LEG_PRICE = 1.30
+
+# A rung has to be a real opinion about the player, not a formality.
+#
+# Ranking a player's legs by evidence quietly guaranteed the opposite. Evidence
+# rises as the threshold falls, so the winner was always the lowest rung that
+# still paid MIN_LEG_PRICE, and the slate came back offering "Gibbs 20+
+# receiving yards" for a man who averages a hundred and eighteen yards from
+# scrimmage. True, on the coupon, and not a bet anybody would place.
+#
+# Two changes fix it. A player's chosen leg is now the LONGEST-priced one
+# rather than the best-evidenced -- every candidate already sits inside a
+# narrow price band, so this picks the most informative rung in that band
+# instead of the safest. And a rung below this share of the player's own median
+# is thrown out outright, which is what "way too low" means in a number.
+MEDIAN_SHARE = 0.6
+
+# A parlay that pays less than this is not what anyone is looking for.
+MIN_PRICE = 3.0
+
+# The rungs a book actually posts.
+#
+# Fives everywhere was wrong at the top of the ladder. A coupon carries
+# "Gibbs 75+ rushing and receiving yards"; it does not carry 85+, and quoting
+# a rung nobody sells is the same failure as quoting a market nobody sells.
+# Below fifty the steps really are fives -- 25+, 30+, 35+ receiving yards are
+# all on there -- and above it they open out to tens.
+YARD_STEP = 5
+YARD_COARSE_ABOVE = 50
+YARD_COARSE_STEP = 10
+
+# In the market lists for a reason that is not a market. Minutes decides
+# whether a football player's other numbers count at all, and nobody sells a
+# price on it, so "Kramaric 67+ minutes" is not a leg however true it is.
+NOT_A_MARKET = {"Minutes"}
+
+# Markets the book sells as a ladder, so a rung other than the posted line can
+# actually be backed.
+#
+# This is the difference between a bet and a nice fact. bet365 puts up one
+# line for a defender's tackles and that is the whole market: "Riley Moss 1+
+# assists" is not on the coupon at any price, so quoting a rate for it wastes
+# a slot in the parlay. Yardage, carries, catches and touchdown passes do
+# ladder, which is why every tipster's slip is made of those and never of
+# defensive counting stats.
+#
+# Anything not listed here is priced only at the line the report suggests,
+# which is a median off the sample rather than the book's number -- so it is
+# kept out of the parlay pool entirely. Correct this list against the coupon
+# rather than trusting it: a market that quietly starts or stops laddering
+# changes what is bettable and nothing else here will notice.
+LADDERED = {
+    # American football, from the bet365 board.
+    "Passing yards",
+    "Passing attempts",
+    "Passing completions",
+    "Passing touchdowns",
+    "Rushing yards",
+    "Rushing attempts",
+    "Receiving yards",
+    "Receiving receptions",
+    "Passing and rushing yards",
+    "Rushing and receiving yards",
+    "Anytime touchdown",          # sold as 1+ and nothing else, which is a rung
+    # Basketball. The whole board ladders: 10+ points, 15+ points, 2+ threes,
+    # 4+ rebounds and the combination props are all rungs a book sells.
+    "Points",
+    "Rebounds",
+    "Three pointers made",
+    "Steals",
+    "Blocks",
+    "Turnovers",
+    "Points rebounds and assists",
+    "Points and rebounds",
+    "Points and assists",
+    "Rebounds and assists",
+    "Steals and blocks",
+    # Football.
+    "Shots",
+    "Shots on target",
+    "Tackles",
+    "Fouls",
+    "Fouled",
+    "Passes",
+    "Saves",
+    "Goals",
+    "Assists",
+    # Darts. Only the two counting markets. A 3-dart average and a highest
+    # checkout are posted as one line each per player, over and under, not as
+    # a ladder of rungs -- so the rate at the report's own line is a fact
+    # worth reading and "Humphries 97+ average" is not a bet. Same rule as
+    # the defensive stats above, and correct it against a live coupon.
+    "Thrown 180",
+    "Checkouts over 100",
+}
+
+# Markets scored on a scale where whole numbers from one would be absurd.
+# A ninety-average darts player would generate ninety rungs, eighty-nine of
+# which he clears in every match he has ever played: a ladder made entirely
+# of certainties, and ninety more chances for the scan to find a fluke. The
+# floor is where the market starts existing and the step is roughly how the
+# board moves. (floor, step).
+COARSE_GRIDS = {
+    "Average 3 darts": (70, 2),
+    "Highest checkout": (40, 10),
+}
+
+
+def _is_yardage(stat: str) -> bool:
+    return "yards" in stat.lower()
+
+
+def _grid(stat: str, values: list[float]) -> list[float]:
+    """The rungs of the ladder a book would actually sell on this stat."""
+    top = max(values) if values else 0
+    if top <= 0:
+        return []
+    coarse = COARSE_GRIDS.get(stat)
+    if coarse:
+        floor, step = coarse
+        return [float(t) for t in range(floor, int(top) + 1, step)]
+    if _is_yardage(stat):
+        rungs = [float(t) for t in range(YARD_STEP, YARD_COARSE_ABOVE, YARD_STEP)]
+        rungs += [float(t) for t in range(YARD_COARSE_ABOVE,
+                                          int(top) + YARD_COARSE_STEP,
+                                          YARD_COARSE_STEP)]
+        return [r for r in rungs if r <= top]
+    return [float(t) for t in range(1, int(top) + 1)]
+
+
+def alt_threshold(values: list[float], stat: str, floor: float = LEG_FLOOR,
+                  guard: float = LEG_GUARD):
+    """The biggest number this player clears at the stated rate.
+
+    Returns (threshold, hits, total) or None. The count is of matches at or
+    above the threshold, because a book's "50+" means fifty, not fifty-one.
+
+    Nothing is being maximised here except the threshold itself, which is why
+    this does not need the selection adjustment that a scan over rungs would.
+    The rate is pinned; the line is the answer. That is the whole trick, and
+    it is what makes a ladder safe to read: scanning 40+, 50+ and 60+ for the
+    best-looking rate would be three nested tests of one question and the
+    winner would be whichever rung the sample flattered.
+    """
+    total = len(values)
+    best = None
+    for threshold in _grid(stat, values):
+        hits = sum(1 for v in values if v >= threshold)
+        if hits == 0:
+            continue
+        if hits / total >= floor and model.wilson_low(hits, total) >= guard:
+            best = (threshold, hits, total)
+    return best
+
+
+def alt_legs_for(entry, meta, floor: float = LEG_FLOOR,
+                 guard: float = LEG_GUARD):
+    """One alt-line leg per player and stat, on the markets the book sells.
+
+    Expressed as an over on threshold minus a half, so everything downstream --
+    the joint counter, the slip, the page -- reads it as an ordinary leg. The
+    `alt` flag is what tells the page to print "50+" instead of "over 49.5".
+    """
+    out = []
+    sport = weekend.sport_of(entry)
+    # Narrowed to what this competition's board carries, not just what the
+    # sport has. Player passes are a Premier League market; quoting "Calo 49+
+    # passes" in Serie B is a number with no bet behind it.
+    competition = (entry.get("fixture") or {}).get("competition")
+    bettable = (markets.player_stats_for_competition(sport, competition)
+                - NOT_A_MARKET) & LADDERED
+    teams = entry.get("teams") or []
+
+    for team_index, records in enumerate(entry.get("players") or []):
+        if team_index >= len(teams):
+            continue
+        team = teams[team_index]
+
+        by_player: dict[str, list] = {}
+        for record in records:
+            name = record.get("player")
+            if name:
+                by_player.setdefault(name, []).append(record)
+
+        for name, games in by_player.items():
+            played = weekend._played(games, sport)
+            if len(played) < MIN_SAMPLE:
+                continue
+            position = played[0].get("position")
+
+            for stat in bettable:
+                values = [float(g["stats"][stat]) for g in played
+                          if (g.get("stats") or {}).get(stat) is not None]
+                if len(values) < MIN_SAMPLE:
+                    continue
+                found = alt_threshold(values, stat, floor, guard)
+                if not found:
+                    continue
+                threshold, hits, total = found
+
+                # A rung far below what he normally does is not an opinion.
+                middle = sorted(values)[len(values) // 2]
+                if middle > 0 and threshold < MEDIAN_SHARE * middle:
+                    continue
+                rate = hits / total
+                if rate >= 1.0:
+                    # Nothing to price. A leg that has never missed carries no
+                    # information about what it is worth, only about how small
+                    # the sample is.
+                    continue
+                out.append({
+                    "fixture": meta,
+                    "team": team.get("name"),
+                    "teamIndex": team_index,
+                    "player": name,
+                    "position": position,
+                    "period": "ALL",
+                    "stat": stat,
+                    "threshold": threshold,
+                    "alt": True,
+                    "line": threshold - 0.5,
+                    "over": True,
+                    "hits": hits,
+                    "total": total,
+                    "venue": None,
+                    "fair": 1 / rate,
+                    "p": rate,
+                    "evidence": model.wilson_low(hits, total),
+                    # The longer price to hold out for, on the same footing as
+                    # every other leg in the tool: one over the 95% lower bound
+                    # rather than one over the rate. weekend's public helpers
+                    # read this key, and without it a ladder leg could not be
+                    # a headline single at all.
+                    "need": (1 / model.wilson_low(hits, total)
+                             if model.wilson_low(hits, total) > 0 else None),
+                    "source": "record",
+                    "crossLeague": bool(entry.get("fixture", {}).get("crossLeague")),
+                })
+    return out
+
+
+def single_legs_for(entry, meta):
+    """The ladder read for a headline single: the rung he clears about half
+    the time, which is the only kind of rung that pays the 2.00 floor."""
+    return alt_legs_for(entry, meta, floor=SINGLE_FLOOR, guard=SINGLE_GUARD)
+
+
+def _games_by_player(entry, team_index):
+    """One team's appearances, indexed by player then match."""
+    players = entry.get("players") or []
+    if team_index >= len(players):
+        return {}
+    grouped: dict[str, list] = {}
+    for record in players[team_index]:
+        name = record.get("player")
+        if name:
+            grouped.setdefault(name, []).append(record)
+    sport = weekend.sport_of(entry)
+    return {name: {g.get("match_id"): g for g in weekend._played(games, sport)}
+            for name, games in grouped.items()}
+
+
+def team_joint(entry, team_index, legs):
+    """Matches where every leg on this team landed, out of those carrying all.
+
+    Joined on match id, so the denominator is the matches on which the parlay
+    could actually have been settled. A player missing a fixture removes it
+    from both halves rather than counting as a loss, which is the same rule
+    the team builder uses and for the same reason.
+    """
+    indexed = _games_by_player(entry, team_index)
+
+    covered = None
+    for leg in legs:
+        games = indexed.get(leg["player"], {})
+        have = {mid for mid, g in games.items()
+                if (g.get("stats") or {}).get(leg["stat"]) is not None}
+        covered = have if covered is None else (covered & have)
+    if not covered:
+        return 0, 0
+
+    hits = 0
+    for mid in covered:
+        if all(float(indexed[l["player"]][mid]["stats"][l["stat"]]) > l["line"]
+               for l in legs):
+            hits += 1
+    return hits, len(covered)
+
+
+def parlays_for(entry, meta, legs=PARLAY_LEGS):
+    """Same-game parlays on one fixture, priced side by side then multiplied."""
+    out = []
+    pool_by_team: dict[int, list] = {}
+
+    for leg in alt_legs_for(entry, meta):
+        pool_by_team.setdefault(leg["teamIndex"], []).append(leg)
+
+    # One leg per player -- the longest-priced rung, not the safest, for the
+    # reason set out beside MEDIAN_SHARE -- then the best-evidenced few per side.
+    for team_index, team_legs in list(pool_by_team.items()):
+        best: dict[str, dict] = {}
+        for leg in team_legs:
+            if leg["fair"] < MIN_LEG_PRICE:
+                continue
+            current = best.get(leg["player"])
+            if current is None or (leg["fair"], leg["evidence"]) > (
+                    current["fair"], current["evidence"]):
+                best[leg["player"]] = leg
+        # Ranked by price too, for the same reason. Sorting the pool on
+        # evidence let a backup running back's "2+ rushing attempts" outrank
+        # Gibbs at eighty yards, because a nailed-on nothing is better
+        # evidenced than a real opinion. Longest price first keeps the pool to
+        # legs worth a slot; evidence breaks the ties.
+        pool_by_team[team_index] = sorted(
+            best.values(), key=lambda l: (-l["fair"], -l["evidence"]))[:POOL_PER_TEAM]
+
+    pool = [leg for legs_ in pool_by_team.values() for leg in legs_]
+    if len(pool) < legs:
+        return out
+
+    for combo in itertools.combinations(pool, legs):
+        sides: dict[int, list] = {}
+        for leg in combo:
+            sides.setdefault(leg["teamIndex"], []).append(leg)
+
+        probability = 1.0
+        evidence = 1.0
+        counted = []
+        ok = True
+        for team_index, side_legs in sides.items():
+            hits, total = team_joint(entry, team_index, side_legs)
+            if total < MIN_SAMPLE or hits < MIN_JOINT:
+                ok = False
+                break
+            probability *= hits / total
+            evidence *= model.wilson_low(hits, total)
+            counted.append({
+                "team": entry["teams"][team_index].get("name"),
+                "hits": hits, "total": total,
+            })
+        if not ok or probability <= 0:
+            continue
+
+        fair = 1 / probability
+        if fair < MIN_PRICE:
+            continue
+
+        naive = 1.0
+        for leg in combo:
+            naive *= leg["fair"]
+
+        out.append({
+            "fixture": meta,
+            "legs": [_leg_public(l) for l in combo],
+            "sides": counted,
+            "fair": fair,
+            "naive": naive,
+            "need": (1 / evidence) if evidence > 0 else None,
+            "evidence": evidence,
+            "crossTeam": len(sides) > 1,
+            "crossLeague": bool(entry.get("fixture", {}).get("crossLeague")),
+        })
+    return out
+
+
+def _leg_public(leg):
+    return {
+        "team": leg["team"], "player": leg["player"], "position": leg["position"],
+        "stat": leg["stat"], "threshold": leg["threshold"], "alt": True,
+        "line": leg["line"], "over": True, "hits": leg["hits"],
+        "total": leg["total"], "fair": leg["fair"],
+        "label": f"{leg['player']} {int(leg['threshold'])}+ {leg['stat'].lower()}",
+    }
+
+
+def best_parlay(entries):
+    """The best-evidenced same-game parlay across a round.
+
+    Adjusted for how hard we looked, the same way the headline single is. A
+    fixture yields a couple of hundred four-leg combinations and a round yields
+    thousands, so the maximum of them is partly the luckiest joint count. The
+    group count is distinct player-and-stat questions rather than combinations,
+    because the combinations overlap heavily -- swapping one leg of four is not
+    a new question -- and counting them would be a penalty nobody could pass.
+    """
+    candidates = []
+    groups = set()
+    for entry, meta in entries:
+        found = parlays_for(entry, meta)
+        candidates.extend(found)
+        for item in found:
+            for leg in item["legs"]:
+                groups.add((meta.get("id"), leg["player"], leg["stat"]))
+    if not candidates:
+        return None
+
+    z = weekend.selection_z(len(groups))
+    for item in candidates:
+        adjusted = 1.0
+        for side in item["sides"]:
+            adjusted *= model.wilson_low(side["hits"], side["total"], z=z)
+        item["adjusted"] = adjusted
+
+    winner = max(candidates, key=lambda p: (p["adjusted"], p["evidence"], p["fair"]))
+    winner["z"] = z
+    winner["consideredGroups"] = len(groups)
+    return winner
+
+
+def ladder_for(entry, player, stat, venue=None):
+    """Every rung of one player's ladder, with the record behind each.
+
+    The parlay picks a single rung and there is no reason to trust it blindly:
+    a coupon may not carry that exact number, and the rung above or below is
+    often the one worth taking. This prints the whole thing so the choice is
+    made against the board rather than against my guess at the board.
+
+    Pass venue="home" or "away" to judge it on that half of the record only,
+    which is the split that caught Marvin Mims out.
+    """
+    rows = []
+    for team_index, records in enumerate(entry.get("players") or []):
+        games = [r for r in records if r.get("player") == player]
+        if not games:
+            continue
+        sport = weekend.sport_of(entry)
+        played = weekend._played(games, sport)
+        if venue:
+            played = [g for g in played if g.get("venue") == venue]
+        values = [float(g["stats"][stat]) for g in played
+                  if (g.get("stats") or {}).get(stat) is not None]
+        if not values:
+            continue
+        total = len(values)
+        for threshold in _grid(stat, values):
+            hits = sum(1 for v in values if v >= threshold)
+            if not hits:
+                continue
+            rows.append({
+                "threshold": threshold, "hits": hits, "total": total,
+                "rate": hits / total, "fair": total / hits,
+                "evidence": model.wilson_low(hits, total),
+            })
+    return rows

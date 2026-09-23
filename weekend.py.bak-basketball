@@ -40,7 +40,6 @@ from __future__ import annotations
 import itertools
 import math
 
-import markets
 import model
 
 # A leg needs this many matches behind it before it is allowed near a headline.
@@ -97,18 +96,9 @@ def legs_for(entry, meta):
         if len(sample) < MIN_SAMPLE:
             continue
 
-        # Only markets this competition's board actually carries. The feed
-        # reports throw-ins for every league on earth; a book prices them in
-        # England and not in MLS, and a pick you cannot place is worse than no
-        # pick because it costs the slot a real one would have had.
-        sellable = markets.stats_for_competition(
-            sport_of(entry), (entry.get("fixture") or {}).get("competition"))
-
         for period, names in (entry.get("stats") or {}).items():
             lines = (entry.get("lines") or {}).get(period) or {}
             for stat in names:
-                if stat not in sellable:
-                    continue
                 line = lines.get(stat)
                 if line is None:
                     continue
@@ -126,8 +116,7 @@ def legs_for(entry, meta):
                     hits = over_hits if over else len(values) - over_hits
                     if hits == 0:
                         continue
-                    price = model.price(line, over, expected, values, hits, len(values),
-                                        sport=sport_of(entry))
+                    price = model.price(line, over, expected, values, hits, len(values))
                     if price.get("conflict") or not math.isfinite(price["fair"]):
                         continue
                     out.append({
@@ -158,23 +147,11 @@ MIN_PLAYER_SAMPLE = 10
 # every NFL record in the file.
 MIN_MINUTES = 45
 
-# What counts as having played, per sport. A number written for football is
-# not a number about football, it is a number about ninety-minute games: an
-# NBA rotation player who logs twenty-two minutes has played a full shift, and
-# judging him against forty-five would have emptied the basketball file the
-# same way the gridiron one emptied. Twelve minutes is a quarter -- enough to
-# separate a rotation player from garbage time, which is all this has to do.
-MIN_MINUTES_BY_SPORT = {
-    "football": 45,
-    "basketball": 12,
-}
 
-
-def _played(games, sport="football"):
+def _played(games):
     """A player's real appearances, by whichever test the sport supports."""
-    floor = MIN_MINUTES_BY_SPORT.get(sport, MIN_MINUTES)
     if any((g.get("minutes") or 0) > 0 for g in games):
-        return [g for g in games if (g.get("minutes") or 0) >= floor]
+        return [g for g in games if (g.get("minutes") or 0) >= MIN_MINUTES]
     return [g for g in games if g.get("stats")]
 
 
@@ -194,7 +171,6 @@ def player_legs_for(entry, meta):
     out = []
     lines = entry.get("playerLines") or {}
     teams = entry.get("teams") or []
-    sport = sport_of(entry)
     cross = bool(entry.get("fixture", {}).get("crossLeague"))
 
     for team_index, records in enumerate(entry.get("players") or []):
@@ -209,7 +185,7 @@ def player_legs_for(entry, meta):
                 by_player.setdefault(name, []).append(record)
 
         for name, games in by_player.items():
-            played = _played(games, sport)
+            played = _played(games)
             if len(played) < MIN_PLAYER_SAMPLE:
                 continue
             position = played[0].get("position")
@@ -225,8 +201,7 @@ def player_legs_for(entry, meta):
                     hits = over_hits if over else len(values) - over_hits
                     if hits == 0:
                         continue
-                    price = model.price(line, over, None, values, hits, len(values),
-                                        sport=sport_of(entry))
+                    price = model.price(line, over, None, values, hits, len(values))
                     if not math.isfinite(price["fair"]):
                         continue
                     out.append({
@@ -328,19 +303,12 @@ def builders_for(entry, meta):
 
 
 def _leg_public(leg):
-    out = {
+    return {
         "team": leg["team"], "period": leg["period"], "stat": leg["stat"],
         "line": leg["line"], "over": leg["over"], "hits": leg["hits"],
         "total": leg["total"], "fair": leg["fair"], "venue": leg["venue"],
         "player": leg.get("player"), "position": leg.get("position"),
     }
-    # A ladder leg carries the rung it was read at, so the page can print
-    # "100+ rushing and receiving yards" rather than "over 99.5" -- the same
-    # bet, and only one of them is what you would look for on a coupon.
-    if leg.get("alt"):
-        out["alt"] = True
-        out["threshold"] = leg["threshold"]
-    return out
 
 
 def _single_public(leg):
@@ -499,28 +467,11 @@ def best_builder(entries):
 # report built before run.py started recording it, which is every report on
 # disk today. The two vocabularies share nothing, so one hit is conclusive.
 _GRIDIRON = {"Touchdowns", "Net yards passing", "Rushing yards", "Total yards",
-             "First downs", "Interceptions thrown"}
-
-# Basketball's giveaways. Deliberately not "Points", "Field goals" or
-# "Turnovers": gridiron has all three under the same names meaning different
-# things, and a fingerprint that fires on both sports is worse than none.
-# Rebounds and 3 pointers belong to nobody else.
-_BASKETBALL = {"Rebounds", "3 pointers", "Defensive rebounds",
-               "Offensive rebounds", "Steals", "Blocks"}
-
-# Darts. One match is two players and no team, and the feed reports the pair
-# of them as teams, which is why nothing below needs a special case: a darts
-# "team" is a man. The fingerprint is only a fallback -- the tournament's own
-# category names the sport, and these fixtures arrive with it attached -- but
-# a report built before that field existed still has to land somewhere.
-_DARTS = {"Thrown 180", "Average 3 darts", "Highest checkout",
-          "Checkouts over 100", "Thrown over 140", "Checkouts accuracy"}
+             "First downs", "Turnovers", "Interceptions thrown"}
 
 SPORT_LABELS = {
     "football": "Football",
     "american-football": "NFL",
-    "basketball": "Basketball",
-    "darts": "Darts",
 }
 
 
@@ -530,12 +481,7 @@ def sport_of(entry) -> str:
     if named:
         return named
     for names in (entry.get("stats") or {}).values():
-        present = set(names)
-        if _DARTS & present:
-            return "darts"
-        if _BASKETBALL & present:
-            return "basketball"
-        if _GRIDIRON & present:
+        if _GRIDIRON & set(names):
             return "american-football"
     return "football"
 
@@ -572,20 +518,7 @@ def picks(entries, days=7, now=None):
         legs = []
         for entry, meta in group:
             legs.extend(legs_for(entry, meta))
-
-            # Player legs come off the ladder, both ends of it, and no longer
-            # from the report's suggested line.
-            #
-            # That line is one number per stat shared across both squads --
-            # fine for ranking a page of players against each other, useless
-            # as a headline. It offered "Gibbs over 35.5 rushing and receiving
-            # yards" because 35.5 is roughly the median of everyone who
-            # recorded any, while Gibbs' own median is 102. A book prices that
-            # at about 1.02. The ladder asks the question the other way round
-            # -- fix the rate, read off the line -- so the number quoted is
-            # always one the player himself makes interesting.
-            legs.extend(parlay.single_legs_for(entry, meta))
-            legs.extend(parlay.alt_legs_for(entry, meta))
+            legs.extend(player_legs_for(entry, meta))
         out["sports"].append({
             "sport": sport,
             "label": SPORT_LABELS.get(sport, sport.replace("-", " ").title()),

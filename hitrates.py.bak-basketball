@@ -87,38 +87,10 @@ def extract_match_stats(
                     continue
                 bucket[name] = (home, away)
 
-        _derive_basketball_points(bucket)
-
         if bucket:
             out[key] = bucket
 
     return out
-
-
-# Basketball scores are in the feed only as made-and-attempted strings, so the
-# one market everybody bets -- team total points -- has to be put back together
-# from its parts. _as_number has already reduced "33/47 (70%)" to 33, the made
-# count, which is the half this needs.
-#
-# Checked against the sampled game rather than assumed: Miami's 33 twos, 10
-# threes and 5 free throws give 101, and the feed's own field goals made (43)
-# equals twos plus threes (33 + 10). The arithmetic is the feed's, not mine.
-#
-# Written only when all three rows are present and Points is not, so a football
-# or gridiron block passes through untouched and a feed that starts sending
-# Points directly wins over this.
-_BASKETBALL_POINTS = (("2 pointers", 2.0), ("3 pointers", 3.0), ("Free throws", 1.0))
-
-
-def _derive_basketball_points(bucket: dict[str, tuple[float, float]]) -> None:
-    """Add team Points to one period's stats, in place, if it can be built."""
-    if "Points" in bucket:
-        return
-    if any(name not in bucket for name, _ in _BASKETBALL_POINTS):
-        return
-    home = sum(bucket[name][0] * weight for name, weight in _BASKETBALL_POINTS)
-    away = sum(bucket[name][1] * weight for name, weight in _BASKETBALL_POINTS)
-    bucket["Points"] = (home, away)
 
 
 def _match_date(event: dict) -> str:
@@ -361,23 +333,6 @@ PLAYER_STAT_NAMES = {
     "bigChanceMissed": "Big chances missed",
     "savedShotsFromInsideTheBox": "Saves inside box",
     "saves": "Saves",
-
-    # Basketball. Most of its keys tidy up correctly on their own -- points,
-    # rebounds, assists, steals, blocks, turnovers -- so only the ones _pretty
-    # would get wrong are listed. "Three points made" is not what anyone calls
-    # it, and secondsPlayed is not minutes, which is handled in the derived
-    # block rather than here because it needs dividing.
-    "threePointsMade": "Three pointers made",
-    "threePointAttempts": "Three pointers attempted",
-    "fieldGoalsMade": "Field goals made",
-    "fieldGoalAttempts": "Field goals attempted",
-    "freeThrowsMade": "Free throws made",
-    "freeThrowAttempts": "Free throws attempted",
-    "twoPointsMade": "Two pointers made",
-    "twoPointAttempts": "Two pointers attempted",
-    "personalFouls": "Personal fouls",
-    "offensiveRebounds": "Offensive rebounds",
-    "defensiveRebounds": "Defensive rebounds",
 }
 
 # Stats where a missing key means the player recorded none of it, not that the
@@ -475,40 +430,6 @@ def _gridiron_derived(raw: dict) -> dict[str, float]:
     return out
 
 
-# The combination props, which every basketball coupon leads with and the feed
-# reports only as separate columns. Points-rebounds-assists is the one people
-# actually bet; the pairs and steals-plus-blocks are the rest of the board.
-#
-# Minutes is here rather than in the rename table because it is not a rename:
-# the feed sends secondsPlayed, and the appearance filter that decides whether
-# a player's record counts at all is written in minutes. Sending it through as
-# "Seconds played" would have left every basketball player looking unplayed.
-def _basketball_derived(raw: dict) -> dict[str, float]:
-    """Combination markets and minutes, from one player's raw box score."""
-    if "points" not in raw or "rebounds" not in raw:
-        return {}
-
-    def num(key: str) -> float:
-        value = raw.get(key)
-        if isinstance(value, bool) or not isinstance(value, (int, float)):
-            return 0.0
-        return float(value)
-
-    points, rebounds = num("points"), num("rebounds")
-    assists, steals, blocks = num("assists"), num("steals"), num("blocks")
-
-    out = {
-        "Points rebounds and assists": points + rebounds + assists,
-        "Points and rebounds": points + rebounds,
-        "Points and assists": points + assists,
-        "Rebounds and assists": rebounds + assists,
-        "Steals and blocks": steals + blocks,
-    }
-    if "secondsPlayed" in raw:
-        out["Minutes"] = num("secondsPlayed") / 60.0
-    return out
-
-
 def _player_stat_values(raw: dict, zero_fill=PLAYER_ZERO_FILL) -> dict[str, float]:
     """One player's statistics block as {readable name: value}.
 
@@ -539,7 +460,6 @@ def _player_stat_values(raw: dict, zero_fill=PLAYER_ZERO_FILL) -> dict[str, floa
 
     if values:
         values.update(_gridiron_derived(raw))
-        values.update(_basketball_derived(raw))
 
     if values:
         for name in zero_fill:
@@ -548,16 +468,47 @@ def _player_stat_values(raw: dict, zero_fill=PLAYER_ZERO_FILL) -> dict[str, floa
     return values
 
 
-def _player_records_for(events, team_id, squad, fill, verbose=True):
-    """Player records for a specific list of matches, in player_form's shape.
+def player_form(
+    team_id: int,
+    team_name: str,
+    tournament_id: int | None = None,
+    limit: int = 10,
+    verbose: bool = True,
+    current_squad_only: bool = True,
+    before: float | None = None,
+    sport: str = "football",
+) -> list[dict]:
+    """One record per player per match, for a team's recent matches.
 
-    Pulled out of player_form so the head-to-head path can build records the
-    exact same way rather than a second, subtly different way. The two used to
-    be one function and one list of matches, which is why a player's record
-    against this opponent could only ever contain meetings that happened to
-    fall inside the form window: there was no way to ask for player stats for
-    any other match.
+    Note the shape difference from team_form: this is flat, one row per
+    player per game, rather than one row per game. Grouping happens later,
+    which keeps the venue and last-N filters working the same way.
     """
+    # Football fills absent keys with zero because the feed omits them; an
+    # American football box score already sends every key, so filling there
+    # would invent football markets on a gridiron page.
+    fill = markets.ZERO_FILL_BY_SPORT.get(sport, PLAYER_ZERO_FILL)
+    if fill is None:
+        fill = PLAYER_ZERO_FILL
+
+    events = collect_events(
+        team_id, tournament_id, team_name=team_name, verbose=verbose, before=before
+    )[-limit:]
+
+    if verbose:
+        print(f"  {team_name}: player stats from {len(events)} matches")
+
+    # A "last 10" sample straddles the transfer window, so it contains
+    # players who have since left. Their numbers are real but useless: a
+    # departed striker's shot record tells you nothing about Saturday.
+    squad: set[int] | None = None
+    if current_squad_only:
+        squad = api.squad_player_ids(team_id)
+        if not squad:
+            squad = None
+            if verbose:
+                print("    couldn't read the squad, keeping everyone who played")
+
     records = []
     for i, event in enumerate(events, start=1):
         event_id = event["id"]
@@ -612,52 +563,6 @@ def _player_records_for(events, team_id, squad, fill, verbose=True):
         if verbose:
             note = f", {departed} since left" if departed else ""
             print(f"    {i}/{len(events)} {event_id} {kept} players{note}")
-
-    return records
-
-
-def player_form(
-    team_id: int,
-    team_name: str,
-    tournament_id: int | None = None,
-    limit: int = 10,
-    verbose: bool = True,
-    current_squad_only: bool = True,
-    before: float | None = None,
-    sport: str = "football",
-) -> list[dict]:
-    """One record per player per match, for a team's recent matches.
-
-    Note the shape difference from team_form: this is flat, one row per
-    player per game, rather than one row per game. Grouping happens later,
-    which keeps the venue and last-N filters working the same way.
-    """
-    # Football fills absent keys with zero because the feed omits them; an
-    # American football box score already sends every key, so filling there
-    # would invent football markets on a gridiron page.
-    fill = markets.ZERO_FILL_BY_SPORT.get(sport, PLAYER_ZERO_FILL)
-    if fill is None:
-        fill = PLAYER_ZERO_FILL
-
-    events = collect_events(
-        team_id, tournament_id, team_name=team_name, verbose=verbose, before=before
-    )[-limit:]
-
-    if verbose:
-        print(f"  {team_name}: player stats from {len(events)} matches")
-
-    # A "last 10" sample straddles the transfer window, so it contains
-    # players who have since left. Their numbers are real but useless: a
-    # departed striker's shot record tells you nothing about Saturday.
-    squad: set[int] | None = None
-    if current_squad_only:
-        squad = api.squad_player_ids(team_id)
-        if not squad:
-            squad = None
-            if verbose:
-                print("    couldn't read the squad, keeping everyone who played")
-
-    records = _player_records_for(events, team_id, squad, fill, verbose)
 
     if squad is not None and verbose:
         seen = {r["player_id"] for r in records}
@@ -1011,17 +916,8 @@ def api_meetings(
     """
     both = {away_id}
     found = []
-    # Four pages, not the default two.
-    #
-    # Two pages is about sixty matches, which for two clubs in the same
-    # division is a season and a half and finds three meetings. For two who
-    # rarely meet -- different NFL divisions, or a side just promoted -- it
-    # finds one, or none, and a head-to-head of one match is not a
-    # head-to-head. Four pages is roughly a hundred and twenty matches: three
-    # football seasons, seven NFL ones. Old matches never change, so this
-    # costs two extra requests per club once and nothing on every build after.
-    for event in collect_events(home_id, tournament_id=None, pages=4,
-                                verbose=False, before=before):
+    for event in collect_events(home_id, tournament_id=None, verbose=False,
+                                before=before):
         sides = {
             (event.get("homeTeam") or {}).get("id"),
             (event.get("awayTeam") or {}).get("id"),
@@ -1031,21 +927,41 @@ def api_meetings(
     return found
 
 
-def _meeting_events(
+def head_to_head(
     event_id: int,
     home_id: int,
     away_id: int,
     limit: int = 10,
     verbose: bool = True,
     before: float | None = None,
-) -> list[dict]:
-    """The previous meetings themselves, before anything is read from them.
+) -> list[list[dict]]:
+    """Previous meetings between these two teams, as two record lists.
 
-    One place, so the team head-to-head and the player head-to-head are
-    talking about the same matches. When those two drift apart the page shows
-    a team record over five meetings beside a player record over two and
-    presents them as the same sample.
+    Same shape as team_form's output, so the report can render head to head
+    with exactly the same code as recent form.
+
+    No competition filter here on purpose: when these two meet in a cup, that
+    is still a meeting between them, and the sample is small enough already.
+
+    `before` is the as-of cutoff, same contract as collect_events: a unix
+    timestamp, compared strictly less-than, None meaning no explicit cutoff.
+    The live path passes the fixture's own kickoff; a backtest would pass
+    the moment it is pretending to stand at.
     """
+    # Derived from the two clubs' own match feeds, not from a head-to-head
+    # endpoint.
+    #
+    # SofaScore's event/{id}/h2h/events is gone. It returned 404 for all 87
+    # fixtures of the 1 September run, which is why the Head to head button
+    # stayed disabled for days while the flag, the config and the payload
+    # were all correct: the code ran, asked, and was told no.
+    #
+    # Intersecting the home side's history with the away side's id needs no
+    # request at all beyond the feeds team_form already fetches, so this is
+    # both cheaper and immune to that endpoint disappearing again. The limit
+    # is honest rather than hidden: it can only see meetings inside the
+    # window already pulled for form, so two clubs who last met three seasons
+    # ago will show nothing rather than something stale.
     events = [
         e for e in api_meetings(home_id, away_id, before=before)
     ]
@@ -1088,47 +1004,6 @@ def _meeting_events(
     events.sort(key=lambda e: e.get("startTimestamp", 0))
     events = events[-limit:]
 
-    return events
-
-
-def head_to_head(
-    event_id: int,
-    home_id: int,
-    away_id: int,
-    limit: int = 10,
-    verbose: bool = True,
-    before: float | None = None,
-) -> list[list[dict]]:
-    """Previous meetings between these two teams, as two record lists.
-
-    Same shape as team_form's output, so the report can render head to head
-    with exactly the same code as recent form.
-
-    No competition filter here on purpose: when these two meet in a cup, that
-    is still a meeting between them, and the sample is small enough already.
-
-    `before` is the as-of cutoff, same contract as collect_events: a unix
-    timestamp, compared strictly less-than, None meaning no explicit cutoff.
-    The live path passes the fixture's own kickoff; a backtest would pass
-    the moment it is pretending to stand at.
-    """
-    # Derived from the two clubs' own match feeds, not from a head-to-head
-    # endpoint.
-    #
-    # SofaScore's event/{id}/h2h/events is gone. It returned 404 for all 87
-    # fixtures of the 1 September run, which is why the Head to head button
-    # stayed disabled for days while the flag, the config and the payload
-    # were all correct: the code ran, asked, and was told no.
-    #
-    # Intersecting the home side's history with the away side's id needs no
-    # request at all beyond the feeds team_form already fetches, so this is
-    # both cheaper and immune to that endpoint disappearing again. The limit
-    # is honest rather than hidden: it can only see meetings inside the
-    # window already pulled for form, so two clubs who last met three seasons
-    # ago will show nothing rather than something stale.
-    events = _meeting_events(event_id, home_id, away_id, limit=limit,
-                              verbose=verbose, before=before)
-
     if verbose:
         print(f"  head to head: {len(events)} previous meeting(s)")
 
@@ -1152,61 +1027,6 @@ def head_to_head(
             )
 
     return [home_records, away_records]
-
-
-def player_head_to_head(
-    event_id: int,
-    home_id: int,
-    away_id: int,
-    home_name: str = "",
-    away_name: str = "",
-    limit: int = 10,
-    verbose: bool = True,
-    before: float | None = None,
-    sport: str = "football",
-    current_squad_only: bool = True,
-) -> list[list[dict]]:
-    """Per-player records for previous meetings between these two clubs.
-
-    The gap this fills: a player's record against this opponent was only ever
-    visible for meetings that happened to fall inside the form window, because
-    lineups are fetched per match and only the form matches were fetched. On a
-    twenty-match NFL sample two clubs from different divisions meet once, so
-    every card read "1/1, only 1 meeting with player data" -- not because the
-    meetings did not exist, but because nobody had asked for their lineups.
-
-    A head-to-head that excludes the head-to-heads is worse than none: it
-    looks like evidence and is an accident of the form window's length.
-
-    One lineups request per meeting, cached from then on. Records come back in
-    player_form's shape, so everything downstream counts them the same way.
-    """
-    events = _meeting_events(event_id, home_id, away_id, limit=limit,
-                             verbose=False, before=before)
-    if not events:
-        if verbose:
-            print("  head to head players: no meetings to read")
-        return [[], []]
-
-    fill = markets.ZERO_FILL_BY_SPORT.get(sport, PLAYER_ZERO_FILL)
-    if fill is None:
-        fill = PLAYER_ZERO_FILL
-
-    out = []
-    for team_id, name in ((home_id, home_name), (away_id, away_name)):
-        squad = None
-        if current_squad_only:
-            # Same reasoning as player_form: a player who has since left
-            # tells you nothing about this weekend, however good his record
-            # against them was.
-            squad = api.squad_player_ids(team_id) or None
-        records = _player_records_for(events, team_id, squad, fill, verbose=False)
-        if verbose:
-            meetings = len({r["match_id"] for r in records})
-            print(f"  head to head players: {name or team_id} "
-                  f"{len(records)} record(s) over {meetings} meeting(s)")
-        out.append(records)
-    return out
 
 
 def stat_names(

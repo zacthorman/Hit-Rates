@@ -1,0 +1,165 @@
+"""
+Which markets exist, and what they are called here.
+
+A module of its own, with no imports at all, deliberately. Both the analysis
+code and the page renderer need this list, and the renderer has no business
+pulling in the HTTP stack to find out what a bettable market is. It did, once,
+and the result was that re-rendering a saved page failed on a machine with no
+curl_cffi installed.
+"""
+
+from __future__ import annotations
+
+# Shown first, in this order, when present. Anything else the endpoint
+# returns is still collected and appears after these.
+PREFERRED_STATS = [
+    "Goals",
+    "Total shots",
+    "Shots on target",
+    "Corner kicks",
+    "Fouls",
+    "Tackles",
+    "Offsides",
+    "Throw-ins",
+    "Yellow cards",
+    "Red cards",
+    "Free kicks",
+    "Goal kicks",
+]
+
+# Stats where a hit-rate line makes no sense or reads oddly.
+SKIP_STATS = {"Ball possession"}
+
+# Markets you can actually get a price on. SofaScore returns a great deal
+# more than this (goals prevented, expected assists, duels won), all of it
+# interesting and none of it bettable, and every extra row is another
+# combination for the Standout scan to trawl through and another chance for
+# a coincidence to look like a finding. Pass --all-stats to see everything.
+FOOTBALL_STATS = {
+    # Matched against the markets bet365 actually prices on a football match.
+    # Anything the endpoint returns that has no market attached is dropped:
+    # it cannot be bet, and every extra row is another combination for the
+    # Standout scan to trawl and another chance for a fluke to look like a
+    # finding. Use --all-stats to see everything again.
+    "Goals",              # Team Total Goals, Over/Under, Both Teams to Score
+    "Total shots",        # Total Shots
+    "Shots on target",    # Total Shots on Target
+    "Corner kicks",       # Corners
+    "Offsides",           # Total Offsides
+    "Tackles",            # Total Tackles
+    "Fouls",              # Fouls Committed, and Fouls Won via the Against measure
+    "Yellow cards",       # Cards
+    "Red cards",          # Red Card in Match / Half
+    "Throw-ins",          # Throw Ins
+    "Goal kicks",         # Goal Kicks
+    "Free kicks",         # Free Kicks
+
+}
+
+# The same idea for player props.
+FOOTBALL_PLAYER_STATS = {
+    "Shots",              # Shots
+    "Shots on target",    # Shots on Target
+    "Goals",              # Player to Score
+    "Assists",            # Score or Assist
+    "Tackles",            # Tackles
+    "Fouls",              # Fouls Committed
+    "Fouled",             # To Be Fouled
+    "Passes",             # Passes
+    "Saves",              # Goalkeeper Saves
+    "Minutes",            # not a market, but it decides whether the rest matter
+
+}
+
+# Dropped because bet365 prices them but SofaScore does not report them per
+# player, so there is nothing to build a hit rate from: headed shots on
+# target, shots on target outside the box, and player cards.
+
+
+GRIDIRON_STATS = {
+    # Checked against what bet365 actually prices on an NFL match, not against
+    # what SofaScore reports. The first version was built from the feed and
+    # offered first downs, turnovers, punts, penalties and third-down
+    # efficiency: all real numbers, none of them bettable. A market you cannot
+    # get a price on is worse than useless in a list of bets, because it is
+    # another combination for the scan to trawl and another chance for a
+    # coincidence to look like a finding.
+    "Points",                    # Team Totals O/U
+    "Touchdowns",                # Touchdowns O/U
+    "Net yards passing",         # Match / Team Total Props: Passing Yards
+    "Rushing yards",             # Match / Team Total Props: Rushing Yards
+    "Rushing attempts",          # Match / Team Total Props: Rushing Attempts
+    "Passing touchdowns",        # Match Total Props: Touchdown Passes
+    "Field goals",               # Field Goals O/U
+}
+
+GRIDIRON_PLAYER_STATS = {
+    # Same rule: only props with a price against them. Receiving targets,
+    # receiving touchdowns, rushing touchdowns and defensive interceptions all
+    # came out, because bet365 prices none of them as a standalone player
+    # market. Touchdowns are sold as Anytime Touchdown Scorer, which is a
+    # different question -- did he score at all, by any route -- so it is built
+    # from rushing, receiving and return scores added together, and appears at
+    # the bottom of this list with the other derived markets.
+    "Passing yards",             # Quarterback Props: Passing Yards
+    "Passing attempts",          # Quarterback Props: Passing Attempts
+    "Passing completions",       # Quarterback Props: Passing Completions
+    "Passing touchdowns",        # Quarterback Props: Passing Touchdowns
+    "Passing interceptions",     # Quarterback Props: Interceptions
+    "Rushing yards",             # Rushing Props: Yards
+    "Rushing attempts",          # Rushing Props: Attempts
+    "Receiving yards",           # Receiving Props: Yards
+    "Receiving receptions",      # Receiving Props: Receptions
+    "Defensive combine tackles", # Tackles and Assists Props: Tackles and Assists
+    "Defensive assist tackles",  # Tackles and Assists Props: Assists
+    "Defensive sacks",           # Defensive/Special Teams Props: Sacks
+    "Kicking fg made",           # Defensive/Special Teams Props: Kicking
+    "Kicking total points",      # Defensive/Special Teams Props: Kicking
+
+    # Derived in hitrates._gridiron_derived, because the book sells them and
+    # the feed does not report them. Anytime Touchdown Scorer is the market
+    # every parlay is built round; the two combined-yardage lines are the
+    # other two bet365 prices that are sums rather than columns.
+    "Anytime touchdown",         # Anytime Touchdown Scorer
+    "Passing and rushing yards", # Quarterback Props: Passing and Rushing Yards
+    "Rushing and receiving yards", # Rushing and Receiving Props: Yards
+}
+
+
+# Which vocabulary belongs to which sport.
+#
+# Keeping these apart is not tidiness. A merged set put "Shots", "Goals",
+# "Assists" and "Saves" on an NFL page as markets, all of them reading zero,
+# because the football zero-fill writes those keys into every player record it
+# touches whatever the sport. Bets that cannot happen, priced off a column of
+# noughts.
+BY_SPORT = {
+    "football": (FOOTBALL_STATS, FOOTBALL_PLAYER_STATS),
+    "american-football": (GRIDIRON_STATS, GRIDIRON_PLAYER_STATS),
+}
+
+# Football fills these with zero when the key is absent, because SofaScore
+# leaves a key out when a player records none of something and reading that as
+# "no data" doubled every shots-on-target average. American football needs no
+# equivalent: its box score sends every key, zero included, so filling would
+# only invent football markets on a gridiron page.
+ZERO_FILL_BY_SPORT = {
+    "football": None,          # resolved to hitrates.PLAYER_ZERO_FILL by callers
+    "american-football": frozenset(),
+}
+
+
+def stats_for(sport: str) -> set:
+    """Team markets for one sport, falling back to football."""
+    return BY_SPORT.get(sport, BY_SPORT["football"])[0]
+
+
+def player_stats_for(sport: str) -> set:
+    """Player markets for one sport, falling back to football."""
+    return BY_SPORT.get(sport, BY_SPORT["football"])[1]
+
+
+# Everything, for the few callers that genuinely want the lot. Prefer the
+# per-sport accessors: a union is what caused the overlap in the first place.
+BETTABLE_STATS = FOOTBALL_STATS | GRIDIRON_STATS
+BETTABLE_PLAYER_STATS = FOOTBALL_PLAYER_STATS | GRIDIRON_PLAYER_STATS

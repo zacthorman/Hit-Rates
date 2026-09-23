@@ -708,26 +708,6 @@ def build_fixture(
                                             sport=sport)
             entry["h2hStats"] = h2h_names
             entry["h2hLines"] = hitrates.suggest_lines(h2h_records, h2h_names)
-
-            # Player numbers for those same meetings.
-            #
-            # Without this the player head-to-head block can only see
-            # meetings that happen to sit inside the form window, because
-            # lineups are fetched per match and only form matches were ever
-            # fetched. Two clubs in different NFL divisions meet once in
-            # twenty games, so every card read "1/1" and looked like a thin
-            # record when it was really an unasked question.
-            #
-            # Needs --players: without it there is nothing on the page to
-            # show these against.
-            if players:
-                entry["h2hPlayers"] = hitrates.player_head_to_head(
-                    event_id=event["id"], home_id=home["id"], away_id=away["id"],
-                    home_name=home.get("name", ""), away_name=away.get("name", ""),
-                    limit=games,
-                    before=event.get("startTimestamp") or None,
-                    sport=sport,
-                )
         else:
             print("  no head to head data, skipping that view")
 
@@ -1148,7 +1128,7 @@ def main() -> None:
         return
 
     if args.search:
-        do_search(args.search, args.sport)
+        do_search(args.search)
         return
 
     # Several divisions in one go. Each gets its own report rather than one

@@ -28,7 +28,6 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 
-import picker
 import weekend
 
 ROOT = Path(__file__).parent
@@ -126,11 +125,7 @@ def main() -> None:
     if not REPORTS.exists():
         raise SystemExit("No reports/ folder yet. Build a report first.")
 
-    # The picker pages live in the same folder and are not fixture reports.
-    # Left in, they get scanned for fixtures, find none, and the build ends by
-    # announcing that nine files have no upcoming games and could be pruned.
-    files = [f for f in sorted(REPORTS.glob("*.html"))
-             if not f.name.startswith(("pick-", "_"))]
+    files = sorted(REPORTS.glob("*.html"))
     if not files:
         raise SystemExit("No reports found in reports/.")
 
@@ -209,14 +204,6 @@ def main() -> None:
     out = ROOT / "index.html"
     out.write_text(page, encoding="utf-8")
 
-    # The picker reads the same reports this index just read, so building it
-    # here is what stops the two drifting: a report rebuilt without its picker
-    # page is a fixture list linking to yesterday's numbers.
-    try:
-        picker.main([])
-    except Exception as exc:
-        print(f"  picker pages not rebuilt: {type(exc).__name__}: {exc}")
-
     print(f"Indexed {len(fixtures)} fixture(s) across {len(competitions)} "
           f"competition(s) into {out}")
     for block in (chosen or {}).get("sports", []):
@@ -294,7 +281,6 @@ PAGE = """<!DOCTYPE html>
                  color: var(--muted); cursor: pointer; }
 .sports button[aria-pressed="true"] { background: var(--raised); color: var(--text);
                                       box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
-a.picks-btn { text-decoration: none; display: inline-flex; align-items: center; }
 .picks-btn { margin-left: auto; border: 1px solid var(--border); background: var(--raised);
              color: var(--text); padding: 7px 14px; border-radius: 7px; font: inherit;
              font-size: 0.85rem; font-weight: 600; cursor: pointer; }
@@ -406,7 +392,6 @@ footer { margin-top: 26px; color: var(--muted); font-size: 12.5px; }
 
   <div class="bar">
     <div class="sports" id="sports"></div>
-    <a class="picks-btn" href="tonight.html">Tonight &rarr;</a>
     <button type="button" class="picks-btn" id="picks-btn"
             aria-expanded="false">Picks of the week</button>
   </div>

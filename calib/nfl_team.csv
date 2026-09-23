@@ -1,0 +1,1091 @@
+date,fixture,stat,period,line,over,p_model,p_record,source,need,won
+2025-09-05,Philadelphia Eagles v Dallas Cowboys,Field goals,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-09-05,Philadelphia Eagles v Dallas Cowboys,Rushing attempts,ALL,29.5,False,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-09-07,Washington Commanders v New York Giants,Field goals,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,False
+2025-09-07,Washington Commanders v New York Giants,Field goals,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-07,Washington Commanders v New York Giants,Net yards passing,ALL,249.5,False,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-07,Washington Commanders v New York Giants,Net yards passing,ALL,250.5,False,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-07,Washington Commanders v New York Giants,Passing touchdowns,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-07,Washington Commanders v New York Giants,Passing touchdowns,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,False
+2025-09-07,Washington Commanders v New York Giants,Rushing attempts,ALL,24.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-07,Washington Commanders v New York Giants,Rushing yards,ALL,104.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-07,Washington Commanders v New York Giants,Rushing yards,ALL,105.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-07,Washington Commanders v New York Giants,Touchdowns,ALL,1.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-07,Washington Commanders v New York Giants,Touchdowns,ALL,2.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-12,Green Bay Packers v Washington Commanders,Field goals,ALL,0.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-09-12,Green Bay Packers v Washington Commanders,Field goals,ALL,0.5,True,1.0,1.0,record,1.4268444444444444,True
+2025-09-12,Green Bay Packers v Washington Commanders,Rushing attempts,ALL,24.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-09-14,Dallas Cowboys v New York Giants,Net yards passing,ALL,226.5,False,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,False
+2025-09-14,Dallas Cowboys v New York Giants,Net yards passing,ALL,227.5,False,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,False
+2025-09-14,Dallas Cowboys v New York Giants,Passing touchdowns,ALL,0.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,True
+2025-09-14,Dallas Cowboys v New York Giants,Rushing yards,ALL,99.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,True
+2025-09-14,Dallas Cowboys v New York Giants,Touchdowns,ALL,1.5,True,0.9090909090909091,0.9090909090909091,record,1.6060764308177646,True
+2025-09-14,Dallas Cowboys v New York Giants,Touchdowns,ALL,2.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,True
+2025-09-14,Detroit Lions v Chicago Bears,Field goals,ALL,1.5,True,0.6666666666666666,0.6666666666666666,record,3.3334631012569553,False
+2025-09-14,Detroit Lions v Chicago Bears,Passing touchdowns,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,2.2910002730123473,True
+2025-09-14,Detroit Lions v Chicago Bears,Passing touchdowns,ALL,0.5,True,0.6666666666666666,0.6666666666666666,record,3.3334631012569553,True
+2025-09-14,Detroit Lions v Chicago Bears,Rushing attempts,ALL,25.5,True,0.8333333333333334,0.8333333333333334,record,2.2910002730123473,True
+2025-09-14,Detroit Lions v Chicago Bears,Rushing attempts,ALL,26.5,True,0.6666666666666666,0.6666666666666666,record,3.3334631012569553,True
+2025-09-14,Indianapolis Colts v Denver Broncos,Field goals,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-14,Indianapolis Colts v Denver Broncos,Field goals,ALL,1.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-14,Indianapolis Colts v Denver Broncos,Net yards passing,ALL,198.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-14,Indianapolis Colts v Denver Broncos,Passing touchdowns,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-14,Indianapolis Colts v Denver Broncos,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.5488,True
+2025-09-14,Indianapolis Colts v Denver Broncos,Rushing yards,ALL,149.5,False,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-14,Indianapolis Colts v Denver Broncos,Rushing yards,ALL,150.5,False,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-15,Minnesota Vikings v Atlanta Falcons,Passing touchdowns,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,False
+2025-09-15,Minnesota Vikings v Atlanta Falcons,Passing touchdowns,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,False
+2025-09-15,Minnesota Vikings v Atlanta Falcons,Rushing attempts,ALL,26.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-15,Minnesota Vikings v Atlanta Falcons,Rushing attempts,ALL,27.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-19,Buffalo Bills v Miami Dolphins,Net yards passing,ALL,226.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,False
+2025-09-19,Buffalo Bills v Miami Dolphins,Net yards passing,ALL,227.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,False
+2025-09-19,Buffalo Bills v Miami Dolphins,Net yards passing,ALL,225.5,False,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-19,Buffalo Bills v Miami Dolphins,Net yards passing,ALL,226.5,False,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-19,Buffalo Bills v Miami Dolphins,Passing touchdowns,ALL,0.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-19,Buffalo Bills v Miami Dolphins,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.5488,True
+2025-09-19,Buffalo Bills v Miami Dolphins,Rushing attempts,ALL,29.5,False,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-19,Buffalo Bills v Miami Dolphins,Rushing attempts,ALL,30.5,False,1.0,1.0,record,1.5488,True
+2025-09-19,Buffalo Bills v Miami Dolphins,Touchdowns,ALL,2.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-21,Jacksonville Jaguars v Houston Texans,Passing touchdowns,ALL,0.5,True,0.875,0.875,record,1.8899833358374518,False
+2025-09-21,Washington Commanders v Las Vegas Raiders,Field goals,ALL,0.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-09-21,Washington Commanders v Las Vegas Raiders,Field goals,ALL,0.5,True,1.0,1.0,record,1.4802,True
+2025-09-21,Washington Commanders v Las Vegas Raiders,Net yards passing,ALL,223.5,False,0.75,0.75,record,2.443375511026396,True
+2025-09-21,Washington Commanders v Las Vegas Raiders,Net yards passing,ALL,224.5,False,0.75,0.75,record,2.443375511026396,True
+2025-09-21,Washington Commanders v Las Vegas Raiders,Touchdowns,ALL,1.5,True,0.75,0.75,record,2.443375511026396,True
+2025-09-21,Minnesota Vikings v Cincinnati Bengals,Field goals,ALL,0.5,True,1.0,1.0,record,1.4802,True
+2025-09-21,Minnesota Vikings v Cincinnati Bengals,Field goals,ALL,0.5,True,1.0,1.0,record,1.4802,True
+2025-09-21,Minnesota Vikings v Cincinnati Bengals,Passing touchdowns,ALL,0.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-09-21,Los Angeles Chargers v Denver Broncos,Field goals,ALL,1.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-21,Los Angeles Chargers v Denver Broncos,Field goals,ALL,2.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-21,Los Angeles Chargers v Denver Broncos,Field goals,ALL,1.5,False,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,False
+2025-09-21,Los Angeles Chargers v Denver Broncos,Rushing attempts,ALL,26.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-21,Los Angeles Chargers v Denver Broncos,Rushing attempts,ALL,25.5,False,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-21,Los Angeles Chargers v Denver Broncos,Rushing attempts,ALL,26.5,False,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-21,Los Angeles Chargers v Denver Broncos,Touchdowns,ALL,1.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-21,Los Angeles Chargers v Denver Broncos,Touchdowns,ALL,1.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-21,Chicago Bears v Dallas Cowboys,Passing touchdowns,ALL,0.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-09-22,New York Giants v Kansas City Chiefs,Field goals,ALL,1.5,True,0.6666666666666666,0.6666666666666666,record,3.3334631012569553,False
+2025-09-22,New York Giants v Kansas City Chiefs,Net yards passing,ALL,207.5,True,1.0,1.0,record,1.6402666666666668,False
+2025-09-22,New York Giants v Kansas City Chiefs,Net yards passing,ALL,208.5,True,1.0,1.0,record,1.6402666666666668,False
+2025-09-22,New York Giants v Kansas City Chiefs,Net yards passing,ALL,207.5,True,0.8333333333333334,0.8333333333333334,record,2.2910002730123473,False
+2025-09-22,New York Giants v Kansas City Chiefs,Net yards passing,ALL,208.5,True,0.8333333333333334,0.8333333333333334,record,2.2910002730123473,False
+2025-09-22,New York Giants v Kansas City Chiefs,Passing touchdowns,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,2.2910002730123473,False
+2025-09-22,New York Giants v Kansas City Chiefs,Passing touchdowns,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,2.2910002730123473,True
+2025-09-22,New York Giants v Kansas City Chiefs,Rushing attempts,ALL,21.5,True,0.8333333333333334,0.8333333333333334,record,2.2910002730123473,True
+2025-09-22,New York Giants v Kansas City Chiefs,Rushing attempts,ALL,22.5,True,0.8333333333333334,0.8333333333333334,record,2.2910002730123473,True
+2025-09-22,New York Giants v Kansas City Chiefs,Touchdowns,ALL,1.5,True,0.8333333333333334,0.8333333333333334,record,2.2910002730123473,False
+2025-09-22,New York Giants v Kansas City Chiefs,Touchdowns,ALL,2.5,True,0.8333333333333334,0.8333333333333334,record,2.2910002730123473,False
+2025-09-22,New York Giants v Kansas City Chiefs,Touchdowns,ALL,1.5,True,0.8333333333333334,0.8333333333333334,record,2.2910002730123473,True
+2025-09-26,Arizona Cardinals v Seattle Seahawks,Field goals,ALL,1.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-26,Arizona Cardinals v Seattle Seahawks,Net yards passing,ALL,225.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,False
+2025-09-26,Arizona Cardinals v Seattle Seahawks,Net yards passing,ALL,226.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,False
+2025-09-26,Arizona Cardinals v Seattle Seahawks,Net yards passing,ALL,225.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-26,Arizona Cardinals v Seattle Seahawks,Net yards passing,ALL,226.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-26,Arizona Cardinals v Seattle Seahawks,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.5488,True
+2025-09-26,Arizona Cardinals v Seattle Seahawks,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.5488,True
+2025-09-26,Arizona Cardinals v Seattle Seahawks,Passing touchdowns,ALL,1.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,False
+2025-09-26,Arizona Cardinals v Seattle Seahawks,Rushing yards,ALL,115.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,False
+2025-09-26,Arizona Cardinals v Seattle Seahawks,Rushing yards,ALL,116.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,False
+2025-09-26,Arizona Cardinals v Seattle Seahawks,Rushing yards,ALL,115.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-26,Arizona Cardinals v Seattle Seahawks,Rushing yards,ALL,116.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-26,Arizona Cardinals v Seattle Seahawks,Touchdowns,ALL,1.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-26,Arizona Cardinals v Seattle Seahawks,Touchdowns,ALL,1.5,True,1.0,1.0,record,1.5488,True
+2025-09-26,Arizona Cardinals v Seattle Seahawks,Touchdowns,ALL,2.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,False
+2025-09-28,Pittsburgh Steelers v Minnesota Vikings,Touchdowns,ALL,1.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,True
+2025-09-28,New York Giants v Los Angeles Chargers,Field goals,ALL,1.5,True,0.75,0.75,record,2.443375511026396,False
+2025-09-28,New York Giants v Los Angeles Chargers,Net yards passing,ALL,221.5,True,0.75,0.75,record,2.443375511026396,False
+2025-09-28,New York Giants v Los Angeles Chargers,Net yards passing,ALL,222.5,True,0.75,0.75,record,2.443375511026396,False
+2025-09-28,New York Giants v Los Angeles Chargers,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.4802,True
+2025-09-28,New York Giants v Los Angeles Chargers,Touchdowns,ALL,1.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-09-28,Atlanta Falcons v Washington Commanders,Field goals,ALL,0.5,True,0.8888888888888888,0.8888888888888888,record,1.7699309729389017,True
+2025-09-28,Atlanta Falcons v Washington Commanders,Field goals,ALL,0.5,True,0.8888888888888888,0.8888888888888888,record,1.7699309729389017,True
+2025-09-28,Atlanta Falcons v Washington Commanders,Net yards passing,ALL,210.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-09-28,Atlanta Falcons v Washington Commanders,Net yards passing,ALL,211.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-09-28,Atlanta Falcons v Washington Commanders,Passing touchdowns,ALL,0.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-09-28,Atlanta Falcons v Washington Commanders,Passing touchdowns,ALL,0.5,True,0.8888888888888888,0.8888888888888888,record,1.7699309729389017,True
+2025-09-28,Atlanta Falcons v Washington Commanders,Passing touchdowns,ALL,1.5,True,0.6666666666666666,0.6666666666666666,record,2.823284835588922,True
+2025-09-28,Atlanta Falcons v Washington Commanders,Rushing attempts,ALL,29.5,False,0.6666666666666666,0.6666666666666666,record,2.823284835588922,True
+2025-09-28,Atlanta Falcons v Washington Commanders,Rushing attempts,ALL,30.5,False,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-09-28,Atlanta Falcons v Washington Commanders,Rushing yards,ALL,126.5,True,0.6666666666666666,0.6666666666666666,record,2.823284835588922,True
+2025-09-28,Atlanta Falcons v Washington Commanders,Rushing yards,ALL,125.5,False,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-09-28,Atlanta Falcons v Washington Commanders,Rushing yards,ALL,126.5,False,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-09-28,Atlanta Falcons v Washington Commanders,Touchdowns,ALL,2.5,True,0.6666666666666666,0.6666666666666666,record,2.823284835588922,True
+2025-09-28,Los Angeles Rams v Indianapolis Colts,Field goals,ALL,1.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-28,Los Angeles Rams v Indianapolis Colts,Passing touchdowns,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-28,Los Angeles Rams v Indianapolis Colts,Passing touchdowns,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-28,Los Angeles Rams v Indianapolis Colts,Rushing yards,ALL,135.5,False,1.0,1.0,record,1.5488,True
+2025-09-28,Los Angeles Rams v Indianapolis Colts,Rushing yards,ALL,136.5,False,1.0,1.0,record,1.5488,True
+2025-09-28,Los Angeles Rams v Indianapolis Colts,Touchdowns,ALL,2.5,False,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,False
+2025-09-28,Kansas City Chiefs v Baltimore Ravens,Field goals,ALL,0.5,True,1.0,1.0,record,1.5488,True
+2025-09-28,Kansas City Chiefs v Baltimore Ravens,Field goals,ALL,0.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-28,Kansas City Chiefs v Baltimore Ravens,Net yards passing,ALL,199.5,False,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-28,Kansas City Chiefs v Baltimore Ravens,Net yards passing,ALL,200.5,False,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-28,Kansas City Chiefs v Baltimore Ravens,Passing touchdowns,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-28,Kansas City Chiefs v Baltimore Ravens,Rushing attempts,ALL,25.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,False
+2025-09-28,Kansas City Chiefs v Baltimore Ravens,Rushing attempts,ALL,26.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,False
+2025-09-28,Kansas City Chiefs v Baltimore Ravens,Rushing yards,ALL,104.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-28,Kansas City Chiefs v Baltimore Ravens,Rushing yards,ALL,105.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-28,Las Vegas Raiders v Chicago Bears,Passing touchdowns,ALL,0.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-28,Las Vegas Raiders v Chicago Bears,Passing touchdowns,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-28,Las Vegas Raiders v Chicago Bears,Rushing attempts,ALL,25.5,True,1.0,1.0,record,1.5488,True
+2025-09-28,Las Vegas Raiders v Chicago Bears,Rushing attempts,ALL,26.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,False
+2025-09-28,Las Vegas Raiders v Chicago Bears,Rushing yards,ALL,89.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,False
+2025-09-28,Las Vegas Raiders v Chicago Bears,Rushing yards,ALL,90.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,False
+2025-09-28,Las Vegas Raiders v Chicago Bears,Touchdowns,ALL,1.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-09-29,Dallas Cowboys v Green Bay Packers,Field goals,ALL,1.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,False
+2025-09-29,Dallas Cowboys v Green Bay Packers,Field goals,ALL,1.5,False,0.7272727272727273,0.7272727272727273,record,2.302292332439837,False
+2025-09-30,Denver Broncos v Cincinnati Bengals,Field goals,ALL,0.5,True,1.0,1.0,record,1.5488,False
+2025-09-30,Denver Broncos v Cincinnati Bengals,Field goals,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-09-30,Denver Broncos v Cincinnati Bengals,Passing touchdowns,ALL,1.5,False,1.0,1.0,record,1.5488,True
+2025-09-30,Denver Broncos v Cincinnati Bengals,Rushing attempts,ALL,20.5,True,1.0,1.0,record,1.5488,True
+2025-09-30,Denver Broncos v Cincinnati Bengals,Rushing attempts,ALL,21.5,True,1.0,1.0,record,1.5488,True
+2025-09-30,Denver Broncos v Cincinnati Bengals,Rushing yards,ALL,77.5,False,1.0,1.0,record,1.5488,True
+2025-09-30,Denver Broncos v Cincinnati Bengals,Rushing yards,ALL,78.5,False,1.0,1.0,record,1.5488,True
+2025-09-30,Denver Broncos v Cincinnati Bengals,Touchdowns,ALL,1.5,True,1.0,1.0,record,1.5488,True
+2025-09-30,Denver Broncos v Cincinnati Bengals,Touchdowns,ALL,1.5,False,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-10-03,Los Angeles Rams v San Francisco 49ers,Field goals,ALL,1.5,True,0.75,0.75,record,2.443375511026396,False
+2025-10-03,Los Angeles Rams v San Francisco 49ers,Net yards passing,ALL,280.5,False,0.875,0.875,record,1.8899833358374518,False
+2025-10-03,Los Angeles Rams v San Francisco 49ers,Net yards passing,ALL,281.5,False,0.875,0.875,record,1.8899833358374518,False
+2025-10-03,Los Angeles Rams v San Francisco 49ers,Touchdowns,ALL,1.5,True,0.75,0.75,record,2.443375511026396,True
+2025-10-05,Cleveland Browns v Minnesota Vikings,Passing touchdowns,ALL,0.5,True,0.9090909090909091,0.9090909090909091,record,1.6060764308177646,True
+2025-10-05,Cleveland Browns v Minnesota Vikings,Touchdowns,ALL,1.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,True
+2025-10-05,Baltimore Ravens v Houston Texans,Net yards passing,ALL,195.5,True,0.7,0.7,record,2.5203313874144593,False
+2025-10-05,Baltimore Ravens v Houston Texans,Net yards passing,ALL,196.5,True,0.7,0.7,record,2.5203313874144593,False
+2025-10-05,Baltimore Ravens v Houston Texans,Rushing yards,ALL,156.5,False,0.7,0.7,record,2.5203313874144593,False
+2025-10-05,Baltimore Ravens v Houston Texans,Rushing yards,ALL,157.5,False,0.7,0.7,record,2.5203313874144593,False
+2025-10-05,New York Jets v Dallas Cowboys,Field goals,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-10-05,New York Jets v Dallas Cowboys,Rushing yards,ALL,117.5,True,0.6666666666666666,0.6666666666666666,record,2.823284835588922,True
+2025-10-05,New York Jets v Dallas Cowboys,Rushing yards,ALL,118.5,True,0.6666666666666666,0.6666666666666666,record,2.823284835588922,True
+2025-10-05,New York Jets v Dallas Cowboys,Touchdowns,ALL,2.5,True,0.6666666666666666,0.6666666666666666,record,2.823284835588922,False
+2025-10-05,Indianapolis Colts v Las Vegas Raiders,Passing touchdowns,ALL,0.5,True,0.9,0.9,record,1.6782927191979256,True
+2025-10-05,Indianapolis Colts v Las Vegas Raiders,Passing touchdowns,ALL,0.5,True,0.9,0.9,record,1.6782927191979256,False
+2025-10-05,Indianapolis Colts v Las Vegas Raiders,Rushing yards,ALL,124.5,False,0.8,0.8,record,2.040163279754755,True
+2025-10-05,Indianapolis Colts v Las Vegas Raiders,Rushing yards,ALL,125.5,False,0.8,0.8,record,2.040163279754755,True
+2025-10-05,Indianapolis Colts v Las Vegas Raiders,Touchdowns,ALL,1.5,True,0.8,0.8,record,2.040163279754755,False
+2025-10-05,Carolina Panthers v Miami Dolphins,Passing touchdowns,ALL,1.5,False,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,False
+2025-10-05,Carolina Panthers v Miami Dolphins,Rushing attempts,ALL,25.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-10-05,Carolina Panthers v Miami Dolphins,Rushing attempts,ALL,26.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-10-05,Carolina Panthers v Miami Dolphins,Touchdowns,ALL,1.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-10-05,Philadelphia Eagles v Denver Broncos,Field goals,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,True
+2025-10-05,Philadelphia Eagles v Denver Broncos,Net yards passing,ALL,189.5,True,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,True
+2025-10-05,Philadelphia Eagles v Denver Broncos,Net yards passing,ALL,190.5,True,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,True
+2025-10-05,Philadelphia Eagles v Denver Broncos,Rushing attempts,ALL,31.5,False,1.0,1.0,record,1.3201333333333336,True
+2025-10-05,Philadelphia Eagles v Denver Broncos,Rushing attempts,ALL,32.5,False,1.0,1.0,record,1.3201333333333336,True
+2025-10-05,Philadelphia Eagles v Denver Broncos,Rushing yards,ALL,127.5,False,0.9166666666666666,0.9166666666666666,record,1.5477143026874012,False
+2025-10-05,Philadelphia Eagles v Denver Broncos,Rushing yards,ALL,128.5,False,0.9166666666666666,0.9166666666666666,record,1.5477143026874012,False
+2025-10-05,New Orleans Saints v New York Giants,Field goals,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-10-05,New Orleans Saints v New York Giants,Net yards passing,ALL,187.5,True,0.8888888888888888,0.8888888888888888,record,1.7699309729389017,True
+2025-10-05,New Orleans Saints v New York Giants,Passing touchdowns,ALL,0.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-10-05,New Orleans Saints v New York Giants,Passing touchdowns,ALL,0.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-10-05,New Orleans Saints v New York Giants,Rushing yards,ALL,99.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-10-05,New Orleans Saints v New York Giants,Rushing yards,ALL,100.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-10-05,New Orleans Saints v New York Giants,Touchdowns,ALL,0.5,True,1.0,1.0,record,1.4268444444444444,True
+2025-10-05,New Orleans Saints v New York Giants,Touchdowns,ALL,0.5,True,0.8888888888888888,0.8888888888888888,record,1.7699309729389017,True
+2025-10-05,Arizona Cardinals v Tennessee Titans,Field goals,ALL,1.5,True,0.875,0.875,record,1.8899833358374518,False
+2025-10-05,Arizona Cardinals v Tennessee Titans,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.4802,False
+2025-10-05,Arizona Cardinals v Tennessee Titans,Touchdowns,ALL,0.5,True,1.0,1.0,record,1.4802,True
+2025-10-05,Arizona Cardinals v Tennessee Titans,Touchdowns,ALL,1.5,True,1.0,1.0,record,1.4802,True
+2025-10-05,Seattle Seahawks v Tampa Bay Buccaneers,Field goals,ALL,1.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,False
+2025-10-05,Seattle Seahawks v Tampa Bay Buccaneers,Rushing attempts,ALL,27.5,False,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-10-05,Seattle Seahawks v Tampa Bay Buccaneers,Rushing attempts,ALL,28.5,False,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-10-05,Seattle Seahawks v Tampa Bay Buccaneers,Rushing yards,ALL,115.5,False,1.0,1.0,record,1.5488,False
+2025-10-05,Seattle Seahawks v Tampa Bay Buccaneers,Rushing yards,ALL,116.5,False,1.0,1.0,record,1.5488,False
+2025-10-05,Seattle Seahawks v Tampa Bay Buccaneers,Touchdowns,ALL,1.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-10-05,Los Angeles Chargers v Washington Commanders,Touchdowns,ALL,1.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,False
+2025-10-05,Los Angeles Chargers v Washington Commanders,Touchdowns,ALL,1.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,True
+2025-10-06,Buffalo Bills v New England Patriots,Field goals,ALL,0.5,True,1.0,1.0,record,1.4268444444444444,True
+2025-10-06,Buffalo Bills v New England Patriots,Net yards passing,ALL,226.5,False,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-10-06,Buffalo Bills v New England Patriots,Net yards passing,ALL,227.5,False,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-10-06,Buffalo Bills v New England Patriots,Passing touchdowns,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-10-06,Buffalo Bills v New England Patriots,Rushing attempts,ALL,29.5,False,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-10-06,Buffalo Bills v New England Patriots,Touchdowns,ALL,3.5,False,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-10-07,Jacksonville Jaguars v Kansas City Chiefs,Passing touchdowns,ALL,0.5,True,0.75,0.75,record,2.443375511026396,True
+2025-10-07,Jacksonville Jaguars v Kansas City Chiefs,Passing touchdowns,ALL,0.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-10-07,Jacksonville Jaguars v Kansas City Chiefs,Rushing attempts,ALL,26.5,False,0.75,0.75,record,2.443375511026396,True
+2025-10-07,Jacksonville Jaguars v Kansas City Chiefs,Rushing attempts,ALL,27.5,False,0.75,0.75,record,2.443375511026396,True
+2025-10-07,Jacksonville Jaguars v Kansas City Chiefs,Rushing yards,ALL,115.5,True,0.75,0.75,record,2.443375511026396,False
+2025-10-07,Jacksonville Jaguars v Kansas City Chiefs,Rushing yards,ALL,116.5,True,0.75,0.75,record,2.443375511026396,False
+2025-10-07,Jacksonville Jaguars v Kansas City Chiefs,Rushing yards,ALL,114.5,False,0.875,0.875,record,1.8899833358374518,False
+2025-10-07,Jacksonville Jaguars v Kansas City Chiefs,Rushing yards,ALL,115.5,False,0.875,0.875,record,1.8899833358374518,False
+2025-10-07,Jacksonville Jaguars v Kansas City Chiefs,Touchdowns,ALL,1.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-10-12,New York Jets v Denver Broncos,Field goals,ALL,0.5,True,1.0,1.0,record,1.38416,True
+2025-10-12,New York Jets v Denver Broncos,Net yards passing,ALL,205.5,True,0.9,0.9,record,1.6782927191979256,False
+2025-10-12,New York Jets v Denver Broncos,Net yards passing,ALL,206.5,True,0.9,0.9,record,1.6782927191979256,False
+2025-10-12,New York Jets v Denver Broncos,Touchdowns,ALL,1.5,True,0.8,0.8,record,2.040163279754755,False
+2025-10-12,New York Jets v Denver Broncos,Touchdowns,ALL,1.5,True,0.9,0.9,record,1.6782927191979256,False
+2025-10-12,Jacksonville Jaguars v Seattle Seahawks,Passing touchdowns,ALL,0.5,True,0.8888888888888888,0.8888888888888888,record,1.7699309729389017,True
+2025-10-12,Jacksonville Jaguars v Seattle Seahawks,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.4268444444444444,True
+2025-10-12,Jacksonville Jaguars v Seattle Seahawks,Touchdowns,ALL,1.5,True,0.8888888888888888,0.8888888888888888,record,1.7699309729389017,True
+2025-10-12,Baltimore Ravens v Los Angeles Rams,Net yards passing,ALL,201.5,True,0.75,0.75,record,2.443375511026396,False
+2025-10-12,Baltimore Ravens v Los Angeles Rams,Touchdowns,ALL,2.5,True,0.75,0.75,record,2.443375511026396,False
+2025-10-12,Pittsburgh Steelers v Cleveland Browns,Field goals,ALL,0.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-10-12,Pittsburgh Steelers v Cleveland Browns,Field goals,ALL,0.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-10-12,Pittsburgh Steelers v Cleveland Browns,Net yards passing,ALL,181.5,True,0.75,0.75,record,2.443375511026396,True
+2025-10-12,Pittsburgh Steelers v Cleveland Browns,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.4802,True
+2025-10-12,Pittsburgh Steelers v Cleveland Browns,Passing touchdowns,ALL,0.5,True,0.875,0.875,record,1.8899833358374518,False
+2025-10-12,Pittsburgh Steelers v Cleveland Browns,Rushing attempts,ALL,25.5,False,0.75,0.75,record,2.443375511026396,True
+2025-10-12,Pittsburgh Steelers v Cleveland Browns,Rushing yards,ALL,81.5,False,0.75,0.75,record,2.443375511026396,True
+2025-10-12,Pittsburgh Steelers v Cleveland Browns,Touchdowns,ALL,1.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-10-12,New Orleans Saints v New England Patriots,Passing touchdowns,ALL,0.5,True,0.875,0.875,record,1.8899833358374518,False
+2025-10-12,New Orleans Saints v New England Patriots,Passing touchdowns,ALL,0.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-10-12,New Orleans Saints v New England Patriots,Passing touchdowns,ALL,1.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-10-12,New Orleans Saints v New England Patriots,Touchdowns,ALL,1.5,True,1.0,1.0,record,1.4802,True
+2025-10-12,Miami Dolphins v Los Angeles Chargers,Field goals,ALL,1.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-10-12,Miami Dolphins v Los Angeles Chargers,Net yards passing,ALL,207.5,True,0.75,0.75,record,2.443375511026396,True
+2025-10-12,Miami Dolphins v Los Angeles Chargers,Net yards passing,ALL,208.5,True,0.75,0.75,record,2.443375511026396,True
+2025-10-12,Miami Dolphins v Los Angeles Chargers,Passing touchdowns,ALL,0.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-10-12,Miami Dolphins v Los Angeles Chargers,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.4802,True
+2025-10-12,Miami Dolphins v Los Angeles Chargers,Touchdowns,ALL,1.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-10-12,Miami Dolphins v Los Angeles Chargers,Touchdowns,ALL,1.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-10-12,Indianapolis Colts v Arizona Cardinals,Field goals,ALL,1.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,False
+2025-10-12,Las Vegas Raiders v Tennessee Titans,Field goals,ALL,1.5,True,0.75,0.75,record,2.443375511026396,False
+2025-10-12,Las Vegas Raiders v Tennessee Titans,Passing touchdowns,ALL,0.5,True,0.75,0.75,record,2.443375511026396,True
+2025-10-12,Las Vegas Raiders v Tennessee Titans,Touchdowns,ALL,1.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-10-12,Green Bay Packers v Cincinnati Bengals,Field goals,ALL,0.5,True,0.8,0.8,record,2.040163279754755,True
+2025-10-12,Green Bay Packers v Cincinnati Bengals,Field goals,ALL,0.5,True,1.0,1.0,record,1.38416,True
+2025-10-12,Green Bay Packers v Cincinnati Bengals,Passing touchdowns,ALL,0.5,True,0.9,0.9,record,1.6782927191979256,True
+2025-10-12,Green Bay Packers v Cincinnati Bengals,Passing touchdowns,ALL,0.5,True,0.9,0.9,record,1.6782927191979256,True
+2025-10-12,Tampa Bay Buccaneers v San Francisco 49ers,Net yards passing,ALL,270.5,False,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-10-12,Tampa Bay Buccaneers v San Francisco 49ers,Net yards passing,ALL,271.5,False,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-10-12,Tampa Bay Buccaneers v San Francisco 49ers,Passing touchdowns,ALL,1.5,True,0.8888888888888888,0.8888888888888888,record,1.7699309729389017,False
+2025-10-12,Tampa Bay Buccaneers v San Francisco 49ers,Rushing attempts,ALL,25.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-10-12,Tampa Bay Buccaneers v San Francisco 49ers,Touchdowns,ALL,1.5,True,0.8888888888888888,0.8888888888888888,record,1.7699309729389017,True
+2025-10-12,Tampa Bay Buccaneers v San Francisco 49ers,Touchdowns,ALL,1.5,True,0.8888888888888888,0.8888888888888888,record,1.7699309729389017,False
+2025-10-13,Kansas City Chiefs v Detroit Lions,Field goals,ALL,0.5,True,1.0,1.0,record,1.4802,True
+2025-10-13,Kansas City Chiefs v Detroit Lions,Field goals,ALL,0.5,True,0.75,0.75,record,2.443375511026396,True
+2025-10-13,Kansas City Chiefs v Detroit Lions,Net yards passing,ALL,228.5,False,0.875,0.875,record,1.8899833358374518,True
+2025-10-13,Kansas City Chiefs v Detroit Lions,Net yards passing,ALL,229.5,False,0.875,0.875,record,1.8899833358374518,True
+2025-10-13,Kansas City Chiefs v Detroit Lions,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.4802,True
+2025-10-13,Kansas City Chiefs v Detroit Lions,Rushing yards,ALL,113.5,True,0.75,0.75,record,2.443375511026396,False
+2025-10-13,Kansas City Chiefs v Detroit Lions,Rushing yards,ALL,114.5,True,0.75,0.75,record,2.443375511026396,False
+2025-10-13,Atlanta Falcons v Buffalo Bills,Rushing yards,ALL,137.5,False,0.875,0.875,record,1.8899833358374518,False
+2025-10-13,Atlanta Falcons v Buffalo Bills,Rushing yards,ALL,138.5,False,0.875,0.875,record,1.8899833358374518,False
+2025-10-14,Washington Commanders v Chicago Bears,Passing touchdowns,ALL,0.5,True,0.9,0.9,record,1.6782927191979256,True
+2025-10-14,Washington Commanders v Chicago Bears,Passing touchdowns,ALL,0.5,True,0.8,0.8,record,2.040163279754755,True
+2025-10-17,Cincinnati Bengals v Pittsburgh Steelers,Passing touchdowns,ALL,1.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,True
+2025-10-17,Cincinnati Bengals v Pittsburgh Steelers,Touchdowns,ALL,1.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,True
+2025-10-17,Cincinnati Bengals v Pittsburgh Steelers,Touchdowns,ALL,1.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,True
+2025-10-19,Jacksonville Jaguars v Los Angeles Rams,Net yards passing,ALL,205.5,False,0.7,0.7,record,2.5203313874144593,False
+2025-10-19,Jacksonville Jaguars v Los Angeles Rams,Passing touchdowns,ALL,0.5,True,0.8,0.8,record,2.040163279754755,True
+2025-10-19,Jacksonville Jaguars v Los Angeles Rams,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.38416,True
+2025-10-19,Jacksonville Jaguars v Los Angeles Rams,Rushing attempts,ALL,25.5,True,0.7,0.7,record,2.5203313874144593,False
+2025-10-19,Jacksonville Jaguars v Los Angeles Rams,Rushing attempts,ALL,25.5,False,0.7,0.7,record,2.5203313874144593,False
+2025-10-19,Kansas City Chiefs v Las Vegas Raiders,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.3201333333333336,True
+2025-10-19,Kansas City Chiefs v Las Vegas Raiders,Passing touchdowns,ALL,0.5,True,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,False
+2025-10-19,Kansas City Chiefs v Las Vegas Raiders,Rushing attempts,ALL,23.5,True,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,True
+2025-10-19,Kansas City Chiefs v Las Vegas Raiders,Rushing attempts,ALL,24.5,True,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,True
+2025-10-19,Kansas City Chiefs v Las Vegas Raiders,Rushing yards,ALL,95.5,True,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,True
+2025-10-19,Kansas City Chiefs v Las Vegas Raiders,Touchdowns,ALL,1.5,True,0.75,0.75,record,2.13816999529094,True
+2025-10-19,Kansas City Chiefs v Las Vegas Raiders,Touchdowns,ALL,1.5,True,0.75,0.75,record,2.13816999529094,False
+2025-10-19,New York Jets v Carolina Panthers,Touchdowns,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-10-19,Tennessee Titans v New England Patriots,Net yards passing,ALL,215.5,True,0.75,0.75,record,2.443375511026396,False
+2025-10-19,Tennessee Titans v New England Patriots,Net yards passing,ALL,216.5,True,0.75,0.75,record,2.443375511026396,False
+2025-10-19,Tennessee Titans v New England Patriots,Passing touchdowns,ALL,0.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-10-19,Tennessee Titans v New England Patriots,Passing touchdowns,ALL,0.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-10-19,Tennessee Titans v New England Patriots,Touchdowns,ALL,1.5,True,1.0,1.0,record,1.4802,True
+2025-10-19,Cleveland Browns v Miami Dolphins,Field goals,ALL,0.5,True,1.0,1.0,record,1.4268444444444444,True
+2025-10-19,Cleveland Browns v Miami Dolphins,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.4268444444444444,False
+2025-10-19,Cleveland Browns v Miami Dolphins,Rushing attempts,ALL,22.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-10-19,Cleveland Browns v Miami Dolphins,Rushing attempts,ALL,23.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-10-19,Cleveland Browns v Miami Dolphins,Rushing yards,ALL,95.5,True,0.8888888888888888,0.8888888888888888,record,1.7699309729389017,True
+2025-10-19,Cleveland Browns v Miami Dolphins,Touchdowns,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-10-19,Minnesota Vikings v Philadelphia Eagles,Net yards passing,ALL,198.5,False,0.6666666666666666,0.6666666666666666,record,2.823284835588922,False
+2025-10-19,Minnesota Vikings v Philadelphia Eagles,Net yards passing,ALL,199.5,False,0.6666666666666666,0.6666666666666666,record,2.823284835588922,False
+2025-10-19,Minnesota Vikings v Philadelphia Eagles,Net yards passing,ALL,198.5,False,0.6666666666666666,0.6666666666666666,record,2.823284835588922,False
+2025-10-19,Minnesota Vikings v Philadelphia Eagles,Net yards passing,ALL,199.5,False,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-10-19,Minnesota Vikings v Philadelphia Eagles,Passing touchdowns,ALL,1.5,False,0.6666666666666666,0.6666666666666666,record,2.823284835588922,True
+2025-10-19,Minnesota Vikings v Philadelphia Eagles,Passing touchdowns,ALL,1.5,False,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-10-19,Minnesota Vikings v Philadelphia Eagles,Rushing attempts,ALL,25.5,True,0.6666666666666666,0.6666666666666666,record,2.823284835588922,False
+2025-10-19,Minnesota Vikings v Philadelphia Eagles,Rushing attempts,ALL,26.5,True,0.6666666666666666,0.6666666666666666,record,2.823284835588922,False
+2025-10-19,Minnesota Vikings v Philadelphia Eagles,Touchdowns,ALL,2.5,False,0.6666666666666666,0.6666666666666666,record,2.823284835588922,False
+2025-10-19,Chicago Bears v New Orleans Saints,Field goals,ALL,1.5,True,1.0,1.0,record,1.5488,False
+2025-10-19,Chicago Bears v New Orleans Saints,Passing touchdowns,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,False
+2025-10-19,Chicago Bears v New Orleans Saints,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.5488,True
+2025-10-19,Chicago Bears v New Orleans Saints,Touchdowns,ALL,1.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-10-19,Chicago Bears v New Orleans Saints,Touchdowns,ALL,2.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,False
+2025-10-19,Los Angeles Chargers v Indianapolis Colts,Field goals,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-10-19,Los Angeles Chargers v Indianapolis Colts,Passing touchdowns,ALL,0.5,True,0.8888888888888888,0.8888888888888888,record,1.7699309729389017,True
+2025-10-19,Los Angeles Chargers v Indianapolis Colts,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.4268444444444444,True
+2025-10-19,Los Angeles Chargers v Indianapolis Colts,Touchdowns,ALL,1.5,True,0.8888888888888888,0.8888888888888888,record,1.7699309729389017,True
+2025-10-19,Denver Broncos v New York Giants,Field goals,ALL,0.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,True
+2025-10-19,Denver Broncos v New York Giants,Field goals,ALL,0.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,False
+2025-10-19,Denver Broncos v New York Giants,Passing touchdowns,ALL,0.5,True,0.9090909090909091,0.9090909090909091,record,1.6060764308177646,True
+2025-10-19,Denver Broncos v New York Giants,Rushing attempts,ALL,25.5,True,0.9090909090909091,0.9090909090909091,record,1.6060764308177646,False
+2025-10-19,Denver Broncos v New York Giants,Rushing attempts,ALL,26.5,True,0.9090909090909091,0.9090909090909091,record,1.6060764308177646,False
+2025-10-19,Denver Broncos v New York Giants,Rushing attempts,ALL,24.5,False,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,False
+2025-10-19,Denver Broncos v New York Giants,Rushing attempts,ALL,25.5,False,0.9090909090909091,0.9090909090909091,record,1.6060764308177646,False
+2025-10-19,Denver Broncos v New York Giants,Rushing yards,ALL,116.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,True
+2025-10-19,Denver Broncos v New York Giants,Rushing yards,ALL,117.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,True
+2025-10-19,Denver Broncos v New York Giants,Rushing yards,ALL,115.5,False,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,False
+2025-10-19,Denver Broncos v New York Giants,Rushing yards,ALL,116.5,False,0.9090909090909091,0.9090909090909091,record,1.6060764308177646,False
+2025-10-19,Denver Broncos v New York Giants,Touchdowns,ALL,1.5,True,1.0,1.0,record,1.3492363636363636,True
+2025-10-19,Denver Broncos v New York Giants,Touchdowns,ALL,2.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,True
+2025-10-19,Arizona Cardinals v Green Bay Packers,Passing touchdowns,ALL,0.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,True
+2025-10-19,Arizona Cardinals v Green Bay Packers,Passing touchdowns,ALL,0.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,True
+2025-10-19,Arizona Cardinals v Green Bay Packers,Rushing attempts,ALL,24.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,False
+2025-10-20,Detroit Lions v Tampa Bay Buccaneers,Field goals,ALL,0.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-10-20,Detroit Lions v Tampa Bay Buccaneers,Field goals,ALL,0.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-10-21,Seattle Seahawks v Houston Texans,Rushing yards,ALL,115.5,False,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,False
+2025-10-21,Seattle Seahawks v Houston Texans,Rushing yards,ALL,116.5,False,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,False
+2025-10-24,Los Angeles Chargers v Minnesota Vikings,Touchdowns,ALL,1.5,True,0.7333333333333333,0.7333333333333333,record,2.0812039866623193,True
+2025-10-24,Los Angeles Chargers v Minnesota Vikings,Touchdowns,ALL,1.5,True,0.8,0.8,record,1.8243492908347394,False
+2025-10-26,Baltimore Ravens v Chicago Bears,Field goals,ALL,1.5,False,0.75,0.75,record,2.13816999529094,False
+2025-10-26,Baltimore Ravens v Chicago Bears,Net yards passing,ALL,196.5,True,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,True
+2025-10-26,Baltimore Ravens v Chicago Bears,Net yards passing,ALL,197.5,True,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,True
+2025-10-26,Baltimore Ravens v Chicago Bears,Passing touchdowns,ALL,0.5,True,0.75,0.75,record,2.13816999529094,True
+2025-10-26,Baltimore Ravens v Chicago Bears,Passing touchdowns,ALL,0.5,True,0.9166666666666666,0.9166666666666666,record,1.5477143026874012,False
+2025-10-26,Baltimore Ravens v Chicago Bears,Rushing attempts,ALL,27.5,False,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,True
+2025-10-26,Baltimore Ravens v Chicago Bears,Rushing yards,ALL,132.5,False,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,True
+2025-10-26,Baltimore Ravens v Chicago Bears,Rushing yards,ALL,133.5,False,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,True
+2025-10-26,Baltimore Ravens v Chicago Bears,Touchdowns,ALL,2.5,True,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,True
+2025-10-26,Baltimore Ravens v Chicago Bears,Touchdowns,ALL,2.5,False,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,True
+2025-10-26,Cincinnati Bengals v New York Jets,Field goals,ALL,0.5,True,1.0,1.0,record,1.38416,True
+2025-10-26,Cincinnati Bengals v New York Jets,Field goals,ALL,0.5,True,0.8,0.8,record,2.040163279754755,True
+2025-10-26,Cincinnati Bengals v New York Jets,Net yards passing,ALL,211.5,True,0.8,0.8,record,2.040163279754755,True
+2025-10-26,Cincinnati Bengals v New York Jets,Net yards passing,ALL,212.5,True,0.8,0.8,record,2.040163279754755,True
+2025-10-26,Cincinnati Bengals v New York Jets,Passing touchdowns,ALL,1.5,True,0.8,0.8,record,2.040163279754755,True
+2025-10-26,Cincinnati Bengals v New York Jets,Passing touchdowns,ALL,1.5,True,0.7,0.7,record,2.5203313874144593,True
+2025-10-26,Cincinnati Bengals v New York Jets,Rushing attempts,ALL,20.5,True,0.9,0.9,record,1.6782927191979256,True
+2025-10-26,Cincinnati Bengals v New York Jets,Rushing attempts,ALL,21.5,True,0.8,0.8,record,2.040163279754755,True
+2025-10-26,Cincinnati Bengals v New York Jets,Rushing yards,ALL,87.5,True,1.0,1.0,record,1.38416,True
+2025-10-26,Cincinnati Bengals v New York Jets,Rushing yards,ALL,88.5,True,1.0,1.0,record,1.38416,True
+2025-10-26,Cincinnati Bengals v New York Jets,Touchdowns,ALL,1.5,True,0.9,0.9,record,1.6782927191979256,True
+2025-10-26,Cincinnati Bengals v New York Jets,Touchdowns,ALL,2.5,True,0.8,0.8,record,2.040163279754755,True
+2025-10-26,Cincinnati Bengals v New York Jets,Touchdowns,ALL,1.5,True,0.9,0.9,record,1.6782927191979256,True
+2025-10-26,New England Patriots v Cleveland Browns,Net yards passing,ALL,207.5,False,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-10-26,New England Patriots v Cleveland Browns,Net yards passing,ALL,208.5,False,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-10-26,New England Patriots v Cleveland Browns,Passing touchdowns,ALL,1.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-10-26,New England Patriots v Cleveland Browns,Rushing attempts,ALL,25.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-10-26,New England Patriots v Cleveland Browns,Rushing attempts,ALL,26.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-10-26,New England Patriots v Cleveland Browns,Rushing yards,ALL,87.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-10-26,New England Patriots v Cleveland Browns,Rushing yards,ALL,88.5,True,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-10-26,New England Patriots v Cleveland Browns,Rushing yards,ALL,86.5,False,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-10-26,New England Patriots v Cleveland Browns,Rushing yards,ALL,87.5,False,0.7142857142857143,0.7142857142857143,record,2.7860656253497584,True
+2025-10-26,New England Patriots v Cleveland Browns,Touchdowns,ALL,1.5,True,0.8571428571428571,0.8571428571428571,record,2.0539553671745874,True
+2025-10-26,Houston Texans v San Francisco 49ers,Passing touchdowns,ALL,0.5,True,0.9,0.9,record,1.6782927191979256,True
+2025-10-26,Houston Texans v San Francisco 49ers,Passing touchdowns,ALL,0.5,True,0.8,0.8,record,2.040163279754755,True
+2025-10-26,Houston Texans v San Francisco 49ers,Rushing yards,ALL,95.5,True,0.7,0.7,record,2.5203313874144593,True
+2025-10-26,Houston Texans v San Francisco 49ers,Touchdowns,ALL,1.5,True,0.9,0.9,record,1.6782927191979256,True
+2025-10-26,Atlanta Falcons v Miami Dolphins,Net yards passing,ALL,204.5,False,0.7272727272727273,0.7272727272727273,record,2.302292332439837,True
+2025-10-26,Atlanta Falcons v Miami Dolphins,Net yards passing,ALL,205.5,False,0.7272727272727273,0.7272727272727273,record,2.302292332439837,True
+2025-10-26,Atlanta Falcons v Miami Dolphins,Passing touchdowns,ALL,0.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,False
+2025-10-26,Atlanta Falcons v Miami Dolphins,Passing touchdowns,ALL,0.5,True,0.9090909090909091,0.9090909090909091,record,1.6060764308177646,True
+2025-10-26,Atlanta Falcons v Miami Dolphins,Rushing attempts,ALL,26.5,True,0.9090909090909091,0.9090909090909091,record,1.6060764308177646,False
+2025-10-26,Atlanta Falcons v Miami Dolphins,Rushing attempts,ALL,27.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,False
+2025-10-26,Atlanta Falcons v Miami Dolphins,Rushing attempts,ALL,25.5,False,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,False
+2025-10-26,Atlanta Falcons v Miami Dolphins,Rushing attempts,ALL,26.5,False,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,False
+2025-10-26,Atlanta Falcons v Miami Dolphins,Touchdowns,ALL,2.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,False
+2025-10-26,Philadelphia Eagles v New York Giants,Field goals,ALL,0.5,True,0.75,0.75,record,1.9801497484328403,True
+2025-10-26,Philadelphia Eagles v New York Giants,Rushing attempts,ALL,26.5,True,0.75,0.75,record,1.9801497484328403,True
+2025-10-26,Philadelphia Eagles v New York Giants,Touchdowns,ALL,1.5,True,1.0,1.0,record,1.2401,True
+2025-10-26,New Orleans Saints v Tampa Bay Buccaneers,Passing touchdowns,ALL,1.5,False,0.8,0.8,record,2.040163279754755,True
+2025-10-26,New Orleans Saints v Tampa Bay Buccaneers,Passing touchdowns,ALL,1.5,True,0.9,0.9,record,1.6782927191979256,False
+2025-10-26,New Orleans Saints v Tampa Bay Buccaneers,Touchdowns,ALL,1.5,True,0.9,0.9,record,1.6782927191979256,True
+2025-10-26,Indianapolis Colts v Tennessee Titans,Net yards passing,ALL,214.5,False,0.75,0.75,record,2.13816999529094,False
+2025-10-26,Indianapolis Colts v Tennessee Titans,Net yards passing,ALL,215.5,False,0.75,0.75,record,2.13816999529094,False
+2025-10-26,Indianapolis Colts v Tennessee Titans,Passing touchdowns,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,True
+2025-10-26,Indianapolis Colts v Tennessee Titans,Rushing attempts,ALL,25.5,True,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,False
+2025-10-26,Indianapolis Colts v Tennessee Titans,Rushing attempts,ALL,26.5,True,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,False
+2025-10-26,Indianapolis Colts v Tennessee Titans,Rushing yards,ALL,108.5,True,0.75,0.75,record,2.13816999529094,True
+2025-10-26,Indianapolis Colts v Tennessee Titans,Rushing yards,ALL,109.5,True,0.75,0.75,record,2.13816999529094,True
+2025-10-26,Indianapolis Colts v Tennessee Titans,Touchdowns,ALL,1.5,True,0.9166666666666666,0.9166666666666666,record,1.5477143026874012,True
+2025-10-27,Pittsburgh Steelers v Green Bay Packers,Rushing attempts,ALL,25.5,True,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,False
+2025-10-27,Pittsburgh Steelers v Green Bay Packers,Rushing yards,ALL,100.5,False,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,True
+2025-10-27,Pittsburgh Steelers v Green Bay Packers,Rushing yards,ALL,101.5,False,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,True
+2025-10-27,Pittsburgh Steelers v Green Bay Packers,Touchdowns,ALL,2.5,False,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,True
+2025-10-28,Kansas City Chiefs v Washington Commanders,Field goals,ALL,0.5,True,0.9375,0.9375,record,1.395269696889672,False
+2025-10-28,Kansas City Chiefs v Washington Commanders,Field goals,ALL,0.5,True,0.8125,0.8125,record,1.7546740968198824,False
+2025-10-28,Kansas City Chiefs v Washington Commanders,Net yards passing,ALL,225.5,True,0.75,0.75,record,1.9801497484328403,True
+2025-10-28,Kansas City Chiefs v Washington Commanders,Net yards passing,ALL,226.5,True,0.75,0.75,record,1.9801497484328403,True
+2025-10-28,Kansas City Chiefs v Washington Commanders,Passing touchdowns,ALL,0.5,True,0.9375,0.9375,record,1.395269696889672,True
+2025-10-31,Miami Dolphins v Baltimore Ravens,Field goals,ALL,1.5,True,1.0,1.0,record,1.4802,True
+2025-10-31,Miami Dolphins v Baltimore Ravens,Field goals,ALL,1.5,True,0.75,0.75,record,2.443375511026396,False
+2025-10-31,Miami Dolphins v Baltimore Ravens,Net yards passing,ALL,195.5,True,0.75,0.75,record,2.443375511026396,True
+2025-10-31,Miami Dolphins v Baltimore Ravens,Net yards passing,ALL,196.5,True,0.75,0.75,record,2.443375511026396,True
+2025-10-31,Miami Dolphins v Baltimore Ravens,Touchdowns,ALL,2.5,True,0.875,0.875,record,1.8899833358374518,False
+2025-11-02,Cincinnati Bengals v Chicago Bears,Field goals,ALL,0.5,True,1.0,1.0,record,1.2561066666666667,True
+2025-11-02,Cincinnati Bengals v Chicago Bears,Field goals,ALL,0.5,True,0.8666666666666667,0.8666666666666667,record,1.6098522754877187,True
+2025-11-02,Cincinnati Bengals v Chicago Bears,Passing touchdowns,ALL,0.5,True,0.9333333333333333,0.9333333333333333,record,1.4248480472538916,True
+2025-11-02,Cincinnati Bengals v Chicago Bears,Passing touchdowns,ALL,0.5,True,0.8,0.8,record,1.8243492908347394,True
+2025-11-02,Cincinnati Bengals v Chicago Bears,Rushing attempts,ALL,22.5,True,0.9333333333333333,0.9333333333333333,record,1.4248480472538916,True
+2025-11-02,Cincinnati Bengals v Chicago Bears,Rushing attempts,ALL,23.5,True,0.8666666666666667,0.8666666666666667,record,1.6098522754877187,True
+2025-11-02,Cincinnati Bengals v Chicago Bears,Rushing yards,ALL,85.5,True,0.8666666666666667,0.8666666666666667,record,1.6098522754877187,True
+2025-11-02,Cincinnati Bengals v Chicago Bears,Rushing yards,ALL,86.5,True,0.8666666666666667,0.8666666666666667,record,1.6098522754877187,True
+2025-11-02,Cincinnati Bengals v Chicago Bears,Touchdowns,ALL,1.5,True,0.8666666666666667,0.8666666666666667,record,1.6098522754877187,True
+2025-11-02,Cincinnati Bengals v Chicago Bears,Touchdowns,ALL,2.5,True,0.8,0.8,record,1.8243492908347394,True
+2025-11-02,Pittsburgh Steelers v Indianapolis Colts,Rushing yards,ALL,114.5,False,0.9166666666666666,0.9166666666666666,record,1.5477143026874012,True
+2025-11-02,Pittsburgh Steelers v Indianapolis Colts,Rushing yards,ALL,115.5,False,0.9166666666666666,0.9166666666666666,record,1.5477143026874012,True
+2025-11-02,New England Patriots v Atlanta Falcons,Net yards passing,ALL,226.5,False,0.8,0.8,record,2.040163279754755,True
+2025-11-02,New England Patriots v Atlanta Falcons,Net yards passing,ALL,227.5,False,0.8,0.8,record,2.040163279754755,True
+2025-11-02,New England Patriots v Atlanta Falcons,Passing touchdowns,ALL,0.5,True,0.8,0.8,record,2.040163279754755,True
+2025-11-02,New England Patriots v Atlanta Falcons,Rushing attempts,ALL,28.5,True,0.7,0.7,record,2.5203313874144593,True
+2025-11-02,New England Patriots v Atlanta Falcons,Touchdowns,ALL,2.5,False,0.7,0.7,record,2.5203313874144593,False
+2025-11-02,Tennessee Titans v Los Angeles Chargers,Field goals,ALL,1.5,True,0.9,0.9,record,1.6782927191979256,True
+2025-11-02,Tennessee Titans v Los Angeles Chargers,Net yards passing,ALL,211.5,True,0.7,0.7,record,2.5203313874144593,True
+2025-11-02,Tennessee Titans v Los Angeles Chargers,Passing touchdowns,ALL,0.5,True,0.9,0.9,record,1.6782927191979256,False
+2025-11-02,Tennessee Titans v Los Angeles Chargers,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.38416,True
+2025-11-02,Tennessee Titans v Los Angeles Chargers,Rushing attempts,ALL,24.5,True,0.8,0.8,record,2.040163279754755,True
+2025-11-02,Tennessee Titans v Los Angeles Chargers,Rushing yards,ALL,91.5,True,0.8,0.8,record,2.040163279754755,True
+2025-11-02,Tennessee Titans v Los Angeles Chargers,Touchdowns,ALL,1.5,True,0.9,0.9,record,1.6782927191979256,True
+2025-11-02,Houston Texans v Denver Broncos,Field goals,ALL,1.5,True,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,True
+2025-11-02,Houston Texans v Denver Broncos,Net yards passing,ALL,204.5,True,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,False
+2025-11-02,Houston Texans v Denver Broncos,Net yards passing,ALL,205.5,True,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,False
+2025-11-02,Houston Texans v Denver Broncos,Rushing attempts,ALL,27.5,True,0.75,0.75,record,2.13816999529094,True
+2025-11-02,Houston Texans v Denver Broncos,Rushing attempts,ALL,26.5,False,0.75,0.75,record,2.13816999529094,True
+2025-11-02,Houston Texans v Denver Broncos,Rushing attempts,ALL,27.5,False,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,True
+2025-11-02,Houston Texans v Denver Broncos,Touchdowns,ALL,1.5,True,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,False
+2025-11-02,New York Giants v San Francisco 49ers,Passing touchdowns,ALL,0.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-11-02,New York Giants v San Francisco 49ers,Passing touchdowns,ALL,0.5,True,0.9230769230769231,0.9230769230769231,record,1.49957713263039,True
+2025-11-02,New York Giants v San Francisco 49ers,Rushing attempts,ALL,23.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,False
+2025-11-02,New York Giants v San Francisco 49ers,Rushing attempts,ALL,24.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,False
+2025-11-02,New York Giants v San Francisco 49ers,Rushing yards,ALL,83.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-11-02,New York Giants v San Francisco 49ers,Rushing yards,ALL,84.5,True,0.6923076923076923,0.6923076923076923,record,2.3602224453132847,True
+2025-11-02,New York Giants v San Francisco 49ers,Touchdowns,ALL,1.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-11-02,New York Giants v San Francisco 49ers,Touchdowns,ALL,1.5,True,0.9230769230769231,0.9230769230769231,record,1.49957713263039,True
+2025-11-02,Detroit Lions v Minnesota Vikings,Field goals,ALL,0.5,True,0.875,0.875,record,1.5630698228860285,True
+2025-11-02,Detroit Lions v Minnesota Vikings,Field goals,ALL,0.5,True,0.875,0.875,record,1.5630698228860285,True
+2025-11-02,Detroit Lions v Minnesota Vikings,Passing touchdowns,ALL,0.5,True,0.9375,0.9375,record,1.395269696889672,True
+2025-11-02,Detroit Lions v Minnesota Vikings,Passing touchdowns,ALL,0.5,True,0.8125,0.8125,record,1.7546740968198824,True
+2025-11-02,Detroit Lions v Minnesota Vikings,Touchdowns,ALL,2.5,True,0.8125,0.8125,record,1.7546740968198824,True
+2025-11-02,Green Bay Packers v Carolina Panthers,Field goals,ALL,1.5,False,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,True
+2025-11-02,Las Vegas Raiders v Jacksonville Jaguars,Passing touchdowns,ALL,0.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-11-02,Las Vegas Raiders v Jacksonville Jaguars,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.4802,False
+2025-11-02,Las Vegas Raiders v Jacksonville Jaguars,Rushing attempts,ALL,25.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-11-02,Las Vegas Raiders v Jacksonville Jaguars,Touchdowns,ALL,1.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-11-02,Las Vegas Raiders v Jacksonville Jaguars,Touchdowns,ALL,1.5,True,0.875,0.875,record,1.8899833358374518,True
+2025-11-02,Los Angeles Rams v New Orleans Saints,Passing touchdowns,ALL,0.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-11-02,Los Angeles Rams v New Orleans Saints,Passing touchdowns,ALL,0.5,True,0.8888888888888888,0.8888888888888888,record,1.7699309729389017,True
+2025-11-02,Los Angeles Rams v New Orleans Saints,Touchdowns,ALL,1.5,True,0.8888888888888888,0.8888888888888888,record,1.7699309729389017,True
+2025-11-02,Buffalo Bills v Kansas City Chiefs,Field goals,ALL,0.5,True,1.0,1.0,record,1.3201333333333336,False
+2025-11-02,Buffalo Bills v Kansas City Chiefs,Rushing attempts,ALL,29.5,False,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,True
+2025-11-02,Buffalo Bills v Kansas City Chiefs,Touchdowns,ALL,3.5,False,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,True
+2025-11-03,Washington Commanders v Seattle Seahawks,Net yards passing,ALL,211.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,True
+2025-11-03,Washington Commanders v Seattle Seahawks,Net yards passing,ALL,212.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,True
+2025-11-04,Dallas Cowboys v Arizona Cardinals,Field goals,ALL,1.5,True,0.6666666666666666,0.6666666666666666,record,2.397326971726358,False
+2025-11-07,Denver Broncos v Las Vegas Raiders,Field goals,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,True
+2025-11-07,Denver Broncos v Las Vegas Raiders,Field goals,ALL,0.5,True,0.75,0.75,record,2.13816999529094,False
+2025-11-07,Denver Broncos v Las Vegas Raiders,Passing touchdowns,ALL,1.5,False,0.75,0.75,record,2.13816999529094,True
+2025-11-07,Denver Broncos v Las Vegas Raiders,Rushing attempts,ALL,25.5,False,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,True
+2025-11-07,Denver Broncos v Las Vegas Raiders,Rushing yards,ALL,110.5,False,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,True
+2025-11-07,Denver Broncos v Las Vegas Raiders,Rushing yards,ALL,111.5,False,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,True
+2025-11-07,Denver Broncos v Las Vegas Raiders,Touchdowns,ALL,1.5,True,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,False
+2025-11-09,Indianapolis Colts v Atlanta Falcons,Passing touchdowns,ALL,0.5,True,0.8,0.8,record,1.8243492908347394,True
+2025-11-09,Houston Texans v Jacksonville Jaguars,Net yards passing,ALL,204.5,True,0.8,0.8,record,2.040163279754755,True
+2025-11-09,Houston Texans v Jacksonville Jaguars,Net yards passing,ALL,205.5,True,0.8,0.8,record,2.040163279754755,True
+2025-11-09,Houston Texans v Jacksonville Jaguars,Passing touchdowns,ALL,0.5,True,0.9,0.9,record,1.6782927191979256,True
+2025-11-09,Houston Texans v Jacksonville Jaguars,Passing touchdowns,ALL,0.5,True,0.8,0.8,record,2.040163279754755,True
+2025-11-09,Houston Texans v Jacksonville Jaguars,Touchdowns,ALL,1.5,True,0.9,0.9,record,1.6782927191979256,True
+2025-11-09,Houston Texans v Jacksonville Jaguars,Touchdowns,ALL,1.5,True,0.8,0.8,record,2.040163279754755,True
+2025-11-09,Minnesota Vikings v Baltimore Ravens,Field goals,ALL,1.5,True,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,True
+2025-11-09,New York Jets v Cleveland Browns,Field goals,ALL,0.5,True,0.9090909090909091,0.9090909090909091,record,1.6060764308177646,True
+2025-11-09,New York Jets v Cleveland Browns,Field goals,ALL,1.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,True
+2025-11-09,New York Jets v Cleveland Browns,Field goals,ALL,0.5,True,0.9090909090909091,0.9090909090909091,record,1.6060764308177646,True
+2025-11-09,New York Jets v Cleveland Browns,Passing touchdowns,ALL,0.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,True
+2025-11-09,New York Jets v Cleveland Browns,Rushing attempts,ALL,21.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,True
+2025-11-09,Tampa Bay Buccaneers v New England Patriots,Field goals,ALL,0.5,True,1.0,1.0,record,1.3492363636363636,True
+2025-11-09,Tampa Bay Buccaneers v New England Patriots,Field goals,ALL,1.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,False
+2025-11-09,Tampa Bay Buccaneers v New England Patriots,Field goals,ALL,0.5,True,0.9090909090909091,0.9090909090909091,record,1.6060764308177646,False
+2025-11-09,Tampa Bay Buccaneers v New England Patriots,Rushing yards,ALL,102.5,False,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,False
+2025-11-09,Tampa Bay Buccaneers v New England Patriots,Rushing yards,ALL,103.5,False,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,False
+2025-11-09,Chicago Bears v New York Giants,Passing touchdowns,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,1.6650545542942021,False
+2025-11-09,Chicago Bears v New York Giants,Rushing attempts,ALL,25.5,True,0.7857142857142857,0.7857142857142857,record,1.9080227619346297,True
+2025-11-09,Chicago Bears v New York Giants,Touchdowns,ALL,1.5,True,0.9285714285714286,0.9285714285714286,record,1.4591993890789652,True
+2025-11-09,Chicago Bears v New York Giants,Touchdowns,ALL,1.5,True,0.7142857142857143,0.7142857142857143,record,2.2050493552961963,True
+2025-11-09,Carolina Panthers v New Orleans Saints,Passing touchdowns,ALL,0.5,True,0.9090909090909091,0.9090909090909091,record,1.6060764308177646,True
+2025-11-09,Carolina Panthers v New Orleans Saints,Rushing attempts,ALL,27.5,True,0.9090909090909091,0.9090909090909091,record,1.6060764308177646,False
+2025-11-09,Carolina Panthers v New Orleans Saints,Rushing attempts,ALL,28.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,False
+2025-11-09,Carolina Panthers v New Orleans Saints,Rushing yards,ALL,112.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,False
+2025-11-09,Carolina Panthers v New Orleans Saints,Rushing yards,ALL,113.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,False
+2025-11-09,Carolina Panthers v New Orleans Saints,Touchdowns,ALL,1.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,False
+2025-11-09,Seattle Seahawks v Arizona Cardinals,Field goals,ALL,1.5,True,0.6923076923076923,0.6923076923076923,record,2.3602224453132847,False
+2025-11-09,Seattle Seahawks v Arizona Cardinals,Net yards passing,ALL,229.5,False,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-11-09,Seattle Seahawks v Arizona Cardinals,Net yards passing,ALL,230.5,False,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-11-09,Seattle Seahawks v Arizona Cardinals,Rushing yards,ALL,115.5,False,0.6923076923076923,0.6923076923076923,record,2.3602224453132847,False
+2025-11-09,San Francisco 49ers v Los Angeles Rams,Passing touchdowns,ALL,1.5,False,0.75,0.75,record,2.443375511026396,False
+2025-11-09,San Francisco 49ers v Los Angeles Rams,Rushing yards,ALL,85.5,True,0.75,0.75,record,2.443375511026396,True
+2025-11-09,San Francisco 49ers v Los Angeles Rams,Rushing yards,ALL,86.5,True,0.75,0.75,record,2.443375511026396,True
+2025-11-09,Washington Commanders v Detroit Lions,Field goals,ALL,0.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,True
+2025-11-09,Washington Commanders v Detroit Lions,Field goals,ALL,0.5,True,0.9090909090909091,0.9090909090909091,record,1.6060764308177646,True
+2025-11-09,Washington Commanders v Detroit Lions,Rushing yards,ALL,128.5,False,0.7272727272727273,0.7272727272727273,record,2.302292332439837,False
+2025-11-09,Washington Commanders v Detroit Lions,Rushing yards,ALL,129.5,False,0.7272727272727273,0.7272727272727273,record,2.302292332439837,False
+2025-11-09,Washington Commanders v Detroit Lions,Touchdowns,ALL,2.5,True,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,True
+2025-11-10,Los Angeles Chargers v Pittsburgh Steelers,Net yards passing,ALL,214.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,False
+2025-11-10,Los Angeles Chargers v Pittsburgh Steelers,Net yards passing,ALL,215.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,False
+2025-11-10,Los Angeles Chargers v Pittsburgh Steelers,Touchdowns,ALL,1.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-11-10,Los Angeles Chargers v Pittsburgh Steelers,Touchdowns,ALL,1.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,False
+2025-11-11,Green Bay Packers v Philadelphia Eagles,Field goals,ALL,1.5,False,0.8,0.8,record,2.040163279754755,True
+2025-11-11,Green Bay Packers v Philadelphia Eagles,Rushing yards,ALL,104.5,False,0.7,0.7,record,2.5203313874144593,False
+2025-11-11,Green Bay Packers v Philadelphia Eagles,Rushing yards,ALL,105.5,False,0.7,0.7,record,2.5203313874144593,False
+2025-11-14,New England Patriots v New York Jets,Net yards passing,ALL,219.5,False,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-11-14,New England Patriots v New York Jets,Net yards passing,ALL,220.5,False,0.7777777777777778,0.7777777777777778,record,2.209537787857586,True
+2025-11-14,New England Patriots v New York Jets,Passing touchdowns,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-11-14,New England Patriots v New York Jets,Passing touchdowns,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-11-14,New England Patriots v New York Jets,Rushing attempts,ALL,27.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-11-14,New England Patriots v New York Jets,Rushing attempts,ALL,28.5,True,0.7777777777777778,0.7777777777777778,record,2.209537787857586,False
+2025-11-16,Miami Dolphins v Washington Commanders,Field goals,ALL,0.5,True,0.875,0.875,record,1.5630698228860285,True
+2025-11-16,Miami Dolphins v Washington Commanders,Field goals,ALL,0.5,True,0.75,0.75,record,1.9801497484328403,True
+2025-11-16,Miami Dolphins v Washington Commanders,Net yards passing,ALL,199.5,True,0.75,0.75,record,1.9801497484328403,False
+2025-11-16,Miami Dolphins v Washington Commanders,Net yards passing,ALL,200.5,True,0.75,0.75,record,1.9801497484328403,False
+2025-11-16,Miami Dolphins v Washington Commanders,Net yards passing,ALL,199.5,True,0.75,0.75,record,1.9801497484328403,True
+2025-11-16,Miami Dolphins v Washington Commanders,Passing touchdowns,ALL,0.5,True,0.875,0.875,record,1.5630698228860285,False
+2025-11-16,Miami Dolphins v Washington Commanders,Passing touchdowns,ALL,0.5,True,0.9375,0.9375,record,1.395269696889672,True
+2025-11-16,Miami Dolphins v Washington Commanders,Touchdowns,ALL,2.5,True,0.6875,0.6875,record,2.2520528204601775,False
+2025-11-16,Buffalo Bills v Tampa Bay Buccaneers,Field goals,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,1.6650545542942021,True
+2025-11-16,Buffalo Bills v Tampa Bay Buccaneers,Net yards passing,ALL,226.5,False,0.7142857142857143,0.7142857142857143,record,2.2050493552961963,True
+2025-11-16,Buffalo Bills v Tampa Bay Buccaneers,Rushing attempts,ALL,29.5,False,0.7857142857142857,0.7857142857142857,record,1.9080227619346297,False
+2025-11-16,Jacksonville Jaguars v Los Angeles Chargers,Passing touchdowns,ALL,0.5,True,0.7857142857142857,0.7857142857142857,record,1.9080227619346297,True
+2025-11-16,Jacksonville Jaguars v Los Angeles Chargers,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.2744,False
+2025-11-16,Jacksonville Jaguars v Los Angeles Chargers,Touchdowns,ALL,1.5,True,0.8571428571428571,0.8571428571428571,record,1.6650545542942021,True
+2025-11-16,Pittsburgh Steelers v Cincinnati Bengals,Field goals,ALL,0.5,True,0.9285714285714286,0.9285714285714286,record,1.4591993890789652,True
+2025-11-16,Pittsburgh Steelers v Cincinnati Bengals,Field goals,ALL,0.5,True,0.9285714285714286,0.9285714285714286,record,1.4591993890789652,True
+2025-11-16,Pittsburgh Steelers v Cincinnati Bengals,Rushing attempts,ALL,20.5,True,0.9285714285714286,0.9285714285714286,record,1.4591993890789652,True
+2025-11-16,Pittsburgh Steelers v Cincinnati Bengals,Rushing attempts,ALL,21.5,True,0.8571428571428571,0.8571428571428571,record,1.6650545542942021,True
+2025-11-16,Pittsburgh Steelers v Cincinnati Bengals,Rushing yards,ALL,71.5,True,0.8571428571428571,0.8571428571428571,record,1.6650545542942021,True
+2025-11-16,Pittsburgh Steelers v Cincinnati Bengals,Rushing yards,ALL,72.5,True,0.7857142857142857,0.7857142857142857,record,1.9080227619346297,True
+2025-11-16,Pittsburgh Steelers v Cincinnati Bengals,Touchdowns,ALL,1.5,True,0.9285714285714286,0.9285714285714286,record,1.4591993890789652,True
+2025-11-16,Tennessee Titans v Houston Texans,Passing touchdowns,ALL,0.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,True
+2025-11-16,Tennessee Titans v Houston Texans,Rushing attempts,ALL,25.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,False
+2025-11-16,Tennessee Titans v Houston Texans,Rushing attempts,ALL,26.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,False
+2025-11-16,Minnesota Vikings v Chicago Bears,Passing touchdowns,ALL,0.5,True,0.8125,0.8125,record,1.7546740968198824,True
+2025-11-16,Minnesota Vikings v Chicago Bears,Passing touchdowns,ALL,0.5,True,0.75,0.75,record,1.9801497484328403,False
+2025-11-16,New York Giants v Green Bay Packers,Passing touchdowns,ALL,0.5,True,0.7857142857142857,0.7857142857142857,record,1.9080227619346297,False
+2025-11-16,New York Giants v Green Bay Packers,Passing touchdowns,ALL,0.5,True,0.9285714285714286,0.9285714285714286,record,1.4591993890789652,True
+2025-11-16,New York Giants v Green Bay Packers,Touchdowns,ALL,1.5,True,0.7142857142857143,0.7142857142857143,record,2.2050493552961963,True
+2025-11-16,New York Giants v Green Bay Packers,Touchdowns,ALL,1.5,True,0.8571428571428571,0.8571428571428571,record,1.6650545542942021,True
+2025-11-16,Atlanta Falcons v Carolina Panthers,Field goals,ALL,0.5,True,0.9166666666666666,0.9166666666666666,record,1.5477143026874012,True
+2025-11-16,Atlanta Falcons v Carolina Panthers,Field goals,ALL,0.5,True,0.75,0.75,record,2.13816999529094,True
+2025-11-16,Atlanta Falcons v Carolina Panthers,Net yards passing,ALL,196.5,True,0.75,0.75,record,2.13816999529094,True
+2025-11-16,Atlanta Falcons v Carolina Panthers,Net yards passing,ALL,197.5,True,0.75,0.75,record,2.13816999529094,True
+2025-11-16,Atlanta Falcons v Carolina Panthers,Passing touchdowns,ALL,0.5,True,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,False
+2025-11-16,Atlanta Falcons v Carolina Panthers,Passing touchdowns,ALL,0.5,True,0.9166666666666666,0.9166666666666666,record,1.5477143026874012,True
+2025-11-16,Atlanta Falcons v Carolina Panthers,Touchdowns,ALL,1.5,True,0.75,0.75,record,2.13816999529094,True
+2025-11-16,Atlanta Falcons v Carolina Panthers,Touchdowns,ALL,1.5,True,0.75,0.75,record,2.13816999529094,True
+2025-11-16,Arizona Cardinals v San Francisco 49ers,Touchdowns,ALL,1.5,True,0.9333333333333333,0.9333333333333333,record,1.4248480472538916,True
+2025-11-16,Arizona Cardinals v San Francisco 49ers,Touchdowns,ALL,1.5,True,0.9333333333333333,0.9333333333333333,record,1.4248480472538916,True
+2025-11-16,Los Angeles Rams v Seattle Seahawks,Rushing attempts,ALL,25.5,False,0.6666666666666666,0.6666666666666666,record,2.5600485801528676,True
+2025-11-16,Denver Broncos v Kansas City Chiefs,Field goals,ALL,0.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,True
+2025-11-16,Denver Broncos v Kansas City Chiefs,Passing touchdowns,ALL,0.5,True,0.9230769230769231,0.9230769230769231,record,1.49957713263039,False
+2025-11-16,Denver Broncos v Kansas City Chiefs,Rushing attempts,ALL,25.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,False
+2025-11-16,Denver Broncos v Kansas City Chiefs,Rushing attempts,ALL,26.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,False
+2025-11-16,Denver Broncos v Kansas City Chiefs,Rushing attempts,ALL,25.5,False,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-11-16,Denver Broncos v Kansas City Chiefs,Rushing yards,ALL,117.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,False
+2025-11-16,Denver Broncos v Kansas City Chiefs,Rushing yards,ALL,118.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,False
+2025-11-16,Denver Broncos v Kansas City Chiefs,Rushing yards,ALL,116.5,False,0.8461538461538461,0.8461538461538461,record,1.731157191677362,True
+2025-11-16,Denver Broncos v Kansas City Chiefs,Rushing yards,ALL,117.5,False,0.8461538461538461,0.8461538461538461,record,1.731157191677362,True
+2025-11-16,Denver Broncos v Kansas City Chiefs,Touchdowns,ALL,1.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,False
+2025-11-16,Denver Broncos v Kansas City Chiefs,Touchdowns,ALL,2.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,False
+2025-11-16,Cleveland Browns v Baltimore Ravens,Field goals,ALL,0.5,True,1.0,1.0,record,1.3492363636363636,True
+2025-11-16,Cleveland Browns v Baltimore Ravens,Field goals,ALL,0.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,True
+2025-11-16,Cleveland Browns v Baltimore Ravens,Passing touchdowns,ALL,0.5,True,0.9090909090909091,0.9090909090909091,record,1.6060764308177646,False
+2025-11-16,Cleveland Browns v Baltimore Ravens,Rushing yards,ALL,126.5,False,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,True
+2025-11-16,Cleveland Browns v Baltimore Ravens,Rushing yards,ALL,127.5,False,0.8181818181818182,0.8181818181818182,record,1.9119952105468399,True
+2025-11-17,Philadelphia Eagles v Detroit Lions,Field goals,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,1.6650545542942021,True
+2025-11-17,Philadelphia Eagles v Detroit Lions,Field goals,ALL,0.5,True,0.7857142857142857,0.7857142857142857,record,1.9080227619346297,True
+2025-11-17,Philadelphia Eagles v Detroit Lions,Passing touchdowns,ALL,1.5,True,0.8571428571428571,0.8571428571428571,record,1.6650545542942021,False
+2025-11-18,Las Vegas Raiders v Dallas Cowboys,Passing touchdowns,ALL,1.5,True,0.6666666666666666,0.6666666666666666,record,2.397326971726358,False
+2025-11-18,Las Vegas Raiders v Dallas Cowboys,Touchdowns,ALL,1.5,True,0.8,0.8,record,1.8243492908347394,False
+2025-11-18,Las Vegas Raiders v Dallas Cowboys,Touchdowns,ALL,1.5,True,0.8,0.8,record,1.8243492908347394,True
+2025-11-23,Kansas City Chiefs v Indianapolis Colts,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.2744,False
+2025-11-23,Baltimore Ravens v New York Jets,Passing touchdowns,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,False
+2025-11-23,Baltimore Ravens v New York Jets,Passing touchdowns,ALL,0.5,True,0.9166666666666666,0.9166666666666666,record,1.5477143026874012,True
+2025-11-23,Baltimore Ravens v New York Jets,Rushing attempts,ALL,28.5,False,0.75,0.75,record,2.13816999529094,True
+2025-11-23,Baltimore Ravens v New York Jets,Rushing attempts,ALL,29.5,False,0.75,0.75,record,2.13816999529094,True
+2025-11-23,Baltimore Ravens v New York Jets,Touchdowns,ALL,2.5,True,0.75,0.75,record,2.13816999529094,False
+2025-11-23,Cincinnati Bengals v New England Patriots,Field goals,ALL,0.5,True,1.0,1.0,record,1.2401,True
+2025-11-23,Cincinnati Bengals v New England Patriots,Field goals,ALL,0.5,True,0.8125,0.8125,record,1.7546740968198824,True
+2025-11-23,Cincinnati Bengals v New England Patriots,Passing touchdowns,ALL,1.5,True,0.8125,0.8125,record,1.7546740968198824,False
+2025-11-23,Cincinnati Bengals v New England Patriots,Rushing attempts,ALL,21.5,True,0.875,0.875,record,1.5630698228860285,True
+2025-11-23,Cincinnati Bengals v New England Patriots,Rushing attempts,ALL,22.5,True,0.8125,0.8125,record,1.7546740968198824,True
+2025-11-23,Cincinnati Bengals v New England Patriots,Rushing yards,ALL,72.5,True,0.875,0.875,record,1.5630698228860285,True
+2025-11-23,Cincinnati Bengals v New England Patriots,Touchdowns,ALL,2.5,True,0.8125,0.8125,record,1.7546740968198824,False
+2025-11-23,Chicago Bears v Pittsburgh Steelers,Net yards passing,ALL,203.5,True,0.75,0.75,record,2.13816999529094,False
+2025-11-23,Chicago Bears v Pittsburgh Steelers,Net yards passing,ALL,204.5,True,0.75,0.75,record,2.13816999529094,False
+2025-11-23,Chicago Bears v Pittsburgh Steelers,Passing touchdowns,ALL,0.5,True,0.9166666666666666,0.9166666666666666,record,1.5477143026874012,True
+2025-11-23,Chicago Bears v Pittsburgh Steelers,Passing touchdowns,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,True
+2025-11-23,Chicago Bears v Pittsburgh Steelers,Touchdowns,ALL,1.5,True,0.9166666666666666,0.9166666666666666,record,1.5477143026874012,True
+2025-11-23,Chicago Bears v Pittsburgh Steelers,Touchdowns,ALL,1.5,True,0.75,0.75,record,2.13816999529094,True
+2025-11-23,Tennessee Titans v Seattle Seahawks,Field goals,ALL,1.5,True,0.6923076923076923,0.6923076923076923,record,2.3602224453132847,True
+2025-11-23,Tennessee Titans v Seattle Seahawks,Net yards passing,ALL,214.5,False,0.6923076923076923,0.6923076923076923,record,2.3602224453132847,False
+2025-11-23,Tennessee Titans v Seattle Seahawks,Net yards passing,ALL,215.5,False,0.6923076923076923,0.6923076923076923,record,2.3602224453132847,False
+2025-11-23,Tennessee Titans v Seattle Seahawks,Passing touchdowns,ALL,0.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,True
+2025-11-23,Tennessee Titans v Seattle Seahawks,Passing touchdowns,ALL,0.5,True,0.9230769230769231,0.9230769230769231,record,1.49957713263039,True
+2025-11-23,Tennessee Titans v Seattle Seahawks,Rushing attempts,ALL,23.5,False,0.6923076923076923,0.6923076923076923,record,2.3602224453132847,True
+2025-11-23,Tennessee Titans v Seattle Seahawks,Rushing attempts,ALL,24.5,False,0.6923076923076923,0.6923076923076923,record,2.3602224453132847,True
+2025-11-23,Tennessee Titans v Seattle Seahawks,Rushing attempts,ALL,24.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,False
+2025-11-23,Tennessee Titans v Seattle Seahawks,Rushing attempts,ALL,25.5,True,0.6923076923076923,0.6923076923076923,record,2.3602224453132847,False
+2025-11-23,Tennessee Titans v Seattle Seahawks,Rushing yards,ALL,87.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,True
+2025-11-23,Tennessee Titans v Seattle Seahawks,Rushing yards,ALL,88.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-11-23,Tennessee Titans v Seattle Seahawks,Touchdowns,ALL,1.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,True
+2025-11-23,Green Bay Packers v Minnesota Vikings,Passing touchdowns,ALL,0.5,True,0.8823529411764706,0.8823529411764706,record,1.5229240232090935,False
+2025-11-23,Detroit Lions v New York Giants,Field goals,ALL,0.5,True,0.8235294117647058,0.8235294117647058,record,1.6957754727727123,True
+2025-11-23,Detroit Lions v New York Giants,Field goals,ALL,0.5,True,0.7647058823529411,0.7647058823529411,record,1.896174793296089,True
+2025-11-23,Detroit Lions v New York Giants,Net yards passing,ALL,201.5,True,0.8235294117647058,0.8235294117647058,record,1.6957754727727123,True
+2025-11-23,Detroit Lions v New York Giants,Net yards passing,ALL,202.5,True,0.7647058823529411,0.7647058823529411,record,1.896174793296089,True
+2025-11-23,Detroit Lions v New York Giants,Passing touchdowns,ALL,0.5,True,0.9411764705882353,0.9411764705882353,record,1.3695355484354597,True
+2025-11-23,Detroit Lions v New York Giants,Passing touchdowns,ALL,0.5,True,0.7058823529411765,0.7058823529411765,record,2.133721765202606,True
+2025-11-23,Detroit Lions v New York Giants,Touchdowns,ALL,2.5,True,0.8823529411764706,0.8823529411764706,record,1.5229240232090935,True
+2025-11-23,Arizona Cardinals v Jacksonville Jaguars,Field goals,ALL,1.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,True
+2025-11-23,Arizona Cardinals v Jacksonville Jaguars,Net yards passing,ALL,209.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,True
+2025-11-23,Arizona Cardinals v Jacksonville Jaguars,Net yards passing,ALL,210.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,True
+2025-11-23,Arizona Cardinals v Jacksonville Jaguars,Passing touchdowns,ALL,0.5,True,0.9230769230769231,0.9230769230769231,record,1.49957713263039,True
+2025-11-23,Arizona Cardinals v Jacksonville Jaguars,Passing touchdowns,ALL,0.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,True
+2025-11-23,Arizona Cardinals v Jacksonville Jaguars,Touchdowns,ALL,1.5,True,1.0,1.0,record,1.2955076923076922,True
+2025-11-23,Arizona Cardinals v Jacksonville Jaguars,Touchdowns,ALL,1.5,True,1.0,1.0,record,1.2955076923076922,True
+2025-11-23,Las Vegas Raiders v Cleveland Browns,Field goals,ALL,0.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,True
+2025-11-23,Las Vegas Raiders v Cleveland Browns,Field goals,ALL,0.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,True
+2025-11-23,Las Vegas Raiders v Cleveland Browns,Passing touchdowns,ALL,0.5,True,0.9230769230769231,0.9230769230769231,record,1.49957713263039,True
+2025-11-23,Las Vegas Raiders v Cleveland Browns,Passing touchdowns,ALL,0.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-11-23,Las Vegas Raiders v Cleveland Browns,Touchdowns,ALL,1.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,False
+2025-11-23,New Orleans Saints v Atlanta Falcons,Field goals,ALL,0.5,True,0.9285714285714286,0.9285714285714286,record,1.4591993890789652,True
+2025-11-23,New Orleans Saints v Atlanta Falcons,Field goals,ALL,0.5,True,0.7857142857142857,0.7857142857142857,record,1.9080227619346297,True
+2025-11-23,New Orleans Saints v Atlanta Falcons,Passing touchdowns,ALL,0.5,True,0.7857142857142857,0.7857142857142857,record,1.9080227619346297,True
+2025-11-23,Dallas Cowboys v Philadelphia Eagles,Field goals,ALL,0.5,True,0.8,0.8,record,1.8243492908347394,False
+2025-11-24,Los Angeles Rams v Tampa Bay Buccaneers,Field goals,ALL,0.5,True,0.9285714285714286,0.9285714285714286,record,1.4591993890789652,False
+2025-11-24,Los Angeles Rams v Tampa Bay Buccaneers,Rushing yards,ALL,102.5,False,0.7142857142857143,0.7142857142857143,record,2.2050493552961963,True
+2025-11-24,Los Angeles Rams v Tampa Bay Buccaneers,Rushing yards,ALL,103.5,False,0.7142857142857143,0.7142857142857143,record,2.2050493552961963,True
+2025-11-25,San Francisco 49ers v Carolina Panthers,Field goals,ALL,1.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,True
+2025-11-25,San Francisco 49ers v Carolina Panthers,Touchdowns,ALL,1.5,True,0.7272727272727273,0.7272727272727273,record,2.302292332439837,True
+2025-11-27,Detroit Lions v Green Bay Packers,Field goals,ALL,0.5,True,0.875,0.875,record,1.5630698228860285,True
+2025-11-27,Detroit Lions v Green Bay Packers,Field goals,ALL,0.5,True,0.875,0.875,record,1.5630698228860285,True
+2025-11-27,Dallas Cowboys v Kansas City Chiefs,Passing touchdowns,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,True
+2025-11-27,Dallas Cowboys v Kansas City Chiefs,Passing touchdowns,ALL,0.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,True
+2025-11-27,Dallas Cowboys v Kansas City Chiefs,Touchdowns,ALL,2.5,True,0.7222222222222222,0.7222222222222222,record,2.03554375086351,True
+2025-11-28,Baltimore Ravens v Cincinnati Bengals,Field goals,ALL,0.5,True,0.8,0.8,record,1.8243492908347394,False
+2025-11-28,Baltimore Ravens v Cincinnati Bengals,Field goals,ALL,0.5,True,0.9333333333333333,0.9333333333333333,record,1.4248480472538916,True
+2025-11-28,Baltimore Ravens v Cincinnati Bengals,Touchdowns,ALL,2.5,False,0.8666666666666667,0.8666666666666667,record,1.6098522754877187,True
+2025-11-28,Philadelphia Eagles v Chicago Bears,Field goals,ALL,0.5,True,0.8947368421052632,0.8947368421052632,record,1.4576101566462472,True
+2025-11-28,Philadelphia Eagles v Chicago Bears,Field goals,ALL,0.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,True
+2025-11-28,Philadelphia Eagles v Chicago Bears,Passing touchdowns,ALL,0.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,True
+2025-11-28,Philadelphia Eagles v Chicago Bears,Passing touchdowns,ALL,0.5,True,0.7368421052631579,0.7368421052631579,record,1.952818668394267,True
+2025-11-28,Philadelphia Eagles v Chicago Bears,Rushing attempts,ALL,27.5,True,0.6842105263157895,0.6842105263157895,record,2.173440075746724,False
+2025-11-28,Philadelphia Eagles v Chicago Bears,Rushing attempts,ALL,28.5,True,0.6842105263157895,0.6842105263157895,record,2.173440075746724,False
+2025-11-28,Philadelphia Eagles v Chicago Bears,Touchdowns,ALL,2.5,False,0.7894736842105263,0.7894736842105263,record,1.7647488874230568,False
+2025-11-30,Tennessee Titans v Jacksonville Jaguars,Field goals,ALL,1.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,False
+2025-11-30,Tennessee Titans v Jacksonville Jaguars,Net yards passing,ALL,195.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-11-30,Tennessee Titans v Jacksonville Jaguars,Net yards passing,ALL,196.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-11-30,Tennessee Titans v Jacksonville Jaguars,Passing touchdowns,ALL,0.5,True,0.9230769230769231,0.9230769230769231,record,1.49957713263039,False
+2025-11-30,Tennessee Titans v Jacksonville Jaguars,Passing touchdowns,ALL,0.5,True,0.9230769230769231,0.9230769230769231,record,1.49957713263039,True
+2025-11-30,Tennessee Titans v Jacksonville Jaguars,Rushing attempts,ALL,24.5,False,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-11-30,Tennessee Titans v Jacksonville Jaguars,Rushing attempts,ALL,25.5,False,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-11-30,Tennessee Titans v Jacksonville Jaguars,Rushing yards,ALL,92.5,False,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-11-30,Tennessee Titans v Jacksonville Jaguars,Rushing yards,ALL,93.5,False,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-11-30,Tennessee Titans v Jacksonville Jaguars,Rushing yards,ALL,93.5,True,0.9230769230769231,0.9230769230769231,record,1.49957713263039,False
+2025-11-30,Tennessee Titans v Jacksonville Jaguars,Rushing yards,ALL,94.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,False
+2025-11-30,Tennessee Titans v Jacksonville Jaguars,Touchdowns,ALL,1.5,True,0.9230769230769231,0.9230769230769231,record,1.49957713263039,True
+2025-11-30,Tennessee Titans v Jacksonville Jaguars,Touchdowns,ALL,2.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,True
+2025-11-30,New York Jets v Atlanta Falcons,Field goals,ALL,1.5,True,0.6875,0.6875,record,2.2520528204601775,True
+2025-11-30,New York Jets v Atlanta Falcons,Passing touchdowns,ALL,0.5,True,0.8125,0.8125,record,1.7546740968198824,True
+2025-11-30,Indianapolis Colts v Houston Texans,Net yards passing,ALL,222.5,False,0.6666666666666666,0.6666666666666666,record,2.2857629087632767,False
+2025-11-30,Indianapolis Colts v Houston Texans,Net yards passing,ALL,223.5,False,0.6666666666666666,0.6666666666666666,record,2.2857629087632767,False
+2025-11-30,Indianapolis Colts v Houston Texans,Passing touchdowns,ALL,0.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,True
+2025-11-30,Indianapolis Colts v Houston Texans,Passing touchdowns,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,False
+2025-11-30,Miami Dolphins v New Orleans Saints,Net yards passing,ALL,204.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-11-30,Miami Dolphins v New Orleans Saints,Passing touchdowns,ALL,0.5,True,0.6923076923076923,0.6923076923076923,record,2.3602224453132847,False
+2025-11-30,Miami Dolphins v New Orleans Saints,Passing touchdowns,ALL,0.5,True,1.0,1.0,record,1.2955076923076922,True
+2025-11-30,Miami Dolphins v New Orleans Saints,Rushing yards,ALL,87.5,True,0.6923076923076923,0.6923076923076923,record,2.3602224453132847,True
+2025-11-30,Miami Dolphins v New Orleans Saints,Rushing yards,ALL,88.5,True,0.6923076923076923,0.6923076923076923,record,2.3602224453132847,True
+2025-11-30,Miami Dolphins v New Orleans Saints,Touchdowns,ALL,1.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,False
+2025-11-30,Cleveland Browns v San Francisco 49ers,Field goals,ALL,0.5,True,0.9333333333333333,0.9333333333333333,record,1.4248480472538916,False
+2025-11-30,Cleveland Browns v San Francisco 49ers,Field goals,ALL,0.5,True,0.8666666666666667,0.8666666666666667,record,1.6098522754877187,True
+2025-11-30,Cleveland Browns v San Francisco 49ers,Rushing attempts,ALL,24.5,True,0.6666666666666666,0.6666666666666666,record,2.397326971726358,True
+2025-11-30,Cleveland Browns v San Francisco 49ers,Rushing yards,ALL,82.5,True,0.8,0.8,record,1.8243492908347394,True
+2025-11-30,Cleveland Browns v San Francisco 49ers,Rushing yards,ALL,83.5,True,0.8,0.8,record,1.8243492908347394,True
+2025-11-30,Cleveland Browns v San Francisco 49ers,Touchdowns,ALL,1.5,True,0.8,0.8,record,1.8243492908347394,True
+2025-11-30,Tampa Bay Buccaneers v Arizona Cardinals,Field goals,ALL,1.5,True,0.6923076923076923,0.6923076923076923,record,2.3602224453132847,False
+2025-11-30,Carolina Panthers v Los Angeles Rams,Net yards passing,ALL,195.5,True,0.6923076923076923,0.6923076923076923,record,2.3602224453132847,True
+2025-11-30,Seattle Seahawks v Minnesota Vikings,Passing touchdowns,ALL,0.5,True,0.875,0.875,record,1.5630698228860285,False
+2025-11-30,Seattle Seahawks v Minnesota Vikings,Passing touchdowns,ALL,0.5,True,0.8125,0.8125,record,1.7546740968198824,False
+2025-11-30,Seattle Seahawks v Minnesota Vikings,Touchdowns,ALL,1.5,True,0.9375,0.9375,record,1.395269696889672,True
+2025-11-30,Seattle Seahawks v Minnesota Vikings,Touchdowns,ALL,2.5,True,0.75,0.75,record,1.9801497484328403,False
+2025-11-30,Los Angeles Chargers v Las Vegas Raiders,Passing touchdowns,ALL,0.5,True,0.9333333333333333,0.9333333333333333,record,1.4248480472538916,True
+2025-11-30,Los Angeles Chargers v Las Vegas Raiders,Rushing attempts,ALL,24.5,True,0.8,0.8,record,1.8243492908347394,True
+2025-12-01,Washington Commanders v Denver Broncos,Field goals,ALL,0.5,True,0.875,0.875,record,1.5630698228860285,True
+2025-12-01,Washington Commanders v Denver Broncos,Rushing attempts,ALL,26.5,True,0.75,0.75,record,1.9801497484328403,True
+2025-12-01,Washington Commanders v Denver Broncos,Touchdowns,ALL,1.5,True,0.8125,0.8125,record,1.7546740968198824,True
+2025-12-02,New England Patriots v New York Giants,Field goals,ALL,0.5,True,0.7647058823529411,0.7647058823529411,record,1.896174793296089,True
+2025-12-02,New England Patriots v New York Giants,Rushing attempts,ALL,26.5,True,0.7647058823529411,0.7647058823529411,record,1.896174793296089,True
+2025-12-02,New England Patriots v New York Giants,Rushing attempts,ALL,27.5,True,0.7058823529411765,0.7058823529411765,record,2.133721765202606,True
+2025-12-02,New England Patriots v New York Giants,Touchdowns,ALL,2.5,True,0.7647058823529411,0.7647058823529411,record,1.896174793296089,True
+2025-12-02,New England Patriots v New York Giants,Touchdowns,ALL,2.5,False,0.7058823529411765,0.7058823529411765,record,2.133721765202606,True
+2025-12-05,Detroit Lions v Dallas Cowboys,Field goals,ALL,0.5,True,0.9473684210526315,0.9473684210526315,record,1.326950090110907,True
+2025-12-05,Detroit Lions v Dallas Cowboys,Field goals,ALL,0.5,True,0.8947368421052632,0.8947368421052632,record,1.4576101566462472,True
+2025-12-07,Buffalo Bills v Cincinnati Bengals,Field goals,ALL,0.5,True,0.8235294117647058,0.8235294117647058,record,1.6957754727727123,True
+2025-12-07,Buffalo Bills v Cincinnati Bengals,Field goals,ALL,0.5,True,0.8235294117647058,0.8235294117647058,record,1.6957754727727123,False
+2025-12-07,Buffalo Bills v Cincinnati Bengals,Rushing attempts,ALL,23.5,True,0.8235294117647058,0.8235294117647058,record,1.6957754727727123,True
+2025-12-07,Jacksonville Jaguars v Indianapolis Colts,Passing touchdowns,ALL,0.5,True,0.8666666666666667,0.8666666666666667,record,1.6098522754877187,True
+2025-12-07,Jacksonville Jaguars v Indianapolis Colts,Passing touchdowns,ALL,0.5,True,0.9333333333333333,0.9333333333333333,record,1.4248480472538916,False
+2025-12-07,Jacksonville Jaguars v Indianapolis Colts,Rushing attempts,ALL,26.5,False,0.7333333333333333,0.7333333333333333,record,2.0812039866623193,True
+2025-12-07,Jacksonville Jaguars v Indianapolis Colts,Rushing yards,ALL,128.5,False,0.7333333333333333,0.7333333333333333,record,2.0812039866623193,True
+2025-12-07,Jacksonville Jaguars v Indianapolis Colts,Rushing yards,ALL,129.5,False,0.7333333333333333,0.7333333333333333,record,2.0812039866623193,True
+2025-12-07,Baltimore Ravens v Pittsburgh Steelers,Passing touchdowns,ALL,0.5,True,0.8823529411764706,0.8823529411764706,record,1.5229240232090935,True
+2025-12-07,Baltimore Ravens v Pittsburgh Steelers,Rushing attempts,ALL,26.5,False,0.7058823529411765,0.7058823529411765,record,2.133721765202606,True
+2025-12-07,Baltimore Ravens v Pittsburgh Steelers,Rushing attempts,ALL,27.5,False,0.7058823529411765,0.7058823529411765,record,2.133721765202606,True
+2025-12-07,New York Jets v Miami Dolphins,Passing touchdowns,ALL,0.5,True,0.8666666666666667,0.8666666666666667,record,1.6098522754877187,True
+2025-12-07,New York Jets v Miami Dolphins,Touchdowns,ALL,1.5,True,0.7333333333333333,0.7333333333333333,record,2.0812039866623193,True
+2025-12-07,Cleveland Browns v Tennessee Titans,Field goals,ALL,0.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,True
+2025-12-07,Cleveland Browns v Tennessee Titans,Field goals,ALL,0.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-12-07,Cleveland Browns v Tennessee Titans,Rushing attempts,ALL,23.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,False
+2025-12-07,Cleveland Browns v Tennessee Titans,Rushing attempts,ALL,24.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,False
+2025-12-07,Cleveland Browns v Tennessee Titans,Rushing yards,ALL,83.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,False
+2025-12-07,Cleveland Browns v Tennessee Titans,Rushing yards,ALL,84.5,True,0.8461538461538461,0.8461538461538461,record,1.731157191677362,False
+2025-12-07,Cleveland Browns v Tennessee Titans,Touchdowns,ALL,0.5,True,0.9230769230769231,0.9230769230769231,record,1.49957713263039,True
+2025-12-07,Cleveland Browns v Tennessee Titans,Touchdowns,ALL,0.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-12-07,Minnesota Vikings v Washington Commanders,Passing touchdowns,ALL,0.5,True,0.8,0.8,record,1.7123924599882308,True
+2025-12-07,Minnesota Vikings v Washington Commanders,Passing touchdowns,ALL,0.5,True,0.8,0.8,record,1.7123924599882308,False
+2025-12-07,Atlanta Falcons v Seattle Seahawks,Passing touchdowns,ALL,0.5,True,0.9333333333333333,0.9333333333333333,record,1.4248480472538916,True
+2025-12-07,Tampa Bay Buccaneers v New Orleans Saints,Field goals,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,1.6650545542942021,True
+2025-12-07,Tampa Bay Buccaneers v New Orleans Saints,Field goals,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,1.6650545542942021,True
+2025-12-07,Tampa Bay Buccaneers v New Orleans Saints,Passing touchdowns,ALL,0.5,True,0.9285714285714286,0.9285714285714286,record,1.4591993890789652,False
+2025-12-07,Tampa Bay Buccaneers v New Orleans Saints,Rushing attempts,ALL,25.5,True,0.7857142857142857,0.7857142857142857,record,1.9080227619346297,True
+2025-12-07,Tampa Bay Buccaneers v New Orleans Saints,Rushing yards,ALL,100.5,True,0.7857142857142857,0.7857142857142857,record,1.9080227619346297,True
+2025-12-07,Tampa Bay Buccaneers v New Orleans Saints,Rushing yards,ALL,101.5,True,0.7142857142857143,0.7142857142857143,record,2.2050493552961963,True
+2025-12-07,Tampa Bay Buccaneers v New Orleans Saints,Rushing yards,ALL,99.5,False,0.7857142857142857,0.7857142857142857,record,1.9080227619346297,False
+2025-12-07,Tampa Bay Buccaneers v New Orleans Saints,Rushing yards,ALL,100.5,False,0.7857142857142857,0.7857142857142857,record,1.9080227619346297,False
+2025-12-07,Tampa Bay Buccaneers v New Orleans Saints,Touchdowns,ALL,1.5,True,0.8571428571428571,0.8571428571428571,record,1.6650545542942021,True
+2025-12-07,Las Vegas Raiders v Denver Broncos,Field goals,ALL,0.5,True,0.9411764705882353,0.9411764705882353,record,1.3695355484354597,True
+2025-12-07,Las Vegas Raiders v Denver Broncos,Field goals,ALL,0.5,True,0.7647058823529411,0.7647058823529411,record,1.896174793296089,True
+2025-12-07,Las Vegas Raiders v Denver Broncos,Passing touchdowns,ALL,0.5,True,0.8235294117647058,0.8235294117647058,record,1.6957754727727123,True
+2025-12-07,Las Vegas Raiders v Denver Broncos,Passing touchdowns,ALL,0.5,True,0.9411764705882353,0.9411764705882353,record,1.3695355484354597,False
+2025-12-07,Las Vegas Raiders v Denver Broncos,Touchdowns,ALL,1.5,True,0.8235294117647058,0.8235294117647058,record,1.6957754727727123,True
+2025-12-07,Green Bay Packers v Chicago Bears,Passing touchdowns,ALL,0.5,True,0.7222222222222222,0.7222222222222222,record,2.03554375086351,True
+2025-12-07,Arizona Cardinals v Los Angeles Rams,Rushing attempts,ALL,22.5,True,0.875,0.875,record,1.5630698228860285,True
+2025-12-07,Arizona Cardinals v Los Angeles Rams,Touchdowns,ALL,2.5,True,0.6875,0.6875,record,2.2520528204601775,True
+2025-12-08,Kansas City Chiefs v Houston Texans,Passing touchdowns,ALL,0.5,True,0.7894736842105263,0.7894736842105263,record,1.7647488874230568,False
+2025-12-08,Kansas City Chiefs v Houston Texans,Passing touchdowns,ALL,0.5,True,0.6842105263157895,0.6842105263157895,record,2.173440075746724,True
+2025-12-09,Los Angeles Chargers v Philadelphia Eagles,Field goals,ALL,1.5,False,0.7333333333333333,0.7333333333333333,record,2.0812039866623193,False
+2025-12-09,Los Angeles Chargers v Philadelphia Eagles,Passing touchdowns,ALL,1.5,False,0.7333333333333333,0.7333333333333333,record,2.0812039866623193,True
+2025-12-09,Los Angeles Chargers v Philadelphia Eagles,Rushing yards,ALL,111.5,False,0.7333333333333333,0.7333333333333333,record,2.0812039866623193,False
+2025-12-09,Los Angeles Chargers v Philadelphia Eagles,Rushing yards,ALL,112.5,False,0.7333333333333333,0.7333333333333333,record,2.0812039866623193,False
+2025-12-09,Los Angeles Chargers v Philadelphia Eagles,Touchdowns,ALL,1.5,True,0.7333333333333333,0.7333333333333333,record,2.0812039866623193,False
+2025-12-09,Los Angeles Chargers v Philadelphia Eagles,Touchdowns,ALL,1.5,True,0.7333333333333333,0.7333333333333333,record,2.0812039866623193,False
+2025-12-12,Tampa Bay Buccaneers v Atlanta Falcons,Field goals,ALL,1.5,True,0.7222222222222222,0.7222222222222222,record,2.03554375086351,True
+2025-12-12,Tampa Bay Buccaneers v Atlanta Falcons,Passing touchdowns,ALL,0.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,True
+2025-12-14,New England Patriots v Buffalo Bills,Field goals,ALL,0.5,True,0.75,0.75,record,1.9801497484328403,True
+2025-12-14,New England Patriots v Buffalo Bills,Net yards passing,ALL,243.5,False,0.8125,0.8125,record,1.7546740968198824,True
+2025-12-14,New England Patriots v Buffalo Bills,Net yards passing,ALL,244.5,False,0.8125,0.8125,record,1.7546740968198824,True
+2025-12-14,New England Patriots v Buffalo Bills,Rushing attempts,ALL,29.5,False,0.6875,0.6875,record,2.2520528204601775,True
+2025-12-14,New England Patriots v Buffalo Bills,Rushing yards,ALL,119.5,False,0.75,0.75,record,1.9801497484328403,False
+2025-12-14,Jacksonville Jaguars v New York Jets,Passing touchdowns,ALL,0.5,True,0.8666666666666667,0.8666666666666667,record,1.6098522754877187,True
+2025-12-14,Jacksonville Jaguars v New York Jets,Passing touchdowns,ALL,0.5,True,0.8666666666666667,0.8666666666666667,record,1.6098522754877187,True
+2025-12-14,Jacksonville Jaguars v New York Jets,Touchdowns,ALL,2.5,False,0.7333333333333333,0.7333333333333333,record,2.0812039866623193,True
+2025-12-14,Kansas City Chiefs v Los Angeles Chargers,Passing touchdowns,ALL,0.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,False
+2025-12-14,Kansas City Chiefs v Los Angeles Chargers,Passing touchdowns,ALL,0.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,True
+2025-12-14,Kansas City Chiefs v Los Angeles Chargers,Touchdowns,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,False
+2025-12-14,Kansas City Chiefs v Los Angeles Chargers,Touchdowns,ALL,1.5,True,0.7222222222222222,0.7222222222222222,record,2.03554375086351,False
+2025-12-14,Cincinnati Bengals v Baltimore Ravens,Field goals,ALL,0.5,True,1.0,1.0,record,1.2401,False
+2025-12-14,Cincinnati Bengals v Baltimore Ravens,Field goals,ALL,0.5,True,0.8125,0.8125,record,1.7546740968198824,True
+2025-12-14,Cincinnati Bengals v Baltimore Ravens,Field goals,ALL,1.5,True,0.6875,0.6875,record,2.2520528204601775,False
+2025-12-14,Cincinnati Bengals v Baltimore Ravens,Net yards passing,ALL,196.5,True,0.8125,0.8125,record,1.7546740968198824,True
+2025-12-14,Cincinnati Bengals v Baltimore Ravens,Net yards passing,ALL,197.5,True,0.75,0.75,record,1.9801497484328403,True
+2025-12-14,Cincinnati Bengals v Baltimore Ravens,Passing touchdowns,ALL,0.5,True,0.875,0.875,record,1.5630698228860285,True
+2025-12-14,Cincinnati Bengals v Baltimore Ravens,Rushing attempts,ALL,22.5,True,0.875,0.875,record,1.5630698228860285,True
+2025-12-14,Cincinnati Bengals v Baltimore Ravens,Rushing attempts,ALL,23.5,True,0.875,0.875,record,1.5630698228860285,True
+2025-12-14,Cincinnati Bengals v Baltimore Ravens,Rushing yards,ALL,114.5,True,0.875,0.875,record,1.5630698228860285,True
+2025-12-14,Cincinnati Bengals v Baltimore Ravens,Rushing yards,ALL,115.5,True,0.875,0.875,record,1.5630698228860285,True
+2025-12-14,Cincinnati Bengals v Baltimore Ravens,Touchdowns,ALL,1.5,True,0.8125,0.8125,record,1.7546740968198824,False
+2025-12-14,Cincinnati Bengals v Baltimore Ravens,Touchdowns,ALL,1.5,True,0.9375,0.9375,record,1.395269696889672,True
+2025-12-14,Philadelphia Eagles v Las Vegas Raiders,Field goals,ALL,0.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,True
+2025-12-14,Philadelphia Eagles v Las Vegas Raiders,Rushing attempts,ALL,24.5,True,0.7894736842105263,0.7894736842105263,record,1.7647488874230568,True
+2025-12-14,Houston Texans v Arizona Cardinals,Passing touchdowns,ALL,0.5,True,0.8125,0.8125,record,1.7546740968198824,True
+2025-12-14,Houston Texans v Arizona Cardinals,Passing touchdowns,ALL,0.5,True,0.8125,0.8125,record,1.7546740968198824,True
+2025-12-14,Chicago Bears v Cleveland Browns,Field goals,ALL,0.5,True,0.9230769230769231,0.9230769230769231,record,1.49957713263039,True
+2025-12-14,Chicago Bears v Cleveland Browns,Field goals,ALL,0.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-12-14,Chicago Bears v Cleveland Browns,Net yards passing,ALL,181.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-12-14,Chicago Bears v Cleveland Browns,Net yards passing,ALL,182.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-12-14,Chicago Bears v Cleveland Browns,Passing touchdowns,ALL,0.5,True,0.9230769230769231,0.9230769230769231,record,1.49957713263039,True
+2025-12-14,Chicago Bears v Cleveland Browns,Passing touchdowns,ALL,0.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,False
+2025-12-14,Chicago Bears v Cleveland Browns,Touchdowns,ALL,1.5,True,0.9230769230769231,0.9230769230769231,record,1.49957713263039,True
+2025-12-14,Chicago Bears v Cleveland Browns,Touchdowns,ALL,2.5,True,0.7692307692307693,0.7692307692307693,record,2.0103280197992284,True
+2025-12-14,New York Giants v Washington Commanders,Field goals,ALL,0.5,True,0.7894736842105263,0.7894736842105263,record,1.7647488874230568,False
+2025-12-14,New York Giants v Washington Commanders,Field goals,ALL,0.5,True,0.7368421052631579,0.7368421052631579,record,1.952818668394267,True
+2025-12-14,New York Giants v Washington Commanders,Passing touchdowns,ALL,0.5,True,0.9473684210526315,0.9473684210526315,record,1.326950090110907,True
+2025-12-14,New York Giants v Washington Commanders,Touchdowns,ALL,1.5,True,0.7368421052631579,0.7368421052631579,record,1.952818668394267,True
+2025-12-14,New York Giants v Washington Commanders,Touchdowns,ALL,1.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,True
+2025-12-14,San Francisco 49ers v Tennessee Titans,Passing touchdowns,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.8117135310974035,True
+2025-12-14,San Francisco 49ers v Tennessee Titans,Touchdowns,ALL,1.5,True,0.9166666666666666,0.9166666666666666,record,1.5477143026874012,True
+2025-12-14,Seattle Seahawks v Indianapolis Colts,Field goals,ALL,1.5,True,0.7333333333333333,0.7333333333333333,record,2.0812039866623193,True
+2025-12-14,Seattle Seahawks v Indianapolis Colts,Passing touchdowns,ALL,0.5,True,0.8,0.8,record,1.8243492908347394,False
+2025-12-14,Seattle Seahawks v Indianapolis Colts,Passing touchdowns,ALL,0.5,True,0.8,0.8,record,1.8243492908347394,True
+2025-12-14,Seattle Seahawks v Indianapolis Colts,Rushing yards,ALL,122.5,False,0.8,0.8,record,1.8243492908347394,True
+2025-12-14,Seattle Seahawks v Indianapolis Colts,Rushing yards,ALL,123.5,False,0.8,0.8,record,1.8243492908347394,True
+2025-12-14,Denver Broncos v Green Bay Packers,Field goals,ALL,0.5,True,0.875,0.875,record,1.5630698228860285,False
+2025-12-14,Denver Broncos v Green Bay Packers,Passing touchdowns,ALL,0.5,True,0.8125,0.8125,record,1.7546740968198824,True
+2025-12-14,Denver Broncos v Green Bay Packers,Rushing attempts,ALL,25.5,True,0.6875,0.6875,record,2.2520528204601775,True
+2025-12-14,Los Angeles Rams v Detroit Lions,Field goals,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,1.6650545542942021,True
+2025-12-14,Los Angeles Rams v Detroit Lions,Passing touchdowns,ALL,1.5,True,0.7857142857142857,0.7857142857142857,record,1.9080227619346297,True
+2025-12-14,Los Angeles Rams v Detroit Lions,Rushing yards,ALL,112.5,False,0.7857142857142857,0.7857142857142857,record,1.9080227619346297,False
+2025-12-14,Los Angeles Rams v Detroit Lions,Rushing yards,ALL,113.5,False,0.7857142857142857,0.7857142857142857,record,1.9080227619346297,False
+2025-12-14,Los Angeles Rams v Detroit Lions,Touchdowns,ALL,3.5,False,0.7142857142857143,0.7142857142857143,record,2.2050493552961963,False
+2025-12-14,New Orleans Saints v Carolina Panthers,Field goals,ALL,0.5,True,0.8666666666666667,0.8666666666666667,record,1.6098522754877187,True
+2025-12-14,New Orleans Saints v Carolina Panthers,Field goals,ALL,0.5,True,0.8666666666666667,0.8666666666666667,record,1.6098522754877187,True
+2025-12-14,New Orleans Saints v Carolina Panthers,Passing touchdowns,ALL,0.5,True,0.8666666666666667,0.8666666666666667,record,1.6098522754877187,True
+2025-12-15,Dallas Cowboys v Minnesota Vikings,Touchdowns,ALL,2.5,True,0.7272727272727273,0.7272727272727273,record,1.9287193060610484,False
+2025-12-16,Pittsburgh Steelers v Miami Dolphins,Passing touchdowns,ALL,0.5,True,0.8888888888888888,0.8888888888888888,record,1.488100660508266,True
+2025-12-20,Washington Commanders v Philadelphia Eagles,Field goals,ALL,0.5,True,0.75,0.75,record,1.9801497484328403,True
+2025-12-20,Washington Commanders v Philadelphia Eagles,Field goals,ALL,0.5,True,0.875,0.875,record,1.5630698228860285,False
+2025-12-20,Washington Commanders v Philadelphia Eagles,Rushing yards,ALL,132.5,False,0.8125,0.8125,record,1.7546740968198824,False
+2025-12-20,Washington Commanders v Philadelphia Eagles,Rushing yards,ALL,133.5,False,0.8125,0.8125,record,1.7546740968198824,False
+2025-12-21,Chicago Bears v Green Bay Packers,Passing touchdowns,ALL,0.5,True,0.8235294117647058,0.8235294117647058,record,1.6957754727727123,True
+2025-12-21,Chicago Bears v Green Bay Packers,Passing touchdowns,ALL,0.5,True,0.8235294117647058,0.8235294117647058,record,1.6957754727727123,True
+2025-12-21,Cleveland Browns v Buffalo Bills,Field goals,ALL,0.5,True,0.8235294117647058,0.8235294117647058,record,1.6957754727727123,True
+2025-12-21,Cleveland Browns v Buffalo Bills,Field goals,ALL,0.5,True,0.7647058823529411,0.7647058823529411,record,1.896174793296089,True
+2025-12-21,Cleveland Browns v Buffalo Bills,Net yards passing,ALL,182.5,False,0.7058823529411765,0.7058823529411765,record,2.133721765202606,True
+2025-12-21,Cleveland Browns v Buffalo Bills,Passing touchdowns,ALL,1.5,False,0.7058823529411765,0.7058823529411765,record,2.133721765202606,True
+2025-12-21,Tennessee Titans v Kansas City Chiefs,Passing touchdowns,ALL,0.5,True,0.75,0.75,record,1.9801497484328403,True
+2025-12-21,Tennessee Titans v Kansas City Chiefs,Passing touchdowns,ALL,0.5,True,0.875,0.875,record,1.5630698228860285,False
+2025-12-21,Tennessee Titans v Kansas City Chiefs,Touchdowns,ALL,1.5,True,0.875,0.875,record,1.5630698228860285,False
+2025-12-21,New Orleans Saints v New York Jets,Net yards passing,ALL,203.5,True,0.7333333333333333,0.7333333333333333,record,2.0812039866623193,True
+2025-12-21,New Orleans Saints v New York Jets,Net yards passing,ALL,204.5,True,0.7333333333333333,0.7333333333333333,record,2.0812039866623193,True
+2025-12-21,New Orleans Saints v New York Jets,Passing touchdowns,ALL,0.5,True,0.9333333333333333,0.9333333333333333,record,1.4248480472538916,False
+2025-12-21,New Orleans Saints v New York Jets,Rushing attempts,ALL,25.5,True,0.8666666666666667,0.8666666666666667,record,1.6098522754877187,False
+2025-12-21,New Orleans Saints v New York Jets,Touchdowns,ALL,1.5,True,0.9333333333333333,0.9333333333333333,record,1.4248480472538916,False
+2025-12-21,Miami Dolphins v Cincinnati Bengals,Passing touchdowns,ALL,0.5,True,0.9411764705882353,0.9411764705882353,record,1.3695355484354597,True
+2025-12-21,Miami Dolphins v Cincinnati Bengals,Rushing yards,ALL,95.5,True,0.7647058823529411,0.7647058823529411,record,1.896174793296089,True
+2025-12-21,Miami Dolphins v Cincinnati Bengals,Rushing yards,ALL,96.5,True,0.7647058823529411,0.7647058823529411,record,1.896174793296089,True
+2025-12-21,Dallas Cowboys v Los Angeles Chargers,Field goals,ALL,1.5,True,0.75,0.75,record,1.882193543592548,False
+2025-12-21,Dallas Cowboys v Los Angeles Chargers,Touchdowns,ALL,1.5,True,0.85,0.85,record,1.5635341211915905,True
+2025-12-21,Dallas Cowboys v Los Angeles Chargers,Touchdowns,ALL,1.5,True,0.85,0.85,record,1.5635341211915905,True
+2025-12-21,New York Giants v Minnesota Vikings,Net yards passing,ALL,185.5,True,0.6666666666666666,0.6666666666666666,record,2.203950218307691,False
+2025-12-21,New York Giants v Minnesota Vikings,Net yards passing,ALL,186.5,True,0.6666666666666666,0.6666666666666666,record,2.203950218307691,False
+2025-12-21,New York Giants v Minnesota Vikings,Passing touchdowns,ALL,0.5,True,0.7142857142857143,0.7142857142857143,record,1.9982724464242418,False
+2025-12-21,New York Giants v Minnesota Vikings,Passing touchdowns,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,1.5299056973520833,False
+2025-12-21,New York Giants v Minnesota Vikings,Rushing attempts,ALL,23.5,True,0.7142857142857143,0.7142857142857143,record,1.9982724464242418,True
+2025-12-21,New York Giants v Minnesota Vikings,Rushing attempts,ALL,24.5,True,0.6666666666666666,0.6666666666666666,record,2.203950218307691,True
+2025-12-21,New York Giants v Minnesota Vikings,Rushing yards,ALL,111.5,True,0.6666666666666666,0.6666666666666666,record,2.203950218307691,True
+2025-12-21,New York Giants v Minnesota Vikings,Rushing yards,ALL,112.5,True,0.6666666666666666,0.6666666666666666,record,2.203950218307691,True
+2025-12-21,New York Giants v Minnesota Vikings,Touchdowns,ALL,1.5,True,0.9047619047619048,0.9047619047619048,record,1.4067583117765785,False
+2025-12-21,New York Giants v Minnesota Vikings,Touchdowns,ALL,2.5,True,0.6666666666666666,0.6666666666666666,record,2.203950218307691,False
+2025-12-21,Carolina Panthers v Tampa Bay Buccaneers,Touchdowns,ALL,1.5,True,0.75,0.75,record,1.9801497484328403,True
+2025-12-21,Denver Broncos v Jacksonville Jaguars,Field goals,ALL,0.5,True,0.8666666666666667,0.8666666666666667,record,1.6098522754877187,True
+2025-12-21,Denver Broncos v Jacksonville Jaguars,Net yards passing,ALL,205.5,True,0.8,0.8,record,1.8243492908347394,True
+2025-12-21,Denver Broncos v Jacksonville Jaguars,Net yards passing,ALL,206.5,True,0.8,0.8,record,1.8243492908347394,True
+2025-12-21,Denver Broncos v Jacksonville Jaguars,Passing touchdowns,ALL,0.5,True,0.8666666666666667,0.8666666666666667,record,1.6098522754877187,True
+2025-12-21,Arizona Cardinals v Atlanta Falcons,Field goals,ALL,0.5,True,0.9523809523809523,0.9523809523809523,record,1.2931561207470297,True
+2025-12-21,Arizona Cardinals v Atlanta Falcons,Field goals,ALL,0.5,True,0.9047619047619048,0.9047619047619048,record,1.4067583117765785,True
+2025-12-21,Arizona Cardinals v Atlanta Falcons,Passing touchdowns,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,1.5299056973520833,True
+2025-12-21,Houston Texans v Las Vegas Raiders,Passing touchdowns,ALL,0.5,True,0.9444444444444444,0.9444444444444444,record,1.3469428402352768,True
+2025-12-21,Houston Texans v Las Vegas Raiders,Rushing attempts,ALL,25.5,True,0.7222222222222222,0.7222222222222222,record,2.03554375086351,True
+2025-12-21,Houston Texans v Las Vegas Raiders,Rushing attempts,ALL,26.5,True,0.6666666666666666,0.6666666666666666,record,2.2857629087632767,False
+2025-12-21,Houston Texans v Las Vegas Raiders,Rushing attempts,ALL,25.5,False,0.7222222222222222,0.7222222222222222,record,2.03554375086351,False
+2025-12-21,Houston Texans v Las Vegas Raiders,Rushing yards,ALL,85.5,True,0.7222222222222222,0.7222222222222222,record,2.03554375086351,False
+2025-12-21,Houston Texans v Las Vegas Raiders,Rushing yards,ALL,86.5,True,0.7222222222222222,0.7222222222222222,record,2.03554375086351,False
+2025-12-21,Houston Texans v Las Vegas Raiders,Touchdowns,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,True
+2025-12-21,Detroit Lions v Pittsburgh Steelers,Field goals,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,True
+2025-12-21,Detroit Lions v Pittsburgh Steelers,Rushing yards,ALL,103.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,False
+2025-12-21,Detroit Lions v Pittsburgh Steelers,Rushing yards,ALL,104.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,False
+2025-12-22,Baltimore Ravens v New England Patriots,Field goals,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,True
+2025-12-22,Baltimore Ravens v New England Patriots,Field goals,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,True
+2025-12-22,Baltimore Ravens v New England Patriots,Rushing yards,ALL,134.5,False,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,True
+2025-12-22,Baltimore Ravens v New England Patriots,Rushing yards,ALL,135.5,False,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,True
+2025-12-23,Indianapolis Colts v San Francisco 49ers,Rushing yards,ALL,103.5,True,0.75,0.75,record,1.882193543592548,False
+2025-12-23,Indianapolis Colts v San Francisco 49ers,Touchdowns,ALL,1.5,True,0.85,0.85,record,1.5635341211915905,True
+2025-12-23,Indianapolis Colts v San Francisco 49ers,Touchdowns,ALL,1.5,True,0.85,0.85,record,1.5635341211915905,True
+2025-12-25,Washington Commanders v Dallas Cowboys,Net yards passing,ALL,227.5,True,0.7142857142857143,0.7142857142857143,record,1.9982724464242418,True
+2025-12-25,Washington Commanders v Dallas Cowboys,Net yards passing,ALL,228.5,True,0.7142857142857143,0.7142857142857143,record,1.9982724464242418,True
+2025-12-26,Kansas City Chiefs v Denver Broncos,Field goals,ALL,0.5,True,0.9523809523809523,0.9523809523809523,record,1.2931561207470297,True
+2025-12-26,Kansas City Chiefs v Denver Broncos,Field goals,ALL,0.5,True,0.7142857142857143,0.7142857142857143,record,1.9982724464242418,True
+2025-12-26,Kansas City Chiefs v Denver Broncos,Net yards passing,ALL,226.5,False,0.8571428571428571,0.8571428571428571,record,1.5299056973520833,True
+2025-12-26,Kansas City Chiefs v Denver Broncos,Net yards passing,ALL,227.5,False,0.9047619047619048,0.9047619047619048,record,1.4067583117765785,True
+2025-12-26,Kansas City Chiefs v Denver Broncos,Passing touchdowns,ALL,0.5,True,0.7619047619047619,0.7619047619047619,record,1.821214370984719,True
+2025-12-26,Kansas City Chiefs v Denver Broncos,Passing touchdowns,ALL,0.5,True,0.8095238095238095,0.8095238095238095,record,1.66669407098596,True
+2025-12-26,Kansas City Chiefs v Denver Broncos,Rushing attempts,ALL,23.5,True,0.7142857142857143,0.7142857142857143,record,1.9982724464242418,False
+2025-12-26,Kansas City Chiefs v Denver Broncos,Rushing attempts,ALL,24.5,True,0.7142857142857143,0.7142857142857143,record,1.9982724464242418,False
+2025-12-27,Los Angeles Chargers v Houston Texans,Passing touchdowns,ALL,0.5,True,0.8095238095238095,0.8095238095238095,record,1.66669407098596,True
+2025-12-28,Green Bay Packers v Baltimore Ravens,Field goals,ALL,1.5,True,0.7647058823529411,0.7647058823529411,record,1.896174793296089,False
+2025-12-28,Green Bay Packers v Baltimore Ravens,Passing touchdowns,ALL,0.5,True,0.8235294117647058,0.8235294117647058,record,1.6957754727727123,True
+2025-12-28,Green Bay Packers v Baltimore Ravens,Rushing yards,ALL,144.5,False,0.7647058823529411,0.7647058823529411,record,1.896174793296089,True
+2025-12-28,Green Bay Packers v Baltimore Ravens,Rushing yards,ALL,145.5,False,0.7647058823529411,0.7647058823529411,record,1.896174793296089,True
+2025-12-28,Indianapolis Colts v Jacksonville Jaguars,Passing touchdowns,ALL,0.5,True,0.8947368421052632,0.8947368421052632,record,1.4576101566462472,True
+2025-12-28,Indianapolis Colts v Jacksonville Jaguars,Passing touchdowns,ALL,0.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,False
+2025-12-28,New York Jets v New England Patriots,Passing touchdowns,ALL,1.5,False,0.7222222222222222,0.7222222222222222,record,2.03554375086351,True
+2025-12-28,Cincinnati Bengals v Arizona Cardinals,Field goals,ALL,0.5,True,0.9444444444444444,0.9444444444444444,record,1.3469428402352768,True
+2025-12-28,Cincinnati Bengals v Arizona Cardinals,Field goals,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,False
+2025-12-28,Cincinnati Bengals v Arizona Cardinals,Passing touchdowns,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,True
+2025-12-28,Cincinnati Bengals v Arizona Cardinals,Rushing attempts,ALL,21.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,False
+2025-12-28,Cincinnati Bengals v Arizona Cardinals,Rushing yards,ALL,93.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,False
+2025-12-28,Cincinnati Bengals v Arizona Cardinals,Rushing yards,ALL,94.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,False
+2025-12-28,Cincinnati Bengals v Arizona Cardinals,Touchdowns,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,True
+2025-12-28,Cincinnati Bengals v Arizona Cardinals,Touchdowns,ALL,1.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,True
+2025-12-28,Cleveland Browns v Pittsburgh Steelers,Field goals,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,True
+2025-12-28,Cleveland Browns v Pittsburgh Steelers,Field goals,ALL,0.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,True
+2025-12-28,Cleveland Browns v Pittsburgh Steelers,Passing touchdowns,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,False
+2025-12-28,Cleveland Browns v Pittsburgh Steelers,Rushing attempts,ALL,23.5,True,0.7222222222222222,0.7222222222222222,record,2.03554375086351,True
+2025-12-28,Cleveland Browns v Pittsburgh Steelers,Rushing attempts,ALL,24.5,True,0.6666666666666666,0.6666666666666666,record,2.2857629087632767,True
+2025-12-28,Cleveland Browns v Pittsburgh Steelers,Rushing yards,ALL,93.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,False
+2025-12-28,Cleveland Browns v Pittsburgh Steelers,Rushing yards,ALL,94.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,False
+2025-12-28,Cleveland Browns v Pittsburgh Steelers,Touchdowns,ALL,1.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,False
+2025-12-28,Tennessee Titans v New Orleans Saints,Passing touchdowns,ALL,0.5,True,0.8823529411764706,0.8823529411764706,record,1.5229240232090935,True
+2025-12-28,Miami Dolphins v Tampa Bay Buccaneers,Passing touchdowns,ALL,0.5,True,0.9444444444444444,0.9444444444444444,record,1.3469428402352768,True
+2025-12-28,Miami Dolphins v Tampa Bay Buccaneers,Touchdowns,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,True
+2025-12-28,Miami Dolphins v Tampa Bay Buccaneers,Touchdowns,ALL,1.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,True
+2025-12-28,Carolina Panthers v Seattle Seahawks,Net yards passing,ALL,197.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,False
+2025-12-28,Carolina Panthers v Seattle Seahawks,Net yards passing,ALL,198.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,False
+2025-12-28,Carolina Panthers v Seattle Seahawks,Touchdowns,ALL,1.5,True,0.7222222222222222,0.7222222222222222,record,2.03554375086351,False
+2025-12-28,Carolina Panthers v Seattle Seahawks,Touchdowns,ALL,1.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,True
+2025-12-28,Las Vegas Raiders v New York Giants,Field goals,ALL,0.5,True,0.9,0.9,record,1.4306933643202107,True
+2025-12-28,Las Vegas Raiders v New York Giants,Passing touchdowns,ALL,0.5,True,0.9,0.9,record,1.4306933643202107,True
+2025-12-28,Las Vegas Raiders v New York Giants,Passing touchdowns,ALL,0.5,True,0.75,0.75,record,1.882193543592548,False
+2025-12-28,Las Vegas Raiders v New York Giants,Touchdowns,ALL,1.5,True,0.85,0.85,record,1.5635341211915905,False
+2025-12-28,Las Vegas Raiders v New York Giants,Touchdowns,ALL,1.5,True,0.8,0.8,record,1.7123924599882308,True
+2025-12-28,Buffalo Bills v Philadelphia Eagles,Field goals,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,False
+2025-12-29,San Francisco 49ers v Chicago Bears,Net yards passing,ALL,223.5,False,0.7058823529411765,0.7058823529411765,record,2.133721765202606,False
+2025-12-29,San Francisco 49ers v Chicago Bears,Net yards passing,ALL,224.5,False,0.7058823529411765,0.7058823529411765,record,2.133721765202606,False
+2025-12-29,San Francisco 49ers v Chicago Bears,Passing touchdowns,ALL,1.5,False,0.7058823529411765,0.7058823529411765,record,2.133721765202606,False
+2025-12-29,San Francisco 49ers v Chicago Bears,Touchdowns,ALL,1.5,True,0.8823529411764706,0.8823529411764706,record,1.5229240232090935,True
+2025-12-30,Atlanta Falcons v Los Angeles Rams,Passing touchdowns,ALL,1.5,True,0.8235294117647058,0.8235294117647058,record,1.6957754727727123,True
+2026-01-03,Tampa Bay Buccaneers v Carolina Panthers,Field goals,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,True
+2026-01-03,Tampa Bay Buccaneers v Carolina Panthers,Net yards passing,ALL,183.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,True
+2026-01-03,Tampa Bay Buccaneers v Carolina Panthers,Net yards passing,ALL,184.5,True,0.7222222222222222,0.7222222222222222,record,2.03554375086351,True
+2026-01-03,Tampa Bay Buccaneers v Carolina Panthers,Touchdowns,ALL,1.5,True,0.8888888888888888,0.8888888888888888,record,1.488100660508266,False
+2026-01-03,Tampa Bay Buccaneers v Carolina Panthers,Touchdowns,ALL,1.5,True,0.7222222222222222,0.7222222222222222,record,2.03554375086351,True
+2026-01-04,Jacksonville Jaguars v Tennessee Titans,Net yards passing,ALL,203.5,False,0.7222222222222222,0.7222222222222222,record,2.03554375086351,True
+2026-01-04,Jacksonville Jaguars v Tennessee Titans,Net yards passing,ALL,204.5,False,0.7222222222222222,0.7222222222222222,record,2.03554375086351,True
+2026-01-04,Jacksonville Jaguars v Tennessee Titans,Passing touchdowns,ALL,0.5,True,0.8888888888888888,0.8888888888888888,record,1.488100660508266,True
+2026-01-04,Jacksonville Jaguars v Tennessee Titans,Rushing attempts,ALL,26.5,False,0.7222222222222222,0.7222222222222222,record,2.03554375086351,True
+2026-01-04,Jacksonville Jaguars v Tennessee Titans,Touchdowns,ALL,1.5,True,0.9444444444444444,0.9444444444444444,record,1.3469428402352768,True
+2026-01-04,Cincinnati Bengals v Cleveland Browns,Field goals,ALL,0.5,True,0.8888888888888888,0.8888888888888888,record,1.488100660508266,False
+2026-01-04,Cincinnati Bengals v Cleveland Browns,Field goals,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,True
+2026-01-04,Cincinnati Bengals v Cleveland Browns,Net yards passing,ALL,194.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,True
+2026-01-04,Cincinnati Bengals v Cleveland Browns,Net yards passing,ALL,195.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,True
+2026-01-04,Cincinnati Bengals v Cleveland Browns,Passing touchdowns,ALL,0.5,True,0.9444444444444444,0.9444444444444444,record,1.3469428402352768,True
+2026-01-04,Cincinnati Bengals v Cleveland Browns,Passing touchdowns,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,True
+2026-01-04,Cincinnati Bengals v Cleveland Browns,Rushing yards,ALL,88.5,True,0.7222222222222222,0.7222222222222222,record,2.03554375086351,True
+2026-01-04,Cincinnati Bengals v Cleveland Browns,Rushing yards,ALL,89.5,True,0.7222222222222222,0.7222222222222222,record,2.03554375086351,True
+2026-01-04,Cincinnati Bengals v Cleveland Browns,Touchdowns,ALL,1.5,True,0.8888888888888888,0.8888888888888888,record,1.488100660508266,True
+2026-01-04,Cincinnati Bengals v Cleveland Browns,Touchdowns,ALL,2.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,True
+2026-01-04,Houston Texans v Indianapolis Colts,Field goals,ALL,1.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,True
+2026-01-04,Houston Texans v Indianapolis Colts,Passing touchdowns,ALL,0.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,True
+2026-01-04,Houston Texans v Indianapolis Colts,Passing touchdowns,ALL,0.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,True
+2026-01-04,Houston Texans v Indianapolis Colts,Rushing attempts,ALL,26.5,False,0.6842105263157895,0.6842105263157895,record,2.173440075746724,False
+2026-01-04,Houston Texans v Indianapolis Colts,Rushing attempts,ALL,27.5,False,0.7894736842105263,0.7894736842105263,record,1.7647488874230568,False
+2026-01-04,Houston Texans v Indianapolis Colts,Touchdowns,ALL,1.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,True
+2026-01-04,Houston Texans v Indianapolis Colts,Touchdowns,ALL,1.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,True
+2026-01-04,Minnesota Vikings v Green Bay Packers,Passing touchdowns,ALL,0.5,True,0.7619047619047619,0.7619047619047619,record,1.821214370984719,False
+2026-01-04,Minnesota Vikings v Green Bay Packers,Passing touchdowns,ALL,0.5,True,0.8095238095238095,0.8095238095238095,record,1.66669407098596,False
+2026-01-04,New York Giants v Dallas Cowboys,Passing touchdowns,ALL,0.5,True,0.9090909090909091,0.9090909090909091,record,1.3853366674519583,False
+2026-01-04,Atlanta Falcons v New Orleans Saints,Field goals,ALL,0.5,True,0.8888888888888888,0.8888888888888888,record,1.488100660508266,True
+2026-01-04,Atlanta Falcons v New Orleans Saints,Field goals,ALL,1.5,True,0.6666666666666666,0.6666666666666666,record,2.2857629087632767,True
+2026-01-04,Atlanta Falcons v New Orleans Saints,Field goals,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.6453457184809495,True
+2026-01-04,Atlanta Falcons v New Orleans Saints,Passing touchdowns,ALL,0.5,True,0.9444444444444444,0.9444444444444444,record,1.3469428402352768,True
+2026-01-04,Atlanta Falcons v New Orleans Saints,Rushing attempts,ALL,27.5,True,0.8888888888888888,0.8888888888888888,record,1.488100660508266,False
+2026-01-04,Atlanta Falcons v New Orleans Saints,Rushing attempts,ALL,28.5,True,0.7222222222222222,0.7222222222222222,record,2.03554375086351,False
+2026-01-04,Atlanta Falcons v New Orleans Saints,Rushing attempts,ALL,27.5,False,0.7222222222222222,0.7222222222222222,record,2.03554375086351,True
+2026-01-04,Atlanta Falcons v New Orleans Saints,Rushing yards,ALL,110.5,True,0.7222222222222222,0.7222222222222222,record,2.03554375086351,False
+2026-01-04,Atlanta Falcons v New Orleans Saints,Rushing yards,ALL,111.5,True,0.7222222222222222,0.7222222222222222,record,2.03554375086351,False
+2026-01-04,Atlanta Falcons v New Orleans Saints,Touchdowns,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,False
+2026-01-04,Atlanta Falcons v New Orleans Saints,Touchdowns,ALL,1.5,True,0.7777777777777778,0.7777777777777778,record,1.8253180301883756,True
+2026-01-04,Buffalo Bills v New York Jets,Net yards passing,ALL,182.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,True
+2026-01-04,Buffalo Bills v New York Jets,Net yards passing,ALL,183.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,True
+2026-01-04,Buffalo Bills v New York Jets,Passing touchdowns,ALL,0.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,True
+2026-01-04,Buffalo Bills v New York Jets,Passing touchdowns,ALL,0.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,True
+2026-01-04,Las Vegas Raiders v Kansas City Chiefs,Field goals,ALL,0.5,True,0.8947368421052632,0.8947368421052632,record,1.4576101566462472,True
+2026-01-04,Las Vegas Raiders v Kansas City Chiefs,Passing touchdowns,ALL,0.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,False
+2026-01-04,Las Vegas Raiders v Kansas City Chiefs,Passing touchdowns,ALL,0.5,True,0.6842105263157895,0.6842105263157895,record,2.173440075746724,False
+2026-01-04,Las Vegas Raiders v Kansas City Chiefs,Touchdowns,ALL,1.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,False
+2026-01-04,New England Patriots v Miami Dolphins,Net yards passing,ALL,219.5,False,0.8235294117647058,0.8235294117647058,record,1.6957754727727123,True
+2026-01-04,New England Patriots v Miami Dolphins,Net yards passing,ALL,220.5,False,0.8235294117647058,0.8235294117647058,record,1.6957754727727123,True
+2026-01-04,New England Patriots v Miami Dolphins,Touchdowns,ALL,2.5,True,0.7058823529411765,0.7058823529411765,record,2.133721765202606,True
+2026-01-04,Denver Broncos v Los Angeles Chargers,Passing touchdowns,ALL,0.5,True,0.7894736842105263,0.7894736842105263,record,1.7647488874230568,False
+2026-01-04,Denver Broncos v Los Angeles Chargers,Touchdowns,ALL,1.5,True,0.7894736842105263,0.7894736842105263,record,1.7647488874230568,False
+2026-01-04,Chicago Bears v Detroit Lions,Field goals,ALL,0.5,True,1.0,1.0,record,1.2401,False
+2026-01-04,Chicago Bears v Detroit Lions,Field goals,ALL,0.5,True,0.8125,0.8125,record,1.7546740968198824,True
+2026-01-04,Chicago Bears v Detroit Lions,Touchdowns,ALL,2.5,True,0.75,0.75,record,1.9801497484328403,False
+2026-01-04,Philadelphia Eagles v Washington Commanders,Field goals,ALL,0.5,True,0.7916666666666666,0.7916666666666666,record,1.6798491283014727,True
+2026-01-04,Philadelphia Eagles v Washington Commanders,Field goals,ALL,0.5,True,0.75,0.75,record,1.8148762788218833,True
+2026-01-04,Philadelphia Eagles v Washington Commanders,Rushing attempts,ALL,29.5,True,0.6666666666666666,0.6666666666666666,record,2.141054398265259,False
+2026-01-04,Philadelphia Eagles v Washington Commanders,Rushing attempts,ALL,28.5,False,0.6666666666666666,0.6666666666666666,record,2.141054398265259,False
+2026-01-04,Philadelphia Eagles v Washington Commanders,Rushing attempts,ALL,29.5,False,0.7083333333333334,0.7083333333333334,record,1.9672671788182685,False
+2026-01-04,Philadelphia Eagles v Washington Commanders,Rushing yards,ALL,133.5,True,0.75,0.75,record,1.8148762788218833,False
+2026-01-04,Philadelphia Eagles v Washington Commanders,Rushing yards,ALL,134.5,True,0.75,0.75,record,1.8148762788218833,False
+2026-01-04,Los Angeles Rams v Arizona Cardinals,Field goals,ALL,0.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,True
+2026-01-04,Los Angeles Rams v Arizona Cardinals,Field goals,ALL,0.5,True,0.7894736842105263,0.7894736842105263,record,1.7647488874230568,True
+2026-01-05,Pittsburgh Steelers v Baltimore Ravens,Field goals,ALL,1.5,True,0.6842105263157895,0.6842105263157895,record,2.173440075746724,False
+2026-01-05,Pittsburgh Steelers v Baltimore Ravens,Passing touchdowns,ALL,0.5,True,0.8947368421052632,0.8947368421052632,record,1.4576101566462472,True
+2026-01-05,Pittsburgh Steelers v Baltimore Ravens,Rushing yards,ALL,129.5,False,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,True
+2026-01-05,Pittsburgh Steelers v Baltimore Ravens,Rushing yards,ALL,130.5,False,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,True
+2026-01-10,Carolina Panthers v Los Angeles Rams,Field goals,ALL,0.5,True,0.6842105263157895,0.6842105263157895,record,2.173440075746724,True
+2026-01-10,Carolina Panthers v Los Angeles Rams,Rushing yards,ALL,114.5,True,0.7368421052631579,0.7368421052631579,record,1.952818668394267,True
+2026-01-10,Carolina Panthers v Los Angeles Rams,Rushing yards,ALL,115.5,True,0.6842105263157895,0.6842105263157895,record,2.173440075746724,True
+2026-01-11,Chicago Bears v Green Bay Packers,Passing touchdowns,ALL,0.5,True,0.8,0.8,record,1.7123924599882308,True
+2026-01-11,Chicago Bears v Green Bay Packers,Passing touchdowns,ALL,1.5,True,0.7,0.7,record,2.0789017049123304,True
+2026-01-11,Chicago Bears v Green Bay Packers,Passing touchdowns,ALL,0.5,True,0.8,0.8,record,1.7123924599882308,True
+2026-01-11,Jacksonville Jaguars v Buffalo Bills,Net yards passing,ALL,210.5,False,0.7142857142857143,0.7142857142857143,record,1.9982724464242418,False
+2026-01-11,Jacksonville Jaguars v Buffalo Bills,Net yards passing,ALL,211.5,False,0.7142857142857143,0.7142857142857143,record,1.9982724464242418,False
+2026-01-11,Philadelphia Eagles v San Francisco 49ers,Field goals,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.5589307886905432,True
+2026-01-11,Philadelphia Eagles v San Francisco 49ers,Field goals,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.5589307886905432,True
+2026-01-11,Philadelphia Eagles v San Francisco 49ers,Passing touchdowns,ALL,1.5,True,0.7083333333333334,0.7083333333333334,record,1.9672671788182685,False
+2026-01-11,Philadelphia Eagles v San Francisco 49ers,Touchdowns,ALL,1.5,True,0.875,0.875,record,1.4493654361346346,True
+2026-01-12,New England Patriots v Los Angeles Chargers,Touchdowns,ALL,2.5,False,0.6842105263157895,0.6842105263157895,record,2.173440075746724,True
+2026-01-13,Pittsburgh Steelers v Houston Texans,Field goals,ALL,1.5,True,0.7619047619047619,0.7619047619047619,record,1.821214370984719,False
+2026-01-13,Pittsburgh Steelers v Houston Texans,Net yards passing,ALL,202.5,False,0.7142857142857143,0.7142857142857143,record,1.9982724464242418,True
+2026-01-13,Pittsburgh Steelers v Houston Texans,Passing touchdowns,ALL,0.5,True,0.8095238095238095,0.8095238095238095,record,1.66669407098596,False
+2026-01-13,Pittsburgh Steelers v Houston Texans,Passing touchdowns,ALL,0.5,True,0.8095238095238095,0.8095238095238095,record,1.66669407098596,True
+2026-01-13,Pittsburgh Steelers v Houston Texans,Rushing yards,ALL,106.5,False,0.7619047619047619,0.7619047619047619,record,1.821214370984719,True
+2026-01-13,Pittsburgh Steelers v Houston Texans,Rushing yards,ALL,107.5,False,0.7619047619047619,0.7619047619047619,record,1.821214370984719,True
+2026-01-17,Denver Broncos v Buffalo Bills,Field goals,ALL,0.5,True,0.8095238095238095,0.8095238095238095,record,1.66669407098596,True
+2026-01-17,Denver Broncos v Buffalo Bills,Field goals,ALL,0.5,True,0.7142857142857143,0.7142857142857143,record,1.9982724464242418,True
+2026-01-18,Seattle Seahawks v San Francisco 49ers,Rushing yards,ALL,116.5,False,0.6666666666666666,0.6666666666666666,record,2.203950218307691,True
+2026-01-18,Seattle Seahawks v San Francisco 49ers,Rushing yards,ALL,117.5,False,0.6666666666666666,0.6666666666666666,record,2.203950218307691,True
+2026-01-18,New England Patriots v Houston Texans,Net yards passing,ALL,240.5,False,0.7727272727272727,0.7727272727272727,record,1.7680450766506763,True
+2026-01-18,New England Patriots v Houston Texans,Net yards passing,ALL,241.5,False,0.7727272727272727,0.7727272727272727,record,1.7680450766506763,True
+2026-01-18,New England Patriots v Houston Texans,Passing touchdowns,ALL,0.5,True,0.7727272727272727,0.7727272727272727,record,1.7680450766506763,True
+2026-01-18,New England Patriots v Houston Texans,Passing touchdowns,ALL,0.5,True,0.8181818181818182,0.8181818181818182,record,1.6264664337176749,True
+2026-01-18,New England Patriots v Houston Texans,Touchdowns,ALL,2.5,False,0.6818181818181818,0.6818181818181818,record,2.1133507160430907,True
+2026-01-25,Denver Broncos v New England Patriots,Field goals,ALL,0.5,True,0.9,0.9,record,1.4306933643202107,False
+2026-01-25,Denver Broncos v New England Patriots,Field goals,ALL,0.5,True,0.75,0.75,record,1.882193543592548,True
+2026-09-13,Houston Texans v Buffalo Bills,Passing touchdowns,ALL,0.5,True,0.8260869565217391,0.8260869565217391,record,1.59078755292174,True
+2026-09-13,Houston Texans v Buffalo Bills,Passing touchdowns,ALL,0.5,True,0.782608695652174,0.782608695652174,record,1.7212853511480446,True
+2026-09-13,Jacksonville Jaguars v Cleveland Browns,Net yards passing,ALL,187.5,True,0.7619047619047619,0.7619047619047619,record,1.821214370984719,True
+2026-09-13,Jacksonville Jaguars v Cleveland Browns,Net yards passing,ALL,188.5,True,0.7619047619047619,0.7619047619047619,record,1.821214370984719,True
+2026-09-13,Jacksonville Jaguars v Cleveland Browns,Passing touchdowns,ALL,0.5,True,0.9523809523809523,0.9523809523809523,record,1.2931561207470297,True
+2026-09-13,Jacksonville Jaguars v Cleveland Browns,Rushing attempts,ALL,26.5,False,0.7142857142857143,0.7142857142857143,record,1.9982724464242418,True
+2026-09-13,Jacksonville Jaguars v Cleveland Browns,Rushing yards,ALL,105.5,False,0.6666666666666666,0.6666666666666666,record,2.203950218307691,True
+2026-09-13,Jacksonville Jaguars v Cleveland Browns,Rushing yards,ALL,106.5,False,0.6666666666666666,0.6666666666666666,record,2.203950218307691,True
+2026-09-13,Jacksonville Jaguars v Cleveland Browns,Touchdowns,ALL,1.5,True,0.9047619047619048,0.9047619047619048,record,1.4067583117765785,True
+2026-09-13,Indianapolis Colts v Baltimore Ravens,Net yards passing,ALL,195.5,True,0.7727272727272727,0.7727272727272727,record,1.7680450766506763,False
+2026-09-13,Indianapolis Colts v Baltimore Ravens,Net yards passing,ALL,196.5,True,0.7272727272727273,0.7272727272727273,record,1.9287193060610484,False
+2026-09-13,Indianapolis Colts v Baltimore Ravens,Passing touchdowns,ALL,0.5,True,0.8181818181818182,0.8181818181818182,record,1.6264664337176749,True
+2026-09-13,Tennessee Titans v New York Jets,Field goals,ALL,1.5,True,0.6842105263157895,0.6842105263157895,record,2.173440075746724,False
+2026-09-13,Tennessee Titans v New York Jets,Net yards passing,ALL,163.5,True,0.7894736842105263,0.7894736842105263,record,1.7647488874230568,False
+2026-09-13,Tennessee Titans v New York Jets,Net yards passing,ALL,164.5,True,0.7894736842105263,0.7894736842105263,record,1.7647488874230568,False
+2026-09-13,Tennessee Titans v New York Jets,Passing touchdowns,ALL,0.5,True,0.8421052631578947,0.8421052631578947,record,1.6016895298528637,True
+2026-09-13,Tennessee Titans v New York Jets,Passing touchdowns,ALL,0.5,True,0.8947368421052632,0.8947368421052632,record,1.4576101566462472,False
+2026-09-13,Tennessee Titans v New York Jets,Rushing attempts,ALL,22.5,True,0.7894736842105263,0.7894736842105263,record,1.7647488874230568,True
+2026-09-13,Tennessee Titans v New York Jets,Touchdowns,ALL,1.5,True,0.7368421052631579,0.7368421052631579,record,1.952818668394267,True
+2026-09-13,Cincinnati Bengals v Tampa Bay Buccaneers,Field goals,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,1.5299056973520833,True
+2026-09-13,Cincinnati Bengals v Tampa Bay Buccaneers,Field goals,ALL,0.5,True,0.8095238095238095,0.8095238095238095,record,1.66669407098596,True
+2026-09-13,Cincinnati Bengals v Tampa Bay Buccaneers,Rushing attempts,ALL,22.5,True,0.8095238095238095,0.8095238095238095,record,1.66669407098596,False
+2026-09-13,Cincinnati Bengals v Tampa Bay Buccaneers,Touchdowns,ALL,1.5,True,0.9047619047619048,0.9047619047619048,record,1.4067583117765785,True
+2026-09-13,Cincinnati Bengals v Tampa Bay Buccaneers,Touchdowns,ALL,1.5,True,0.9047619047619048,0.9047619047619048,record,1.4067583117765785,True
+2026-09-13,Pittsburgh Steelers v Atlanta Falcons,Passing touchdowns,ALL,0.5,True,0.8695652173913043,0.8695652173913043,record,1.4733594070837253,True
+2026-09-13,Carolina Panthers v Chicago Bears,Field goals,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,1.5299056973520833,True
+2026-09-13,Carolina Panthers v Chicago Bears,Field goals,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,1.5299056973520833,True
+2026-09-13,Carolina Panthers v Chicago Bears,Touchdowns,ALL,1.5,True,0.8571428571428571,0.8571428571428571,record,1.5299056973520833,True
+2026-09-13,Carolina Panthers v Chicago Bears,Touchdowns,ALL,1.5,True,0.8095238095238095,0.8095238095238095,record,1.66669407098596,True
+2026-09-13,Detroit Lions v New Orleans Saints,Field goals,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,1.5299056973520833,True
+2026-09-13,Detroit Lions v New Orleans Saints,Field goals,ALL,0.5,True,0.9047619047619048,0.9047619047619048,record,1.4067583117765785,True
+2026-09-13,Detroit Lions v New Orleans Saints,Passing touchdowns,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,1.5299056973520833,True
+2026-09-13,Detroit Lions v New Orleans Saints,Passing touchdowns,ALL,0.5,True,0.8571428571428571,0.8571428571428571,record,1.5299056973520833,True
+2026-09-13,Detroit Lions v New Orleans Saints,Rushing yards,ALL,97.5,True,0.7142857142857143,0.7142857142857143,record,1.9982724464242418,True
+2026-09-13,Detroit Lions v New Orleans Saints,Rushing yards,ALL,98.5,True,0.7142857142857143,0.7142857142857143,record,1.9982724464242418,True
+2026-09-13,Detroit Lions v New Orleans Saints,Touchdowns,ALL,1.5,True,0.8571428571428571,0.8571428571428571,record,1.5299056973520833,True
+2026-09-13,Detroit Lions v New Orleans Saints,Touchdowns,ALL,1.5,True,0.7142857142857143,0.7142857142857143,record,1.9982724464242418,True
+2026-09-13,Las Vegas Raiders v Miami Dolphins,Touchdowns,ALL,1.5,True,0.7619047619047619,0.7619047619047619,record,1.821214370984719,False
+2026-09-13,Los Angeles Chargers v Arizona Cardinals,Touchdowns,ALL,1.5,True,0.7619047619047619,0.7619047619047619,record,1.821214370984719,True
+2026-09-13,Minnesota Vikings v Green Bay Packers,Field goals,ALL,1.5,True,0.6956521739130435,0.6956521739130435,record,2.0352558853602387,False
+2026-09-13,Philadelphia Eagles v Washington Commanders,Field goals,ALL,0.5,True,0.8148148148148148,0.8148148148148148,record,1.5797552845038036,True
+2026-09-13,Philadelphia Eagles v Washington Commanders,Field goals,ALL,0.5,True,0.7777777777777778,0.7777777777777778,record,1.6879715533186803,True
+2026-09-13,Philadelphia Eagles v Washington Commanders,Passing touchdowns,ALL,0.5,True,0.8518518518518519,0.8518518518518519,record,1.4810221089446984,True
+2026-09-13,Philadelphia Eagles v Washington Commanders,Passing touchdowns,ALL,0.5,True,0.8518518518518519,0.8518518518518519,record,1.4810221089446984,True
+2026-09-14,New York Giants v Dallas Cowboys,Passing touchdowns,ALL,0.5,True,0.8333333333333334,0.8333333333333334,record,1.5589307886905432,True
+2026-09-15,Kansas City Chiefs v Denver Broncos,Field goals,ALL,0.5,True,0.9565217391304348,0.9565217391304348,record,1.265687988944123,True
+2026-09-15,Kansas City Chiefs v Denver Broncos,Field goals,ALL,0.5,True,0.7391304347826086,0.7391304347826086,record,1.868124968887201,True
+2026-09-15,Kansas City Chiefs v Denver Broncos,Net yards passing,ALL,224.5,False,0.8695652173913043,0.8695652173913043,record,1.4733594070837253,True
+2026-09-15,Kansas City Chiefs v Denver Broncos,Net yards passing,ALL,225.5,False,0.8695652173913043,0.8695652173913043,record,1.4733594070837253,True
+2026-09-15,Kansas City Chiefs v Denver Broncos,Passing touchdowns,ALL,0.5,True,0.782608695652174,0.782608695652174,record,1.7212853511480446,True
+2026-09-15,Kansas City Chiefs v Denver Broncos,Passing touchdowns,ALL,0.5,True,0.8260869565217391,0.8260869565217391,record,1.59078755292174,True
+2026-09-15,Kansas City Chiefs v Denver Broncos,Touchdowns,ALL,1.5,True,0.7391304347826086,0.7391304347826086,record,1.868124968887201,False
+2026-09-18,Buffalo Bills v Detroit Lions,Field goals,ALL,0.5,True,0.8095238095238095,0.8095238095238095,record,1.66669407098596,False
+2026-09-18,Buffalo Bills v Detroit Lions,Passing touchdowns,ALL,1.5,True,0.7619047619047619,0.7619047619047619,record,1.821214370984719,True
+2026-09-18,Buffalo Bills v Detroit Lions,Rushing yards,ALL,140.5,False,0.7142857142857143,0.7142857142857143,record,1.9982724464242418,True
+2026-09-18,Buffalo Bills v Detroit Lions,Rushing yards,ALL,141.5,False,0.7142857142857143,0.7142857142857143,record,1.9982724464242418,True

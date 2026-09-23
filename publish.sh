@@ -50,10 +50,22 @@ fi
 
 "$PY" make_index.py
 
+# The small page.
+#
+# Everything else here is megabytes of report that only a real browser can
+# read. tonight.html is about twenty kilobytes of rendered answers, which is
+# what makes it usable on a phone on mobile data and readable by anything that
+# fetches a URL. It is built last so it sees whatever make_index just did.
+"$PY" tonight.py --hours 8 || echo "  tonight.html not rebuilt (continuing)"
+
 STAGE="$(mktemp -d)"
 trap 'rm -rf "$STAGE"' EXIT
 
 cp index.html "$STAGE"/
+# `[ -f x ] && cp x y` is a trap under `set -e`: when the file is missing the
+# whole list returns 1 and the script exits, so a page that failed to build
+# would silently stop the entire publish.
+if [ -f tonight.html ]; then cp tonight.html "$STAGE"/; fi
 cp -R reports "$STAGE"/
 # Stops GitHub running the site through Jekyll, which it has no need to do
 # and which is the piece that failed during the outage.
@@ -128,13 +140,34 @@ echo
 echo "Waiting for Pages to rebuild, then checking ${BASE}/"
 sleep 45
 
+# A HEAD request, deliberately.
+#
+# This used to GET the whole page and throw the body away, with a twenty
+# second cap. A report is one to twenty megabytes and the site is over a
+# hundred, so a page that was serving perfectly well would time out mid-body
+# -- and then `|| echo 000` appended three more digits to the status curl had
+# already printed, producing "FAIL bundesliga.html (HTTP 200000)". That is a
+# 200 with 000 stuck on the end: the page was fine and the check said it was
+# broken, in a code that does not exist. Two bugs wearing each other's coat.
+#
+# A HEAD asks for the status and nothing else, so size stops mattering, and
+# the exit status is now read separately from the status line instead of being
+# concatenated onto it.
 check() {
-  code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$1" || echo 000)"
+  local code
+  code="$(curl -s -I -o /dev/null -w '%{http_code}' --max-time 20 "$1")" || code="000"
+  case "$code" in
+    ''|*[!0-9]*) code="000" ;;
+  esac
   if [ "$code" = "200" ]; then
     echo "  ok   $2"
     return 0
   fi
-  echo "  FAIL $2  (HTTP $code)"
+  if [ "$code" = "000" ]; then
+    echo "  FAIL $2  (no answer: timed out or DNS)"
+  else
+    echo "  FAIL $2  (HTTP $code)"
+  fi
   return 1
 }
 
@@ -143,6 +176,7 @@ check() {
 verify_round() {
   local failed=0
   check "${BASE}/" "index" || failed=1
+  check "${BASE}/tonight.html" "tonight.html" || failed=1
   for name in $(ls reports/*.html | head -3 | xargs -n1 basename); do
     check "${BASE}/reports/${name}" "$name" || failed=1
   done

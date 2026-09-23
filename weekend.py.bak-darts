@@ -126,8 +126,7 @@ def legs_for(entry, meta):
                     hits = over_hits if over else len(values) - over_hits
                     if hits == 0:
                         continue
-                    price = model.price(line, over, expected, values, hits, len(values),
-                                        sport=sport_of(entry))
+                    price = model.price(line, over, expected, values, hits, len(values))
                     if price.get("conflict") or not math.isfinite(price["fair"]):
                         continue
                     out.append({
@@ -225,8 +224,7 @@ def player_legs_for(entry, meta):
                     hits = over_hits if over else len(values) - over_hits
                     if hits == 0:
                         continue
-                    price = model.price(line, over, None, values, hits, len(values),
-                                        sport=sport_of(entry))
+                    price = model.price(line, over, None, values, hits, len(values))
                     if not math.isfinite(price["fair"]):
                         continue
                     out.append({
@@ -508,19 +506,10 @@ _GRIDIRON = {"Touchdowns", "Net yards passing", "Rushing yards", "Total yards",
 _BASKETBALL = {"Rebounds", "3 pointers", "Defensive rebounds",
                "Offensive rebounds", "Steals", "Blocks"}
 
-# Darts. One match is two players and no team, and the feed reports the pair
-# of them as teams, which is why nothing below needs a special case: a darts
-# "team" is a man. The fingerprint is only a fallback -- the tournament's own
-# category names the sport, and these fixtures arrive with it attached -- but
-# a report built before that field existed still has to land somewhere.
-_DARTS = {"Thrown 180", "Average 3 darts", "Highest checkout",
-          "Checkouts over 100", "Thrown over 140", "Checkouts accuracy"}
-
 SPORT_LABELS = {
     "football": "Football",
     "american-football": "NFL",
     "basketball": "Basketball",
-    "darts": "Darts",
 }
 
 
@@ -531,8 +520,6 @@ def sport_of(entry) -> str:
         return named
     for names in (entry.get("stats") or {}).values():
         present = set(names)
-        if _DARTS & present:
-            return "darts"
         if _BASKETBALL & present:
             return "basketball"
         if _GRIDIRON & present:

@@ -96,9 +96,51 @@ def cached_only(path: str, max_age_hours=None):
     return data
 
 
+def sport_of_fixtures(fixtures) -> str:
+    """Which sport a competition's fixtures belong to, straight from the feed.
+
+    The events carry it on their tournament's category, the same field run.py
+    reads when it builds a report. Taken by majority rather than from the
+    first event, because a cup round can drag one fixture from elsewhere into
+    the list and a single stray event should not decide the vocabulary the
+    whole replay is filtered against.
+    """
+    counts: dict[str, int] = {}
+    for event in fixtures or []:
+        slug = (((event.get("tournament") or {}).get("category") or {})
+                .get("sport") or {}).get("slug")
+        if slug:
+            counts[slug] = counts.get(slug, 0) + 1
+    if not counts:
+        return "football"
+    return max(counts, key=counts.get)
+
+
 class Backtester:
+    """Replays a competition's fixtures and settles the bets the page would
+    have made.
+
+    THE SPORT IS NOT OPTIONAL. Every call into hitrates and model below has a
+    sport-shaped argument, and this class used to leave all of them on their
+    football defaults. The effect was total and silent for the NFL: stat_names
+    filtered gridiron stats against football's vocabulary, matched nothing,
+    and the replay walked all 831 fixtures settling zero bets while printing
+    that everything was fine. The same blindness put football's zero-fill on
+    gridiron player records and graded every gridiron player void, because the
+    appearance bar was football's 45 minutes and a box score reports none.
+
+    So `sport` is carried on the instance and threaded everywhere. It is the
+    same separation markets.py already enforces; the backtest simply was not
+    part of it.
+    """
+
     def __init__(self, tournament_id: int, games: int, verbose: bool = True,
-                 players: bool = False):
+                 players: bool = False, sport: str = "football"):
+        self.sport = sport
+        self.zero_fill = markets.ZERO_FILL_BY_SPORT.get(sport)
+        if self.zero_fill is None:
+            self.zero_fill = hitrates.PLAYER_ZERO_FILL
+        self.min_minutes = model.min_minutes_for(sport)
         self.tournament_id = tournament_id
         self.games = games
         self.verbose = verbose
@@ -186,7 +228,8 @@ class Backtester:
                 ratings, home["id"], away["id"], league_names
             )
 
-        names = hitrates.stat_names(*records, bettable_only=True)
+        names = hitrates.stat_names(*records, bettable_only=True,
+                                    sport=self.sport)
         lines = hitrates.suggest_lines(records, names)
 
         for period in hitrates.PERIODS:
@@ -194,7 +237,7 @@ class Backtester:
                 continue
 
             for stat in names.get(period, []):
-                if stat not in markets.BETTABLE_STATS:
+                if stat not in markets.stats_for(self.sport):
                     continue
 
                 suggested = (lines.get(period) or {}).get(stat)
@@ -257,7 +300,8 @@ class Backtester:
                 hits = k_for + k_agn
                 total = len(for_vals) + len(against_vals)
 
-                priced = model.price(line, over, expected, for_vals, hits, total)
+                priced = model.price(line, over, expected, for_vals, hits, total,
+                                     sport=self.sport)
                 if priced["conflict"]:
                     continue
 
@@ -293,6 +337,7 @@ class Backtester:
             team_id=team_id, team_name=str(team_id),
             tournament_id=self.tournament_id, limit=self.games,
             verbose=False, current_squad_only=False, before=before,
+            sport=self.sport,
         )
 
     def player_adjustment(self, stat, team_index, records, projection) -> float:
@@ -358,7 +403,8 @@ class Backtester:
         if not any(squads):
             return
 
-        stats = hitrates.player_stat_names(*squads, bettable_only=True)
+        stats = hitrates.player_stat_names(*squads, bettable_only=True,
+                                           sport=self.sport)
         lines = hitrates.suggest_player_lines(squads, stats)
 
         for team_index in (0, 1):
@@ -399,7 +445,7 @@ class Backtester:
                 apps_by_name: dict[str, list[dict]] = {}
                 for name, played in by_player.items():
                     apps = model.appearances(
-                        played, stat, hitrates.PLAYER_ZERO_FILL)
+                        played, stat, self.zero_fill, self.min_minutes)
                     apps_by_name[name] = apps
                     for a in apps:
                         base_n += 1
@@ -419,9 +465,9 @@ class Backtester:
 
                     prior = model.position_prior(
                         by_player, played[0].get("position") or "", stat,
-                        name, hitrates.PLAYER_ZERO_FILL)
+                        name, self.zero_fill)
                     priced = model.price_player(
-                        apps, line, True, adjustment, prior)
+                        apps, line, True, adjustment, prior, self.sport)
                     if not math.isfinite(priced["fair"]):
                         continue
 
@@ -465,10 +511,15 @@ class Backtester:
              if (e.get("player") or {}).get("id") == player_id), None)
         if entry is None:
             return "void_absent"
-        values = hitrates._player_stat_values(entry.get("statistics") or {})
+        values = hitrates._player_stat_values(
+            entry.get("statistics") or {}, zero_fill=self.zero_fill)
         if not values:
             return "void_absent"
-        if values.get("Minutes", 0) < model.MIN_MINUTES:
+        # Gate on minutes only where minutes are reported. A gridiron box
+        # score sends zero for everyone, so the football bar graded every
+        # single player a cameo and voided the entire sport -- the same
+        # failure the page hit, arriving here by the same route.
+        if values.get("Minutes", 0) > 0 and values["Minutes"] < self.min_minutes:
             return "void_cameo"
         actual = values.get(stat)
         if actual is None:
@@ -576,8 +627,6 @@ def main() -> None:
             print("  could not read the team list from cache, skipping")
             continue
 
-        tester = Backtester(tournament_id, args.games, players=args.players)
-
         def competition_of(event: dict):
             return (event.get("tournament", {})
                     .get("uniqueTournament", {}).get("id"))
@@ -644,8 +693,14 @@ def main() -> None:
             e[side]["id"] for e in replay for side in ("homeTeam", "awayTeam")
         })
 
+        # Built here rather than above, because the sport is read off the
+        # fixtures and they do not exist until now.
+        sport = sport_of_fixtures(replay)
+        tester = Backtester(tournament_id, args.games, players=args.players,
+                            sport=sport)
+
         print(f"  {len(replay)} finished fixture(s) to replay, "
-              f"{len(team_ids)} club(s) involved")
+              f"{len(team_ids)} club(s) involved, sport: {sport}")
         if excluded:
             print(f"  {excluded} fixture(s) excluded as other competitions "
                   f"(cups, playoffs, another division): this backtest settles "
