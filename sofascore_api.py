@@ -105,6 +105,21 @@ TOURNAMENTS = {
     "brasileirao": 325,
     "brasileirao_serie_a": 325,
     "brazil_serie_a": 325,
+    # International football. 10783, read off the tournament's own URL rather
+    # than from search, which was returning 403 at the time.
+    #
+    # --league will technically work -- the group tables answer -- but it
+    # resolves to all 54 nations across leagues A to D, which is a fetch you
+    # do not want and a report nobody reads. Use --teams for the two or three
+    # fixtures you actually care about.
+    #
+    # Read the note in weekend.py about international form before trusting
+    # anything this builds: a national side plays ten matches a year, so a
+    # "last 10" window is eighteen months of Nations League, qualifiers and
+    # friendlies mixed together, and the opposition ranges from France to
+    # San Marino.
+    "uefa_nations_league": 10783,
+    "nations_league": 10783,
     # Darts. A knockout with no league table, so --league only works through
     # the season-fixtures fallback in tournament_team_ids below. It is also
     # seasonal in the strictest sense: the World Championship is played across
@@ -113,6 +128,31 @@ TOURNAMENTS = {
     "world_darts_championship": 616,
     "darts": 616,
 }
+
+# Team ids that do not need the search endpoint.
+#
+# search/all started answering 403 to everything while the match and
+# statistics endpoints carried on working normally, which meant --names died
+# on the lookup for fixtures the tool could otherwise build perfectly well.
+# The ids themselves are not secret: they are in the URL of every team page on
+# the site, so anything read off there once never needs asking for again.
+#
+# National sides are the ones worth keeping, because their names are stable
+# and there is no league table to enumerate them from. Same idea as
+# nfl_teams.py, which exists because search used to answer NFL queries with
+# soccer clubs.
+KNOWN_TEAM_IDS = {
+    "england": 4713, "spain": 4698, "france": 4481, "italy": 4707,
+    "belgium": 4717, "germany": 4711, "netherlands": 4705, "portugal": 4704,
+    "croatia": 4715, "czechia": 4714, "scotland": 4695, "switzerland": 4699,
+}
+
+
+def known_team_id(name: str) -> int | None:
+    """A team id from the built-in table, or None. Never touches the network."""
+    return KNOWN_TEAM_IDS.get("".join(
+        c for c in (name or "").lower() if c.isalnum()))
+
 
 def tournament_id_for(name: str) -> int | None:
     """Competition name to id, forgiving about how it is written.
@@ -142,6 +182,83 @@ def tournament_id_for(name: str) -> int | None:
 
 _session = None
 
+# Which browser to look like on the wire.
+#
+# This was the bare alias "chrome", which curl_cffi maps to a default that
+# ages: the installed 0.16.0 ships targets up to chrome146, and the default
+# is years behind them. An old TLS and HTTP/2 fingerprint is precisely what a
+# bot filter is looking for, and it is why every request started coming back
+# 403 while the same URL served 200 to the real Chrome on the same machine.
+#
+# Overridable, because this will go stale again. When it does, raise it to
+# the newest target the installed curl_cffi lists rather than assuming a ban:
+#   python -c "from curl_cffi.requests.impersonate import BrowserTypeLiteral; \
+#              import typing; print(typing.get_args(BrowserTypeLiteral))"
+IMPERSONATE = os.environ.get("SOFA_IMPERSONATE", "chrome142")
+
+# FlareSolverr route. Opt-in: set SOFA_FLARESOLVERR=1 (or a full URL) and
+# every request goes through a real Chrome in the FlareSolverr container
+# instead of curl_cffi. Slower per request, but it gets past Cloudflare
+# challenges that a fingerprint alone no longer does. Everything downstream
+# (cache, backoff, circuit breaker) is unchanged because this answers the
+# same .get() / .status_code / .json() calls a curl_cffi session does.
+FLARESOLVERR = os.environ.get("SOFA_FLARESOLVERR", "")
+if FLARESOLVERR in ("1", "true", "yes"):
+    FLARESOLVERR = "http://localhost:8191/v1"
+
+
+class _FlareResponse:
+    def __init__(self, status_code: int, text: str):
+        self.status_code = status_code
+        self.text = text
+
+    def json(self):
+        # Raises json.JSONDecodeError on non-JSON, which get_json already handles.
+        return json.loads(self.text)
+
+
+class _FlareSession:
+    """Looks enough like a curl_cffi session for get_json not to notice."""
+
+    def __init__(self, endpoint: str):
+        self.endpoint = endpoint
+        # One browser session for the whole run, so the Cloudflare clearance
+        # cookie is reused instead of re-solved on every request.
+        created = self._call({"cmd": "sessions.create"}, timeout=60)
+        self.session_id = created.get("session")
+
+    def _call(self, payload: dict, timeout: float) -> dict:
+        import urllib.request
+        req = urllib.request.Request(
+            self.endpoint,
+            data=json.dumps(payload).encode(),
+            headers={"Content-Type": "application/json"},
+        )
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            return json.load(r)
+
+    def get(self, url: str, timeout: float = 30):
+        import html
+        import re
+
+        wait = max(timeout, 60)
+        payload = {"cmd": "request.get", "url": url, "maxTimeout": int(wait * 1000)}
+        if self.session_id:
+            payload["session"] = self.session_id
+        out = self._call(payload, timeout=wait + 30)
+
+        if out.get("status") != "ok":
+            # FlareSolverr could not get through. Report it as a block so the
+            # circuit breaker counts it, rather than as a network fault that
+            # would just be retried.
+            return _FlareResponse(403, "")
+
+        sol = out.get("solution") or {}
+        body = sol.get("response") or ""
+        # Chrome shows a JSON response wrapped in <pre>...</pre>.
+        m = re.search(r"<pre[^>]*>(.*?)</pre>", body, re.S)
+        text = html.unescape(m.group(1)) if m else body
+        return _FlareResponse(int(sol.get("status") or 0), text)
 
 def _get_session():
     """One session for the whole run, so cookies persist between requests.
@@ -151,18 +268,48 @@ def _get_session():
     along on everything afterwards.
     """
     global _session
+    if _session is None and FLARESOLVERR:
+        _session = _FlareSession(FLARESOLVERR)
     if _session is None:
         from curl_cffi import requests
-        _session = requests.Session(impersonate="chrome")
+        _session = requests.Session(impersonate=IMPERSONATE)
         _session.headers.update(
             {
                 "Accept": "*/*",
                 "Accept-Language": "en-GB,en;q=0.9",
                 "Referer": "https://www.sofascore.com/",
                 "Origin": "https://www.sofascore.com",
+                # What a real XHR from the site sends. Their edge checks
+                # these, and a request without them is obviously not a page.
+                "Sec-Fetch-Site": "same-origin",
+                "Sec-Fetch-Mode": "cors",
+                "Sec-Fetch-Dest": "empty",
+                "X-Requested-With": "XMLHttpRequest",
             }
         )
+        _warm(_session)
     return _session
+
+def _warm(session) -> None:
+    """Load one ordinary page before asking the API anything.
+
+    The docstring above has always said the clearance cookie rides along on
+    everything once you are accepted. Nothing ever went and got one. The
+    session was created, had headers set, and went straight at /api/v1 with
+    an empty cookie jar -- which is a request that looks like nothing a
+    browser has ever sent, because a browser loads the site first.
+
+    That is what the 403s were. The endpoint had not moved: the very same URL
+    returned 200 from Chrome on the same machine at the same minute. Only the
+    caller looked wrong.
+
+    One request, failures ignored: if this does not work the API call is no
+    worse off than before.
+    """
+    try:
+        session.get("https://www.sofascore.com/", timeout=20)
+    except Exception:
+        pass
 
 
 # How many times one request is attempted, and how long to wait between

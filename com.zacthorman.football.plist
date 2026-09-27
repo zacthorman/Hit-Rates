@@ -62,6 +62,10 @@
         <!-- git push needs to find git and the credential helper. -->
         <key>PATH</key>
         <string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <!-- Route every SofaScore request through the FlareSolverr container.
+             Docker Desktop must be running at 07:00 for this to work. -->
+        <key>SOFA_FLARESOLVERR</key>
+        <string>1</string>
     </dict>
 </dict>
 </plist>

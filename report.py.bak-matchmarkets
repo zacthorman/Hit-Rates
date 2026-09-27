@@ -1046,9 +1046,7 @@ const STRONG_LOW = 20;
    through, which is now only the bettable set unless the report was built
    with --all-stats. */
 const CORE_STATS = [
-  "Goals", "Both teams to score", "Match goals", "Match corners",
-  "Match cards", "Both teams carded",
-  "Total shots", "Shots on target", "Corner kicks",
+  "Goals", "Total shots", "Shots on target", "Corner kicks",
   "Fouls", "Tackles", "Offsides", "Throw-ins", "Yellow cards",
 ];
 

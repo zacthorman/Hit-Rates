@@ -340,8 +340,6 @@ def team_form(
         scored = "Points" if sport == "american-football" else "Goals"
         records[-1]["stats"].setdefault("ALL", {})[scored] = float(goals_for)
         records[-1]["against"].setdefault("ALL", {})[scored] = float(goals_against)
-        if sport == "football":
-            _add_match_markets(records[-1])
 
         if verbose:
             periods = "/".join(sorted(match_stats, key=list(PERIODS).index))
@@ -1089,35 +1087,6 @@ def _record_from_event(
         },
     }
 
-
-
-def _add_match_markets(record: dict) -> None:
-    """Both-sides markets for one football match, written onto the record.
-
-    Every value is a property of the MATCH, so it goes into "stats" and
-    "against" alike: England's record then reads "8 of their last 10 games
-    had both teams score", which is the question a BTTS price asks.
-
-    Card rows are missing from SofaScore's feed when neither side had one,
-    so a match that has statistics but no card row is counted as 0-0 cards
-    rather than dropped. Dropping it is what made Yellow cards read 6/8.
-    """
-    own = record["stats"].setdefault("ALL", {})
-    opp = record["against"].setdefault("ALL", {})
-    gf, ga = own.get("Goals"), opp.get("Goals")
-    derived: dict[str, float] = {}
-    if gf is not None and ga is not None:
-        derived["Both teams to score"] = 1.0 if gf >= 1 and ga >= 1 else 0.0
-        derived["Match goals"] = float(gf + ga)
-    if "Corner kicks" in own or "Corner kicks" in opp:
-        derived["Match corners"] = float(own.get("Corner kicks", 0) + opp.get("Corner kicks", 0))
-    if own or opp:
-        def cards(side):
-            return side.get("Yellow cards", 0) + side.get("Red cards", 0)
-        derived["Both teams carded"] = 1.0 if cards(own) >= 1 and cards(opp) >= 1 else 0.0
-        derived["Match cards"] = float(own.get("Yellow cards", 0) + opp.get("Yellow cards", 0))
-    own.update(derived)
-    opp.update(derived)
 
 def referee_card_rates(event_details: dict | None) -> dict | None:
     """The referee on one match record, with his card averages, or None.

@@ -23,7 +23,6 @@ second and third fixtures cost far less than the first.
 from __future__ import annotations
 
 import argparse
-import json
 import random
 import webbrowser
 from datetime import datetime, timezone
@@ -36,11 +35,6 @@ import sofascore_api as api
 
 OUT_DIR = Path(__file__).parent / "reports"
 
-
-
-# How many recent club games each player gets alongside his caps under
-# --club-form. Small on purpose: the report stays mostly international.
-CLUB_FORM_APPS = int(__import__("os").environ.get("CLUB_FORM_APPS", 3))
 
 def describe(event: dict) -> str:
     tournament = event.get("tournament", {}).get("name", "?")
@@ -317,12 +311,6 @@ DIVISION_BELOW = {
 CROSS_LEAGUE_COMPETITIONS = {
     7,      # UEFA Champions League
     679,    # UEFA Europa League
-    # Nations League. A national side plays a handful of these a year, so
-    # its form is always World Cup, qualifiers and friendlies. Without this
-    # the page's wrong-competition guard threw away both teams' entire
-    # record, and Standout lines and Best teams came up empty however far
-    # the minimums were lowered.
-    10783,  # UEFA Nations League
 }
 
 
@@ -533,15 +521,7 @@ def build_fixture(
             "id": event["id"],
             "home": home["name"],
             "away": away["name"],
-            # A cross-competition tournament reports its stage in the name:
-            # "UEFA Nations League, League A, Gr. 3". Filed under that, every
-            # group became its own competition on the index. The parent name
-            # keeps them together. Domestic leagues are left alone, because
-            # the page compares this against each record's competition.
-            "competition": (
-                (tournament.get("uniqueTournament") or {}).get("name")
-                if cross_league else None
-            ) or tournament.get("name", "Football"),
+            "competition": tournament.get("name", "Football"),
             "date": kickoff,
             "kickoff": event.get("startTimestamp", 0),
             "tournamentId": unique_id,
@@ -771,22 +751,30 @@ def build_fixture(
 
     if players:
         print("  player stats:")
-        # Caps are the sample. Club form, when asked for, is added further
-        # down as a light top-up, not a replacement: an England report built
-        # from Arsenal and Real Madrid games answered a different question
-        # from the one being bet on, and the page could not show those rows
-        # at all because none of their match ids were England matches.
-        player_records = [
-            hitrates.player_form(
-                team_id=team["id"],
-                team_name=team["name"],
-                tournament_id=None if cross_league else unique_id,
-                limit=games,
-                sport=sport,
-                max_age_days=form_days,
-            )
-            for team in (home, away)
-        ]
+        if club_form:
+            # International fixtures: the twenty-game sample lives at the
+            # club, not in the caps. Records come back tagged with the club
+            # they came from, so nothing downstream passes a league
+            # appearance off as an international one.
+            player_records = [
+                hitrates.club_form_for_squad(
+                    team_id=team["id"], team_name=team["name"],
+                    max_age_days=form_days or 400, sport=sport,
+                )
+                for team in (home, away)
+            ]
+        else:
+            player_records = [
+                hitrates.player_form(
+                    team_id=team["id"],
+                    team_name=team["name"],
+                    tournament_id=None if cross_league else unique_id,
+                    limit=games,
+                    sport=sport,
+                    max_age_days=form_days,
+                )
+                for team in (home, away)
+            ]
         entry["players"] = player_records
         entry["playerStats"] = hitrates.player_stat_names(
             *player_records, bettable_only=not all_stats, sport=sport
@@ -794,36 +782,6 @@ def build_fixture(
         entry["playerLines"] = hitrates.suggest_player_lines(
             player_records, entry["playerStats"]
         )
-
-        # Club form as a top-up. Appended after the stat list and lines are
-        # settled, so every line on the page is still set by the caps alone.
-        # Each player gets at most CLUB_FORM_APPS of his most recent club
-        # games, tagged former_club so the page admits them through the same
-        # door as a new signing's old-club record: labelled with where they
-        # came from, left out of head to head and tier filters. Ten caps plus
-        # three club games is mostly international, which is the point.
-        if club_form:
-            for side, team in enumerate((home, away)):
-                try:
-                    club_recs = hitrates.club_form_for_squad(
-                        team_id=team["id"], team_name=team["name"],
-                        max_age_days=form_days or 400, sport=sport,
-                    )
-                except Exception as exc:
-                    print(f"    {team['name']}: club form skipped ({type(exc).__name__})")
-                    continue
-                by_player: dict = {}
-                for r in club_recs:
-                    by_player.setdefault(r.get("player_id") or r.get("player"), []).append(r)
-                added = 0
-                for recs in by_player.values():
-                    recs.sort(key=lambda r: r.get("date") or "", reverse=True)
-                    for r in recs[:CLUB_FORM_APPS]:
-                        r["former_club"] = r.get("club") or {"name": "club", "id": None}
-                        player_records[side].append(r)
-                        added += 1
-                print(f"    {team['name']}: +{added} club record(s), "
-                      f"max {CLUB_FORM_APPS} per player")
 
         # Previous-club stats for new signings, appended only after the stat
         # list and the lines are settled. The ordering is deliberate: with
@@ -904,33 +862,6 @@ def build(
                    if (c.isalnum() and not unicodedata.combining(c)) or c == "-")
 
     path = OUT_DIR / f"{slug}.html"
-
-    # A cross-competition tournament is never built as one round: the
-    # Nations League comes in batches of a few --teams at a time. With one
-    # stable file per competition, each batch used to overwrite the last and
-    # the 5pm games vanished when the 7.45pm ones were built. Carry forward
-    # any fixture from the file on disk that this build does not replace and
-    # that has not long since finished.
-    if len(comps) == 1 and all(f["fixture"].get("crossLeague") for f in fixtures) \
-            and path.exists():
-        import re
-        try:
-            old = json.loads(re.search(r"const ALL = (\{.*?\});\n",
-                                       path.read_text(encoding="utf-8"), re.S).group(1))
-        except Exception:
-            old = {}
-        have = {f["fixture"]["id"] for f in fixtures}
-        cutoff = datetime.now(tz=timezone.utc).timestamp() - 4 * 3600
-        kept = [f for f in old.get("fixtures", [])
-                if f.get("fixture", {}).get("id") not in have
-                and (f.get("fixture", {}).get("kickoff") or 0) > cutoff]
-        if kept:
-            fixtures.extend(kept)
-            fixtures.sort(key=lambda f: (f["fixture"].get("kickoff") or 0,
-                                         f["fixture"].get("home", "")))
-            payload["fixtures"] = fixtures
-            print(f"\n  kept {len(kept)} fixture(s) already in {path.name}")
-
     report.write_report(payload, path)
 
     print(f"\n\n{len(fixtures)} fixture(s) written to {path}")

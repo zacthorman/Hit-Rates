@@ -14,11 +14,6 @@ from __future__ import annotations
 # returns is still collected and appears after these.
 PREFERRED_STATS = [
     "Goals",
-    "Both teams to score",
-    "Match goals",
-    "Match corners",
-    "Match cards",
-    "Both teams carded",
     "Total shots",
     "Shots on target",
     "Corner kicks",
@@ -58,14 +53,7 @@ FOOTBALL_STATS = {
     "Throw-ins",          # Throw Ins
     "Goal kicks",         # Goal Kicks
     "Free kicks",         # Free Kicks
-    # Match-level markets, derived from both sides of the same match rather
-    # than read off the feed. A team's record then says how often its GAMES
-    # went both-teams-to-score, not just how often it scored.
-    "Both teams to score",  # BTTS
-    "Both teams carded",    # Both Teams to Receive a Card
-    "Match goals",          # Match Goals Over/Under
-    "Match corners",        # Match Corners
-    "Match cards",          # Match Cards (yellows, both sides)
+
 }
 
 # The same idea for player props.
