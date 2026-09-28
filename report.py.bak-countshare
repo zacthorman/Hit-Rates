@@ -3251,16 +3251,6 @@ const SCAN_FLOOR = 0.65;     // the rate the rung has to clear
    all still apply on top. This only throws out a rung with nothing behind it. */
 const SCAN_GUARD = 0.35;
 const SCAN_MEDIAN_SHARE = 0.6;  // a rung far below his own median is not a bet
-/* Count markets (catches, carries, completions, attempts) barely move from
-   week to week, so 60% of the median is still a near-certain rung: 3+
-   catches for a man who makes six. Those rungs topped every scan on hit rate
-   and are the ones a book prices at 1.05. On counts the rung has to sit close
-   to his normal output before it counts as a bet, which is what lets the
-   yardage markets, where the value actually is, come through. Mirrored in
-   parlay.py. */
-const COUNT_MEDIAN_SHARE = 0.85;
-const COUNT_STATS = new Set(["Receiving receptions", "Rushing attempts",
-  "Passing attempts", "Passing completions"]);
 
 /* Markets scored on a scale where whole numbers from one would be absurd: a
    ninety-average darts player would get ninety rungs, eighty-nine of them
@@ -3299,8 +3289,7 @@ function ladderLine(stat, values) {
     : (sorted[n / 2 - 1] + sorted[n / 2]) / 2;
   let best = null;
   ladderRungs(stat, values).forEach(threshold => {
-    const share = COUNT_STATS.has(stat) ? COUNT_MEDIAN_SHARE : SCAN_MEDIAN_SHARE;
-    if (median > 0 && threshold < share * median) return;
+    if (median > 0 && threshold < SCAN_MEDIAN_SHARE * median) return;
     const hits = values.filter(v => v >= threshold).length;
     if (!hits) return;
     // A record that has never missed says nothing about what the bet is

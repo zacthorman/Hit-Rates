@@ -66,11 +66,6 @@ cp index.html "$STAGE"/
 # whole list returns 1 and the script exits, so a page that failed to build
 # would silently stop the entire publish.
 if [ -f tonight.html ]; then cp tonight.html "$STAGE"/; fi
-# Record the site's best bets as published (pre-kick-off only), then render
-# the Best bets summary page that tracks how they actually did.
-"$PY" besttrack.py snapshot || echo "  best bets not snapshotted (continuing)"
-"$PY" bets_page.py || echo "  best-bets-summary.html not rebuilt (continuing)"
-if [ -f best-bets-summary.html ]; then cp best-bets-summary.html "$STAGE"/; fi
 cp -R reports "$STAGE"/
 # Stops GitHub running the site through Jekyll, which it has no need to do
 # and which is the piece that failed during the outage.

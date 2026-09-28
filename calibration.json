@@ -1,0 +1,32 @@
+{
+  "legs": 25,
+  "prior": 2.0,
+  "provisional": true,
+  "bands": [
+    {
+      "raw": "55-65%",
+      "legs": 5,
+      "said": 0.6,
+      "happened": 0.4
+    },
+    {
+      "raw": "65-75%",
+      "legs": 4,
+      "said": 0.7,
+      "happened": 0.75
+    },
+    {
+      "raw": "75-85%",
+      "legs": 3,
+      "said": 0.8,
+      "happened": 1.0
+    },
+    {
+      "raw": "85-100%",
+      "legs": 13,
+      "said": 0.938,
+      "happened": 0.923
+    }
+  ],
+  "fitted_prior": 0.0
+}

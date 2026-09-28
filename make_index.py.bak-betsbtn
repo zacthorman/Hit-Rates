@@ -407,7 +407,6 @@ footer { margin-top: 26px; color: var(--muted); font-size: 12.5px; }
   <div class="bar">
     <div class="sports" id="sports"></div>
     <a class="picks-btn" href="tonight.html">Tonight &rarr;</a>
-    <a class="picks-btn" href="best-bets-summary.html">Best bets summary &rarr;</a>
     <button type="button" class="picks-btn" id="picks-btn"
             aria-expanded="false">Picks of the week</button>
   </div>
@@ -644,35 +643,6 @@ function renderPicks() {
          becomes <span class="flag">${(s.adjusted * 100).toFixed(0)}%</span> once
          that searching is paid for. Asking for ${fmtOdds(floor)}+ caps the chance
          at 50%, so price and evidence pull against each other here.`)}
-    </div>`);
-  }
-
-  if (p && p.double) {
-    const d = p.double;
-    cards.push(`<div class="pick">
-      <h2>Evens double</h2>
-      <div class="sel">2 legs &middot; ${fmtOdds(d.combined)}</div>
-      <ol>${d.legs.map(l => `<li>${legText(l)} &mdash; ${l.hits}/${l.total},
-        ${fmtOdds(l.fair)}<br><small>${escapeHtml(l.fixture.home)} v ${escapeHtml(l.fixture.away)}</small></li>`).join("")}</ol>
-      ${note("why these two?",
-        `The pair most likely to both land (about ${(d.joint * 100).toFixed(0)}% on the
-         records) among doubles priced around evens. Counts and 0.5 lines are left
-         out. ${d.sameGame ? "Both legs are in one game, so it goes on as a builder." :
-         "Two different games, so neither leg rides on the other."}`)}
-    </div>`);
-  }
-
-  if (p && p.banker) {
-    const s = p.banker;
-    cards.push(`<div class="pick">
-      <h2>Banker</h2>
-      <div class="sel">${legText(s)}</div>
-      <div class="where">${escapeHtml(s.fixture.home)} v ${escapeHtml(s.fixture.away)}</div>
-      <div class="odds"><b>${s.hits}/${s.total}</b> &middot; fair <b>${fmtOdds(s.fair)}</b>,
-        hold out for ${fmtOdds(s.need)}</div>
-      ${note("what is a banker?",
-        `The best-supported single priced between 1.30 and 1.75, after allowing for
-         how many bets were searched (${(s.adjusted * 100).toFixed(0)}% worst case).`)}
     </div>`);
   }
 

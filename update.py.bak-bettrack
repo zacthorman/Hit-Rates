@@ -333,16 +333,6 @@ def main() -> None:
                 else:
                     say("could not publish those, carrying on with the rebuild")
 
-        # 0. Settle yesterday's tracked bets before anything else touches the
-        #    network, so LESSONS.md and calibration.json are current by the time
-        #    anyone reads today's picks. Never fatal: a settle problem must not
-        #    cost the league build.
-        if not args.dry and Path("bettrack.py").exists():
-            say("settling tracked bets")
-            run([python, "bettrack.py", "settle"], args.dry, allow_fail=True)
-            if Path("besttrack.py").exists():
-                run([python, "besttrack.py", "settle"], args.dry, allow_fail=True)
-
         # 1. Fetch and build. Each league is its own report, so one failing
         #    competition does not take the others down with it.
         if args.only_render:

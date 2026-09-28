@@ -423,7 +423,7 @@ def best_single(legs):
     ones closest to being a coin flip. That is the honest shape of the
     question, not a fault in the sort.
     """
-    eligible = [l for l in legs if l["fair"] >= ODDS_FLOOR and _headline_ok(l)]
+    eligible = [l for l in legs if l["fair"] >= ODDS_FLOOR and l["total"] >= MIN_SAMPLE]
     if not eligible:
         return None
 
@@ -484,93 +484,6 @@ def best_acca(legs, wanted=ACCA_LEGS, target=ACCA_TARGET):
         "target": target,
         "short": combined < target,
     }
-
-
-# ------------------------------------------------------------ evens double
-#
-# Asked for often enough to deserve its own slot: "a solid evens bet". The
-# best single at 2.00 is by construction a coin flip (see best_single), so the
-# steadier way to reach evens is two strong legs at about 1.40 each. Chosen to
-# maximise the chance both land, not the price.
-
-# Counts (catches, carries, attempts) settle on one snap too few far more
-# often than the yards they feed; lines of 0.5 are near-certain and priced to
-# nothing. Neither belongs in a headline pick.
-PICK_COUNT_STATS = {"Receiving receptions", "Rushing attempts",
-                    "Passing attempts", "Passing completions"}
-DOUBLE_TARGET = 2.0
-DOUBLE_MAX = 2.6
-BANKER_RANGE = (1.30, 1.75)
-# Headline picks want a real record behind them, not a lucky ten games.
-HEADLINE_SAMPLE = 15
-
-
-def _shrunk(leg, a=2.0):
-    return (leg["hits"] + a) / (leg["total"] + 2 * a)
-
-
-def _headline_ok(leg, sample=MIN_SAMPLE):
-    if leg["total"] < sample or leg.get("stat") in PICK_COUNT_STATS:
-        return False
-    if not leg.get("player") and leg.get("line") == 0.5 and leg.get("over"):
-        return False
-    return 1.05 < leg["fair"] < 100
-
-
-def _dedupe(legs):
-    """"X receiving yards" and "X rushing and receiving yards" at one line are
-    the same bet for a receiver; keep whichever has the better record."""
-    best = {}
-    for l in legs:
-        stat = l["stat"].replace("Rushing and receiving yards", "Receiving yards") \
-            if l.get("position") in ("WR", "TE") else l["stat"]
-        key = (l["fixture"]["id"], l.get("player") or l.get("team"), stat,
-               l.get("period"), l.get("line"), l.get("over"))
-        if key not in best or (_shrunk(l), -len(l["stat"])) > (_shrunk(best[key]), -len(best[key]["stat"])):
-            best[key] = l
-    return list(best.values())
-
-
-def best_double(legs, target=DOUBLE_TARGET):
-    pool = _dedupe([l for l in legs if _headline_ok(l, HEADLINE_SAMPLE) and 1.25 <= l["fair"] <= 1.8])
-    pool.sort(key=lambda l: -_shrunk(l))
-    pool = pool[:80]
-    fixtures = {l["fixture"]["id"] for l in pool}
-    best = None
-    for a, b in itertools.combinations(pool, 2):
-        if a.get("player") and a.get("player") == b.get("player"):
-            continue
-        if len(fixtures) > 1 and a["fixture"]["id"] == b["fixture"]["id"]:
-            continue
-        if a["fixture"]["id"] == b["fixture"]["id"] and a["teamIndex"] == b["teamIndex"]:
-            continue
-        combined = a["fair"] * b["fair"]
-        if not (target * 0.95 <= combined <= DOUBLE_MAX):
-            continue
-        joint = _shrunk(a) * _shrunk(b)
-        if best is None or joint > best[0]:
-            best = (joint, combined, a, b)
-    if not best:
-        return None
-    joint, combined, a, b = best
-    return {"legs": [_single_public(a), _single_public(b)],
-            "combined": combined, "joint": joint,
-            "sameGame": a["fixture"]["id"] == b["fixture"]["id"]}
-
-
-def best_banker(legs):
-    """The single most likely to land that still pays something."""
-    lo, hi = BANKER_RANGE
-    pool = _dedupe([l for l in legs if _headline_ok(l, HEADLINE_SAMPLE) and lo <= l["fair"] <= hi])
-    if not pool:
-        return None
-    z = selection_z(group_count(legs))
-    for l in pool:
-        l["adjusted"] = model.wilson_low(l["hits"], l["total"], z=z)
-    w = max(pool, key=lambda l: (l["adjusted"], l["fair"]))
-    out = _single_public(w)
-    out["adjusted"] = w["adjusted"]
-    return out
 
 
 def best_builder(entries):
@@ -679,8 +592,6 @@ def picks(entries, days=7, now=None):
             "fixtures": len(group),
             "legs": len(legs),
             "single": best_single(legs),
-            "double": best_double(legs),
-            "banker": best_banker(legs),
             "acca": best_acca(legs),
             "builder": best_builder(group),
             "parlay": parlay.best_parlay(group),

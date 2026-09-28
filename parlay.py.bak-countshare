@@ -104,11 +104,6 @@ MIN_LEG_PRICE = 1.30
 # instead of the safest. And a rung below this share of the player's own median
 # is thrown out outright, which is what "way too low" means in a number.
 MEDIAN_SHARE = 0.6
-# Counts (catches, carries, completions, attempts) need a rung near the
-# median: see COUNT_MEDIAN_SHARE in report.py, which this mirrors.
-COUNT_MEDIAN_SHARE = 0.85
-COUNT_STATS = {"Receiving receptions", "Rushing attempts",
-               "Passing attempts", "Passing completions"}
 
 # A parlay that pays less than this is not what anyone is looking for.
 MIN_PRICE = 3.0
@@ -295,8 +290,7 @@ def alt_legs_for(entry, meta, floor: float = LEG_FLOOR,
 
                 # A rung far below what he normally does is not an opinion.
                 middle = sorted(values)[len(values) // 2]
-                share = COUNT_MEDIAN_SHARE if stat in COUNT_STATS else MEDIAN_SHARE
-                if middle > 0 and threshold < share * middle:
+                if middle > 0 and threshold < MEDIAN_SHARE * middle:
                     continue
                 rate = hits / total
                 if rate >= 1.0:
