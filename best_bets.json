@@ -95,8 +95,8 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
   "result": null
@@ -341,11 +341,11 @@
     "total": 10,
     "fair": 1.4937478247230116,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 107.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: builder",
@@ -371,8 +371,8 @@
     "total": 10,
     "fair": 1.3604189027029285,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    },
    {
     "event_id": 16184632,
@@ -392,8 +392,8 @@
     "total": 10,
     "fair": 1.6236644059043108,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 247.0,
+    "result": "win"
    },
    {
     "event_id": 16184632,
@@ -413,11 +413,11 @@
     "total": 10,
     "fair": 1.6236644059043108,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 35.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: parlay",
@@ -443,8 +443,8 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 84.0,
+    "result": "win"
    },
    {
     "event_id": 16184632,
@@ -465,7 +465,7 @@
     "fair": 1.4285714285714286,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    },
    {
     "event_id": 16184632,
@@ -485,8 +485,8 @@
     "total": 20,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 31.0,
+    "result": "lose"
    },
    {
     "event_id": 16184632,
@@ -506,11 +506,11 @@
     "total": 19,
     "fair": 1.3571428571428572,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -626,11 +626,11 @@
     "total": 10,
     "fair": 1.3604189027029285,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -656,11 +656,11 @@
     "total": 10,
     "fair": 1.3604189027029285,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -686,11 +686,11 @@
     "total": 19,
     "fair": 1.3571428571428572,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 20.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -716,11 +716,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -746,11 +746,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -776,11 +776,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -1016,8 +1016,8 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 84.0,
+    "result": "win"
    },
    {
     "event_id": 16184632,
@@ -1038,7 +1038,7 @@
     "fair": 1.4285714285714286,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    },
    {
     "event_id": 16184632,
@@ -1058,8 +1058,8 @@
     "total": 20,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 31.0,
+    "result": "win"
    },
    {
     "event_id": 16184632,
@@ -1079,11 +1079,11 @@
     "total": 19,
     "fair": 1.3571428571428572,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: evens double",
@@ -1211,11 +1211,11 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 84.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: banker",
@@ -1364,8 +1364,8 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 84.0,
+    "result": "win"
    },
    {
     "event_id": 16184632,
@@ -1386,7 +1386,7 @@
     "fair": 1.4285714285714286,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    },
    {
     "event_id": 16184632,
@@ -1406,8 +1406,8 @@
     "total": 20,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 31.0,
+    "result": "lose"
    },
    {
     "event_id": 16184632,
@@ -1427,10 +1427,367 @@
     "total": 19,
     "fair": 1.3571428571428572,
     "venue": null,
+    "value": 0.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: single",
+  "sport": "football",
+  "snapshot_at": 1790581315,
+  "fair": 2.0892436685215827,
+  "legs": [
+   {
+    "event_id": 15534026,
+    "fixture": "Belgium v France",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790621100,
+    "sport": "football",
+    "team": "Belgium",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 17.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 4,
+    "total": 10,
+    "fair": 2.0892436685215827,
+    "venue": null,
+    "value": 12.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1790581315,
+  "fair": 2.690111665734208,
+  "legs": [
+   {
+    "event_id": 15534106,
+    "fixture": "Scotland v Switzerland",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790707500,
+    "sport": "football",
+    "team": "Switzerland",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.5852951849505161,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15534026,
+    "fixture": "Belgium v France",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790621100,
+    "sport": "football",
+    "team": "Belgium",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": 1.0,
+    "result": "lose"
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: builder",
+  "sport": "football",
+  "snapshot_at": 1790581315,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 15534106,
+    "fixture": "Scotland v Switzerland",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790707500,
+    "sport": "football",
+    "team": "Switzerland",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.5852951849505161,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15534106,
+    "fixture": "Scotland v Switzerland",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790707500,
+    "sport": "football",
+    "team": "Switzerland",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 10,
+    "fair": 1.7932978740142371,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15534106,
+    "fixture": "Scotland v Switzerland",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790707500,
+    "sport": "football",
+    "team": "Switzerland",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 10,
+    "fair": 1.7932978740142371,
+    "venue": null,
     "value": null,
     "result": null
    }
   ],
   "result": null
+ },
+ {
+  "category": "Pick: single",
+  "sport": "american-football",
+  "snapshot_at": 1790581315,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 16184632,
+    "fixture": "Chicago Bears v Philadelphia Eagles",
+    "competition": "NFL",
+    "kickoff": 1790640900,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "Caleb Williams",
+    "stat": "Passing yards",
+    "period": "ALL",
+    "line": 239.5,
+    "over": true,
+    "alt": true,
+    "threshold": 240.0,
+    "hits": 10,
+    "total": 20,
+    "fair": 2.0,
+    "venue": null,
+    "value": null,
+    "result": "void"
+   }
+  ],
+  "result": "void"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "american-football",
+  "snapshot_at": 1790581315,
+  "fair": 1.9387755102040818,
+  "legs": [
+   {
+    "event_id": 16184632,
+    "fixture": "Chicago Bears v Philadelphia Eagles",
+    "competition": "NFL",
+    "kickoff": 1790640900,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "Cole Kmet",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10.0,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3571428571428572,
+    "venue": null,
+    "value": 0.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 16184632,
+    "fixture": "Chicago Bears v Philadelphia Eagles",
+    "competition": "NFL",
+    "kickoff": 1790640900,
+    "sport": "american-football",
+    "team": "Philadelphia Eagles",
+    "player": "DeVonta Smith",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 44.5,
+    "over": true,
+    "alt": true,
+    "threshold": 45.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 65.0,
+    "result": "win"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "american-football",
+  "snapshot_at": 1790581315,
+  "fair": 1.3571428571428572,
+  "legs": [
+   {
+    "event_id": 16184632,
+    "fixture": "Chicago Bears v Philadelphia Eagles",
+    "competition": "NFL",
+    "kickoff": 1790640900,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "Cole Kmet",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10.0,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3571428571428572,
+    "venue": null,
+    "value": 0.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1790581315,
+  "fair": 3.5999999999999996,
+  "legs": [
+   {
+    "event_id": 16184632,
+    "fixture": "Chicago Bears v Philadelphia Eagles",
+    "competition": "NFL",
+    "kickoff": 1790640900,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "D'Andre Swift",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 49.5,
+    "over": true,
+    "alt": true,
+    "threshold": 50.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 84.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16184632,
+    "fixture": "Chicago Bears v Philadelphia Eagles",
+    "competition": "NFL",
+    "kickoff": 1790640900,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "Caleb Williams",
+    "stat": "Passing yards",
+    "period": "ALL",
+    "line": 209.5,
+    "over": true,
+    "alt": true,
+    "threshold": 210.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": null,
+    "result": "void"
+   },
+   {
+    "event_id": 16184632,
+    "fixture": "Chicago Bears v Philadelphia Eagles",
+    "competition": "NFL",
+    "kickoff": 1790640900,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "Kyle Monangai",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 31.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16184632,
+    "fixture": "Chicago Bears v Philadelphia Eagles",
+    "competition": "NFL",
+    "kickoff": 1790640900,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "Cole Kmet",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10.0,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3571428571428572,
+    "venue": null,
+    "value": 0.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
  }
 ]
