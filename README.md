@@ -46,6 +46,18 @@ python make_index.py
 
 `--leagues` writes one report per division rather than a single enormous file, so the index reads as a list of rounds and no page has to carry a hundred fixtures. Files are named after the competition, so each league keeps its own and re-running replaces only that one.
 
+**Darts.** No league table, so `--league` cannot find the players. `--darts` reads the day-by-day schedule instead and builds every PDC match in the window into one report, `reports/darts.html`, which the index lists under its own Darts tab.
+
+```bash
+./darts.sh        # next 3 days, waits for the nightly job, then indexes
+./darts.sh 7      # next 7 days
+python run.py --darts 3 --games 20 --h2h    # the same thing by hand
+```
+
+`darts.sh` routes every request through FlareSolverr (`SOFA_FLARESOLVERR=1`, the same as the nightly job) and refuses to start if the container is not answering on port 8191, so start Docker Desktop first.
+
+Markets are 180s, 3-dart average, highest checkout and 100+ checkouts (`DARTS_STATS` in markets.py). Form is drawn from every competition a player has played in, because one darts event is at most a few matches a year. Modus, WDF, Challenge and Development Tour and the Women's Series are skipped by name (`DARTS_SKIP` in run.py, override with `--darts-skip`). One caveat the numbers do not show: a best-of-11-legs floor match and a sets-format major produce very different 180 counts, and the last 20 mixes both.
+
 `--league` reads the team list off the league table, so you don't have to know twenty ids, then collapses each team's next fixture into a round. Known names: `premier_league`, `championship`, `la_liga`, `serie_a`, `bundesliga`, `ligue_1`, `champions_league`, `europa_league`. Any other competition works by passing its uniqueTournament id.
 
 A report can hold as many fixtures as you like, with a dropdown at the top to switch between them. All the filters and edited lines are per fixture.

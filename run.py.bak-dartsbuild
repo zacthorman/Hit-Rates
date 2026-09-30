@@ -26,7 +26,7 @@ import argparse
 import json
 import random
 import webbrowser
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 import clubcolour
@@ -499,10 +499,7 @@ def build_fixture(
 
     sport = ((tournament.get("category") or {})
               .get("sport") or {}).get("slug") or "football"
-    # Darts is cross-competition by nature. A player's World Grand Prix record
-    # is one match a year; his real form is the Players Championships, Euro
-    # Tour and majors around it, all under different uniqueTournament ids.
-    cross_league = unique_id in CROSS_LEAGUE_COMPETITIONS or sport == "darts"
+    cross_league = unique_id in CROSS_LEAGUE_COMPETITIONS
     if cross_league:
         print("  cross-league competition: form drawn from all competitions")
 
@@ -847,65 +844,12 @@ def build_fixture(
     return entry
 
 
-# Darts events that are not the PDC tour proper. They play most days, the
-# players have little or no statistics, and a sweep that includes them spends
-# hundreds of requests building empty fixtures. Matched against the
-# tournament name, case-insensitively. Override with --darts-skip.
-DARTS_SKIP = ("modus", "super series", "wdf", "challenge tour",
-              "development tour", "women", "youth", "legends", "junior",
-              "bdo", "winmau", "icons", "exhibition")
-
-
-def darts_events(days: int, skip: tuple[str, ...] = DARTS_SKIP,
-                 limit: int = 40) -> list[dict]:
-    """Every not-yet-started darts match in the next few days.
-
-    Darts has no league table, so --league cannot find the players. The
-    day-by-day schedule can, and it covers whatever is on (a Players
-    Championship, a Euro Tour event, a major) without needing its id.
-    """
-    today = datetime.now(tz=timezone.utc).date()
-    now = datetime.now(tz=timezone.utc).timestamp()
-    found, seen, skipped = [], set(), {}
-    for offset in range(max(1, days)):
-        day = (today + timedelta(days=offset)).isoformat()
-        data = api.get_json(f"sport/darts/scheduled-events/{day}",
-                            max_age_hours=3) or {}
-        for event in data.get("events", []):
-            if event["id"] in seen:
-                continue
-            seen.add(event["id"])
-            name = (event.get("tournament") or {}).get("name", "?")
-            if any(word in name.lower() for word in skip):
-                skipped[name] = skipped.get(name, 0) + 1
-                continue
-            if (event.get("status") or {}).get("type") != "notstarted":
-                continue
-            if (event.get("startTimestamp") or 0) < now:
-                continue
-            # A draw not yet made comes through as TBD v TBD.
-            home = (event.get("homeTeam") or {}).get("name", "")
-            away = (event.get("awayTeam") or {}).get("name", "")
-            if not home or not away or "tbd" in (home + away).lower():
-                continue
-            found.append(event)
-    found.sort(key=lambda e: e.get("startTimestamp") or 0)
-    if skipped:
-        print("  skipped (not PDC tour): "
-              + ", ".join(f"{k} ({v})" for k, v in sorted(skipped.items())))
-    if len(found) > limit:
-        print(f"  {len(found)} matches, keeping the first {limit} (--max-fixtures)")
-        found = found[:limit]
-    return found
-
-
 def build(
     events: list[dict], games: int, open_browser: bool,
     players: bool, h2h: bool = False, adjust: bool = False,
     all_stats: bool = False, tiers: bool = False,
     newsignings: bool = False, referee: bool = False,
     *, form_days: float | None = None, club_form: bool = False,
-    out_name: str | None = None,
 ) -> Path:
     fixtures = []
     for i, event in enumerate(events, start=1):
@@ -928,11 +872,7 @@ def build(
     first = fixtures[0]["fixture"]
     comps = {f["fixture"]["competition"] for f in fixtures}
 
-    if out_name:
-        # A sweep across several competitions that still wants one stable
-        # URL, e.g. darts.html for every PDC event in the next few days.
-        slug = out_name
-    elif len(fixtures) == 1:
+    if len(fixtures) == 1:
         slug = f"{first['home']}-v-{first['away']}"
     elif len(comps) == 1:
         # A whole division's round, named for the competition alone.
@@ -1316,22 +1256,6 @@ def main() -> None:
              "and project promoted fixtures from the rated side's record "
              "against bottom-tier opponents (wants --games 38)",
     )
-    parser.add_argument(
-        "--darts", type=int, nargs="?", const=3, default=None, metavar="DAYS",
-        help="every PDC darts match in the next DAYS days (default 3), one "
-             "report at reports/darts.html. Form is drawn from all "
-             "competitions, since no single darts event has enough of it",
-    )
-    parser.add_argument(
-        "--darts-skip", dest="darts_skip", default=None,
-        help="comma-separated words; darts tournaments whose name contains "
-             "any of them are left out. Replaces the built-in list "
-             "(Modus, WDF, Challenge Tour, Women's Series and so on)",
-    )
-    parser.add_argument(
-        "--max-fixtures", type=int, default=40, dest="max_fixtures",
-        help="cap on how many darts matches one --darts run builds",
-    )
     parser.add_argument("--no-open", action="store_true", help="don't launch a browser")
     parser.add_argument("--demo", action="store_true", help="synthetic data, no network")
     args = parser.parse_args()
@@ -1395,29 +1319,6 @@ def main() -> None:
 
 def main_for(args) -> None:
     league_filter = None
-
-    if getattr(args, "darts", None) is not None:
-        skip = DARTS_SKIP
-        if args.darts_skip is not None:
-            skip = tuple(w.strip().lower() for w in args.darts_skip.split(",")
-                         if w.strip())
-        print(f"Reading the darts schedule for the next {args.darts} day(s)...")
-        events = darts_events(args.darts, skip, args.max_fixtures)
-        if not events:
-            dropped = api.last_transport_error()
-            if dropped:
-                raise SystemExit(f"Couldn't reach SofaScore ({dropped}).")
-            raise SystemExit("No fixtures found: no PDC darts in that window.")
-        print(f"\n{len(events)} match(es) to build:")
-        for event in events:
-            print(f"  {describe(event)}")
-        # No --players (darts has no lineups) and no --adjust (there is no
-        # league to fit ratings over). --h2h is worth having: the top forty
-        # meet each other constantly.
-        build(events, args.games, not args.no_open, False, args.h2h, False,
-              args.all_stats, False, False, False,
-              form_days=args.form_days, out_name="darts")
-        return
 
     # A whole competition: read the team list off the league table, then
     # take each team's next fixture. Two teams playing each other collapse

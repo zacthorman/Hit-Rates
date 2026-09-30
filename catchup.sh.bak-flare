@@ -26,17 +26,6 @@ PY=".venv/bin/python"
 export SOFA_DELAY_MIN=${SOFA_DELAY_MIN:-4}
 export SOFA_DELAY_MAX=${SOFA_DELAY_MAX:-8}
 
-# FlareSolverr, same as the nightly job. sofascore_api defaults to it anyway;
-# this just fails fast with a clear message if the container is down.
-export SOFA_FLARESOLVERR="${SOFA_FLARESOLVERR:-1}"
-FLARE_URL="$SOFA_FLARESOLVERR"
-case "$FLARE_URL" in 1|true|yes) FLARE_URL="http://localhost:8191/v1" ;; esac
-if ! curl -s -m 10 -o /dev/null "${FLARE_URL%/v1}/"; then
-  echo "FlareSolverr is not answering at ${FLARE_URL%/v1}."
-  echo "Start Docker Desktop and the flaresolverr container, then run this again."
-  exit 1
-fi
-
 say() { echo "$(date '+%H:%M:%S')  $*"; }
 
 waited=0

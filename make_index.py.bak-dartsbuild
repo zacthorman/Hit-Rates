@@ -427,7 +427,7 @@ let competition = "all";
 let query = "";
 let sport = null;          // set on first render to whichever has most fixtures
 
-const SPORT_LABELS = { "football": "Football", "american-football": "NFL", "basketball": "Basketball", "darts": "Darts" };
+const SPORT_LABELS = { "football": "Football", "american-football": "NFL" };
 
 /* Sports present, busiest first. Two codes on one page need separating before
    anything else: the league chips, the fixture list and the picks all mean

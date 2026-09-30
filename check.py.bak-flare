@@ -16,6 +16,7 @@ from __future__ import annotations
 import time
 from datetime import date, timedelta
 
+from curl_cffi import requests
 
 BASE = "https://www.sofascore.com/api/v1"
 
@@ -86,11 +87,14 @@ CANDIDATES = [
 
 
 def main() -> None:
-    # The shared session, so this goes through FlareSolverr like everything
-    # else. Its own bare curl_cffi session was the one thing still going
-    # direct.
-    import sofascore_api as api
-    session = api._get_session()
+    session = requests.Session(impersonate="chrome")
+    session.headers.update(
+        {
+            "Accept": "*/*",
+            "Accept-Language": "en-GB,en;q=0.9",
+            "Referer": "https://www.sofascore.com/",
+        }
+    )
 
     width = max(len(p) for p in CANDIDATES)
     print(f"\n{'path':<{width}}  {'code':>4}  {'bytes':>8}  note")

@@ -196,32 +196,21 @@ _session = None
 #              import typing; print(typing.get_args(BrowserTypeLiteral))"
 IMPERSONATE = os.environ.get("SOFA_IMPERSONATE", "chrome142")
 
-# FlareSolverr route. ON BY DEFAULT: every request goes through a real Chrome
-# in the FlareSolverr container instead of curl_cffi. Slower per request, but
-# it gets past Cloudflare challenges that a fingerprint alone no longer does.
-# Everything downstream (cache, backoff, circuit breaker) is unchanged because
-# this answers the same .get() / .status_code / .json() calls a curl_cffi
-# session does.
-#
-# It used to be opt-in, set only in the launchd plist, so anything run by hand
-# from Terminal (nfl_fit.sh, catchup.sh, check_sport.py, a one-off run.py)
-# went straight at SofaScore with curl_cffi and got blocked. Now the default
-# is FlareSolverr on localhost:8191. SOFA_FLARESOLVERR=http://host:port/v1
-# points it elsewhere; SOFA_FLARESOLVERR=0 is the only way back to curl_cffi.
-FLARESOLVERR = os.environ.get("SOFA_FLARESOLVERR", "1").strip()
-if FLARESOLVERR.lower() in ("1", "true", "yes", "on", ""):
+# FlareSolverr route. Opt-in: set SOFA_FLARESOLVERR=1 (or a full URL) and
+# every request goes through a real Chrome in the FlareSolverr container
+# instead of curl_cffi. Slower per request, but it gets past Cloudflare
+# challenges that a fingerprint alone no longer does. Everything downstream
+# (cache, backoff, circuit breaker) is unchanged because this answers the
+# same .get() / .status_code / .json() calls a curl_cffi session does.
+FLARESOLVERR = os.environ.get("SOFA_FLARESOLVERR", "")
+if FLARESOLVERR in ("1", "true", "yes"):
     FLARESOLVERR = "http://localhost:8191/v1"
-elif FLARESOLVERR.lower() in ("0", "false", "no", "off"):
-    FLARESOLVERR = ""
 
 
 class _FlareResponse:
     def __init__(self, status_code: int, text: str):
         self.status_code = status_code
         self.text = text
-        # canary.py and check.py read these off a curl_cffi response.
-        self.content = text.encode("utf-8", "replace")
-        self.headers: dict = {}
 
     def json(self):
         # Raises json.JSONDecodeError on non-JSON, which get_json already handles.
@@ -280,20 +269,7 @@ def _get_session():
     """
     global _session
     if _session is None and FLARESOLVERR:
-        # SystemExit, not an exception: get_json catches Exception as a
-        # network blip and retries with backoff, which would sit there for
-        # minutes. And no quiet fallback to curl_cffi, because going direct
-        # is what gets the IP blocked.
-        try:
-            _session = _FlareSession(FLARESOLVERR)
-        except Exception as exc:
-            raise SystemExit(
-                f"\nFlareSolverr is not answering at {FLARESOLVERR} "
-                f"({type(exc).__name__}).\nStart Docker Desktop and the "
-                "flaresolverr container, then run this again.\n"
-                "(SOFA_FLARESOLVERR=0 goes direct with curl_cffi, which is "
-                "what gets blocked.)"
-            )
+        _session = _FlareSession(FLARESOLVERR)
     if _session is None:
         from curl_cffi import requests
         _session = requests.Session(impersonate=IMPERSONATE)

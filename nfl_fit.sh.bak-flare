@@ -26,22 +26,7 @@ PY=".venv/bin/python"
 export SOFA_DELAY_MIN=5
 export SOFA_DELAY_MAX=10
 
-# Every request goes through FlareSolverr, same as the nightly job (the plist
-# sets this for launchd; a run from Terminal does not inherit it). Override
-# with SOFA_FLARESOLVERR=http://host:port/v1 if the container lives elsewhere.
-export SOFA_FLARESOLVERR="${SOFA_FLARESOLVERR:-1}"
-FLARE_URL="$SOFA_FLARESOLVERR"
-case "$FLARE_URL" in 1|true|yes) FLARE_URL="http://localhost:8191/v1" ;; esac
-
 say() { echo "$(date '+%H:%M:%S')  $*"; }
-
-# Check it is actually up before waiting on the lock or touching SofaScore.
-if ! curl -s -m 10 -o /dev/null "${FLARE_URL%/v1}/"; then
-  say "FlareSolverr is not answering at ${FLARE_URL%/v1}."
-  say "Start Docker Desktop and the flaresolverr container, then run this again."
-  exit 1
-fi
-say "FlareSolverr is up at ${FLARE_URL%/v1}"
 
 waited=0
 while [ -f .update.lock ]; do

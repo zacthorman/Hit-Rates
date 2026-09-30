@@ -1,28 +1,33 @@
 #!/usr/bin/env bash
 #
-# Fit the NFL and build next week's slate, once the football job is out of the way.
+# Build the darts page: every PDC match in the next few days, one report.
 #
-#     ./nfl_fit.sh
+#     ./darts.sh          # next 3 days
+#     ./darts.sh 7        # next 7 days
 #
-# Start it whenever and walk away. It waits for update.py's lock to clear
-# before touching the network, because two builds sharing one home connection
-# is how a fourteen-hour run turns into a wall of 403s.
+# Same shape as nfl_fit.sh. Start it whenever and walk away: it waits for
+# update.py's lock to clear before touching the network.
 #
-# What it costs: the opponent-adjusted fit needs every club's season, and only
-# a handful are cached, so expect somewhere around an hour of fetching the
-# first time. After that the ratings come off disk and every NFL fixture for
-# the rest of the season is priced in seconds.
+# Darts has no league table, so this reads the day-by-day schedule instead of
+# --league, and each player's form is drawn from every competition he has
+# played in (Players Championships, Euro Tour, majors). Modus, WDF, Challenge
+# and Development Tour and the Women's Series are skipped by name, see
+# DARTS_SKIP in run.py.
 #
-# It does not publish. Look at what it built first.
+# What it costs: one request per day of schedule, then about 20 per player for
+# a first build. A Players Championship day is 64 players, so the first run of
+# a floor event is the expensive one. After that it is mostly cache.
+#
+# It writes reports/darts.html and rebuilds the index. It does not publish.
+# Look at it first, then: ./publish.sh
 
 set -uo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+DAYS="${1:-3}"
 PY=".venv/bin/python"
 [ -x "$PY" ] || PY="python3"
 
-# Deliberately slower than the football job. This is an extra build on a day
-# that already had one, and the whole point is to be forgettable.
 export SOFA_DELAY_MIN=5
 export SOFA_DELAY_MAX=10
 
@@ -36,6 +41,8 @@ case "$FLARE_URL" in 1|true|yes) FLARE_URL="http://localhost:8191/v1" ;; esac
 say() { echo "$(date '+%H:%M:%S')  $*"; }
 
 # Check it is actually up before waiting on the lock or touching SofaScore.
+# Without this the first request dies on a refused connection and the run
+# reports it as a network fault, which it is not.
 if ! curl -s -m 10 -o /dev/null "${FLARE_URL%/v1}/"; then
   say "FlareSolverr is not answering at ${FLARE_URL%/v1}."
   say "Start Docker Desktop and the flaresolverr container, then run this again."
@@ -52,18 +59,17 @@ while [ -f .update.lock ]; do
   waited=$((waited + 300))
   if [ "$waited" -ge 43200 ]; then
     say "twelve hours and the lock is still there. Giving up rather than"
-    say "assuming it is stale -- check whether update.py is actually running."
+    say "assuming it is stale. Check whether update.py is actually running."
     exit 1
   fi
 done
 [ "$waited" -gt 0 ] && say "lock cleared after $((waited / 60)) minutes"
 
-say "fitting the NFL and building the slate, pacing ${SOFA_DELAY_MIN}-${SOFA_DELAY_MAX}s"
+say "building darts for the next ${DAYS} day(s), pacing ${SOFA_DELAY_MIN}-${SOFA_DELAY_MAX}s"
 
-# caffeinate -i: the Mac sleeping mid-run is what makes these finish at
-# unpredictable times. -i keeps it awake for idle only, so closing the lid
-# still suspends, which is the behaviour you want overnight on a desk.
-RUN=("$PY" run.py --league NFL --games 20 --players --adjust --h2h --no-open)
+# Deliberately no curl_cffi fallback: if FlareSolverr drops mid-run the
+# circuit breaker stops the build rather than hammering SofaScore direct.
+RUN=("$PY" run.py --darts "$DAYS" --games 20 --h2h --no-open)
 if command -v caffeinate >/dev/null 2>&1; then
   caffeinate -i "${RUN[@]}"
 else
@@ -73,11 +79,11 @@ status=$?
 
 if [ $status -ne 0 ]; then
   say "the build failed (exit $status). Nothing has been indexed or published."
-  say "If it was 403s, wait a few hours rather than retrying now."
+  say "No PDC darts in the window is also a non-zero exit; try ./darts.sh 7."
   exit $status
 fi
 
 say "building the index"
 "$PY" make_index.py || exit $?
 
-say "done. Nothing is published yet -- check the report, then: ./publish.sh"
+say "done. Nothing is published yet. Check reports/darts.html, then: ./publish.sh"
