@@ -53,8 +53,8 @@
     "total": 10,
     "fair": 1.5852951849505161,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    },
    {
     "event_id": 15168422,
@@ -99,7 +99,7 @@
     "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: builder",
@@ -806,11 +806,11 @@
     "total": 10,
     "fair": 1.5852951849505161,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -836,11 +836,11 @@
     "total": 10,
     "fair": 1.7932978740142371,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -866,11 +866,11 @@
     "total": 10,
     "fair": 1.7932978740142371,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -1487,8 +1487,8 @@
     "total": 10,
     "fair": 1.5852951849505161,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    },
    {
     "event_id": 15534026,
@@ -1512,7 +1512,7 @@
     "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: builder",
@@ -1538,8 +1538,8 @@
     "total": 10,
     "fair": 1.5852951849505161,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    },
    {
     "event_id": 15534106,
@@ -1559,8 +1559,8 @@
     "total": 10,
     "fair": 1.7932978740142371,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    },
    {
     "event_id": 15534106,
@@ -1580,11 +1580,11 @@
     "total": 10,
     "fair": 1.7932978740142371,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: single",
@@ -1789,5 +1789,278 @@
    }
   ],
   "result": "lose"
+ },
+ {
+  "category": "Pick: single",
+  "sport": "football",
+  "snapshot_at": 1790715067,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 17194039,
+    "fixture": "New York Red Bulls v St.Louis City",
+    "competition": "MLS",
+    "kickoff": 1790811000,
+    "sport": "football",
+    "team": "New York Red Bulls",
+    "player": "Ronald Donkor",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 16,
+    "total": 32,
+    "fair": 2.0,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1790715067,
+  "fair": 2.4526641625150503,
+  "legs": [
+   {
+    "event_id": 17194039,
+    "fixture": "New York Red Bulls v St.Louis City",
+    "competition": "MLS",
+    "kickoff": 1790811000,
+    "sport": "football",
+    "team": "St.Louis City",
+    "player": "Simon Becher",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 19,
+    "total": 27,
+    "fair": 1.4210526315789473,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 17194039,
+    "fixture": "New York Red Bulls v St.Louis City",
+    "competition": "MLS",
+    "kickoff": 1790811000,
+    "sport": "football",
+    "team": "New York Red Bulls",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.7259488551031834,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "football",
+  "snapshot_at": 1790715067,
+  "fair": 1.4210526315789473,
+  "legs": [
+   {
+    "event_id": 17194039,
+    "fixture": "New York Red Bulls v St.Louis City",
+    "competition": "MLS",
+    "kickoff": 1790811000,
+    "sport": "football",
+    "team": "St.Louis City",
+    "player": "Simon Becher",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 19,
+    "total": 27,
+    "fair": 1.4210526315789473,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: builder",
+  "sport": "football",
+  "snapshot_at": 1790715067,
+  "fair": 2.111111111111111,
+  "legs": [
+   {
+    "event_id": 17194039,
+    "fixture": "New York Red Bulls v St.Louis City",
+    "competition": "MLS",
+    "kickoff": 1790811000,
+    "sport": "football",
+    "team": "New York Red Bulls",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 18,
+    "total": 19,
+    "fair": 1.3182692392619466,
+    "venue": "home",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 17194039,
+    "fixture": "New York Red Bulls v St.Louis City",
+    "competition": "MLS",
+    "kickoff": 1790811000,
+    "sport": "football",
+    "team": "New York Red Bulls",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.7259488551031834,
+    "venue": "home",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 17194039,
+    "fixture": "New York Red Bulls v St.Louis City",
+    "competition": "MLS",
+    "kickoff": 1790811000,
+    "sport": "football",
+    "team": "New York Red Bulls",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.3758556101758963,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790715067,
+  "fair": 1.3182692392619466,
+  "legs": [
+   {
+    "event_id": 17194039,
+    "fixture": "New York Red Bulls v St.Louis City",
+    "competition": "MLS",
+    "kickoff": 1790811000,
+    "sport": "football",
+    "team": "New York Red Bulls",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 18,
+    "total": 19,
+    "fair": 1.3182692392619466,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790715067,
+  "fair": 1.3214996417422857,
+  "legs": [
+   {
+    "event_id": 17194039,
+    "fixture": "New York Red Bulls v St.Louis City",
+    "competition": "MLS",
+    "kickoff": 1790811000,
+    "sport": "football",
+    "team": "St.Louis City",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.3214996417422857,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790715067,
+  "fair": 1.4210526315789473,
+  "legs": [
+   {
+    "event_id": 17194039,
+    "fixture": "New York Red Bulls v St.Louis City",
+    "competition": "MLS",
+    "kickoff": 1790811000,
+    "sport": "football",
+    "team": "St.Louis City",
+    "player": "Simon Becher",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 19,
+    "total": 27,
+    "fair": 1.4210526315789473,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
  }
 ]
