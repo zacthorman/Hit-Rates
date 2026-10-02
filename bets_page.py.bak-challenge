@@ -119,44 +119,6 @@ Nothing is picked by hand, so the record cannot be flattered.</p>
 """
 
 
-def challenge_section() -> str:
-    """The rolling 1.8 to 2.2 challenge, from challenge.json. Empty if never started."""
-    try:
-        import challenge
-    except Exception:
-        return ""
-    state = challenge.load()
-    if not state["runs"]:
-        return ""
-    bets = bettrack.load()
-    walks = [(r, challenge.walk(r, bets)) for r in state["runs"]]
-    run, st = walks[-1]
-    best = max(sum(1 for x in w["steps"] if x["result"] == "win") for _, w in walks)
-    rows = ""
-    for x in st["steps"]:
-        legs = " + ".join(f'{esc(l["player"])} {esc(l["stat"])} {l["line"]:g}+' for l in x["legs"])
-        price = f'{x["price"]:.2f}' if x["price"] else "?"
-        rows += (f'<tr><td>{x["step"]}</td><td>&pound;{x["stake"]:.2f}</td><td>{price}</td>'
-                 f'<td><span class="pill {x["result"]}">{esc(x["result"])}</span></td><td>{legs}</td></tr>')
-    state_txt = "Alive" if st["alive"] else "Cashed out" if st.get("cashed") else "Bust"
-    total = sum(w["profit"] for _, w in walks)
-    target = state.get("target")
-    banked = (f'<div class="stat"><span class="muted">Banked</span><b>&pound;{st["banked"]:.2f}</b></div>'
-              if st["banked"] else "")
-    return f"""<h2>Rolling challenge</h2>
-<p class="muted">One bet at 1.80 to 2.20, the whole return rolled into the next{f", banked after {run['cashout']} wins" if run.get("cashout") else ""}. Run {run["id"]},
-started {esc(run["started"][:10])} with &pound;{run["stake"]:.2f}.</p>
-<div class="stats">
-<div class="stat"><span class="muted">Run {run["id"]}</span><b class="{"pos" if st["alive"] else "neg"}">{state_txt}</b></div>
-<div class="stat"><span class="muted">Pot</span><b>&pound;{st["pot"]:.2f}</b></div>{banked}
-<div class="stat"><span class="muted">Steps won</span><b>{sum(1 for x in st["steps"] if x["result"] == "win")}</b></div>
-<div class="stat"><span class="muted">Best run, steps</span><b>{best}</b></div>
-<div class="stat"><span class="muted">Challenge total{f" / &pound;{target:.0f}" if target else ""}</span><b class="{"pos" if total >= 0 else "neg"}">&pound;{total:+.2f}</b></div>
-</div>
-<table><tr><th>Step</th><th>Stake</th><th>Price</th><th>Result</th><th>Bet</th></tr>
-{rows or '<tr><td colspan="5" class="muted">No step logged yet.</td></tr>'}</table>"""
-
-
 def main() -> None:
     cal = bettrack.fit_and_write()
     bets = bettrack.load()
@@ -195,7 +157,6 @@ td,th{{text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)}}
 </style></head><body><div class="wrap">
 <a href="index.html" class="muted">&larr; All fixtures</a>
 <h1>Best bets summary</h1>
-{challenge_section()}
 {site}
 <h2 style="margin-top:40px">Your tracked bets</h2>
 <p class="muted">Every best bet is logged with the hit rate the site showed at the time, then settled from the box score.

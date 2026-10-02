@@ -88,70 +88,6 @@ def load_config() -> dict:
         raise SystemExit(f"{CONFIG.name} is not valid JSON: {exc}")
 
 
-def _flare_url() -> str:
-    url = os.environ.get("SOFA_FLARESOLVERR", "1").strip()
-    if url.lower() in ("0", "false", "no", "off"):
-        return ""
-    if url.lower() in ("1", "true", "yes", "on", ""):
-        return "http://localhost:8191/v1"
-    return url
-
-
-def _flare_healthy(url: str) -> bool:
-    """Can FlareSolverr open and close a browser session right now?
-
-    Not just "is the port open": the 2 October failure was a container that
-    answered on 8191 but had a browser stuck on an Oddschecker challenge, so
-    every real request hung until it timed out. Creating a session needs a
-    working browser, which is the thing that matters.
-    """
-    import urllib.request
-
-    def call(payload, timeout):
-        req = urllib.request.Request(url, data=json.dumps(payload).encode(),
-                                     headers={"Content-Type": "application/json"})
-        with urllib.request.urlopen(req, timeout=timeout) as r:
-            return json.load(r)
-    try:
-        made = call({"cmd": "sessions.create"}, 45)
-        sid = made.get("session")
-        if sid:
-            call({"cmd": "sessions.destroy", "session": sid}, 20)
-        return made.get("status") == "ok"
-    except Exception:
-        return False
-
-
-def ensure_flaresolverr() -> bool:
-    """Healthy, or restarted until healthy, or False. Waits out a cold start."""
-    url = _flare_url()
-    if not url:
-        return True
-    if _flare_healthy(url):
-        return True
-    say("FlareSolverr is not healthy, restarting the container")
-    name = os.environ.get("FLARESOLVERR_CONTAINER", "flaresolverr")
-    docker = next((d for d in ("/usr/local/bin/docker", "/opt/homebrew/bin/docker",
-                               "/Applications/Docker.app/Contents/Resources/bin/docker")
-                   if Path(d).exists()), "docker")
-    try:
-        subprocess.run([docker, "restart", name], check=True, timeout=120,
-                       capture_output=True, text=True)
-    except Exception as exc:
-        say(f"  could not restart it ({type(exc).__name__}). Is Docker Desktop running?")
-        return False
-    # A fresh container takes ten to thirty seconds before it will take a
-    # request. Starting the build in the same second is what the 11:11 run
-    # on 2 October did, and every league failed on RemoteDisconnected.
-    for waited in range(0, 150, 10):
-        time.sleep(10)
-        if _flare_healthy(url):
-            say(f"  FlareSolverr back after about {waited + 10}s")
-            return True
-    say("  still not healthy after two and a half minutes")
-    return False
-
-
 def say(message: str) -> None:
     """Print and log at once. A scheduled run has nobody watching the terminal.
 
@@ -397,12 +333,6 @@ def main() -> None:
                 else:
                     say("could not publish those, carrying on with the rebuild")
 
-        # Before anything touches the network: a FlareSolverr that is down or
-        # wedged fails every league one by one, slowly, and publishes nothing.
-        if not args.dry and not args.only_render:
-            if not ensure_flaresolverr():
-                fail("FlareSolverr is not answering, nothing was fetched")
-
         # 0. Settle yesterday's tracked bets before anything else touches the
         #    network, so LESSONS.md and calibration.json are current by the time
         #    anyone reads today's picks. Never fatal: a settle problem must not
@@ -434,21 +364,6 @@ def main() -> None:
                 say("  raise delay_min and delay_max in update.json, and build")
                 say("  fewer leagues per run. Cached data still works meanwhile.")
                 fail("the league build failed, nothing was published")
-
-            # 1b. The Nations League. Not a league with a round, so it is
-            #     read off the schedule for the next few days instead. Off
-            #     the international windows there is nothing to build, which
-            #     is the normal answer, so a failure here never stops the
-            #     club leagues being published.
-            days = settings.get("nations_days")
-            if days:
-                say(f"building the Nations League, next {days} day(s)")
-                nations = [python, "run.py", "--nations", str(days),
-                           "--games", "20", "--form-days", "400",
-                           "--no-open", "--players", "--h2h"]
-                if settings.get("referee"):
-                    nations.append("--referee")
-                run(nations, args.dry, allow_fail=True)
 
         # 2. Re-render, so reports built by older code pick up new page
         #    features. Cheap: the data is already inside each file.

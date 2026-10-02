@@ -1,0 +1,171 @@
+"""
+The rolling challenge: a 1.8 to 2.2 bet, then the whole return on the next.
+
+    python challenge.py start --stake 10            # new run, everything rolls
+    python challenge.py start --stake 10 --bank half  # bank half of each profit
+    python challenge.py log --event 16184622 --player "Jaylen Warren" \\
+        --stat "Rushing and receiving yards" --line 60 --price 1.96
+    python challenge.py log --event 16184622 --player "Harold Fannin Jr." \\
+        --stat "Receiving yards" --line 30          # second leg, same step
+    python challenge.py status                      # pot, step, record
+
+Each step is an ordinary bettrack.py bet (group "ch<run>-s<step>"), so it is
+settled from the box score by `bettrack.py settle` like everything else and
+feeds the same calibration. This file only remembers the runs and works out
+the pot from how each step settled. A void step returns the stake and the run
+carries on at the same step number with a fresh bet.
+
+Prices outside 1.80 to 2.20 are refused: the point of the challenge is the
+fixed band, and a 1.5 "to get through tonight" is how it stops meaning anything.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+import bettrack
+
+HERE = Path(__file__).parent
+STATE = HERE / "challenge.json"
+LOW, HIGH = 1.80, 2.20
+
+
+def load() -> dict:
+    return json.loads(STATE.read_text()) if STATE.exists() else {"runs": []}
+
+
+def save(s: dict) -> None:
+    STATE.write_text(json.dumps(s, indent=2))
+
+
+def _group(run_id: int, step: int, retry: int) -> str:
+    return f"ch{run_id}-s{step}" + (f"v{retry}" if retry else "")
+
+
+def walk(run: dict, bets: list[dict]) -> dict:
+    """Replay one run against bets.json: pot, banked, steps, and whether it is alive."""
+    pot, banked = float(run["stake"]), 0.0
+    steps, step, retry = [], 1, 0
+    alive, open_bet = True, None
+    by_group = {b["group"]: b for b in bets}
+    while True:
+        group = _group(run["id"], step, retry)
+        b = by_group.get(group)
+        if b is None:
+            break
+        res = b.get("result")
+        steps.append({"step": step, "group": group, "price": b.get("price"),
+                      "stake": round(pot, 2), "result": res or "open", "legs": b["legs"]})
+        if res is None:
+            open_bet = group
+            break
+        if res == "void":          # stake back, same step, fresh bet
+            retry += 1
+            continue
+        if res == "lose":
+            alive, pot = False, 0.0
+            break
+        profit = pot * ((b.get("price") or 1) - 1)
+        if run.get("bank") == "half":
+            banked += profit / 2
+            pot += profit / 2
+        else:
+            pot += profit
+        step, retry = step + 1, 0
+    return {"pot": round(pot, 2), "banked": round(banked, 2), "steps": steps,
+            "alive": alive, "next_step": step, "next_retry": retry, "open": open_bet}
+
+
+def current() -> tuple[dict, dict] | tuple[None, None]:
+    s = load()
+    if not s["runs"]:
+        return None, None
+    run = s["runs"][-1]
+    return run, walk(run, bettrack.load())
+
+
+def start(args) -> None:
+    run, st = current()
+    if run and st["alive"] and st["steps"] and not args.force:
+        raise SystemExit(f"Run {run['id']} is still alive at step {st['next_step']} "
+                         f"with £{st['pot']:.2f}. Finish it, or --force to abandon it.")
+    s = load()
+    rid = (s["runs"][-1]["id"] + 1) if s["runs"] else 1
+    s["runs"].append({"id": rid, "stake": args.stake, "bank": args.bank,
+                      "started": datetime.now(tz=timezone.utc).isoformat(timespec="seconds")})
+    save(s)
+    print(f"Run {rid} started: £{args.stake:.2f}, "
+          f"{'banking half of each profit' if args.bank == 'half' else 'everything rolls'}.")
+
+
+def log(args) -> None:
+    run, st = current()
+    if not run:
+        raise SystemExit("No run yet: python challenge.py start --stake 10")
+    if not st["alive"]:
+        raise SystemExit(f"Run {run['id']} is over. Start a new one.")
+    if st["open"]:
+        group = st["open"]
+        existing = next(b for b in bettrack.load() if b["group"] == group)
+        if any(l["result"] is not None for l in existing["legs"]):
+            raise SystemExit("This step has started settling. Wait for it.")
+    else:
+        if not args.price:
+            raise SystemExit("First leg of a step needs --price for the whole bet.")
+        group = _group(run["id"], st["next_step"], st["next_retry"])
+    if args.price and not LOW <= args.price <= HIGH:
+        raise SystemExit(f"{args.price:.2f} is outside the {LOW:.2f} to {HIGH:.2f} band.")
+    ns = argparse.Namespace(
+        event=args.event, player=args.player, stat=args.stat, line=args.line,
+        price=args.price, stake=st["pot"], kind="multi", group=group,
+        suggested=False, backfill=False, note=f"challenge run {run['id']}")
+    bettrack.log(ns)
+    print(f"  step {st['next_step']} of run {run['id']}, staking £{st['pot']:.2f}")
+
+
+def status(args=None) -> None:
+    run, st = current()
+    if not run:
+        print("No challenge run yet.")
+        return
+    print(f"Run {run['id']} (started {run['started'][:10]}, £{run['stake']:.2f}, "
+          f"{run.get('bank') or 'all'}): "
+          + ("ALIVE" if st["alive"] else "BUST"))
+    for x in st["steps"]:
+        legs = " + ".join(f"{l['player']} {l['stat']} {l['line']:g}+" for l in x["legs"])
+        price = f"{x['price']:.2f}" if x["price"] else "?"
+        print(f"  step {x['step']}: £{x['stake']:.2f} @ {price}  {x['result']:5}  {legs}")
+    if st["alive"]:
+        print(f"Pot £{st['pot']:.2f}" + (f", banked £{st['banked']:.2f}" if st["banked"] else "")
+              + (f". Waiting on {st['open']}." if st["open"] else f". Next: step {st['next_step']}."))
+    s = load()
+    if len(s["runs"]) > 1:
+        best = max((walk(r, bettrack.load()) for r in s["runs"]),
+                   key=lambda w: sum(1 for x in w["steps"] if x["result"] == "win"))
+        wins = sum(1 for x in best["steps"] if x["result"] == "win")
+        print(f"Best run so far: {wins} step(s) won.")
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    a = sub.add_parser("start")
+    a.add_argument("--stake", type=float, default=10.0)
+    a.add_argument("--bank", choices=["all", "half"], default="all")
+    a.add_argument("--force", action="store_true")
+    b = sub.add_parser("log")
+    b.add_argument("--event", type=int, required=True)
+    b.add_argument("--player", required=True)
+    b.add_argument("--stat", required=True)
+    b.add_argument("--line", type=float, required=True)
+    b.add_argument("--price", type=float)
+    sub.add_parser("status")
+    args = ap.parse_args()
+    {"start": start, "log": log, "status": status}[args.cmd](args)
+
+
+if __name__ == "__main__":
+    main()

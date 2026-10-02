@@ -426,6 +426,14 @@ def get_json(
                 if verbose:
                     print(f"    non-JSON response on {path}")
                 return None
+            # FlareSolverr reports the page Chrome rendered, so an API 404
+            # arrives as status 200 with {"error": {"code": 404}} as the body.
+            # Cached, that looked like a real empty answer for hours.
+            if isinstance(data, dict) and set(data) == {"error"}:
+                code = (data.get("error") or {}).get("code")
+                if verbose:
+                    print(f"    {code} on {path} (error body)")
+                return None
             cache_file.write_text(json.dumps(data))
             # Sleep only after a real network call. Cache hits return above,
             # so a fully cached run is instant.

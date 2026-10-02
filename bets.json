@@ -624,5 +624,51 @@
     "result": "win",
     "profit": null,
     "note": ""
+  },
+  {
+    "group": "ch1-s1",
+    "kind": "multi",
+    "logged_at": "2026-10-01T21:56:56+00:00",
+    "price": 1.96,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": true,
+    "legs": [
+      {
+        "event_id": 16184622,
+        "fixture": "Cleveland Browns v Pittsburgh Steelers",
+        "kickoff": 1790900100,
+        "player": "Jaylen Warren",
+        "player_id": 1389553,
+        "team": "Pittsburgh Steelers",
+        "stat": "Rushing and receiving yards",
+        "line": 60.0,
+        "model_k": 7,
+        "model_n": 10,
+        "model_p": 0.7,
+        "source": "nfl.html",
+        "value": 126.0,
+        "result": "win"
+      },
+      {
+        "event_id": 16184622,
+        "fixture": "Cleveland Browns v Pittsburgh Steelers",
+        "kickoff": 1790900100,
+        "player": "Harold Fannin Jr.",
+        "player_id": 1530785,
+        "team": "Cleveland Browns",
+        "stat": "Receiving yards",
+        "line": 30.0,
+        "model_k": 8,
+        "model_n": 10,
+        "model_p": 0.8,
+        "source": "nfl.html",
+        "value": 27.0,
+        "result": "lose"
+      }
+    ],
+    "result": "lose",
+    "profit": -10.0,
+    "note": "challenge run 1"
   }
 ]

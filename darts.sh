@@ -8,7 +8,7 @@
 # Same shape as nfl_fit.sh. Start it whenever and walk away: it waits for
 # update.py's lock to clear before touching the network.
 #
-# Darts has no league table, so this reads the day-by-day schedule instead of
+# Darts has no league table, so this asks a seed list of PDC players for their next matches instead of
 # --league, and each player's form is drawn from every competition he has
 # played in (Players Championships, Euro Tour, majors). Modus, WDF, Challenge
 # and Development Tour and the Women's Series are skipped by name, see

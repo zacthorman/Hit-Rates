@@ -1815,10 +1815,10 @@
     "fair": 2.0,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Pick: evens double",
@@ -1844,8 +1844,8 @@
     "total": 27,
     "fair": 1.4210526315789473,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    },
    {
     "event_id": 17194039,
@@ -1865,11 +1865,11 @@
     "total": 19,
     "fair": 1.7259488551031834,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: banker",
@@ -1895,11 +1895,11 @@
     "total": 27,
     "fair": 1.4210526315789473,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: builder",
@@ -1925,8 +1925,8 @@
     "total": 19,
     "fair": 1.3182692392619466,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    },
    {
     "event_id": 17194039,
@@ -1946,8 +1946,8 @@
     "total": 19,
     "fair": 1.7259488551031834,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    },
    {
     "event_id": 17194039,
@@ -1967,11 +1967,11 @@
     "total": 19,
     "fair": 1.3758556101758963,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -1997,11 +1997,11 @@
     "total": 19,
     "fair": 1.3182692392619466,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -2027,11 +2027,11 @@
     "total": 19,
     "fair": 1.3214996417422857,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -2057,11 +2057,11 @@
     "total": 27,
     "fair": 1.4210526315789473,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: single",
@@ -2087,11 +2087,11 @@
     "total": 19,
     "fair": 2.2159669118868157,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: evens double",
@@ -2117,8 +2117,8 @@
     "total": 25,
     "fair": 1.25,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    },
    {
     "event_id": 17194039,
@@ -2138,11 +2138,11 @@
     "total": 19,
     "fair": 1.7259488551031834,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: banker",
@@ -2169,10 +2169,10 @@
     "fair": 1.3636363636363638,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Pick: acca",
@@ -2198,8 +2198,8 @@
     "total": 19,
     "fair": 1.5828841448390334,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win"
    },
    {
     "event_id": 17194039,
@@ -2219,11 +2219,11 @@
     "total": 17,
     "fair": 1.6101423846808904,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: builder",
@@ -2249,8 +2249,8 @@
     "total": 19,
     "fair": 1.2107724367497794,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    },
    {
     "event_id": 16275102,
@@ -2270,8 +2270,8 @@
     "total": 19,
     "fair": 1.3588225462017542,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 11.0,
+    "result": "win"
    },
    {
     "event_id": 16275102,
@@ -2291,11 +2291,11 @@
     "total": 18,
     "fair": 1.5572020542583824,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -2322,10 +2322,10 @@
     "fair": 1.3636363636363638,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Fixture single",
@@ -2351,11 +2351,11 @@
     "total": 19,
     "fair": 1.3588225462017542,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 11.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -2381,6 +2381,1551 @@
     "total": 19,
     "fair": 1.5828841448390334,
     "venue": "home",
+    "value": 7.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1790810185,
+  "fair": 2.1819812892816297,
+  "legs": [
+   {
+    "event_id": 17108375,
+    "fixture": "S\u00e3o Paulo v Santos",
+    "competition": "Brasileir\u00e3o Betano",
+    "kickoff": 1790982000,
+    "sport": "football",
+    "team": "S\u00e3o Paulo",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.3784845191582356,
+    "venue": "home",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16275102,
+    "fixture": "Seattle Sounders FC v Sporting Kansas City",
+    "competition": "MLS",
+    "kickoff": 1790904600,
+    "sport": "football",
+    "team": "Seattle Sounders FC",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.5828841448390334,
+    "venue": "home",
+    "value": 7.0,
+    "result": "win"
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "football",
+  "snapshot_at": 1790810185,
+  "fair": 1.3784845191582356,
+  "legs": [
+   {
+    "event_id": 17108375,
+    "fixture": "S\u00e3o Paulo v Santos",
+    "competition": "Brasileir\u00e3o Betano",
+    "kickoff": 1790982000,
+    "sport": "football",
+    "team": "S\u00e3o Paulo",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.3784845191582356,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1790810185,
+  "fair": 4.070003924884804,
+  "legs": [
+   {
+    "event_id": 16275102,
+    "fixture": "Seattle Sounders FC v Sporting Kansas City",
+    "competition": "MLS",
+    "kickoff": 1790904600,
+    "sport": "football",
+    "team": "Seattle Sounders FC",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.5828841448390334,
+    "venue": "home",
+    "value": 7.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17108375,
+    "fixture": "S\u00e3o Paulo v Santos",
+    "competition": "Brasileir\u00e3o Betano",
+    "kickoff": 1790982000,
+    "sport": "football",
+    "team": "S\u00e3o Paulo",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 11.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.5969135897189515,
+    "venue": "home",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 17194039,
+    "fixture": "New York Red Bulls v St.Louis City",
+    "competition": "MLS",
+    "kickoff": 1790811000,
+    "sport": "football",
+    "team": "St.Louis City",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 17,
+    "fair": 1.6101423846808904,
+    "venue": "away",
+    "value": 0.0,
+    "result": "lose"
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790810185,
+  "fair": 1.4352178498153962,
+  "legs": [
+   {
+    "event_id": 17108375,
+    "fixture": "S\u00e3o Paulo v Santos",
+    "competition": "Brasileir\u00e3o Betano",
+    "kickoff": 1790982000,
+    "sport": "football",
+    "team": "Santos",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 15,
+    "fair": 1.4352178498153962,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790810185,
+  "fair": 1.3009114251576346,
+  "legs": [
+   {
+    "event_id": 17108375,
+    "fixture": "S\u00e3o Paulo v Santos",
+    "competition": "Brasileir\u00e3o Betano",
+    "kickoff": 1790982000,
+    "sport": "football",
+    "team": "S\u00e3o Paulo",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 18,
+    "fair": 1.3009114251576346,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790810185,
+  "fair": 1.3784845191582356,
+  "legs": [
+   {
+    "event_id": 17108375,
+    "fixture": "S\u00e3o Paulo v Santos",
+    "competition": "Brasileir\u00e3o Betano",
+    "kickoff": 1790982000,
+    "sport": "football",
+    "team": "S\u00e3o Paulo",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.3784845191582356,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1790880681,
+  "fair": 2.5277292018441133,
+  "legs": [
+   {
+    "event_id": 16275102,
+    "fixture": "Seattle Sounders FC v Sporting Kansas City",
+    "competition": "MLS",
+    "kickoff": 1790904600,
+    "sport": "football",
+    "team": "Seattle Sounders FC",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.5828841448390334,
+    "venue": "home",
+    "value": 7.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17108375,
+    "fixture": "S\u00e3o Paulo v Santos",
+    "competition": "Brasileir\u00e3o Betano",
+    "kickoff": 1790982000,
+    "sport": "football",
+    "team": "S\u00e3o Paulo",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 11.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.5969135897189515,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: single",
+  "sport": "american-football",
+  "snapshot_at": 1790880681,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Cleveland Browns",
+    "player": "Jerry Jeudy",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 10,
+    "total": 20,
+    "fair": 2.0,
+    "venue": null,
+    "value": 36.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "american-football",
+  "snapshot_at": 1790880681,
+  "fair": 1.9226190476190474,
+  "legs": [
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Cleveland Browns",
+    "player": "Harold Fannin Jr.",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 29.5,
+    "over": true,
+    "alt": true,
+    "threshold": 30.0,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3571428571428572,
+    "venue": null,
+    "value": 27.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Pittsburgh Steelers",
+    "player": "Darnell Washington",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 12,
+    "total": 17,
+    "fair": 1.4166666666666665,
+    "venue": null,
+    "value": 27.0,
+    "result": "win"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "american-football",
+  "snapshot_at": 1790880681,
+  "fair": 1.3571428571428572,
+  "legs": [
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Cleveland Browns",
+    "player": "Harold Fannin Jr.",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 29.5,
+    "over": true,
+    "alt": true,
+    "threshold": 30.0,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3571428571428572,
+    "venue": null,
+    "value": 27.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: builder",
+  "sport": "american-football",
+  "snapshot_at": 1790880681,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Cleveland Browns",
+    "player": null,
+    "stat": "Rushing attempts",
+    "period": "ALL",
+    "line": 23.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.4937478247230116,
+    "venue": "home",
+    "value": 27.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Cleveland Browns",
+    "player": null,
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 93.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 10,
+    "fair": 1.6236644059043108,
+    "venue": "home",
+    "value": 112.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Cleveland Browns",
+    "player": null,
+    "stat": "Net yards passing",
+    "period": "ALL",
+    "line": 181.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 6,
+    "total": 10,
+    "fair": 1.7614210882474883,
+    "venue": "home",
+    "value": 260.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1790880681,
+  "fair": 4.25,
+  "legs": [
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Cleveland Browns",
+    "player": "Isaiah Bond",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 12,
+    "total": 17,
+    "fair": 1.4166666666666665,
+    "venue": null,
+    "value": 1.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Pittsburgh Steelers",
+    "player": "Jaylen Warren",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 44.5,
+    "over": true,
+    "alt": true,
+    "threshold": 45.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 93.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Pittsburgh Steelers",
+    "player": "Aaron Rodgers",
+    "stat": "Passing attempts",
+    "period": "ALL",
+    "line": 30.5,
+    "over": true,
+    "alt": true,
+    "threshold": 31.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 40.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Pittsburgh Steelers",
+    "player": "Darnell Washington",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 12,
+    "total": 17,
+    "fair": 1.4166666666666665,
+    "venue": null,
+    "value": 27.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790880681,
+  "fair": 1.3571428571428572,
+  "legs": [
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Cleveland Browns",
+    "player": "Harold Fannin Jr.",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 29.5,
+    "over": true,
+    "alt": true,
+    "threshold": 30.0,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3571428571428572,
+    "venue": null,
+    "value": 27.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790880681,
+  "fair": 1.3571428571428572,
+  "legs": [
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Pittsburgh Steelers",
+    "player": "Aaron Rodgers",
+    "stat": "Passing completions",
+    "period": "ALL",
+    "line": 17.5,
+    "over": true,
+    "alt": true,
+    "threshold": 18.0,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3571428571428572,
+    "venue": null,
+    "value": 22.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790880681,
+  "fair": 1.4937478247230116,
+  "legs": [
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Cleveland Browns",
+    "player": null,
+    "stat": "Rushing attempts",
+    "period": "ALL",
+    "line": 23.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.4937478247230116,
+    "venue": "home",
+    "value": 27.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 3.8004008450245443,
+  "legs": [
+   {
+    "event_id": 15534175,
+    "fixture": "Bosnia & Herzegovina v Sweden",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790966700,
+    "sport": "football",
+    "team": "Bosnia & Herzegovina",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 13,
+    "fair": 1.5419150911238728,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15534040,
+    "fixture": "Belgium v T\u00fcrkiye",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790966700,
+    "sport": "football",
+    "team": "T\u00fcrkiye",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 12,
+    "fair": 1.5547437027245392,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15534087,
+    "fixture": "Croatia v England",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791043200,
+    "sport": "football",
+    "team": "Croatia",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.5852951849505161,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: single",
+  "sport": "american-football",
+  "snapshot_at": 1790887255,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Cleveland Browns",
+    "player": "Jerry Jeudy",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 10,
+    "total": 20,
+    "fair": 2.0,
+    "venue": null,
+    "value": 36.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1790887255,
+  "fair": 4.571428571428571,
+  "legs": [
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Cleveland Browns",
+    "player": "Harold Fannin Jr.",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 34.5,
+    "over": true,
+    "alt": true,
+    "threshold": 35.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 27.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Cleveland Browns",
+    "player": "Isaiah Bond",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 12,
+    "total": 17,
+    "fair": 1.4166666666666665,
+    "venue": null,
+    "value": 1.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Pittsburgh Steelers",
+    "player": "Jaylen Warren",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 44.5,
+    "over": true,
+    "alt": true,
+    "threshold": 45.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 93.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16184622,
+    "fixture": "Cleveland Browns v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1790900100,
+    "sport": "american-football",
+    "team": "Pittsburgh Steelers",
+    "player": "Darnell Washington",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 12,
+    "total": 17,
+    "fair": 1.4166666666666665,
+    "venue": null,
+    "value": 27.0,
+    "result": "win"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 15534028,
+    "fixture": "France v Italy",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790966700,
+    "sport": "football",
+    "team": "Italy",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.7932978740142371,
+  "legs": [
+   {
+    "event_id": 15534028,
+    "fixture": "France v Italy",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790966700,
+    "sport": "football",
+    "team": "Italy",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 10,
+    "fair": 1.7932978740142371,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.625,
+  "legs": [
+   {
+    "event_id": 15534028,
+    "fixture": "France v Italy",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790966700,
+    "sport": "football",
+    "team": "France",
+    "player": "Kylian Mbapp\u00e9",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": true,
+    "threshold": 3.0,
+    "hits": 8,
+    "total": 13,
+    "fair": 1.625,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.5547437027245392,
+  "legs": [
+   {
+    "event_id": 15534040,
+    "fixture": "Belgium v T\u00fcrkiye",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790966700,
+    "sport": "football",
+    "team": "T\u00fcrkiye",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 12,
+    "fair": 1.5547437027245392,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.5547437027245392,
+  "legs": [
+   {
+    "event_id": 15534040,
+    "fixture": "Belgium v T\u00fcrkiye",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790966700,
+    "sport": "football",
+    "team": "T\u00fcrkiye",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 12,
+    "fair": 1.5547437027245392,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.375,
+  "legs": [
+   {
+    "event_id": 15534040,
+    "fixture": "Belgium v T\u00fcrkiye",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790966700,
+    "sport": "football",
+    "team": "Belgium",
+    "player": "Kevin De Bruyne",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": true,
+    "threshold": 3.0,
+    "hits": 8,
+    "total": 11,
+    "fair": 1.375,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.5419150911238728,
+  "legs": [
+   {
+    "event_id": 15534175,
+    "fixture": "Bosnia & Herzegovina v Sweden",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790966700,
+    "sport": "football",
+    "team": "Bosnia & Herzegovina",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 13,
+    "fair": 1.5419150911238728,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.640240495650078,
+  "legs": [
+   {
+    "event_id": 15534175,
+    "fixture": "Bosnia & Herzegovina v Sweden",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790966700,
+    "sport": "football",
+    "team": "Bosnia & Herzegovina",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 13,
+    "fair": 1.640240495650078,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.640240495650078,
+  "legs": [
+   {
+    "event_id": 15534175,
+    "fixture": "Bosnia & Herzegovina v Sweden",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790966700,
+    "sport": "football",
+    "team": "Bosnia & Herzegovina",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 13,
+    "fair": 1.640240495650078,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.5852951849505161,
+  "legs": [
+   {
+    "event_id": 15534087,
+    "fixture": "Croatia v England",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791043200,
+    "sport": "football",
+    "team": "Croatia",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.5852951849505161,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.7932978740142371,
+  "legs": [
+   {
+    "event_id": 15534087,
+    "fixture": "Croatia v England",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791043200,
+    "sport": "football",
+    "team": "Croatia",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "1ST",
+    "line": 0.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 10,
+    "fair": 1.7932978740142371,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.7932978740142371,
+  "legs": [
+   {
+    "event_id": 15534087,
+    "fixture": "Croatia v England",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791043200,
+    "sport": "football",
+    "team": "Croatia",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 10,
+    "fair": 1.7932978740142371,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.5852951849505161,
+  "legs": [
+   {
+    "event_id": 15537768,
+    "fixture": "Estonia v Luxembourg",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791043200,
+    "sport": "football",
+    "team": "Luxembourg",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.5852951849505161,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 15537768,
+    "fixture": "Estonia v Luxembourg",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791043200,
+    "sport": "football",
+    "team": "Luxembourg",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 6.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.7932978740142371,
+  "legs": [
+   {
+    "event_id": 15537768,
+    "fixture": "Estonia v Luxembourg",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791043200,
+    "sport": "football",
+    "team": "Luxembourg",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 10,
+    "fair": 1.7932978740142371,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.6755005554346891,
+  "legs": [
+   {
+    "event_id": 15534085,
+    "fixture": "Spain v Czechia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791053100,
+    "sport": "football",
+    "team": "Czechia",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 14.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.6755005554346891,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.6755005554346891,
+  "legs": [
+   {
+    "event_id": 15534085,
+    "fixture": "Spain v Czechia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791053100,
+    "sport": "football",
+    "team": "Czechia",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 6.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.6755005554346891,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.6755005554346891,
+  "legs": [
+   {
+    "event_id": 15534085,
+    "fixture": "Spain v Czechia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791053100,
+    "sport": "football",
+    "team": "Czechia",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 7.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.6755005554346891,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 15534112,
+    "fixture": "Switzerland v Slovenia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791053100,
+    "sport": "football",
+    "team": "Switzerland",
+    "player": "Remo Freuler",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 6,
+    "total": 12,
+    "fair": 2.0,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 15534112,
+    "fixture": "Switzerland v Slovenia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791053100,
+    "sport": "football",
+    "team": "Switzerland",
+    "player": "Dan Ndoye",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 6,
+    "total": 12,
+    "fair": 2.0,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.6755005554346891,
+  "legs": [
+   {
+    "event_id": 15534111,
+    "fixture": "North Macedonia v Scotland",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791053100,
+    "sport": "football",
+    "team": "Scotland",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.6755005554346891,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.6755005554346891,
+  "legs": [
+   {
+    "event_id": 15534111,
+    "fixture": "North Macedonia v Scotland",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791053100,
+    "sport": "football",
+    "team": "Scotland",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.6755005554346891,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790887255,
+  "fair": 1.7659202120225284,
+  "legs": [
+   {
+    "event_id": 15534111,
+    "fixture": "North Macedonia v Scotland",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791053100,
+    "sport": "football",
+    "team": "Scotland",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 11,
+    "fair": 1.7659202120225284,
+    "venue": null,
     "value": null,
     "result": null
    }

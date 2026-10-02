@@ -856,46 +856,22 @@ DARTS_SKIP = ("modus", "super series", "wdf", "challenge tour",
               "bdo", "winmau", "icons", "exhibition")
 
 
-# PDC tour players to start the darts sweep from. Every match one of these
-# plays in the window comes in, along with whoever he is drawn against, so the
-# list only has to touch each event, not name everyone in it. Ids read off the
-# cached darts feed; add to it as new names break through.
-DARTS_SEEDS = (
-    412122, 272992, 26280, 143420, 191218, 70916, 143410, 222544, 172078,
-    35951, 190416, 253804, 180890, 248244, 410446, 191330, 298580, 83897,
-    342180, 273922, 232576, 136796, 132048, 26272, 26110, 68642, 331967,
-    85671, 132040, 35969, 186078, 337886, 51537, 407830, 32762, 51766,
-    206512, 136790, 42237,
-)
-
-
-def _in_window(event: dict, now: float, until: float) -> bool:
-    if (event.get("status") or {}).get("type") != "notstarted":
-        return False
-    start = event.get("startTimestamp") or 0
-    if not now < start < until:
-        return False
-    home = (event.get("homeTeam") or {}).get("name", "")
-    away = (event.get("awayTeam") or {}).get("name", "")
-    # A draw not yet made comes through as TBD v TBD.
-    return bool(home and away) and "tbd" not in (home + away).lower()
-
-
 def darts_events(days: int, skip: tuple[str, ...] = DARTS_SKIP,
                  limit: int = 40) -> list[dict]:
-    """Every not-yet-started PDC match in the next few days.
+    """Every not-yet-started darts match in the next few days.
 
-    Darts has no league table, so --league cannot find the players, and the
-    day-by-day schedule endpoint 404s (check.py found that months ago for
-    football, and darts is the same). So this asks each seed player for his
-    next matches, the same team/events/next call every other path uses.
-    About forty requests, cached for six hours.
+    Darts has no league table, so --league cannot find the players. The
+    day-by-day schedule can, and it covers whatever is on (a Players
+    Championship, a Euro Tour event, a major) without needing its id.
     """
+    today = datetime.now(tz=timezone.utc).date()
     now = datetime.now(tz=timezone.utc).timestamp()
-    until = now + max(1, days) * 86400
     found, seen, skipped = [], set(), {}
-    for player_id in DARTS_SEEDS:
-        for event in api.team_next_events(player_id):
+    for offset in range(max(1, days)):
+        day = (today + timedelta(days=offset)).isoformat()
+        data = api.get_json(f"sport/darts/scheduled-events/{day}",
+                            max_age_hours=3) or {}
+        for event in data.get("events", []):
             if event["id"] in seen:
                 continue
             seen.add(event["id"])
@@ -903,8 +879,16 @@ def darts_events(days: int, skip: tuple[str, ...] = DARTS_SKIP,
             if any(word in name.lower() for word in skip):
                 skipped[name] = skipped.get(name, 0) + 1
                 continue
-            if _in_window(event, now, until):
-                found.append(event)
+            if (event.get("status") or {}).get("type") != "notstarted":
+                continue
+            if (event.get("startTimestamp") or 0) < now:
+                continue
+            # A draw not yet made comes through as TBD v TBD.
+            home = (event.get("homeTeam") or {}).get("name", "")
+            away = (event.get("awayTeam") or {}).get("name", "")
+            if not home or not away or "tbd" in (home + away).lower():
+                continue
+            found.append(event)
     found.sort(key=lambda e: e.get("startTimestamp") or 0)
     if skipped:
         print("  skipped (not PDC tour): "
@@ -913,51 +897,6 @@ def darts_events(days: int, skip: tuple[str, ...] = DARTS_SKIP,
         print(f"  {len(found)} matches, keeping the first {limit} (--max-fixtures)")
         found = found[:limit]
     return found
-
-
-def nations_events(days: int, limit: int = 60) -> list[dict]:
-    """Every Nations League match in the next few days.
-
-    Not from the day-by-day schedule: that endpoint 404s, and FlareSolverr
-    hands the 404 back as a page, so the first version of this read an empty
-    schedule and built nothing. Tries the competition's own upcoming list
-    first, then falls back to asking each nation for its next matches, which
-    is the team/events/next call the club leagues already rely on.
-    """
-    now = datetime.now(tz=timezone.utc).timestamp()
-    until = now + max(1, days) * 86400
-    found, seen = {}, set()
-
-    def take(event):
-        unique = ((event.get("tournament") or {})
-                  .get("uniqueTournament") or {}).get("id")
-        if unique == 10783 and event["id"] not in seen and _in_window(event, now, until):
-            found[event["id"]] = event
-        seen.add(event["id"])
-
-    seasons = api.season_ids(10783, count=1)
-    if seasons:
-        for page in range(3):
-            data = api.get_json(
-                f"unique-tournament/10783/season/{seasons[0]}/events/next/{page}",
-                max_age_hours=6) or {}
-            events = data.get("events") or []
-            for event in events:
-                take(event)
-            if not data.get("hasNextPage"):
-                break
-
-    if not found:
-        print("  competition list empty, asking each nation instead")
-        for team_id in api.tournament_team_ids(10783):
-            for event in api.team_next_events(team_id):
-                take(event)
-
-    out = sorted(found.values(), key=lambda e: e.get("startTimestamp") or 0)
-    if len(out) > limit:
-        print(f"  {len(out)} matches, keeping the first {limit}")
-        out = out[:limit]
-    return out
 
 
 def build(
@@ -1378,11 +1317,6 @@ def main() -> None:
              "against bottom-tier opponents (wants --games 38)",
     )
     parser.add_argument(
-        "--nations", type=int, nargs="?", const=7, default=None, metavar="DAYS",
-        help="every UEFA Nations League match in the next DAYS days "
-             "(default 7), one report at reports/uefa-nations-league.html",
-    )
-    parser.add_argument(
         "--darts", type=int, nargs="?", const=3, default=None, metavar="DAYS",
         help="every PDC darts match in the next DAYS days (default 3), one "
              "report at reports/darts.html. Form is drawn from all "
@@ -1461,22 +1395,6 @@ def main() -> None:
 
 def main_for(args) -> None:
     league_filter = None
-
-    if getattr(args, "nations", None) is not None:
-        print(f"Reading the Nations League schedule for the next {args.nations} day(s)...")
-        events = nations_events(args.nations)
-        if not events:
-            dropped = api.last_transport_error()
-            if dropped:
-                raise SystemExit(f"Couldn't reach SofaScore ({dropped}).")
-            raise SystemExit("No fixtures found: no Nations League in that window.")
-        print(f"\n{len(events)} match(es) to build:")
-        for event in events:
-            print(f"  {describe(event)}")
-        build(events, args.games, not args.no_open, args.players, args.h2h,
-              False, args.all_stats, False, False, args.referee,
-              form_days=args.form_days, club_form=args.club_form)
-        return
 
     if getattr(args, "darts", None) is not None:
         skip = DARTS_SKIP

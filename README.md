@@ -46,7 +46,7 @@ python make_index.py
 
 `--leagues` writes one report per division rather than a single enormous file, so the index reads as a list of rounds and no page has to carry a hundred fixtures. Files are named after the competition, so each league keeps its own and re-running replaces only that one.
 
-**Darts.** No league table, so `--league` cannot find the players. `--darts` reads the day-by-day schedule instead and builds every PDC match in the window into one report, `reports/darts.html`, which the index lists under its own Darts tab.
+**Darts.** No league table, so `--league` cannot find the players. `--darts` asks a seed list of PDC players (`DARTS_SEEDS` in run.py) for their next matches and builds every one in the window into one report, `reports/darts.html`, which the index lists under its own Darts tab.
 
 ```bash
 ./darts.sh        # next 3 days, waits for the nightly job, then indexes
