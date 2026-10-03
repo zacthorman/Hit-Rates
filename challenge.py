@@ -139,6 +139,57 @@ def log(args) -> None:
     print(f"  step {st['next_step']} of run {run['id']}, staking £{st['pot']:.2f}")
 
 
+def team(args) -> None:
+    """A team-market leg (shots on target, corners, cards), settled from match stats."""
+    run, st = current()
+    if not run:
+        raise SystemExit("No run yet: python challenge.py start --stake 10")
+    if not st["alive"]:
+        raise SystemExit(f"Run {run['id']} is over. Start the next: python challenge.py start")
+    fx, source = bettrack._report_fixture(args.event)
+    if not fx:
+        raise SystemExit(f"Event {args.event} is not in any built report.")
+    F = fx["fixture"]
+    names = [t["name"] for t in fx["teams"]]
+    if args.team not in names:
+        raise SystemExit(f"Team must be one of: {', '.join(names)}")
+    late = (F.get("kickoff") or 0) <= bettrack.now()
+    if late and not args.backfill:
+        raise SystemExit("Already kicked off. Add --backfill if the bet was placed before kick-off.")
+    recs = fx["records"][names.index(args.team)]
+    vals = [r["stats"].get("ALL", {}).get(args.stat) for r in recs]
+    vals = [v for v in vals if v is not None][-10:]
+    k = sum((v > args.line) if not args.under else (v < args.line) for v in vals)
+    bets = bettrack.load()
+    group = st["open"] or _group(run["id"], st["next_step"], st["next_retry"])
+    bet = next((b for b in bets if b["group"] == group), None)
+    if bet is None:
+        if not args.price:
+            raise SystemExit("First leg of a step needs --price for the whole bet.")
+        if not LOW <= args.price <= HIGH:
+            raise SystemExit(f"{args.price:.2f} is outside the {LOW:.2f} to {HIGH:.2f} band.")
+        bet = {"group": group, "kind": "single", "logged_at":
+               datetime.now(tz=timezone.utc).isoformat(timespec="seconds"),
+               "price": args.price, "stake": st["pot"], "backfilled": bool(late),
+               "placed": True, "legs": [], "result": None, "profit": None,
+               "note": f"challenge run {run['id']}"}
+        bets.append(bet)
+    else:
+        bet["kind"] = "multi"
+    bet["legs"].append({
+        "event_id": args.event, "fixture": f"{F['home']} v {F['away']}",
+        "kickoff": F.get("kickoff") or 0, "player": args.team, "player_id": None,
+        "team": args.team, "team_leg": True, "stat": args.stat, "period": "ALL",
+        "line": args.line, "over": not args.under, "model_k": k, "model_n": len(vals),
+        "model_p": round(bettrack.adjusted(k, len(vals)), 3), "source": source,
+        "value": None, "result": None})
+    bettrack.save(bets)
+    side = "under" if args.under else "over"
+    print(f"  logged [{group}] {args.team} {args.stat} {side} {args.line:g} "
+          f"- last {len(vals)} {k}/{len(vals)}" + (" (backfilled)" if late else ""))
+    print(f"  step {st['next_step']} of run {run['id']}, staking £{st['pot']:.2f}")
+
+
 def status(args=None) -> None:
     run, st = current()
     if not run:
@@ -183,9 +234,17 @@ def main() -> None:
     b.add_argument("--stat", required=True)
     b.add_argument("--line", type=float, required=True)
     b.add_argument("--price", type=float)
+    t = sub.add_parser("team", help="team market leg: shots on target, corners, cards")
+    t.add_argument("--event", type=int, required=True)
+    t.add_argument("--team", required=True)
+    t.add_argument("--stat", required=True)
+    t.add_argument("--line", type=float, required=True, help="e.g. 3.5 for 4+")
+    t.add_argument("--under", action="store_true")
+    t.add_argument("--price", type=float)
+    t.add_argument("--backfill", action="store_true")
     sub.add_parser("status")
     args = ap.parse_args()
-    {"start": start, "log": log, "status": status}[args.cmd](args)
+    {"start": start, "log": log, "team": team, "status": status}[args.cmd](args)
 
 
 if __name__ == "__main__":

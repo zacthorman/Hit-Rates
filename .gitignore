@@ -33,3 +33,9 @@ update.log
 launchd.out.log
 launchd.err.log
 .update.lock
+
+# Betfair login details and session token. NEVER commit these: the repo is
+# public and update.py / publish.sh run `git add -A`.
+.betfair.env
+.betfair_session
+*.env

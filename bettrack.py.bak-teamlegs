@@ -179,23 +179,6 @@ def settle(args) -> None:
                 continue
             sport = (((ev.get("tournament") or {}).get("category") or {})
                      .get("sport") or {}).get("slug") or "football"
-            if leg.get("team_leg"):
-                # Team market (shots on target, corners, cards): read the
-                # match statistics the same way besttrack settles site picks.
-                import besttrack
-                stats = hitrates.extract_match_stats(api.event_statistics(leg["event_id"]))
-                v = besttrack._team_value(
-                    {"team": leg["team"], "period": leg.get("period", "ALL"),
-                     "stat": leg["stat"]}, ev, stats or {})
-                if v is None:
-                    continue
-                leg["value"] = v
-                over = leg.get("over", True)
-                leg["result"] = "win" if (v > leg["line"] if over else v < leg["line"]) else "lose"
-                changed += 1
-                print(f"  {leg['team']} {leg['stat']} {'over' if over else 'under'} {leg['line']:g}: "
-                      f"{v:g} -> {leg['result']}  (report had {leg['model_k']}/{leg['model_n']})")
-                continue
             vals = _lineup_values(leg["event_id"], leg["player_id"], sport)
             if not vals:
                 leg["result"] = "void"

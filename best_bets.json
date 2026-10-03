@@ -2411,8 +2411,8 @@
     "total": 18,
     "fair": 1.3784845191582356,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win"
    },
    {
     "event_id": 16275102,
@@ -2436,7 +2436,7 @@
     "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: banker",
@@ -2462,11 +2462,11 @@
     "total": 18,
     "fair": 1.3784845191582356,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: acca",
@@ -2513,8 +2513,8 @@
     "total": 18,
     "fair": 1.5969135897189515,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 20.0,
+    "result": "win"
    },
    {
     "event_id": 17194039,
@@ -2538,7 +2538,7 @@
     "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -2564,11 +2564,11 @@
     "total": 15,
     "fair": 1.4352178498153962,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -2594,11 +2594,11 @@
     "total": 18,
     "fair": 1.3009114251576346,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -2624,11 +2624,11 @@
     "total": 18,
     "fair": 1.3784845191582356,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: acca",
@@ -2675,11 +2675,11 @@
     "total": 18,
     "fair": 1.5969135897189515,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 20.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: single",
@@ -3071,8 +3071,8 @@
     "total": 13,
     "fair": 1.5419150911238728,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 15534040,
@@ -3092,8 +3092,8 @@
     "total": 12,
     "fair": 1.5547437027245392,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    },
    {
     "event_id": 15534087,
@@ -3266,11 +3266,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -3296,11 +3296,11 @@
     "total": 10,
     "fair": 1.7932978740142371,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -3327,10 +3327,10 @@
     "fair": 1.625,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Fixture single",
@@ -3356,11 +3356,11 @@
     "total": 12,
     "fair": 1.5547437027245392,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -3386,11 +3386,11 @@
     "total": 12,
     "fair": 1.5547437027245392,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -3416,11 +3416,11 @@
     "total": 11,
     "fair": 1.375,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -3446,11 +3446,11 @@
     "total": 13,
     "fair": 1.5419150911238728,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -3476,11 +3476,11 @@
     "total": 13,
     "fair": 1.640240495650078,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -3506,11 +3506,11 @@
     "total": 13,
     "fair": 1.640240495650078,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -3925,6 +3925,3042 @@
     "hits": 8,
     "total": 11,
     "fair": 1.7659202120225284,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: single",
+  "sport": "football",
+  "snapshot_at": 1790941969,
+  "fair": 2.130894366222983,
+  "legs": [
+   {
+    "event_id": 17108375,
+    "fixture": "S\u00e3o Paulo v Santos",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1790982000,
+    "sport": "football",
+    "team": "Santos",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 15,
+    "fair": 2.130894366222983,
+    "venue": "away",
+    "value": 4.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1790941969,
+  "fair": 1.977053539379036,
+  "legs": [
+   {
+    "event_id": 17135943,
+    "fixture": "Atl\u00e9tico Mineiro v Red Bull Bragantino",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791063000,
+    "sport": "football",
+    "team": "Atl\u00e9tico Mineiro",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 16,
+    "fair": 1.4342225189342812,
+    "venue": "home",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 17108375,
+    "fixture": "S\u00e3o Paulo v Santos",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1790982000,
+    "sport": "football",
+    "team": "S\u00e3o Paulo",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.3784845191582356,
+    "venue": "home",
+    "value": 7.0,
+    "result": "win"
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "football",
+  "snapshot_at": 1790941969,
+  "fair": 1.3799396479339552,
+  "legs": [
+   {
+    "event_id": 17135943,
+    "fixture": "Atl\u00e9tico Mineiro v Red Bull Bragantino",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791063000,
+    "sport": "football",
+    "team": "Red Bull Bragantino",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.3799396479339552,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1790941969,
+  "fair": 3.752885271091822,
+  "legs": [
+   {
+    "event_id": 15534175,
+    "fixture": "Bosnia & Herzegovina v Sweden",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790966700,
+    "sport": "football",
+    "team": "Bosnia & Herzegovina",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 13,
+    "fair": 1.5419150911238728,
+    "venue": null,
+    "value": 0.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 15534040,
+    "fixture": "Belgium v T\u00fcrkiye",
+    "competition": "UEFA Nations League",
+    "kickoff": 1790966700,
+    "sport": "football",
+    "team": "T\u00fcrkiye",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 12,
+    "fair": 1.5547437027245392,
+    "venue": null,
+    "value": 3.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17135943,
+    "fixture": "Atl\u00e9tico Mineiro v Red Bull Bragantino",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791063000,
+    "sport": "football",
+    "team": "Atl\u00e9tico Mineiro",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 16,
+    "fair": 1.5654745887456918,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: builder",
+  "sport": "football",
+  "snapshot_at": 1790941969,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 17108375,
+    "fixture": "S\u00e3o Paulo v Santos",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1790982000,
+    "sport": "football",
+    "team": "S\u00e3o Paulo",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.3784845191582356,
+    "venue": "home",
+    "value": 7.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17108375,
+    "fixture": "S\u00e3o Paulo v Santos",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1790982000,
+    "sport": "football",
+    "team": "S\u00e3o Paulo",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 11.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.5969135897189515,
+    "venue": "home",
+    "value": 20.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17108375,
+    "fixture": "S\u00e3o Paulo v Santos",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1790982000,
+    "sport": "football",
+    "team": "S\u00e3o Paulo",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.6200985014239617,
+    "venue": "home",
+    "value": 8.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "football",
+  "snapshot_at": 1790941969,
+  "fair": 4.0,
+  "legs": [
+   {
+    "event_id": 17135943,
+    "fixture": "Atl\u00e9tico Mineiro v Red Bull Bragantino",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791063000,
+    "sport": "football",
+    "team": "Atl\u00e9tico Mineiro",
+    "player": "Victor Hugo",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3571428571428572,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 17135943,
+    "fixture": "Atl\u00e9tico Mineiro v Red Bull Bragantino",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791063000,
+    "sport": "football",
+    "team": "Atl\u00e9tico Mineiro",
+    "player": "Tom\u00e1s Cuello",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 17135943,
+    "fixture": "Atl\u00e9tico Mineiro v Red Bull Bragantino",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791063000,
+    "sport": "football",
+    "team": "Red Bull Bragantino",
+    "player": "Gabriel Girotto",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 19,
+    "total": 26,
+    "fair": 1.368421052631579,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 17135943,
+    "fixture": "Atl\u00e9tico Mineiro v Red Bull Bragantino",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791063000,
+    "sport": "football",
+    "team": "Red Bull Bragantino",
+    "player": "Eduardo Sasha",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 16,
+    "total": 21,
+    "fair": 1.3125,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790941969,
+  "fair": 1.400642717855731,
+  "legs": [
+   {
+    "event_id": 17135943,
+    "fixture": "Atl\u00e9tico Mineiro v Red Bull Bragantino",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791063000,
+    "sport": "football",
+    "team": "Atl\u00e9tico Mineiro",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 16,
+    "fair": 1.400642717855731,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790941969,
+  "fair": 1.4342225189342812,
+  "legs": [
+   {
+    "event_id": 17135943,
+    "fixture": "Atl\u00e9tico Mineiro v Red Bull Bragantino",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791063000,
+    "sport": "football",
+    "team": "Atl\u00e9tico Mineiro",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 16,
+    "fair": 1.4342225189342812,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790941969,
+  "fair": 1.5654745887456918,
+  "legs": [
+   {
+    "event_id": 17135943,
+    "fixture": "Atl\u00e9tico Mineiro v Red Bull Bragantino",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791063000,
+    "sport": "football",
+    "team": "Atl\u00e9tico Mineiro",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 16,
+    "fair": 1.5654745887456918,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 3.8940643076232466,
+  "legs": [
+   {
+    "event_id": 17135943,
+    "fixture": "Atl\u00e9tico Mineiro v Red Bull Bragantino",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791063000,
+    "sport": "football",
+    "team": "Atl\u00e9tico Mineiro",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 16,
+    "fair": 1.5654745887456918,
+    "venue": "home",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15534102,
+    "fixture": "Wales v Denmark",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Denmark",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 11,
+    "fair": 1.5690867546635847,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15534087,
+    "fixture": "Croatia v England",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791043200,
+    "sport": "football",
+    "team": "Croatia",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.5852951849505161,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "New England Patriots",
+    "player": "Drake Maye",
+    "stat": "Passing yards",
+    "period": "ALL",
+    "line": 259.5,
+    "over": true,
+    "alt": true,
+    "threshold": 260.0,
+    "hits": 10,
+    "total": 20,
+    "fair": 2.0,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.9047619047619047,
+  "legs": [
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "New England Patriots",
+    "player": "Drake Maye",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184637,
+    "fixture": "Cincinnati Bengals v Jacksonville Jaguars",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Cincinnati Bengals",
+    "player": "Chase Brown",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "New England Patriots",
+    "player": "Drake Maye",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 3.155353037723439,
+  "legs": [
+   {
+    "event_id": 16184635,
+    "fixture": "Chicago Bears v New York Jets",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": null,
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.4667271096447916,
+    "venue": "home",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183703,
+    "fixture": "Philadelphia Eagles v Los Angeles Rams",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Los Angeles Rams",
+    "player": null,
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.4667271096447916,
+    "venue": "away",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184623,
+    "fixture": "New York Giants v Arizona Cardinals",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Arizona Cardinals",
+    "player": null,
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.4667271096447916,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: builder",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 16184626,
+    "fixture": "Tampa Bay Buccaneers v Green Bay Packers",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Green Bay Packers",
+    "player": null,
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 12,
+    "fair": 1.3272070083913112,
+    "venue": "away",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184626,
+    "fixture": "Tampa Bay Buccaneers v Green Bay Packers",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Green Bay Packers",
+    "player": null,
+    "stat": "Touchdowns",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 12,
+    "fair": 1.553354968128702,
+    "venue": "away",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184626,
+    "fixture": "Tampa Bay Buccaneers v Green Bay Packers",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Green Bay Packers",
+    "player": null,
+    "stat": "Field goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 12,
+    "fair": 1.7839277694169664,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 3.4,
+  "legs": [
+   {
+    "event_id": 16184635,
+    "fixture": "Chicago Bears v New York Jets",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "Cole Kmet",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184635,
+    "fixture": "Chicago Bears v New York Jets",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "D'Andre Swift",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 49.5,
+    "over": true,
+    "alt": true,
+    "threshold": 50.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184635,
+    "fixture": "Chicago Bears v New York Jets",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "Caleb Williams",
+    "stat": "Passing and rushing yards",
+    "period": "ALL",
+    "line": 219.5,
+    "over": true,
+    "alt": true,
+    "threshold": 220.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184635,
+    "fixture": "Chicago Bears v New York Jets",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "Kyle Monangai",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.6755005554346891,
+  "legs": [
+   {
+    "event_id": 15534163,
+    "fixture": "Kosovo v Austria",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791129600,
+    "sport": "football",
+    "team": "Kosovo",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.6755005554346891,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 15534163,
+    "fixture": "Kosovo v Austria",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791129600,
+    "sport": "football",
+    "team": "Kosovo",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.7659202120225284,
+  "legs": [
+   {
+    "event_id": 15534163,
+    "fixture": "Kosovo v Austria",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791129600,
+    "sport": "football",
+    "team": "Kosovo",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 11,
+    "fair": 1.7659202120225284,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.6755005554346891,
+  "legs": [
+   {
+    "event_id": 15534061,
+    "fixture": "Greece v Germany",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Germany",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.6755005554346891,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.7218264028970067,
+  "legs": [
+   {
+    "event_id": 15534061,
+    "fixture": "Greece v Germany",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Germany",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 7.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 13,
+    "fair": 1.7218264028970067,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.7966272816919078,
+  "legs": [
+   {
+    "event_id": 15534061,
+    "fixture": "Greece v Germany",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Germany",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 13,
+    "fair": 1.7966272816919078,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.5714285714285714,
+  "legs": [
+   {
+    "event_id": 15534067,
+    "fixture": "Netherlands v Serbia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Netherlands",
+    "player": "Tijjani Reijnders",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 7,
+    "total": 11,
+    "fair": 1.5714285714285714,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.5714285714285714,
+  "legs": [
+   {
+    "event_id": 15534067,
+    "fixture": "Netherlands v Serbia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Netherlands",
+    "player": "Cody Gakpo",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 7,
+    "total": 11,
+    "fair": 1.5714285714285714,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.8571428571428572,
+  "legs": [
+   {
+    "event_id": 15534067,
+    "fixture": "Netherlands v Serbia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Netherlands",
+    "player": "Virgil van Dijk",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 7,
+    "total": 13,
+    "fair": 1.8571428571428572,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 15534095,
+    "fixture": "Portugal v Norway",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Norway",
+    "player": "Erling Haaland",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": true,
+    "threshold": 3.0,
+    "hits": 9,
+    "total": 12,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.7659202120225284,
+  "legs": [
+   {
+    "event_id": 15534095,
+    "fixture": "Portugal v Norway",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Norway",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "1ST",
+    "line": 0.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 11,
+    "fair": 1.7659202120225284,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.7966272816919078,
+  "legs": [
+   {
+    "event_id": 15534095,
+    "fixture": "Portugal v Norway",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Norway",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 13,
+    "fair": 1.7966272816919078,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.5690867546635847,
+  "legs": [
+   {
+    "event_id": 15534102,
+    "fixture": "Wales v Denmark",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Denmark",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 11,
+    "fair": 1.5690867546635847,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.6755005554346891,
+  "legs": [
+   {
+    "event_id": 15534102,
+    "fixture": "Wales v Denmark",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Denmark",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.6755005554346891,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.6755005554346891,
+  "legs": [
+   {
+    "event_id": 15534102,
+    "fixture": "Wales v Denmark",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Denmark",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 7.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.6755005554346891,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.5852951849505161,
+  "legs": [
+   {
+    "event_id": 15534157,
+    "fixture": "Ireland v Israel",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Ireland",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.5852951849505161,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 15534157,
+    "fixture": "Ireland v Israel",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Ireland",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1790966717,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 15534157,
+    "fixture": "Ireland v Israel",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Ireland",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "New England Patriots",
+    "player": "Drake Maye",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "New England Patriots",
+    "player": "Drake Maye",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3571428571428572,
+  "legs": [
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "Josh Allen",
+    "stat": "Passing yards",
+    "period": "ALL",
+    "line": 199.5,
+    "over": true,
+    "alt": true,
+    "threshold": 200.0,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3571428571428572,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16184637,
+    "fixture": "Cincinnati Bengals v Jacksonville Jaguars",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Cincinnati Bengals",
+    "player": "Chase Brown",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 59.5,
+    "over": true,
+    "alt": true,
+    "threshold": 60.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16184637,
+    "fixture": "Cincinnati Bengals v Jacksonville Jaguars",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Jacksonville Jaguars",
+    "player": "Trevor Lawrence",
+    "stat": "Passing and rushing yards",
+    "period": "ALL",
+    "line": 229.5,
+    "over": true,
+    "alt": true,
+    "threshold": 230.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16184637,
+    "fixture": "Cincinnati Bengals v Jacksonville Jaguars",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Jacksonville Jaguars",
+    "player": "Trevor Lawrence",
+    "stat": "Passing attempts",
+    "period": "ALL",
+    "line": 28.5,
+    "over": true,
+    "alt": true,
+    "threshold": 29.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16184633,
+    "fixture": "Baltimore Ravens v Tennessee Titans",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Baltimore Ravens",
+    "player": "Derrick Henry",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 79.5,
+    "over": true,
+    "alt": true,
+    "threshold": 80.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3571428571428572,
+  "legs": [
+   {
+    "event_id": 16184633,
+    "fixture": "Baltimore Ravens v Tennessee Titans",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Tennessee Titans",
+    "player": "Gunnar Helm",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3571428571428572,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3571428571428572,
+  "legs": [
+   {
+    "event_id": 16184633,
+    "fixture": "Baltimore Ravens v Tennessee Titans",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Tennessee Titans",
+    "player": "Elic Ayomanor",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3571428571428572,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.342620953258506,
+  "legs": [
+   {
+    "event_id": 16184635,
+    "fixture": "Chicago Bears v New York Jets",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": null,
+    "stat": "Touchdowns",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 11,
+    "fair": 1.342620953258506,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16184635,
+    "fixture": "Chicago Bears v New York Jets",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "Kyle Monangai",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 29.5,
+    "over": true,
+    "alt": true,
+    "threshold": 30.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3076923076923077,
+  "legs": [
+   {
+    "event_id": 16184635,
+    "fixture": "Chicago Bears v New York Jets",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "Kyle Monangai",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 13,
+    "total": 17,
+    "fair": 1.3076923076923077,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16175303,
+    "fixture": "Washington Commanders v Indianapolis Colts",
+    "competition": "NFL",
+    "kickoff": 1791120600,
+    "sport": "american-football",
+    "team": "Washington Commanders",
+    "player": "Jacory Croskey-Merritt",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 29.5,
+    "over": true,
+    "alt": true,
+    "threshold": 30.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16175303,
+    "fixture": "Washington Commanders v Indianapolis Colts",
+    "competition": "NFL",
+    "kickoff": 1791120600,
+    "sport": "american-football",
+    "team": "Indianapolis Colts",
+    "player": "Daniel Jones",
+    "stat": "Passing yards",
+    "period": "ALL",
+    "line": 209.5,
+    "over": true,
+    "alt": true,
+    "threshold": 210.0,
+    "hits": 12,
+    "total": 16,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16175303,
+    "fixture": "Washington Commanders v Indianapolis Colts",
+    "competition": "NFL",
+    "kickoff": 1791120600,
+    "sport": "american-football",
+    "team": "Indianapolis Colts",
+    "player": "Daniel Jones",
+    "stat": "Passing and rushing yards",
+    "period": "ALL",
+    "line": 209.5,
+    "over": true,
+    "alt": true,
+    "threshold": 210.0,
+    "hits": 12,
+    "total": 16,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3604189027029285,
+  "legs": [
+   {
+    "event_id": 16184639,
+    "fixture": "Houston Texans v Dallas Cowboys",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Dallas Cowboys",
+    "player": null,
+    "stat": "Touchdowns",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.3604189027029285,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16184639,
+    "fixture": "Houston Texans v Dallas Cowboys",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Houston Texans",
+    "player": "Dalton Schultz",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 29.5,
+    "over": true,
+    "alt": true,
+    "threshold": 30.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16184639,
+    "fixture": "Houston Texans v Dallas Cowboys",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Houston Texans",
+    "player": "Dalton Schultz",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 29.5,
+    "over": true,
+    "alt": true,
+    "threshold": 30.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16183703,
+    "fixture": "Philadelphia Eagles v Los Angeles Rams",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Philadelphia Eagles",
+    "player": "DeVonta Smith",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 44.5,
+    "over": true,
+    "alt": true,
+    "threshold": 45.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16183703,
+    "fixture": "Philadelphia Eagles v Los Angeles Rams",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Philadelphia Eagles",
+    "player": "DeVonta Smith",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 44.5,
+    "over": true,
+    "alt": true,
+    "threshold": 45.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16183703,
+    "fixture": "Philadelphia Eagles v Los Angeles Rams",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Los Angeles Rams",
+    "player": "Matthew Stafford",
+    "stat": "Passing yards",
+    "period": "ALL",
+    "line": 249.5,
+    "over": true,
+    "alt": true,
+    "threshold": 250.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.342620953258506,
+  "legs": [
+   {
+    "event_id": 16184623,
+    "fixture": "New York Giants v Arizona Cardinals",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Arizona Cardinals",
+    "player": null,
+    "stat": "Touchdowns",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 11,
+    "fair": 1.342620953258506,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3604189027029285,
+  "legs": [
+   {
+    "event_id": 16184623,
+    "fixture": "New York Giants v Arizona Cardinals",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "New York Giants",
+    "player": null,
+    "stat": "Rushing attempts",
+    "period": "ALL",
+    "line": 26.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.3604189027029285,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.4667271096447916,
+  "legs": [
+   {
+    "event_id": 16184623,
+    "fixture": "New York Giants v Arizona Cardinals",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Arizona Cardinals",
+    "player": null,
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.4667271096447916,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3272070083913112,
+  "legs": [
+   {
+    "event_id": 16184626,
+    "fixture": "Tampa Bay Buccaneers v Green Bay Packers",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Green Bay Packers",
+    "player": null,
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 12,
+    "fair": 1.3272070083913112,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16184626,
+    "fixture": "Tampa Bay Buccaneers v Green Bay Packers",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Tampa Bay Buccaneers",
+    "player": "Baker Mayfield",
+    "stat": "Passing and rushing yards",
+    "period": "ALL",
+    "line": 209.5,
+    "over": true,
+    "alt": true,
+    "threshold": 210.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790966717,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16184626,
+    "fixture": "Tampa Bay Buccaneers v Green Bay Packers",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Tampa Bay Buccaneers",
+    "player": "Baker Mayfield",
+    "stat": "Passing attempts",
+    "period": "ALL",
+    "line": 27.5,
+    "over": true,
+    "alt": true,
+    "threshold": 28.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "american-football",
+  "snapshot_at": 1790970615,
+  "fair": 1.9047619047619047,
+  "legs": [
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "New England Patriots",
+    "player": "Drake Maye",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184637,
+    "fixture": "Cincinnati Bengals v Jacksonville Jaguars",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Cincinnati Bengals",
+    "player": "Chase Brown",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "american-football",
+  "snapshot_at": 1790970615,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "New England Patriots",
+    "player": "Drake Maye",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1790970615,
+  "fair": 3.4,
+  "legs": [
+   {
+    "event_id": 16184635,
+    "fixture": "Chicago Bears v New York Jets",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "Cole Kmet",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184635,
+    "fixture": "Chicago Bears v New York Jets",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "D'Andre Swift",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 49.5,
+    "over": true,
+    "alt": true,
+    "threshold": 50.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184635,
+    "fixture": "Chicago Bears v New York Jets",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "Caleb Williams",
+    "stat": "Passing attempts",
+    "period": "ALL",
+    "line": 31.5,
+    "over": true,
+    "alt": true,
+    "threshold": 32.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184635,
+    "fixture": "Chicago Bears v New York Jets",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "Kyle Monangai",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790970615,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16175303,
+    "fixture": "Washington Commanders v Indianapolis Colts",
+    "competition": "NFL",
+    "kickoff": 1791120600,
+    "sport": "american-football",
+    "team": "Indianapolis Colts",
+    "player": "Daniel Jones",
+    "stat": "Passing attempts",
+    "period": "ALL",
+    "line": 28.5,
+    "over": true,
+    "alt": true,
+    "threshold": 29.0,
+    "hits": 12,
+    "total": 16,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: single",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 16183704,
+    "fixture": "Las Vegas Raiders v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1791145500,
+    "sport": "american-football",
+    "team": "Las Vegas Raiders",
+    "player": "Ashton Jeanty",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 69.5,
+    "over": true,
+    "alt": true,
+    "threshold": 70.0,
+    "hits": 10,
+    "total": 20,
+    "fair": 2.0,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 1.9047619047619047,
+  "legs": [
+   {
+    "event_id": 16183704,
+    "fixture": "Las Vegas Raiders v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1791145500,
+    "sport": "american-football",
+    "team": "Las Vegas Raiders",
+    "player": "Tre Tucker",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "James Cook III",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 69.5,
+    "over": true,
+    "alt": true,
+    "threshold": 70.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16183704,
+    "fixture": "Las Vegas Raiders v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1791145500,
+    "sport": "american-football",
+    "team": "Las Vegas Raiders",
+    "player": "Tre Tucker",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 3.2,
+  "legs": [
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "New England Patriots",
+    "player": "TreVeyon Henderson",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 34.5,
+    "over": true,
+    "alt": true,
+    "threshold": 35.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "New England Patriots",
+    "player": "Drake Maye",
+    "stat": "Passing and rushing yards",
+    "period": "ALL",
+    "line": 229.5,
+    "over": true,
+    "alt": true,
+    "threshold": 230.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "New England Patriots",
+    "player": "Hunter Henry",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "New England Patriots",
+    "player": "Rhamondre Stevenson",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10.0,
+    "hits": 12,
+    "total": 17,
+    "fair": 1.4166666666666665,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16183704,
+    "fixture": "Las Vegas Raiders v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1791145500,
+    "sport": "american-football",
+    "team": "Las Vegas Raiders",
+    "player": "Tre Tucker",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16183704,
+    "fixture": "Las Vegas Raiders v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1791145500,
+    "sport": "american-football",
+    "team": "Las Vegas Raiders",
+    "player": "Tre Tucker",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 1.3076923076923077,
+  "legs": [
+   {
+    "event_id": 16183704,
+    "fixture": "Las Vegas Raiders v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1791145500,
+    "sport": "american-football",
+    "team": "Kansas City Chiefs",
+    "player": "Patrick Mahomes",
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 13,
+    "total": 17,
+    "fair": 1.3076923076923077,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16184637,
+    "fixture": "Cincinnati Bengals v Jacksonville Jaguars",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Jacksonville Jaguars",
+    "player": "Trevor Lawrence",
+    "stat": "Passing completions",
+    "period": "ALL",
+    "line": 17.5,
+    "over": true,
+    "alt": true,
+    "threshold": 18.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16187841,
+    "fixture": "San Francisco 49ers v Denver Broncos",
+    "competition": "NFL",
+    "kickoff": 1791145500,
+    "sport": "american-football",
+    "team": "San Francisco 49ers",
+    "player": "Christian McCaffrey",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 44.5,
+    "over": true,
+    "alt": true,
+    "threshold": 45.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16187841,
+    "fixture": "San Francisco 49ers v Denver Broncos",
+    "competition": "NFL",
+    "kickoff": 1791145500,
+    "sport": "american-football",
+    "team": "San Francisco 49ers",
+    "player": "Christian McCaffrey",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 79.5,
+    "over": true,
+    "alt": true,
+    "threshold": 80.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16187841,
+    "fixture": "San Francisco 49ers v Denver Broncos",
+    "competition": "NFL",
+    "kickoff": 1791145500,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "Pat Bryant",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 19.5,
+    "over": true,
+    "alt": true,
+    "threshold": 20.0,
+    "hits": 12,
+    "total": 16,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16183702,
+    "fixture": "Minnesota Vikings v Miami Dolphins",
+    "competition": "NFL",
+    "kickoff": 1791144300,
+    "sport": "american-football",
+    "team": "Miami Dolphins",
+    "player": "Malik Washington",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 19.5,
+    "over": true,
+    "alt": true,
+    "threshold": 20.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 1.3076923076923077,
+  "legs": [
+   {
+    "event_id": 16183702,
+    "fixture": "Minnesota Vikings v Miami Dolphins",
+    "competition": "NFL",
+    "kickoff": 1791144300,
+    "sport": "american-football",
+    "team": "Minnesota Vikings",
+    "player": "Jordan Addison",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 13,
+    "total": 17,
+    "fair": 1.3076923076923077,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 1.4937478247230116,
+  "legs": [
+   {
+    "event_id": 16183702,
+    "fixture": "Minnesota Vikings v Miami Dolphins",
+    "competition": "NFL",
+    "kickoff": 1791144300,
+    "sport": "american-football",
+    "team": "Miami Dolphins",
+    "player": null,
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.4937478247230116,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16183711,
+    "fixture": "Seattle Seahawks v Los Angeles Chargers",
+    "competition": "NFL",
+    "kickoff": 1791145500,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Jaxon Smith-Njigba",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 89.5,
+    "over": true,
+    "alt": true,
+    "threshold": 90.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 1.3571428571428572,
+  "legs": [
+   {
+    "event_id": 16183711,
+    "fixture": "Seattle Seahawks v Los Angeles Chargers",
+    "competition": "NFL",
+    "kickoff": 1791145500,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Sam Darnold",
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3571428571428572,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 1.3571428571428572,
+  "legs": [
+   {
+    "event_id": 16183711,
+    "fixture": "Seattle Seahawks v Los Angeles Chargers",
+    "competition": "NFL",
+    "kickoff": 1791145500,
+    "sport": "american-football",
+    "team": "Los Angeles Chargers",
+    "player": "Oronde Gadsden",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3571428571428572,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1790975563,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16184626,
+    "fixture": "Tampa Bay Buccaneers v Green Bay Packers",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Tampa Bay Buccaneers",
+    "player": "Baker Mayfield",
+    "stat": "Passing completions",
+    "period": "ALL",
+    "line": 16.5,
+    "over": true,
+    "alt": true,
+    "threshold": 17.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
     "venue": null,
     "value": null,
     "result": null
