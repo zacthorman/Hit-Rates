@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Football hit rates</title>
+<style>
+:root {
+  color-scheme: light;
+  --surface: #fcfcfb; --page: #f9f9f7; --raised: #ffffff;
+  --text: #0b0b0b; --muted: #77756f;
+  --border: rgba(11,11,11,0.10); --grid: #e8e7e1;
+  --link: #2a78d6; --accent: #0b0b0b; --on-accent: #ffffff;
+  --today: #c2410c;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --surface: #1a1a19; --page: #0d0d0d; --raised: #232322;
+    --text: #ffffff; --muted: #8f8d87;
+    --border: rgba(255,255,255,0.12); --grid: #2c2c2a;
+    --link: #5ba3f5; --accent: #ffffff; --on-accent: #0b0b0b;
+    --today: #fb923c;
+  }
+}
+* { box-sizing: border-box; }
+.bar { display: flex; align-items: center; gap: 10px; margin: 20px 0 12px;
+       flex-wrap: wrap; }
+.sports { display: flex; gap: 4px; background: var(--grid); padding: 3px;
+          border-radius: 9px; }
+.sports button { border: 0; background: none; padding: 7px 16px; border-radius: 7px;
+                 font: inherit; font-weight: 600; font-size: 0.88rem;
+                 color: var(--muted); cursor: pointer; }
+.sports button[aria-pressed="true"] { background: var(--raised); color: var(--text);
+                                      box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+a.picks-btn { text-decoration: none; display: inline-flex; align-items: center; }
+.picks-btn { margin-left: auto; border: 1px solid var(--border); background: var(--raised);
+             color: var(--text); padding: 7px 14px; border-radius: 7px; font: inherit;
+             font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+.picks-btn[aria-expanded="true"] { background: var(--accent); color: var(--on-accent);
+                                   border-color: var(--accent); }
+.picks { display: grid; gap: 10px; margin: 0 0 22px;
+         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.pick { background: var(--raised); border: 1px solid var(--border);
+        border-radius: 10px; padding: 13px 15px; font-size: 0.9rem; }
+.pick h2 { font-size: 0.68rem; letter-spacing: 0.07em; text-transform: uppercase;
+           color: var(--muted); margin: 0 0 8px; font-weight: 600; }
+.pick .sel { font-size: 0.97rem; font-weight: 600; line-height: 1.35; }
+.pick .where { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
+.pick .odds { margin-top: 8px; }
+.pick .odds b { font-size: 1.05rem; }
+.pick ol { margin: 7px 0 0; padding-left: 17px; font-size: 0.85rem; line-height: 1.45; }
+.pick details { margin-top: 9px; }
+.pick summary { color: var(--muted); font-size: 0.78rem; cursor: pointer;
+                list-style: none; }
+.pick summary::-webkit-details-marker { display: none; }
+/* Drawn rather than typed. The chevron characters rendered as a missing-glyph
+   box on a machine without the font, and a marker that might not exist is
+   worse than one made of borders, which always does. */
+.pick summary::before { content: ""; display: inline-block; width: 0; height: 0;
+  border-left: 4px solid currentColor; border-top: 3.5px solid transparent;
+  border-bottom: 3.5px solid transparent; margin-right: 6px;
+  transform-origin: 30% 50%; transition: transform 0.15s ease; }
+.pick details[open] summary::before { transform: rotate(90deg); }
+.pick details p { color: var(--muted); font-size: 0.78rem; line-height: 1.45;
+                  margin: 6px 0 0; }
+.pick .flag { color: var(--today); font-weight: 600; }
+.pick.none { color: var(--muted); }
+body {
+  margin: 0; padding: 34px 18px 60px;
+  background: var(--page); color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 15px; line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+.wrap { max-width: 760px; margin: 0 auto; }
+h1 { font-size: 27px; font-weight: 660; margin: 0 0 5px; letter-spacing: -0.015em; }
+.sub { color: var(--muted); font-size: 14px; margin: 0 0 20px; }
+
+/* Filters. Sticky, because on a phone the list is long and the filter is
+   the thing you reach for after scrolling, not before. */
+.filters {
+  position: sticky; top: 0; z-index: 5;
+  background: var(--page); padding: 10px 0 12px;
+  margin: 0 0 6px; border-bottom: 1px solid var(--border);
+  display: flex; gap: 7px; flex-wrap: wrap; align-items: center;
+}
+.chip {
+  appearance: none; cursor: pointer;
+  background: var(--raised); color: var(--text);
+  border: 1px solid var(--border); border-radius: 999px;
+  padding: 7px 13px; font: inherit; font-size: 13.5px; font-weight: 550;
+  white-space: nowrap;
+}
+.chip:hover { border-color: var(--muted); }
+.chip[aria-pressed="true"] {
+  background: var(--accent); color: var(--on-accent); border-color: var(--accent);
+}
+.chip .n { opacity: 0.55; margin-left: 5px; font-weight: 500; }
+.search {
+  flex: 1 1 150px; min-width: 130px;
+  background: var(--raised); color: var(--text);
+  border: 1px solid var(--border); border-radius: 999px;
+  padding: 7px 13px; font: inherit; font-size: 13.5px;
+}
+.search::placeholder { color: var(--muted); }
+
+.day {
+  margin: 22px 0 8px; font-size: 13px; font-weight: 640;
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted);
+}
+.day.soon { color: var(--today); }
+
+ul { list-style: none; margin: 0; padding: 0;
+     background: var(--surface); border: 1px solid var(--border);
+     border-radius: 11px; overflow: hidden; }
+li { border-bottom: 1px solid var(--grid); }
+li:last-child { border-bottom: 0; }
+li a {
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 13px 16px; color: inherit; text-decoration: none;
+}
+li a:hover { background: var(--raised); }
+.time {
+  flex: 0 0 46px; font-variant-numeric: tabular-nums;
+  font-weight: 620; font-size: 14.5px; color: var(--text);
+}
+.match { flex: 1 1 auto; min-width: 0; }
+.teams { font-weight: 560; color: var(--link); }
+.meta { display: block; color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.tag {
+  display: inline-block; font-size: 11px; font-weight: 600;
+  padding: 1px 6px; border-radius: 5px; margin-left: 6px;
+  border: 1px solid var(--border); color: var(--muted);
+}
+li.played { opacity: 0.5; }
+
+.empty { padding: 26px 16px; color: var(--muted); text-align: center; }
+footer { margin-top: 26px; color: var(--muted); font-size: 12.5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Hit rates</h1>
+
+  <div class="bar">
+    <div class="sports" id="sports"></div>
+    <a class="picks-btn" href="tonight.html">Tonight &rarr;</a>
+    <a class="picks-btn" href="best-bets-summary.html">Best bets summary &rarr;</a>
+    <button type="button" class="picks-btn" id="picks-btn"
+            aria-expanded="false">Picks of the week</button>
+  </div>
+
+  <div id="picks" hidden></div>
+
+  <div class="filters" id="filters"></div>
+  <div id="list"></div>
+
+  <footer id="footer"></footer>
+</div>
+
+<script>
+const DATA = {"fixtures":[{"id":15534146,"home":"Finland","away":"Albania","competition":"UEFA Nations League","kickoff":1791032400,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534149,"home":"Belarus","away":"San Marino","competition":"UEFA Nations League","kickoff":1791043200,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534087,"home":"Croatia","away":"England","competition":"UEFA Nations League","kickoff":1791043200,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15537768,"home":"Estonia","away":"Luxembourg","competition":"UEFA Nations League","kickoff":1791043200,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534232,"home":"Iceland","away":"Bulgaria","competition":"UEFA Nations League","kickoff":1791043200,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534111,"home":"North Macedonia","away":"Scotland","competition":"UEFA Nations League","kickoff":1791053100,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534085,"home":"Spain","away":"Czechia","competition":"UEFA Nations League","kickoff":1791053100,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534112,"home":"Switzerland","away":"Slovenia","competition":"UEFA Nations League","kickoff":1791053100,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":17135943,"home":"Atl\u00e9tico Mineiro","away":"Red Bull Bragantino","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1791063000,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15534239,"home":"Azerbaijan","away":"Lithuania","competition":"UEFA Nations League","kickoff":1791118800,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":16175303,"home":"Washington Commanders","away":"Indianapolis Colts","competition":"NFL","kickoff":1791120600,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":15534163,"home":"Kosovo","away":"Austria","competition":"UEFA Nations League","kickoff":1791129600,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15537769,"home":"Malta","away":"Andorra","competition":"UEFA Nations League","kickoff":1791129600,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":16184633,"home":"Baltimore Ravens","away":"Tennessee Titans","competition":"NFL","kickoff":1791133200,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16184624,"home":"Buffalo Bills","away":"New England Patriots","competition":"NFL","kickoff":1791133200,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16184635,"home":"Chicago Bears","away":"New York Jets","competition":"NFL","kickoff":1791133200,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16184637,"home":"Cincinnati Bengals","away":"Jacksonville Jaguars","competition":"NFL","kickoff":1791133200,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16184639,"home":"Houston Texans","away":"Dallas Cowboys","competition":"NFL","kickoff":1791133200,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16184623,"home":"New York Giants","away":"Arizona Cardinals","competition":"NFL","kickoff":1791133200,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16183703,"home":"Philadelphia Eagles","away":"Los Angeles Rams","competition":"NFL","kickoff":1791133200,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16184626,"home":"Tampa Bay Buccaneers","away":"Green Bay Packers","competition":"NFL","kickoff":1791133200,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":15534061,"home":"Greece","away":"Germany","competition":"UEFA Nations League","kickoff":1791139500,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534157,"home":"Ireland","away":"Israel","competition":"UEFA Nations League","kickoff":1791139500,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534067,"home":"Netherlands","away":"Serbia","competition":"UEFA Nations League","kickoff":1791139500,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534095,"home":"Portugal","away":"Norway","competition":"UEFA Nations League","kickoff":1791139500,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534102,"home":"Wales","away":"Denmark","competition":"UEFA Nations League","kickoff":1791139500,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":16183702,"home":"Minnesota Vikings","away":"Miami Dolphins","competition":"NFL","kickoff":1791144300,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16183704,"home":"Las Vegas Raiders","away":"Kansas City Chiefs","competition":"NFL","kickoff":1791145500,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16187841,"home":"San Francisco 49ers","away":"Denver Broncos","competition":"NFL","kickoff":1791145500,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16183711,"home":"Seattle Seahawks","away":"Los Angeles Chargers","competition":"NFL","kickoff":1791145500,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16183706,"home":"Carolina Panthers","away":"Detroit Lions","competition":"NFL","kickoff":1791159600,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":15537770,"home":"Cyprus","away":"Latvia","competition":"UEFA Nations League","kickoff":1791216000,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534168,"home":"Bosnia & Herzegovina","away":"Poland","competition":"UEFA Nations League","kickoff":1791225900,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534027,"home":"France","away":"Belgium","competition":"UEFA Nations League","kickoff":1791225900,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534050,"home":"Italy","away":"T\u00fcrkiye","competition":"UEFA Nations League","kickoff":1791225900,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534182,"home":"Montenegro","away":"Armenia","competition":"UEFA Nations League","kickoff":1791225900,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534139,"home":"Northern Ireland","away":"Georgia","competition":"UEFA Nations League","kickoff":1791225900,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534177,"home":"Romania","away":"Sweden","competition":"UEFA Nations League","kickoff":1791225900,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534129,"home":"Ukraine","away":"Hungary","competition":"UEFA Nations League","kickoff":1791225900,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":16183705,"home":"New Orleans Saints","away":"Atlanta Falcons","competition":"NFL","kickoff":1791245700,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":15534189,"home":"Kazakhstan","away":"Faroe Islands","competition":"UEFA Nations League","kickoff":1791295200,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534144,"home":"Albania","away":"San Marino","competition":"UEFA Nations League","kickoff":1791312300,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534148,"home":"Belarus","away":"Finland","competition":"UEFA Nations League","kickoff":1791312300,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534082,"home":"Croatia","away":"Spain","competition":"UEFA Nations League","kickoff":1791312300,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534091,"home":"England","away":"Czechia","competition":"UEFA Nations League","kickoff":1791312300,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534236,"home":"Estonia","away":"Iceland","competition":"UEFA Nations League","kickoff":1791312300,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15537771,"home":"Luxembourg","away":"Bulgaria","competition":"UEFA Nations League","kickoff":1791312300,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534198,"home":"Moldova","away":"Slovakia","competition":"UEFA Nations League","kickoff":1791312300,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534108,"home":"Scotland","away":"Slovenia","competition":"UEFA Nations League","kickoff":1791312300,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":15534114,"home":"Switzerland","away":"North Macedonia","competition":"UEFA Nations League","kickoff":1791312300,"report":"uefa-nations-league.html","sport":"football","players":true,"adjusted":false},{"id":16547921,"home":"Chicago Fire","away":"Vancouver Whitecaps","competition":"MLS","kickoff":1791333000,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15237996,"home":"Internacional","away":"Corinthians","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1791412200,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15237994,"home":"Red Bull Bragantino","away":"Mirassol","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1791412200,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15237999,"home":"Remo","away":"Gr\u00eamio","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1791412200,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15237998,"home":"Vit\u00f3ria","away":"Chapecoense","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1791414000,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15237991,"home":"Botafogo","away":"Vasco da Gama","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1791415800,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15237995,"home":"Cruzeiro","away":"S\u00e3o Paulo","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1791419400,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15237992,"home":"Santos","away":"Flamengo","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1791498600,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15237997,"home":"Athletico","away":"Atl\u00e9tico Mineiro","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1791500400,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15237990,"home":"Fluminense","away":"Coritiba","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1791505800,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15237993,"home":"Palmeiras","away":"Bahia","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1791505800,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16434050,"home":"Borussia Dortmund","away":"SV Werder Bremen","competition":"Bundesliga","kickoff":1791570600,"report":"bundesliga.html","sport":"football","players":true,"adjusted":true},{"id":16310967,"home":"RC Lens","away":"Olympique Lyonnais","competition":"Ligue 1","kickoff":1791571500,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16421062,"home":"M\u00e1laga CF","away":"Espanyol","competition":"LaLiga","kickoff":1791572400,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":16391318,"home":"West Ham United","away":"Queens Park Rangers","competition":"Championship","kickoff":1791572400,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":16363871,"home":"Arsenal","away":"Leeds United","competition":"Premier League","kickoff":1791631800,"report":"premier-league.html","sport":"football","players":true,"adjusted":true},{"id":16391697,"home":"Charlton Athletic","away":"Bristol City","competition":"Championship","kickoff":1791631800,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":16391251,"home":"Swansea City","away":"Norwich City","competition":"Championship","kickoff":1791631800,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":16391296,"home":"West Bromwich Albion","away":"Birmingham City","competition":"Championship","kickoff":1791631800,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":16421065,"home":"Rayo Vallecano","away":"Athletic Club","competition":"LaLiga","kickoff":1791633600,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":16285032,"home":"Genoa","away":"Fiorentina","competition":"Serie A","kickoff":1791637200,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16434054,"home":"1. FC Union Berlin","away":"SV 07 Elversberg","competition":"Bundesliga","kickoff":1791639000,"report":"bundesliga.html","sport":"football","players":true,"adjusted":true},{"id":16434058,"home":"1. FSV Mainz 05","away":"Bayer 04 Leverkusen","competition":"Bundesliga","kickoff":1791639000,"report":"bundesliga.html","sport":"football","players":true,"adjusted":true},{"id":16434057,"home":"FC Augsburg","away":"FC Bayern M\u00fcnchen","competition":"Bundesliga","kickoff":1791639000,"report":"bundesliga.html","sport":"football","players":true,"adjusted":true},{"id":16434060,"home":"SC Paderborn 07","away":"VfB Stuttgart","competition":"Bundesliga","kickoff":1791639000,"report":"bundesliga.html","sport":"football","players":true,"adjusted":true},{"id":16434056,"home":"TSG Hoffenheim","away":"Hamburger SV","competition":"Bundesliga","kickoff":1791639000,"report":"bundesliga.html","sport":"football","players":true,"adjusted":true},{"id":16363872,"home":"Aston Villa","away":"Brentford","competition":"Premier League","kickoff":1791640800,"report":"premier-league.html","sport":"football","players":true,"adjusted":true},{"id":16391695,"home":"Blackburn Rovers","away":"Cardiff City","competition":"Championship","kickoff":1791640800,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":16391696,"home":"Bolton Wanderers","away":"Stoke City","competition":"Championship","kickoff":1791640800,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":16363873,"home":"Chelsea","away":"Bournemouth","competition":"Premier League","kickoff":1791640800,"report":"premier-league.html","sport":"football","players":true,"adjusted":true},{"id":16391698,"home":"Derby County","away":"Wrexham","competition":"Championship","kickoff":1791640800,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":16363877,"home":"Ipswich Town","away":"Fulham","competition":"Premier League","kickoff":1791640800,"report":"premier-league.html","sport":"football","players":true,"adjusted":true},{"id":16391199,"home":"Middlesbrough","away":"Wolverhampton","competition":"Championship","kickoff":1791640800,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":16391202,"home":"Preston North End","away":"Millwall","competition":"Championship","kickoff":1791640800,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":16391211,"home":"Sheffield United","away":"Lincoln City","competition":"Championship","kickoff":1791640800,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":16363880,"home":"Sunderland","away":"Brighton & Hove Albion","competition":"Premier League","kickoff":1791640800,"report":"premier-league.html","sport":"football","players":true,"adjusted":true},{"id":16391272,"home":"Watford","away":"Burnley","competition":"Championship","kickoff":1791640800,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":16421056,"home":"Deportivo Alav\u00e9s","away":"Atl\u00e9tico Madrid","competition":"LaLiga","kickoff":1791641700,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":16310968,"home":"Lille","away":"Le Havre","competition":"Ligue 1","kickoff":1791645300,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16285030,"home":"Inter","away":"Parma","competition":"Serie A","kickoff":1791648000,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16421060,"home":"FC Barcelona","away":"Getafe","competition":"LaLiga","kickoff":1791649800,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":16363879,"home":"Manchester United","away":"Tottenham Hotspur","competition":"Premier League","kickoff":1791649800,"report":"premier-league.html","sport":"football","players":true,"adjusted":true},{"id":16434055,"home":"RB Leipzig","away":"Eintracht Frankfurt","competition":"Bundesliga","kickoff":1791649800,"report":"bundesliga.html","sport":"football","players":true,"adjusted":true},{"id":15168428,"home":"Toronto FC","away":"CF Montr\u00e9al","competition":"MLS","kickoff":1791651600,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15168425,"home":"Chicago Fire","away":"New York City FC","competition":"MLS","kickoff":1791657000,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":16310970,"home":"AS Monaco","away":"Toulouse","competition":"Ligue 1","kickoff":1791657900,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16310969,"home":"Lorient","away":"Paris FC","competition":"Ligue 1","kickoff":1791657900,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16310972,"home":"Paris Saint-Germain","away":"Le Mans","competition":"Ligue 1","kickoff":1791657900,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16285036,"home":"SSC Napoli","away":"Frosinone","competition":"Serie A","kickoff":1791657900,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16310966,"home":"Stade Brestois","away":"Angers","competition":"Ligue 1","kickoff":1791657900,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16421066,"home":"Real Madrid","away":"Villarreal","competition":"LaLiga","kickoff":1791658800,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":15168427,"home":"Atlanta United","away":"FC Cincinnati","competition":"MLS","kickoff":1791675000,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15168430,"home":"Charlotte FC","away":"FC Dallas","competition":"MLS","kickoff":1791675000,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15168431,"home":"Inter Miami CF","away":"DC United","competition":"MLS","kickoff":1791675000,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15168432,"home":"New England Revolution","away":"Seattle Sounders FC","competition":"MLS","kickoff":1791675000,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15168433,"home":"New York Red Bulls","away":"San Diego FC","competition":"MLS","kickoff":1791675000,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15168434,"home":"Orlando City SC","away":"Columbus Crew","competition":"MLS","kickoff":1791675000,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15168435,"home":"Philadelphia Union","away":"Real Salt Lake","competition":"MLS","kickoff":1791675000,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15171678,"home":"Austin FC","away":"Nashville SC","competition":"MLS","kickoff":1791678600,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15171681,"home":"Minnesota United","away":"Houston Dynamo","competition":"MLS","kickoff":1791678600,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15171680,"home":"Sporting Kansas City","away":"Portland Timbers","competition":"MLS","kickoff":1791678600,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15171682,"home":"Colorado Rapids","away":"San Jose Earthquakes","competition":"MLS","kickoff":1791682200,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15171684,"home":"Los Angeles FC","away":"Vancouver Whitecaps","competition":"MLS","kickoff":1791685800,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":16285031,"home":"Como","away":"AS Roma","competition":"Serie A","kickoff":1791714600,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16391229,"home":"Southampton","away":"Portsmouth","competition":"Championship","kickoff":1791716400,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":16363875,"home":"Crystal Palace","away":"Nottingham Forest","competition":"Premier League","kickoff":1791723600,"report":"premier-league.html","sport":"football","players":true,"adjusted":true},{"id":16363876,"home":"Hull City","away":"Everton","competition":"Premier League","kickoff":1791723600,"report":"premier-league.html","sport":"football","players":true,"adjusted":true},{"id":16285033,"home":"Lazio","away":"Monza","competition":"Serie A","kickoff":1791723600,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16285034,"home":"Lecce","away":"Bologna","competition":"Serie A","kickoff":1791723600,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16310971,"home":"Nice","away":"RC Strasbourg","competition":"Ligue 1","kickoff":1791723600,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16434059,"home":"1. FC K\u00f6ln","away":"Borussia M'gladbach","competition":"Bundesliga","kickoff":1791725400,"report":"bundesliga.html","sport":"football","players":true,"adjusted":true},{"id":16421067,"home":"Real Sociedad","away":"Deportivo de A Coru\u00f1a","competition":"LaLiga","kickoff":1791728100,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":16310973,"home":"Stade Rennais","away":"Auxerre","competition":"Ligue 1","kickoff":1791731700,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16363878,"home":"Liverpool FC","away":"Manchester City","competition":"Premier League","kickoff":1791732600,"report":"premier-league.html","sport":"football","players":true,"adjusted":true},{"id":16434053,"home":"SC Freiburg","away":"FC Schalke 04","competition":"Bundesliga","kickoff":1791732600,"report":"bundesliga.html","sport":"football","players":true,"adjusted":true},{"id":16285035,"home":"Sassuolo","away":"AC Milan","competition":"Serie A","kickoff":1791734400,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16421054,"home":"Real Betis","away":"Osasuna","competition":"LaLiga","kickoff":1791736200,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":16285029,"home":"Cagliari","away":"Juventus","competition":"Serie A","kickoff":1791744300,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16310974,"home":"Troyes","away":"Olympique de Marseille","competition":"Ligue 1","kickoff":1791744300,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16421058,"home":"Elche","away":"Celta Vigo","competition":"LaLiga","kickoff":1791745200,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":16421064,"home":"Real Racing Club","away":"Valencia","competition":"LaLiga","kickoff":1791745200,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":15171690,"home":"St.Louis City","away":"LA Galaxy","competition":"MLS","kickoff":1791759600,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":16285026,"home":"Atalanta","away":"Venezia","competition":"Serie A","kickoff":1791822600,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16285037,"home":"Torino","away":"Udinese","competition":"Serie A","kickoff":1791830700,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16363874,"home":"Coventry City","away":"Newcastle United","competition":"Premier League","kickoff":1791831600,"report":"premier-league.html","sport":"football","players":true,"adjusted":true},{"id":16421063,"home":"Levante UD","away":"Sevilla","competition":"LaLiga","kickoff":1791831600,"report":"laliga.html","sport":"football","players":true,"adjusted":true}],"competitions":["Bundesliga","Campeonato Brasileiro S\u00e9rie A","Championship","LaLiga","Ligue 1","MLS","NFL","Premier League","Serie A","UEFA Nations League"],"built":"03 Oct 2026, 07:23 UTC","stamp":"1791012210","picks":{"days":7,"floor":2.0,"sports":[{"sport":"football","label":"Football","fixtures":50,"legs":1995,"single":{"team":"Chicago Fire","period":"1ST","stat":"Corner kicks","line":1.5,"over":true,"hits":12,"total":19,"fair":2.0824846826860037,"venue":"home","player":null,"position":null,"fixture":{"id":16547921,"home":"Chicago Fire","away":"Vancouver Whitecaps","competition":"MLS","kickoff":1791333000,"report":"mls.html"},"need":2.088779824268472,"source":"model","evidence":0.41039157498156714,"crossLeague":false,"adjusted":0.24024917306541085,"z":3.9925756285720815,"consideredGroups":765},"double":{"legs":[{"team":"Red Bull Bragantino","period":"2ND","stat":"Total shots","line":6.5,"over":true,"hits":17,"total":18,"fair":1.3542879085301887,"venue":"home","player":null,"position":null,"fixture":{"id":15237994,"home":"Red Bull Bragantino","away":"Mirassol","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1791412200,"report":"campeonato-brasileiro-serie-a.html"},"need":1.368051649712907,"source":"model","evidence":0.7424220019799247,"crossLeague":false},{"team":"Santos","period":"1ST","stat":"Corner kicks","line":1.5,"over":true,"hits":14,"total":16,"fair":1.4101989684910046,"venue":"home","player":null,"position":null,"fixture":{"id":15237992,"home":"Santos","away":"Flamengo","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1791498600,"report":"campeonato-brasileiro-serie-a.html"},"need":1.4212838726683303,"source":"model","evidence":0.6397666856325172,"crossLeague":false}],"combined":1.909815411649112,"joint":0.6909090909090909,"sameGame":false},"banker":{"team":"Red Bull Bragantino","period":"2ND","stat":"Total shots","line":6.5,"over":true,"hits":17,"total":18,"fair":1.3542879085301887,"venue":"home","player":null,"position":null,"fixture":{"id":15237994,"home":"Red Bull Bragantino","away":"Mirassol","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1791412200,"report":"campeonato-brasileiro-serie-a.html"},"need":1.368051649712907,"source":"model","evidence":0.7424220019799247,"crossLeague":false,"adjusted":0.474525968976598},"acca":{"legs":[{"team":"Red Bull Bragantino","period":"1ST","stat":"Yellow cards","line":0.5,"over":true,"hits":16,"total":18,"fair":1.5128397379865262,"venue":"home","player":null,"position":null,"fixture":{"id":15237994,"home":"Red Bull Bragantino","away":"Mirassol","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1791412200,"report":"campeonato-brasileiro-serie-a.html"},"need":1.5128397379865262,"source":"model","evidence":0.6719975513339578,"crossLeague":false},{"team":"Bosnia & Herzegovina","period":"2ND","stat":"Yellow cards","line":0.5,"over":true,"hits":12,"total":13,"fair":1.5419150911238728,"venue":null,"player":null,"position":null,"fixture":{"id":15534168,"home":"Bosnia & Herzegovina","away":"Poland","competition":"UEFA Nations League","kickoff":1791225900,"report":"uefa-nations-league.html"},"need":1.49957713263039,"source":"record","evidence":0.6668546607175265,"crossLeague":true},{"team":"Corinthians","period":"1ST","stat":"Yellow cards","line":0.5,"over":true,"hits":12,"total":13,"fair":1.470611689403302,"venue":"away","player":null,"position":null,"fixture":{"id":15237996,"home":"Internacional","away":"Corinthians","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1791412200,"report":"campeonato-brasileiro-serie-a.html"},"need":1.470611689403302,"source":"model","evidence":0.6668546607175265,"crossLeague":false}],"combined":3.4304523907851765,"target":3.0,"short":false},"builder":{"fixture":{"id":16310967,"home":"RC Lens","away":"Olympique Lyonnais","competition":"Ligue 1","kickoff":1791571500,"report":"ligue-1.html"},"team":"RC Lens","venue":"home","legs":[{"team":"RC Lens","period":"1ST","stat":"Shots on target","line":1.5,"over":true,"hits":16,"total":18,"fair":1.318473637793714,"venue":"home","player":null,"position":null},{"team":"RC Lens","period":"1ST","stat":"Total shots","line":5.5,"over":true,"hits":14,"total":18,"fair":1.4856676612128135,"venue":"home","player":null,"position":null},{"team":"RC Lens","period":"1ST","stat":"Fouls","line":4.5,"over":true,"hits":11,"total":16,"fair":1.3495663931644026,"venue":"home","player":null,"position":null}],"hits":8,"total":16,"fair":2.0,"need":3.5715258175265534,"naive":2.6435490668863513,"evidence":0.2799923761135083,"crossLeague":false},"parlay":{"fixture":{"id":16434050,"home":"Borussia Dortmund","away":"SV Werder Bremen","competition":"Bundesliga","kickoff":1791570600,"report":"bundesliga.html"},"legs":[{"team":"Borussia Dortmund","player":"Felix Nmecha","position":"M","stat":"Shots","threshold":1.0,"alt":true,"line":0.5,"over":true,"hits":19,"total":29,"fair":1.5263157894736843,"label":"Felix Nmecha 1+ shots"},{"team":"Borussia Dortmund","player":"Serhou Guirassy","position":"F","stat":"Shots","threshold":2.0,"alt":true,"line":1.5,"over":true,"hits":23,"total":32,"fair":1.391304347826087,"label":"Serhou Guirassy 2+ shots"},{"team":"SV Werder Bremen","player":"Jens Stage","position":"M","stat":"Fouls","threshold":1.0,"alt":true,"line":0.5,"over":true,"hits":21,"total":29,"fair":1.380952380952381,"label":"Jens Stage 1+ fouls"},{"team":"SV Werder Bremen","player":"Marco Friedl","position":"D","stat":"Tackles","threshold":1.0,"alt":true,"line":0.5,"over":true,"hits":25,"total":33,"fair":1.32,"label":"Marco Friedl 1+ tackles"}],"sides":[{"team":"Borussia Dortmund","hits":13,"total":24},{"team":"SV Werder Bremen","hits":15,"total":26}],"fair":3.2000000000000006,"naive":3.8709643674403407,"need":7.320139812103469,"evidence":0.13660941261621154,"crossTeam":true,"crossLeague":false,"adjusted":0.07726289904395735,"z":3.134046053002003,"consideredGroups":29}},{"sport":"american-football","label":"NFL","fixtures":15,"legs":1436,"single":{"team":"Las Vegas Raiders","period":"ALL","stat":"Rushing and receiving yards","line":69.5,"over":true,"hits":10,"total":20,"fair":2.0,"venue":null,"player":"Ashton Jeanty","position":"RB","alt":true,"threshold":70.0,"fixture":{"id":16183704,"home":"Las Vegas Raiders","away":"Kansas City Chiefs","competition":"NFL","kickoff":1791145500,"report":"nfl.html"},"need":3.341186073626001,"source":"record","evidence":0.2992949144298199,"crossLeague":false,"adjusted":0.16454982360422138,"z":4.0460759833759985,"consideredGroups":960},"double":{"legs":[{"team":"Las Vegas Raiders","period":"ALL","stat":"Receiving yards","line":24.5,"over":true,"hits":15,"total":20,"fair":1.3333333333333333,"venue":null,"player":"Tre Tucker","position":"WR","alt":true,"threshold":25.0,"fixture":{"id":16183704,"home":"Las Vegas Raiders","away":"Kansas City Chiefs","competition":"NFL","kickoff":1791145500,"report":"nfl.html"},"need":1.882193543592548,"source":"record","evidence":0.5312949900419365,"crossLeague":false},{"team":"Buffalo Bills","period":"ALL","stat":"Rushing and receiving yards","line":79.5,"over":true,"hits":14,"total":20,"fair":1.4285714285714286,"venue":null,"player":"James Cook III","position":"RB","alt":true,"threshold":80.0,"fixture":{"id":16184624,"home":"Buffalo Bills","away":"New England Patriots","competition":"NFL","kickoff":1791133200,"report":"nfl.html"},"need":2.0789017049123304,"source":"record","evidence":0.4810232237710205,"crossLeague":false}],"combined":1.9047619047619047,"joint":0.4722222222222222,"sameGame":false},"banker":{"team":"Las Vegas Raiders","period":"ALL","stat":"Receiving yards","line":24.5,"over":true,"hits":15,"total":20,"fair":1.3333333333333333,"venue":null,"player":"Tre Tucker","position":"WR","alt":true,"threshold":25.0,"fixture":{"id":16183704,"home":"Las Vegas Raiders","away":"Kansas City Chiefs","competition":"NFL","kickoff":1791145500,"report":"nfl.html"},"need":1.882193543592548,"source":"record","evidence":0.5312949900419365,"crossLeague":false,"adjusted":0.32593281091748083},"acca":{"legs":[{"team":"Chicago Bears","period":"ALL","stat":"Passing touchdowns","line":0.5,"over":true,"hits":9,"total":11,"fair":1.4667271096447916,"venue":"home","player":null,"position":null,"fixture":{"id":16184635,"home":"Chicago Bears","away":"New York Jets","competition":"NFL","kickoff":1791133200,"report":"nfl.html"},"need":1.9119952105468399,"source":"record","evidence":0.5230138624217553,"crossLeague":false},{"team":"Los Angeles Rams","period":"ALL","stat":"Passing touchdowns","line":1.5,"over":true,"hits":9,"total":11,"fair":1.4667271096447916,"venue":"away","player":null,"position":null,"fixture":{"id":16183703,"home":"Philadelphia Eagles","away":"Los Angeles Rams","competition":"NFL","kickoff":1791133200,"report":"nfl.html"},"need":1.9119952105468399,"source":"record","evidence":0.5230138624217553,"crossLeague":false},{"team":"Arizona Cardinals","period":"ALL","stat":"Passing touchdowns","line":1.5,"over":true,"hits":9,"total":11,"fair":1.4667271096447916,"venue":"away","player":null,"position":null,"fixture":{"id":16184623,"home":"New York Giants","away":"Arizona Cardinals","competition":"NFL","kickoff":1791133200,"report":"nfl.html"},"need":1.9119952105468399,"source":"record","evidence":0.5230138624217553,"crossLeague":false}],"combined":3.155353037723439,"target":3.0,"short":false},"builder":{"fixture":{"id":16184626,"home":"Tampa Bay Buccaneers","away":"Green Bay Packers","competition":"NFL","kickoff":1791133200,"report":"nfl.html"},"team":"Green Bay Packers","venue":"away","legs":[{"team":"Green Bay Packers","period":"ALL","stat":"Passing touchdowns","line":0.5,"over":true,"hits":11,"total":12,"fair":1.3272070083913112,"venue":"away","player":null,"position":null},{"team":"Green Bay Packers","period":"ALL","stat":"Touchdowns","line":1.5,"over":true,"hits":9,"total":12,"fair":1.553354968128702,"venue":"away","player":null,"position":null},{"team":"Green Bay Packers","period":"ALL","stat":"Field goals","line":1.5,"over":true,"hits":7,"total":12,"fair":1.7839277694169664,"venue":"away","player":null,"position":null}],"hits":6,"total":12,"fair":2.0,"need":3.940449245298521,"naive":3.6777875905176174,"evidence":0.2537781703934222,"crossLeague":false},"parlay":{"fixture":{"id":16184624,"home":"Buffalo Bills","away":"New England Patriots","competition":"NFL","kickoff":1791133200,"report":"nfl.html"},"legs":[{"team":"New England Patriots","player":"TreVeyon Henderson","position":"RB","stat":"Rushing and receiving yards","threshold":35.0,"alt":true,"line":34.5,"over":true,"hits":13,"total":19,"fair":1.4615384615384615,"label":"TreVeyon Henderson 35+ rushing and receiving yards"},{"team":"New England Patriots","player":"Drake Maye","position":"QB","stat":"Passing and rushing yards","threshold":230.0,"alt":true,"line":229.5,"over":true,"hits":14,"total":20,"fair":1.4285714285714286,"label":"Drake Maye 230+ passing and rushing yards"},{"team":"New England Patriots","player":"Hunter Henry","position":"TE","stat":"Rushing and receiving yards","threshold":25.0,"alt":true,"line":24.5,"over":true,"hits":14,"total":20,"fair":1.4285714285714286,"label":"Hunter Henry 25+ rushing and receiving yards"},{"team":"New England Patriots","player":"Rhamondre Stevenson","position":"RB","stat":"Receiving receptions","threshold":2.0,"alt":true,"line":1.5,"over":true,"hits":12,"total":17,"fair":1.4166666666666665,"label":"Rhamondre Stevenson 2+ receiving receptions"}],"sides":[{"team":"New England Patriots","hits":5,"total":16}],"fair":3.2,"naive":4.225536368393511,"need":7.059935651027261,"evidence":0.14164435051961052,"crossTeam":false,"crossLeague":false,"adjusted":0.07937955008380139,"z":3.4494173109502064,"consideredGroups":89}}]}};
+
+let competition = "all";
+let query = "";
+let sport = null;          // set on first render to whichever has most fixtures
+
+const SPORT_LABELS = { "football": "Football", "american-football": "NFL", "basketball": "Basketball", "darts": "Darts" };
+
+/* Sports present, busiest first. Two codes on one page need separating before
+   anything else: the league chips, the fixture list and the picks all mean
+   something different depending on which you are looking at. */
+function sportsPresent() {
+  const counts = {};
+  DATA.fixtures.forEach(f => {
+    const key = f.sport || "football";
+    counts[key] = (counts[key] || 0) + 1;
+  });
+  return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+}
+
+/* Day headings read better as "Today" and "Tomorrow" than as a date, and the
+   comparison has to be on calendar days in the reader's own timezone rather
+   than on a 24 hour difference: a match at 20:00 tonight and one at 12:00
+   tomorrow are 16 hours apart but belong under different headings. */
+function dayKey(ts) {
+  const d = new Date(ts * 1000);
+  return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+}
+
+function dayLabel(ts) {
+  const d = new Date(ts * 1000);
+  const today = new Date();
+  const tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+
+  if (dayKey(ts) === dayKey(today.getTime() / 1000)) return "Today";
+  if (dayKey(ts) === dayKey(tomorrow.getTime() / 1000)) return "Tomorrow";
+  return d.toLocaleDateString(undefined,
+    { weekday: "long", day: "numeric", month: "long" });
+}
+
+function timeLabel(ts) {
+  if (!ts) return "TBC";
+  return new Date(ts * 1000).toLocaleTimeString(undefined,
+    { hour: "2-digit", minute: "2-digit", hour12: false });
+}
+
+function matches(f) {
+  if (sport && (f.sport || "football") !== sport) return false;
+  if (competition !== "all" && f.competition !== competition) return false;
+  if (!query) return true;
+  const hay = `${f.home} ${f.away} ${f.competition}`.toLowerCase();
+  return hay.includes(query);
+}
+
+function renderSports() {
+  const present = sportsPresent();
+  if (!sport) sport = present.length ? present[0][0] : "football";
+
+  const box = document.getElementById("sports");
+  if (present.length < 2) { box.innerHTML = ""; return; }
+
+  box.innerHTML = present.map(([key, n]) =>
+    `<button type="button" data-sport="${escapeAttr(key)}"
+      aria-pressed="${key === sport}">${escapeHtml(SPORT_LABELS[key] || key)}</button>`
+  ).join("");
+
+  box.querySelectorAll("[data-sport]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      sport = btn.dataset.sport;
+      competition = "all";
+      renderSports();
+      renderPicks();
+      renderFilters();
+      renderList();
+    });
+  });
+}
+
+function renderFilters() {
+  // Only the leagues that belong to the sport on screen, so the row is four
+  // chips rather than ten wrapping onto two lines with the NFL buried in it.
+  const mine = DATA.fixtures.filter(f => (f.sport || "football") === sport);
+  const comps = [...new Set(mine.map(f => f.competition))].sort();
+  const counts = { all: mine.length };
+  comps.forEach(c => {
+    counts[c] = mine.filter(f => f.competition === c).length;
+  });
+  if (competition !== "all" && !comps.includes(competition)) competition = "all";
+
+  const chips = ["all"].concat(comps).map(c => {
+    const label = c === "all" ? "All" : c;
+    return `<button type="button" class="chip" data-comp="${escapeAttr(c)}"
+      aria-pressed="${c === competition}">${escapeHtml(label)}<span class="n">${counts[c]}</span></button>`;
+  }).join("");
+
+  document.getElementById("filters").innerHTML = chips +
+    `<input class="search" id="search" type="search" placeholder="Search team"
+      value="${escapeAttr(query)}" aria-label="Search team">`;
+
+  document.querySelectorAll("[data-comp]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      competition = btn.dataset.comp;
+      renderFilters();
+      renderList();
+    });
+  });
+
+  const search = document.getElementById("search");
+  search.addEventListener("input", () => {
+    query = search.value.trim().toLowerCase();
+    renderList();
+  });
+  if (query) {
+    search.focus();
+    search.setSelectionRange(search.value.length, search.value.length);
+  }
+}
+
+function renderList() {
+  const shown = DATA.fixtures.filter(matches);
+  const now = Date.now() / 1000;
+
+  if (!shown.length) {
+    document.getElementById("list").innerHTML =
+      `<ul><li><div class="empty">Nothing to show. Build a new round with
+       <code>python run.py --league "Premier League"</code>.</div></li></ul>`;
+    return;
+  }
+
+  const groups = [];
+  shown.forEach(f => {
+    const key = f.kickoff ? dayKey(f.kickoff) : "tbc";
+    const last = groups[groups.length - 1];
+    if (last && last.key === key) last.items.push(f);
+    else groups.push({ key, ts: f.kickoff, items: [f] });
+  });
+
+  document.getElementById("list").innerHTML = groups.map(g => {
+    const label = g.ts ? dayLabel(g.ts) : "Date to be confirmed";
+    const soon = label === "Today" || label === "Tomorrow";
+    const rows = g.items.map(f => {
+      const played = f.kickoff && f.kickoff <= now;
+      const tags = (f.players ? '<span class="tag">players</span>' : "")
+                 + (f.adjusted ? '<span class="tag">adjusted</span>' : "");
+      // ?v= is the build stamp. It changes every time the index is rebuilt,
+      // so the browser is forced to fetch the report rather than serve a copy
+      // it cached before the report was re-rendered. Without this a fixed
+      // report looks unfixed for as long as the cache holds, which is the
+      // most confusing possible failure.
+      return `<li class="${played ? "played" : ""}">
+        <a href="reports/${escapeAttr(f.report)}?v=${DATA.stamp}#e${f.id}">
+          <span class="time">${timeLabel(f.kickoff)}</span>
+          <span class="match">
+            <span class="teams">${escapeHtml(f.home)} v ${escapeHtml(f.away)}</span>${tags}
+            <span class="meta">${escapeHtml(f.competition)}${played ? " &middot; kicked off" : ""}</span>
+          </span>
+        </a></li>`;
+    }).join("");
+    return `<div class="day${soon ? " soon" : ""}">${escapeHtml(label)}</div>
+            <ul>${rows}</ul>`;
+  }).join("");
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"]/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+}
+function escapeAttr(s) { return escapeHtml(s).replace(/'/g, "&#39;"); }
+
+document.getElementById("footer").textContent =
+  `Built ${DATA.built}. Each report is a snapshot: the numbers are frozen at ` +
+  `the moment it was generated. Times are shown in your own timezone.`;
+
+/* The picks, for whichever sport is on screen.
+
+   Decided at build time, not in the browser: a pick of the week that moves
+   when you nudge a slider is a search, not a pick. Kept behind a button
+   because it is a sidebar to the fixture list, not the point of the page. */
+const fmtOdds = v => (v === null || v === undefined || !isFinite(v))
+  ? "—" : v.toFixed(2);
+
+const half = p => p === "1ST" ? " (1st half)" : p === "2ND" ? " (2nd half)" : "";
+
+function legText(l) {
+  /* Alt lines read the way a book writes them. "50+ receiving yards" and
+     "over 49.5 receiving yards" are the same bet, and only one of them is
+     what you would go looking for on the coupon. */
+  const market = l.alt
+    ? `${l.threshold}+ ${l.stat.toLowerCase()}`
+    : `${l.over ? "over" : "under"} ${l.line} ${l.stat.toLowerCase()}`;
+  return l.player
+    ? `${escapeHtml(l.player)} ${market}${half(l.period)}`
+    : `${escapeHtml(l.team)} ${market}${half(l.period)}`;
+}
+
+function note(summary, body) {
+  return `<details><summary>${summary}</summary><p>${body}</p></details>`;
+}
+
+function renderPicks() {
+  const box = document.getElementById("picks");
+  const all = DATA.picks && DATA.picks.sports;
+  if (!box || !all) return;
+
+  const p = all.find(x => x.sport === sport);
+  const floor = DATA.picks.floor;
+  const cards = [];
+
+  if (p && p.single) {
+    const s = p.single;
+    cards.push(`<div class="pick">
+      <h2>Best bet &middot; ${fmtOdds(floor)}+</h2>
+      <div class="sel">${legText(s)}</div>
+      <div class="where">${escapeHtml(s.fixture.home)} v ${escapeHtml(s.fixture.away)}</div>
+      <div class="odds"><b>${s.hits}/${s.total}</b>${s.venue ? " " + s.venue : ""}
+        &middot; fair <b>${fmtOdds(s.fair)}</b>, hold out for ${fmtOdds(s.need)}</div>
+      ${note("how solid is this?",
+        `Chosen from ${s.consideredGroups} separate questions this round, so the
+         bar rises to match: a plain 95% floor of ${(s.evidence * 100).toFixed(0)}%
+         becomes <span class="flag">${(s.adjusted * 100).toFixed(0)}%</span> once
+         that searching is paid for. Asking for ${fmtOdds(floor)}+ caps the chance
+         at 50%, so price and evidence pull against each other here.`)}
+    </div>`);
+  }
+
+  if (p && p.double) {
+    const d = p.double;
+    cards.push(`<div class="pick">
+      <h2>Evens double</h2>
+      <div class="sel">2 legs &middot; ${fmtOdds(d.combined)}</div>
+      <ol>${d.legs.map(l => `<li>${legText(l)} &mdash; ${l.hits}/${l.total},
+        ${fmtOdds(l.fair)}<br><small>${escapeHtml(l.fixture.home)} v ${escapeHtml(l.fixture.away)}</small></li>`).join("")}</ol>
+      ${note("why these two?",
+        `The pair most likely to both land (about ${(d.joint * 100).toFixed(0)}% on the
+         records) among doubles priced around evens. Counts and 0.5 lines are left
+         out. ${d.sameGame ? "Both legs are in one game, so it goes on as a builder." :
+         "Two different games, so neither leg rides on the other."}`)}
+    </div>`);
+  }
+
+  if (p && p.banker) {
+    const s = p.banker;
+    cards.push(`<div class="pick">
+      <h2>Banker</h2>
+      <div class="sel">${legText(s)}</div>
+      <div class="where">${escapeHtml(s.fixture.home)} v ${escapeHtml(s.fixture.away)}</div>
+      <div class="odds"><b>${s.hits}/${s.total}</b> &middot; fair <b>${fmtOdds(s.fair)}</b>,
+        hold out for ${fmtOdds(s.need)}</div>
+      ${note("what is a banker?",
+        `The best-supported single priced between 1.30 and 1.75, after allowing for
+         how many bets were searched (${(s.adjusted * 100).toFixed(0)}% worst case).`)}
+    </div>`);
+  }
+
+  if (p && p.acca) {
+    const a = p.acca;
+    cards.push(`<div class="pick">
+      <h2>Best acca</h2>
+      <div class="sel">${a.legs.length} legs &middot; ${fmtOdds(a.combined)}</div>
+      <ol>${a.legs.map(l => `<li>${legText(l)} &mdash; ${l.hits}/${l.total},
+        ${fmtOdds(l.fair)}</li>`).join("")}</ol>
+      ${note("read this first",
+        `One leg per match, so nothing rides twice on the same game.
+         ${a.short ? `Short of the ${fmtOdds(a.target)} target &mdash; reaching it
+         would have meant worse legs. ` : ""}These are fair prices, not offers: a
+         book has to beat every one for the multiple to be worth taking, and the
+         margin compounds with each leg.`)}
+    </div>`);
+  }
+
+  if (p && p.builder) {
+    const b = p.builder;
+    const over = 100 * (b.naive / b.fair - 1);
+    cards.push(`<div class="pick">
+      <h2>Best builder</h2>
+      <div class="sel">${escapeHtml(b.team)}</div>
+      <div class="where">${escapeHtml(b.fixture.home)} v ${escapeHtml(b.fixture.away)}</div>
+      <ol>${b.legs.map(l => `<li>${legText(l)} &mdash; ${l.hits}/${l.total}
+        alone</li>`).join("")}</ol>
+      <div class="odds">together <b>${b.hits}/${b.total}</b>
+        &middot; fair <b>${fmtOdds(b.fair)}</b></div>
+      ${note("why not just multiply the legs?",
+        `Multiplying would say ${fmtOdds(b.naive)} &mdash;
+         <span class="flag">${over.toFixed(0)}% longer than the record supports</span>.
+         Same-team legs move together, so the product always flatters a builder.
+         This is priced by counting the matches where every leg actually landed.`)}
+    </div>`);
+  }
+
+  if (p && p.parlay) {
+    const g = p.parlay;
+    const gap = 100 * (g.naive / g.fair - 1);
+    const sides = g.sides.map(s =>
+      `${escapeHtml(s.team)} legs together <b>${s.hits}/${s.total}</b>`).join(" &middot; ");
+    cards.push(`<div class="pick">
+      <h2>Same-game parlay</h2>
+      <div class="sel">${g.legs.length} legs &middot; ${fmtOdds(g.fair)}</div>
+      <div class="where">${escapeHtml(g.fixture.home)} v ${escapeHtml(g.fixture.away)}</div>
+      <ol>${g.legs.map(l => `<li>${legText(l)} &mdash; ${l.hits}/${l.total}
+        alone</li>`).join("")}</ol>
+      <div class="odds">${sides} &middot; fair <b>${fmtOdds(g.fair)}</b>,
+        hold out for ${fmtOdds(g.need)}</div>
+      ${note("how is this priced?",
+        `Legs on the same team are counted together, out of the matches that
+         carried all of them, so nothing assumes they are independent &mdash;
+         multiplying them would have said ${fmtOdds(g.naive)}, ${gap >= 0
+         ? `<span class="flag">${gap.toFixed(0)}% longer than the record supports</span>`
+         : `${Math.abs(gap).toFixed(0)}% shorter than the record supports`}.
+         ${g.crossTeam ? `The two sides share no matches outside a head to head,
+         so their rates are multiplied rather than counted. Overs in one game
+         drift up together with the pace, so that product slightly understates
+         the real chance and quotes a price a shade longer than the truth.
+         ` : ""}Lines are the biggest number each man clears at least 65% of the
+         time, picked by fixing the rate and reading off the line rather than
+         hunting the ladder for the rung that flatters him.`)}
+    </div>`);
+  }
+
+  box.innerHTML = cards.length
+    ? `<div class="picks">${cards.join("")}</div>`
+    : `<div class="picks"><div class="pick none">Nothing cleared the bar for
+       ${escapeHtml(SPORT_LABELS[sport] || sport)} this round.</div></div>`;
+}
+
+document.getElementById("picks-btn").addEventListener("click", e => {
+  const box = document.getElementById("picks");
+  const open = box.hidden;
+  box.hidden = !open;
+  e.currentTarget.setAttribute("aria-expanded", String(open));
+});
+
+renderSports();
+renderPicks();
+renderFilters();
+renderList();
+</script>
+</body>
+</html>
