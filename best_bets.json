@@ -3113,11 +3113,11 @@
     "total": 10,
     "fair": 1.5852951849505161,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: single",
@@ -3536,11 +3536,11 @@
     "total": 10,
     "fair": 1.5852951849505161,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -3566,11 +3566,11 @@
     "total": 10,
     "fair": 1.7932978740142371,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -3596,11 +3596,11 @@
     "total": 10,
     "fair": 1.7932978740142371,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -3626,11 +3626,11 @@
     "total": 10,
     "fair": 1.5852951849505161,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -3656,11 +3656,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -3686,11 +3686,11 @@
     "total": 10,
     "fair": 1.7932978740142371,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -3716,11 +3716,11 @@
     "total": 11,
     "fair": 1.6755005554346891,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -3746,11 +3746,11 @@
     "total": 11,
     "fair": 1.6755005554346891,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -3776,11 +3776,11 @@
     "total": 11,
     "fair": 1.6755005554346891,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -3806,11 +3806,11 @@
     "total": 12,
     "fair": 2.0,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -3836,11 +3836,11 @@
     "total": 12,
     "fair": 2.0,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -3866,11 +3866,11 @@
     "total": 11,
     "fair": 1.6755005554346891,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -3896,11 +3896,11 @@
     "total": 11,
     "fair": 1.6755005554346891,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -3926,11 +3926,11 @@
     "total": 11,
     "fair": 1.7659202120225284,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 10.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: single",
@@ -3986,8 +3986,8 @@
     "total": 16,
     "fair": 1.4342225189342812,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "lose"
    },
    {
     "event_id": 17108375,
@@ -4011,7 +4011,7 @@
     "result": "win"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: banker",
@@ -4037,11 +4037,11 @@
     "total": 19,
     "fair": 1.3799396479339552,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: acca",
@@ -4109,11 +4109,11 @@
     "total": 16,
     "fair": 1.5654745887456918,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: builder",
@@ -4211,8 +4211,8 @@
     "total": 19,
     "fair": 1.3571428571428572,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 17135943,
@@ -4232,8 +4232,8 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 17135943,
@@ -4253,8 +4253,8 @@
     "total": 26,
     "fair": 1.368421052631579,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 17135943,
@@ -4274,11 +4274,11 @@
     "total": 21,
     "fair": 1.3125,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -4304,11 +4304,11 @@
     "total": 16,
     "fair": 1.400642717855731,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -4334,11 +4334,11 @@
     "total": 16,
     "fair": 1.4342225189342812,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -4364,11 +4364,11 @@
     "total": 16,
     "fair": 1.5654745887456918,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: acca",
@@ -4394,8 +4394,8 @@
     "total": 16,
     "fair": 1.5654745887456918,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    },
    {
     "event_id": 15534102,
@@ -4436,8 +4436,8 @@
     "total": 10,
     "fair": 1.5852951849505161,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
   "result": null
@@ -6958,6 +6958,423 @@
     "over": true,
     "alt": true,
     "threshold": 17.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: single",
+  "sport": "football",
+  "snapshot_at": 1791012225,
+  "fair": 2.0808622856738737,
+  "legs": [
+   {
+    "event_id": 17135943,
+    "fixture": "Atl\u00e9tico Mineiro v Red Bull Bragantino",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791063000,
+    "sport": "football",
+    "team": "Red Bull Bragantino",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 19,
+    "fair": 2.0808622856738737,
+    "venue": "away",
+    "value": 1.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1791012225,
+  "fair": 1.9568432359321148,
+  "legs": [
+   {
+    "event_id": 17135943,
+    "fixture": "Atl\u00e9tico Mineiro v Red Bull Bragantino",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791063000,
+    "sport": "football",
+    "team": "Atl\u00e9tico Mineiro",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 16,
+    "fair": 1.5654745887456918,
+    "venue": "home",
+    "value": 4.0,
+    "result": "win"
+   },
+   {
+    "event_id": 15534085,
+    "fixture": "Spain v Czechia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791053100,
+    "sport": "football",
+    "team": "Spain",
+    "player": "Mikel Oyarzabal",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 12,
+    "total": 15,
+    "fair": 1.25,
+    "venue": null,
+    "value": 0.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: builder",
+  "sport": "football",
+  "snapshot_at": 1791012225,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 15537768,
+    "fixture": "Estonia v Luxembourg",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791043200,
+    "sport": "football",
+    "team": "Luxembourg",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.5852951849505161,
+    "venue": null,
+    "value": 0.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 15537768,
+    "fixture": "Estonia v Luxembourg",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791043200,
+    "sport": "football",
+    "team": "Luxembourg",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 6.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": 8.0,
+    "result": "win"
+   },
+   {
+    "event_id": 15537768,
+    "fixture": "Estonia v Luxembourg",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791043200,
+    "sport": "football",
+    "team": "Luxembourg",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 6,
+    "total": 10,
+    "fair": 1.8861371236054818,
+    "venue": null,
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "american-football",
+  "snapshot_at": 1791012225,
+  "fair": 1.9047619047619047,
+  "legs": [
+   {
+    "event_id": 16183704,
+    "fixture": "Las Vegas Raiders v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1791145500,
+    "sport": "american-football",
+    "team": "Las Vegas Raiders",
+    "player": "Tre Tucker",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "James Cook III",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 79.5,
+    "over": true,
+    "alt": true,
+    "threshold": 80.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1791012225,
+  "fair": 3.4,
+  "legs": [
+   {
+    "event_id": 16184635,
+    "fixture": "Chicago Bears v New York Jets",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "Cole Kmet",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184635,
+    "fixture": "Chicago Bears v New York Jets",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "D'Andre Swift",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 49.5,
+    "over": true,
+    "alt": true,
+    "threshold": 50.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184635,
+    "fixture": "Chicago Bears v New York Jets",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "Caleb Williams",
+    "stat": "Passing attempts",
+    "period": "ALL",
+    "line": 31.5,
+    "over": true,
+    "alt": true,
+    "threshold": 32.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16184635,
+    "fixture": "Chicago Bears v New York Jets",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "Chicago Bears",
+    "player": "Kyle Monangai",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1791012225,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16187841,
+    "fixture": "San Francisco 49ers v Denver Broncos",
+    "competition": "NFL",
+    "kickoff": 1791145500,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "Pat Bryant",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 19.5,
+    "over": true,
+    "alt": true,
+    "threshold": 20.0,
+    "hits": 12,
+    "total": 16,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1791012225,
+  "fair": 1.3604189027029285,
+  "legs": [
+   {
+    "event_id": 16183706,
+    "fixture": "Carolina Panthers v Detroit Lions",
+    "competition": "NFL",
+    "kickoff": 1791159600,
+    "sport": "american-football",
+    "team": "Carolina Panthers",
+    "player": null,
+    "stat": "Field goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.3604189027029285,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1791012225,
+  "fair": 1.3604189027029285,
+  "legs": [
+   {
+    "event_id": 16183706,
+    "fixture": "Carolina Panthers v Detroit Lions",
+    "competition": "NFL",
+    "kickoff": 1791159600,
+    "sport": "american-football",
+    "team": "Detroit Lions",
+    "player": null,
+    "stat": "Field goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.3604189027029285,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1791012225,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16183706,
+    "fixture": "Carolina Panthers v Detroit Lions",
+    "competition": "NFL",
+    "kickoff": 1791159600,
+    "sport": "american-football",
+    "team": "Detroit Lions",
+    "player": "Jahmyr Gibbs",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 19.5,
+    "over": true,
+    "alt": true,
+    "threshold": 20.0,
     "hits": 15,
     "total": 20,
     "fair": 1.3333333333333333,

@@ -1,38 +1,38 @@
 {
-  "legs": 134,
-  "prior": 0.0,
+  "legs": 161,
+  "prior": 1.0,
   "provisional": false,
   "bands": [
     {
       "raw": "0-55%",
-      "legs": 5,
-      "said": 0.48,
-      "happened": 0.6
+      "legs": 6,
+      "said": 0.456,
+      "happened": 0.5
     },
     {
       "raw": "55-65%",
-      "legs": 9,
+      "legs": 11,
       "said": 0.598,
-      "happened": 0.333
+      "happened": 0.455
     },
     {
       "raw": "65-75%",
-      "legs": 68,
-      "said": 0.706,
-      "happened": 0.647
+      "legs": 75,
+      "said": 0.707,
+      "happened": 0.653
     },
     {
       "raw": "75-85%",
-      "legs": 28,
-      "said": 0.797,
-      "happened": 0.857
+      "legs": 36,
+      "said": 0.805,
+      "happened": 0.833
     },
     {
       "raw": "85-100%",
-      "legs": 24,
-      "said": 0.925,
-      "happened": 0.917
+      "legs": 33,
+      "said": 0.923,
+      "happened": 0.848
     }
   ],
-  "fitted_prior": 0.0
+  "fitted_prior": 1.0
 }

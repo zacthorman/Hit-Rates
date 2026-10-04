@@ -134,7 +134,8 @@ def log(args) -> None:
     ns = argparse.Namespace(
         event=args.event, player=args.player, stat=args.stat, line=args.line,
         price=args.price, stake=st["pot"], kind="multi", group=group,
-        suggested=False, backfill=False, note=f"challenge run {run['id']}")
+        suggested=False, backfill=getattr(args, "backfill", False),
+        note=f"challenge run {run['id']}")
     bettrack.log(ns)
     print(f"  step {st['next_step']} of run {run['id']}, staking £{st['pot']:.2f}")
 
@@ -234,6 +235,7 @@ def main() -> None:
     b.add_argument("--stat", required=True)
     b.add_argument("--line", type=float, required=True)
     b.add_argument("--price", type=float)
+    b.add_argument("--backfill", action="store_true")
     t = sub.add_parser("team", help="team market leg: shots on target, corners, cards")
     t.add_argument("--event", type=int, required=True)
     t.add_argument("--team", required=True)
