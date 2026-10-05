@@ -4415,8 +4415,8 @@
     "total": 11,
     "fair": 1.5690867546635847,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    },
    {
     "event_id": 15534087,
@@ -4440,7 +4440,7 @@
     "result": "win"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: single",
@@ -4466,11 +4466,11 @@
     "total": 20,
     "fair": 2.0,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 269.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: evens double",
@@ -4496,8 +4496,8 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 54.0,
+    "result": "win"
    },
    {
     "event_id": 16184637,
@@ -4517,11 +4517,11 @@
     "total": 20,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 71.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: banker",
@@ -4547,11 +4547,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 54.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: acca",
@@ -4577,8 +4577,8 @@
     "total": 11,
     "fair": 1.4667271096447916,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 16183703,
@@ -4598,8 +4598,8 @@
     "total": 11,
     "fair": 1.4667271096447916,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 16184623,
@@ -4619,11 +4619,11 @@
     "total": 11,
     "fair": 1.4667271096447916,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: builder",
@@ -4649,8 +4649,8 @@
     "total": 12,
     "fair": 1.3272070083913112,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    },
    {
     "event_id": 16184626,
@@ -4670,8 +4670,8 @@
     "total": 12,
     "fair": 1.553354968128702,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    },
    {
     "event_id": 16184626,
@@ -4691,11 +4691,11 @@
     "total": 12,
     "fair": 1.7839277694169664,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: parlay",
@@ -4721,8 +4721,8 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 13.0,
+    "result": "win"
    },
    {
     "event_id": 16184635,
@@ -4742,8 +4742,8 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 58.0,
+    "result": "win"
    },
    {
     "event_id": 16184635,
@@ -4764,7 +4764,7 @@
     "fair": 1.4615384615384615,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    },
    {
     "event_id": 16184635,
@@ -4784,11 +4784,11 @@
     "total": 20,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 146.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -4814,11 +4814,11 @@
     "total": 11,
     "fair": 1.6755005554346891,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -4844,11 +4844,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -4874,11 +4874,11 @@
     "total": 11,
     "fair": 1.7659202120225284,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -4904,11 +4904,11 @@
     "total": 11,
     "fair": 1.6755005554346891,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -4934,11 +4934,11 @@
     "total": 13,
     "fair": 1.7218264028970067,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -4964,11 +4964,11 @@
     "total": 13,
     "fair": 1.7966272816919078,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -4994,11 +4994,11 @@
     "total": 11,
     "fair": 1.5714285714285714,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -5025,10 +5025,10 @@
     "fair": 1.5714285714285714,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Fixture single",
@@ -5054,11 +5054,11 @@
     "total": 13,
     "fair": 1.8571428571428572,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -5084,11 +5084,11 @@
     "total": 12,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -5114,11 +5114,11 @@
     "total": 11,
     "fair": 1.7659202120225284,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -5144,11 +5144,11 @@
     "total": 13,
     "fair": 1.7966272816919078,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -5174,11 +5174,11 @@
     "total": 11,
     "fair": 1.5690867546635847,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -5204,11 +5204,11 @@
     "total": 11,
     "fair": 1.6755005554346891,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -5234,11 +5234,11 @@
     "total": 11,
     "fair": 1.6755005554346891,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -5264,11 +5264,11 @@
     "total": 10,
     "fair": 1.5852951849505161,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -5294,11 +5294,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -5324,11 +5324,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -5354,11 +5354,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 54.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -5384,11 +5384,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 54.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -5414,11 +5414,11 @@
     "total": 19,
     "fair": 1.3571428571428572,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 253.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -5444,11 +5444,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 81.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -5474,11 +5474,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 227.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -5504,11 +5504,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 23.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -5534,11 +5534,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 79.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -5564,11 +5564,11 @@
     "total": 19,
     "fair": 1.3571428571428572,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -5594,11 +5594,11 @@
     "total": 19,
     "fair": 1.3571428571428572,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -5624,11 +5624,11 @@
     "total": 11,
     "fair": 1.342620953258506,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -5654,11 +5654,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 150.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -5684,11 +5684,11 @@
     "total": 17,
     "fair": 1.3076923076923077,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -5714,11 +5714,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 50.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -5744,11 +5744,11 @@
     "total": 16,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 143.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -5774,11 +5774,11 @@
     "total": 16,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 145.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -5804,11 +5804,11 @@
     "total": 10,
     "fair": 1.3604189027029285,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -5834,11 +5834,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 9.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -5864,11 +5864,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 9.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -5895,10 +5895,10 @@
     "fair": 1.3333333333333333,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Fixture single",
@@ -5925,10 +5925,10 @@
     "fair": 1.3333333333333333,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Fixture single",
@@ -5954,11 +5954,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 317.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -5984,11 +5984,11 @@
     "total": 11,
     "fair": 1.342620953258506,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -6014,11 +6014,11 @@
     "total": 10,
     "fair": 1.3604189027029285,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 28.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -6044,11 +6044,11 @@
     "total": 11,
     "fair": 1.4667271096447916,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -6074,11 +6074,11 @@
     "total": 12,
     "fair": 1.3272070083913112,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -6105,10 +6105,10 @@
     "fair": 1.3333333333333333,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Fixture single",
@@ -6135,10 +6135,10 @@
     "fair": 1.3333333333333333,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Pick: evens double",
@@ -6164,8 +6164,8 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 54.0,
+    "result": "win"
    },
    {
     "event_id": 16184637,
@@ -6185,11 +6185,11 @@
     "total": 20,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 71.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: banker",
@@ -6215,11 +6215,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 54.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: parlay",
@@ -6245,8 +6245,8 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 13.0,
+    "result": "win"
    },
    {
     "event_id": 16184635,
@@ -6266,8 +6266,8 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 58.0,
+    "result": "win"
    },
    {
     "event_id": 16184635,
@@ -6288,7 +6288,7 @@
     "fair": 1.4615384615384615,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    },
    {
     "event_id": 16184635,
@@ -6308,11 +6308,11 @@
     "total": 20,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 146.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -6338,11 +6338,11 @@
     "total": 16,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 34.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: single",
@@ -6368,11 +6368,11 @@
     "total": 20,
     "fair": 2.0,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 126.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: evens double",
@@ -6398,8 +6398,8 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 44.0,
+    "result": "win"
    },
    {
     "event_id": 16184624,
@@ -6419,11 +6419,11 @@
     "total": 20,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 75.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: banker",
@@ -6449,11 +6449,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 44.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: parlay",
@@ -6479,8 +6479,8 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 42.0,
+    "result": "win"
    },
    {
     "event_id": 16184624,
@@ -6500,8 +6500,8 @@
     "total": 20,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 323.0,
+    "result": "win"
    },
    {
     "event_id": 16184624,
@@ -6521,8 +6521,8 @@
     "total": 20,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 62.0,
+    "result": "win"
    },
    {
     "event_id": 16184624,
@@ -6542,11 +6542,11 @@
     "total": 17,
     "fair": 1.4166666666666665,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 27.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -6572,11 +6572,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 44.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -6602,11 +6602,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 44.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -6632,11 +6632,11 @@
     "total": 17,
     "fair": 1.3076923076923077,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -6662,11 +6662,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 18.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -6692,11 +6692,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 52.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -6722,11 +6722,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 70.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -6752,11 +6752,11 @@
     "total": 16,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 47.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -6782,11 +6782,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 70.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -6812,11 +6812,11 @@
     "total": 17,
     "fair": 1.3076923076923077,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -6842,11 +6842,11 @@
     "total": 10,
     "fair": 1.4937478247230116,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -6872,11 +6872,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 76.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -6902,11 +6902,11 @@
     "total": 19,
     "fair": 1.3571428571428572,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -6932,11 +6932,11 @@
     "total": 19,
     "fair": 1.3571428571428572,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -6963,10 +6963,10 @@
     "fair": 1.3333333333333333,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Pick: single",
@@ -7145,8 +7145,8 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 44.0,
+    "result": "win"
    },
    {
     "event_id": 16184624,
@@ -7166,11 +7166,11 @@
     "total": 20,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 83.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: parlay",
@@ -7196,8 +7196,8 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 13.0,
+    "result": "win"
    },
    {
     "event_id": 16184635,
@@ -7217,8 +7217,8 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 58.0,
+    "result": "win"
    },
    {
     "event_id": 16184635,
@@ -7239,7 +7239,7 @@
     "fair": 1.4615384615384615,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    },
    {
     "event_id": 16184635,
@@ -7259,11 +7259,11 @@
     "total": 20,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 146.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -7289,11 +7289,11 @@
     "total": 16,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 47.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -7319,11 +7319,11 @@
     "total": 10,
     "fair": 1.3604189027029285,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -7349,11 +7349,11 @@
     "total": 10,
     "fair": 1.3604189027029285,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -7375,6 +7375,993 @@
     "over": true,
     "alt": true,
     "threshold": 20.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": 31.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 15534095,
+    "fixture": "Portugal v Norway",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Norway",
+    "player": "Erling Haaland",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": true,
+    "threshold": 5.0,
+    "hits": 6,
+    "total": 12,
+    "fair": 2.0,
+    "venue": null,
+    "value": 3.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.6666666666666667,
+  "legs": [
+   {
+    "event_id": 15534027,
+    "fixture": "France v Belgium",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "France",
+    "player": "Michael Olise",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": true,
+    "threshold": 3.0,
+    "hits": 9,
+    "total": 15,
+    "fair": 1.6666666666666667,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 3.8354608659230736,
+  "legs": [
+   {
+    "event_id": 15534168,
+    "fixture": "Bosnia & Herzegovina v Poland",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Bosnia & Herzegovina",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 13,
+    "fair": 1.5419150911238728,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15534102,
+    "fixture": "Wales v Denmark",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Denmark",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 11,
+    "fair": 1.5690867546635847,
+    "venue": null,
+    "value": 1.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 15534157,
+    "fixture": "Ireland v Israel",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791139500,
+    "sport": "football",
+    "team": "Ireland",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.5852951849505161,
+    "venue": null,
+    "value": 1.0,
+    "result": "lose"
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: builder",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 15534168,
+    "fixture": "Bosnia & Herzegovina v Poland",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Bosnia & Herzegovina",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 14,
+    "fair": 1.7745664855466896,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15534168,
+    "fixture": "Bosnia & Herzegovina v Poland",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Bosnia & Herzegovina",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 13.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 14,
+    "fair": 1.9112163946498752,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15534168,
+    "fixture": "Bosnia & Herzegovina v Poland",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Bosnia & Herzegovina",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 14,
+    "fair": 1.9824557248696748,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1791099661,
+  "fair": 3.2,
+  "legs": [
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "New England Patriots",
+    "player": "TreVeyon Henderson",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 34.5,
+    "over": true,
+    "alt": true,
+    "threshold": 35.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 42.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "New England Patriots",
+    "player": "Drake Maye",
+    "stat": "Passing and rushing yards",
+    "period": "ALL",
+    "line": 229.5,
+    "over": true,
+    "alt": true,
+    "threshold": 230.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 323.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "New England Patriots",
+    "player": "Hunter Henry",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 62.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16184624,
+    "fixture": "Buffalo Bills v New England Patriots",
+    "competition": "NFL",
+    "kickoff": 1791133200,
+    "sport": "american-football",
+    "team": "New England Patriots",
+    "player": "Rhamondre Stevenson",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10.0,
+    "hits": 12,
+    "total": 17,
+    "fair": 1.4166666666666665,
+    "venue": null,
+    "value": 27.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.5852951849505161,
+  "legs": [
+   {
+    "event_id": 15537770,
+    "fixture": "Cyprus v Latvia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791216000,
+    "sport": "football",
+    "team": "Latvia",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.5852951849505161,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 15537770,
+    "fixture": "Cyprus v Latvia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791216000,
+    "sport": "football",
+    "team": "Latvia",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 15537770,
+    "fixture": "Cyprus v Latvia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791216000,
+    "sport": "football",
+    "team": "Latvia",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 15534027,
+    "fixture": "France v Belgium",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "France",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 15534027,
+    "fixture": "France v Belgium",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "France",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 7.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 15534027,
+    "fixture": "France v Belgium",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "France",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 2.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.6755005554346891,
+  "legs": [
+   {
+    "event_id": 15534050,
+    "fixture": "Italy v T\u00fcrkiye",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Italy",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 6.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.6755005554346891,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.6755005554346891,
+  "legs": [
+   {
+    "event_id": 15534050,
+    "fixture": "Italy v T\u00fcrkiye",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Italy",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 2.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.6755005554346891,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 15534050,
+    "fixture": "Italy v T\u00fcrkiye",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Italy",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "1ST",
+    "line": 0.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.7932978740142371,
+  "legs": [
+   {
+    "event_id": 15534129,
+    "fixture": "Ukraine v Hungary",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Ukraine",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 12.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 10,
+    "fair": 1.7932978740142371,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.7932978740142371,
+  "legs": [
+   {
+    "event_id": 15534129,
+    "fixture": "Ukraine v Hungary",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Ukraine",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 10,
+    "fair": 1.7932978740142371,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.8861371236054818,
+  "legs": [
+   {
+    "event_id": 15534129,
+    "fixture": "Ukraine v Hungary",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Ukraine",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 6,
+    "total": 10,
+    "fair": 1.8861371236054818,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 15534139,
+    "fixture": "Northern Ireland v Georgia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Northern Ireland",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 15534139,
+    "fixture": "Northern Ireland v Georgia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Northern Ireland",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 15534139,
+    "fixture": "Northern Ireland v Georgia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Northern Ireland",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.5419150911238728,
+  "legs": [
+   {
+    "event_id": 15534168,
+    "fixture": "Bosnia & Herzegovina v Poland",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Bosnia & Herzegovina",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 13,
+    "fair": 1.5419150911238728,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.5852951849505161,
+  "legs": [
+   {
+    "event_id": 15534168,
+    "fixture": "Bosnia & Herzegovina v Poland",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Poland",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.5852951849505161,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.640240495650078,
+  "legs": [
+   {
+    "event_id": 15534168,
+    "fixture": "Bosnia & Herzegovina v Poland",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Bosnia & Herzegovina",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 13,
+    "fair": 1.640240495650078,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.625,
+  "legs": [
+   {
+    "event_id": 15534177,
+    "fixture": "Romania v Sweden",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Sweden",
+    "player": "Yasin Ayari",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 8,
+    "total": 13,
+    "fair": 1.625,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791099661,
+  "fair": 1.625,
+  "legs": [
+   {
+    "event_id": 15534177,
+    "fixture": "Romania v Sweden",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Sweden",
+    "player": "Viktor Gy\u00f6keres",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 8,
+    "total": 13,
+    "fair": 1.625,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1791099661,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "New Orleans Saints",
+    "player": "Juwan Johnson",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 34.5,
+    "over": true,
+    "alt": true,
+    "threshold": 35.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1791099661,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "New Orleans Saints",
+    "player": "Juwan Johnson",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 34.5,
+    "over": true,
+    "alt": true,
+    "threshold": 35.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1791099661,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "Atlanta Falcons",
+    "player": "Bijan Robinson",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 69.5,
+    "over": true,
+    "alt": true,
+    "threshold": 70.0,
     "hits": 15,
     "total": 20,
     "fair": 1.3333333333333333,
