@@ -765,5 +765,125 @@
     "result": "lose",
     "profit": -10.0,
     "note": "challenge run 3"
+  },
+  {
+    "group": "jarvis-2026-10-05-1",
+    "kind": "single",
+    "logged_at": "2026-10-05T22:19:25+00:00",
+    "price": 1.61,
+    "stake": 2.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16183705,
+        "fixture": "New Orleans Saints v Atlanta Falcons",
+        "kickoff": 1791245700,
+        "player": "Chris Olave",
+        "player_id": 1389467,
+        "team": "New Orleans Saints",
+        "stat": "Rushing and receiving yards",
+        "line": 50.0,
+        "model_k": 8,
+        "model_n": 10,
+        "model_p": 0.714,
+        "source": "nfl.html",
+        "value": 116.0,
+        "result": "win"
+      }
+    ],
+    "result": "win",
+    "profit": 1.22,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-06-1",
+    "kind": "single",
+    "logged_at": "2026-10-06T06:03:32+00:00",
+    "price": 1.74,
+    "stake": 2.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 15534114,
+        "fixture": "Switzerland v North Macedonia",
+        "kickoff": 1791312300,
+        "player": "Dan Ndoye",
+        "player_id": 944327,
+        "team": "Switzerland",
+        "stat": "Shots",
+        "line": 2.0,
+        "model_k": 7,
+        "model_n": 10,
+        "model_p": 0.643,
+        "source": "uefa-nations-league.html",
+        "value": null,
+        "result": null
+      }
+    ],
+    "result": null,
+    "profit": null,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-06-2",
+    "kind": "single",
+    "logged_at": "2026-10-06T06:03:32+00:00",
+    "price": 1.82,
+    "stake": 2.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 15534108,
+        "fixture": "Scotland v Slovenia",
+        "kickoff": 1791312300,
+        "player": "John McGinn",
+        "player_id": 250223,
+        "team": "Scotland",
+        "stat": "Shots",
+        "line": 1.0,
+        "model_k": 8,
+        "model_n": 10,
+        "model_p": 0.714,
+        "source": "uefa-nations-league.html",
+        "value": null,
+        "result": null
+      }
+    ],
+    "result": null,
+    "profit": null,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-06-3",
+    "kind": "single",
+    "logged_at": "2026-10-06T06:03:32+00:00",
+    "price": 1.83,
+    "stake": 2.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 15534082,
+        "fixture": "Croatia v Spain",
+        "kickoff": 1791312300,
+        "player": "Mikel Oyarzabal",
+        "player_id": 823622,
+        "team": "Spain",
+        "stat": "Shots on target",
+        "line": 1.0,
+        "model_k": 7,
+        "model_n": 10,
+        "model_p": 0.643,
+        "source": "uefa-nations-league.html",
+        "value": null,
+        "result": null
+      }
+    ],
+    "result": null,
+    "profit": null,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
   }
 ]

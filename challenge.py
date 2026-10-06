@@ -131,6 +131,28 @@ def log(args) -> None:
         group = _group(run["id"], st["next_step"], st["next_retry"])
     if args.price and not LOW <= args.price <= HIGH:
         raise SystemExit(f"{args.price:.2f} is outside the {LOW:.2f} to {HIGH:.2f} band.")
+    # Is he actually starting? Twice in a week a pick was on a man on the bench.
+    if not getattr(args, "backfill", False):
+        try:
+            import lineups
+            lu = lineups.lineup(args.event)
+        except Exception:
+            lu = None
+        if lu:
+            confirmed, starters, bench = lu
+            starting = {n for side in starters.values() for n in side if n}
+            benched = {n for side in bench.values() for n in side if n}
+            if args.player not in starting:
+                where = "on the bench" if args.player in benched else "not in the squad"
+                if confirmed and not getattr(args, "force", False):
+                    raise SystemExit(f"{args.player} is {where} in the confirmed line-up. "
+                                     "Not logged. (--force to log anyway.)")
+                print(f"  WARNING: {args.player} is {where} in the "
+                      f"{'confirmed' if confirmed else 'predicted'} line-up")
+            else:
+                print(f"  {args.player} is in the {'confirmed' if confirmed else 'predicted'} starting XI")
+        else:
+            print("  line-up not out yet: check it before kick-off (python lineups.py)")
     ns = argparse.Namespace(
         event=args.event, player=args.player, stat=args.stat, line=args.line,
         price=args.price, stake=st["pot"], kind="multi", group=group,
@@ -236,6 +258,7 @@ def main() -> None:
     b.add_argument("--line", type=float, required=True)
     b.add_argument("--price", type=float)
     b.add_argument("--backfill", action="store_true")
+    b.add_argument("--force", action="store_true")
     t = sub.add_parser("team", help="team market leg: shots on target, corners, cards")
     t.add_argument("--event", type=int, required=True)
     t.add_argument("--team", required=True)

@@ -7439,11 +7439,11 @@
     "total": 15,
     "fair": 1.6666666666666667,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: acca",
@@ -7469,8 +7469,8 @@
     "total": 13,
     "fair": 1.5419150911238728,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    },
    {
     "event_id": 15534102,
@@ -7515,7 +7515,7 @@
     "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: builder",
@@ -7541,8 +7541,8 @@
     "total": 14,
     "fair": 1.7745664855466896,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    },
    {
     "event_id": 15534168,
@@ -7562,8 +7562,8 @@
     "total": 14,
     "fair": 1.9112163946498752,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 9.0,
+    "result": "lose"
    },
    {
     "event_id": 15534168,
@@ -7583,11 +7583,11 @@
     "total": 14,
     "fair": 1.9824557248696748,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: parlay",
@@ -7706,11 +7706,11 @@
     "total": 10,
     "fair": 1.5852951849505161,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -7736,11 +7736,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -7766,11 +7766,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -7796,11 +7796,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -7826,11 +7826,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -7856,11 +7856,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -7886,11 +7886,11 @@
     "total": 11,
     "fair": 1.6755005554346891,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -7916,11 +7916,11 @@
     "total": 11,
     "fair": 1.6755005554346891,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -7946,11 +7946,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -7976,11 +7976,11 @@
     "total": 10,
     "fair": 1.7932978740142371,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 17.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -8006,11 +8006,11 @@
     "total": 10,
     "fair": 1.7932978740142371,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -8036,11 +8036,11 @@
     "total": 10,
     "fair": 1.8861371236054818,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -8066,11 +8066,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -8096,11 +8096,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -8126,11 +8126,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -8156,11 +8156,11 @@
     "total": 13,
     "fair": 1.5419150911238728,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -8186,11 +8186,11 @@
     "total": 10,
     "fair": 1.5852951849505161,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -8216,11 +8216,11 @@
     "total": 13,
     "fair": 1.640240495650078,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -8247,10 +8247,10 @@
     "fair": 1.625,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Fixture single",
@@ -8276,11 +8276,11 @@
     "total": 13,
     "fair": 1.625,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -8306,11 +8306,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 59.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -8336,11 +8336,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 59.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -8366,10 +8366,1546 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
+    "value": 145.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: single",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 2.0824846826860037,
+  "legs": [
+   {
+    "event_id": 16547921,
+    "fixture": "Chicago Fire v Vancouver Whitecaps",
+    "competition": "MLS",
+    "kickoff": 1791333000,
+    "sport": "football",
+    "team": "Chicago Fire",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 19,
+    "fair": 2.0824846826860037,
+    "venue": "home",
     "value": null,
     "result": null
    }
   ],
   "result": null
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.9113276921185753,
+  "legs": [
+   {
+    "event_id": 15534027,
+    "fixture": "France v Belgium",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "France",
+    "player": "Michael Olise",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 12,
+    "total": 15,
+    "fair": 1.25,
+    "venue": null,
+    "value": 4.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16547921,
+    "fixture": "Chicago Fire v Vancouver Whitecaps",
+    "competition": "MLS",
+    "kickoff": 1791333000,
+    "sport": "football",
+    "team": "Vancouver Whitecaps",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 17,
+    "fair": 1.5290621536948603,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.380952380952381,
+  "legs": [
+   {
+    "event_id": 16547921,
+    "fixture": "Chicago Fire v Vancouver Whitecaps",
+    "competition": "MLS",
+    "kickoff": 1791333000,
+    "sport": "football",
+    "team": "Vancouver Whitecaps",
+    "player": "Thomas M\u00fcller",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 21,
+    "total": 29,
+    "fair": 1.380952380952381,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 3.796246213249093,
+  "legs": [
+   {
+    "event_id": 15534168,
+    "fixture": "Bosnia & Herzegovina v Poland",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791225900,
+    "sport": "football",
+    "team": "Bosnia & Herzegovina",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 13,
+    "fair": 1.5419150911238728,
+    "venue": null,
+    "value": 1.0,
+    "result": "win"
+   },
+   {
+    "event_id": 15534082,
+    "fixture": "Croatia v Spain",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Croatia",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 11,
+    "fair": 1.5690867546635847,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15537771,
+    "fixture": "Luxembourg v Bulgaria",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Luxembourg",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 11,
+    "fair": 1.5690867546635847,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 3.609625668449198,
+  "legs": [
+   {
+    "event_id": 16547921,
+    "fixture": "Chicago Fire v Vancouver Whitecaps",
+    "competition": "MLS",
+    "kickoff": 1791333000,
+    "sport": "football",
+    "team": "Chicago Fire",
+    "player": "Philip Zinckernagel",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 24,
+    "total": 35,
+    "fair": 1.4583333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16547921,
+    "fixture": "Chicago Fire v Vancouver Whitecaps",
+    "competition": "MLS",
+    "kickoff": 1791333000,
+    "sport": "football",
+    "team": "Chicago Fire",
+    "player": "Andrew Gutman",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 21,
+    "total": 30,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16547921,
+    "fixture": "Chicago Fire v Vancouver Whitecaps",
+    "competition": "MLS",
+    "kickoff": 1791333000,
+    "sport": "football",
+    "team": "Vancouver Whitecaps",
+    "player": "Thomas M\u00fcller",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 19,
+    "total": 29,
+    "fair": 1.5263157894736843,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16547921,
+    "fixture": "Chicago Fire v Vancouver Whitecaps",
+    "competition": "MLS",
+    "kickoff": 1791333000,
+    "sport": "football",
+    "team": "Vancouver Whitecaps",
+    "player": "Math\u00edas Laborda",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 23,
+    "total": 34,
+    "fair": 1.4782608695652173,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: single",
+  "sport": "american-football",
+  "snapshot_at": 1791194530,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "Atlanta Falcons",
+    "player": "Bijan Robinson",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 139.5,
+    "over": true,
+    "alt": true,
+    "threshold": 140.0,
+    "hits": 10,
+    "total": 20,
+    "fair": 2.0,
+    "venue": null,
+    "value": 147.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "american-football",
+  "snapshot_at": 1791194530,
+  "fair": 1.9047619047619047,
+  "legs": [
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "New Orleans Saints",
+    "player": "Juwan Johnson",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 34.5,
+    "over": true,
+    "alt": true,
+    "threshold": 35.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": 59.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "Atlanta Falcons",
+    "player": "Bijan Robinson",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 2.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "american-football",
+  "snapshot_at": 1791194530,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "New Orleans Saints",
+    "player": "Juwan Johnson",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 34.5,
+    "over": true,
+    "alt": true,
+    "threshold": 35.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": 59.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: builder",
+  "sport": "american-football",
+  "snapshot_at": 1791194530,
+  "fair": 2.2,
+  "legs": [
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "Atlanta Falcons",
+    "player": null,
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.4667271096447916,
+    "venue": "away",
+    "value": 1.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "Atlanta Falcons",
+    "player": null,
+    "stat": "Points",
+    "period": "ALL",
+    "line": 19.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 11,
+    "fair": 1.5853909193771791,
+    "venue": "away",
+    "value": 45.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "Atlanta Falcons",
+    "player": null,
+    "stat": "Rushing attempts",
+    "period": "ALL",
+    "line": 27.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 11,
+    "fair": 1.7082361004793647,
+    "venue": "away",
+    "value": 35.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1791194530,
+  "fair": 3.095238095238095,
+  "legs": [
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "New Orleans Saints",
+    "player": "Chris Olave",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 5.5,
+    "over": true,
+    "alt": true,
+    "threshold": 6.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 8.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "New Orleans Saints",
+    "player": "Juwan Johnson",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": true,
+    "threshold": 4.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 6.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "New Orleans Saints",
+    "player": "Tyler Shough",
+    "stat": "Passing and rushing yards",
+    "period": "ALL",
+    "line": 249.5,
+    "over": true,
+    "alt": true,
+    "threshold": 250.0,
+    "hits": 10,
+    "total": 14,
+    "fair": 1.4,
+    "venue": null,
+    "value": 291.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "Atlanta Falcons",
+    "player": "Bijan Robinson",
+    "stat": "Rushing attempts",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 19.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.5690867546635847,
+  "legs": [
+   {
+    "event_id": 15534082,
+    "fixture": "Croatia v Spain",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Croatia",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 11,
+    "fair": 1.5690867546635847,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.7659202120225284,
+  "legs": [
+   {
+    "event_id": 15534082,
+    "fixture": "Croatia v Spain",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Croatia",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "1ST",
+    "line": 0.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 11,
+    "fair": 1.7659202120225284,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.7659202120225284,
+  "legs": [
+   {
+    "event_id": 15534082,
+    "fixture": "Croatia v Spain",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Croatia",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 11,
+    "fair": 1.7659202120225284,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.6567940908283343,
+  "legs": [
+   {
+    "event_id": 15534091,
+    "fixture": "England v Czechia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Czechia",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 5.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 12,
+    "fair": 1.6567940908283343,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.7423850836864392,
+  "legs": [
+   {
+    "event_id": 15534091,
+    "fixture": "England v Czechia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Czechia",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 5.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 12,
+    "fair": 1.7423850836864392,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.7423850836864392,
+  "legs": [
+   {
+    "event_id": 15534091,
+    "fixture": "England v Czechia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Czechia",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 1.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 12,
+    "fair": 1.7423850836864392,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.8571428571428572,
+  "legs": [
+   {
+    "event_id": 15534114,
+    "fixture": "Switzerland v North Macedonia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Switzerland",
+    "player": "Remo Freuler",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 7,
+    "total": 13,
+    "fair": 1.8571428571428572,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 15534198,
+    "fixture": "Moldova v Slovakia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Slovakia",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 15534198,
+    "fixture": "Moldova v Slovakia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Slovakia",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 15534198,
+    "fixture": "Moldova v Slovakia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Slovakia",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.5690867546635847,
+  "legs": [
+   {
+    "event_id": 15537771,
+    "fixture": "Luxembourg v Bulgaria",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Luxembourg",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 11,
+    "fair": 1.5690867546635847,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.6755005554346891,
+  "legs": [
+   {
+    "event_id": 15537771,
+    "fixture": "Luxembourg v Bulgaria",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Luxembourg",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 6.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.6755005554346891,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.6755005554346891,
+  "legs": [
+   {
+    "event_id": 15537771,
+    "fixture": "Luxembourg v Bulgaria",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Luxembourg",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.6755005554346891,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.380952380952381,
+  "legs": [
+   {
+    "event_id": 16547921,
+    "fixture": "Chicago Fire v Vancouver Whitecaps",
+    "competition": "MLS",
+    "kickoff": 1791333000,
+    "sport": "football",
+    "team": "Vancouver Whitecaps",
+    "player": "Thomas M\u00fcller",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 21,
+    "total": 29,
+    "fair": 1.380952380952381,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.4198419619675586,
+  "legs": [
+   {
+    "event_id": 16547921,
+    "fixture": "Chicago Fire v Vancouver Whitecaps",
+    "competition": "MLS",
+    "kickoff": 1791333000,
+    "sport": "football",
+    "team": "Vancouver Whitecaps",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 17,
+    "fair": 1.4198419619675586,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791194530,
+  "fair": 1.4285714285714286,
+  "legs": [
+   {
+    "event_id": 16547921,
+    "fixture": "Chicago Fire v Vancouver Whitecaps",
+    "competition": "MLS",
+    "kickoff": 1791333000,
+    "sport": "football",
+    "team": "Chicago Fire",
+    "player": "Andrew Gutman",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 21,
+    "total": 30,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: single",
+  "sport": "american-football",
+  "snapshot_at": 1791224474,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "Atlanta Falcons",
+    "player": "Bijan Robinson",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 79.5,
+    "over": true,
+    "alt": true,
+    "threshold": 80.0,
+    "hits": 10,
+    "total": 20,
+    "fair": 2.0,
+    "venue": null,
+    "value": 145.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1791224474,
+  "fair": 3.095238095238095,
+  "legs": [
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "New Orleans Saints",
+    "player": "Chris Olave",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 5.5,
+    "over": true,
+    "alt": true,
+    "threshold": 6.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 8.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "New Orleans Saints",
+    "player": "Juwan Johnson",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": true,
+    "threshold": 4.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 6.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "New Orleans Saints",
+    "player": "Tyler Shough",
+    "stat": "Passing and rushing yards",
+    "period": "ALL",
+    "line": 249.5,
+    "over": true,
+    "alt": true,
+    "threshold": 250.0,
+    "hits": 10,
+    "total": 14,
+    "fair": 1.4,
+    "venue": null,
+    "value": 291.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "Atlanta Falcons",
+    "player": "Bijan Robinson",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 2.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1791232103,
+  "fair": 1.9113276921185753,
+  "legs": [
+   {
+    "event_id": 15534082,
+    "fixture": "Croatia v Spain",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Spain",
+    "player": "Mikel Oyarzabal",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 12,
+    "total": 15,
+    "fair": 1.25,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16547921,
+    "fixture": "Chicago Fire v Vancouver Whitecaps",
+    "competition": "MLS",
+    "kickoff": 1791333000,
+    "sport": "football",
+    "team": "Vancouver Whitecaps",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 17,
+    "fair": 1.5290621536948603,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1791232103,
+  "fair": 4.079082129519965,
+  "legs": [
+   {
+    "event_id": 15534082,
+    "fixture": "Croatia v Spain",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Croatia",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 11,
+    "fair": 1.5690867546635847,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15537771,
+    "fixture": "Luxembourg v Bulgaria",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Luxembourg",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 11,
+    "fair": 1.5690867546635847,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15534091,
+    "fixture": "England v Czechia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Czechia",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 5.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 12,
+    "fair": 1.6567940908283343,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: builder",
+  "sport": "football",
+  "snapshot_at": 1791232103,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 15534091,
+    "fixture": "England v Czechia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Czechia",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 5.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 12,
+    "fair": 1.6567940908283343,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15534091,
+    "fixture": "England v Czechia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Czechia",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 5.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 12,
+    "fair": 1.7423850836864392,
+    "venue": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15534091,
+    "fixture": "England v Czechia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Czechia",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "1ST",
+    "line": 0.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 12,
+    "fair": 1.8218819988496782,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1791232103,
+  "fair": 3.8000000000000003,
+  "legs": [
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "New Orleans Saints",
+    "player": "Chris Olave",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 5.5,
+    "over": true,
+    "alt": true,
+    "threshold": 6.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 8.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "New Orleans Saints",
+    "player": "Juwan Johnson",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": true,
+    "threshold": 4.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 6.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "Atlanta Falcons",
+    "player": "Bijan Robinson",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 2.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "Atlanta Falcons",
+    "player": "Kyle Pitts Sr.",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 47.0,
+    "result": "win"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1791235319,
+  "fair": 3.095238095238095,
+  "legs": [
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "New Orleans Saints",
+    "player": "Chris Olave",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 5.5,
+    "over": true,
+    "alt": true,
+    "threshold": 6.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 8.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "New Orleans Saints",
+    "player": "Juwan Johnson",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": true,
+    "threshold": 4.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 6.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "New Orleans Saints",
+    "player": "Tyler Shough",
+    "stat": "Passing yards",
+    "period": "ALL",
+    "line": 229.5,
+    "over": true,
+    "alt": true,
+    "threshold": 230.0,
+    "hits": 10,
+    "total": 14,
+    "fair": 1.4,
+    "venue": null,
+    "value": 286.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183705,
+    "fixture": "New Orleans Saints v Atlanta Falcons",
+    "competition": "NFL",
+    "kickoff": 1791245700,
+    "sport": "american-football",
+    "team": "Atlanta Falcons",
+    "player": "Bijan Robinson",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 2.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
  }
 ]

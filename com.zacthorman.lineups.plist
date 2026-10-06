@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Every 15 minutes: pull confirmed line-ups for big games kicking off in the
+  next 20 to 80 minutes, then publish. Does nothing on most runs.
+
+  Install:
+      cp com.zacthorman.lineups.plist ~/Library/LaunchAgents/
+      launchctl load ~/Library/LaunchAgents/com.zacthorman.lineups.plist
+  Stop:
+      launchctl unload ~/Library/LaunchAgents/com.zacthorman.lineups.plist
+  Log: lineups_auto.log in this folder.
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.zacthorman.lineups</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/zacthorman/Vaults/Cowork Base/03 Code Projects/Football stats/.venv/bin/python</string>
+        <string>/Users/zacthorman/Vaults/Cowork Base/03 Code Projects/Football stats/lineups_auto.py</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/zacthorman/Vaults/Cowork Base/03 Code Projects/Football stats</string>
+
+    <key>StartInterval</key>
+    <integer>900</integer>
+
+    <key>StandardOutPath</key>
+    <string>/Users/zacthorman/Vaults/Cowork Base/03 Code Projects/Football stats/lineups_launchd.out.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/zacthorman/Vaults/Cowork Base/03 Code Projects/Football stats/lineups_launchd.err.log</string>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <!-- git push needs to find git and the credential helper. -->
+        <key>PATH</key>
+        <string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <!-- Route every SofaScore request through the FlareSolverr container.
+             Docker Desktop must be running at 07:00 for this to work. -->
+        <key>SOFA_FLARESOLVERR</key>
+        <string>1</string>
+    </dict>
+</dict>
+</plist>

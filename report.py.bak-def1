@@ -264,23 +264,6 @@ select { max-width: 100%; min-width: 0; text-overflow: ellipsis; }
 .def-spot { padding: 6px 0; border-top: 1px solid var(--grid); font-size: 14px; }
 .def-spot:first-child { border-top: 0; }
 .tablewrap { overflow-x: auto; }
-.def-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px; margin-top: 14px; }
-@media (max-width: 760px) { .def-grid { grid-template-columns: 1fr; } }
-.def-row { padding: 8px 0; border-top: 1px solid var(--grid); }
-.def-row:first-of-type { border-top: 0; }
-.def-row-top { display: flex; justify-content: space-between; gap: 8px; font-size: 13.5px; }
-.def-row-top span { color: var(--text-secondary); }
-.def-row.def-soft .def-row-top b { color: var(--hit); } .def-row.def-tough .def-row-top b { color: var(--miss); }
-.def-bar { display: block; height: 5px; background: var(--track); border-radius: 99px; margin: 5px 0 3px; overflow: hidden; }
-.def-bar em { display: block; height: 100%; background: var(--muted); border-radius: 99px; }
-.def-soft .def-bar em { background: var(--hit); } .def-tough .def-bar em { background: var(--miss); }
-.def-pick { padding: 9px 0; border-top: 1px solid var(--grid); }
-.def-pick:first-child { border-top: 0; }
-.def-pick-main { display: flex; align-items: center; gap: 8px; font-size: 15px; }
-.def-line { font-weight: 700; padding: 1px 8px; border-radius: 99px; border: 1px solid var(--hit); color: var(--hit); font-size: 13px; }
-.def-pick-why { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12.5px; color: var(--muted); margin-top: 4px; padding-left: 17px; }
-.def-fade { padding: 7px 0; border-top: 1px solid var(--grid); font-size: 13.5px; display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
-.def-fade:first-child { border-top: 0; }
 /* --------------------------------------------------------------- tabs */
 
 .tabs { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 16px; }
@@ -5573,119 +5556,55 @@ const DEF_ROWS = [["QB", "Passing yards"], ["RB", "Rushing yards"], ["RB", "Rece
                   ["TE", "Receiving yards"], ["TE", "Receiving receptions"]];
 const DEF_POS = { QB: "QBs", RB: "RBs", WR: "WRs", TE: "TEs" };
 
-/* Ladder lines bookies actually offer, per market. */
-const DEF_LADDER = {
-  "Passing yards": [175, 200, 225, 250, 275, 300],
-  "Rushing yards": [25, 40, 50, 60, 75, 100],
-  "Receiving yards": [25, 40, 50, 60, 75, 100],
-  "Receiving receptions": [2, 3, 4, 5, 6, 7, 8],
-};
-
-/* The players who actually get the ball at a position: top two by average
-   over their last ten games with the stat recorded. */
-function defPlayers(teamIndex, pos, stat) {
-  const by = new Map();
-  ((DATA.players || [])[teamIndex] || []).forEach(r => {
-    if (r.position !== pos || r.former_club) return;
-    const v = (r.stats || {})[stat];
-    if (v === undefined || v === null) return;
-    if (!by.has(r.player)) by.set(r.player, []);
-    by.get(r.player).push(r);
-  });
-  return [...by.entries()].map(([name, rs]) => {
-    rs.sort((a, b) => (a.date < b.date ? -1 : 1));
-    const v = rs.slice(-10).map(r => r.stats[stat]);
-    return { name, v, avg: v.reduce((a, b) => a + b, 0) / v.length };
-  }).filter(p => p.v.length >= 5).sort((a, b) => b.avg - a.avg).slice(0, pos === "QB" ? 1 : 2);
-}
-
-/* The line to take for one player against one defence. Over a soft defence:
-   the HIGHEST ladder rung he has cleared 7 times in 10 or more, provided his
-   average scaled by how generous the defence is still clears it. Against a
-   tough one: the same test, but the defence has to leave room, so this is
-   usually a lower rung or nothing at all. */
-function defLine(p, stat, factor) {
-  const ladder = DEF_LADDER[stat] || [];
-  let best = null;
-  for (const L of ladder) {
-    const k = p.v.filter(x => x >= L).length;
-    const proj = p.avg * factor;
-    if (k / p.v.length >= 0.7 && proj >= L * 1.1) best = { line: L, k, n: p.v.length, proj };
-  }
-  return best;
+function defCell(r) {
+  if (!r) return `<td class="lu-muted">&ndash;</td>`;
+  const share = (r.place - 1) / Math.max(1, r.of - 1);
+  const cls = share <= 0.25 ? "def-soft" : share >= 0.75 ? "def-tough" : "";
+  const word = share <= 0.5 ? `${r.place}${ordinal(r.place)} softest` : `${r.of - r.place + 1}${ordinal(r.of - r.place + 1)} toughest`;
+  const vs = r.vsUsual ? `${r.vsUsual.toFixed(2)}&times;` : "";
+  /* Trend by RANK, not by raw ratio. Older games carry fewer player rows
+     (records only exist for players still on the roster), so every team's
+     recent ratio reads higher than its season one; comparing places within
+     the same recent window cancels that out. */
+  const jump = r.recentPlace ? r.place - r.recentPlace : 0;   // + = softer lately
+  const big = Math.max(4, Math.round(r.of / 4));
+  const trend = jump >= big
+    ? `<span class="def-up" title="Last ${DEF_RECENT} games: ${r.recentPlace}${ordinal(r.recentPlace)} softest">&#9650; leaking lately</span>`
+    : -jump >= big
+    ? `<span class="def-down" title="Last ${DEF_RECENT} games: ${r.recentPlace}${ordinal(r.recentPlace)} softest">&#9660; tighter lately</span>` : "";
+  return `<td class="${cls}"><b>${word}</b> <small>of ${r.of}</small>
+    <div class="def-sub">${r.perGame.toFixed(r.perGame < 10 ? 1 : 0)}/g &middot; lead ${r.lead.toFixed(r.lead < 10 ? 1 : 0)} &middot; ${vs} usual ${trend}</div></td>`;
 }
 
 function defenceView(el) {
+  const head = `<p class="note">How each defence treats each position, ranked against every defence in the file.
+    <b>vs usual</b> is the main number: what offences get from that position against this defence,
+    divided by what the same offences get everywhere else, so a soft schedule does not flatter it.
+    <b>lead</b> is the best single player at the position per game, which is what most props are on.
+    &#9650; and &#9660; flag a defence whose rank over the last ${DEF_RECENT} games is a long way from its season rank.</p>`;
   const teams = DATA.teams;
-  const picks = [], fades = [];
+  const rows = DEF_ROWS.map(([pos, stat]) =>
+    `<tr><th>${DEF_POS[pos]} &middot; ${stat.toLowerCase()}</th>${
+      [1, 0].map(i => defCell(defRow(teams[i].id, pos, stat))).join("")}</tr>`).join("");
+  // The soft spots in this fixture, most generous first, with who benefits.
+  const spots = [];
   DEF_ROWS.forEach(([pos, stat]) => [0, 1].forEach(d => {
     const r = defRow(teams[d].id, pos, stat);
-    if (!r || !r.vsUsual) return;
-    const share = (r.place - 1) / Math.max(1, r.of - 1);
-    defPlayers(1 - d, pos, stat).forEach(p => {
-      const item = { p, r, pos, stat, d, share };
-      if (share <= 0.34) {
-        const l = defLine(p, stat, r.vsUsual);
-        if (l) picks.push({ ...item, l, score: (l.k / l.n) * r.vsUsual });
-      } else if (share >= 0.66 && p.avg >= (DEF_LADDER[stat] || [0])[0]) {
-        // Only players with a real role: a backup averaging 15 yards is not
-        // a line anyone is choosing whether to take.
-        fades.push(item);
-      }
-    });
+    if (!r || !r.vsUsual || (r.place - 1) / Math.max(1, r.of - 1) > 0.25) return;
+    const attackers = ((DATA.players || [])[1 - d] || []).filter(p => p.position === pos);
+    const who = Object.entries(attackers.reduce((a, p) => {
+      a[p.player] = (a[p.player] || 0) + ((p.stats || {})[stat] || 0); return a; }, {}))
+      .sort((a, b) => b[1] - a[1]).slice(0, 2).map(x => x[0]);
+    spots.push({ r, pos, stat, d, who });
   }));
-  picks.sort((a, b) => b.score - a.score);
-  fades.sort((a, b) => b.share - a.share);
-
-  const rankWord = r => {
-    const share = (r.place - 1) / Math.max(1, r.of - 1);
-    return share <= 0.5 ? `${r.place}${ordinal(r.place)} softest` : `${r.of - r.place + 1}${ordinal(r.of - r.place + 1)} toughest`;
-  };
-  const statWord = s => s === "Receiving receptions" ? "receptions" : s.toLowerCase();
-
-  const pickCard = x => `<div class="def-pick">
-      <div class="def-pick-main"><span class="lu-dot lu-dot${1 - x.d}"></span>
-        <b>${escapeHtml(x.p.name)}</b> <span class="def-line">${x.l.line}+ ${statWord(x.stat)}</span></div>
-      <div class="def-pick-why">
-        <span><b class="lu-hi">${x.l.k}/${x.l.n}</b> his last ${x.l.n}</span>
-        <span>avg ${x.p.avg.toFixed(x.p.avg < 10 ? 1 : 0)} &rarr; <b>${x.l.proj.toFixed(x.l.proj < 10 ? 1 : 0)}</b> v this D</span>
-        <span>${escapeHtml(teams[x.d].name)}: <b class="lu-hi">${rankWord(x.r)}</b> v ${DEF_POS[x.pos]}, ${x.r.vsUsual.toFixed(2)}&times; usual</span>
-      </div></div>`;
-  const fadeLine = x => `<div class="def-fade"><span class="lu-dot lu-dot${1 - x.d}"></span>
-      <b>${escapeHtml(x.p.name)}</b> ${statWord(x.stat)} <span class="lu-muted">&middot; ${escapeHtml(teams[x.d].name)} ${rankWord(x.r)} v ${DEF_POS[x.pos]}, ${x.r.vsUsual.toFixed(2)}&times; usual &middot; avg ${x.p.avg.toFixed(x.p.avg < 10 ? 1 : 0)}</span></div>`;
-
-  // One card per defence: each market as a bar, full = softest in the file.
-  const defCard = d => {
-    const rows = DEF_ROWS.map(([pos, stat]) => {
-      const r = defRow(teams[d].id, pos, stat);
-      if (!r || !r.vsUsual) return "";
-      const soft = 1 - (r.place - 1) / Math.max(1, r.of - 1);
-      const cls = soft >= 0.66 ? "def-soft" : soft <= 0.34 ? "def-tough" : "";
-      const jump = r.recentPlace ? r.place - r.recentPlace : 0;
-      const big = Math.max(4, Math.round(r.of / 4));
-      const trend = jump >= big ? `<span class="def-up">&#9650; leaking</span>` : -jump >= big ? `<span class="def-down">&#9660; tighter</span>` : "";
-      return `<div class="def-row ${cls}">
-        <div class="def-row-top"><span>${DEF_POS[pos]} &middot; ${statWord(stat)}</span><b>${rankWord(r)}</b></div>
-        <i class="def-bar"><em style="width:${Math.round(soft * 100)}%"></em></i>
-        <div class="def-sub">${r.vsUsual.toFixed(2)}&times; usual &middot; ${r.perGame.toFixed(r.perGame < 10 ? 1 : 0)}/game &middot; lead ${r.lead.toFixed(r.lead < 10 ? 1 : 0)} ${trend}</div>
-      </div>`;
-    }).join("");
-    return `<div class="lu-card"><div class="lu-who"><span class="lu-dot lu-dot${d}"></span><b>${escapeHtml(teams[d].name)} defence</b>
-      <span class="lu-muted">longer bar = softer</span></div>${rows}</div>`;
-  };
-
-  el.innerHTML = `
-    <h3 class="lu-h">Best lines v these defences</h3>
-    ${picks.length ? `<div class="lu-card">${picks.slice(0, 6).map(pickCard).join("")}</div>`
-      : `<div class="lu-card lu-empty">No soft matchup in this game where a player's record backs a line.</div>`}
-    ${fades.length ? `<h3 class="lu-h">Tough matchups: lower your line or avoid</h3><div class="lu-card">${fades.slice(0, 5).map(fadeLine).join("")}</div>` : ""}
-    <div class="def-grid">${defCard(1)}${defCard(0)}</div>
-    <details class="lu-more"><summary>How this is worked out</summary><p class="note">
-      <b>vs usual</b>: what offences get from that position against this defence, divided by what the same offences
-      get everywhere else, so a soft schedule does not flatter it. <b>Best lines</b> take the highest ladder rung a
-      player has cleared 7 times in his last 10, where his average scaled by the defence still clears it by 10%.
-      <b>lead</b> is the top player at the position each game. &#9650;/&#9660; mark a defence whose last
-      ${DEF_RECENT} games rank a long way from its season.</p></details>`;
+  spots.sort((a, b) => b.r.vsUsual - a.r.vsUsual);
+  const spotHtml = spots.length ? `<h3 class="lu-h">Soft spots in this game</h3><div class="lu-card">${spots.map(s =>
+    `<div class="def-spot"><b>${escapeHtml(teams[s.d].name)}</b> v ${DEF_POS[s.pos]}, ${s.stat.toLowerCase()}:
+      ${s.r.place}${ordinal(s.r.place)} softest of ${s.r.of}, ${s.r.vsUsual.toFixed(2)}&times; usual
+      ${s.who.length ? `<span class="lu-muted">&middot; ${s.who.map(escapeHtml).join(", ")}</span>` : ""}</div>`).join("")}</div>`
+    : `<p class="note">No defence in this game ranks in the softest quarter for any of these.</p>`;
+  el.innerHTML = head + spotHtml + `<div class="tablewrap"><table class="def-table">
+    <tr><th></th><th>${escapeHtml(teams[1].name)} D</th><th>${escapeHtml(teams[0].name)} D</th></tr>${rows}</table></div>`;
 }
 
 /* ---------------------------------------------------------------- line-ups */

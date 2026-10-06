@@ -75,12 +75,6 @@ cp -R reports "$STAGE"/
 # Stops GitHub running the site through Jekyll, which it has no need to do
 # and which is the piece that failed during the outage.
 touch "$STAGE"/.nojekyll
-# A stamp unique to this publish. The live check below fetches it back: a
-# page answering 200 only proves SOMETHING is being served, and on 5 October
-# GitHub failed two deploys ("job was not acquired by Runner") while the old
-# site kept answering 200 and this script reported "verified".
-STAMP="$(date -u '+%Y%m%dT%H%M%SZ')-$$"
-echo "$STAMP" > "$STAGE"/build.txt
 
 cd "$STAGE"
 git init -q
@@ -184,12 +178,10 @@ check() {
 
 # The first few reports the index links to. Names come from the staged copy,
 # so this checks the files that were actually published.
-CORE_OK=0
 verify_round() {
-  local failed=0 core=0
-  check "${BASE}/" "index" || { failed=1; core=1; }
-  check "${BASE}/tonight.html" "tonight.html" || { failed=1; core=1; }
-  [ "$core" = "0" ] && CORE_OK=1 || CORE_OK=0
+  local failed=0
+  check "${BASE}/" "index" || failed=1
+  check "${BASE}/tonight.html" "tonight.html" || failed=1
   for name in $(ls reports/*.html | head -3 | xargs -n1 basename); do
     check "${BASE}/reports/${name}" "$name" || failed=1
   done
@@ -203,17 +195,6 @@ if ! verify_round; then
   echo "Not serving yet. Waiting 60s and checking once more."
   sleep 60
   if ! verify_round; then
-    # The site itself is up and only report pages failed: almost always a
-    # report with a brand-new filename (SofaScore renamed the Brasileirao,
-    # which created campeonato-brasileiro-serie-a.html) that Pages has not
-    # finished deploying, or a Pages build queued behind the previous push.
-    # The push landed, so this is a warning, not a failed publish.
-    if [ "$CORE_OK" = "1" ]; then
-      echo
-      echo "Pushed. The site is up; some report pages are still deploying."
-      echo "They normally appear within a few minutes. Nothing to re-run."
-      exit 0
-    fi
     echo
     echo "The push succeeded but the site is not serving those pages." >&2
     echo "Pages can lag by a minute; if a retry also fails, check" >&2
@@ -222,28 +203,5 @@ if ! verify_round; then
   fi
 fi
 
-# Is it THIS publish that is live, or an older one still being served?
-fresh() {
-  local live
-  live="$(curl -s --max-time 20 "${BASE}/build.txt?nocache=$RANDOM" | tr -d '[:space:]')"
-  [ "$live" = "$STAMP" ]
-}
-if ! fresh; then
-  echo
-  echo "Pages is still serving an older build. Waiting up to 4 minutes for this one..."
-  ok=0
-  for _ in 1 2 3 4; do
-    sleep 60
-    if fresh; then ok=1; break; fi
-  done
-  if [ "$ok" != "1" ]; then
-    echo
-    echo "GitHub has not deployed this publish. The push landed, but their" >&2
-    echo "Pages build failed or is stuck (check the Actions tab). The site is" >&2
-    echo "still showing the previous version. Run ./publish.sh again later." >&2
-    exit 1
-  fi
-fi
-
 echo
-echo "Live site verified (build ${STAMP})."
+echo "Live site verified."

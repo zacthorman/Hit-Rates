@@ -983,17 +983,6 @@ def build(
             "Try --games 20, or check the competition filter if these are cup ties."
         )
 
-    # Line-ups for the Line-ups tab: one request per fixture. Predicted XIs
-    # days out, the confirmed one when it is out. Never fatal.
-    try:
-        import lineup_data
-        got = sum(lineup_data.attach(entry) for entry in fixtures
-                  if (entry["fixture"].get("sport") or "football") == "football")
-        if got:
-            print(f"\n  line-ups attached for {got}/{len(fixtures)} fixture(s)")
-    except Exception as exc:
-        print(f"\n  line-ups skipped ({type(exc).__name__})")
-
     payload = {"fixtures": fixtures, "periods": hitrates.PERIODS}
 
     OUT_DIR.mkdir(exist_ok=True)

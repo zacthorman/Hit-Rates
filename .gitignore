@@ -39,3 +39,8 @@ launchd.err.log
 .betfair.env
 .betfair_session
 *.env
+
+# Line-up job logs
+lineups_auto.log
+lineups_launchd.out.log
+lineups_launchd.err.log

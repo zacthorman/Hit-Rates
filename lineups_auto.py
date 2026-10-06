@@ -1,0 +1,94 @@
+#!/usr/bin/env python3
+"""Pull confirmed line-ups about an hour before kick-off, then publish.
+
+Run by launchd every 15 minutes (com.zacthorman.lineups.plist). Almost every
+run does nothing: it only acts when a big-league fixture kicks off in the next
+20 to 80 minutes and its confirmed XI is not in the report yet. Once a fixture
+has its confirmed line-up it is never fetched again.
+
+Big games only: the leagues in update.json plus the Nations League. NFL and
+darts have no football line-up to pull. A run never overlaps the nightly
+build, and never publishes unless something actually changed.
+"""
+from __future__ import annotations
+
+import glob
+import json
+import re
+import subprocess
+import time
+from datetime import datetime
+from pathlib import Path
+
+ROOT = Path(__file__).parent
+LOG = ROOT / "lineups_auto.log"
+SKIP = {"nfl.html", "darts.html"}
+WINDOW = (20 * 60, 80 * 60)
+
+
+def say(msg: str) -> None:
+    line = f"{datetime.now():%Y-%m-%d %H:%M:%S}  {msg}"
+    print(line)
+    with LOG.open("a", encoding="utf-8") as f:
+        f.write(line + "\n")
+
+
+def due():
+    """{report path: payload} for reports with a fixture needing its XI now."""
+    now = time.time()
+    out = {}
+    for f in sorted(glob.glob(str(ROOT / "reports" / "*.html"))):
+        name = Path(f).name
+        if name.startswith("pick-") or name in SKIP:
+            continue
+        text = Path(f).read_text(encoding="utf-8")
+        m = re.search(r"const ALL = (\{.*?\});\n", text, re.S)
+        if not m:
+            continue
+        payload = json.loads(m.group(1))
+        if (payload.get("fixtures") or [{}])[0].get("fixture", {}).get("sport", "football") != "football":
+            continue
+        for entry in payload.get("fixtures", []):
+            ko = entry["fixture"].get("kickoff") or 0
+            if WINDOW[0] < ko - now < WINDOW[1] and not (entry.get("lineups") or {}).get("confirmed"):
+                out[Path(f)] = payload
+                break
+    return out
+
+
+def main() -> None:
+    if (ROOT / ".update.lock").exists():
+        return                      # the nightly build is running; next tick
+    todo = due()
+    if not todo:
+        return
+    import update                   # for the FlareSolverr health check
+    update.say = say
+    if not update.ensure_flaresolverr():
+        say("FlareSolverr not healthy, line-ups skipped this time")
+        return
+    import lineup_data
+    import report
+    now = time.time()
+    changed = 0
+    for path, payload in todo.items():
+        got = []
+        for entry in payload["fixtures"]:
+            ko = entry["fixture"].get("kickoff") or 0
+            if WINDOW[0] < ko - now < WINDOW[1] and not (entry.get("lineups") or {}).get("confirmed"):
+                lineup_data.attach(entry, max_age_hours=0.05)
+                if (entry.get("lineups") or {}).get("confirmed"):
+                    got.append(f'{entry["fixture"]["home"]} v {entry["fixture"]["away"]}')
+        if got:
+            report.write_report(payload, path)
+            changed += len(got)
+            say(f"{path.name}: confirmed XI for {', '.join(got)}")
+        else:
+            say(f"{path.name}: not confirmed yet, will retry in 15 minutes")
+    if changed:
+        r = subprocess.run(["./publish.sh"], cwd=ROOT, capture_output=True, text=True)
+        say("published" if r.returncode == 0 else f"publish failed: {r.stderr[-300:]}")
+
+
+if __name__ == "__main__":
+    main()
