@@ -160,6 +160,12 @@ def _team_value(leg, ev, stats):
     bucket = stats.get(period, {})
     if leg["stat"] in bucket:
         return float(bucket[leg["stat"]][idx])
+    if period in ("1ST", "2ND"):
+        # The feed leaves a half's card row out when nobody was booked in it. An
+        # empty bucket means no half stats at all, so leave the leg unsettled.
+        if "card" in leg["stat"].lower() and bucket:
+            return 0.0
+        return None
     # Match-level markets and card rows the feed leaves out when both are 0.
     own = {k: v[idx] for k, v in stats.get("ALL", {}).items()}
     opp = {k: v[1 - idx] for k, v in stats.get("ALL", {}).items()}
