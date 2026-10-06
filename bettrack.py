@@ -3,6 +3,8 @@ Track every best bet, settle it from the box score, and learn from the misses.
 
     python bettrack.py log --event 16184611 --player "Derrick Henry" \\
         --stat "Rushing yards" --line 60 --price 1.10 --kind ladder --group henry-ladder
+    python bettrack.py log --event 15237992 --team "Santos" --stat "Corner kicks" \\
+        --line 1.5 --side over --period 1ST --price 1.40      # a team leg
     python bettrack.py settle          # after the games, reads results from SofaScore
     python bettrack.py report          # P&L, hit rate, and the calibration table
     python bettrack.py fair 6 10       # what a 6/10 record is really worth, learned
@@ -110,7 +112,48 @@ def model_record(fx: dict, player: str, stat: str, line: float, games: int = 10)
 
 # ------------------------------------------------------------------- log
 
+PERIODS = ("ALL", "1ST", "2ND")
+
+
+def team_record(fx: dict, team: str, stat: str, line: float, over: bool,
+                period: str = "ALL", games: int = 10):
+    """k of n for a team leg, from the report the pick was taken from: the
+    team's last `games` with the stat, counted the way settle decides it
+    (over wins above the line, under below it)."""
+    import copy
+    names = [t["name"] for t in fx.get("teams") or []]
+    if team not in names:
+        return None
+    recs = sorted((fx.get("records") or [[], []])[names.index(team)] or [],
+                  key=lambda r: r.get("date") or "")
+    vals = []
+    for r in recs:
+        bucket = (r.get("stats") or {}).get(period)
+        if not bucket:
+            continue
+        v = bucket.get(stat)
+        if v is None and period == "ALL":
+            # Reports built before the match markets were written onto records.
+            rec = copy.deepcopy({"stats": r.get("stats") or {}, "against": r.get("against") or {}})
+            hitrates._add_match_markets(rec)
+            v = rec["stats"]["ALL"].get(stat)
+        if v is None and "card" in stat.lower():
+            # The feed leaves the card row out when nobody was booked, as settle assumes.
+            v = 0.0
+        if v is not None:
+            vals.append(float(v))
+    vals = vals[-games:]
+    if not vals:
+        return None
+    k = sum((v > line) if over else (v < line) for v in vals)
+    return k, len(vals)
+
+
 def log(args) -> None:
+    if getattr(args, "team", None):
+        return log_team(args)
+    if args.side is not None or args.period is not None:
+        raise SystemExit("--side and --period are for --team legs. A player leg is N+, full match.")
     fx, source = _report_fixture(args.event)
     if not fx:
         raise SystemExit(f"Event {args.event} is not in any built report. Build it first.")
@@ -148,6 +191,56 @@ def log(args) -> None:
     tag = " (backfilled)" if late else ""
     print(f"  logged{tag}: [{bet['kind']}:{group}] {args.player} {args.stat} {args.line:g}+ "
           f"- report said {k}/{n}, treated as {leg['model_p']:.0%}")
+
+
+def log_team(args) -> None:
+    """A team leg, stored with team_leg, period and over, which is what settle
+    reads, and the same model_record and adjusted treatment as a player leg."""
+    fx, source = _report_fixture(args.event)
+    if not fx:
+        raise SystemExit(f"Event {args.event} is not in any built report. Build it first.")
+    F = fx["fixture"]
+    kickoff = F.get("kickoff") or 0
+    late = kickoff and kickoff <= now()
+    if late and not args.backfill:
+        raise SystemExit("That match has already kicked off. Use --backfill to record it "
+                         "for calibration only (it stays out of the P&L record).")
+    names = [t["name"] for t in fx.get("teams") or []]
+    if args.team not in names:
+        raise SystemExit(f"Team must be one of: {', '.join(names)}")
+    side = args.side or "over"
+    period = args.period or "ALL"
+    over = side == "over"
+    rec = team_record(fx, args.team, args.stat, args.line, over, period)
+    if not rec:
+        raise SystemExit(f"No {period} '{args.stat}' record for {args.team} in "
+                         f"{F['home']} v {F['away']}.")
+    k, n = rec
+    leg = {
+        "event_id": args.event, "fixture": f"{F['home']} v {F['away']}",
+        "kickoff": kickoff, "player": args.team, "player_id": None, "team": args.team,
+        "team_leg": True, "stat": args.stat, "period": period, "line": args.line,
+        "over": over, "model_k": k, "model_n": n,
+        "model_p": round(adjusted(k, n), 3), "source": source,
+        "value": None, "result": None,
+    }
+    bets = load()
+    group = args.group or f"{args.team}-{args.stat}-{side}-{args.line:g}-{period}"
+    bet = next((b for b in bets if b["group"] == group and b["result"] is None), None)
+    if bet is None:
+        bet = {"group": group, "kind": args.kind, "logged_at":
+               datetime.now(tz=timezone.utc).isoformat(timespec="seconds"),
+               "price": args.price, "stake": args.stake, "backfilled": bool(late),
+               "placed": not args.suggested, "legs": [], "result": None, "profit": None,
+               "note": args.note or ""}
+        bets.append(bet)
+    elif args.price:
+        bet["price"] = args.price
+    bet["legs"].append(leg)
+    save(bets)
+    tag = " (backfilled)" if late else ""
+    print(f"  logged{tag}: [{bet['kind']}:{group}] {args.team} {args.stat} {side} "
+          f"{args.line:g} ({period}) - report said {k}/{n}, treated as {leg['model_p']:.0%}")
 
 
 # ---------------------------------------------------------------- settle
@@ -318,15 +411,20 @@ def fair(args) -> None:
           f"(prior {prior():g}{', provisional' if not CALIB.exists() or json.loads(CALIB.read_text()).get('provisional', True) else ''})")
 
 
-def main() -> None:
+def parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     a = sub.add_parser("log", help="log a leg (before kick-off)")
     a.add_argument("--event", type=int, required=True)
-    a.add_argument("--player", required=True)
+    who = a.add_mutually_exclusive_group(required=True)
+    who.add_argument("--player")
+    who.add_argument("--team", help="a team leg, settled from the match statistics")
     a.add_argument("--stat", required=True)
-    a.add_argument("--line", type=float, required=True, help="N for an N+ market")
+    a.add_argument("--line", type=float, required=True,
+                   help="N for a player's N+ market; the line itself for a team leg, e.g. 1.5")
+    a.add_argument("--side", choices=["over", "under"], help="team legs only, default over")
+    a.add_argument("--period", choices=list(PERIODS), help="team legs only, default ALL")
     a.add_argument("--price", type=float, help="decimal odds for the whole bet")
     a.add_argument("--stake", type=float, default=1.0)
     a.add_argument("--kind", choices=["single", "ladder", "multi", "bb"], default="single")
@@ -339,7 +437,11 @@ def main() -> None:
     f = sub.add_parser("fair")
     f.add_argument("k", type=int)
     f.add_argument("n", type=int)
-    args = ap.parse_args()
+    return ap
+
+
+def main() -> None:
+    args = parser().parse_args()
     {"log": log, "settle": settle, "report": report, "fair": fair}[args.cmd](args)
 
 
