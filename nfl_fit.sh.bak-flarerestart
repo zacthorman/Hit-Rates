@@ -36,10 +36,8 @@ case "$FLARE_URL" in 1|true|yes) FLARE_URL="http://localhost:8191/v1" ;; esac
 say() { echo "$(date '+%H:%M:%S')  $*"; }
 
 # Check it is actually up before waiting on the lock or touching SofaScore.
-# Health-check it with a real browser session (the root page answers even
-# when Chrome inside is wedged), and restart the container if it is stuck.
-if ! "$PY" -c "import sys, update; sys.exit(0 if update.ensure_flaresolverr() else 1)"; then
-  say "FlareSolverr is not answering at ${FLARE_URL%/v1} and a restart did not fix it."
+if ! curl -s -m 10 -o /dev/null "${FLARE_URL%/v1}/"; then
+  say "FlareSolverr is not answering at ${FLARE_URL%/v1}."
   say "Start Docker Desktop and the flaresolverr container, then run this again."
   exit 1
 fi

@@ -450,14 +450,6 @@ def main() -> None:
                     nations.append("--referee")
                 run(nations, args.dry, allow_fail=True)
 
-            # 1c. The NFL. Its own step: 20 games rather than 38, and a
-            #     week with no games simply finds nothing. Never fatal.
-            if settings.get("nfl"):
-                say("building the NFL slate")
-                run([python, "run.py", "--league", "NFL", "--games", "20",
-                     "--players", "--adjust", "--h2h", "--no-open"],
-                    args.dry, allow_fail=True)
-
         # 2. Re-render, so reports built by older code pick up new page
         #    features. Cheap: the data is already inside each file.
         if not run([python, "rerender.py"], args.dry):

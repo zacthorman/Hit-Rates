@@ -22,15 +22,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).parent
 LOG = ROOT / "lineups_auto.log"
-SKIP = {"darts.html"}
+SKIP = {"nfl.html", "darts.html"}
 WINDOW = (20 * 60, 80 * 60)
-# NFL inactives are announced 90 minutes before kick-off.
-NFL_WINDOW = (15 * 60, 95 * 60)
-
-
-def window(entry):
-    sport = entry["fixture"].get("sport") or "football"
-    return NFL_WINDOW if sport == "american-football" else WINDOW
 
 
 def say(msg: str) -> None:
@@ -53,10 +46,11 @@ def due():
         if not m:
             continue
         payload = json.loads(m.group(1))
+        if (payload.get("fixtures") or [{}])[0].get("fixture", {}).get("sport", "football") != "football":
+            continue
         for entry in payload.get("fixtures", []):
             ko = entry["fixture"].get("kickoff") or 0
-            w = window(entry)
-            if w[0] < ko - now < w[1] and not (entry.get("lineups") or {}).get("confirmed"):
+            if WINDOW[0] < ko - now < WINDOW[1] and not (entry.get("lineups") or {}).get("confirmed"):
                 out[Path(f)] = payload
                 break
     return out
@@ -81,8 +75,7 @@ def main() -> None:
         got = []
         for entry in payload["fixtures"]:
             ko = entry["fixture"].get("kickoff") or 0
-            w = window(entry)
-            if w[0] < ko - now < w[1] and not (entry.get("lineups") or {}).get("confirmed"):
+            if WINDOW[0] < ko - now < WINDOW[1] and not (entry.get("lineups") or {}).get("confirmed"):
                 lineup_data.attach(entry, max_age_hours=0.05)
                 if (entry.get("lineups") or {}).get("confirmed"):
                     got.append(f'{entry["fixture"]["home"]} v {entry["fixture"]["away"]}')

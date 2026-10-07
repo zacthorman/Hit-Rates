@@ -818,12 +818,12 @@
         "model_n": 10,
         "model_p": 0.643,
         "source": "uefa-nations-league.html",
-        "value": null,
-        "result": null
+        "value": 4.0,
+        "result": "win"
       }
     ],
-    "result": null,
-    "profit": null,
+    "result": "win",
+    "profit": 1.48,
     "note": "Jarvis pick. Price is the need price she said to take it at or better."
   },
   {
@@ -848,12 +848,12 @@
         "model_n": 10,
         "model_p": 0.714,
         "source": "uefa-nations-league.html",
-        "value": null,
-        "result": null
+        "value": 2.0,
+        "result": "win"
       }
     ],
-    "result": null,
-    "profit": null,
+    "result": "win",
+    "profit": 1.64,
     "note": "Jarvis pick. Price is the need price she said to take it at or better."
   },
   {
@@ -878,12 +878,102 @@
         "model_n": 10,
         "model_p": 0.643,
         "source": "uefa-nations-league.html",
-        "value": null,
-        "result": null
+        "value": 1.0,
+        "result": "win"
       }
     ],
-    "result": null,
-    "profit": null,
+    "result": "win",
+    "profit": 1.66,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-06-4",
+    "kind": "single",
+    "logged_at": "2026-10-06T12:53:38+00:00",
+    "price": 1.83,
+    "stake": 2.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 15534091,
+        "fixture": "England v Czechia",
+        "kickoff": 1791312300,
+        "player": "Harry Kane",
+        "player_id": 108579,
+        "team": "England",
+        "stat": "Shots",
+        "line": 2.0,
+        "model_k": 7,
+        "model_n": 10,
+        "model_p": 0.654,
+        "source": "uefa-nations-league.html",
+        "value": 4.0,
+        "result": "win"
+      }
+    ],
+    "result": "win",
+    "profit": 1.66,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-06-5",
+    "kind": "single",
+    "logged_at": "2026-10-06T12:53:41+00:00",
+    "price": 2.05,
+    "stake": 2.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16547921,
+        "fixture": "Chicago Fire v Vancouver Whitecaps",
+        "kickoff": 1791333000,
+        "player": "Robert Lewandowski",
+        "player_id": 41789,
+        "team": "Chicago Fire",
+        "stat": "Shots on target",
+        "line": 1.0,
+        "model_k": 8,
+        "model_n": 10,
+        "model_p": 0.731,
+        "source": "mls.html",
+        "value": 0.0,
+        "result": "lose"
+      }
+    ],
+    "result": "lose",
+    "profit": -2.0,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-06-6",
+    "kind": "single",
+    "logged_at": "2026-10-06T12:53:44+00:00",
+    "price": 2.31,
+    "stake": 2.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 15537771,
+        "fixture": "Luxembourg v Bulgaria",
+        "kickoff": 1791312300,
+        "player": "Aiman Dardari",
+        "player_id": 1481370,
+        "team": "Luxembourg",
+        "stat": "Shots",
+        "line": 1.0,
+        "model_k": 7,
+        "model_n": 10,
+        "model_p": 0.654,
+        "source": "uefa-nations-league.html",
+        "value": 1.0,
+        "result": "win"
+      }
+    ],
+    "result": "win",
+    "profit": 2.62,
     "note": "Jarvis pick. Price is the need price she said to take it at or better."
   }
 ]

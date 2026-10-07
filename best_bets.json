@@ -8396,11 +8396,11 @@
     "total": 19,
     "fair": 2.0824846826860037,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: evens double",
@@ -8447,11 +8447,11 @@
     "total": 17,
     "fair": 1.5290621536948603,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: banker",
@@ -8477,11 +8477,11 @@
     "total": 29,
     "fair": 1.380952380952381,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: acca",
@@ -8528,8 +8528,8 @@
     "total": 11,
     "fair": 1.5690867546635847,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    },
    {
     "event_id": 15537771,
@@ -8549,11 +8549,11 @@
     "total": 11,
     "fair": 1.5690867546635847,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: parlay",
@@ -8579,8 +8579,8 @@
     "total": 35,
     "fair": 1.4583333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    },
    {
     "event_id": 16547921,
@@ -8600,8 +8600,8 @@
     "total": 30,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 16547921,
@@ -8621,8 +8621,8 @@
     "total": 29,
     "fair": 1.5263157894736843,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 16547921,
@@ -8642,11 +8642,11 @@
     "total": 34,
     "fair": 1.4782608695652173,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: single",
@@ -8948,11 +8948,11 @@
     "total": 11,
     "fair": 1.5690867546635847,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -8978,11 +8978,11 @@
     "total": 11,
     "fair": 1.7659202120225284,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -9008,11 +9008,11 @@
     "total": 11,
     "fair": 1.7659202120225284,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -9038,11 +9038,11 @@
     "total": 12,
     "fair": 1.6567940908283343,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -9068,11 +9068,11 @@
     "total": 12,
     "fair": 1.7423850836864392,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -9098,11 +9098,11 @@
     "total": 12,
     "fair": 1.7423850836864392,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -9128,11 +9128,11 @@
     "total": 13,
     "fair": 1.8571428571428572,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -9158,11 +9158,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -9188,11 +9188,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -9218,11 +9218,11 @@
     "total": 10,
     "fair": 1.696915307175539,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 10.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -9248,11 +9248,11 @@
     "total": 11,
     "fair": 1.5690867546635847,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -9278,11 +9278,11 @@
     "total": 11,
     "fair": 1.6755005554346891,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 17.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -9308,11 +9308,11 @@
     "total": 11,
     "fair": 1.6755005554346891,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -9338,11 +9338,11 @@
     "total": 29,
     "fair": 1.380952380952381,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -9368,11 +9368,11 @@
     "total": 17,
     "fair": 1.4198419619675586,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -9398,11 +9398,11 @@
     "total": 30,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: single",
@@ -9551,8 +9551,8 @@
     "total": 15,
     "fair": 1.25,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    },
    {
     "event_id": 16547921,
@@ -9572,11 +9572,11 @@
     "total": 17,
     "fair": 1.5290621536948603,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: acca",
@@ -9602,8 +9602,8 @@
     "total": 11,
     "fair": 1.5690867546635847,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    },
    {
     "event_id": 15537771,
@@ -9623,8 +9623,8 @@
     "total": 11,
     "fair": 1.5690867546635847,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    },
    {
     "event_id": 15534091,
@@ -9644,11 +9644,11 @@
     "total": 12,
     "fair": 1.6567940908283343,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: builder",
@@ -9674,8 +9674,8 @@
     "total": 12,
     "fair": 1.6567940908283343,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "win"
    },
    {
     "event_id": 15534091,
@@ -9695,8 +9695,8 @@
     "total": 12,
     "fair": 1.7423850836864392,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    },
    {
     "event_id": 15534091,
@@ -9716,11 +9716,11 @@
     "total": 12,
     "fair": 1.8218819988496782,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: parlay",
@@ -9903,6 +9903,1044 @@
     "fair": 1.4285714285714286,
     "venue": null,
     "value": 2.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 2.0457100335345237,
+  "legs": [
+   {
+    "event_id": 15237994,
+    "fixture": "Red Bull Bragantino v Mirassol",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Red Bull Bragantino",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 18,
+    "fair": 1.381291422227403,
+    "venue": "home",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15237991,
+    "fixture": "Botafogo v Vasco da Gama",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791415800,
+    "sport": "football",
+    "team": "Botafogo",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.481012623850014,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.4738808269554569,
+  "legs": [
+   {
+    "event_id": 15237994,
+    "fixture": "Red Bull Bragantino v Mirassol",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Red Bull Bragantino",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 7.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 18,
+    "fair": 1.4738808269554569,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 3.5443067135807436,
+  "legs": [
+   {
+    "event_id": 15237994,
+    "fixture": "Red Bull Bragantino v Mirassol",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Red Bull Bragantino",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 18,
+    "fair": 1.5359827109878843,
+    "venue": "home",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15237996,
+    "fixture": "Internacional v Corinthians",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Corinthians",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 13,
+    "fair": 1.470611689403302,
+    "venue": "away",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15534082,
+    "fixture": "Croatia v Spain",
+    "competition": "UEFA Nations League",
+    "kickoff": 1791312300,
+    "sport": "football",
+    "team": "Croatia",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 11,
+    "fair": 1.5690867546635847,
+    "venue": null,
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: builder",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 15237999,
+    "fixture": "Remo v Gr\u00eamio",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Remo",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 14,
+    "fair": 1.362841410762424,
+    "venue": "home",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15237999,
+    "fixture": "Remo v Gr\u00eamio",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Remo",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 14,
+    "fair": 1.4438570388976977,
+    "venue": "home",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15237999,
+    "fixture": "Remo v Gr\u00eamio",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Remo",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 14,
+    "fair": 1.5650645162943024,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.3276972481647071,
+  "legs": [
+   {
+    "event_id": 15237995,
+    "fixture": "Cruzeiro v S\u00e3o Paulo",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791419400,
+    "sport": "football",
+    "team": "Cruzeiro",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 15,
+    "fair": 1.3276972481647071,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.3029754998346834,
+  "legs": [
+   {
+    "event_id": 15237995,
+    "fixture": "Cruzeiro v S\u00e3o Paulo",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791419400,
+    "sport": "football",
+    "team": "Cruzeiro",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.3029754998346834,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.4307346484983445,
+  "legs": [
+   {
+    "event_id": 15237995,
+    "fixture": "Cruzeiro v S\u00e3o Paulo",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791419400,
+    "sport": "football",
+    "team": "S\u00e3o Paulo",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.4307346484983445,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.381291422227403,
+  "legs": [
+   {
+    "event_id": 15237994,
+    "fixture": "Red Bull Bragantino v Mirassol",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Red Bull Bragantino",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 18,
+    "fair": 1.381291422227403,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.5359827109878843,
+  "legs": [
+   {
+    "event_id": 15237994,
+    "fixture": "Red Bull Bragantino v Mirassol",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Red Bull Bragantino",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 18,
+    "fair": 1.5359827109878843,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.4738808269554569,
+  "legs": [
+   {
+    "event_id": 15237994,
+    "fixture": "Red Bull Bragantino v Mirassol",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Red Bull Bragantino",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 7.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 18,
+    "fair": 1.4738808269554569,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.4056848358558343,
+  "legs": [
+   {
+    "event_id": 15237991,
+    "fixture": "Botafogo v Vasco da Gama",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791415800,
+    "sport": "football",
+    "team": "Botafogo",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 15,
+    "fair": 1.4056848358558343,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.481012623850014,
+  "legs": [
+   {
+    "event_id": 15237991,
+    "fixture": "Botafogo v Vasco da Gama",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791415800,
+    "sport": "football",
+    "team": "Botafogo",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.481012623850014,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.7122081556284972,
+  "legs": [
+   {
+    "event_id": 15237991,
+    "fixture": "Botafogo v Vasco da Gama",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791415800,
+    "sport": "football",
+    "team": "Vasco da Gama",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 12,
+    "fair": 1.7122081556284972,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.316847282973553,
+  "legs": [
+   {
+    "event_id": 15237998,
+    "fixture": "Vit\u00f3ria v Chapecoense",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791414000,
+    "sport": "football",
+    "team": "Vit\u00f3ria",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 16,
+    "fair": 1.316847282973553,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.8337825396657104,
+  "legs": [
+   {
+    "event_id": 15237998,
+    "fixture": "Vit\u00f3ria v Chapecoense",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791414000,
+    "sport": "football",
+    "team": "Vit\u00f3ria",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 15,
+    "fair": 1.8337825396657104,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.36814074656728,
+  "legs": [
+   {
+    "event_id": 15237998,
+    "fixture": "Vit\u00f3ria v Chapecoense",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791414000,
+    "sport": "football",
+    "team": "Vit\u00f3ria",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 16,
+    "fair": 1.36814074656728,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.470611689403302,
+  "legs": [
+   {
+    "event_id": 15237996,
+    "fixture": "Internacional v Corinthians",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Corinthians",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 13,
+    "fair": 1.470611689403302,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.6419848413554063,
+  "legs": [
+   {
+    "event_id": 15237996,
+    "fixture": "Internacional v Corinthians",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Internacional",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 5.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.6419848413554063,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.5779148255990596,
+  "legs": [
+   {
+    "event_id": 15237996,
+    "fixture": "Internacional v Corinthians",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Corinthians",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 13,
+    "fair": 1.5779148255990596,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.362841410762424,
+  "legs": [
+   {
+    "event_id": 15237999,
+    "fixture": "Remo v Gr\u00eamio",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Remo",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 14,
+    "fair": 1.362841410762424,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.4824526304439258,
+  "legs": [
+   {
+    "event_id": 15237999,
+    "fixture": "Remo v Gr\u00eamio",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Gr\u00eamio",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.4824526304439258,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791271112,
+  "fair": 1.3625943002008327,
+  "legs": [
+   {
+    "event_id": 15237999,
+    "fixture": "Remo v Gr\u00eamio",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Remo",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 14,
+    "fair": 1.3625943002008327,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1791309998,
+  "fair": 2.004313362888405,
+  "legs": [
+   {
+    "event_id": 15237994,
+    "fixture": "Red Bull Bragantino v Mirassol",
+    "competition": "Brasileir\u00e3o Betano",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Red Bull Bragantino",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 6.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 18,
+    "fair": 1.3553993454977087,
+    "venue": "home",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15237991,
+    "fixture": "Botafogo v Vasco da Gama",
+    "competition": "Brasileir\u00e3o Betano",
+    "kickoff": 1791415800,
+    "sport": "football",
+    "team": "Botafogo",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.4787622330984764,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "football",
+  "snapshot_at": 1791309998,
+  "fair": 1.3553993454977087,
+  "legs": [
+   {
+    "event_id": 15237994,
+    "fixture": "Red Bull Bragantino v Mirassol",
+    "competition": "Brasileir\u00e3o Betano",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Red Bull Bragantino",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 6.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 18,
+    "fair": 1.3553993454977087,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791309998,
+  "fair": 1.3553993454977087,
+  "legs": [
+   {
+    "event_id": 15237994,
+    "fixture": "Red Bull Bragantino v Mirassol",
+    "competition": "Brasileir\u00e3o Betano",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Red Bull Bragantino",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 6.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 18,
+    "fair": 1.3553993454977087,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1791314566,
+  "fair": 3.2899499246991675,
+  "legs": [
+   {
+    "event_id": 15237994,
+    "fixture": "Red Bull Bragantino v Mirassol",
+    "competition": "Brasileir\u00e3o Betano",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Red Bull Bragantino",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 18,
+    "fair": 1.5128397379865262,
+    "venue": "home",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15237996,
+    "fixture": "Internacional v Corinthians",
+    "competition": "Brasileir\u00e3o Betano",
+    "kickoff": 1791412200,
+    "sport": "football",
+    "team": "Corinthians",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 13,
+    "fair": 1.470611689403302,
+    "venue": "away",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15237991,
+    "fixture": "Botafogo v Vasco da Gama",
+    "competition": "Brasileir\u00e3o Betano",
+    "kickoff": 1791415800,
+    "sport": "football",
+    "team": "Botafogo",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.4787622330984764,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791321035,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 17167387,
+    "fixture": "Argentina v Benin",
+    "competition": "International Friendly Games",
+    "kickoff": 1791327600,
+    "sport": "football",
+    "team": "Benin",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": 0.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791321035,
+  "fair": 1.696915307175539,
+  "legs": [
+   {
+    "event_id": 17167387,
+    "fixture": "Argentina v Benin",
+    "competition": "International Friendly Games",
+    "kickoff": 1791327600,
+    "sport": "football",
+    "team": "Benin",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.696915307175539,
+    "venue": null,
+    "value": 1.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791321035,
+  "fair": 2.3849878764193635,
+  "legs": [
+   {
+    "event_id": 17167387,
+    "fixture": "Argentina v Benin",
+    "competition": "International Friendly Games",
+    "kickoff": 1791327600,
+    "sport": "football",
+    "team": "Benin",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 2,
+    "total": 10,
+    "fair": 2.3849878764193635,
+    "venue": null,
+    "value": 0.0,
     "result": "lose"
    }
   ],

@@ -5583,10 +5583,25 @@ const DEF_LADDER = {
 
 /* The players who actually get the ball at a position: top two by average
    over their last ten games with the stat recorded. */
+/* Who is actually playing. NFL inactives are announced about 90 minutes
+   before kick-off; once SofaScore has the confirmed roster, anyone not on it,
+   or listed as missing, is dropped from the picks. Before then: everyone. */
+function defActive(teamIndex) {
+  const lu = (DATA.lineups || {}).confirmed;
+  if (!lu) return null;
+  const side = lu[teamIndex === 0 ? "home" : "away"] || {};
+  const roster = new Set([...(side.xi || []).map(p => p.name), ...(side.bench || [])]);
+  const out = new Set((side.missing || []).map(m => m[0]));
+  if (!roster.size) return null;
+  return { roster, out };
+}
+
 function defPlayers(teamIndex, pos, stat) {
   const by = new Map();
+  const active = defActive(teamIndex);
   ((DATA.players || [])[teamIndex] || []).forEach(r => {
     if (r.position !== pos || r.former_club) return;
+    if (active && (!active.roster.has(r.player) || active.out.has(r.player))) return;
     const v = (r.stats || {})[stat];
     if (v === undefined || v === null) return;
     if (!by.has(r.player)) by.set(r.player, []);
@@ -5674,7 +5689,11 @@ function defenceView(el) {
       <span class="lu-muted">longer bar = softer</span></div>${rows}</div>`;
   };
 
+  const status = (DATA.lineups || {}).confirmed
+    ? `<span class="lu-badge lu-conf">Inactives applied</span>`
+    : `<span class="lu-badge">Inactives not out yet</span>`;
   el.innerHTML = `
+    <div class="lu-head">${status}<span class="lu-muted">Picks update about 90 minutes before kick-off, when the actives are confirmed.</span></div>
     <h3 class="lu-h">Best lines v these defences</h3>
     ${picks.length ? `<div class="lu-card">${picks.slice(0, 6).map(pickCard).join("")}</div>`
       : `<div class="lu-card lu-empty">No soft matchup in this game where a player's record backs a line.</div>`}

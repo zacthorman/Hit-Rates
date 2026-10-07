@@ -19,5 +19,6 @@
   "push": true,
   "delay_min": 3.0,
   "delay_max": 6.0,
-  "nations_days": 7
+  "nations_days": 7,
+  "nfl": true
 }

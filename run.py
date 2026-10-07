@@ -987,8 +987,7 @@ def build(
     # days out, the confirmed one when it is out. Never fatal.
     try:
         import lineup_data
-        got = sum(lineup_data.attach(entry) for entry in fixtures
-                  if (entry["fixture"].get("sport") or "football") == "football")
+        got = sum(lineup_data.attach(entry) for entry in fixtures)
         if got:
             print(f"\n  line-ups attached for {got}/{len(fixtures)} fixture(s)")
     except Exception as exc:
