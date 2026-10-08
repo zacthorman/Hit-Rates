@@ -975,5 +975,35 @@
     "result": "win",
     "profit": 2.62,
     "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-08-1",
+    "kind": "single",
+    "logged_at": "2026-10-08T14:04:38+00:00",
+    "price": 2.43,
+    "stake": 2.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16183708,
+        "fixture": "Dallas Cowboys v Tampa Bay Buccaneers",
+        "kickoff": 1791504900,
+        "player": "Ryan Flournoy",
+        "player_id": 1861488,
+        "team": "Dallas Cowboys",
+        "stat": "Receiving yards",
+        "line": 20.0,
+        "model_k": 8,
+        "model_n": 10,
+        "model_p": 0.731,
+        "source": "nfl.html",
+        "value": null,
+        "result": null
+      }
+    ],
+    "result": null,
+    "profit": null,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
   }
 ]
