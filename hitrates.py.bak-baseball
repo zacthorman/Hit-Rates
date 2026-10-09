@@ -77,21 +77,9 @@ def extract_match_stats(
 
         bucket: dict[str, tuple[float, float]] = {}
         for group in period.get("groups", []):
-            # Baseball sends Runs, Hits, Home runs, Strike outs and Base on
-            # balls twice: once under Batting (what this side did at the
-            # plate) and again under Pitching (what this side's pitchers
-            # allowed, i.e. the OTHER side's batting, mirrored). Keyed by name,
-            # the second copy overwrote the first and every team's runs came
-            # out as its opponent's: White Sox 5 Guardians 9 read as Runs 9/5.
-            # So inside a Pitching group a name already taken is skipped. The
-            # pitching-only rows (Innings pitched, Earned runs, Outs, ERA)
-            # still come through. No other sport has a group by that name.
-            pitching = group.get("groupName") == "Pitching"
             for item in group.get("statisticsItems", []):
                 name = item.get("name")
                 if not name:
-                    continue
-                if pitching and name in bucket:
                     continue
                 home = _as_number(item.get("homeValue", item.get("home")))
                 away = _as_number(item.get("awayValue", item.get("away")))
@@ -349,11 +337,7 @@ def team_form(
         # Called Points where the sport calls them points. The figure is the
         # same scoreline either way, but "Goals 21.5" on an NFL page is a
         # football word on a gridiron market and reads as a bug.
-        # Baseball's scoreline is runs, and the feed already carries a Runs
-        # row equal to it, so writing "Goals" there would add a football word
-        # reading the same number twice.
-        scored = {"american-football": "Points",
-                  "baseball": "Runs"}.get(sport, "Goals")
+        scored = "Points" if sport == "american-football" else "Goals"
         records[-1]["stats"].setdefault("ALL", {})[scored] = float(goals_for)
         records[-1]["against"].setdefault("ALL", {})[scored] = float(goals_against)
         if sport == "football":
@@ -417,29 +401,6 @@ PLAYER_STAT_NAMES = {
     "personalFouls": "Personal fouls",
     "offensiveRebounds": "Offensive rebounds",
     "defensiveRebounds": "Defensive rebounds",
-
-    # Baseball. Every key arrives prefixed batting/pitching/fielding, which
-    # _pretty would turn into "Batting hits" and "Pitching strike outs". Only
-    # the bettable ones are renamed, to the names the coupon uses; the rest
-    # (fly outs, BABIP, inherited runners...) keep their prefixed names, which
-    # is honest about what they are. Pitching keys get a pitcher-side name so
-    # a pitcher's strikeouts never share a column with a batter's.
-    "battingHits": "Hits",
-    "battingTotalBases": "Total bases",
-    "battingHomeRuns": "Home runs",
-    "battingRbi": "RBIs",
-    "battingRuns": "Runs",
-    "battingSingles": "Singles",
-    "battingDoubles": "Doubles",
-    "battingStolenBases": "Stolen bases",
-    "battingBaseOnBalls": "Walks",
-    "battingStrikeOuts": "Batter strikeouts",
-    "pitchingStrikeOuts": "Pitcher strikeouts",
-    "pitchingOuts": "Outs recorded",
-    "pitchingHitsAllowed": "Hits allowed",
-    "pitchingEarnedRuns": "Earned runs",
-    "pitchingBaseOnBalls": "Walks allowed",
-    "pitchingPitchesThrown": "Pitches thrown",
 }
 
 # Stats where a missing key means the player recorded none of it, not that the
@@ -571,24 +532,6 @@ def _basketball_derived(raw: dict) -> dict[str, float]:
     return out
 
 
-# Hits + Runs + RBIs is the combination prop every MLB coupon carries, and the
-# feed reports only the three parts. Gated on battingHits so a pitcher who
-# never batted (the DH rule, so nearly all of them) does not acquire a zero.
-def _baseball_derived(raw: dict) -> dict[str, float]:
-    """Combination batting markets, from one player's raw box score."""
-    if "battingHits" not in raw:
-        return {}
-
-    def num(key: str) -> float:
-        value = raw.get(key)
-        if isinstance(value, bool) or not isinstance(value, (int, float)):
-            return 0.0
-        return float(value)
-
-    return {"Hits runs and RBIs": num("battingHits") + num("battingRuns")
-            + num("battingRbi")}
-
-
 def _player_stat_values(raw: dict, zero_fill=PLAYER_ZERO_FILL) -> dict[str, float]:
     """One player's statistics block as {readable name: value}.
 
@@ -620,7 +563,6 @@ def _player_stat_values(raw: dict, zero_fill=PLAYER_ZERO_FILL) -> dict[str, floa
     if values:
         values.update(_gridiron_derived(raw))
         values.update(_basketball_derived(raw))
-        values.update(_baseball_derived(raw))
 
     if values:
         for name in zero_fill:

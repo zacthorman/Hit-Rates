@@ -20,7 +20,5 @@
   "delay_min": 3.0,
   "delay_max": 6.0,
   "nations_days": 7,
-  "nfl": true,
-  "darts": 3,
-  "mlb": true
+  "nfl": true
 }

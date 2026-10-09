@@ -458,29 +458,6 @@ def main() -> None:
                      "--players", "--adjust", "--h2h", "--no-open"],
                     args.dry, allow_fail=True)
 
-            # 1d. Darts. Every PDC tour match in the next few days, swept
-            #     from the seed players in run.py, one page at darts.html.
-            #     Most days there is a floor event or a major on; a quiet
-            #     window exits non-zero with "no PDC darts", which is normal,
-            #     so never fatal. The first build of a 64-player floor event
-            #     is the expensive one, after that it is mostly cache.
-            darts_days = settings.get("darts")
-            if darts_days:
-                say(f"building darts, next {darts_days} day(s)")
-                run([python, "run.py", "--darts", str(darts_days),
-                     "--games", "20", "--h2h", "--no-open"],
-                    args.dry, allow_fail=True)
-
-            # 1e. MLB. Same shape as the NFL step: the 30-team list, each
-            #     team's next game in competition 11205. In October only the
-            #     postseason teams have one, and from November to late March
-            #     nobody does, so this finds nothing and moves on. Never fatal.
-            if settings.get("mlb"):
-                say("building the MLB slate")
-                run([python, "run.py", "--league", "MLB", "--games", "20",
-                     "--players", "--adjust", "--h2h", "--no-open"],
-                    args.dry, allow_fail=True)
-
         # 2. Re-render, so reports built by older code pick up new page
         #    features. Cheap: the data is already inside each file.
         if not run([python, "rerender.py"], args.dry):

@@ -229,54 +229,6 @@ DARTS_STATS = {
 DARTS_PLAYER_STATS: frozenset = frozenset()
 
 
-# ------------------------------------------------------------------ baseball
-#
-# Read off the feed on 9 October 2026 (event 17212667, White Sox v Guardians,
-# MLB Postseason), not from memory. Three things shaped this:
-#
-# Only ALL comes back. No per-inning statistics, so no first-five-innings or
-# first-inning market is possible from this feed, the same as gridiron.
-#
-# The team block repeats Runs, Hits, Home runs, Strike outs and Base on balls
-# under Pitching, mirrored. hitrates.extract_match_stats keeps the Batting
-# copy; see the note there, because without it every team total is inverted.
-#
-# The lineups carry full batting and pitching box scores per player, with
-# zeros sent rather than omitted, so no zero-fill. Positions are P, C, IF, OF
-# and DH. There are no minutes, so the appearance test is the gridiron one:
-# a player with a box score played.
-BASEBALL_STATS = {
-    "Runs",                # Team Total Runs, Total Runs (via both sides)
-    "Hits",                # Team Total Hits
-    "Home runs",           # Team to Hit a Home Run, Total Home Runs
-}
-
-BASEBALL_PLAYER_STATS = {
-    # Batter props
-    "Hits",                # Player Hits
-    "Total bases",         # Player Total Bases
-    "Home runs",           # Player to Hit a Home Run
-    "RBIs",                # Player RBIs
-    "Runs",                # Player Runs Scored
-    "Singles",             # Player Singles
-    "Doubles",             # Player Doubles
-    "Stolen bases",        # Player Stolen Bases
-    "Walks",               # Player Walks
-    "Hits runs and RBIs",  # derived in hitrates, the combination prop
-    # Pitcher props
-    "Pitcher strikeouts",  # Pitcher Strikeouts
-    "Outs recorded",       # Pitcher Outs Recorded
-    "Hits allowed",        # Pitcher Hits Allowed
-    "Earned runs",         # Pitcher Earned Runs
-    "Walks allowed",       # Pitcher Walks Allowed
-}
-
-# Provisional, same flag and same reason as basketball: every name above is a
-# real row in the feed, which is not the same claim as every one being priced
-# on bet365. Check against a live MLB coupon and cut what is not sold.
-BASEBALL_UNCONFIRMED = True
-
-
 # Which vocabulary belongs to which sport.
 #
 # Keeping these apart is not tidiness. A merged set put "Shots", "Goals",
@@ -289,7 +241,6 @@ BY_SPORT = {
     "american-football": (GRIDIRON_STATS, GRIDIRON_PLAYER_STATS),
     "basketball": (BASKETBALL_STATS, BASKETBALL_PLAYER_STATS),
     "darts": (DARTS_STATS, DARTS_PLAYER_STATS),
-    "baseball": (BASEBALL_STATS, BASEBALL_PLAYER_STATS),
 }
 
 # Football fills these with zero when the key is absent, because SofaScore
@@ -302,7 +253,6 @@ ZERO_FILL_BY_SPORT = {
     "american-football": frozenset(),
     "basketball": frozenset(),  # box score sends every key, zeros included
     "darts": frozenset(),       # no player records at all to fill
-    "baseball": frozenset(),    # box score sends every key, zeros included
 }
 
 

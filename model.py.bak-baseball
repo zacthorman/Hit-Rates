@@ -604,27 +604,9 @@ BASKETBALL_STAT_TO_TEAM = {
     # would be a lie told to a gate.
 }
 
-BASEBALL_STAT_TO_TEAM = {
-    # --- baseball -----------------------------------------------------------
-    # A batter's numbers ride on how much his own lineup produces, so hits and
-    # bases pair with team hits, and anything that is a run pairs with team
-    # runs. Pitcher props are deliberately absent: a starter's strikeouts and
-    # hits allowed are driven by the OPPOSING lineup, and there is no own-team
-    # market for that. Same rule as sacks and tackles: no honest pairing, no
-    # adjustment.
-    "Hits": "Hits",
-    "Singles": "Hits",
-    "Doubles": "Hits",
-    "Total bases": "Hits",
-    "Home runs": "Home runs",
-    "RBIs": "Runs",
-    "Runs": "Runs",
-    "Hits runs and RBIs": "Runs",
-}
-
 # The union, which is what report.py's JS mirrors and verify.py cross-checks.
 PLAYER_STAT_TO_TEAM = {**FOOTBALL_STAT_TO_TEAM, **GRIDIRON_STAT_TO_TEAM,
-                       **BASKETBALL_STAT_TO_TEAM, **BASEBALL_STAT_TO_TEAM}
+                       **BASKETBALL_STAT_TO_TEAM}
 
 # What the player scan will look at, per sport. Deliberately not the same
 # thing as the map above: see the note beside PLAYER_SCAN_ALLOW in report.py.
@@ -640,7 +622,6 @@ STAT_TO_TEAM_BY_SPORT = {
     "american-football": GRIDIRON_STAT_TO_TEAM,
     "basketball": BASKETBALL_STAT_TO_TEAM,
     "darts": DARTS_STAT_TO_TEAM,
-    "baseball": BASEBALL_STAT_TO_TEAM,
 }
 
 # Two full appearances' worth of prior evidence, in minutes. At one full

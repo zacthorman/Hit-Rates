@@ -102,12 +102,6 @@ TOURNAMENTS = {
     # basketball and none of which is the competition anyone means.
     "nba": 132,
     "national_basketball_association": 132,
-    # Baseball. 11205 is MLB proper, regular season and postseason under one
-    # id (season 84695 is 2026). Search also returns MLB Preseason (11527),
-    # the All Star Game and Summer Camp, none of which is what anyone means.
-    # Read off the feed on 9 October 2026, not from memory.
-    "mlb": 11205,
-    "major_league_baseball": 11205,
     "brasileirao": 325,
     "brasileirao_serie_a": 325,
     "brazil_serie_a": 325,

@@ -338,7 +338,6 @@ def check_sport_separation() -> None:
         "american-football": (markets.GRIDIRON_STATS, markets.GRIDIRON_PLAYER_STATS),
         "basketball": (markets.BASKETBALL_STATS, markets.BASKETBALL_PLAYER_STATS),
         "darts": (markets.DARTS_STATS, markets.DARTS_PLAYER_STATS),
-        "baseball": (markets.BASEBALL_STATS, markets.BASEBALL_PLAYER_STATS),
     }
 
     # 1. No sport's zero-fill may write a key it does not itself price.

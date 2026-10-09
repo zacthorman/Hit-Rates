@@ -44,7 +44,6 @@ POSITION_ORDER = {
     "american-football": ["QB", "RB", "FB", "WR", "TE", "K"],
     "football": ["F", "M", "D", "G"],
     "basketball": ["G", "F", "C"],
-    "baseball": ["P", "IF", "OF", "C", "DH"],
 }
 
 

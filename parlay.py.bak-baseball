@@ -170,20 +170,6 @@ LADDERED = {
     "Points and assists",
     "Rebounds and assists",
     "Steals and blocks",
-    # Baseball. Batter props are sold as rungs (1+ hits, 2+ total bases, 1+
-    # RBI) and pitcher strikeouts ladder too. Outs recorded, hits allowed,
-    # earned runs and walks allowed are posted as one over/under line each,
-    # so they stay out, same rule as the darts average. Check against a coupon.
-    "Hits",
-    "Total bases",
-    "Home runs",
-    "RBIs",
-    "Runs",
-    "Singles",
-    "Doubles",
-    "Stolen bases",
-    "Hits runs and RBIs",
-    "Pitcher strikeouts",
     # Football.
     "Shots",
     "Shots on target",

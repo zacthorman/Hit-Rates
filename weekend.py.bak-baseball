@@ -603,16 +603,11 @@ _BASKETBALL = {"Rebounds", "3 pointers", "Defensive rebounds",
 _DARTS = {"Thrown 180", "Average 3 darts", "Highest checkout",
           "Checkouts over 100", "Thrown over 140", "Checkouts accuracy"}
 
-# Baseball. Rows no other sport has: the Batting/Pitching block's own words.
-_BASEBALL = {"Left on base", "Innings pitched", "Base on balls", "At bats",
-             "Earned runs", "RBI"}
-
 SPORT_LABELS = {
     "football": "Football",
     "american-football": "NFL",
     "basketball": "Basketball",
     "darts": "Darts",
-    "baseball": "MLB",
 }
 
 
@@ -625,8 +620,6 @@ def sport_of(entry) -> str:
         present = set(names)
         if _DARTS & present:
             return "darts"
-        if _BASEBALL & present:
-            return "baseball"
         if _BASKETBALL & present:
             return "basketball"
         if _GRIDIRON & present:

@@ -2139,18 +2139,6 @@ const PLAYER_STAT_TO_TEAM = {
   "Points and rebounds": "Points",
   "Points and assists": "Points",
   "Rebounds and assists": "Rebounds",
-
-  // --- baseball -----------------------------------------------------------
-  // Batting props ride on the own lineup's output. Pitcher props are absent:
-  // the opposing lineup drives them and there is no own-team market for it.
-  "Hits": "Hits",
-  "Singles": "Hits",
-  "Doubles": "Hits",
-  "Total bases": "Hits",
-  "Home runs": "Home runs",
-  "RBIs": "Runs",
-  "Runs": "Runs",
-  "Hits runs and RBIs": "Runs",
 };
 
 /* Which player markets the scan will consider at all.
