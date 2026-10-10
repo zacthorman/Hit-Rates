@@ -6,9 +6,8 @@ run does nothing: it only acts when a big-league fixture kicks off in the next
 20 to 80 minutes and its confirmed XI is not in the report yet. Once a fixture
 has its confirmed line-up it is never fetched again.
 
-Big games only: the leagues in update.json plus the Nations League, the NFL
-(inactives) and MLB (batting orders and starting pitchers). Darts has no
-line-up to pull, so darts.html is skipped. A run never overlaps the nightly
+Big games only: the leagues in update.json plus the Nations League. NFL and
+darts have no football line-up to pull. A run never overlaps the nightly
 build, and never publishes unless something actually changed.
 """
 from __future__ import annotations
@@ -24,22 +23,14 @@ from pathlib import Path
 ROOT = Path(__file__).parent
 LOG = ROOT / "lineups_auto.log"
 SKIP = {"darts.html"}
-WINDOW = (5 * 60, 80 * 60)
+WINDOW = (20 * 60, 80 * 60)
 # NFL inactives are announced 90 minutes before kick-off.
 NFL_WINDOW = (15 * 60, 95 * 60)
-# MLB batting orders and the starting pitcher are posted anywhere from about
-# four hours to one hour before first pitch, so the window opens early and
-# the 15-minute retry catches it whenever it lands.
-MLB_WINDOW = (15 * 60, 240 * 60)
 
 
 def window(entry):
     sport = entry["fixture"].get("sport") or "football"
-    if sport == "american-football":
-        return NFL_WINDOW
-    if sport == "baseball":
-        return MLB_WINDOW
-    return WINDOW
+    return NFL_WINDOW if sport == "american-football" else WINDOW
 
 
 def say(msg: str) -> None:

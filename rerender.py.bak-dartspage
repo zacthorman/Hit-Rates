@@ -80,18 +80,6 @@ def main() -> None:
             continue
 
         fixtures = data.get("fixtures", [])
-        # Unresolved draw slots ("Winner OF Match 16") were let through by the
-        # darts sweep before run.py learned to skip them. One side has no
-        # record, so they are dropped here rather than re-rendered half empty.
-        def _slot(fx):
-            names = (fx["fixture"].get("home", "") + " "
-                     + fx["fixture"].get("away", "")).lower()
-            return "winner of" in names or "loser of" in names
-        if any(_slot(fx) for fx in fixtures):
-            kept = [fx for fx in fixtures if not _slot(fx)]
-            print(f"  {path.name}: dropped {len(fixtures) - len(kept)} "
-                  f"unresolved draw slot(s)")
-            data["fixtures"] = fixtures = kept
         if not fixtures:
             print(f"  {path.name}: no fixtures in payload, skipping")
             failed += 1

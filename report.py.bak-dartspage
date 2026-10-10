@@ -1340,15 +1340,6 @@ function staleWarning() {
 }
 
 function mismatchWarning() {
-  // A darts player's form is every PDC event he has played, by design: no
-  // single event has enough matches. The football warning about clubs from
-  // different leagues is wrong here, so say the one thing that does matter.
-  if (SPORT === "darts") {
-    return `<p class="note">Form is each player's last 20 PDC matches across
-      every event. Floor and Euro Tour matches are short (best of 11 legs) and
-      majors are longer, so 180 and 100+ checkout counts move with match
-      length as much as with form.</p>`;
-  }
   const notes = [];
   DATA.records.forEach((rows, i) => {
     const mix = sampleMix(i);
@@ -2021,9 +2012,7 @@ function scanLines(minSample) {
           // rather than three near-identical ones.
           let best = null;
 
-          // Darts has no venue: "home" is whoever SofaScore lists first, so a
-          // home/away split halves a player's form for nothing.
-          (SPORT === "darts" ? VENUE_SPLITS.slice(0, 1) : VENUE_SPLITS).forEach(split => {
+          VENUE_SPLITS.forEach(split => {
             let rows = records;
             if (split.key !== "all") rows = rows.filter(r => r.venue === split.key);
             rows = rows.slice(-games);
@@ -3133,13 +3122,10 @@ function scanMatchups(minSample) {
           const attackVenue  = side === 0 ? "home" : "away";
           const defendVenue  = side === 0 ? "away" : "home";
 
-          // Same reason as the standout scan: in darts the listing order is
-          // not a venue, so each player's full record is used.
-          const anyVenue = SPORT === "darts";
           const attackRows = fx.records[side]
-            .filter(r => anyVenue || r.venue === attackVenue).slice(-games);
+            .filter(r => r.venue === attackVenue).slice(-games);
           const defendRows = fx.records[1 - side]
-            .filter(r => anyVenue || r.venue === defendVenue).slice(-games);
+            .filter(r => r.venue === defendVenue).slice(-games);
 
           // Same guard as the standout scan: a promoted club's record is
           // true and useless, and this is the exact fixture where pairing it
@@ -3854,15 +3840,6 @@ function valueEdge(r) {
   return pr.p - r.k / r.n;
 }
 
-/* Darts bets are priced off the record alone (no opponent-adjusted model
-   across PDC events), and record-only scores top out in the 30s and 40s, so
-   football's default bar of 60 left every darts slip unbuilt. Lowered once,
-   on load, and only if nobody has typed their own. */
-if (SPORT === "darts") {
-  const el = document.getElementById("bbar");
-  if (el && el.value === "60") el.value = "30";
-}
-
 function slipBar() {
   const el = document.getElementById("bbar");
   const v = el ? parseInt(el.value, 10) : 60;
@@ -4153,16 +4130,14 @@ function bestBetsView() {
 
         <div class="pick-halves">
           <div class="half">
-            <span class="half-label">${escapeHtml(r.team)} ${SPORT === "darts" ? "form" : r.attackVenue}</span>
+            <span class="half-label">${escapeHtml(r.team)} ${r.attackVenue}</span>
             <span class="half-num">${r.kFor}/${r.nFor}</span>
             <div class="bar"><div class="fill" style="width:${r.pFor * 100}%;
                  background:var(${VARS[r.teamIndex]})"></div></div>
             <span class="seq">${r.forVals.join(", ")}</span>
           </div>
           <div class="half">
-            <span class="half-label">${SPORT === "darts"
-              ? `${escapeHtml(r.opponent)}'s opponents`
-              : `${escapeHtml(r.opponent)} conceded, ${r.defendVenue}`}</span>
+            <span class="half-label">${escapeHtml(r.opponent)} conceded, ${r.defendVenue}</span>
             <span class="half-num">${r.kAgn}/${r.nAgn}</span>
             <div class="bar"><div class="fill" style="width:${r.pAgn * 100}%;
                  background:var(${VARS[1 - r.teamIndex]})"></div></div>
@@ -5329,23 +5304,6 @@ function fillPlayerStats() {
   const select = document.getElementById("pstat");
   const tabs = document.querySelector(".tabs");
 
-  // Darts has no squads, so no player tabs, but the two players ARE the
-  // "teams" and the team scans are exactly the darts bets.
-  if (SPORT === "darts") {
-    tabs.hidden = false;
-    ["players", "lineups", "best-player"].forEach(t => {
-      const b = tabs.querySelector(`[data-tab="${t}"]`);
-      if (b) b.hidden = true;
-    });
-    const label = { team: "Stats", "best-team": "Best bets" };
-    Object.entries(label).forEach(([t, text]) => {
-      const b = tabs.querySelector(`[data-tab="${t}"]`);
-      if (b) b.textContent = text;
-    });
-    if (["players", "lineups", "best-player"].includes(tab)) switchTab("team");
-    return;
-  }
-
   if (!hasPlayers()) {
     tabs.hidden = true;
     if (tab === "players") switchTab("team");
@@ -5419,17 +5377,6 @@ function applyFixture() {
     b.disabled = b.dataset.source === "h2h" && !hasH2H();
     b.setAttribute("aria-pressed", b.dataset.source === source);
   });
-
-  // Darts: no venue and no halves, so those controls go rather than sit
-  // there greyed out or, worse, quietly halving the sample.
-  if (SPORT === "darts") {
-    if (venue !== "all") venue = "all";
-    ["[data-venue]", "[data-period]"].forEach(sel => {
-      const b = document.querySelector(sel);
-      const g = b && b.closest(".control-group");
-      if (g) g.hidden = true;
-    });
-  }
 
   // A fixture can be missing a half if SofaScore never published it.
   if (!DATA.lines[period]) period = "ALL";
@@ -6066,14 +6013,6 @@ segment("games", v => {
   if (onBest()) bestBetsView();
 });
 segment("border", () => bestBetsView());
-/* A darts match carries four markets, so one fixture is too thin a board to
-   pick from. Darts opens Best bets and Standout lines on every match in the
-   report; the button still switches back to one fixture. */
-if (SPORT === "darts") {
-  scanScope = "round";
-  document.querySelectorAll("[data-scope2]").forEach(b =>
-    b.setAttribute("aria-pressed", b.dataset.scope2 === "round"));
-}
 segment("scope2", v => {
   scanScope = v;
   bestBetsView();
@@ -6545,17 +6484,15 @@ function filterSummaryParts() {
 
   if (source === "h2h") push("Head to head", true);
   push(games >= 99 ? "All matches" : "Last " + games, games !== 10);
-  if (SPORT !== "darts")
-    push(venue === "all" ? "All venues"
-       : venue === "home" ? "Home only" : "Away only", venue !== "all");
+  push(venue === "all" ? "All venues"
+     : venue === "home" ? "Home only" : "Away only", venue !== "all");
   if (tier !== "all") {
     const b = document.querySelector(`[data-tier="${tier}"]`);
     push("vs " + (b ? b.textContent : tier), true);
   }
-  if (SPORT !== "darts")
-    push(period === "ALL" ? "Full match"
-       : period === "1ST" ? "First half" : "Second half", period !== "ALL");
-  if (focus === "both") push(SPORT === "darts" ? "Both players" : "Both teams", false);
+  push(period === "ALL" ? "Full match"
+     : period === "1ST" ? "First half" : "Second half", period !== "ALL");
+  if (focus === "both") push("Both teams", false);
   else push(escapeHtml((DATA.teams[+focus] || {}).name || "One team") + " only", true);
   if (measure !== "for") push(measure === "against" ? "Against" : "Matchup", true);
   push(scope === "core" ? "Main stats" : "All stats", scope !== "core");

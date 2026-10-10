@@ -877,14 +877,8 @@ def _in_window(event: dict, now: float, until: float) -> bool:
         return False
     home = (event.get("homeTeam") or {}).get("name", "")
     away = (event.get("awayTeam") or {}).get("name", "")
-    # A draw not yet made comes through as TBD v TBD, and in darts a later
-    # round arrives as "Winner OF Match 16" before the earlier one is played.
-    # Neither is a player: one side has no record at all, so the page shows
-    # half a fixture. The next run picks the match up once the slot resolves.
-    names = (home + " " + away).lower()
-    placeholder = ("tbd" in names or "winner of" in names
-                   or "loser of" in names)
-    return bool(home and away) and not placeholder
+    # A draw not yet made comes through as TBD v TBD.
+    return bool(home and away) and "tbd" not in (home + away).lower()
 
 
 def darts_events(days: int, skip: tuple[str, ...] = DARTS_SKIP,
