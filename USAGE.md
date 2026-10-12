@@ -619,6 +619,24 @@ The breakdown is always shown. A score you cannot interrogate is just an opinion
 
 Add more than one and it shows the combined price against the fair price, and how much better each leg would need to be priced to break even. It also states plainly what multiples do: the bookmaker's margin compounds, so at 5% per market a treble carries about 16% against you and a five-fold about 28%. Singles are where value survives.
 
+## The Line-ups tab as data (`gamestate.py`)
+
+The Line-ups tab's player lines are worked out in the browser. `gamestate.py` works out the same things in Python from the same report data and prints them as JSON, so Jarvis (or anything else) can read them without a browser.
+
+```bash
+.venv/bin/python -B gamestate.py --event 16363888
+.venv/bin/python -B gamestate.py --team "Aston Villa" --hours 168
+```
+
+`--team` matches any part of either team's name and takes kick-offs from now to `--hours` ahead (default 168). Per fixture you get where the XI came from (`confirmed`, `predicted` or `regular starters`), the game card (expected possession, projected shots, on target, goals, fouls and tackles, and the one-line script), every Fouls, Fouled, Shots, Shots on target and Tackles line the page backs with its "works against" list, the head-to-head foul pairs scoring 0.6 or more, and the positional matchup for each line, marked `thin` where the page would. `on_page` marks the rows the page itself shows; the rest it computes and cuts. It exits 1 if nothing matches.
+
+It reads only: no fetching (`lineups_auto.py` already puts the XI in the report), no writing. The page is the reference. `tests/test_gamestate.py` lifts the tab's own JavaScript out of `report.py`, runs it in node on three saved reports and fails unless every row matches to 3 decimal places, so a change to the page's JavaScript fails the test until `gamestate.py` follows.
+
+```bash
+.venv/bin/python -B -m unittest tests.test_gamestate
+GAMESTATE_LIVE=1 .venv/bin/python -B -m unittest tests.test_gamestate   # also every football fixture in reports/
+```
+
 ## Weekly routine
 
 ```bash
@@ -648,6 +666,7 @@ Commit source changes to `main` as normal. Only generated output goes to `gh-pag
 | `report.py` | Generates the HTML. |
 | `publish.sh` | Pushes the built site to gh-pages without growing the repo. |
 | `track.py` | Logs picks before kickoff, settles them, reports honestly. |
+| `gamestate.py` | The Line-ups tab's player lines as JSON. Reads only. |
 | `make_index.py` | Builds the front page listing every report. |
 | `check.py` | Probes endpoints when something breaks. |
 | `explore.ipynb` | Your notebook. Keep it for experimenting. |
