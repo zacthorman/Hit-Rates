@@ -93,6 +93,13 @@ def main() -> None:
             w = window(entry)
             if w[0] < ko - now < w[1] and not (entry.get("lineups") or {}).get("confirmed"):
                 lineup_data.attach(entry, max_age_hours=0.05)
+                if (entry["fixture"].get("sport") or "") == "american-football":
+                    # Inactives can change who starts at QB; recompute.
+                    try:
+                        import nfl_injuries
+                        nfl_injuries.attach(entry)
+                    except Exception:
+                        pass
                 if (entry.get("lineups") or {}).get("confirmed"):
                     got.append(f'{entry["fixture"]["home"]} v {entry["fixture"]["away"]}')
         if got:

@@ -275,6 +275,34 @@ select { max-width: 100%; min-width: 0; text-overflow: ellipsis; }
 .def-bar em { display: block; height: 100%; background: var(--muted); border-radius: 99px; }
 .def-soft .def-bar em { background: var(--hit); } .def-tough .def-bar em { background: var(--miss); }
 .def-pick { padding: 9px 0; border-top: 1px solid var(--grid); }
+.gs-card { padding: 14px 16px; }
+.gs-teams { display: flex; justify-content: space-between; gap: 12px; }
+.gs-side { display: flex; flex-direction: column; gap: 1px; font-size: 15px; min-width: 0; }
+.gs-name { display: inline-flex; align-items: center; gap: 7px; }
+.gs-r { align-items: flex-end; text-align: right; }
+.gs-poss { display: flex; align-items: center; gap: 10px; margin-top: 12px; font-variant-numeric: tabular-nums; }
+.gs-bar { flex: 1; height: 10px; border-radius: 99px; background: var(--team-2); overflow: hidden; font-style: normal; }
+.gs-bar em { display: block; height: 100%; background: var(--team-1); border-right: 2px solid var(--surface-1); }
+.gs-caption { text-align: center; font-size: 11.5px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: .05em; }
+.gs-vols { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin-top: 12px; }
+@media (max-width: 560px) { .gs-vols { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.gs-vol { background: var(--tint); border-radius: 8px; padding: 6px 8px; text-align: center; }
+.gs-vol span { display: block; font-size: 11px; color: var(--muted); }
+.gs-vol b { font-size: 14px; font-variant-numeric: tabular-nums; }
+.gs-script { margin: 10px 0 0; font-size: 13.5px; color: var(--text-secondary); }
+.gs-head { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 18px 0 4px; }
+.gs-h { margin: 0; }
+.gs-p { margin-left: auto; font-weight: 700; font-variant-numeric: tabular-nums; }
+.gs-up { color: var(--hit); font-weight: 600; } .gs-down { color: var(--miss); font-weight: 600; }
+.gs-missing { margin: 0 0 10px; }
+.nfl-qb { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--miss); border-left-width: 4px;
+          border-radius: 10px; padding: 10px 13px; margin: 0 0 10px; font-size: 14px; line-height: 1.45; }
+.nfl-qb .lu-dot { margin-top: 6px; flex: 0 0 auto; }
+.nfl-inj { display: flex; gap: 8px; align-items: baseline; font-size: 13.5px; padding: 4px 0; line-height: 1.5; }
+.nfl-inj .lu-dot { flex: 0 0 auto; }
+.nfl-injcard .lu-who { margin-bottom: 4px; }
+.nfl-tag { font-size: 11px; font-weight: 600; border: 1px solid var(--border); border-radius: 5px;
+           padding: 0 5px; color: var(--muted); margin-left: 4px; }
 .def-pick:first-child { border-top: 0; }
 .def-pick-main { display: flex; align-items: center; gap: 8px; font-size: 15px; }
 .def-line { font-weight: 700; padding: 1px 8px; border-radius: 99px; border: 1px solid var(--hit); color: var(--hit); font-size: 13px; }
@@ -5581,6 +5609,22 @@ function defPerGame(records, stat) {
   return games;
 }
 
+/* Defensive positions come labelled every way SofaScore can think of (DE,
+   DT, NT, DL; CB, SAF, DB). A tackle prop on a linebacker and one on a
+   safety are different questions, but a nose tackle and a defensive tackle
+   are the same one, so these are pooled into three groups. */
+const DEF_GROUPS = { DL: ["DE", "DT", "DL", "NT"], DB: ["CB", "SAF", "DB", "S", "FS", "SS"],
+                     LB: ["LB", "OLB", "ILB", "MLB"] };
+function posList(byPos, pos) {
+  if (!byPos) return [];
+  const g = DEF_GROUPS[pos];
+  return g ? g.flatMap(p => byPos.get(p) || []) : (byPos.get(pos) || []);
+}
+function posMatch(have, want) {
+  const g = DEF_GROUPS[want];
+  return g ? g.includes(have) : have === want;
+}
+
 function defenceTable(pos, stat) {
   const key = `${pos}|${stat}`;
   if (DEF_CACHE.has(key)) return DEF_CACHE.get(key);
@@ -5588,7 +5632,7 @@ function defenceTable(pos, stat) {
   const { off, names } = defOffenceMap();
   // What each offence usually gets from this position, game by game.
   const ownGames = new Map();
-  idx.own.forEach((byPos, teamId) => ownGames.set(teamId, defPerGame(byPos.get(pos), stat)));
+  idx.own.forEach((byPos, teamId) => ownGames.set(teamId, defPerGame(posList(byPos, pos), stat)));
   const usual = (teamId, skipMatch) => {
     const g = ownGames.get(teamId);
     if (!g) return null;
@@ -5598,7 +5642,7 @@ function defenceTable(pos, stat) {
   };
   const rows = [];
   idx.conceded.forEach((byPos, defId) => {
-    const games = [...defPerGame(byPos.get(pos), stat).entries()]
+    const games = [...defPerGame(posList(byPos, pos), stat).entries()]
       .sort((a, b) => (a[1].date < b[1].date ? -1 : 1));
     if (games.length < DEF_MIN_GAMES) return;
     const ratios = games.map(([mid, g]) => {
@@ -5636,7 +5680,7 @@ function defRow(teamId, pos, stat) {
 const DEF_ROWS = [["QB", "Passing yards"], ["RB", "Rushing yards"], ["RB", "Receiving yards"],
                   ["WR", "Receiving yards"], ["WR", "Receiving receptions"],
                   ["TE", "Receiving yards"], ["TE", "Receiving receptions"]];
-const DEF_POS = { QB: "QBs", RB: "RBs", WR: "WRs", TE: "TEs" };
+const DEF_POS = { QB: "QBs", RB: "RBs", WR: "WRs", TE: "TEs", LB: "LBs", DB: "DBs", DL: "D-line" };
 
 /* Ladder lines bookies actually offer, per market. */
 const DEF_LADDER = {
@@ -5644,10 +5688,23 @@ const DEF_LADDER = {
   "Rushing yards": [25, 40, 50, 60, 75, 100],
   "Receiving yards": [25, 40, 50, 60, 75, 100],
   "Receiving receptions": [2, 3, 4, 5, 6, 7, 8],
+  "Defensive combine tackles": [2, 3, 4, 5, 6, 7, 8, 9, 10],
+  "Defensive assist tackles": [1, 2, 3, 4],
+  "Defensive sacks": [0.5, 1, 1.5],
 };
 
-/* The players who actually get the ball at a position: top two by average
-   over their last ten games with the stat recorded. */
+/* Defensive props: the same machinery pointed the other way. "vs usual"
+   here is what defenders at the position make against THIS offence, divided
+   by what the same defenders make against everyone else, so an offence that
+   runs a lot of plays, or leaves its quarterback exposed, shows up as
+   generous. Sacks are rare enough that the hit bar is lower (half his games
+   rather than seven in ten), or no pass rusher would ever qualify. */
+const DEFP_ROWS = [["LB", "Defensive combine tackles"], ["DB", "Defensive combine tackles"],
+                   ["DL", "Defensive combine tackles"], ["LB", "Defensive assist tackles"],
+                   ["DB", "Defensive assist tackles"], ["DL", "Defensive sacks"], ["LB", "Defensive sacks"]];
+const DEFP_RATE = { "Defensive sacks": 0.5 };
+let defMode = "offence";
+
 /* Who is actually playing. NFL inactives are announced about 90 minutes
    before kick-off; once SofaScore has the confirmed roster, anyone not on it,
    or listed as missing, is dropped from the picks. Before then: everyone. */
@@ -5661,22 +5718,64 @@ function defActive(teamIndex) {
   return { roster, out };
 }
 
-function defPlayers(teamIndex, pos, stat) {
+/* Days before the inactives, the injury report is the best guide there is.
+   It comes from ESPN at build time (nfl_injuries.py): anyone Out, Doubtful,
+   on IR or suspended is treated as not playing. Questionable is left in and
+   flagged, because most questionable players play. */
+const NFL_OUT = /^(out|doubtful|injured reserve|ir\\b|suspen|pup|physically unable|non-football|reserve)/i;
+function nflInjuries(teamIndex) {
+  return ((DATA.injuries || {})[teamIndex === 0 ? "home" : "away"]) || [];
+}
+function nflOut(teamIndex) {
+  return new Map(nflInjuries(teamIndex).filter(x => NFL_OUT.test(x[2] || "")).map(x => [x[0], x[2]]));
+}
+function nflQuestionable(teamIndex) {
+  return new Map(nflInjuries(teamIndex).filter(x => /^questionable/i.test(x[2] || "")).map(x => [x[0], x[2]]));
+}
+
+/* A change at quarterback, worked out at build time from the injury report,
+   the confirmed inactives and a manual override (nfl_injuries.py). Every
+   receiver's record was built catching passes from the man who has been
+   starting, so when somebody else starts, those records are scaled by how
+   the new man's passing compares: yards by yards per start, receptions by
+   completions per start. */
+function qbChange(teamIndex) {
+  return ((DATA.qbChange || {})[teamIndex === 0 ? "home" : "away"]) || null;
+}
+function qbScale(teamIndex, stat) {
+  const q = qbChange(teamIndex);
+  if (!q) return 1;
+  if (stat === "Receiving yards") return q.yds || 1;
+  if (stat === "Receiving receptions") return q.rec || 1;
+  return 1;
+}
+
+/* The players who actually get the ball at a position: top two by average
+   over their last ten games with the stat recorded. Injured and inactive
+   players are left out, and a quarterback who is not starting is never the
+   quarterback pick. */
+function defPlayers(teamIndex, pos, stat, count) {
   const by = new Map();
   const active = defActive(teamIndex);
+  const injured = nflOut(teamIndex);
+  const q = qbChange(teamIndex);
   ((DATA.players || [])[teamIndex] || []).forEach(r => {
-    if (r.position !== pos || r.former_club) return;
+    if (!posMatch(r.position, pos) || r.former_club) return;
     if (active && (!active.roster.has(r.player) || active.out.has(r.player))) return;
+    if (injured.has(r.player)) return;
+    if (q && pos === "QB" && r.player === q.from) return;
     const v = (r.stats || {})[stat];
     if (v === undefined || v === null) return;
     if (!by.has(r.player)) by.set(r.player, []);
     by.get(r.player).push(r);
   });
+  const scale = qbScale(teamIndex, stat);
   return [...by.entries()].map(([name, rs]) => {
     rs.sort((a, b) => (a.date < b.date ? -1 : 1));
-    const v = rs.slice(-10).map(r => r.stats[stat]);
-    return { name, v, avg: v.reduce((a, b) => a + b, 0) / v.length };
-  }).filter(p => p.v.length >= 5).sort((a, b) => b.avg - a.avg).slice(0, pos === "QB" ? 1 : 2);
+    const v = rs.slice(-10).map(r => r.stats[stat] * scale);
+    return { name, v, avg: v.reduce((a, b) => a + b, 0) / v.length, scaled: scale !== 1 };
+  }).filter(p => p.v.length >= 5).sort((a, b) => b.avg - a.avg)
+    .slice(0, count || (pos === "QB" ? 1 : 2));
 }
 
 /* The line to take for one player against one defence. Over a soft defence:
@@ -5684,18 +5783,69 @@ function defPlayers(teamIndex, pos, stat) {
    average scaled by how generous the defence is still clears it. Against a
    tough one: the same test, but the defence has to leave room, so this is
    usually a lower rung or nothing at all. */
-function defLine(p, stat, factor) {
+function defLine(p, stat, factor, minRate) {
   const ladder = DEF_LADDER[stat] || [];
+  const need = minRate || 0.7;
   let best = null;
   for (const L of ladder) {
     const k = p.v.filter(x => x >= L).length;
     const proj = p.avg * factor;
-    if (k / p.v.length >= 0.7 && proj >= L * 1.1) best = { line: L, k, n: p.v.length, proj };
+    if (k / p.v.length >= need && proj >= L * (need < 0.7 ? 1 : 1.1)) best = { line: L, k, n: p.v.length, proj };
   }
   return best;
 }
 
+const statWordNfl = s => ({ "Receiving receptions": "receptions", "Defensive combine tackles": "tackles",
+  "Defensive assist tackles": "assisted tackles", "Defensive sacks": "sacks" }[s] || s.toLowerCase());
+const fmtN = x => x.toFixed(x < 10 ? 1 : 0);
+
+/* The quarterback banner, plus anyone who matters on the injury report. */
+function nflStatusHtml() {
+  const teams = DATA.teams;
+  const parts = [];
+  [0, 1].forEach(t => {
+    const q = qbChange(t);
+    if (q) {
+      const to = q.to ? `<b>${escapeHtml(q.to)}</b> expected to start${q.toStarts ? ` (${q.toStarts} start${q.toStarts === 1 ? "" : "s"} on record)` : " (no starts on record)"}`
+                      : `backup with no record expected to start`;
+      parts.push(`<div class="nfl-qb"><span class="lu-dot lu-dot${t}"></span><div>
+        <b>QB change, ${escapeHtml(teams[t].name)}:</b> ${escapeHtml(q.from)} ${escapeHtml(q.reason || "out")}. ${to}.
+        <span class="lu-muted">Receiver lines scaled &times;${(q.yds || 1).toFixed(2)} on yards and &times;${(q.rec || 1).toFixed(2)} on receptions.
+        Source: ${escapeHtml(q.source || "injury report")}.</span></div></div>`);
+    }
+  });
+  // Skill players and regular defenders only: a list of every practice-squad
+  // tight end is noise.
+  const regular = t => {
+    const c = new Map();
+    ((DATA.players || [])[t] || []).forEach(r => c.set(r.player, (c.get(r.player) || 0) + 1));
+    return c;
+  };
+  const lines = [0, 1].map(t => {
+    const seen = regular(t);
+    const out = nflInjuries(t).filter(x => (seen.get(x[0]) || 0) >= 3 && (NFL_OUT.test(x[2] || "") || /^questionable/i.test(x[2] || "")));
+    if (!out.length) return "";
+    return `<div class="nfl-inj"><span class="lu-dot lu-dot${t}"></span><span>${out.slice(0, 8).map(x =>
+      `${escapeHtml(x[0])} <span class="lu-muted">${escapeHtml(x[1] || "")}</span> <b class="${NFL_OUT.test(x[2]) ? "lu-lo" : "lu-mid"}">${escapeHtml(x[2])}</b>`).join(" &middot; ")}</span></div>`;
+  }).join("");
+  const when = (DATA.injuries || {}).fetched;
+  return parts.join("") + (lines ? `<div class="lu-card nfl-injcard"><div class="lu-who"><b>Injury report</b>
+      <span class="lu-muted">${when ? "ESPN, " + escapeHtml(when) + ". " : ""}Out, doubtful and IR are left out of every pick below.</span></div>${lines}</div>` : "");
+}
+
 function defenceView(el) {
+  const teams = DATA.teams;
+  const status = (DATA.lineups || {}).confirmed
+    ? `<span class="lu-badge lu-conf">Inactives applied</span>`
+    : `<span class="lu-badge">Inactives not out yet</span>`;
+  const toggle = `<div class="seg lu-seg">` + [["offence", "QBs &amp; receivers"], ["defence", "Tackles &amp; sacks"]].map(([m, l]) =>
+    `<button type="button" data-defmode="${m}" aria-pressed="${m === defMode}">${l}</button>`).join("") + `</div>`;
+  const head = `<div class="lu-head">${toggle}${status}<span class="lu-muted">Picks update about 90 minutes before kick-off, when the actives are confirmed.</span></div>`
+    + nflStatusHtml();
+  el.innerHTML = head + (defMode === "defence" ? defensivePropsHtml() : offencePropsHtml());
+}
+
+function offencePropsHtml() {
   const teams = DATA.teams;
   const picks = [], fades = [];
   DEF_ROWS.forEach(([pos, stat]) => [0, 1].forEach(d => {
@@ -5721,18 +5871,18 @@ function defenceView(el) {
     const share = (r.place - 1) / Math.max(1, r.of - 1);
     return share <= 0.5 ? `${r.place}${ordinal(r.place)} softest` : `${r.of - r.place + 1}${ordinal(r.of - r.place + 1)} toughest`;
   };
-  const statWord = s => s === "Receiving receptions" ? "receptions" : s.toLowerCase();
+  const qbTag = p => p.scaled ? ` <span class="nfl-tag">QB-adjusted</span>` : "";
 
   const pickCard = x => `<div class="def-pick">
       <div class="def-pick-main"><span class="lu-dot lu-dot${1 - x.d}"></span>
-        <b>${escapeHtml(x.p.name)}</b> <span class="def-line">${x.l.line}+ ${statWord(x.stat)}</span></div>
+        <b>${escapeHtml(x.p.name)}</b> <span class="def-line">${x.l.line}+ ${statWordNfl(x.stat)}</span>${qbTag(x.p)}</div>
       <div class="def-pick-why">
         <span><b class="lu-hi">${x.l.k}/${x.l.n}</b> his last ${x.l.n}</span>
-        <span>avg ${x.p.avg.toFixed(x.p.avg < 10 ? 1 : 0)} &rarr; <b>${x.l.proj.toFixed(x.l.proj < 10 ? 1 : 0)}</b> v this D</span>
+        <span>avg ${fmtN(x.p.avg)} &rarr; <b>${fmtN(x.l.proj)}</b> v this D</span>
         <span>${escapeHtml(teams[x.d].name)}: <b class="lu-hi">${rankWord(x.r)}</b> v ${DEF_POS[x.pos]}, ${x.r.vsUsual.toFixed(2)}&times; usual</span>
       </div></div>`;
   const fadeLine = x => `<div class="def-fade"><span class="lu-dot lu-dot${1 - x.d}"></span>
-      <b>${escapeHtml(x.p.name)}</b> ${statWord(x.stat)} <span class="lu-muted">&middot; ${escapeHtml(teams[x.d].name)} ${rankWord(x.r)} v ${DEF_POS[x.pos]}, ${x.r.vsUsual.toFixed(2)}&times; usual &middot; avg ${x.p.avg.toFixed(x.p.avg < 10 ? 1 : 0)}</span></div>`;
+      <b>${escapeHtml(x.p.name)}</b> ${statWordNfl(x.stat)}${qbTag(x.p)} <span class="lu-muted">&middot; ${escapeHtml(teams[x.d].name)} ${rankWord(x.r)} v ${DEF_POS[x.pos]}, ${x.r.vsUsual.toFixed(2)}&times; usual &middot; avg ${fmtN(x.p.avg)}</span></div>`;
 
   // One card per defence: each market as a bar, full = softest in the file.
   const defCard = d => {
@@ -5745,20 +5895,16 @@ function defenceView(el) {
       const big = Math.max(4, Math.round(r.of / 4));
       const trend = jump >= big ? `<span class="def-up">&#9650; leaking</span>` : -jump >= big ? `<span class="def-down">&#9660; tighter</span>` : "";
       return `<div class="def-row ${cls}">
-        <div class="def-row-top"><span>${DEF_POS[pos]} &middot; ${statWord(stat)}</span><b>${rankWord(r)}</b></div>
+        <div class="def-row-top"><span>${DEF_POS[pos]} &middot; ${statWordNfl(stat)}</span><b>${rankWord(r)}</b></div>
         <i class="def-bar"><em style="width:${Math.round(soft * 100)}%"></em></i>
-        <div class="def-sub">${r.vsUsual.toFixed(2)}&times; usual &middot; ${r.perGame.toFixed(r.perGame < 10 ? 1 : 0)}/game &middot; lead ${r.lead.toFixed(r.lead < 10 ? 1 : 0)} ${trend}</div>
+        <div class="def-sub">${r.vsUsual.toFixed(2)}&times; usual &middot; ${fmtN(r.perGame)}/game &middot; lead ${fmtN(r.lead)} ${trend}</div>
       </div>`;
     }).join("");
     return `<div class="lu-card"><div class="lu-who"><span class="lu-dot lu-dot${d}"></span><b>${escapeHtml(teams[d].name)} defence</b>
       <span class="lu-muted">longer bar = softer</span></div>${rows}</div>`;
   };
 
-  const status = (DATA.lineups || {}).confirmed
-    ? `<span class="lu-badge lu-conf">Inactives applied</span>`
-    : `<span class="lu-badge">Inactives not out yet</span>`;
-  el.innerHTML = `
-    <div class="lu-head">${status}<span class="lu-muted">Picks update about 90 minutes before kick-off, when the actives are confirmed.</span></div>
+  return `
     <h3 class="lu-h">Best lines v these defences</h3>
     ${picks.length ? `<div class="lu-card">${picks.slice(0, 6).map(pickCard).join("")}</div>`
       : `<div class="lu-card lu-empty">No soft matchup in this game where a player's record backs a line.</div>`}
@@ -5769,7 +5915,87 @@ function defenceView(el) {
       get everywhere else, so a soft schedule does not flatter it. <b>Best lines</b> take the highest ladder rung a
       player has cleared 7 times in his last 10, where his average scaled by the defence still clears it by 10%.
       <b>lead</b> is the top player at the position each game. &#9650;/&#9660; mark a defence whose last
-      ${DEF_RECENT} games rank a long way from its season.</p></details>`;
+      ${DEF_RECENT} games rank a long way from its season. <b>QB-adjusted</b> means the starting quarterback has
+      changed, so the receiver's games are rescaled to the new man's passing before anything is counted.</p></details>`;
+}
+
+/* Tackles and sacks. The defender's own record, scaled by how generous the
+   offence he faces is to his position group. */
+function defensivePropsHtml() {
+  const teams = DATA.teams;
+  const picks = [], fades = [];
+  DEFP_ROWS.forEach(([pos, stat]) => [0, 1].forEach(o => {
+    // o is the OFFENCE; the defenders are on the other side.
+    const r = defRow(teams[o].id, pos, stat);
+    if (!r || !r.vsUsual) return;
+    const share = (r.place - 1) / Math.max(1, r.of - 1);   // 0 = most generous
+    defPlayers(1 - o, pos, stat, 3).forEach(p => {
+      const item = { p, r, pos, stat, o, share };
+      const l = defLine(p, stat, r.vsUsual, DEFP_RATE[stat]);
+      if (l && share <= 0.5) picks.push({ ...item, l, score: (l.k / l.n) * r.vsUsual });
+      else if (share >= 0.66 && p.avg >= (DEF_LADDER[stat] || [0])[0]) fades.push(item);
+    });
+  }));
+  // One line per player: his best market, not tackles and assists twice over.
+  const bestPer = new Map();
+  picks.sort((a, b) => b.score - a.score).forEach(x => {
+    const k = x.p.name + "|" + x.stat;
+    if (!bestPer.has(k)) bestPer.set(k, x);
+  });
+  const top = [...bestPer.values()];
+  const tackles = top.filter(x => x.stat !== "Defensive sacks");
+  const sacks = top.filter(x => x.stat === "Defensive sacks");
+  fades.sort((a, b) => b.share - a.share);
+
+  const rankWord = r => {
+    const share = (r.place - 1) / Math.max(1, r.of - 1);
+    return share <= 0.5 ? `${r.place}${ordinal(r.place)} most generous` : `${r.of - r.place + 1}${ordinal(r.of - r.place + 1)} stingiest`;
+  };
+  const pickCard = x => `<div class="def-pick">
+      <div class="def-pick-main"><span class="lu-dot lu-dot${1 - x.o}"></span>
+        <b>${escapeHtml(x.p.name)}</b> <span class="def-line">${x.l.line}+ ${statWordNfl(x.stat)}</span>
+        <span class="lu-muted">${escapeHtml(DEF_POS[x.pos])}</span></div>
+      <div class="def-pick-why">
+        <span><b class="lu-hi">${x.l.k}/${x.l.n}</b> his last ${x.l.n}</span>
+        <span>avg ${x.p.avg.toFixed(1)} &rarr; <b>${x.l.proj.toFixed(1)}</b> v this offence</span>
+        <span>${escapeHtml(teams[x.o].name)}: <b class="lu-hi">${rankWord(x.r)}</b> to ${DEF_POS[x.pos]}, ${x.r.vsUsual.toFixed(2)}&times; usual</span>
+      </div></div>`;
+  const fadeLine = x => `<div class="def-fade"><span class="lu-dot lu-dot${1 - x.o}"></span>
+      <b>${escapeHtml(x.p.name)}</b> ${statWordNfl(x.stat)} <span class="lu-muted">&middot; ${escapeHtml(teams[x.o].name)} ${rankWord(x.r)} to ${DEF_POS[x.pos]}, ${x.r.vsUsual.toFixed(2)}&times; usual &middot; avg ${x.p.avg.toFixed(1)}</span></div>`;
+
+  const offCard = o => {
+    const rows = DEFP_ROWS.map(([pos, stat]) => {
+      const r = defRow(teams[o].id, pos, stat);
+      if (!r || !r.vsUsual) return "";
+      const soft = 1 - (r.place - 1) / Math.max(1, r.of - 1);
+      const cls = soft >= 0.66 ? "def-soft" : soft <= 0.34 ? "def-tough" : "";
+      return `<div class="def-row ${cls}">
+        <div class="def-row-top"><span>${DEF_POS[pos]} &middot; ${statWordNfl(stat)}</span><b>${rankWord(r)}</b></div>
+        <i class="def-bar"><em style="width:${Math.round(soft * 100)}%"></em></i>
+        <div class="def-sub">${r.vsUsual.toFixed(2)}&times; usual &middot; ${r.perGame.toFixed(1)}/game to the group &middot; top man ${r.lead.toFixed(1)}</div>
+      </div>`;
+    }).join("");
+    return `<div class="lu-card"><div class="lu-who"><span class="lu-dot lu-dot${o}"></span><b>${escapeHtml(teams[o].name)} offence</b>
+      <span class="lu-muted">longer bar = gives up more</span></div>${rows}</div>`;
+  };
+
+  const list = (xs, empty) => xs.length
+    ? `<div class="lu-card">${xs.slice(0, 6).map(pickCard).join("")}</div>`
+    : `<div class="lu-card lu-empty">${empty}</div>`;
+  return `
+    <h3 class="lu-h">Tackles v these offences</h3>
+    ${list(tackles, "No defender whose record backs a tackle line against a generous offence here.")}
+    <h3 class="lu-h">Sacks</h3>
+    ${list(sacks, "No pass rusher with a sack in half his games against an offence that gives them up.")}
+    ${fades.length ? `<h3 class="lu-h">Stingy offences: lower your line or avoid</h3><div class="lu-card">${fades.slice(0, 5).map(fadeLine).join("")}</div>` : ""}
+    <div class="def-grid">${offCard(1)}${offCard(0)}</div>
+    <details class="lu-more"><summary>How this is worked out</summary><p class="note">
+      <b>vs usual</b>: what a position group (linebackers, defensive backs, the defensive line) makes against this offence,
+      divided by what the same defenders make against everyone else. Offences that run a lot of plays give up more
+      tackles; offences with a leaky line give up more sacks. <b>Tackles</b> are combined (solo plus assisted).
+      A tackle line is the highest rung he has cleared 7 times in his last 10, where his average scaled by the offence
+      still clears it by 10%. A sack line needs a sack in half his games and the scaled average to reach the line.
+      Groups: D-line is DE, DT and NT; DBs are corners and safeties.</p></details>`;
 }
 
 /* ---------------------------------------------------------------- line-ups */
@@ -5871,6 +6097,265 @@ function luPairs(shapes) {
     .filter(x => { const k = x.p + "|" + x.o; if (seen.has(k)) return false; seen.add(k); return true; });
 }
 
+/* ------------------------------------------------------ game state */
+/* What kind of game this is going to be, and what that does to each
+   player's numbers. A midfielder who averages two tackles got them in games
+   where his side had about its usual share of the ball. Put the same side at
+   home to a team that will sit in, and he spends the afternoon in possession
+   and makes fewer; put them away at the champions and he makes more.
+
+   Two estimates of the game, blended:
+
+     fitted    the team projection already on the page: each side's attack
+               rating times the other's defence rating, per stat. It knows
+               who is strong and who is weak, so it carries team level.
+     ball      expected possession, from each side's average share of the
+               ball combined head to head (log5), with a small home tilt.
+               With the ball you shoot and get fouled; without it you
+               tackle and foul.
+
+   For each player and market: his average over his last ten starts, times
+   (what his team is projected to do here / what it did in those same ten
+   games), with the two factors averaged geometrically. The line is read off
+   a Poisson on that adjusted average, and his raw record has to agree. */
+let gsSection = "fouls";
+const GS_SECTIONS = [["fouls", "Fouls"], ["shots", "Shots"], ["tackles", "Tackles"]];
+const GS_MARKETS = {
+  fouls: [["Fouls", [1, 2, 3], "fouls"], ["Fouled", [1, 2, 3], "fouled"]],
+  shots: [["Shots", [1, 2, 3, 4], "shots"], ["Shots on target", [1, 2], "on target"]],
+  tackles: [["Tackles", [1, 2, 3, 4], "tackles"]],
+};
+/* The team stat each player stat is a share of, which side's projection it
+   reads, and whether having the ball pushes it up (+1) or down (-1). */
+const GS_TEAM = {
+  "Shots":           { stat: "Total shots",     side: "for",     ball: +1 },
+  "Shots on target": { stat: "Shots on target", side: "for",     ball: +1 },
+  "Fouls":           { stat: "Fouls",           side: "for",     ball: -1 },
+  "Fouled":          { stat: "Fouls",           side: "against", ball: +1 },
+  "Tackles":         { stat: "Tackles",         side: "for",     ball: -1 },
+};
+const GS_MIN_MODEL = 0.6;    // the adjusted chance a line has to reach
+const GS_MIN_RECORD = 0.5;   // and his shrunk record has to agree this far
+let GS_CACHE = null;
+
+const gsAvg = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : null;
+const gsVal = (rec, side, stat) => {
+  const block = side === "for" ? (rec.stats || {}).ALL : (rec.against || {}).ALL;
+  const v = (block || {})[stat];
+  return v === undefined || v === null ? null : v;
+};
+
+function gsState() {
+  if (GS_CACHE && GS_CACHE.id === DATA.fixture.id) return GS_CACHE;
+  const team = t => {
+    const recs = ((DATA.records || [])[t] || []).filter(r => !r.club).slice(-10);
+    const pick = (side, stat) => gsAvg(recs.map(r => gsVal(r, side, stat)).filter(v => v !== null));
+    return { n: recs.length, poss: pick("for", "Ball possession"),
+             xg: pick("for", "Expected goals"), xga: pick("against", "Expected goals"),
+             byMatch: new Map(((DATA.records || [])[t] || []).map(r => [r.id, r])) };
+  };
+  const teams = [team(0), team(1)];
+  let poss = [50, 50];
+  if (teams[0].poss && teams[1].poss) {
+    const lg = p => Math.log(p / (1 - p));
+    const h = Math.min(0.85, Math.max(0.15, teams[0].poss / 100));
+    const a = Math.min(0.85, Math.max(0.15, teams[1].poss / 100));
+    // Shrunk a little: two averages over ten games each overstate the gap.
+    const lo = 0.85 * (lg(h) - lg(a)) + 0.06;
+    const p0 = 100 / (1 + Math.exp(-lo));
+    poss = [p0, 100 - p0];
+  }
+  const proj = ((DATA.projection || {}).ALL) || {};
+  const tierMap = ((DATA.tiers || {}).map) || {};
+  const tierLab = ((DATA.tiers || {}).labels) || {};
+  const tiers = DATA.teams.map(t => tierLab[tierMap[String(t.id)]] || null);
+  GS_CACHE = { id: DATA.fixture.id, teams, poss, proj, tiers };
+  return GS_CACHE;
+}
+
+/* The game-state multiplier for one player's market, measured against the
+   games his own average came from rather than a season figure, so a player
+   who only started the easy ones is compared with the easy ones. */
+function gsFactor(t, stat, recs) {
+  const st = gsState();
+  const def = GS_TEAM[stat];
+  const games = recs.map(r => st.teams[t].byMatch.get(r.match_id)).filter(Boolean);
+  const usual = gsAvg(games.map(g => gsVal(g, def.side, def.stat)).filter(v => v !== null));
+  const usualPoss = gsAvg(games.map(g => gsVal(g, "for", "Ball possession")).filter(v => v !== null));
+  const projRow = st.proj[def.stat];
+  const projTeam = projRow ? projRow[def.side === "for" ? t : 1 - t] : null;
+  const mf = projTeam && usual ? projTeam / usual : null;
+  let pf = null;
+  if (usualPoss && st.teams[0].poss && st.teams[1].poss) {
+    const here = st.poss[t];
+    pf = def.ball > 0 ? here / usualPoss : (100 - here) / (100 - usualPoss);
+  }
+  let f = mf && pf ? Math.sqrt(mf * pf) : (mf || pf || 1);
+  f = Math.min(1.6, Math.max(0.6, f));
+  return { f, mf, pf, usual, projTeam };
+}
+
+function gsPoisAtLeast(mu, k) {
+  let term = Math.exp(-mu), cdf = 0;
+  for (let i = 0; i < k; i++) { cdf += term; term *= mu / (i + 1); }
+  return Math.max(0, 1 - cdf);
+}
+
+/* Who to price: the XI if there is one, otherwise the men who started most
+   of the last five, so the tab still works days out. */
+function gsSquads() {
+  const store = DATA.lineups || {};
+  const lu = store.confirmed || store.predicted;
+  if (lu) {
+    return { source: store.confirmed ? "confirmed XI" : "predicted XI",
+             sides: [lu.home, lu.away].map(s => (s.xi || []).filter(p => p.pos !== "G").map(p => p.name)) };
+  }
+  const sides = [0, 1].map(t => {
+    const recs = (DATA.players || [])[t] || [];
+    const ids = [...new Set(recs.map(r => r.match_id))];
+    const dates = new Map(recs.map(r => [r.match_id, r.date]));
+    const last5 = new Set(ids.sort((a, b) => (dates.get(a) < dates.get(b) ? 1 : -1)).slice(0, 5));
+    const starts = new Map();
+    recs.forEach(r => {
+      if (!last5.has(r.match_id) || r.former_club || r.position === "G" || (r.minutes || 0) < 45) return;
+      starts.set(r.player, (starts.get(r.player) || 0) + 1);
+    });
+    return [...starts.entries()].filter(([, n]) => n >= 3).map(([name]) => name);
+  });
+  return { source: "regular starters (no line-up yet)", sides };
+}
+
+/* Every player's best line in one market, adjusted, with the reasoning. */
+function gsRows(stat, lines) {
+  const out = [], against = [];
+  const squads = gsSquads();
+  squads.sides.forEach((names, t) => names.forEach(name => {
+    const recs = luRecords(t, name);
+    if (recs.length < 5) return;
+    const vals = recs.map(r => (r.stats || {})[stat] ?? 0);
+    const avg = gsAvg(vals);
+    if (!avg) return;
+    const g = gsFactor(t, stat, recs);
+    const mu = avg * g.f;
+    let best = null;
+    for (const L of lines) {
+      const k = vals.filter(v => v >= L).length;
+      const rec = (k + 2) / (vals.length + 4);
+      // Blended with his shrunk record: the Poisson alone reads hot at short
+      // lines (LESSONS.md: 90% calls land about 79%).
+      const p = (gsPoisAtLeast(mu, L) + rec) / 2;
+      if (p >= GS_MIN_MODEL && rec >= GS_MIN_RECORD) best = { L, k, n: vals.length, p, rec };
+    }
+    const row = { t, name, avg, mu, g, best };
+    if (best) out.push(row);
+    // Game state working against a line his record would otherwise back.
+    const L1 = lines[0];
+    const k1 = vals.filter(v => v >= L1).length;
+    if (g.f <= 0.85 && (k1 + 2) / (vals.length + 4) >= 0.6) {
+      against.push({ ...row, L: L1, k: k1, n: vals.length,
+                     p: (gsPoisAtLeast(mu, L1) + (k1 + 2) / (vals.length + 4)) / 2 });
+    }
+  }));
+  out.sort((a, b) => (b.best.p - a.best.p) || (b.best.L - a.best.L));
+  against.sort((a, b) => a.g.f - b.g.f);
+  return { out, against };
+}
+
+function gsArrow(f) {
+  const pct = Math.round((f - 1) * 100);
+  if (pct >= 8) return `<span class="gs-up">&#9650; ${pct}%</span>`;
+  if (pct <= -8) return `<span class="gs-down">&#9660; ${-pct}%</span>`;
+  return `<span class="lu-muted">level</span>`;
+}
+
+function gsRowHtml(x, word) {
+  const why = [];
+  if (x.g.mf) why.push(`team ${fmtGs(x.g.projTeam)} here v ${fmtGs(x.g.usual)} usual`);
+  if (x.g.pf) why.push(`ball ${Math.round(gsState().poss[x.t])}%`);
+  return `<div class="def-pick">
+    <div class="def-pick-main"><span class="lu-dot lu-dot${x.t}"></span>
+      <b>${escapeHtml(x.name)}</b> <span class="def-line">${x.best.L}+ ${word}</span>
+      <span class="gs-p">${Math.round(x.best.p * 100)}%</span></div>
+    <div class="def-pick-why">
+      <span><b class="lu-hi">${x.best.k}/${x.best.n}</b> his last ${x.best.n}</span>
+      <span>avg ${x.avg.toFixed(1)} &rarr; <b>${x.mu.toFixed(1)}</b> here ${gsArrow(x.g.f)}</span>
+      <span>${why.join(" &middot; ")}</span>
+    </div></div>`;
+}
+const fmtGs = v => v == null ? "&ndash;" : v.toFixed(v < 10 ? 1 : 0);
+
+function gsAgainstHtml(xs, word) {
+  if (!xs.length) return "";
+  return `<details class="lu-more"><summary>Game state works against (${xs.length})</summary>
+    <div class="lu-card">${xs.slice(0, 5).map(x => `<div class="def-fade"><span class="lu-dot lu-dot${x.t}"></span>
+      <b>${escapeHtml(x.name)}</b> ${x.L}+ ${word} <span class="lu-muted">&middot; ${x.k}/${x.n} record, but
+      ${x.avg.toFixed(1)} &rarr; ${x.mu.toFixed(1)} here (${Math.round(x.p * 100)}%)</span> ${gsArrow(x.g.f)}</div>`).join("")}</div></details>`;
+}
+
+/* The card at the top: possession, level, expected volume. */
+function gsCardHtml() {
+  const st = gsState();
+  const T = DATA.teams;
+  const P = st.proj;
+  const pair = (k, d) => P[k] ? `${P[k][0].toFixed(d)} v ${P[k][1].toFixed(d)}` : null;
+  const p0 = Math.round(st.poss[0]);
+  const hasBall = st.teams[0].poss && st.teams[1].poss;
+  const dom = st.poss[0] >= st.poss[1] ? 0 : 1;
+  const gap = Math.abs(st.poss[0] - 50);
+  const script = !hasBall ? "No possession record for one side, so only the fitted ratings are used."
+    : gap < 6 ? "Even on the ball. Player numbers move little from their usual."
+    : `${escapeHtml(T[dom].name)} expected to have the ball. Their shots and fouls won go up;
+       ${escapeHtml(T[1 - dom].name)}'s tackles and fouls committed go up, and the reverse for each.`;
+  const vol = [["Shots", pair("Total shots", 1)], ["On target", pair("Shots on target", 1)],
+               ["Goals", pair("Goals", 2)], ["Fouls", pair("Fouls", 1)], ["Tackles", pair("Tackles", 1)]]
+    .filter(x => x[1]).map(x => `<div class="gs-vol"><span>${x[0]}</span><b>${x[1]}</b></div>`).join("");
+  const xg = t => st.teams[t].xg != null ? `xG ${st.teams[t].xg.toFixed(2)} for, ${st.teams[t].xga.toFixed(2)} against` : "";
+  const side = t => `<div class="gs-side ${t ? "gs-r" : ""}"><span class="gs-name"><span class="lu-dot lu-dot${t}"></span>
+      <b>${escapeHtml(T[t].name)}</b></span>${st.tiers[t] ? `<span class="lu-muted">${escapeHtml(st.tiers[t])}</span>` : ""}
+      <span class="lu-muted">${xg(t)}</span></div>`;
+  return `<div class="lu-card gs-card">
+    <div class="gs-teams">${side(0)}${side(1)}</div>
+    ${hasBall ? `<div class="gs-poss"><b>${p0}%</b><i class="gs-bar"><em style="width:${p0}%"></em></i><b>${100 - p0}%</b></div>
+      <div class="gs-caption">expected possession</div>` : ""}
+    ${vol ? `<div class="gs-vols">${vol}</div>` : ""}
+    <p class="gs-script">${script}</p>
+  </div>`;
+}
+
+/* Fouls, Shots, Tackles: one market family at a time. */
+function gsSectionHtml(shapes) {
+  const seg = `<div class="seg gs-seg">` + GS_SECTIONS.map(([k, l]) =>
+    `<button type="button" data-gssec="${k}" aria-pressed="${k === gsSection}">${l}</button>`).join("") + `</div>`;
+  const squads = gsSquads();
+  let body = "";
+  if (gsSection === "fouls" && shapes) {
+    const pairs = luPairs(shapes).filter(x => x.score >= 0.6).slice(0, 5);
+    body += pairs.length
+      ? `<h3 class="lu-h">Head-to-head foul matchups</h3><div class="lu-card lu-best">${pairs.map(x => x.text).join("")}</div>`
+      : `<p class="note">No foul matchup where both sides are at 60% or better.</p>`;
+  }
+  GS_MARKETS[gsSection].forEach(([stat, lines, word]) => {
+    const { out, against } = gsRows(stat, lines);
+    const title = { Fouls: "Fouls committed", Fouled: "Fouls won", Shots: "Shots",
+                    "Shots on target": "Shots on target", Tackles: "Tackles" }[stat];
+    body += `<h3 class="lu-h">${title}, adjusted for this game</h3>` + (out.length
+      ? `<div class="lu-card">${out.slice(0, 6).map(x => gsRowHtml(x, word)).join("")}</div>`
+      : `<div class="lu-card lu-empty">Nobody reaches ${Math.round(GS_MIN_MODEL * 100)}% on this market once the game state is applied.</div>`)
+      + gsAgainstHtml(against, word);
+  });
+  return `<div class="gs-head"><h3 class="lu-h gs-h">Player lines</h3>${seg}
+      <span class="lu-muted">from the ${escapeHtml(squads.source)}</span></div>${body}
+    <details class="lu-more"><summary>How this is worked out</summary><p class="note">
+      Each player's average over his last ten starts (45 minutes or more) is multiplied by the game state:
+      what his team is projected to do here, divided by what it did in those same ten games. Two projections are
+      blended: the fitted team ratings on this page (attack times the opponent's defence, so team level is in it),
+      and expected possession from both sides' average share of the ball. Shots and fouls won rise with the ball;
+      tackles and fouls committed rise without it. The percentage is the average of two numbers: a Poisson chance on the
+      adjusted average, and his own record pulled two games towards 50% (the Poisson alone runs hot at short lines).
+      A line shows only if that reaches ${Math.round(GS_MIN_MODEL * 100)}% and his shrunk record is at least
+      ${Math.round(GS_MIN_RECORD * 100)}%. &#9650;/&#9660; is the game-state change to his average.</p></details>`;
+}
+
 function lineupView() {
   const el = document.getElementById("lineups");
   if (!el) return;
@@ -5879,8 +6364,8 @@ function lineupView() {
   const modes = ["predicted", "confirmed"].filter(m => store[m]);
   if (!modes.length) {
     el.innerHTML = `<p class="note">No line-up yet. Predicted XIs usually appear a day or two out and
-      the confirmed one about an hour before kick-off. Run <code>python lineups.py --update</code>
-      then <code>./publish.sh</code> to pull them in.</p>`;
+      the confirmed one about an hour before kick-off. Until then the lines below use each side's regular starters.</p>`
+      + gsCardHtml() + gsSectionHtml(null);
     return;
   }
   if (!modes.includes(lineupMode)) lineupMode = store.confirmed ? "confirmed" : "predicted";
@@ -5919,12 +6404,14 @@ function lineupView() {
       <span class="lu-muted">${escapeHtml(DATA.teams[0].name)} ${escapeHtml(lu.home.formation || "")}
       &middot; ${escapeHtml(DATA.teams[1].name)} ${escapeHtml(lu.away.formation || "")}</span></div>`;
 
-  const pairs = luPairs(shapes).filter(x => x.score >= 0.6).slice(0, 5);
-  const best = pairs.length
-    ? `<h3 class="lu-h">Best foul matchups</h3><div class="lu-card lu-best">${pairs.map(x => x.text).join("")}</div>`
-    : `<p class="note">No foul matchup where both sides are at 60% or better.</p>`;
+  const missing = [lu.home, lu.away].map((s, t) => (s.missing || []).length
+      ? `<span class="lu-dot lu-dot${t}"></span> ${(s.missing || []).map(m => escapeHtml(m[0])).join(", ")}` : "")
+    .filter(Boolean);
+  const out = missing.length ? `<p class="note gs-missing"><b>Missing:</b> ${missing.join(" &nbsp; ")}</p>` : "";
 
-  el.innerHTML = head + changes + `<div class="lu-grid">${pitch}<div id="lu-detail">${luDetail(shapes)}</div></div>` + best;
+  el.innerHTML = head + changes + out + gsCardHtml()
+    + `<div class="lu-grid">${pitch}<div id="lu-detail">${luDetail(shapes)}</div></div>`
+    + gsSectionHtml(shapes);
 }
 
 /* Compact tiles for one player's record: one tile per market, the hit
@@ -5986,6 +6473,10 @@ if (SPORT !== "football") {
 }
 
 document.addEventListener("click", e => {
+  const dm = e.target.closest("[data-defmode]");
+  if (dm) { defMode = dm.dataset.defmode; lineupView(); return; }
+  const gs = e.target.closest("[data-gssec]");
+  if (gs) { gsSection = gs.dataset.gssec; lineupView(); return; }
   const m = e.target.closest("[data-lumode]");
   if (m && !m.disabled) { lineupMode = m.dataset.lumode; lineupView(); return; }
   const c = e.target.closest("[data-luname]");

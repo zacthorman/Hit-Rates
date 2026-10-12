@@ -999,6 +999,21 @@ def build(
     except Exception as exc:
         print(f"\n  line-ups skipped ({type(exc).__name__})")
 
+    # NFL: the injury report and any change at quarterback, so receivers are
+    # not priced off a passer who is not playing. Never fatal.
+    try:
+        import nfl_injuries
+        nfl = [e for e in fixtures if (e.get("fixture") or {}).get("sport") == "american-football"]
+        if nfl:
+            injuries = nfl_injuries.fetch()
+            for entry in nfl:
+                nfl_injuries.attach(entry, injuries)
+            changes = [(e["fixture"][s], q) for e in nfl for s, q in (e.get("qbChange") or {}).items()]
+            for team, q in changes:
+                print(f"  QB change, {team}: {q['from']} {q['reason']} -> {q['to'] or 'backup'}")
+    except Exception as exc:
+        print(f"\n  NFL injuries skipped ({type(exc).__name__})")
+
     payload = {"fixtures": fixtures, "periods": hitrates.PERIODS}
 
     OUT_DIR.mkdir(exist_ok=True)

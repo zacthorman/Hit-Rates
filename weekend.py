@@ -39,6 +39,7 @@ from __future__ import annotations
 
 import itertools
 import math
+import re
 
 import markets
 import model
@@ -197,10 +198,21 @@ def player_legs_for(entry, meta):
     sport = sport_of(entry)
     cross = bool(entry.get("fixture", {}).get("crossLeague"))
 
+    # NFL: nobody on the injury report as out, and no passing or receiving
+    # leg for a side whose quarterback has changed, since every one of those
+    # records was built with the other man throwing. See nfl_injuries.py.
+    out_re = re.compile(r"^(out|doubtful|injured reserve|ir\b|suspen|pup|physically unable|"
+                        r"non-football|reserve)", re.I)
+    injuries = entry.get("injuries") or {}
+    qb_change = entry.get("qbChange") or {}
+
     for team_index, records in enumerate(entry.get("players") or []):
         if team_index >= len(teams):
             continue
         team = teams[team_index]
+        side = "home" if team_index == 0 else "away"
+        unavailable = {p[0] for p in injuries.get(side) or [] if out_re.match(p[2] or "")}
+        new_qb = side in qb_change
 
         by_player: dict[str, list] = {}
         for record in records:
@@ -209,12 +221,16 @@ def player_legs_for(entry, meta):
                 by_player.setdefault(name, []).append(record)
 
         for name, games in by_player.items():
+            if name in unavailable:
+                continue
             played = _played(games, sport)
             if len(played) < MIN_PLAYER_SAMPLE:
                 continue
             position = played[0].get("position")
 
             for stat, line in lines.items():
+                if new_qb and stat.startswith(("Passing", "Receiving", "Rushing and receiving")):
+                    continue
                 values = [g["stats"][stat] for g in played
                           if (g.get("stats") or {}).get(stat) is not None]
                 if len(values) < MIN_PLAYER_SAMPLE:

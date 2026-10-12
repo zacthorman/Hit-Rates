@@ -285,23 +285,91 @@ PAGE = """<!DOCTYPE html>
   }
 }
 * { box-sizing: border-box; }
-.bar { display: flex; align-items: center; gap: 10px; margin: 20px 0 12px;
-       flex-wrap: wrap; }
-.sports { display: flex; gap: 4px; background: var(--grid); padding: 3px;
-          border-radius: 9px; }
-.sports button { border: 0; background: none; padding: 7px 16px; border-radius: 7px;
-                 font: inherit; font-weight: 600; font-size: 0.88rem;
-                 color: var(--muted); cursor: pointer; }
-.sports button[aria-pressed="true"] { background: var(--raised); color: var(--text);
-                                      box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
-a.picks-btn { text-decoration: none; display: inline-flex; align-items: center; }
-.picks-btn { margin-left: auto; border: 1px solid var(--border); background: var(--raised);
-             color: var(--text); padding: 7px 14px; border-radius: 7px; font: inherit;
-             font-size: 0.85rem; font-weight: 600; cursor: pointer; }
-.picks-btn[aria-expanded="true"] { background: var(--accent); color: var(--on-accent);
-                                   border-color: var(--accent); }
-.picks { display: grid; gap: 10px; margin: 0 0 22px;
-         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+
+/* Top bar: the site name and one tab per sport, full width. The sport is the
+   first choice anyone makes on this page, so it gets the top of the screen
+   and everything else hangs off it. */
+.topbar { position: sticky; top: 0; z-index: 20; background: var(--page);
+          border-bottom: 1px solid var(--border); }
+.topbar-in { max-width: 1240px; margin: 0 auto; padding: 0 18px;
+             display: flex; align-items: center; gap: 22px; min-height: 56px; }
+.brand { font-size: 19px; font-weight: 700; letter-spacing: -0.01em;
+         white-space: nowrap; margin: 0; }
+.sports { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none;
+          align-self: stretch; }
+.sports::-webkit-scrollbar { display: none; }
+.sports button { border: 0; background: none; padding: 0 14px; font: inherit;
+                 font-weight: 600; font-size: 0.92rem; color: var(--muted);
+                 cursor: pointer; white-space: nowrap;
+                 border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.sports button:hover { color: var(--text); }
+.sports button[aria-pressed="true"] { color: var(--text);
+                                      border-bottom-color: var(--accent); }
+.sports button .n { font-weight: 500; opacity: 0.5; margin-left: 4px; font-size: 0.8rem; }
+
+/* Two columns on a wide screen: fixtures in the middle, picks in a rail on
+   the right that scrolls on its own. Below 1100px the rail becomes a drawer
+   behind a tab on the right edge, so the fixture list keeps the full width. */
+.layout { max-width: 1240px; margin: 0 auto; padding: 18px 18px 60px;
+          display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 28px;
+          align-items: start; }
+.main { min-width: 0; max-width: 780px; width: 100%; justify-self: center; }
+.rail { position: sticky; top: 74px; max-height: calc(100vh - 92px);
+        overflow-y: auto; scrollbar-width: thin; padding-bottom: 12px; }
+.rail-head { display: flex; align-items: center; justify-content: space-between;
+             margin: 0 0 10px; }
+.rail-title { font-size: 0.72rem; letter-spacing: 0.07em; text-transform: uppercase;
+              color: var(--muted); font-weight: 650; margin: 0; }
+.quick { display: grid; gap: 6px; margin: 0 0 16px; }
+.quick a { display: flex; justify-content: space-between; align-items: center;
+           background: var(--raised); border: 1px solid var(--border);
+           border-radius: 9px; padding: 10px 13px; color: var(--text);
+           text-decoration: none; font-weight: 600; font-size: 0.88rem; }
+.quick a:hover { border-color: var(--muted); }
+.quick a span { color: var(--muted); font-weight: 500; font-size: 0.8rem; }
+.fold { background: none; border: 0; padding: 0; font: inherit; cursor: pointer;
+        display: flex; align-items: center; gap: 7px; color: var(--text);
+        font-weight: 650; font-size: 0.95rem; }
+.fold::before { content: ""; width: 0; height: 0;
+  border-left: 5px solid currentColor; border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent; transition: transform 0.15s ease; }
+.fold[aria-expanded="true"]::before { transform: rotate(90deg); }
+.fold small { color: var(--muted); font-weight: 500; font-size: 0.8rem; }
+.drawer-close { display: none; }
+.side-tab { display: none; }
+.scrim { display: none; }
+
+@media (max-width: 1099px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .rail { position: fixed; top: 0; right: 0; bottom: 0; width: min(380px, 88vw);
+          max-height: none; z-index: 40; background: var(--page);
+          border-left: 1px solid var(--border); padding: 18px 16px 40px;
+          transform: translateX(105%); transition: transform 0.2s ease;
+          box-shadow: -8px 0 24px rgba(0,0,0,0.12); }
+  body.drawer-open .rail { transform: none; }
+  .scrim { display: block; position: fixed; inset: 0; z-index: 30;
+           background: rgba(0,0,0,0.35); opacity: 0; pointer-events: none;
+           transition: opacity 0.2s ease; }
+  body.drawer-open .scrim { opacity: 1; pointer-events: auto; }
+  .drawer-close { display: inline-flex; border: 1px solid var(--border);
+                  background: var(--raised); color: var(--text); border-radius: 7px;
+                  font: inherit; font-size: 0.8rem; padding: 4px 10px; cursor: pointer; }
+  /* The tab that opens it: a strip on the right edge, always in reach. */
+  .side-tab { display: block; position: fixed; right: 0; top: 50%; z-index: 25;
+              transform: translateY(-50%); writing-mode: vertical-rl;
+              background: var(--accent); color: var(--on-accent); border: 0;
+              border-radius: 8px 0 0 8px; padding: 14px 7px; font: inherit;
+              font-size: 0.8rem; font-weight: 650; letter-spacing: 0.04em;
+              cursor: pointer; box-shadow: -2px 2px 10px rgba(0,0,0,0.15); }
+}
+@media (max-width: 560px) {
+  .topbar-in { gap: 12px; padding: 0 12px; }
+  .brand { font-size: 17px; }
+  .sports button { padding: 0 10px; font-size: 0.86rem; }
+  .layout { padding: 12px 12px 60px; }
+}
+
+.picks { display: grid; gap: 10px; margin: 0 0 12px; }
 .pick { background: var(--raised); border: 1px solid var(--border);
         border-radius: 10px; padding: 13px 15px; font-size: 0.9rem; }
 .pick h2 { font-size: 0.68rem; letter-spacing: 0.07em; text-transform: uppercase;
@@ -328,20 +396,19 @@ a.picks-btn { text-decoration: none; display: inline-flex; align-items: center; 
 .pick .flag { color: var(--today); font-weight: 600; }
 .pick.none { color: var(--muted); }
 body {
-  margin: 0; padding: 34px 18px 60px;
+  margin: 0; padding: 0;
   background: var(--page); color: var(--text);
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 15px; line-height: 1.5;
   -webkit-text-size-adjust: 100%;
 }
-.wrap { max-width: 760px; margin: 0 auto; }
-h1 { font-size: 27px; font-weight: 660; margin: 0 0 5px; letter-spacing: -0.015em; }
 .sub { color: var(--muted); font-size: 14px; margin: 0 0 20px; }
 
 /* Filters. Sticky, because on a phone the list is long and the filter is
-   the thing you reach for after scrolling, not before. */
+   the thing you reach for after scrolling, not before. Sits under the top
+   bar rather than behind it. */
 .filters {
-  position: sticky; top: 0; z-index: 5;
+  position: sticky; top: 56px; z-index: 5;
   background: var(--page); padding: 10px 0 12px;
   margin: 0 0 6px; border-bottom: 1px solid var(--border);
   display: flex; gap: 7px; flex-wrap: wrap; align-items: center;
@@ -401,23 +468,39 @@ footer { margin-top: 26px; color: var(--muted); font-size: 12.5px; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>Hit rates</h1>
-
-  <div class="bar">
-    <div class="sports" id="sports"></div>
-    <a class="picks-btn" href="tonight.html">Tonight &rarr;</a>
-    <a class="picks-btn" href="best-bets-summary.html">Best bets summary &rarr;</a>
-    <button type="button" class="picks-btn" id="picks-btn"
-            aria-expanded="false">Picks of the week</button>
+<header class="topbar">
+  <div class="topbar-in">
+    <h1 class="brand">Hit rates</h1>
+    <nav class="sports" id="sports" aria-label="Sport"></nav>
   </div>
+</header>
 
-  <div id="picks" hidden></div>
+<button type="button" class="side-tab" id="side-tab"
+        aria-controls="rail" aria-expanded="false">Best picks</button>
+<div class="scrim" id="scrim"></div>
 
-  <div class="filters" id="filters"></div>
-  <div id="list"></div>
+<div class="layout">
+  <main class="main">
+    <div class="filters" id="filters"></div>
+    <div id="list"></div>
+    <footer id="footer"></footer>
+  </main>
 
-  <footer id="footer"></footer>
+  <aside class="rail" id="rail" aria-label="Best picks">
+    <div class="rail-head">
+      <p class="rail-title">Best picks</p>
+      <button type="button" class="drawer-close" id="drawer-close">Close</button>
+    </div>
+    <div class="quick">
+      <a href="tonight.html">Tonight <span>next 8 hours &rarr;</span></a>
+      <a href="best-bets-summary.html">Best bets summary <span>all sports &rarr;</span></a>
+    </div>
+    <div class="rail-head">
+      <button type="button" class="fold" id="picks-btn" aria-expanded="true"
+              aria-controls="picks">Picks of the week <small id="picks-sport"></small></button>
+    </div>
+    <div id="picks"></div>
+  </aside>
 </div>
 
 <script>
@@ -481,11 +564,11 @@ function renderSports() {
   if (!sport) sport = present.length ? present[0][0] : "football";
 
   const box = document.getElementById("sports");
-  if (present.length < 2) { box.innerHTML = ""; return; }
+  if (!present.length) { box.innerHTML = ""; return; }
 
   box.innerHTML = present.map(([key, n]) =>
     `<button type="button" data-sport="${escapeAttr(key)}"
-      aria-pressed="${key === sport}">${escapeHtml(SPORT_LABELS[key] || key)}</button>`
+      aria-pressed="${key === sport}">${escapeHtml(SPORT_LABELS[key] || key)}<span class="n">${n}</span></button>`
   ).join("");
 
   box.querySelectorAll("[data-sport]").forEach(btn => {
@@ -627,6 +710,8 @@ function renderPicks() {
   if (!box || !all) return;
 
   const p = all.find(x => x.sport === sport);
+  const lab = document.getElementById("picks-sport");
+  if (lab) lab.textContent = SPORT_LABELS[sport] || sport;
   const floor = DATA.picks.floor;
   const cards = [];
 
@@ -746,12 +831,30 @@ function renderPicks() {
        ${escapeHtml(SPORT_LABELS[sport] || sport)} this round.</div></div>`;
 }
 
+/* The picks rail. Open or folded is remembered per browser, which is a
+   convenience only: storage can be missing or throw, and the page works the
+   same without it. */
+const FOLD_KEY = "hitrates.picksOpen";
+function setFold(open) {
+  document.getElementById("picks").hidden = !open;
+  document.getElementById("picks-btn").setAttribute("aria-expanded", String(open));
+}
+try { setFold(localStorage.getItem(FOLD_KEY) !== "0"); } catch (e) { setFold(true); }
 document.getElementById("picks-btn").addEventListener("click", e => {
-  const box = document.getElementById("picks");
-  const open = box.hidden;
-  box.hidden = !open;
-  e.currentTarget.setAttribute("aria-expanded", String(open));
+  const open = e.currentTarget.getAttribute("aria-expanded") !== "true";
+  setFold(open);
+  try { localStorage.setItem(FOLD_KEY, open ? "1" : "0"); } catch (err) {}
 });
+
+/* Narrow screens: the rail is a drawer behind the tab on the right edge. */
+function drawer(open) {
+  document.body.classList.toggle("drawer-open", open);
+  document.getElementById("side-tab").setAttribute("aria-expanded", String(open));
+}
+document.getElementById("side-tab").addEventListener("click", () => drawer(true));
+document.getElementById("drawer-close").addEventListener("click", () => drawer(false));
+document.getElementById("scrim").addEventListener("click", () => drawer(false));
+document.addEventListener("keydown", e => { if (e.key === "Escape") drawer(false); });
 
 renderSports();
 renderPicks();
