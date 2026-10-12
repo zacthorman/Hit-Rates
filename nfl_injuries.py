@@ -128,14 +128,21 @@ def _starts(records: list) -> list[dict]:
 
 
 def qb_change(entry: dict, t: int, injured: list, override: str | None) -> dict | None:
-    """Who has been starting, who will, and how to rescale his receivers."""
+    """Who will start, and how far his passing is from what the receivers' records saw.
+
+    Receivers' records are their last ten games, which may already mix
+    quarterbacks (an injury last season, a backup for two weeks). So the
+    question is not "is the usual starter out" but "is the man starting this
+    week the one who threw most of those ten games". If he threw seven or
+    more, nothing changes. Otherwise receivers are rescaled by his passing
+    per start against the team's average over those same ten games.
+    """
     records = (entry.get("players") or [[], []])[t] or []
     starts = _starts(records)
     if not starts:
         return None
     last10 = starts[-10:]
     counts = Counter(g["name"] for g in last10)
-    regular = max(counts, key=lambda n: (counts[n], max(g["date"] for g in last10 if g["name"] == n)))
 
     side = "home" if t == 0 else "away"
     out_status = {_norm(p[0]): p[2] for p in injured if OUT.match(p[2] or "")}
@@ -151,29 +158,40 @@ def qb_change(entry: dict, t: int, injured: list, override: str | None) -> dict 
             return f"listed {out_status[k]}"
         return None
 
-    source = None
     if override:
         current, source = override, "manual override (nfl_starters.json)"
     else:
-        order = [regular] + [g["name"] for g in reversed(starts)]
+        # Latest starter first: whoever started last week starts this week
+        # unless he is hurt. Then the rest by how recently they started.
+        order = [g["name"] for g in reversed(starts)]
         order += [n for n, _ in Counter(r["player"] for r in records if r.get("position") == "QB").most_common()]
         current = next((n for n in dict.fromkeys(order) if not unavailable(n)), None)
         source = "confirmed inactives" if roster else "ESPN injury report"
 
-    if current and _norm(current) == _norm(regular):
+    share = sum(1 for g in last10 if current and _norm(g["name"]) == _norm(current)) / len(last10)
+    if share >= 0.7:
         return None
 
-    base = [g for g in last10 if g["name"] == regular]
-    yds0 = sum(g["yds"] for g in base) / len(base)
-    cmp0 = sum(g["cmp"] for g in base) / len(base)
+    others = Counter({n: c for n, c in counts.items() if not current or _norm(n) != _norm(current)})
+    regular = others.most_common(1)[0][0] if others else last10[-1]["name"]
+    yds0 = sum(g["yds"] for g in last10) / len(last10)
+    cmp0 = sum(g["cmp"] for g in last10) / len(last10)
     mine = [g for g in starts if current and _norm(g["name"]) == _norm(current) and g["att"] >= 15]
     n = len(mine)
     yds1 = (sum(g["yds"] for g in mine) + PHANTOM * BACKUP_LEVEL * yds0) / (n + PHANTOM)
     cmp1 = (sum(g["cmp"] for g in mine) + PHANTOM * BACKUP_LEVEL * cmp0) / (n + PHANTOM)
     clamp = lambda x: round(min(1.2, max(0.55, x)), 3)
-    reason = unavailable(regular) or ("not starting" if override else "not the latest starter")
+    status = unavailable(regular)
+    yf = clamp(yds1 / yds0) if yds0 else 1
+    rf = clamp(cmp1 / cmp0) if cmp0 else 1
+    # Nobody hurt and nothing overridden: the latest starter is a guess at
+    # who starts, so only act on it when the passing gap is worth acting on.
+    if not status and not override and abs(yf - 1) < 0.1 and abs(rf - 1) < 0.1:
+        return None
+    reason = (status or "not starting") + f", threw {counts[regular]} of the last {len(last10)}"
     return {"from": regular, "to": current, "toStarts": n, "reason": reason, "source": source,
-            "yds": clamp(yds1 / yds0) if yds0 else 1, "rec": clamp(cmp1 / cmp0) if cmp0 else 1}
+            "share": round(share, 2),
+            "yds": yf, "rec": rf}
 
 
 def attach(entry: dict, report: dict | None = None) -> bool:
