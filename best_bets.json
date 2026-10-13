@@ -25433,11 +25433,11 @@
     "total": 18,
     "fair": 1.5359827109878843,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -25463,11 +25463,11 @@
     "total": 18,
     "fair": 1.4611026679623238,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -25493,11 +25493,11 @@
     "total": 22,
     "fair": 1.375,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: parlay",
@@ -25862,11 +25862,11 @@
     "total": 14,
     "fair": 1.3295748074504221,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -25892,11 +25892,11 @@
     "total": 15,
     "fair": 1.3388209551992525,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -25922,11 +25922,11 @@
     "total": 14,
     "fair": 1.3971628806374838,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -25952,11 +25952,11 @@
     "total": 19,
     "fair": 1.3583450513716215,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -25982,11 +25982,11 @@
     "total": 17,
     "fair": 1.3178242987985367,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -26012,11 +26012,11 @@
     "total": 19,
     "fair": 1.4662065349590336,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -26042,11 +26042,11 @@
     "total": 18,
     "fair": 1.4681858521571436,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -26072,11 +26072,11 @@
     "total": 18,
     "fair": 1.5390388941910984,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -26102,11 +26102,11 @@
     "total": 28,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -26132,11 +26132,11 @@
     "total": 16,
     "fair": 1.5249262788162643,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -26162,11 +26162,11 @@
     "total": 28,
     "fair": 1.4,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 70.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -26192,11 +26192,11 @@
     "total": 22,
     "fair": 1.375,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: evens double",
@@ -26273,11 +26273,11 @@
     "total": 13,
     "fair": 1.342353642126007,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -26303,11 +26303,11 @@
     "total": 12,
     "fair": 1.338858900831509,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -26333,11 +26333,11 @@
     "total": 13,
     "fair": 1.4883376751673782,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 21.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: parlay",
@@ -26549,8 +26549,8 @@
     "total": 18,
     "fair": 1.5131438742745273,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 9.0,
+    "result": "win"
    },
    {
     "event_id": 15238201,
@@ -26574,7 +26574,7 @@
     "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: banker",
@@ -26600,11 +26600,11 @@
     "total": 18,
     "fair": 1.5131438742745273,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 9.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: acca",
@@ -26630,8 +26630,8 @@
     "total": 18,
     "fair": 1.5131438742745273,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 9.0,
+    "result": "win"
    },
    {
     "event_id": 16310974,
@@ -26676,7 +26676,7 @@
     "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: parlay",
@@ -26795,11 +26795,11 @@
     "total": 18,
     "fair": 1.5131438742745273,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 9.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -26825,11 +26825,11 @@
     "total": 17,
     "fair": 1.396906573517934,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -26855,11 +26855,11 @@
     "total": 18,
     "fair": 1.4744804790540986,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: evens double",
@@ -26885,8 +26885,8 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 383.0,
+    "result": "win"
    },
    {
     "event_id": 16175306,
@@ -26910,7 +26910,7 @@
     "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: banker",
@@ -26936,11 +26936,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 383.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: parlay",
@@ -27059,11 +27059,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 383.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -27089,11 +27089,11 @@
     "total": 17,
     "fair": 1.3076923076923077,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 138.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -27119,11 +27119,11 @@
     "total": 17,
     "fair": 1.3076923076923077,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 147.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: acca",
@@ -27149,8 +27149,8 @@
     "total": 18,
     "fair": 1.5131438742745273,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 9.0,
+    "result": "win"
    },
    {
     "event_id": 16310974,
@@ -27195,7 +27195,7 @@
     "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: single",
@@ -27536,8 +27536,8 @@
     "total": 20,
     "fair": 1.25,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    },
    {
     "event_id": 17193111,
@@ -27561,7 +27561,7 @@
     "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: banker",
@@ -27587,11 +27587,11 @@
     "total": 17,
     "fair": 1.3076923076923077,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: acca",
@@ -27617,8 +27617,8 @@
     "total": 16,
     "fair": 1.4545454545454546,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 17193111,
@@ -27642,7 +27642,7 @@
     "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: builder",
@@ -27923,11 +27923,11 @@
     "total": 17,
     "fair": 1.3076923076923077,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -27953,11 +27953,11 @@
     "total": 17,
     "fair": 1.3076923076923077,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -27983,11 +27983,11 @@
     "total": 17,
     "fair": 1.3076923076923077,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -28763,8 +28763,8 @@
     "total": 20,
     "fair": 1.25,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    },
    {
     "event_id": 17193111,
@@ -28788,7 +28788,7 @@
     "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: banker",
@@ -28814,11 +28814,11 @@
     "total": 17,
     "fair": 1.3076923076923077,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: acca",
@@ -28844,8 +28844,8 @@
     "total": 16,
     "fair": 1.4545454545454546,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 17193111,
@@ -28869,7 +28869,7 @@
     "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: parlay",
@@ -29018,8 +29018,8 @@
     "total": 16,
     "fair": 1.4545454545454546,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 17193111,
@@ -29043,7 +29043,7 @@
     "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: single",
@@ -29315,11 +29315,11 @@
     "total": 17,
     "fair": 1.3076923076923077,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: single",
@@ -29519,11 +29519,11 @@
     "total": 20,
     "fair": 2.0,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 111.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: evens double",
@@ -29549,8 +29549,8 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 383.0,
+    "result": "win"
    },
    {
     "event_id": 16183747,
@@ -29574,7 +29574,7 @@
     "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: builder",
@@ -30002,8 +30002,8 @@
     "total": 18,
     "fair": 1.5120072914464102,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 9.0,
+    "result": "win"
    },
    {
     "event_id": 16421063,
@@ -30023,11 +30023,11 @@
     "total": 18,
     "fair": 1.4681858521571436,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: builder",
@@ -30053,8 +30053,8 @@
     "total": 18,
     "fair": 1.4681858521571436,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    },
    {
     "event_id": 16421063,
@@ -30074,8 +30074,8 @@
     "total": 18,
     "fair": 1.6523576476155912,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 13.0,
+    "result": "win"
    },
    {
     "event_id": 16421063,
@@ -30095,11 +30095,11 @@
     "total": 18,
     "fair": 1.803612314186689,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: parlay",
@@ -30125,8 +30125,8 @@
     "total": 26,
     "fair": 1.4444444444444444,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    },
    {
     "event_id": 16285037,
@@ -30146,8 +30146,8 @@
     "total": 25,
     "fair": 1.3888888888888888,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 16285037,
@@ -30167,8 +30167,8 @@
     "total": 36,
     "fair": 1.3846153846153846,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 16285037,
@@ -30189,10 +30189,10 @@
     "fair": 1.5263157894736843,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: acca",
@@ -30260,11 +30260,11 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 331.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: builder",
@@ -30497,11 +30497,11 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 12.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: builder",
@@ -30527,8 +30527,8 @@
     "total": 18,
     "fair": 1.4906035271458284,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    },
    {
     "event_id": 16285026,
@@ -30548,8 +30548,8 @@
     "total": 20,
     "fair": 1.4115911986621752,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 22.0,
+    "result": "win"
    },
    {
     "event_id": 16285026,
@@ -30569,11 +30569,11 @@
     "total": 20,
     "fair": 1.5351037890532657,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: parlay",
@@ -30743,8 +30743,8 @@
     "total": 18,
     "fair": 1.5120072914464102,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 9.0,
+    "result": "win"
    }
   ],
   "result": null
@@ -30803,8 +30803,8 @@
     "total": 18,
     "fair": 1.5120072914464102,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 9.0,
+    "result": "win"
    },
    {
     "event_id": 16391472,
@@ -30845,8 +30845,8 @@
     "total": 18,
     "fair": 1.4681858521571436,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
   "result": null
@@ -31040,8 +31040,8 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 12.0,
+    "result": "lose"
    },
    {
     "event_id": 16183747,
@@ -31065,7 +31065,7 @@
     "result": "win"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: parlay",
@@ -31091,8 +31091,8 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 12.0,
+    "result": "lose"
    },
    {
     "event_id": 16183750,
@@ -31112,8 +31112,8 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 80.0,
+    "result": "win"
    },
    {
     "event_id": 16183750,
@@ -31133,8 +31133,8 @@
     "total": 20,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 25.0,
+    "result": "win"
    },
    {
     "event_id": 16183750,
@@ -31154,11 +31154,11 @@
     "total": 20,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -31907,8 +31907,8 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 331.0,
+    "result": "win"
    },
    {
     "event_id": 16183747,
@@ -31932,7 +31932,7 @@
     "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: parlay",
@@ -31958,8 +31958,8 @@
     "total": 20,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 49.0,
+    "result": "lose"
    },
    {
     "event_id": 16183750,
@@ -31979,8 +31979,8 @@
     "total": 20,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 383.0,
+    "result": "win"
    },
    {
     "event_id": 16183750,
@@ -32000,8 +32000,8 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 331.0,
+    "result": "win"
    },
    {
     "event_id": 16183750,
@@ -32021,6 +32021,1416 @@
     "total": 19,
     "fair": 1.4615384615384615,
     "venue": null,
+    "value": 80.0,
+    "result": "win"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: single",
+  "sport": "football",
+  "snapshot_at": 1791792633,
+  "fair": 2.0959770711125953,
+  "legs": [
+   {
+    "event_id": 16391341,
+    "fixture": "Birmingham City v Preston North End",
+    "competition": "Championship",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Preston North End",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 19,
+    "fair": 2.0959770711125953,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "american-football",
+  "snapshot_at": 1791792633,
+  "fair": 1.9047619047619047,
+  "legs": [
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Los Angeles Rams",
+    "player": "Matthew Stafford",
+    "stat": "Passing yards",
+    "period": "ALL",
+    "line": 249.5,
+    "over": true,
+    "alt": true,
+    "threshold": 250.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": 383.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "James Cook III",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 79.5,
+    "over": true,
+    "alt": true,
+    "threshold": 80.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 118.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1791792633,
+  "fair": 3.2300000000000004,
+  "legs": [
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Los Angeles Rams",
+    "player": "Matthew Stafford",
+    "stat": "Passing completions",
+    "period": "ALL",
+    "line": 21.5,
+    "over": true,
+    "alt": true,
+    "threshold": 22.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 40.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Los Angeles Rams",
+    "player": "Puka Nacua",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 5.5,
+    "over": true,
+    "alt": true,
+    "threshold": 6.0,
+    "hits": 12,
+    "total": 17,
+    "fair": 1.4166666666666665,
+    "venue": null,
+    "value": 17.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "Josh Allen",
+    "stat": "Passing completions",
+    "period": "ALL",
+    "line": 18.5,
+    "over": true,
+    "alt": true,
+    "threshold": 19.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 12.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "Dawson Knox",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 6.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: single",
+  "sport": "baseball",
+  "snapshot_at": 1791792633,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 17193081,
+    "fixture": "Tampa Bay Rays v Cleveland Guardians",
+    "competition": "MLB Postseason",
+    "kickoff": 1791849600,
+    "sport": "baseball",
+    "team": "Tampa Bay Rays",
+    "player": "Jonny DeLuca",
+    "stat": "Hits runs and RBIs",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 10,
+    "total": 20,
+    "fair": 2.0,
+    "venue": null,
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "baseball",
+  "snapshot_at": 1791792633,
+  "fair": 1.923076923076923,
+  "legs": [
+   {
+    "event_id": 17193081,
+    "fixture": "Tampa Bay Rays v Cleveland Guardians",
+    "competition": "MLB Postseason",
+    "kickoff": 1791849600,
+    "sport": "baseball",
+    "team": "Cleveland Guardians",
+    "player": "Jo Adell",
+    "stat": "Total bases",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.25,
+    "venue": null,
+    "value": 2.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17193081,
+    "fixture": "Tampa Bay Rays v Cleveland Guardians",
+    "competition": "MLB Postseason",
+    "kickoff": 1791849600,
+    "sport": "baseball",
+    "team": "Tampa Bay Rays",
+    "player": "Jonny DeLuca",
+    "stat": "Total bases",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 13,
+    "total": 20,
+    "fair": 1.5384615384615383,
+    "venue": null,
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: builder",
+  "sport": "baseball",
+  "snapshot_at": 1791792633,
+  "fair": 2.2,
+  "legs": [
+   {
+    "event_id": 17193081,
+    "fixture": "Tampa Bay Rays v Cleveland Guardians",
+    "competition": "MLB Postseason",
+    "kickoff": 1791849600,
+    "sport": "baseball",
+    "team": "Cleveland Guardians",
+    "player": null,
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 6.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 11,
+    "fair": 1.4117647058823528,
+    "venue": "away",
+    "value": 14.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17193081,
+    "fixture": "Tampa Bay Rays v Cleveland Guardians",
+    "competition": "MLB Postseason",
+    "kickoff": 1791849600,
+    "sport": "baseball",
+    "team": "Cleveland Guardians",
+    "player": null,
+    "stat": "Runs",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 11,
+    "fair": 1.4117647058823528,
+    "venue": "away",
+    "value": 7.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17193081,
+    "fixture": "Tampa Bay Rays v Cleveland Guardians",
+    "competition": "MLB Postseason",
+    "kickoff": 1791849600,
+    "sport": "baseball",
+    "team": "Cleveland Guardians",
+    "player": null,
+    "stat": "Home runs",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 11,
+    "fair": 1.6,
+    "venue": "away",
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791792633,
+  "fair": 1.7098452198680472,
+  "legs": [
+   {
+    "event_id": 16363874,
+    "fixture": "Coventry City v Newcastle United",
+    "competition": "Premier League",
+    "kickoff": 1791831600,
+    "sport": "football",
+    "team": "Newcastle United",
+    "player": null,
+    "stat": "Both teams carded",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.7098452198680472,
+    "venue": "away",
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "american-football",
+  "snapshot_at": 1791801954,
+  "fair": 1.9047619047619047,
+  "legs": [
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Los Angeles Rams",
+    "player": "Matthew Stafford",
+    "stat": "Passing yards",
+    "period": "ALL",
+    "line": 249.5,
+    "over": true,
+    "alt": true,
+    "threshold": 250.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": 383.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "James Cook III",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 69.5,
+    "over": true,
+    "alt": true,
+    "threshold": 70.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 111.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1791801954,
+  "fair": 3.262626262626262,
+  "legs": [
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Los Angeles Rams",
+    "player": "Kyren Williams",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 59.5,
+    "over": true,
+    "alt": true,
+    "threshold": 60.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 49.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Los Angeles Rams",
+    "player": "Puka Nacua",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 5.5,
+    "over": true,
+    "alt": true,
+    "threshold": 6.0,
+    "hits": 12,
+    "total": 17,
+    "fair": 1.4166666666666665,
+    "venue": null,
+    "value": 17.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "Josh Allen",
+    "stat": "Passing and rushing yards",
+    "period": "ALL",
+    "line": 249.5,
+    "over": true,
+    "alt": true,
+    "threshold": 250.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 331.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "Khalil Shakir",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 34.5,
+    "over": true,
+    "alt": true,
+    "threshold": 35.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 80.0,
+    "result": "win"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "baseball",
+  "snapshot_at": 1791801954,
+  "fair": 1.923076923076923,
+  "legs": [
+   {
+    "event_id": 17193081,
+    "fixture": "Tampa Bay Rays v Cleveland Guardians",
+    "competition": "MLB Postseason",
+    "kickoff": 1791849600,
+    "sport": "baseball",
+    "team": "Cleveland Guardians",
+    "player": "Jo Adell",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.25,
+    "venue": null,
+    "value": 1.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17193081,
+    "fixture": "Tampa Bay Rays v Cleveland Guardians",
+    "competition": "MLB Postseason",
+    "kickoff": 1791849600,
+    "sport": "baseball",
+    "team": "Tampa Bay Rays",
+    "player": "Jonny DeLuca",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 13,
+    "total": 20,
+    "fair": 1.5384615384615383,
+    "venue": null,
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1791809130,
+  "fair": 3.2300000000000004,
+  "legs": [
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Los Angeles Rams",
+    "player": "Matthew Stafford",
+    "stat": "Passing completions",
+    "period": "ALL",
+    "line": 21.5,
+    "over": true,
+    "alt": true,
+    "threshold": 22.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 40.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Los Angeles Rams",
+    "player": "Puka Nacua",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 5.5,
+    "over": true,
+    "alt": true,
+    "threshold": 6.0,
+    "hits": 12,
+    "total": 17,
+    "fair": 1.4166666666666665,
+    "venue": null,
+    "value": 17.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "Josh Allen",
+    "stat": "Passing completions",
+    "period": "ALL",
+    "line": 18.5,
+    "over": true,
+    "alt": true,
+    "threshold": 19.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 12.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "Dawson Knox",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 6.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1791821100,
+  "fair": 3.140495867768595,
+  "legs": [
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Los Angeles Rams",
+    "player": "Kyren Williams",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 79.5,
+    "over": true,
+    "alt": true,
+    "threshold": 80.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 76.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Los Angeles Rams",
+    "player": "Matthew Stafford",
+    "stat": "Passing and rushing yards",
+    "period": "ALL",
+    "line": 259.5,
+    "over": true,
+    "alt": true,
+    "threshold": 260.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 383.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "Josh Allen",
+    "stat": "Passing and rushing yards",
+    "period": "ALL",
+    "line": 249.5,
+    "over": true,
+    "alt": true,
+    "threshold": 250.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 331.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "Khalil Shakir",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 34.5,
+    "over": true,
+    "alt": true,
+    "threshold": 35.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 80.0,
+    "result": "win"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: builder",
+  "sport": "football",
+  "snapshot_at": 1791827505,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 16285037,
+    "fixture": "Torino v Udinese",
+    "competition": "Serie A",
+    "kickoff": 1791830700,
+    "sport": "football",
+    "team": "Udinese",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.262179071922605,
+    "venue": "away",
+    "value": 1.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16285037,
+    "fixture": "Torino v Udinese",
+    "competition": "Serie A",
+    "kickoff": 1791830700,
+    "sport": "football",
+    "team": "Udinese",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.3451336715540552,
+    "venue": "away",
+    "value": 1.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16285037,
+    "fixture": "Torino v Udinese",
+    "competition": "Serie A",
+    "kickoff": 1791830700,
+    "sport": "football",
+    "team": "Udinese",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.5627026805462898,
+    "venue": "away",
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1791829472,
+  "fair": 3.140495867768595,
+  "legs": [
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Los Angeles Rams",
+    "player": "Kyren Williams",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 59.5,
+    "over": true,
+    "alt": true,
+    "threshold": 60.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 49.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Los Angeles Rams",
+    "player": "Matthew Stafford",
+    "stat": "Passing and rushing yards",
+    "period": "ALL",
+    "line": 259.5,
+    "over": true,
+    "alt": true,
+    "threshold": 260.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 383.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "Josh Allen",
+    "stat": "Passing and rushing yards",
+    "period": "ALL",
+    "line": 249.5,
+    "over": true,
+    "alt": true,
+    "threshold": 250.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 331.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "Khalil Shakir",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 34.5,
+    "over": true,
+    "alt": true,
+    "threshold": 35.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 80.0,
+    "result": "win"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1791843123,
+  "fair": 3.671554766005499,
+  "legs": [
+   {
+    "event_id": 15238004,
+    "fixture": "Red Bull Bragantino v Cruzeiro",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1791849600,
+    "sport": "football",
+    "team": "Red Bull Bragantino",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 7.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 18,
+    "fair": 1.5165702617862262,
+    "venue": "home",
+    "value": 9.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16391472,
+    "fixture": "Wrexham v West Bromwich Albion",
+    "competition": "Championship",
+    "kickoff": 1791917100,
+    "sport": "football",
+    "team": "Wrexham",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 18,
+    "fair": 1.4439770542423387,
+    "venue": "home",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16391437,
+    "fixture": "Stoke City v Middlesbrough",
+    "competition": "Championship",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Stoke City",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.6765912021479785,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: builder",
+  "sport": "football",
+  "snapshot_at": 1791843123,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 16391420,
+    "fixture": "Millwall v Swansea City",
+    "competition": "Championship",
+    "kickoff": 1791917100,
+    "sport": "football",
+    "team": "Millwall",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.4273565285845398,
+    "venue": "home",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16391420,
+    "fixture": "Millwall v Swansea City",
+    "competition": "Championship",
+    "kickoff": 1791917100,
+    "sport": "football",
+    "team": "Millwall",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.4319882266174457,
+    "venue": "home",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16391420,
+    "fixture": "Millwall v Swansea City",
+    "competition": "Championship",
+    "kickoff": 1791917100,
+    "sport": "football",
+    "team": "Millwall",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "1ST",
+    "line": 0.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.6368040962799069,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1791843123,
+  "fair": 3.8000000000000003,
+  "legs": [
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "Josh Allen",
+    "stat": "Passing completions",
+    "period": "ALL",
+    "line": 18.5,
+    "over": true,
+    "alt": true,
+    "threshold": 19.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 12.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "Khalil Shakir",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 34.5,
+    "over": true,
+    "alt": true,
+    "threshold": 35.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "value": 80.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "James Cook III",
+    "stat": "Rushing attempts",
+    "period": "ALL",
+    "line": 15.5,
+    "over": true,
+    "alt": true,
+    "threshold": 16.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 25.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16183750,
+    "fixture": "Los Angeles Rams v Buffalo Bills",
+    "competition": "NFL",
+    "kickoff": 1791850500,
+    "sport": "american-football",
+    "team": "Buffalo Bills",
+    "player": "Dawson Knox",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 6.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791843123,
+  "fair": 1.3728158174265332,
+  "legs": [
+   {
+    "event_id": 16391542,
+    "fixture": "Queens Park Rangers v Derby County",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Queens Park Rangers",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 18,
+    "total": 19,
+    "fair": 1.3728158174265332,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791843123,
+  "fair": 1.3922403979417985,
+  "legs": [
+   {
+    "event_id": 16391542,
+    "fixture": "Queens Park Rangers v Derby County",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Derby County",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 19,
+    "fair": 1.3922403979417985,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791843123,
+  "fair": 1.377209963778685,
+  "legs": [
+   {
+    "event_id": 16391542,
+    "fixture": "Queens Park Rangers v Derby County",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Queens Park Rangers",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 17,
+    "fair": 1.377209963778685,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791843123,
+  "fair": 1.511248336583851,
+  "legs": [
+   {
+    "event_id": 16391506,
+    "fixture": "Norwich City v Southampton",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Norwich City",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.511248336583851,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791843123,
+  "fair": 1.4780886829202347,
+  "legs": [
+   {
+    "event_id": 16391506,
+    "fixture": "Norwich City v Southampton",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Norwich City",
+    "player": null,
+    "stat": "Fouls",
+    "period": "2ND",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.4780886829202347,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791843123,
+  "fair": 1.3636363636363638,
+  "legs": [
+   {
+    "event_id": 16391506,
+    "fixture": "Norwich City v Southampton",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Southampton",
+    "player": "Leo Scienza",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 22,
+    "total": 30,
+    "fair": 1.3636363636363638,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791843123,
+  "fair": 1.3059065476944514,
+  "legs": [
+   {
+    "event_id": 16391524,
+    "fixture": "Portsmouth v Sheffield United",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Portsmouth",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.3059065476944514,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791843123,
+  "fair": 1.3636363636363638,
+  "legs": [
+   {
+    "event_id": 16391524,
+    "fixture": "Portsmouth v Sheffield United",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Sheffield United",
+    "player": "Sydie Peck",
+    "stat": "Fouls",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 22,
+    "total": 30,
+    "fair": 1.3636363636363638,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791843123,
+  "fair": 1.631731140805138,
+  "legs": [
+   {
+    "event_id": 16391524,
+    "fixture": "Portsmouth v Sheffield United",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Portsmouth",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 5.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.631731140805138,
+    "venue": "home",
     "value": null,
     "result": null
    }

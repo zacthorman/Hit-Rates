@@ -1035,5 +1035,185 @@
     "result": "lose",
     "profit": -2.0,
     "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-12-1",
+    "kind": "single",
+    "logged_at": "2026-10-12T13:05:49+00:00",
+    "price": 1.79,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16285037,
+        "fixture": "Torino v Udinese",
+        "kickoff": 1791830700,
+        "player": "Nikola Vla\u0161i\u0107",
+        "player_id": 357596,
+        "team": "Torino",
+        "stat": "Shots",
+        "line": 1.0,
+        "model_k": 9,
+        "model_n": 10,
+        "model_p": 0.786,
+        "source": "serie-a.html",
+        "value": 0.0,
+        "result": "lose"
+      }
+    ],
+    "result": "lose",
+    "profit": -10.0,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-12-2",
+    "kind": "single",
+    "logged_at": "2026-10-12T13:05:49+00:00",
+    "price": 1.95,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16421063,
+        "fixture": "Levante UD v Sevilla",
+        "kickoff": 1791831600,
+        "player": "Adri\u00e1n de la Fuente",
+        "player_id": 997244,
+        "team": "Levante UD",
+        "stat": "Shots",
+        "line": 1.0,
+        "model_k": 9,
+        "model_n": 10,
+        "model_p": 0.786,
+        "source": "laliga.html",
+        "value": 4.0,
+        "result": "win"
+      }
+    ],
+    "result": "win",
+    "profit": 9.5,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-12-3",
+    "kind": "single",
+    "logged_at": "2026-10-12T13:05:50+00:00",
+    "price": 1.58,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 15238207,
+        "fixture": "Chapecoense v Athletico",
+        "kickoff": 1791844200,
+        "player": "Kevin Viveros",
+        "player_id": 925124,
+        "team": "Athletico",
+        "stat": "Shots",
+        "line": 2.0,
+        "model_k": 9,
+        "model_n": 10,
+        "model_p": 0.786,
+        "source": "campeonato-brasileiro-serie-a.html",
+        "value": 3.0,
+        "result": "win"
+      }
+    ],
+    "result": "win",
+    "profit": 5.8,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-12-4",
+    "kind": "single",
+    "logged_at": "2026-10-12T13:06:55+00:00",
+    "price": 2.33,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16363874,
+        "fixture": "Coventry City v Newcastle United",
+        "kickoff": 1791831600,
+        "player": "Sven Botman",
+        "player_id": 910046,
+        "team": "Newcastle United",
+        "stat": "Tackles",
+        "line": 1.0,
+        "model_k": 9,
+        "model_n": 10,
+        "model_p": 0.786,
+        "source": "premier-league.html",
+        "value": 1.0,
+        "result": "win"
+      }
+    ],
+    "result": "win",
+    "profit": 13.3,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-12-5",
+    "kind": "single",
+    "logged_at": "2026-10-12T13:54:01+00:00",
+    "price": 1.77,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 15238221,
+        "fixture": "Coritiba v Botafogo",
+        "kickoff": 1791831600,
+        "player": "\u00c1lvaro Montoro",
+        "player_id": 1650770,
+        "team": "Botafogo",
+        "stat": "Shots",
+        "line": 1.0,
+        "model_k": 9,
+        "model_n": 10,
+        "model_p": 0.786,
+        "source": "campeonato-brasileiro-serie-a.html",
+        "value": 0.0,
+        "result": "lose"
+      }
+    ],
+    "result": "lose",
+    "profit": -10.0,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-12-6",
+    "kind": "single",
+    "logged_at": "2026-10-12T13:55:51+00:00",
+    "price": 1.89,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16183750,
+        "fixture": "Los Angeles Rams v Buffalo Bills",
+        "kickoff": 1791850500,
+        "player": "Matthew Stafford",
+        "player_id": 854986,
+        "team": "Los Angeles Rams",
+        "stat": "Passing yards",
+        "line": 250.0,
+        "model_k": 9,
+        "model_n": 10,
+        "model_p": 0.786,
+        "source": "nfl.html",
+        "value": 383.0,
+        "result": "win"
+      }
+    ],
+    "result": "win",
+    "profit": 8.9,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
   }
 ]
