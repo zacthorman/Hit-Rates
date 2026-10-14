@@ -30692,11 +30692,11 @@
     "total": 19,
     "fair": 2.1042078806610864,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: evens double",
@@ -30722,8 +30722,8 @@
     "total": 19,
     "fair": 1.3627012894977972,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win"
    },
    {
     "event_id": 15238004,
@@ -30747,7 +30747,7 @@
     "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: banker",
@@ -30773,11 +30773,11 @@
     "total": 19,
     "fair": 1.3627012894977972,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: acca",
@@ -30824,8 +30824,8 @@
     "total": 18,
     "fair": 1.4473228261856785,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    },
    {
     "event_id": 16421063,
@@ -30849,7 +30849,7 @@
     "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: builder",
@@ -30947,8 +30947,8 @@
     "total": 35,
     "fair": 1.5217391304347827,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    },
    {
     "event_id": 16391341,
@@ -30968,8 +30968,8 @@
     "total": 35,
     "fair": 1.4583333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    },
    {
     "event_id": 16391341,
@@ -30989,8 +30989,8 @@
     "total": 33,
     "fair": 1.375,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 16391341,
@@ -31010,11 +31010,11 @@
     "total": 31,
     "fair": 1.4761904761904763,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: acca",
@@ -31184,11 +31184,11 @@
     "total": 18,
     "fair": 1.4273565285845398,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -31214,11 +31214,11 @@
     "total": 34,
     "fair": 1.3076923076923077,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -31244,11 +31244,11 @@
     "total": 37,
     "fair": 1.3703703703703705,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -31274,11 +31274,11 @@
     "total": 19,
     "fair": 1.6765912021479785,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -31304,11 +31304,11 @@
     "total": 19,
     "fair": 1.4253329203682352,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -31334,11 +31334,11 @@
     "total": 19,
     "fair": 1.589988510385868,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -31364,11 +31364,11 @@
     "total": 18,
     "fair": 1.4473228261856785,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -31394,11 +31394,11 @@
     "total": 18,
     "fair": 1.4573013129353118,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -31424,11 +31424,11 @@
     "total": 18,
     "fair": 1.3514008595553577,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -31455,10 +31455,10 @@
     "fair": 1.3333333333333333,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Fixture single",
@@ -31484,11 +31484,11 @@
     "total": 18,
     "fair": 1.6555264274772914,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -31514,11 +31514,11 @@
     "total": 26,
     "fair": 1.368421052631579,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -31544,11 +31544,11 @@
     "total": 18,
     "fair": 1.5128397379865262,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -31574,11 +31574,11 @@
     "total": 18,
     "fair": 1.552852372338947,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -31604,11 +31604,11 @@
     "total": 18,
     "fair": 1.4262887126682184,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -31634,11 +31634,11 @@
     "total": 19,
     "fair": 1.3627012894977972,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -31664,11 +31664,11 @@
     "total": 19,
     "fair": 1.3441210738427412,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -31694,11 +31694,11 @@
     "total": 19,
     "fair": 1.4052685271782006,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -31724,11 +31724,11 @@
     "total": 30,
     "fair": 1.3043478260869565,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -31754,11 +31754,11 @@
     "total": 19,
     "fair": 1.3585168349566543,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -31784,11 +31784,11 @@
     "total": 17,
     "fair": 1.3076923076923077,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: parlay",
@@ -31814,8 +31814,8 @@
     "total": 35,
     "fair": 1.5217391304347827,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 16391472,
@@ -31836,7 +31836,7 @@
     "fair": 1.4444444444444444,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    },
    {
     "event_id": 16391472,
@@ -31856,8 +31856,8 @@
     "total": 36,
     "fair": 1.3846153846153846,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 16391472,
@@ -31877,11 +31877,11 @@
     "total": 29,
     "fair": 1.5263157894736843,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: acca",
@@ -32051,11 +32051,11 @@
     "total": 19,
     "fair": 2.0959770711125953,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: evens double",
@@ -32975,8 +32975,8 @@
     "total": 18,
     "fair": 1.4439770542423387,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    },
    {
     "event_id": 16391437,
@@ -32996,11 +32996,11 @@
     "total": 19,
     "fair": 1.6765912021479785,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: builder",
@@ -33026,8 +33026,8 @@
     "total": 18,
     "fair": 1.4273565285845398,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 16391420,
@@ -33047,8 +33047,8 @@
     "total": 18,
     "fair": 1.4319882266174457,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win"
    },
    {
     "event_id": 16391420,
@@ -33068,11 +33068,11 @@
     "total": 18,
     "fair": 1.6368040962799069,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: parlay",
@@ -33436,5 +33436,7052 @@
    }
   ],
   "result": null
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.9006181941624614,
+  "legs": [
+   {
+    "event_id": 16391341,
+    "fixture": "Birmingham City v Preston North End",
+    "competition": "Championship",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Birmingham City",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 18,
+    "total": 19,
+    "fair": 1.364757845760097,
+    "venue": "home",
+    "value": 7.0,
+    "result": "win"
+   },
+   {
+    "event_id": 15171691,
+    "fixture": "CF Montr\u00e9al v Atlanta United",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "CF Montr\u00e9al",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 18,
+    "total": 20,
+    "fair": 1.3926413393168067,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 3.146953229318148,
+  "legs": [
+   {
+    "event_id": 16391472,
+    "fixture": "Wrexham v West Bromwich Albion",
+    "competition": "Championship",
+    "kickoff": 1791917100,
+    "sport": "football",
+    "team": "Wrexham",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 18,
+    "fair": 1.4439770542423387,
+    "venue": "home",
+    "value": 1.0,
+    "result": "win"
+   },
+   {
+    "event_id": 15171689,
+    "fixture": "DC United v New York Red Bulls",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "New York Red Bulls",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 19,
+    "fair": 1.4742055200365929,
+    "venue": "away",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15171694,
+    "fixture": "Chicago Fire v Philadelphia Union",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Philadelphia Union",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.4783319507427115,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: builder",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 15171687,
+    "fixture": "Inter Miami CF v New York City FC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "New York City FC",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 12.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.373255444914815,
+    "venue": "away",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15171687,
+    "fixture": "Inter Miami CF v New York City FC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "New York City FC",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.461076908604455,
+    "venue": "away",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15171687,
+    "fixture": "Inter Miami CF v New York City FC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "New York City FC",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 2.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.649591806267376,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.4041160029607331,
+  "legs": [
+   {
+    "event_id": 15171692,
+    "fixture": "Nashville SC v Sporting Kansas City",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Nashville SC",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.4041160029607331,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.4576173167897006,
+  "legs": [
+   {
+    "event_id": 15171692,
+    "fixture": "Nashville SC v Sporting Kansas City",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Nashville SC",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.4576173167897006,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 15171692,
+    "fixture": "Nashville SC v Sporting Kansas City",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Nashville SC",
+    "player": "Cristian Espinoza",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3616277079727288,
+  "legs": [
+   {
+    "event_id": 15171687,
+    "fixture": "Inter Miami CF v New York City FC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "Inter Miami CF",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 19,
+    "total": 21,
+    "fair": 1.3616277079727288,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.4338750420656605,
+  "legs": [
+   {
+    "event_id": 15171687,
+    "fixture": "Inter Miami CF v New York City FC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "Inter Miami CF",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 18,
+    "total": 21,
+    "fair": 1.4338750420656605,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3969471486862344,
+  "legs": [
+   {
+    "event_id": 15171687,
+    "fixture": "Inter Miami CF v New York City FC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "Inter Miami CF",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 21,
+    "fair": 1.3969471486862344,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.4783319507427115,
+  "legs": [
+   {
+    "event_id": 15171694,
+    "fixture": "Chicago Fire v Philadelphia Union",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Philadelphia Union",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.4783319507427115,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.7041909205323826,
+  "legs": [
+   {
+    "event_id": 15171694,
+    "fixture": "Chicago Fire v Philadelphia Union",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Chicago Fire",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.7041909205323826,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.368940613613701,
+  "legs": [
+   {
+    "event_id": 15171694,
+    "fixture": "Chicago Fire v Philadelphia Union",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Chicago Fire",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.368940613613701,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3247725550886205,
+  "legs": [
+   {
+    "event_id": 15171683,
+    "fixture": "FC Cincinnati v New England Revolution",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "FC Cincinnati",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 20,
+    "fair": 1.3247725550886205,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.32,
+  "legs": [
+   {
+    "event_id": 15171683,
+    "fixture": "FC Cincinnati v New England Revolution",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "FC Cincinnati",
+    "player": "Evander",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": true,
+    "threshold": 3.0,
+    "hits": 25,
+    "total": 33,
+    "fair": 1.32,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3732888376236845,
+  "legs": [
+   {
+    "event_id": 15171683,
+    "fixture": "FC Cincinnati v New England Revolution",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "FC Cincinnati",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 11.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.3732888376236845,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3358514881652794,
+  "legs": [
+   {
+    "event_id": 15171688,
+    "fixture": "Columbus Crew v Charlotte FC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "Columbus Crew",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.3358514881652794,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3943741174681257,
+  "legs": [
+   {
+    "event_id": 15171688,
+    "fixture": "Columbus Crew v Charlotte FC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "Charlotte FC",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.3943741174681257,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.4189815849445049,
+  "legs": [
+   {
+    "event_id": 15171688,
+    "fixture": "Columbus Crew v Charlotte FC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "Columbus Crew",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 17,
+    "fair": 1.4189815849445049,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3885459887213607,
+  "legs": [
+   {
+    "event_id": 15171693,
+    "fixture": "Toronto FC v Orlando City SC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "Orlando City SC",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 19,
+    "fair": 1.3885459887213607,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.4393238864020423,
+  "legs": [
+   {
+    "event_id": 15171693,
+    "fixture": "Toronto FC v Orlando City SC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "Orlando City SC",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.4393238864020423,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.4072466666980044,
+  "legs": [
+   {
+    "event_id": 15171693,
+    "fixture": "Toronto FC v Orlando City SC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "Toronto FC",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.4072466666980044,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.4742055200365929,
+  "legs": [
+   {
+    "event_id": 15171689,
+    "fixture": "DC United v New York Red Bulls",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "New York Red Bulls",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 19,
+    "fair": 1.4742055200365929,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3098148004684116,
+  "legs": [
+   {
+    "event_id": 15171689,
+    "fixture": "DC United v New York Red Bulls",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "New York Red Bulls",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.3098148004684116,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.7828828231453828,
+  "legs": [
+   {
+    "event_id": 15171689,
+    "fixture": "DC United v New York Red Bulls",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "DC United",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.7828828231453828,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3926413393168067,
+  "legs": [
+   {
+    "event_id": 15171691,
+    "fixture": "CF Montr\u00e9al v Atlanta United",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "CF Montr\u00e9al",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 18,
+    "total": 20,
+    "fair": 1.3926413393168067,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.4368944731574547,
+  "legs": [
+   {
+    "event_id": 15171691,
+    "fixture": "CF Montr\u00e9al v Atlanta United",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "Atlanta United",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.4368944731574547,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.4296564185702354,
+  "legs": [
+   {
+    "event_id": 15171691,
+    "fixture": "CF Montr\u00e9al v Atlanta United",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "CF Montr\u00e9al",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.4296564185702354,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3337888797229898,
+  "legs": [
+   {
+    "event_id": 15171696,
+    "fixture": "St.Louis City v Vancouver Whitecaps",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "St.Louis City",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.3337888797229898,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 15171696,
+    "fixture": "St.Louis City v Vancouver Whitecaps",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Vancouver Whitecaps",
+    "player": "Brian White",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 21,
+    "total": 28,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.4344733680915398,
+  "legs": [
+   {
+    "event_id": 15171696,
+    "fixture": "St.Louis City v Vancouver Whitecaps",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Vancouver Whitecaps",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.4344733680915398,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.6997338045753076,
+  "legs": [
+   {
+    "event_id": 15171695,
+    "fixture": "FC Dallas v Seattle Sounders FC",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "FC Dallas",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.6997338045753076,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3181818181818183,
+  "legs": [
+   {
+    "event_id": 15171695,
+    "fixture": "FC Dallas v Seattle Sounders FC",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Seattle Sounders FC",
+    "player": "Paul Rothrock",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 22,
+    "total": 29,
+    "fair": 1.3181818181818183,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.4004799382627244,
+  "legs": [
+   {
+    "event_id": 15171695,
+    "fixture": "FC Dallas v Seattle Sounders FC",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Seattle Sounders FC",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 5.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.4004799382627244,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3606743714782543,
+  "legs": [
+   {
+    "event_id": 15171698,
+    "fixture": "Real Salt Lake v San Jose Earthquakes",
+    "competition": "MLS",
+    "kickoff": 1792027800,
+    "sport": "football",
+    "team": "San Jose Earthquakes",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 19,
+    "fair": 1.3606743714782543,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3773449470303984,
+  "legs": [
+   {
+    "event_id": 15171698,
+    "fixture": "Real Salt Lake v San Jose Earthquakes",
+    "competition": "MLS",
+    "kickoff": 1792027800,
+    "sport": "football",
+    "team": "Real Salt Lake",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.3773449470303984,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.651938256578576,
+  "legs": [
+   {
+    "event_id": 15171698,
+    "fixture": "Real Salt Lake v San Jose Earthquakes",
+    "competition": "MLS",
+    "kickoff": 1792027800,
+    "sport": "football",
+    "team": "Real Salt Lake",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.651938256578576,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3629376898016508,
+  "legs": [
+   {
+    "event_id": 15171699,
+    "fixture": "San Diego FC v Houston Dynamo",
+    "competition": "MLS",
+    "kickoff": 1792031400,
+    "sport": "football",
+    "team": "San Diego FC",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 18,
+    "total": 20,
+    "fair": 1.3629376898016508,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3030159084753536,
+  "legs": [
+   {
+    "event_id": 15171699,
+    "fixture": "San Diego FC v Houston Dynamo",
+    "competition": "MLS",
+    "kickoff": 1792031400,
+    "sport": "football",
+    "team": "San Diego FC",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.3030159084753536,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3548050111930525,
+  "legs": [
+   {
+    "event_id": 15171699,
+    "fixture": "San Diego FC v Houston Dynamo",
+    "competition": "MLS",
+    "kickoff": 1792031400,
+    "sport": "football",
+    "team": "Houston Dynamo",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.3548050111930525,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3043478260869565,
+  "legs": [
+   {
+    "event_id": 15171697,
+    "fixture": "Los Angeles FC v Austin FC",
+    "competition": "MLS",
+    "kickoff": 1792031400,
+    "sport": "football",
+    "team": "Los Angeles FC",
+    "player": "Son Heung-min",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 23,
+    "total": 30,
+    "fair": 1.3043478260869565,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 15171697,
+    "fixture": "Los Angeles FC v Austin FC",
+    "competition": "MLS",
+    "kickoff": 1792031400,
+    "sport": "football",
+    "team": "Austin FC",
+    "player": "Joseph Rosales",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 18,
+    "total": 24,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.4730174121036788,
+  "legs": [
+   {
+    "event_id": 15171697,
+    "fixture": "Los Angeles FC v Austin FC",
+    "competition": "MLS",
+    "kickoff": 1792031400,
+    "sport": "football",
+    "team": "Los Angeles FC",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 15,
+    "fair": 1.4730174121036788,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3147124066833982,
+  "legs": [
+   {
+    "event_id": 15171702,
+    "fixture": "Colorado Rapids v Minnesota United",
+    "competition": "MLS",
+    "kickoff": 1792027800,
+    "sport": "football",
+    "team": "Colorado Rapids",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 18,
+    "fair": 1.3147124066833982,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.4341523503224263,
+  "legs": [
+   {
+    "event_id": 15171702,
+    "fixture": "Colorado Rapids v Minnesota United",
+    "competition": "MLS",
+    "kickoff": 1792027800,
+    "sport": "football",
+    "team": "Minnesota United",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 19,
+    "fair": 1.4341523503224263,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.4028173454107575,
+  "legs": [
+   {
+    "event_id": 15171702,
+    "fixture": "Colorado Rapids v Minnesota United",
+    "competition": "MLS",
+    "kickoff": 1792027800,
+    "sport": "football",
+    "team": "Colorado Rapids",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 18,
+    "fair": 1.4028173454107575,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.3267807600212826,
+  "legs": [
+   {
+    "event_id": 15171700,
+    "fixture": "LA Galaxy v Portland Timbers",
+    "competition": "MLS",
+    "kickoff": 1792031400,
+    "sport": "football",
+    "team": "LA Galaxy",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 19,
+    "fair": 1.3267807600212826,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.347690883676524,
+  "legs": [
+   {
+    "event_id": 15171700,
+    "fixture": "LA Galaxy v Portland Timbers",
+    "competition": "MLS",
+    "kickoff": 1792031400,
+    "sport": "football",
+    "team": "LA Galaxy",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.347690883676524,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791883644,
+  "fair": 1.5314904401677,
+  "legs": [
+   {
+    "event_id": 15171700,
+    "fixture": "LA Galaxy v Portland Timbers",
+    "competition": "MLS",
+    "kickoff": 1792031400,
+    "sport": "football",
+    "team": "LA Galaxy",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.5314904401677,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 2.0272967843877123,
+  "legs": [
+   {
+    "event_id": 16938807,
+    "fixture": "Arsenal v Lille",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Arsenal",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 18,
+    "total": 19,
+    "fair": 1.4854626340386536,
+    "venue": "home",
+    "value": 3.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16391341,
+    "fixture": "Birmingham City v Preston North End",
+    "competition": "Championship",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Birmingham City",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 18,
+    "total": 19,
+    "fair": 1.364757845760097,
+    "venue": "home",
+    "value": 7.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.4854626340386536,
+  "legs": [
+   {
+    "event_id": 16938807,
+    "fixture": "Arsenal v Lille",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Arsenal",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 18,
+    "total": 19,
+    "fair": 1.4854626340386536,
+    "venue": "home",
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 3.202642877936404,
+  "legs": [
+   {
+    "event_id": 16938807,
+    "fixture": "Arsenal v Lille",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Arsenal",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 18,
+    "total": 19,
+    "fair": 1.4854626340386536,
+    "venue": "home",
+    "value": 3.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16938931,
+    "fixture": "Bod\u00f8/Glimt v Borussia Dortmund",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Bod\u00f8/Glimt",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 18,
+    "fair": 1.4930917297460553,
+    "venue": "home",
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16391472,
+    "fixture": "Wrexham v West Bromwich Albion",
+    "competition": "Championship",
+    "kickoff": 1791917100,
+    "sport": "football",
+    "team": "Wrexham",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 18,
+    "fair": 1.4439770542423387,
+    "venue": "home",
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 3.033333333333334,
+  "legs": [
+   {
+    "event_id": 16939021,
+    "fixture": "Viking FK v FC Bayern M\u00fcnchen",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Viking FK",
+    "player": "Peter Christiansen",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 21,
+    "total": 32,
+    "fair": 1.5238095238095237,
+    "venue": null,
+    "value": 2.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16939021,
+    "fixture": "Viking FK v FC Bayern M\u00fcnchen",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Viking FK",
+    "player": "Kristoffer Haugen",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 19,
+    "total": 27,
+    "fair": 1.4210526315789473,
+    "venue": null,
+    "value": 0.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 16939021,
+    "fixture": "Viking FK v FC Bayern M\u00fcnchen",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "FC Bayern M\u00fcnchen",
+    "player": "Harry Kane",
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 23,
+    "total": 31,
+    "fair": 1.3478260869565217,
+    "venue": null,
+    "value": 2.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16939021,
+    "fixture": "Viking FK v FC Bayern M\u00fcnchen",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "FC Bayern M\u00fcnchen",
+    "player": "Luis D\u00edaz",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 26,
+    "total": 34,
+    "fair": 1.3076923076923077,
+    "venue": null,
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6471000098134692,
+  "legs": [
+   {
+    "event_id": 16938772,
+    "fixture": "Manchester City v Paris Saint-Germain",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Manchester City",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.6471000098134692,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6471000098134692,
+  "legs": [
+   {
+    "event_id": 16938772,
+    "fixture": "Manchester City v Paris Saint-Germain",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Manchester City",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 6.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.6471000098134692,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.3181818181818183,
+  "legs": [
+   {
+    "event_id": 16938772,
+    "fixture": "Manchester City v Paris Saint-Germain",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Manchester City",
+    "player": "Erling Haaland",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 22,
+    "total": 29,
+    "fair": 1.3181818181818183,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.560281866941418,
+  "legs": [
+   {
+    "event_id": 16939021,
+    "fixture": "Viking FK v FC Bayern M\u00fcnchen",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "FC Bayern M\u00fcnchen",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 18,
+    "total": 20,
+    "fair": 1.560281866941418,
+    "venue": "away",
+    "value": 4.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.5999224202764204,
+  "legs": [
+   {
+    "event_id": 16939021,
+    "fixture": "Viking FK v FC Bayern M\u00fcnchen",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Viking FK",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 16,
+    "fair": 1.5999224202764204,
+    "venue": "home",
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6120731078262605,
+  "legs": [
+   {
+    "event_id": 16939021,
+    "fixture": "Viking FK v FC Bayern M\u00fcnchen",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Viking FK",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.6120731078262605,
+    "venue": "home",
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6358467944293176,
+  "legs": [
+   {
+    "event_id": 16938979,
+    "fixture": "Galatasaray v FC Barcelona",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Galatasaray",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 2.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.6358467944293176,
+    "venue": "home",
+    "value": 1.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6943802254764067,
+  "legs": [
+   {
+    "event_id": 16938979,
+    "fixture": "Galatasaray v FC Barcelona",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Galatasaray",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 2.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.6943802254764067,
+    "venue": "home",
+    "value": 1.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.3157894736842106,
+  "legs": [
+   {
+    "event_id": 16938979,
+    "fixture": "Galatasaray v FC Barcelona",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Galatasaray",
+    "player": "Yunus Akg\u00fcn",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 19,
+    "total": 25,
+    "fair": 1.3157894736842106,
+    "venue": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.380952380952381,
+  "legs": [
+   {
+    "event_id": 16938789,
+    "fixture": "Atl\u00e9tico Madrid v Manchester United",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Manchester United",
+    "player": "Diogo Dalot",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 21,
+    "total": 29,
+    "fair": 1.380952380952381,
+    "venue": null,
+    "value": 0.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.4,
+  "legs": [
+   {
+    "event_id": 16938789,
+    "fixture": "Atl\u00e9tico Madrid v Manchester United",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Manchester United",
+    "player": "Bryan Mbeumo",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 20,
+    "total": 28,
+    "fair": 1.4,
+    "venue": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.4285714285714286,
+  "legs": [
+   {
+    "event_id": 16938789,
+    "fixture": "Atl\u00e9tico Madrid v Manchester United",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Manchester United",
+    "player": "Matheus Cunha",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 21,
+    "total": 30,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6471000098134692,
+  "legs": [
+   {
+    "event_id": 16938974,
+    "fixture": "Feyenoord v Como",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791996300,
+    "sport": "football",
+    "team": "Feyenoord",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.6471000098134692,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.32,
+  "legs": [
+   {
+    "event_id": 16938974,
+    "fixture": "Feyenoord v Como",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791996300,
+    "sport": "football",
+    "team": "Como",
+    "player": "Lucas Da Cunha",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 25,
+    "total": 33,
+    "fair": 1.32,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16938974,
+    "fixture": "Feyenoord v Como",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791996300,
+    "sport": "football",
+    "team": "Feyenoord",
+    "player": "Luciano Valente",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 27,
+    "total": 36,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6593235972925007,
+  "legs": [
+   {
+    "event_id": 16939003,
+    "fixture": "RC Lens v Sporting CP",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791909900,
+    "sport": "football",
+    "team": "Sporting CP",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.6593235972925007,
+    "venue": "away",
+    "value": 0.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16939003,
+    "fixture": "RC Lens v Sporting CP",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791909900,
+    "sport": "football",
+    "team": "Sporting CP",
+    "player": "Geny Catamo",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 24,
+    "total": 32,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16939003,
+    "fixture": "RC Lens v Sporting CP",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791909900,
+    "sport": "football",
+    "team": "RC Lens",
+    "player": "Florian Thauvin",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 21,
+    "total": 28,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6358467944293176,
+  "legs": [
+   {
+    "event_id": 16939041,
+    "fixture": "\u0160K Slovan Bratislava v VfB Stuttgart",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "VfB Stuttgart",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.6358467944293176,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6943802254764067,
+  "legs": [
+   {
+    "event_id": 16939041,
+    "fixture": "\u0160K Slovan Bratislava v VfB Stuttgart",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "VfB Stuttgart",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.6943802254764067,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.380952380952381,
+  "legs": [
+   {
+    "event_id": 16939041,
+    "fixture": "\u0160K Slovan Bratislava v VfB Stuttgart",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "VfB Stuttgart",
+    "player": "Maximilian Mittelst\u00e4dt",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 21,
+    "total": 29,
+    "fair": 1.380952380952381,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6593235972925007,
+  "legs": [
+   {
+    "event_id": 16938852,
+    "fixture": "Aston Villa v Fenerbah\u00e7e",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Aston Villa",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.6593235972925007,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.7074969266062165,
+  "legs": [
+   {
+    "event_id": 16938852,
+    "fixture": "Aston Villa v Fenerbah\u00e7e",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Fenerbah\u00e7e",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.7074969266062165,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.4117647058823528,
+  "legs": [
+   {
+    "event_id": 16938852,
+    "fixture": "Aston Villa v Fenerbah\u00e7e",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Aston Villa",
+    "player": "John McGinn",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 17,
+    "total": 24,
+    "fair": 1.4117647058823528,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.5690867546635847,
+  "legs": [
+   {
+    "event_id": 16938869,
+    "fixture": "Real Betis v FC Porto",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Real Betis",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 19,
+    "fair": 1.5690867546635847,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6120731078262605,
+  "legs": [
+   {
+    "event_id": 16938869,
+    "fixture": "Real Betis v FC Porto",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "FC Porto",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.6120731078262605,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.3125,
+  "legs": [
+   {
+    "event_id": 16938869,
+    "fixture": "Real Betis v FC Porto",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "FC Porto",
+    "player": "Alan Varela",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 16,
+    "total": 21,
+    "fair": 1.3125,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.4930917297460553,
+  "legs": [
+   {
+    "event_id": 16938931,
+    "fixture": "Bod\u00f8/Glimt v Borussia Dortmund",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Bod\u00f8/Glimt",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 18,
+    "fair": 1.4930917297460553,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.519809645020489,
+  "legs": [
+   {
+    "event_id": 16938931,
+    "fixture": "Bod\u00f8/Glimt v Borussia Dortmund",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Bod\u00f8/Glimt",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 15,
+    "fair": 1.519809645020489,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.5785607392265233,
+  "legs": [
+   {
+    "event_id": 16938931,
+    "fixture": "Bod\u00f8/Glimt v Borussia Dortmund",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Bod\u00f8/Glimt",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 18,
+    "fair": 1.5785607392265233,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.5303377472693214,
+  "legs": [
+   {
+    "event_id": 16939043,
+    "fixture": "LASK v Liverpool FC",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791996300,
+    "sport": "football",
+    "team": "LASK",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "1ST",
+    "line": 0.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 14,
+    "fair": 1.5303377472693214,
+    "venue": "home",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.7074969266062165,
+  "legs": [
+   {
+    "event_id": 16939043,
+    "fixture": "LASK v Liverpool FC",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791996300,
+    "sport": "football",
+    "team": "Liverpool FC",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.7074969266062165,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.4285714285714286,
+  "legs": [
+   {
+    "event_id": 16939043,
+    "fixture": "LASK v Liverpool FC",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791996300,
+    "sport": "football",
+    "team": "Liverpool FC",
+    "player": "Ryan Gravenberch",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 21,
+    "total": 30,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.5690867546635847,
+  "legs": [
+   {
+    "event_id": 16938872,
+    "fixture": "AS Roma v Real Madrid",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Real Madrid",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 19,
+    "fair": 1.5690867546635847,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.3076923076923077,
+  "legs": [
+   {
+    "event_id": 16938872,
+    "fixture": "AS Roma v Real Madrid",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Real Madrid",
+    "player": "Vin\u00edcius J\u00fanior",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 26,
+    "total": 34,
+    "fair": 1.3076923076923077,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.3599999999999999,
+  "legs": [
+   {
+    "event_id": 16938872,
+    "fixture": "AS Roma v Real Madrid",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Real Madrid",
+    "player": "Federico Valverde",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 25,
+    "total": 34,
+    "fair": 1.3599999999999999,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.4854626340386536,
+  "legs": [
+   {
+    "event_id": 16938807,
+    "fixture": "Arsenal v Lille",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Arsenal",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 18,
+    "total": 19,
+    "fair": 1.4854626340386536,
+    "venue": "home",
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.5690867546635847,
+  "legs": [
+   {
+    "event_id": 16938807,
+    "fixture": "Arsenal v Lille",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Arsenal",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 19,
+    "fair": 1.5690867546635847,
+    "venue": "home",
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.5690867546635847,
+  "legs": [
+   {
+    "event_id": 16938807,
+    "fixture": "Arsenal v Lille",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Lille",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 19,
+    "fair": 1.5690867546635847,
+    "venue": "away",
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6593235972925007,
+  "legs": [
+   {
+    "event_id": 16938918,
+    "fixture": "Shakhtar Donetsk v AEK Athens",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "AEK Athens",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.6593235972925007,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.3181818181818183,
+  "legs": [
+   {
+    "event_id": 16938918,
+    "fixture": "Shakhtar Donetsk v AEK Athens",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "AEK Athens",
+    "player": "Luka Jovi\u0107",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 22,
+    "total": 29,
+    "fair": 1.3181818181818183,
+    "venue": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.672677382305647,
+  "legs": [
+   {
+    "event_id": 16938918,
+    "fixture": "Shakhtar Donetsk v AEK Athens",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "AEK Athens",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 16,
+    "fair": 1.672677382305647,
+    "venue": "away",
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6120731078262605,
+  "legs": [
+   {
+    "event_id": 16938939,
+    "fixture": "RB Leipzig v PSV Eindhoven",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "PSV Eindhoven",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.6120731078262605,
+    "venue": "away",
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6120731078262605,
+  "legs": [
+   {
+    "event_id": 16938939,
+    "fixture": "RB Leipzig v PSV Eindhoven",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "PSV Eindhoven",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.6120731078262605,
+    "venue": "away",
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6471000098134692,
+  "legs": [
+   {
+    "event_id": 16938939,
+    "fixture": "RB Leipzig v PSV Eindhoven",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "RB Leipzig",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.6471000098134692,
+    "venue": "home",
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.3157894736842106,
+  "legs": [
+   {
+    "event_id": 16939017,
+    "fixture": "Sabah FK v SK Slavia Praha",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791909900,
+    "sport": "football",
+    "team": "SK Slavia Praha",
+    "player": "Luk\u00e1\u0161 Provod",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 19,
+    "total": 25,
+    "fair": 1.3157894736842106,
+    "venue": null,
+    "value": 8.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.4,
+  "legs": [
+   {
+    "event_id": 16939017,
+    "fixture": "Sabah FK v SK Slavia Praha",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791909900,
+    "sport": "football",
+    "team": "Sabah FK",
+    "player": "Tymoteusz Puchacz",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 20,
+    "total": 28,
+    "fair": 1.4,
+    "venue": null,
+    "value": 0.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.7218264028970067,
+  "legs": [
+   {
+    "event_id": 16939017,
+    "fixture": "Sabah FK v SK Slavia Praha",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791909900,
+    "sport": "football",
+    "team": "Sabah FK",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 17,
+    "fair": 1.7218264028970067,
+    "venue": "home",
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6120731078262605,
+  "legs": [
+   {
+    "event_id": 16938924,
+    "fixture": "Villarreal v SSC Napoli",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Villarreal",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.6120731078262605,
+    "venue": "home",
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6873620194038563,
+  "legs": [
+   {
+    "event_id": 16938924,
+    "fixture": "Villarreal v SSC Napoli",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Villarreal",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 15,
+    "fair": 1.6873620194038563,
+    "venue": "home",
+    "value": 4.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6873620194038563,
+  "legs": [
+   {
+    "event_id": 16938924,
+    "fixture": "Villarreal v SSC Napoli",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Villarreal",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 15,
+    "fair": 1.6873620194038563,
+    "venue": "home",
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16938777,
+    "fixture": "Inter v Club Brugge KV",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Inter",
+    "player": "Piotr Zieli\u0144ski",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 21,
+    "total": 28,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.35,
+  "legs": [
+   {
+    "event_id": 16938777,
+    "fixture": "Inter v Club Brugge KV",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Inter",
+    "player": "Marcus Thuram",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 20,
+    "total": 27,
+    "fair": 1.35,
+    "venue": null,
+    "value": 0.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791896261,
+  "fair": 1.6873620194038563,
+  "legs": [
+   {
+    "event_id": 16938777,
+    "fixture": "Inter v Club Brugge KV",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Club Brugge KV",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 15,
+    "fair": 1.6873620194038563,
+    "venue": "away",
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 2.0197452104585576,
+  "legs": [
+   {
+    "event_id": 15171687,
+    "fixture": "Inter Miami CF v New York City FC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "New York City FC",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 20,
+    "fair": 2.0197452104585576,
+    "venue": "away",
+    "chance": 0.4951,
+    "fair_record": 1.8593634805698052,
+    "elo": [
+     1501,
+     1617
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.9000959961101476,
+  "legs": [
+   {
+    "event_id": 16938807,
+    "fixture": "Arsenal v Lille",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Arsenal",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3513678104299354,
+    "venue": "home",
+    "chance": 0.74,
+    "fair_record": 1.748477753994032,
+    "elo": [
+     2014,
+     1665
+    ],
+    "value": 8.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16938852,
+    "fixture": "Aston Villa v Fenerbah\u00e7e",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Fenerbah\u00e7e",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 16,
+    "fair": 1.406053911781157,
+    "venue": "away",
+    "chance": 0.7112,
+    "fair_record": 1.7375839696790456,
+    "elo": [
+     1714,
+     1870
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3041094467462,
+  "legs": [
+   {
+    "event_id": 15171683,
+    "fixture": "FC Cincinnati v New England Revolution",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "FC Cincinnati",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 11.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.3041094467462,
+    "venue": "home",
+    "chance": 0.7668,
+    "fair_record": 1.3732888376236845,
+    "elo": [
+     1539,
+     1479
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 3.013958035448982,
+  "legs": [
+   {
+    "event_id": 16938979,
+    "fixture": "Galatasaray v FC Barcelona",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Galatasaray",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 2.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 19,
+    "fair": 1.4434869017940366,
+    "venue": "home",
+    "chance": 0.6928,
+    "fair_record": 2.1338712583045827,
+    "elo": [
+     1660,
+     1908
+    ],
+    "value": 2.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16938772,
+    "fixture": "Manchester City v Paris Saint-Germain",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Paris Saint-Germain",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 8.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 18,
+    "fair": 1.4448398829916178,
+    "venue": "away",
+    "chance": 0.6921,
+    "fair_record": 2.107650151320388,
+    "elo": [
+     1891,
+     2028
+    ],
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15171692,
+    "fixture": "Nashville SC v Sporting Kansas City",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Sporting Kansas City",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 2.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4451223986629098,
+    "venue": "away",
+    "chance": 0.692,
+    "fair_record": 1.4388247904296854,
+    "elo": [
+     1352,
+     1653
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: builder",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 15171691,
+    "fixture": "CF Montr\u00e9al v Atlanta United",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "CF Montr\u00e9al",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 18,
+    "total": 20,
+    "fair": 1.2730604696266863,
+    "venue": "home",
+    "chance": 0.7855,
+    "fair_record": 1.3926413393168067,
+    "elo": [
+     1418,
+     1411
+    ],
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15171691,
+    "fixture": "CF Montr\u00e9al v Atlanta United",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "CF Montr\u00e9al",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.4281325150365671,
+    "venue": "home",
+    "chance": 0.7002,
+    "fair_record": 1.5174416604705518,
+    "elo": [
+     1418,
+     1411
+    ],
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 15171691,
+    "fixture": "CF Montr\u00e9al v Atlanta United",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "CF Montr\u00e9al",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4368740064843992,
+    "venue": "home",
+    "chance": 0.696,
+    "fair_record": 1.4318416536911573,
+    "elo": [
+     1418,
+     1411
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3484296653076828,
+  "legs": [
+   {
+    "event_id": 16938772,
+    "fixture": "Manchester City v Paris Saint-Germain",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Paris Saint-Germain",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 6.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 5,
+    "total": 18,
+    "fair": 1.3484296653076828,
+    "venue": "away",
+    "chance": 0.7416033818655431,
+    "fair_record": 2.263976130001152,
+    "elo": [
+     1891,
+     2028
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4032813336836445,
+  "legs": [
+   {
+    "event_id": 16938772,
+    "fixture": "Manchester City v Paris Saint-Germain",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Paris Saint-Germain",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 2.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 18,
+    "fair": 1.4032813336836445,
+    "venue": "away",
+    "chance": 0.7126154791605315,
+    "fair_record": 1.8177555981797449,
+    "elo": [
+     1891,
+     2028
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.425,
+  "legs": [
+   {
+    "event_id": 16938772,
+    "fixture": "Manchester City v Paris Saint-Germain",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Manchester City",
+    "player": "Erling Haaland",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 26,
+    "total": 29,
+    "fair": 1.425,
+    "venue": null,
+    "chance": 0.7017543859649122,
+    "fair_record": 1.1153846153846154,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3210627287636931,
+  "legs": [
+   {
+    "event_id": 16939021,
+    "fixture": "Viking FK v FC Bayern M\u00fcnchen",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Viking FK",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 3.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 15,
+    "fair": 1.3210627287636931,
+    "venue": "home",
+    "chance": 0.756966325842712,
+    "fair_record": 1.948549998359662,
+    "elo": [
+     1737,
+     2021
+    ],
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.351993479971176,
+  "legs": [
+   {
+    "event_id": 16939021,
+    "fixture": "Viking FK v FC Bayern M\u00fcnchen",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Viking FK",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 2.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 6,
+    "total": 15,
+    "fair": 1.351993479971176,
+    "venue": "home",
+    "chance": 0.7396485373741001,
+    "fair_record": 2.092845437400485,
+    "elo": [
+     1737,
+     2021
+    ],
+    "value": 5.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3104390497016134,
+  "legs": [
+   {
+    "event_id": 16938979,
+    "fixture": "Galatasaray v FC Barcelona",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Galatasaray",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 6.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 19,
+    "fair": 1.3104390497016134,
+    "venue": "home",
+    "chance": 0.7631030227828602,
+    "fair_record": 2.0694238148568025,
+    "elo": [
+     1660,
+     1908
+    ],
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3242260990697994,
+  "legs": [
+   {
+    "event_id": 16938979,
+    "fixture": "Galatasaray v FC Barcelona",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Galatasaray",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 16.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 6,
+    "total": 19,
+    "fair": 1.3242260990697994,
+    "venue": "home",
+    "chance": 0.7551580509570447,
+    "fair_record": 2.206093995192874,
+    "elo": [
+     1660,
+     1908
+    ],
+    "value": 5.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3886832014342105,
+  "legs": [
+   {
+    "event_id": 16938979,
+    "fixture": "Galatasaray v FC Barcelona",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Galatasaray",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 19,
+    "fair": 1.3886832014342105,
+    "venue": "home",
+    "chance": 0.7201066441699702,
+    "fair_record": 1.8512600035143663,
+    "elo": [
+     1660,
+     1908
+    ],
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4328039628095457,
+  "legs": [
+   {
+    "event_id": 16938789,
+    "fixture": "Atl\u00e9tico Madrid v Manchester United",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Atl\u00e9tico Madrid",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 2.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 18,
+    "fair": 1.4328039628095457,
+    "venue": "home",
+    "chance": 0.697932184692683,
+    "fair_record": 2.042470452833097,
+    "elo": [
+     1753,
+     1856
+    ],
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.45,
+  "legs": [
+   {
+    "event_id": 16938789,
+    "fixture": "Atl\u00e9tico Madrid v Manchester United",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Manchester United",
+    "player": "Matheus Cunha",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 26,
+    "total": 30,
+    "fair": 1.45,
+    "venue": null,
+    "chance": 0.6896551724137931,
+    "fair_record": 1.1538461538461537,
+    "elo": null,
+    "value": 1.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.5278648535856711,
+  "legs": [
+   {
+    "event_id": 16938789,
+    "fixture": "Atl\u00e9tico Madrid v Manchester United",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Atl\u00e9tico Madrid",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 7.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 5,
+    "total": 18,
+    "fair": 1.5278648535856711,
+    "venue": "home",
+    "chance": 0.6545081508047973,
+    "fair_record": 2.263976130001152,
+    "elo": [
+     1753,
+     1856
+    ],
+    "value": 5.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4575266842072125,
+  "legs": [
+   {
+    "event_id": 16938974,
+    "fixture": "Feyenoord v Como",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791996300,
+    "sport": "football",
+    "team": "Como",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.4575266842072125,
+    "venue": "away",
+    "chance": 0.6860937853387752,
+    "fair_record": 1.6943802254764067,
+    "elo": [
+     1740,
+     1602
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4878048780487805,
+  "legs": [
+   {
+    "event_id": 16938974,
+    "fixture": "Feyenoord v Como",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791996300,
+    "sport": "football",
+    "team": "Feyenoord",
+    "player": "Anis Hadj Moussa",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 27,
+    "total": 33,
+    "fair": 1.4878048780487805,
+    "venue": null,
+    "chance": 0.6721311475409836,
+    "fair_record": 1.222222222222222,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3054127245859375,
+  "legs": [
+   {
+    "event_id": 16939003,
+    "fixture": "RC Lens v Sporting CP",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791909900,
+    "sport": "football",
+    "team": "Sporting CP",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 6.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 17,
+    "fair": 1.3054127245859375,
+    "venue": "away",
+    "chance": 0.7660412535944822,
+    "fair_record": 1.8371141086275016,
+    "elo": [
+     1811,
+     1748
+    ],
+    "value": 5.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3507344586169858,
+  "legs": [
+   {
+    "event_id": 16939003,
+    "fixture": "RC Lens v Sporting CP",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791909900,
+    "sport": "football",
+    "team": "Sporting CP",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 2.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 17,
+    "fair": 1.3507344586169858,
+    "venue": "away",
+    "chance": 0.7403379647424542,
+    "fair_record": 1.7218264028970067,
+    "elo": [
+     1811,
+     1748
+    ],
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3646525345183187,
+  "legs": [
+   {
+    "event_id": 16939041,
+    "fixture": "\u0160K Slovan Bratislava v VfB Stuttgart",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "\u0160K Slovan Bratislava",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 14,
+    "fair": 1.3646525345183187,
+    "venue": "home",
+    "chance": 0.7327872661394865,
+    "fair_record": 1.7036337573945712,
+    "elo": [
+     1647,
+     1748
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.34681785846873,
+  "legs": [
+   {
+    "event_id": 16938852,
+    "fixture": "Aston Villa v Fenerbah\u00e7e",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Fenerbah\u00e7e",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 7.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 18,
+    "fair": 1.34681785846873,
+    "venue": "away",
+    "chance": 0.7424908971261741,
+    "fair_record": 2.107650151320388,
+    "elo": [
+     1714,
+     1870
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3499804791254122,
+  "legs": [
+   {
+    "event_id": 16938852,
+    "fixture": "Aston Villa v Fenerbah\u00e7e",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Fenerbah\u00e7e",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 13.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 18,
+    "fair": 1.3499804791254122,
+    "venue": "away",
+    "chance": 0.7407514519379215,
+    "fair_record": 2.107650151320388,
+    "elo": [
+     1714,
+     1870
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4087304180085805,
+  "legs": [
+   {
+    "event_id": 16938869,
+    "fixture": "Real Betis v FC Porto",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "FC Porto",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 15,
+    "fair": 1.4087304180085805,
+    "venue": "away",
+    "chance": 0.7098590242791997,
+    "fair_record": 1.6873620194038563,
+    "elo": [
+     1792,
+     1705
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4520317485433407,
+  "legs": [
+   {
+    "event_id": 16938869,
+    "fixture": "Real Betis v FC Porto",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Real Betis",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 18,
+    "fair": 1.4520317485433407,
+    "venue": "home",
+    "chance": 0.6886901756818933,
+    "fair_record": 1.8177555981797449,
+    "elo": [
+     1705,
+     1792
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4658798393268166,
+  "legs": [
+   {
+    "event_id": 16938869,
+    "fixture": "Real Betis v FC Porto",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "FC Porto",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 17,
+    "fair": 1.4658798393268166,
+    "venue": "away",
+    "chance": 0.6821841553256064,
+    "fair_record": 1.7218264028970067,
+    "elo": [
+     1792,
+     1705
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4169254738972012,
+  "legs": [
+   {
+    "event_id": 16938931,
+    "fixture": "Bod\u00f8/Glimt v Borussia Dortmund",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Borussia Dortmund",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 2.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.4169254738972012,
+    "venue": "away",
+    "chance": 0.7057534206435974,
+    "fair_record": 1.6593235972925007,
+    "elo": [
+     1820,
+     1764
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.425,
+  "legs": [
+   {
+    "event_id": 16938931,
+    "fixture": "Bod\u00f8/Glimt v Borussia Dortmund",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Bod\u00f8/Glimt",
+    "player": "Sondre Fet",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 26,
+    "total": 29,
+    "fair": 1.425,
+    "venue": null,
+    "chance": 0.7017543859649122,
+    "fair_record": 1.1153846153846154,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4878544597418726,
+  "legs": [
+   {
+    "event_id": 16938931,
+    "fixture": "Bod\u00f8/Glimt v Borussia Dortmund",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Borussia Dortmund",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 4.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 17,
+    "fair": 1.4878544597418726,
+    "venue": "away",
+    "chance": 0.6721087492478865,
+    "fair_record": 1.7218264028970067,
+    "elo": [
+     1820,
+     1764
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.336223462145306,
+  "legs": [
+   {
+    "event_id": 16939043,
+    "fixture": "LASK v Liverpool FC",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791996300,
+    "sport": "football",
+    "team": "LASK",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 5.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 16,
+    "fair": 1.336223462145306,
+    "venue": "home",
+    "chance": 0.7483778187777819,
+    "fair_record": 2.049832566654068,
+    "elo": [
+     1620,
+     1853
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.375,
+  "legs": [
+   {
+    "event_id": 16939043,
+    "fixture": "LASK v Liverpool FC",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791996300,
+    "sport": "football",
+    "team": "LASK",
+    "player": "Samuel Adeniran",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 26,
+    "total": 27,
+    "fair": 1.375,
+    "venue": null,
+    "chance": 0.7272727272727273,
+    "fair_record": 1.0384615384615385,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4651162790697674,
+  "legs": [
+   {
+    "event_id": 16939043,
+    "fixture": "LASK v Liverpool FC",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791996300,
+    "sport": "football",
+    "team": "LASK",
+    "player": "Kasper J\u00f8rgensen",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 29,
+    "total": 35,
+    "fair": 1.4651162790697674,
+    "venue": null,
+    "chance": 0.6825396825396826,
+    "fair_record": 1.206896551724138,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.462626433048931,
+  "legs": [
+   {
+    "event_id": 16938872,
+    "fixture": "AS Roma v Real Madrid",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Real Madrid",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.462626433048931,
+    "venue": "away",
+    "chance": 0.6837015777948448,
+    "fair_record": 1.748477753994032,
+    "elo": [
+     1835,
+     1750
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.497809383050763,
+  "legs": [
+   {
+    "event_id": 16938872,
+    "fixture": "AS Roma v Real Madrid",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Real Madrid",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.497809383050763,
+    "venue": "away",
+    "chance": 0.6676416981466516,
+    "fair_record": 1.6943802254764067,
+    "elo": [
+     1835,
+     1750
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.5,
+  "legs": [
+   {
+    "event_id": 16938872,
+    "fixture": "AS Roma v Real Madrid",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Real Madrid",
+    "player": "Aur\u00e9lien Tchouam\u00e9ni",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 22,
+    "total": 26,
+    "fair": 1.5,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "fair_record": 1.1818181818181819,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3513678104299354,
+  "legs": [
+   {
+    "event_id": 16938807,
+    "fixture": "Arsenal v Lille",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Arsenal",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3513678104299354,
+    "venue": "home",
+    "chance": 0.7399909871183418,
+    "fair_record": 1.748477753994032,
+    "elo": [
+     2014,
+     1665
+    ],
+    "value": 8.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3527629459283794,
+  "legs": [
+   {
+    "event_id": 16938807,
+    "fixture": "Arsenal v Lille",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Arsenal",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.3527629459283794,
+    "venue": "home",
+    "chance": 0.7392278174160929,
+    "fair_record": 1.6943802254764067,
+    "elo": [
+     2014,
+     1665
+    ],
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3928774202654106,
+  "legs": [
+   {
+    "event_id": 16938807,
+    "fixture": "Arsenal v Lille",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Arsenal",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.3928774202654106,
+    "venue": "home",
+    "chance": 0.7179382661034533,
+    "fair_record": 1.8002852639813065,
+    "elo": [
+     2014,
+     1665
+    ],
+    "value": 5.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4511818458587056,
+  "legs": [
+   {
+    "event_id": 16938918,
+    "fixture": "Shakhtar Donetsk v AEK Athens",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "AEK Athens",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 14.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 17,
+    "fair": 1.4511818458587056,
+    "venue": "away",
+    "chance": 0.6890935156429493,
+    "fair_record": 1.7803075493989338,
+    "elo": [
+     1741,
+     1703
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3672988206128014,
+  "legs": [
+   {
+    "event_id": 16938939,
+    "fixture": "RB Leipzig v PSV Eindhoven",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "PSV Eindhoven",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 7.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 17,
+    "fair": 1.3672988206128014,
+    "venue": "away",
+    "chance": 0.7313690211126022,
+    "fair_record": 1.952266912502032,
+    "elo": [
+     1654,
+     1701
+    ],
+    "value": 5.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3717440883673189,
+  "legs": [
+   {
+    "event_id": 16938939,
+    "fixture": "RB Leipzig v PSV Eindhoven",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "RB Leipzig",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 2.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.3717440883673189,
+    "venue": "home",
+    "chance": 0.7289989499354962,
+    "fair_record": 1.6471000098134692,
+    "elo": [
+     1701,
+     1654
+    ],
+    "value": 5.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4210526315789473,
+  "legs": [
+   {
+    "event_id": 16939017,
+    "fixture": "Sabah FK v SK Slavia Praha",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791909900,
+    "sport": "football",
+    "team": "Sabah FK",
+    "player": "Umarali Rakhmonaliev",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 24,
+    "total": 26,
+    "fair": 1.4210526315789473,
+    "venue": null,
+    "chance": 0.7037037037037037,
+    "fair_record": 1.0833333333333333,
+    "elo": null,
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4855134329586592,
+  "legs": [
+   {
+    "event_id": 16939017,
+    "fixture": "Sabah FK v SK Slavia Praha",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791909900,
+    "sport": "football",
+    "team": "SK Slavia Praha",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 7.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 17,
+    "fair": 1.4855134329586592,
+    "venue": "away",
+    "chance": 0.6731679282147759,
+    "fair_record": 1.8939422442918599,
+    "elo": [
+     1695,
+     1710
+    ],
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4858174700130211,
+  "legs": [
+   {
+    "event_id": 16939017,
+    "fixture": "Sabah FK v SK Slavia Praha",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791909900,
+    "sport": "football",
+    "team": "SK Slavia Praha",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 16,
+    "fair": 1.4858174700130211,
+    "venue": "away",
+    "chance": 0.6730301804778459,
+    "fair_record": 1.7375839696790456,
+    "elo": [
+     1695,
+     1710
+    ],
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4857405367477203,
+  "legs": [
+   {
+    "event_id": 16938924,
+    "fixture": "Villarreal v SSC Napoli",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Villarreal",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 15,
+    "fair": 1.4857405367477203,
+    "venue": "home",
+    "chance": 0.6730650307145793,
+    "fair_record": 1.7550445985208574,
+    "elo": [
+     1632,
+     1683
+    ],
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.5287156479628594,
+  "legs": [
+   {
+    "event_id": 16938924,
+    "fixture": "Villarreal v SSC Napoli",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "SSC Napoli",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 4.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 17,
+    "fair": 1.5287156479628594,
+    "venue": "away",
+    "chance": 0.6541438895667635,
+    "fair_record": 2.01360158444772,
+    "elo": [
+     1683,
+     1632
+    ],
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3057729732791878,
+  "legs": [
+   {
+    "event_id": 16938777,
+    "fixture": "Inter v Club Brugge KV",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Club Brugge KV",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 16.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 17,
+    "fair": 1.3057729732791878,
+    "venue": "away",
+    "chance": 0.7658299110669291,
+    "fair_record": 1.8371141086275016,
+    "elo": [
+     1703,
+     1812
+    ],
+    "value": 18.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3448037206050234,
+  "legs": [
+   {
+    "event_id": 16938777,
+    "fixture": "Inter v Club Brugge KV",
+    "competition": "UEFA Champions League",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Club Brugge KV",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 7.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 17,
+    "fair": 1.3448037206050234,
+    "venue": "away",
+    "chance": 0.7436029397287084,
+    "fair_record": 1.8939422442918599,
+    "elo": [
+     1703,
+     1812
+    ],
+    "value": 6.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3065211227775781,
+  "legs": [
+   {
+    "event_id": 15171692,
+    "fixture": "Nashville SC v Sporting Kansas City",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Nashville SC",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 5.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 19,
+    "fair": 1.3065211227775781,
+    "venue": "home",
+    "chance": 0.7653913760491415,
+    "fair_record": 1.421714064475725,
+    "elo": [
+     1653,
+     1352
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.385300001927748,
+  "legs": [
+   {
+    "event_id": 15171692,
+    "fixture": "Nashville SC v Sporting Kansas City",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Sporting Kansas City",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 4.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.385300001927748,
+    "venue": "away",
+    "chance": 0.7218652989305029,
+    "fair_record": 1.3989266026309484,
+    "elo": [
+     1352,
+     1653
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3590102338843146,
+  "legs": [
+   {
+    "event_id": 15171687,
+    "fixture": "Inter Miami CF v New York City FC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "New York City FC",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 5.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.3590102338843146,
+    "venue": "away",
+    "chance": 0.7358296317915181,
+    "fair_record": 1.5076147848777635,
+    "elo": [
+     1501,
+     1617
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.384665455744428,
+  "legs": [
+   {
+    "event_id": 15171694,
+    "fixture": "Chicago Fire v Philadelphia Union",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Philadelphia Union",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.384665455744428,
+    "venue": "away",
+    "chance": 0.7221961058184824,
+    "fair_record": 1.4246343217135153,
+    "elo": [
+     1590,
+     1580
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3378531489405594,
+  "legs": [
+   {
+    "event_id": 15171683,
+    "fixture": "FC Cincinnati v New England Revolution",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "FC Cincinnati",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3378531489405594,
+    "venue": "home",
+    "chance": 0.7474661929763338,
+    "fair_record": 1.3707833574270765,
+    "elo": [
+     1539,
+     1479
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.390096033655751,
+  "legs": [
+   {
+    "event_id": 15171688,
+    "fixture": "Columbus Crew v Charlotte FC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "Columbus Crew",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 17,
+    "fair": 1.390096033655751,
+    "venue": "home",
+    "chance": 0.7193747595769661,
+    "fair_record": 1.2547489222875594,
+    "elo": [
+     1514,
+     1565
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3132229659413686,
+  "legs": [
+   {
+    "event_id": 15171693,
+    "fixture": "Toronto FC v Orlando City SC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "Toronto FC",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.3132229659413686,
+    "venue": "home",
+    "chance": 0.7614853120415555,
+    "fair_record": 1.254930301181097,
+    "elo": [
+     1446,
+     1516
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.322809764991031,
+  "legs": [
+   {
+    "event_id": 15171693,
+    "fixture": "Toronto FC v Orlando City SC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "Orlando City SC",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.322809764991031,
+    "venue": "away",
+    "chance": 0.7559665996317922,
+    "fair_record": 1.3977771189289774,
+    "elo": [
+     1516,
+     1446
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3181434949848096,
+  "legs": [
+   {
+    "event_id": 15171689,
+    "fixture": "DC United v New York Red Bulls",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "New York Red Bulls",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3181434949848096,
+    "venue": "away",
+    "chance": 0.7586427455013341,
+    "fair_record": 1.341841095304004,
+    "elo": [
+     1458,
+     1390
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3331597519834586,
+  "legs": [
+   {
+    "event_id": 15171689,
+    "fixture": "DC United v New York Red Bulls",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "DC United",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3331597519834586,
+    "venue": "home",
+    "chance": 0.750097652222258,
+    "fair_record": 1.3994166612969332,
+    "elo": [
+     1390,
+     1458
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3439807370400034,
+  "legs": [
+   {
+    "event_id": 15171689,
+    "fixture": "DC United v New York Red Bulls",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "New York Red Bulls",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 19,
+    "fair": 1.3439807370400034,
+    "venue": "away",
+    "chance": 0.7440582833072519,
+    "fair_record": 1.4442110261270653,
+    "elo": [
+     1458,
+     1390
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4281325150365671,
+  "legs": [
+   {
+    "event_id": 15171691,
+    "fixture": "CF Montr\u00e9al v Atlanta United",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "CF Montr\u00e9al",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.4281325150365671,
+    "venue": "home",
+    "chance": 0.7002151337296562,
+    "fair_record": 1.5174416604705518,
+    "elo": [
+     1418,
+     1411
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4368740064843992,
+  "legs": [
+   {
+    "event_id": 15171691,
+    "fixture": "CF Montr\u00e9al v Atlanta United",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "CF Montr\u00e9al",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4368740064843992,
+    "venue": "home",
+    "chance": 0.6959552441530352,
+    "fair_record": 1.4318416536911573,
+    "elo": [
+     1418,
+     1411
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4183254818003954,
+  "legs": [
+   {
+    "event_id": 15171696,
+    "fixture": "St.Louis City v Vancouver Whitecaps",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Vancouver Whitecaps",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 5.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 18,
+    "fair": 1.4183254818003954,
+    "venue": "away",
+    "chance": 0.7050567819811141,
+    "fair_record": 1.5620722050880587,
+    "elo": [
+     1563,
+     1611
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3379683750124138,
+  "legs": [
+   {
+    "event_id": 15171695,
+    "fixture": "FC Dallas v Seattle Sounders FC",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Seattle Sounders FC",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.3379683750124138,
+    "venue": "away",
+    "chance": 0.7474018210562876,
+    "fair_record": 1.3319031777296255,
+    "elo": [
+     1559,
+     1577
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.340249927401491,
+  "legs": [
+   {
+    "event_id": 15171695,
+    "fixture": "FC Dallas v Seattle Sounders FC",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Seattle Sounders FC",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.340249927401491,
+    "venue": "away",
+    "chance": 0.7461294938764326,
+    "fair_record": 1.2659876831564147,
+    "elo": [
+     1559,
+     1577
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3789709712562372,
+  "legs": [
+   {
+    "event_id": 15171695,
+    "fixture": "FC Dallas v Seattle Sounders FC",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "FC Dallas",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.3789709712562372,
+    "venue": "home",
+    "chance": 0.7251784271346944,
+    "fair_record": 1.3768563587450564,
+    "elo": [
+     1577,
+     1559
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3553341350994406,
+  "legs": [
+   {
+    "event_id": 15171698,
+    "fixture": "Real Salt Lake v San Jose Earthquakes",
+    "competition": "MLS",
+    "kickoff": 1792027800,
+    "sport": "football",
+    "team": "San Jose Earthquakes",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3553341350994406,
+    "venue": "away",
+    "chance": 0.7378254366231469,
+    "fair_record": 1.3551991737482505,
+    "elo": [
+     1511,
+     1469
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3162203814300555,
+  "legs": [
+   {
+    "event_id": 15171697,
+    "fixture": "Los Angeles FC v Austin FC",
+    "competition": "MLS",
+    "kickoff": 1792031400,
+    "sport": "football",
+    "team": "Los Angeles FC",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 18,
+    "fair": 1.3162203814300555,
+    "venue": "home",
+    "chance": 0.7597511891690308,
+    "fair_record": 1.2911219761672375,
+    "elo": [
+     1570,
+     1480
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.323035385514775,
+  "legs": [
+   {
+    "event_id": 15171697,
+    "fixture": "Los Angeles FC v Austin FC",
+    "competition": "MLS",
+    "kickoff": 1792031400,
+    "sport": "football",
+    "team": "Los Angeles FC",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.323035385514775,
+    "venue": "home",
+    "chance": 0.7558376827622896,
+    "fair_record": 1.3003900545375744,
+    "elo": [
+     1570,
+     1480
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.332366039618449,
+  "legs": [
+   {
+    "event_id": 15171697,
+    "fixture": "Los Angeles FC v Austin FC",
+    "competition": "MLS",
+    "kickoff": 1792031400,
+    "sport": "football",
+    "team": "Los Angeles FC",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.332366039618449,
+    "venue": "home",
+    "chance": 0.7505444977315476,
+    "fair_record": 1.3350761653729106,
+    "elo": [
+     1570,
+     1480
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3331177332093402,
+  "legs": [
+   {
+    "event_id": 15171702,
+    "fixture": "Colorado Rapids v Minnesota United",
+    "competition": "MLS",
+    "kickoff": 1792027800,
+    "sport": "football",
+    "team": "Minnesota United",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.3331177332093402,
+    "venue": "away",
+    "chance": 0.7501212946831076,
+    "fair_record": 1.312217325628724,
+    "elo": [
+     1476,
+     1465
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3714146662460727,
+  "legs": [
+   {
+    "event_id": 15171702,
+    "fixture": "Colorado Rapids v Minnesota United",
+    "competition": "MLS",
+    "kickoff": 1792027800,
+    "sport": "football",
+    "team": "Colorado Rapids",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.3714146662460727,
+    "venue": "home",
+    "chance": 0.7291740599050661,
+    "fair_record": 1.49658009628667,
+    "elo": [
+     1465,
+     1476
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3671447411140691,
+  "legs": [
+   {
+    "event_id": 15171700,
+    "fixture": "LA Galaxy v Portland Timbers",
+    "competition": "MLS",
+    "kickoff": 1792031400,
+    "sport": "football",
+    "team": "LA Galaxy",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3671447411140691,
+    "venue": "home",
+    "chance": 0.7314514476244209,
+    "fair_record": 1.364309301624209,
+    "elo": [
+     1484,
+     1491
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3746045849082864,
+  "legs": [
+   {
+    "event_id": 15171700,
+    "fixture": "LA Galaxy v Portland Timbers",
+    "competition": "MLS",
+    "kickoff": 1792031400,
+    "sport": "football",
+    "team": "LA Galaxy",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3746045849082864,
+    "venue": "home",
+    "chance": 0.7274819326073468,
+    "fair_record": 1.3520563891237158,
+    "elo": [
+     1484,
+     1491
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.420061628560814,
+  "legs": [
+   {
+    "event_id": 16391420,
+    "fixture": "Millwall v Swansea City",
+    "competition": "Championship",
+    "kickoff": 1791917100,
+    "sport": "football",
+    "team": "Swansea City",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.420061628560814,
+    "venue": "away",
+    "chance": 0.7041947897806853,
+    "fair_record": 1.4204762652770557,
+    "elo": [
+     1512,
+     1525
+    ],
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.434306174031669,
+  "legs": [
+   {
+    "event_id": 16391420,
+    "fixture": "Millwall v Swansea City",
+    "competition": "Championship",
+    "kickoff": 1791917100,
+    "sport": "football",
+    "team": "Swansea City",
+    "player": null,
+    "stat": "Fouls",
+    "period": "ALL",
+    "line": 10.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 19,
+    "fair": 1.434306174031669,
+    "venue": "away",
+    "chance": 0.6972012099683819,
+    "fair_record": 1.2942966976856711,
+    "elo": [
+     1512,
+     1525
+    ],
+    "value": 11.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3098743933191532,
+  "legs": [
+   {
+    "event_id": 16391437,
+    "fixture": "Stoke City v Middlesbrough",
+    "competition": "Championship",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Stoke City",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 13.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3098743933191532,
+    "venue": "home",
+    "chance": 0.7634319787457271,
+    "fair_record": 1.293544038438352,
+    "elo": [
+     1435,
+     1548
+    ],
+    "value": 8.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3125451661550627,
+  "legs": [
+   {
+    "event_id": 16391437,
+    "fixture": "Stoke City v Middlesbrough",
+    "competition": "Championship",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Middlesbrough",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.3125451661550627,
+    "venue": "away",
+    "chance": 0.7618785439051787,
+    "fair_record": 1.3266321638723348,
+    "elo": [
+     1548,
+     1435
+    ],
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3555555555555554,
+  "legs": [
+   {
+    "event_id": 16391437,
+    "fixture": "Stoke City v Middlesbrough",
+    "competition": "Championship",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Middlesbrough",
+    "player": "Callum Brittain",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 31,
+    "total": 33,
+    "fair": 1.3555555555555554,
+    "venue": null,
+    "chance": 0.7377049180327869,
+    "fair_record": 1.064516129032258,
+    "elo": null,
+    "value": 0.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3503290810515922,
+  "legs": [
+   {
+    "event_id": 16391542,
+    "fixture": "Queens Park Rangers v Derby County",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Queens Park Rangers",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 19,
+    "fair": 1.3503290810515922,
+    "venue": "home",
+    "chance": 0.7405602190106375,
+    "fair_record": 1.4025625261534926,
+    "elo": [
+     1453,
+     1427
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3578618139863858,
+  "legs": [
+   {
+    "event_id": 16391542,
+    "fixture": "Queens Park Rangers v Derby County",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Queens Park Rangers",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.3578618139863858,
+    "venue": "home",
+    "chance": 0.7364519641834675,
+    "fair_record": 1.4064268747054136,
+    "elo": [
+     1453,
+     1427
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3841461747136532,
+  "legs": [
+   {
+    "event_id": 16391542,
+    "fixture": "Queens Park Rangers v Derby County",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Queens Park Rangers",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.3841461747136532,
+    "venue": "home",
+    "chance": 0.7224670473888902,
+    "fair_record": 1.4250032162751416,
+    "elo": [
+     1453,
+     1427
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3203374603444933,
+  "legs": [
+   {
+    "event_id": 16391341,
+    "fixture": "Birmingham City v Preston North End",
+    "competition": "Championship",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Birmingham City",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 5.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3203374603444933,
+    "venue": "home",
+    "chance": 0.7573821314886324,
+    "fair_record": 1.510754770659624,
+    "elo": [
+     1536,
+     1335
+    ],
+    "value": 7.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3717543158804602,
+  "legs": [
+   {
+    "event_id": 16391341,
+    "fixture": "Birmingham City v Preston North End",
+    "competition": "Championship",
+    "kickoff": 1791918000,
+    "sport": "football",
+    "team": "Birmingham City",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.3717543158804602,
+    "venue": "home",
+    "chance": 0.7289935146718677,
+    "fair_record": 1.405592456691425,
+    "elo": [
+     1536,
+     1335
+    ],
+    "value": 4.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4228409103588469,
+  "legs": [
+   {
+    "event_id": 16391472,
+    "fixture": "Wrexham v West Bromwich Albion",
+    "competition": "Championship",
+    "kickoff": 1791917100,
+    "sport": "football",
+    "team": "West Bromwich Albion",
+    "player": null,
+    "stat": "Fouls",
+    "period": "1ST",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 18,
+    "fair": 1.4228409103588469,
+    "venue": "away",
+    "chance": 0.7028192630107856,
+    "fair_record": 1.4620289355524956,
+    "elo": [
+     1458,
+     1526
+    ],
+    "value": 9.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3760269148795243,
+  "legs": [
+   {
+    "event_id": 16391363,
+    "fixture": "Bristol City v Blackburn Rovers",
+    "competition": "Championship",
+    "kickoff": 1791917100,
+    "sport": "football",
+    "team": "Blackburn Rovers",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.3760269148795243,
+    "venue": "away",
+    "chance": 0.7267299710395223,
+    "fair_record": 1.374694209477592,
+    "elo": [
+     1437,
+     1456
+    ],
+    "value": 0.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4007382744916228,
+  "legs": [
+   {
+    "event_id": 16391363,
+    "fixture": "Bristol City v Blackburn Rovers",
+    "competition": "Championship",
+    "kickoff": 1791917100,
+    "sport": "football",
+    "team": "Blackburn Rovers",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 18,
+    "fair": 1.4007382744916228,
+    "venue": "away",
+    "chance": 0.7139092421551307,
+    "fair_record": 1.3298117762172483,
+    "elo": [
+     1437,
+     1456
+    ],
+    "value": 0.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4086714992305023,
+  "legs": [
+   {
+    "event_id": 16391363,
+    "fixture": "Bristol City v Blackburn Rovers",
+    "competition": "Championship",
+    "kickoff": 1791917100,
+    "sport": "football",
+    "team": "Blackburn Rovers",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.4086714992305023,
+    "venue": "away",
+    "chance": 0.7098887146834857,
+    "fair_record": 1.4300149570250675,
+    "elo": [
+     1437,
+     1456
+    ],
+    "value": 1.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.341588525872793,
+  "legs": [
+   {
+    "event_id": 16391506,
+    "fixture": "Norwich City v Southampton",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Southampton",
+    "player": null,
+    "stat": "Offsides",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.341588525872793,
+    "venue": "away",
+    "chance": 0.7453850273126278,
+    "fair_record": 1.2716806101532065,
+    "elo": [
+     1611,
+     1500
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3636916495917961,
+  "legs": [
+   {
+    "event_id": 16391506,
+    "fixture": "Norwich City v Southampton",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Norwich City",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 17,
+    "fair": 1.3636916495917961,
+    "venue": "home",
+    "chance": 0.7333036029804373,
+    "fair_record": 1.418451983799181,
+    "elo": [
+     1500,
+     1611
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3657276914294456,
+  "legs": [
+   {
+    "event_id": 16391506,
+    "fixture": "Norwich City v Southampton",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Southampton",
+    "player": null,
+    "stat": "Offsides",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.3657276914294456,
+    "venue": "away",
+    "chance": 0.7322103859176678,
+    "fair_record": 1.317961302898398,
+    "elo": [
+     1611,
+     1500
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3291679448672924,
+  "legs": [
+   {
+    "event_id": 16391384,
+    "fixture": "Burnley v Charlton Athletic",
+    "competition": "Championship",
+    "kickoff": 1791917100,
+    "sport": "football",
+    "team": "Charlton Athletic",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 17,
+    "fair": 1.3291679448672924,
+    "venue": "away",
+    "chance": 0.7523503736767009,
+    "fair_record": 1.350202269595405,
+    "elo": [
+     1427,
+     1459
+    ],
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3756741595339206,
+  "legs": [
+   {
+    "event_id": 16391384,
+    "fixture": "Burnley v Charlton Athletic",
+    "competition": "Championship",
+    "kickoff": 1791917100,
+    "sport": "football",
+    "team": "Charlton Athletic",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 17,
+    "fair": 1.3756741595339206,
+    "venue": "away",
+    "chance": 0.7269163217682308,
+    "fair_record": 1.3420553749611905,
+    "elo": [
+     1427,
+     1459
+    ],
+    "value": 1.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3852738066071846,
+  "legs": [
+   {
+    "event_id": 16391384,
+    "fixture": "Burnley v Charlton Athletic",
+    "competition": "Championship",
+    "kickoff": 1791917100,
+    "sport": "football",
+    "team": "Charlton Athletic",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 11.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.3852738066071846,
+    "venue": "away",
+    "chance": 0.7218789492953758,
+    "fair_record": 1.5679301392567893,
+    "elo": [
+     1427,
+     1459
+    ],
+    "value": 9.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3427664696080068,
+  "legs": [
+   {
+    "event_id": 16391524,
+    "fixture": "Portsmouth v Sheffield United",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Portsmouth",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.3427664696080068,
+    "venue": "home",
+    "chance": 0.7447311372706004,
+    "fair_record": 1.2987397504967015,
+    "elo": [
+     1421,
+     1496
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4079390683077966,
+  "legs": [
+   {
+    "event_id": 16391524,
+    "fixture": "Portsmouth v Sheffield United",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Portsmouth",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 11.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.4079390683077966,
+    "venue": "home",
+    "chance": 0.7102580093909184,
+    "fair_record": 1.4586623968086638,
+    "elo": [
+     1421,
+     1496
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.4136502858815905,
+  "legs": [
+   {
+    "event_id": 16391524,
+    "fixture": "Portsmouth v Sheffield United",
+    "competition": "Championship",
+    "kickoff": 1792003500,
+    "sport": "football",
+    "team": "Sheffield United",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.4136502858815905,
+    "venue": "away",
+    "chance": 0.70738853165256,
+    "fair_record": 1.41662147871444,
+    "elo": [
+     1496,
+     1421
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3199041333832713,
+  "legs": [
+   {
+    "event_id": 16391402,
+    "fixture": "Cardiff City v Watford",
+    "competition": "Championship",
+    "kickoff": 1791917100,
+    "sport": "football",
+    "team": "Watford",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 19,
+    "fair": 1.3199041333832713,
+    "venue": "away",
+    "chance": 0.7576307814392016,
+    "fair_record": 1.25220567203762,
+    "elo": [
+     1332,
+     1470
+    ],
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791901672,
+  "fair": 1.3805626316188915,
+  "legs": [
+   {
+    "event_id": 16391402,
+    "fixture": "Cardiff City v Watford",
+    "competition": "Championship",
+    "kickoff": 1791917100,
+    "sport": "football",
+    "team": "Watford",
+    "player": null,
+    "stat": "Fouls",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 19,
+    "fair": 1.3805626316188915,
+    "venue": "away",
+    "chance": 0.7243423638284112,
+    "fair_record": 1.280721757203755,
+    "elo": [
+     1332,
+     1470
+    ],
+    "value": 12.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
  }
 ]

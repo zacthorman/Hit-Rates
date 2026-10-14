@@ -377,6 +377,8 @@ PAGE = """<!DOCTYPE html>
 .pick .sel { font-size: 0.97rem; font-weight: 600; line-height: 1.35; }
 .pick .where { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
 .pick .odds { margin-top: 8px; }
+.pick .str { color: var(--muted); font-size: 0.78rem; line-height: 1.45; margin-top: 6px; }
+.pick .str b { color: var(--text); font-weight: 600; }
 .pick .odds b { font-size: 1.05rem; }
 .pick ol { margin: 7px 0 0; padding-left: 17px; font-size: 0.85rem; line-height: 1.45; }
 .pick details { margin-top: 9px; }
@@ -700,6 +702,32 @@ function legText(l) {
     : `${escapeHtml(l.team)} ${market}${half(l.period)}`;
 }
 
+/* Team strength behind a football team leg, one muted line. Elo as of
+   kick-off for both sides, the chance of the leg's team winning, its record
+   against similar-strength opposition, and what strength and the league
+   projection expect against the line. Nothing for a leg without it. */
+function strengthLine(l) {
+  const s = l.strength;
+  if (!s || s.team == null) return "";
+  const opp = l.fixture ? (l.team === l.fixture.home ? l.fixture.away : l.fixture.home) : "opponent";
+  const pct = x => `${Math.round(x * 100)}%`;
+  const bits = [
+    `<b>${escapeHtml(l.team)} ${s.team}</b> (${s.teamLabel}) v <b>${escapeHtml(opp)} ${s.opp}</b> (${s.oppLabel})`,
+  ];
+  if (s.win != null) bits.push(`${pct(s.win)} to win`);
+  if (s.similarN >= 2) bits.push(`${s.similarHits} of ${s.similarN} against similar opposition`);
+  else bits.push("no record against opposition this strong or weak");
+  const exp = [];
+  if (s.eloExpected != null) exp.push(`strength says ${s.eloExpected}`);
+  if (s.projection != null) exp.push(`projection ${s.projection}`);
+  if (exp.length) bits.push(`${exp.join(", ")} v a line of ${l.line}`);
+  return `<div class="str">${bits.join(" &middot; ")}</div>`;
+}
+
+function chanceText(l) {
+  return l.chance != null ? `${Math.round(l.chance * 100)}% chance` : "";
+}
+
 function note(summary, body) {
   return `<details><summary>${summary}</summary><p>${body}</p></details>`;
 }
@@ -722,13 +750,18 @@ function renderPicks() {
       <div class="sel">${legText(s)}</div>
       <div class="where">${escapeHtml(s.fixture.home)} v ${escapeHtml(s.fixture.away)}</div>
       <div class="odds"><b>${s.hits}/${s.total}</b>${s.venue ? " " + s.venue : ""}
-        &middot; fair <b>${fmtOdds(s.fair)}</b>, hold out for ${fmtOdds(s.need)}</div>
+        &middot; ${chanceText(s)} &middot; fair <b>${fmtOdds(s.fair)}</b>, hold out for ${fmtOdds(s.need)}</div>
+      ${strengthLine(s)}
       ${note("how solid is this?",
-        `Chosen from ${s.consideredGroups} separate questions this round, so the
-         bar rises to match: a plain 95% floor of ${(s.evidence * 100).toFixed(0)}%
-         becomes <span class="flag">${(s.adjusted * 100).toFixed(0)}%</span> once
-         that searching is paid for. Asking for ${fmtOdds(floor)}+ caps the chance
-         at 50%, so price and evidence pull against each other here.`)}
+        `Ranked on a calibrated chance, not the raw record: ${s.strength
+          ? "for a team leg that blends the record, the record against similar-strength opposition, what team strength expects and the league projection"
+          : "for a player leg, the record pulled towards a coin flip by as much as the site's own settled player picks say it should be"}.
+         ${s.fairRecord ? `The record alone would have priced it at ${fmtOdds(s.fairRecord)}. ` : ""}
+         Chosen from ${s.consideredGroups} separate questions this round; the floor
+         once that searching is paid for is
+         <span class="flag">${(s.adjusted * 100).toFixed(0)}%</span>. Asking for
+         ${fmtOdds(floor)}+ caps the chance at 50%, so price and evidence pull
+         against each other here.`)}
     </div>`);
   }
 
@@ -738,10 +771,10 @@ function renderPicks() {
       <h2>Evens double</h2>
       <div class="sel">2 legs &middot; ${fmtOdds(d.combined)}</div>
       <ol>${d.legs.map(l => `<li>${legText(l)} &mdash; ${l.hits}/${l.total},
-        ${fmtOdds(l.fair)}<br><small>${escapeHtml(l.fixture.home)} v ${escapeHtml(l.fixture.away)}</small></li>`).join("")}</ol>
+        ${fmtOdds(l.fair)}<br><small>${escapeHtml(l.fixture.home)} v ${escapeHtml(l.fixture.away)}</small>${strengthLine(l)}</li>`).join("")}</ol>
       ${note("why these two?",
         `The pair most likely to both land (about ${(d.joint * 100).toFixed(0)}% on the
-         records) among doubles priced around evens. Counts and 0.5 lines are left
+         calibrated chances) among doubles priced around evens. Counts and 0.5 lines are left
          out. ${d.sameGame ? "Both legs are in one game, so it goes on as a builder." :
          "Two different games, so neither leg rides on the other."}`)}
     </div>`);
@@ -753,11 +786,13 @@ function renderPicks() {
       <h2>Banker</h2>
       <div class="sel">${legText(s)}</div>
       <div class="where">${escapeHtml(s.fixture.home)} v ${escapeHtml(s.fixture.away)}</div>
-      <div class="odds"><b>${s.hits}/${s.total}</b> &middot; fair <b>${fmtOdds(s.fair)}</b>,
+      <div class="odds"><b>${s.hits}/${s.total}</b> &middot; ${chanceText(s)} &middot; fair <b>${fmtOdds(s.fair)}</b>,
         hold out for ${fmtOdds(s.need)}</div>
+      ${strengthLine(s)}
       ${note("what is a banker?",
-        `The best-supported single priced between 1.30 and 1.75, after allowing for
-         how many bets were searched (${(s.adjusted * 100).toFixed(0)}% worst case).`)}
+        `The single most likely to land, on the calibrated chance, among those
+         priced between 1.30 and 1.75 (${(s.adjusted * 100).toFixed(0)}% worst case
+         once the searching is paid for).`)}
     </div>`);
   }
 
@@ -767,7 +802,7 @@ function renderPicks() {
       <h2>Best acca</h2>
       <div class="sel">${a.legs.length} legs &middot; ${fmtOdds(a.combined)}</div>
       <ol>${a.legs.map(l => `<li>${legText(l)} &mdash; ${l.hits}/${l.total},
-        ${fmtOdds(l.fair)}</li>`).join("")}</ol>
+        ${fmtOdds(l.fair)}${strengthLine(l)}</li>`).join("")}</ol>
       ${note("read this first",
         `One leg per match, so nothing rides twice on the same game.
          ${a.short ? `Short of the ${fmtOdds(a.target)} target &mdash; reaching it

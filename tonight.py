@@ -88,7 +88,8 @@ def legs_of(entry, meta) -> list:
             continue
         seen.add(key)
         out.append(leg)
-    return out
+    # Same calibrated prices the picks use, so a leg reads the same here.
+    return weekend.calibrate(out)
 
 
 def odds(x) -> str:
@@ -101,8 +102,23 @@ def leg_row(leg) -> str:
     # The venue split is printed because it repeatedly changes the answer, and
     # a rate quoted without it has quietly averaged two different teams.
     where = {"home": " at home", "away": " away"}.get(leg.get("venue"), "")
+    st = leg.get("strength") or {}
+    strength_note = ""
+    if st.get("team") is not None:
+        fx = leg.get("fixture") or {}
+        opp = fx.get("away") if leg.get("team") == fx.get("home") else fx.get("home")
+        bits = [f"{st['team']} v {html.escape(str(opp or 'opponent'))} {st['opp']}"]
+        if st.get("win") is not None:
+            bits.append(f"{st['win'] * 100:.0f}% to win")
+        if (st.get("similarN") or 0) >= 2:
+            bits.append(f"{st['similarHits']} of {st['similarN']} v similar")
+        else:
+            bits.append("nothing comparable in the record")
+        strength_note = f"<br><span class='sub'>{' &middot; '.join(bits)}</span>"
+    chance = leg.get("pStrength") or leg.get("pShrunk")
+    record += f"<br><span class='sub'>{chance * 100:.0f}%</span>" if chance else ""
     return (
-        f"<tr><td>{html.escape(fmt_leg(leg))}{where}</td>"
+        f"<tr><td>{html.escape(fmt_leg(leg))}{where}{strength_note}</td>"
         f"<td class='n'>{record}</td>"
         f"<td class='n'>{odds(leg.get('fair'))}</td>"
         f"<td class='n'>{odds(leg.get('need'))}</td></tr>"
@@ -208,7 +224,7 @@ def build(hours: float | None) -> str:
             [l for l in legs_of(entry, meta)
              if isinstance(l.get("fair"), (int, float))
              and l["fair"] >= MIN_PRICE],
-            key=lambda l: -(l.get("evidence") or 0),
+            key=lambda l: (-weekend.sort_value(l), -(l.get("total") or 0)),
         )[:SINGLES_PER_FIXTURE]
 
         singles = "".join(leg_row(l) for l in own) or "<tr><td colspan='4'>nothing qualified</td></tr>"
@@ -265,7 +281,10 @@ th {{ color:var(--muted); font-weight:600; font-size:12px; text-transform:upperc
 <h1>Tonight</h1>
 <p class="stamp">{span} &middot; page made {stamp} &middot; numbers from reports built {built}</p>
 <div class="warn">
-Fair and Need are what the record implies, not what anyone is offering.
+Fair and Need are what the evidence implies, not what anyone is offering.
+For a football team leg that evidence includes team strength (Elo as of
+kick-off, shown under the selection) as well as the record; a player leg's
+record is pulled towards a coin flip by as much as past picks show it should be.
 <b>Need</b> is the price the evidence supports once the sample size is paid for,
 and it is the one to bet off. Neither includes the bookmaker's margin, which
 runs 5&ndash;8% a market and compounds with every leg you add.

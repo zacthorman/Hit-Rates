@@ -584,6 +584,45 @@ Last season's table is used, not this one. In August the current table is
 three games old and would put whoever won on the opening weekend in the top
 six.
 
+## Team strength in the picks (`strength.py`)
+
+The picks of the week (best bet, evens double, banker, acca) and the per-fixture singles on `tonight.html` now know how good each side is, not just what its record says.
+
+```bash
+python strength.py                  # build the ratings, print the top 40, write strength.json
+python strength.py --team Arsenal   # one club
+python strength.py --slopes         # refit strength_slopes.json from the built reports
+python strength.py --tune           # grid-search the Elo settings on log loss
+```
+
+**The rating.** One Elo number per club, built in a single pass over every finished match in the cache (about 18,000), each one rated only on results before it, so the backtest can use it without reading the future. Settings tuned on log loss: home advantage 60, K 20 for league and cup, 30 for European ties, 5 for friendlies. Two fixes over plain Elo:
+
+- **League offsets.** A league's own offset moves only on matches between leagues, so a league's European results reprice every club in it. Without this, Sabah rated above Liverpool by winning the Azerbaijani league every week. Log loss on cross-league matches went from 0.567 to 0.551.
+- **Promotion keeps strength.** A promoted club's rating is re-based onto its new league's scale, so it does not inherit the whole Premier League offset overnight.
+
+It is the only cross-league measure in the project, which is the point: the league projection needs shared opponents, so on a Champions League night it had nothing and every pick fell back to the raw record.
+
+**What a team leg now carries.** Both sides' Elo as of kick-off, the chance of winning, the record against similar-strength opposition (matches weighted by how close the rating gap was to tonight's), and a strength expectation: the side's average moved by that stat's slope for the difference between tonight's gap and its usual one (shots about +11% per 100 Elo, corners +13%, yellow cards -5%). Slopes extrapolate; weighting alone could not. LASK had never been 230 points worse than anyone, so the first version took the single nearest match, a 40-shot night against Celtic, and expected 33 shots at Liverpool. The slope says 13.
+
+**One calibrated chance.** These are blended by a logistic fit (`STACK_WITH_PROJECTION` in strength.py; Elo carries it alone where there is no projection) and the leg's `fair` becomes one over that chance. The record-only price is kept as `fairRecord`. Player legs have no strength yet; their record is shrunk towards a coin flip by phantom games fitted on how the site's own settled player picks landed (`best_bets.json`, refitted every run, 14 phantoms on 120 legs as of 13 October, against 2 before).
+
+Picks then rank on that chance in football. Every other sport ranks exactly as before, because none of this was tested on them.
+
+**What the backtest says, honestly.** `calib/strength_eval/` replays 1,010 fixtures across five leagues since August 2025 (48,549 headline-eligible legs), every input as of kick-off, fitted with one league held out at a time.
+
+| | Log loss (lower is better) |
+|---|---|
+| Record, as the site priced it | 0.6756 |
+| League projection | 0.6645 |
+| Strength blend, held out | 0.6501 (Premier League) to 0.6640 (Championship) |
+| Champions League, never fitted on: record / strength | 0.6818 / 0.6654 |
+
+Its stated chances land within a point or two of what happened from 20% to 80%. The live ranking claimed 81% for picks that landed 71%.
+
+What it does not do is pick more winners. The top three per matchday land about as often as the old ranking's (bankers 72.7% against 70.6%, best singles 45.5% against 50.8%, both inside the noise). The gain is that the numbers are true and the Champions League gets real picks. The top of the board still runs about 8 points ahead of what lands, because choosing the best of thousands of honest estimates picks the lucky ones; treat the top pick's chance as a ceiling.
+
+Known gaps: La Liga crashed the replay in `hitrates.league_ratings` (a divide by zero, pre-existing, not chased), so it is not in the fit. The slopes are fitted on this season's reports, a mild look-ahead for one number per stat. Builders and the parlay are unchanged.
+
 ## Track record (`track.py`)
 
 The tool has no evidence yet that it beats the market, and neither does anything else after a few weeks. The only way to find out is to write picks down before kickoff at the price you could actually have got, settle them from the result, and count.

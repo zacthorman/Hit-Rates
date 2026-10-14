@@ -44,6 +44,24 @@ import re
 import markets
 import model
 
+try:
+    import strength
+except ImportError:              # never lose the picks to this
+    strength = None
+
+
+def _ratings():
+    """The Elo table, built once per process from the cache. None if it
+    cannot be built, in which case every leg is priced the old way."""
+    if strength is None:
+        return None
+    try:
+        return strength.ratings()
+    except Exception as exc:
+        print(f"  team strength unavailable, picks use records only: "
+              f"{type(exc).__name__}: {exc}")
+        return None
+
 # A leg needs this many matches behind it before it is allowed near a headline.
 MIN_SAMPLE = 10
 
@@ -86,10 +104,22 @@ def _values(sample, period, stat):
 
 
 def legs_for(entry, meta):
-    """Every priceable single on one fixture, both directions."""
+    """Every priceable single on one fixture, both directions.
+
+    Football team legs also carry team strength (strength.py): both sides'
+    Elo as of kick-off, the record against similar-strength opposition, and a
+    chance that blends the record, that similar-opposition record, a
+    strength-weighted expectation and the league projection. Where that chance
+    exists it is the leg's price: `fair` is one over it, and the record-only
+    price is kept as `fairRecord`. See USAGE.md, "Team strength in the picks".
+    """
     out = []
     projection = entry.get("projection") or {}
     cross = bool(entry.get("fixture", {}).get("crossLeague"))
+    fixture = entry.get("fixture") or {}
+    kickoff = fixture.get("kickoff") or (meta or {}).get("kickoff")
+    team_ids = [t.get("id") for t in entry.get("teams", [])]
+    ratings = _ratings() if sport_of(entry) == "football" and kickoff and len(team_ids) == 2 else None
 
     for team_index, team in enumerate(entry.get("teams", [])):
         venue = team.get("side")
@@ -97,6 +127,14 @@ def legs_for(entry, meta):
         sample, venue_used = _sample(records, venue)
         if len(sample) < MIN_SAMPLE:
             continue
+
+        side = None
+        if ratings is not None:
+            try:
+                side = strength.Side(ratings, team_ids[team_index], team_ids[1 - team_index],
+                                     kickoff, venue == "home", sample)
+            except Exception:
+                side = None
 
         # Only markets this competition's board actually carries. The feed
         # reports throw-ins for every league on earth; a book prices them in
@@ -122,6 +160,10 @@ def legs_for(entry, meta):
                 if pair and len(pair) > team_index:
                     expected = pair[team_index]
 
+                raw = [(r.get("stats", {}).get(period) or {}).get(stat) for r in sample]
+                keep = [v is not None for v in raw]
+                raw = [float(v) if v is not None else 0.0 for v in raw]
+
                 over_hits = sum(1 for v in values if v > line)
                 for over in (True, False):
                     hits = over_hits if over else len(values) - over_hits
@@ -131,6 +173,21 @@ def legs_for(entry, meta):
                                         sport=sport_of(entry))
                     if price.get("conflict") or not math.isfinite(price["fair"]):
                         continue
+
+                    chance = None
+                    if side is not None:
+                        def price_fn(exp, _over=over, _hits=hits, _values=values, _line=line):
+                            got = model.price(_line, _over, exp, _values, _hits, len(_values),
+                                              sport="football")
+                            if got.get("conflict") or not math.isfinite(got.get("fair", float("nan"))):
+                                return None
+                            return got["p"]
+                        try:
+                            chance = strength.leg_chance(side, raw, keep, hits, len(values),
+                                                         line, over, expected, price_fn,
+                                                         slope_key=f"{period}|{stat}")
+                        except Exception:
+                            chance = None
                     out.append({
                         "fixture": meta,
                         "team": team.get("name"),
@@ -149,7 +206,165 @@ def legs_for(entry, meta):
                         "evidence": model.wilson_low(hits, len(values)),
                         "crossLeague": cross,
                     })
+                    if chance:
+                        _apply_strength(out[-1], chance, side)
     return out
+
+
+def _apply_strength(leg, chance, side):
+    """Make the strength-aware chance the leg's price and its evidence.
+
+    `need` is never allowed below the new fair price: it is the price to hold
+    out for, and holding out for less than the fair price is not caution.
+    The evidence figure is the same Wilson floor as before, read at the new
+    chance on the same sample, so the selection allowance in best_single
+    still pays for how many bets were searched.
+    """
+    p = chance["p"]
+    n = leg["total"]
+    leg["fairRecord"] = leg["fair"]
+    leg["pStrength"] = p
+    leg["fair"] = 1 / p
+    leg["need"] = max(leg["need"], leg["fair"]) if math.isfinite(leg.get("need", float("nan"))) else leg["fair"]
+    leg["evidence"] = model.wilson_low(p * n, n)
+    ctx = side.public()
+    ctx.update({k: v for k, v in chance.items() if k != "p"})
+    leg["strength"] = ctx
+
+
+# ----------------------------------------------------- one honest chance
+#
+# Picks used to rank on the Wilson floor of the raw record, team and player
+# legs alike. Two things were wrong with that, both measured:
+#
+#   * The records overstate. The site's own settled best bets (best_bets.json,
+#     13 October) said 82% on team legs that landed 73%, and 72% on player
+#     legs that landed 61%.
+#   * With four to six thousand legs searched the selection allowance is
+#     z ~ 4.4, at which the floor mostly measures sample size. A player's
+#     record is 38 games and a team's venue split about 20, so a player prop
+#     won the headline almost by default.
+#
+# So every leg now carries one calibrated chance and the picks rank on it.
+# Football team legs: the strength-aware chance (strength.leg_chance, fitted
+# and checked on held-out leagues). Player legs: the record shrunk towards a
+# coin flip by a number of phantom games learned from how the site's own
+# settled player picks actually landed, refitted every run. Anything else:
+# the old (hits + 2) / (n + 4).
+
+PLAYER_SHRINK_DEFAULT = 8.0
+PLAYER_SHRINK_MIN_LEGS = 60
+_PLAYER_SHRINK: dict = {}
+
+
+def player_shrink() -> float:
+    """Phantom hits and misses for a player leg, fitted on settled history.
+
+    Maximum likelihood over a small grid, on unique settled football player
+    legs in best_bets.json. These are legs the site chose, so the fit already
+    carries the cost of choosing the best-looking of thousands: exactly the
+    correction a headline pick needs. Falls back to the default below
+    PLAYER_SHRINK_MIN_LEGS, because a shrink fitted on thirty legs is noise.
+    """
+    if "a" in _PLAYER_SHRINK:
+        return _PLAYER_SHRINK["a"]
+    a_best = PLAYER_SHRINK_DEFAULT
+    try:
+        import json
+        from pathlib import Path
+        items = json.loads((Path(__file__).parent / "best_bets.json").read_text())
+        unique = {}
+        for item in items:
+            for l in item.get("legs") or []:
+                if (l.get("sport") == "football" and l.get("player")
+                        and l.get("result") in ("win", "lose") and l.get("total")):
+                    k = (l.get("event_id"), l.get("player"), l.get("stat"),
+                         l.get("line"), l.get("over"))
+                    unique[k] = (l["hits"], l["total"], l["result"] == "win")
+        legs = list(unique.values())
+        if len(legs) >= PLAYER_SHRINK_MIN_LEGS:
+            def loss(a):
+                total = 0.0
+                for h, n, won in legs:
+                    p = min(max((h + a) / (n + 2 * a), 1e-4), 1 - 1e-4)
+                    total -= math.log(p if won else 1 - p)
+                return total
+            a_best = min((2, 4, 6, 8, 10, 12, 14, 17, 20, 25), key=loss)
+            _PLAYER_SHRINK["legs"] = len(legs)
+    except Exception:
+        pass
+    _PLAYER_SHRINK["a"] = float(a_best)
+    return _PLAYER_SHRINK["a"]
+
+
+def calibrate(legs):
+    """Give every football player leg its shrunk chance and price it from it.
+
+    Team legs that strength has priced are left alone. Idempotent: a leg
+    already calibrated is skipped, so tonight.py and picks() can both call it.
+    """
+    a = None
+    for leg in legs:
+        if not leg.get("player") or leg.get("pStrength") or leg.get("pShrunk"):
+            continue
+        if (leg.get("fixture") or {}).get("sport", "football") != "football":
+            continue
+        if a is None:
+            a = player_shrink()
+        p = (leg["hits"] + a) / (leg["total"] + 2 * a)
+        leg["pShrunk"] = p
+        leg["fairRecord"] = leg.get("fair")
+        leg["fair"] = 1 / p
+        need = leg.get("need")
+        leg["need"] = max(need, leg["fair"]) if isinstance(need, (int, float)) and math.isfinite(need) else leg["fair"]
+    return legs
+
+
+def chance(leg) -> float:
+    """The one probability the picks rank on (see the note above)."""
+    return leg.get("pStrength") or leg.get("pShrunk") or _shrunk(leg)
+
+
+def _prob(leg):
+    return chance(leg)
+
+
+def _is_football(leg) -> bool:
+    return (leg.get("fixture") or {}).get("sport", "football") == "football"
+
+
+def rank_key(leg, z=None):
+    """What a headline pick is chosen on.
+
+    Football: the calibrated chance, to two places, then whether team strength
+    stands behind it (that chance was validated on held-out leagues; the
+    player shrink is a cruder fix), then sample size. Every other sport keeps
+    the selection-adjusted Wilson floor on the record, unchanged, because
+    nothing here was tested on them.
+    """
+    if _is_football(leg):
+        return (round(chance(leg), 2), bool(leg.get("pStrength")), leg["total"], leg["fair"])
+    return (leg.get("adjusted") if leg.get("adjusted") is not None
+            else model.wilson_low(leg["hits"], leg["total"], z=z or 1.96), 0, 0, leg["fair"])
+
+
+def sort_value(leg) -> float:
+    """For short per-fixture lists: calibrated chance in football, the old
+    evidence floor elsewhere."""
+    return chance(leg) if _is_football(leg) else (leg.get("evidence") or 0)
+
+
+def _adjusted(leg, z):
+    """The selection-adjusted floor.
+
+    Football: read at the leg's calibrated chance, shown on the page but no
+    longer what decides the pick, since stacking a z of 4.4 on a chance
+    already calibrated on selected legs only measures sample size a second
+    time. Other sports: the record's floor, as before, and still the ranking.
+    """
+    if _is_football(leg):
+        return model.wilson_low(chance(leg) * leg["total"], leg["total"], z=z)
+    return model.wilson_low(leg["hits"], leg["total"], z=z)
 
 
 MIN_PLAYER_SAMPLE = 10
@@ -350,6 +565,11 @@ def _leg_public(leg):
         "total": leg["total"], "fair": leg["fair"], "venue": leg["venue"],
         "player": leg.get("player"), "position": leg.get("position"),
     }
+    out["chance"] = round(chance(leg), 4)
+    if leg.get("fairRecord") is not None:
+        out["fairRecord"] = leg.get("fairRecord")
+    if leg.get("pStrength"):
+        out["strength"] = leg.get("strength")
     # A ladder leg carries the rung it was read at, so the page can print
     # "100+ rushing and receiving yards" rather than "over 99.5" -- the same
     # bet, and only one of them is what you would look for on a coupon.
@@ -445,9 +665,9 @@ def best_single(legs):
 
     z = selection_z(group_count(legs))
     for leg in eligible:
-        leg["adjusted"] = model.wilson_low(leg["hits"], leg["total"], z=z)
+        leg["adjusted"] = _adjusted(leg, z)
 
-    winner = max(eligible, key=lambda l: (l["adjusted"], l["fair"]))
+    winner = max(eligible, key=rank_key)
     out = _single_public(winner)
     out["adjusted"] = winner["adjusted"]
     out["z"] = z
@@ -484,7 +704,8 @@ def best_acca(legs, wanted=ACCA_LEGS, target=ACCA_TARGET):
     # price alone reaches any target in two legs by taking the two worst bets
     # on the board; sorting on evidence alone returns three near-certainties
     # multiplying to nothing anyone would place.
-    take(sorted([l for l in pool if l["fair"] >= per_leg], key=lambda l: -l["evidence"]))
+    take(sorted([l for l in pool if l["fair"] >= per_leg],
+                key=lambda l: (-sort_value(l), -l["total"])))
     take(sorted(pool, key=lambda l: -l["fair"]))
 
     if len(chosen) < 2:
@@ -542,15 +763,24 @@ def _dedupe(legs):
             if l.get("position") in ("WR", "TE") else l["stat"]
         key = (l["fixture"]["id"], l.get("player") or l.get("team"), stat,
                l.get("period"), l.get("line"), l.get("over"))
-        if key not in best or (_shrunk(l), -len(l["stat"])) > (_shrunk(best[key]), -len(best[key]["stat"])):
+        if key not in best or (_prob(l), -len(l["stat"])) > (_prob(best[key]), -len(best[key]["stat"])):
             best[key] = l
     return list(best.values())
 
 
 def best_double(legs, target=DOUBLE_TARGET):
     pool = _dedupe([l for l in legs if _headline_ok(l, HEADLINE_SAMPLE) and 1.25 <= l["fair"] <= 1.8])
-    pool.sort(key=lambda l: -_shrunk(l))
-    pool = pool[:80]
+    pool.sort(key=lambda l: -_prob(l))
+    # The best few in each 0.05 price band rather than the 80 most likely
+    # overall. Once a leg's price is one over its chance, the 80 most likely
+    # are all priced 1.25 to 1.30 and no two of them reach evens, which is how
+    # the double went missing the first time this ran.
+    banded: dict[int, list] = {}
+    for l in pool:
+        band = banded.setdefault(int(l["fair"] / 0.05), [])
+        if len(band) < 15:
+            band.append(l)
+    pool = [l for band in banded.values() for l in band]
     fixtures = {l["fixture"]["id"] for l in pool}
     best = None
     for a, b in itertools.combinations(pool, 2):
@@ -563,7 +793,7 @@ def best_double(legs, target=DOUBLE_TARGET):
         combined = a["fair"] * b["fair"]
         if not (target * 0.95 <= combined <= DOUBLE_MAX):
             continue
-        joint = _shrunk(a) * _shrunk(b)
+        joint = _prob(a) * _prob(b)
         if best is None or joint > best[0]:
             best = (joint, combined, a, b)
     if not best:
@@ -582,8 +812,8 @@ def best_banker(legs):
         return None
     z = selection_z(group_count(legs))
     for l in pool:
-        l["adjusted"] = model.wilson_low(l["hits"], l["total"], z=z)
-    w = max(pool, key=lambda l: (l["adjusted"], l["fair"]))
+        l["adjusted"] = _adjusted(l, z)
+    w = max(pool, key=rank_key)
     out = _single_public(w)
     out["adjusted"] = w["adjusted"]
     return out
@@ -677,7 +907,9 @@ def picks(entries, days=7, now=None):
     for entry, meta in upcoming:
         by_sport.setdefault(sport_of(entry), []).append((entry, meta))
 
-    out = {"days": days, "floor": ODDS_FLOOR, "sports": []}
+    out = {"days": days, "floor": ODDS_FLOOR, "sports": [],
+           "playerShrink": player_shrink(),
+           "playerShrinkLegs": _PLAYER_SHRINK.get("legs")}
     for sport, group in by_sport.items():
         legs = []
         for entry, meta in group:
@@ -696,6 +928,7 @@ def picks(entries, days=7, now=None):
             # always one the player himself makes interesting.
             legs.extend(parlay.single_legs_for(entry, meta))
             legs.extend(parlay.alt_legs_for(entry, meta))
+        calibrate(legs)
         out["sports"].append({
             "sport": sport,
             "label": SPORT_LABELS.get(sport, sport.replace("-", " ").title()),
