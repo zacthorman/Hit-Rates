@@ -1238,12 +1238,12 @@
         "model_n": 10,
         "model_p": 0.786,
         "source": "mls.html",
-        "value": null,
-        "result": null
+        "value": 6.0,
+        "result": "win"
       }
     ],
-    "result": null,
-    "profit": null,
+    "result": "win",
+    "profit": 12.3,
     "note": "Jarvis pick. Price is the need price she said to take it at or better."
   }
 ]

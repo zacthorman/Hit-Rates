@@ -33191,11 +33191,11 @@
     "total": 19,
     "fair": 1.3728158174265332,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -33221,11 +33221,11 @@
     "total": 19,
     "fair": 1.3922403979417985,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -33251,11 +33251,11 @@
     "total": 17,
     "fair": 1.377209963778685,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -33281,11 +33281,11 @@
     "total": 19,
     "fair": 1.511248336583851,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -33311,11 +33311,11 @@
     "total": 19,
     "fair": 1.4780886829202347,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 10.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -33341,11 +33341,11 @@
     "total": 30,
     "fair": 1.3636363636363638,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -33371,11 +33371,11 @@
     "total": 18,
     "fair": 1.3059065476944514,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -33401,11 +33401,11 @@
     "total": 30,
     "fair": 1.3636363636363638,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -33431,11 +33431,11 @@
     "total": 18,
     "fair": 1.631731140805138,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 12.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: evens double",
@@ -33482,11 +33482,11 @@
     "total": 20,
     "fair": 1.3926413393168067,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: acca",
@@ -33533,8 +33533,8 @@
     "total": 19,
     "fair": 1.4742055200365929,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    },
    {
     "event_id": 15171694,
@@ -33554,11 +33554,11 @@
     "total": 19,
     "fair": 1.4783319507427115,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: builder",
@@ -33584,8 +33584,8 @@
     "total": 20,
     "fair": 1.373255444914815,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 14.0,
+    "result": "lose"
    },
    {
     "event_id": 15171687,
@@ -33605,8 +33605,8 @@
     "total": 20,
     "fair": 1.461076908604455,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 15171687,
@@ -33626,11 +33626,11 @@
     "total": 20,
     "fair": 1.649591806267376,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -33656,11 +33656,11 @@
     "total": 19,
     "fair": 1.4041160029607331,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -33686,11 +33686,11 @@
     "total": 19,
     "fair": 1.4576173167897006,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -33716,11 +33716,11 @@
     "total": 20,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -33746,11 +33746,11 @@
     "total": 21,
     "fair": 1.3616277079727288,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -33776,11 +33776,11 @@
     "total": 21,
     "fair": 1.4338750420656605,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -33806,11 +33806,11 @@
     "total": 21,
     "fair": 1.3969471486862344,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -33836,11 +33836,11 @@
     "total": 19,
     "fair": 1.4783319507427115,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -33866,11 +33866,11 @@
     "total": 20,
     "fair": 1.7041909205323826,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -33896,11 +33896,11 @@
     "total": 20,
     "fair": 1.368940613613701,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -33926,11 +33926,11 @@
     "total": 20,
     "fair": 1.3247725550886205,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -33956,11 +33956,11 @@
     "total": 33,
     "fair": 1.32,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -33986,11 +33986,11 @@
     "total": 20,
     "fair": 1.3732888376236845,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 21.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34016,11 +34016,11 @@
     "total": 17,
     "fair": 1.3358514881652794,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34046,11 +34046,11 @@
     "total": 17,
     "fair": 1.3943741174681257,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -34076,11 +34076,11 @@
     "total": 17,
     "fair": 1.4189815849445049,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 14.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34106,11 +34106,11 @@
     "total": 19,
     "fair": 1.3885459887213607,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34136,11 +34136,11 @@
     "total": 19,
     "fair": 1.4393238864020423,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -34166,11 +34166,11 @@
     "total": 19,
     "fair": 1.4072466666980044,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34196,11 +34196,11 @@
     "total": 19,
     "fair": 1.4742055200365929,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34226,11 +34226,11 @@
     "total": 19,
     "fair": 1.3098148004684116,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34256,11 +34256,11 @@
     "total": 18,
     "fair": 1.7828828231453828,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34286,11 +34286,11 @@
     "total": 20,
     "fair": 1.3926413393168067,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34316,11 +34316,11 @@
     "total": 19,
     "fair": 1.4368944731574547,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34346,11 +34346,11 @@
     "total": 20,
     "fair": 1.4296564185702354,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34376,11 +34376,11 @@
     "total": 19,
     "fair": 1.3337888797229898,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34406,11 +34406,11 @@
     "total": 28,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -34436,11 +34436,11 @@
     "total": 18,
     "fair": 1.4344733680915398,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34466,11 +34466,11 @@
     "total": 18,
     "fair": 1.6997338045753076,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34497,10 +34497,10 @@
     "fair": 1.3181818181818183,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Fixture single",
@@ -34526,11 +34526,11 @@
     "total": 19,
     "fair": 1.4004799382627244,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 9.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34556,11 +34556,11 @@
     "total": 19,
     "fair": 1.3606743714782543,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34586,11 +34586,11 @@
     "total": 19,
     "fair": 1.3773449470303984,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34616,11 +34616,11 @@
     "total": 19,
     "fair": 1.651938256578576,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -34646,11 +34646,11 @@
     "total": 20,
     "fair": 1.3629376898016508,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34676,11 +34676,11 @@
     "total": 20,
     "fair": 1.3030159084753536,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34706,11 +34706,11 @@
     "total": 20,
     "fair": 1.3548050111930525,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -34736,11 +34736,11 @@
     "total": 30,
     "fair": 1.3043478260869565,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34766,11 +34766,11 @@
     "total": 24,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34796,11 +34796,11 @@
     "total": 15,
     "fair": 1.4730174121036788,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -34826,11 +34826,11 @@
     "total": 18,
     "fair": 1.3147124066833982,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34856,11 +34856,11 @@
     "total": 19,
     "fair": 1.4341523503224263,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34886,11 +34886,11 @@
     "total": 18,
     "fair": 1.4028173454107575,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34916,11 +34916,11 @@
     "total": 19,
     "fair": 1.3267807600212826,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34946,11 +34946,11 @@
     "total": 19,
     "fair": 1.347690883676524,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -34976,11 +34976,11 @@
     "total": 19,
     "fair": 1.5314904401677,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: evens double",
@@ -35108,8 +35108,8 @@
     "total": 18,
     "fair": 1.4930917297460553,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "lose"
    },
    {
     "event_id": 16391472,
@@ -35133,7 +35133,7 @@
     "result": "win"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: parlay",
@@ -35252,11 +35252,11 @@
     "total": 18,
     "fair": 1.6471000098134692,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -35282,11 +35282,11 @@
     "total": 18,
     "fair": 1.6471000098134692,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -35312,11 +35312,11 @@
     "total": 29,
     "fair": 1.3181818181818183,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -35612,11 +35612,11 @@
     "total": 18,
     "fair": 1.6471000098134692,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -35642,11 +35642,11 @@
     "total": 33,
     "fair": 1.32,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -35672,11 +35672,11 @@
     "total": 36,
     "fair": 1.3333333333333333,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -35792,11 +35792,11 @@
     "total": 19,
     "fair": 1.6358467944293176,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -35822,11 +35822,11 @@
     "total": 19,
     "fair": 1.6943802254764067,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -35853,10 +35853,10 @@
     "fair": 1.380952380952381,
     "venue": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Fixture single",
@@ -35882,11 +35882,11 @@
     "total": 17,
     "fair": 1.6593235972925007,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -35912,11 +35912,11 @@
     "total": 18,
     "fair": 1.7074969266062165,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -35942,11 +35942,11 @@
     "total": 24,
     "fair": 1.4117647058823528,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -35972,11 +35972,11 @@
     "total": 19,
     "fair": 1.5690867546635847,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -36002,11 +36002,11 @@
     "total": 15,
     "fair": 1.6120731078262605,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -36032,11 +36032,11 @@
     "total": 21,
     "fair": 1.3125,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -36062,11 +36062,11 @@
     "total": 18,
     "fair": 1.4930917297460553,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -36092,11 +36092,11 @@
     "total": 15,
     "fair": 1.519809645020489,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -36122,11 +36122,11 @@
     "total": 18,
     "fair": 1.5785607392265233,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -36152,11 +36152,11 @@
     "total": 14,
     "fair": 1.5303377472693214,
     "venue": "home",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -36182,11 +36182,11 @@
     "total": 18,
     "fair": 1.7074969266062165,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -36212,11 +36212,11 @@
     "total": 30,
     "fair": 1.4285714285714286,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -36242,11 +36242,11 @@
     "total": 19,
     "fair": 1.5690867546635847,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -36272,11 +36272,11 @@
     "total": 34,
     "fair": 1.3076923076923077,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -36302,11 +36302,11 @@
     "total": 34,
     "fair": 1.3599999999999999,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -36422,11 +36422,11 @@
     "total": 17,
     "fair": 1.6593235972925007,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -36452,11 +36452,11 @@
     "total": 29,
     "fair": 1.3181818181818183,
     "venue": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -36482,11 +36482,11 @@
     "total": 16,
     "fair": 1.672677382305647,
     "venue": "away",
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -36878,11 +36878,11 @@
      1501,
      1617
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: evens double",
@@ -36941,11 +36941,11 @@
      1714,
      1870
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: banker",
@@ -36977,11 +36977,11 @@
      1539,
      1479
     ],
-    "value": null,
-    "result": null
+    "value": 21.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: acca",
@@ -37040,8 +37040,8 @@
      1891,
      2028
     ],
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    },
    {
     "event_id": 15171692,
@@ -37067,11 +37067,11 @@
      1352,
      1653
     ],
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: builder",
@@ -37103,8 +37103,8 @@
      1418,
      1411
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    },
    {
     "event_id": 15171691,
@@ -37130,8 +37130,8 @@
      1418,
      1411
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    },
    {
     "event_id": 15171691,
@@ -37157,11 +37157,11 @@
      1418,
      1411
     ],
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -37193,11 +37193,11 @@
      1891,
      2028
     ],
-    "value": null,
-    "result": null
+    "value": 10.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -37229,11 +37229,11 @@
      1891,
      2028
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -37262,11 +37262,11 @@
     "chance": 0.7017543859649122,
     "fair_record": 1.1153846153846154,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -37583,11 +37583,11 @@
      1740,
      1602
     ],
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -37616,11 +37616,11 @@
     "chance": 0.6721311475409836,
     "fair_record": 1.222222222222222,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -37724,11 +37724,11 @@
      1647,
      1748
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -37760,11 +37760,11 @@
      1714,
      1870
     ],
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -37796,11 +37796,11 @@
      1714,
      1870
     ],
-    "value": null,
-    "result": null
+    "value": 15.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -37832,11 +37832,11 @@
      1792,
      1705
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -37868,11 +37868,11 @@
      1705,
      1792
     ],
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -37904,11 +37904,11 @@
      1792,
      1705
     ],
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -37940,11 +37940,11 @@
      1820,
      1764
     ],
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -37973,11 +37973,11 @@
     "chance": 0.7017543859649122,
     "fair_record": 1.1153846153846154,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -38009,11 +38009,11 @@
      1820,
      1764
     ],
-    "value": null,
-    "result": null
+    "value": 9.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -38045,11 +38045,11 @@
      1620,
      1853
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -38078,11 +38078,11 @@
     "chance": 0.7272727272727273,
     "fair_record": 1.0384615384615385,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -38111,11 +38111,11 @@
     "chance": 0.6825396825396826,
     "fair_record": 1.206896551724138,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -38147,11 +38147,11 @@
      1835,
      1750
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -38183,11 +38183,11 @@
      1835,
      1750
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -38216,11 +38216,11 @@
     "chance": 0.6666666666666666,
     "fair_record": 1.1818181818181819,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -38360,11 +38360,11 @@
      1741,
      1703
     ],
-    "value": null,
-    "result": null
+    "value": 13.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -38717,11 +38717,11 @@
      1653,
      1352
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -38753,11 +38753,11 @@
      1352,
      1653
     ],
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -38789,11 +38789,11 @@
      1501,
      1617
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -38825,11 +38825,11 @@
      1590,
      1580
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -38861,11 +38861,11 @@
      1539,
      1479
     ],
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -38897,11 +38897,11 @@
      1514,
      1565
     ],
-    "value": null,
-    "result": null
+    "value": 10.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -38933,11 +38933,11 @@
      1446,
      1516
     ],
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -38969,11 +38969,11 @@
      1516,
      1446
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -39005,11 +39005,11 @@
      1458,
      1390
     ],
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -39041,11 +39041,11 @@
      1390,
      1458
     ],
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -39077,11 +39077,11 @@
      1458,
      1390
     ],
-    "value": null,
-    "result": null
+    "value": 11.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -39113,11 +39113,11 @@
      1418,
      1411
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -39149,11 +39149,11 @@
      1418,
      1411
     ],
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -39185,11 +39185,11 @@
      1563,
      1611
     ],
-    "value": null,
-    "result": null
+    "value": 10.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -39221,11 +39221,11 @@
      1559,
      1577
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -39257,11 +39257,11 @@
      1559,
      1577
     ],
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -39293,11 +39293,11 @@
      1577,
      1559
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -39329,11 +39329,11 @@
      1511,
      1469
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -39365,11 +39365,11 @@
      1570,
      1480
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -39401,11 +39401,11 @@
      1570,
      1480
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -39437,11 +39437,11 @@
      1570,
      1480
     ],
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -39473,11 +39473,11 @@
      1476,
      1465
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -39509,11 +39509,11 @@
      1465,
      1476
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -39545,11 +39545,11 @@
      1484,
      1491
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -39581,11 +39581,11 @@
      1484,
      1491
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -39794,11 +39794,11 @@
      1453,
      1427
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -39830,11 +39830,11 @@
      1453,
      1427
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -39866,11 +39866,11 @@
      1453,
      1427
     ],
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -40118,11 +40118,11 @@
      1611,
      1500
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -40154,11 +40154,11 @@
      1500,
      1611
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -40190,11 +40190,11 @@
      1611,
      1500
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -40334,11 +40334,11 @@
      1421,
      1496
     ],
-    "value": null,
-    "result": null
+    "value": 10.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -40370,11 +40370,11 @@
      1421,
      1496
     ],
-    "value": null,
-    "result": null
+    "value": 24.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -40406,11 +40406,11 @@
      1496,
      1421
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -40483,5 +40483,2924 @@
    }
   ],
   "result": "win"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1791990209,
+  "fair": 1.9000974387454364,
+  "legs": [
+   {
+    "event_id": 15171693,
+    "fixture": "Toronto FC v Orlando City SC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "Toronto FC",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.2942828524273624,
+    "venue": "home",
+    "chance": 0.7726,
+    "fair_record": 1.269574697068683,
+    "elo": [
+     1446,
+     1516
+    ],
+    "value": 5.0,
+    "result": "win"
+   },
+   {
+    "event_id": 15171702,
+    "fixture": "Colorado Rapids v Minnesota United",
+    "competition": "MLS",
+    "kickoff": 1792027800,
+    "sport": "football",
+    "team": "Colorado Rapids",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 6.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.4680696998974367,
+    "venue": "home",
+    "chance": 0.6812,
+    "fair_record": 1.6911233976165714,
+    "elo": [
+     1465,
+     1476
+    ],
+    "value": 6.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1791990209,
+  "fair": 3.014161079564493,
+  "legs": [
+   {
+    "event_id": 16938772,
+    "fixture": "Manchester City v Paris Saint-Germain",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Paris Saint-Germain",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 8.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 18,
+    "fair": 1.4439839910044912,
+    "venue": "away",
+    "chance": 0.6925,
+    "fair_record": 2.107650151320388,
+    "elo": [
+     1884,
+     2022
+    ],
+    "value": 5.0,
+    "result": "win"
+   },
+   {
+    "event_id": 15171696,
+    "fixture": "St.Louis City v Vancouver Whitecaps",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Vancouver Whitecaps",
+    "player": "Brian White",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 24,
+    "total": 28,
+    "fair": 1.4444444444444444,
+    "venue": null,
+    "chance": 0.6923,
+    "fair_record": 1.1666666666666667,
+    "elo": null,
+    "value": 2.0,
+    "result": "win"
+   },
+   {
+    "event_id": 15171692,
+    "fixture": "Nashville SC v Sporting Kansas City",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Sporting Kansas City",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 2.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.44511775354611,
+    "venue": "away",
+    "chance": 0.692,
+    "fair_record": 1.4388247904296854,
+    "elo": [
+     1352,
+     1653
+    ],
+    "value": 0.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "football",
+  "snapshot_at": 1791990209,
+  "fair": 3.138392857142857,
+  "legs": [
+   {
+    "event_id": 15171687,
+    "fixture": "Inter Miami CF v New York City FC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "Inter Miami CF",
+    "player": "Luis Su\u00e1rez",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 17,
+    "total": 25,
+    "fair": 1.4705882352941175,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 0.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 15171687,
+    "fixture": "Inter Miami CF v New York City FC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "Inter Miami CF",
+    "player": "Lionel Messi",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 23,
+    "total": 33,
+    "fair": 1.434782608695652,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 1.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 15171687,
+    "fixture": "Inter Miami CF v New York City FC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "Inter Miami CF",
+    "player": "Rodrigo De Paul",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 22,
+    "total": 31,
+    "fair": 1.409090909090909,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 2.0,
+    "result": "win"
+   },
+   {
+    "event_id": 15171687,
+    "fixture": "Inter Miami CF v New York City FC",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "New York City FC",
+    "player": "Nicol\u00e1s Fern\u00e1ndez",
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 28,
+    "total": 37,
+    "fair": 1.3214285714285714,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 5.0,
+    "result": "win"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: single",
+  "sport": "baseball",
+  "snapshot_at": 1791990209,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Los Angeles Dodgers",
+    "player": "Kyle Tucker",
+    "stat": "Hits runs and RBIs",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 10,
+    "total": 20,
+    "fair": 2.0,
+    "venue": null,
+    "chance": 0.5,
+    "fair_record": 2.0,
+    "elo": null,
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "baseball",
+  "snapshot_at": 1791990209,
+  "fair": 2.478021978021978,
+  "legs": [
+   {
+    "event_id": 17193082,
+    "fixture": "Cleveland Guardians v Tampa Bay Rays",
+    "competition": "MLB Postseason",
+    "kickoff": 1792101600,
+    "sport": "baseball",
+    "team": "Cleveland Guardians",
+    "player": "Jo Adell",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.5714285714285714,
+    "venue": null,
+    "chance": 0.6364,
+    "fair_record": 1.25,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "William Contreras",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.5769230769230769,
+    "venue": null,
+    "chance": 0.6341,
+    "fair_record": 1.2142857142857144,
+    "elo": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "baseball",
+  "snapshot_at": 1791990209,
+  "fair": 1.5714285714285714,
+  "legs": [
+   {
+    "event_id": 17193082,
+    "fixture": "Cleveland Guardians v Tampa Bay Rays",
+    "competition": "MLB Postseason",
+    "kickoff": 1792101600,
+    "sport": "baseball",
+    "team": "Cleveland Guardians",
+    "player": "Jo Adell",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.5714285714285714,
+    "venue": null,
+    "chance": 0.6364,
+    "fair_record": 1.25,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "baseball",
+  "snapshot_at": 1791990209,
+  "fair": 2.478021978021978,
+  "legs": [
+   {
+    "event_id": 17193082,
+    "fixture": "Cleveland Guardians v Tampa Bay Rays",
+    "competition": "MLB Postseason",
+    "kickoff": 1792101600,
+    "sport": "baseball",
+    "team": "Cleveland Guardians",
+    "player": "Jo Adell",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.5714285714285714,
+    "venue": null,
+    "chance": 0.6364,
+    "fair_record": 1.25,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "William Contreras",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.5769230769230769,
+    "venue": null,
+    "chance": 0.6341,
+    "fair_record": 1.2142857142857144,
+    "elo": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "baseball",
+  "snapshot_at": 1791990209,
+  "fair": 3.75,
+  "legs": [
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "Garrett Mitchell",
+    "stat": "Hits runs and RBIs",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 3.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "Jake Bauers",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.3846153846153846,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 1.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "Cooper Pratt",
+    "stat": "Hits runs and RBIs",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.3846153846153846,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 4.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "Brice Turang",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: single",
+  "sport": "american-football",
+  "snapshot_at": 1791990209,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "Courtland Sutton",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 44.5,
+    "over": true,
+    "alt": true,
+    "threshold": 45.0,
+    "hits": 10,
+    "total": 20,
+    "fair": 2.0,
+    "venue": null,
+    "chance": 0.5,
+    "fair_record": 2.0,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "american-football",
+  "snapshot_at": 1791990209,
+  "fair": 2.5398351648351647,
+  "legs": [
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "Bo Nix",
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.5357142857142856,
+    "venue": null,
+    "chance": 0.6512,
+    "fair_record": 1.1875,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Sam Darnold",
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.653846153846154,
+    "venue": null,
+    "chance": 0.6047,
+    "fair_record": 1.3571428571428572,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "american-football",
+  "snapshot_at": 1791990209,
+  "fair": 1.5357142857142856,
+  "legs": [
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "Bo Nix",
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.5357142857142856,
+    "venue": null,
+    "chance": 0.6512,
+    "fair_record": 1.1875,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: builder",
+  "sport": "american-football",
+  "snapshot_at": 1791990209,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": null,
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.4937478247230116,
+    "venue": "away",
+    "chance": 0.7143,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": null,
+    "stat": "Touchdowns",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.4937478247230116,
+    "venue": "away",
+    "chance": 0.7143,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": null,
+    "stat": "Field goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 10,
+    "fair": 1.6236644059043108,
+    "venue": "away",
+    "chance": 0.6429,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1791990209,
+  "fair": 3.095238095238095,
+  "legs": [
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "RJ Harvey",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "Bo Nix",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "Marvin Mims Jr.",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10.0,
+    "hits": 10,
+    "total": 14,
+    "fair": 1.4,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Jaxon Smith-Njigba",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 89.5,
+    "over": true,
+    "alt": true,
+    "threshold": 90.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791990209,
+  "fair": 1.4736842105263157,
+  "legs": [
+   {
+    "event_id": 16938869,
+    "fixture": "Real Betis v FC Porto",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Real Betis",
+    "player": "Antony",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 26,
+    "total": 32,
+    "fair": 1.4736842105263157,
+    "venue": null,
+    "chance": 0.6785714285714286,
+    "fair_record": 1.2307692307692308,
+    "elo": null,
+    "value": 4.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1791990209,
+  "fair": 1.4848484848484849,
+  "legs": [
+   {
+    "event_id": 16938872,
+    "fixture": "AS Roma v Real Madrid",
+    "competition": "UEFA Champions League",
+    "kickoff": 1792004400,
+    "sport": "football",
+    "team": "Real Madrid",
+    "player": "Kylian Mbapp\u00e9",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": true,
+    "threshold": 4.0,
+    "hits": 21,
+    "total": 25,
+    "fair": 1.4848484848484849,
+    "venue": null,
+    "chance": 0.673469387755102,
+    "fair_record": 1.1904761904761905,
+    "elo": null,
+    "value": 4.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1791990209,
+  "fair": 1.4667271096447916,
+  "legs": [
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": null,
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.4667271096447916,
+    "venue": "home",
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1791990209,
+  "fair": 1.4937478247230116,
+  "legs": [
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": null,
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.4937478247230116,
+    "venue": "away",
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1791990209,
+  "fair": 1.4937478247230116,
+  "legs": [
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": null,
+    "stat": "Touchdowns",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.4937478247230116,
+    "venue": "away",
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "baseball",
+  "snapshot_at": 1791990209,
+  "fair": 1.5769230769230769,
+  "legs": [
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "William Contreras",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.5769230769230769,
+    "venue": null,
+    "chance": 0.6341463414634146,
+    "fair_record": 1.2142857142857144,
+    "elo": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "baseball",
+  "snapshot_at": 1791990209,
+  "fair": 1.5769230769230769,
+  "legs": [
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "William Contreras",
+    "stat": "Total bases",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.5769230769230769,
+    "venue": null,
+    "chance": 0.6341463414634146,
+    "fair_record": 1.2142857142857144,
+    "elo": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "baseball",
+  "snapshot_at": 1791990209,
+  "fair": 1.6296296296296295,
+  "legs": [
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "Brice Turang",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.6296296296296295,
+    "venue": null,
+    "chance": 0.6136363636363636,
+    "fair_record": 1.3333333333333333,
+    "elo": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "baseball",
+  "snapshot_at": 1791990209,
+  "fair": 1.5714285714285714,
+  "legs": [
+   {
+    "event_id": 17193082,
+    "fixture": "Cleveland Guardians v Tampa Bay Rays",
+    "competition": "MLB Postseason",
+    "kickoff": 1792101600,
+    "sport": "baseball",
+    "team": "Cleveland Guardians",
+    "player": "Jo Adell",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.5714285714285714,
+    "venue": null,
+    "chance": 0.6363636363636364,
+    "fair_record": 1.25,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "baseball",
+  "snapshot_at": 1791990209,
+  "fair": 1.5714285714285714,
+  "legs": [
+   {
+    "event_id": 17193082,
+    "fixture": "Cleveland Guardians v Tampa Bay Rays",
+    "competition": "MLB Postseason",
+    "kickoff": 1792101600,
+    "sport": "baseball",
+    "team": "Cleveland Guardians",
+    "player": "Jo Adell",
+    "stat": "Total bases",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.5714285714285714,
+    "venue": null,
+    "chance": 0.6363636363636364,
+    "fair_record": 1.25,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "baseball",
+  "snapshot_at": 1791990209,
+  "fair": 1.6296296296296295,
+  "legs": [
+   {
+    "event_id": 17193082,
+    "fixture": "Cleveland Guardians v Tampa Bay Rays",
+    "competition": "MLB Postseason",
+    "kickoff": 1792101600,
+    "sport": "baseball",
+    "team": "Tampa Bay Rays",
+    "player": "Junior Caminero",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.6296296296296295,
+    "venue": null,
+    "chance": 0.6136363636363636,
+    "fair_record": 1.3333333333333333,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "baseball",
+  "snapshot_at": 1791991995,
+  "fair": 2.478021978021978,
+  "legs": [
+   {
+    "event_id": 17193082,
+    "fixture": "Cleveland Guardians v Tampa Bay Rays",
+    "competition": "MLB Postseason",
+    "kickoff": 1792101600,
+    "sport": "baseball",
+    "team": "Cleveland Guardians",
+    "player": "Jo Adell",
+    "stat": "Total bases",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.5714285714285714,
+    "venue": null,
+    "chance": 0.6364,
+    "fair_record": 1.25,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "William Contreras",
+    "stat": "Total bases",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.5769230769230769,
+    "venue": null,
+    "chance": 0.6341,
+    "fair_record": 1.2142857142857144,
+    "elo": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "baseball",
+  "snapshot_at": 1791991995,
+  "fair": 1.5714285714285714,
+  "legs": [
+   {
+    "event_id": 17193082,
+    "fixture": "Cleveland Guardians v Tampa Bay Rays",
+    "competition": "MLB Postseason",
+    "kickoff": 1792101600,
+    "sport": "baseball",
+    "team": "Cleveland Guardians",
+    "player": "Jo Adell",
+    "stat": "Total bases",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.5714285714285714,
+    "venue": null,
+    "chance": 0.6364,
+    "fair_record": 1.25,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "baseball",
+  "snapshot_at": 1791991995,
+  "fair": 2.478021978021978,
+  "legs": [
+   {
+    "event_id": 17193082,
+    "fixture": "Cleveland Guardians v Tampa Bay Rays",
+    "competition": "MLB Postseason",
+    "kickoff": 1792101600,
+    "sport": "baseball",
+    "team": "Cleveland Guardians",
+    "player": "Jo Adell",
+    "stat": "Total bases",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.5714285714285714,
+    "venue": null,
+    "chance": 0.6364,
+    "fair_record": 1.25,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "William Contreras",
+    "stat": "Total bases",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.5769230769230769,
+    "venue": null,
+    "chance": 0.6341,
+    "fair_record": 1.2142857142857144,
+    "elo": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "baseball",
+  "snapshot_at": 1791991995,
+  "fair": 3.75,
+  "legs": [
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "Garrett Mitchell",
+    "stat": "Hits runs and RBIs",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 3.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "Jake Bauers",
+    "stat": "Total bases",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.3846153846153846,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 4.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "Cooper Pratt",
+    "stat": "Total bases",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.3846153846153846,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 3.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "Brice Turang",
+    "stat": "Total bases",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: single",
+  "sport": "american-football",
+  "snapshot_at": 1791991995,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "Courtland Sutton",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 44.5,
+    "over": true,
+    "alt": true,
+    "threshold": 45.0,
+    "hits": 10,
+    "total": 20,
+    "fair": 2.0,
+    "venue": null,
+    "chance": 0.5,
+    "fair_record": 2.0,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1791991995,
+  "fair": 3.069444444444444,
+  "legs": [
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "Bo Nix",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "Marvin Mims Jr.",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10.0,
+    "hits": 10,
+    "total": 14,
+    "fair": 1.4,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Jaxon Smith-Njigba",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 89.5,
+    "over": true,
+    "alt": true,
+    "threshold": 90.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Rashid Shaheed",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 12,
+    "total": 17,
+    "fair": 1.4166666666666665,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "baseball",
+  "snapshot_at": 1791991995,
+  "fair": 1.6296296296296295,
+  "legs": [
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "Brice Turang",
+    "stat": "Total bases",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.6296296296296295,
+    "venue": null,
+    "chance": 0.6136363636363636,
+    "fair_record": 1.3333333333333333,
+    "elo": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "baseball",
+  "snapshot_at": 1791991995,
+  "fair": 1.6296296296296295,
+  "legs": [
+   {
+    "event_id": 17193082,
+    "fixture": "Cleveland Guardians v Tampa Bay Rays",
+    "competition": "MLB Postseason",
+    "kickoff": 1792101600,
+    "sport": "baseball",
+    "team": "Tampa Bay Rays",
+    "player": "Junior Caminero",
+    "stat": "Total bases",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.6296296296296295,
+    "venue": null,
+    "chance": 0.6136363636363636,
+    "fair_record": 1.3333333333333333,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "football",
+  "snapshot_at": 1792000229,
+  "fair": 3.4375,
+  "legs": [
+   {
+    "event_id": 15171694,
+    "fixture": "Chicago Fire v Philadelphia Union",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Chicago Fire",
+    "player": "Philip Zinckernagel",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 25,
+    "total": 35,
+    "fair": 1.4,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 2.0,
+    "result": "win"
+   },
+   {
+    "event_id": 15171694,
+    "fixture": "Chicago Fire v Philadelphia Union",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Chicago Fire",
+    "player": "Andrew Gutman",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 20,
+    "total": 28,
+    "fair": 1.4,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 0.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 15171694,
+    "fixture": "Chicago Fire v Philadelphia Union",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Philadelphia Union",
+    "player": "Milan Iloski",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": true,
+    "threshold": 3.0,
+    "hits": 24,
+    "total": 36,
+    "fair": 1.5,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 5.0,
+    "result": "win"
+   },
+   {
+    "event_id": 15171694,
+    "fixture": "Chicago Fire v Philadelphia Union",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Philadelphia Union",
+    "player": "Danley Jean Jacques",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 25,
+    "total": 35,
+    "fair": 1.4,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": "void"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1792000229,
+  "fair": 3.4545454545454546,
+  "legs": [
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "RJ Harvey",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "Bo Nix",
+    "stat": "Passing yards",
+    "period": "ALL",
+    "line": 179.5,
+    "over": true,
+    "alt": true,
+    "threshold": 180.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Sam Darnold",
+    "stat": "Passing yards",
+    "period": "ALL",
+    "line": 189.5,
+    "over": true,
+    "alt": true,
+    "threshold": 190.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Jaxon Smith-Njigba",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 89.5,
+    "over": true,
+    "alt": true,
+    "threshold": 90.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1792001285,
+  "fair": 3.109090909090909,
+  "legs": [
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "RJ Harvey",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 39.5,
+    "over": true,
+    "alt": true,
+    "threshold": 40.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "Bo Nix",
+    "stat": "Passing yards",
+    "period": "ALL",
+    "line": 179.5,
+    "over": true,
+    "alt": true,
+    "threshold": 180.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Sam Darnold",
+    "stat": "Passing yards",
+    "period": "ALL",
+    "line": 189.5,
+    "over": true,
+    "alt": true,
+    "threshold": 190.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Jaxon Smith-Njigba",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 89.5,
+    "over": true,
+    "alt": true,
+    "threshold": 90.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1792017802,
+  "fair": 3.017557470198914,
+  "legs": [
+   {
+    "event_id": 15171696,
+    "fixture": "St.Louis City v Vancouver Whitecaps",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Vancouver Whitecaps",
+    "player": "Brian White",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 24,
+    "total": 28,
+    "fair": 1.4444444444444444,
+    "venue": null,
+    "chance": 0.6923,
+    "fair_record": 1.1666666666666667,
+    "elo": null,
+    "value": 2.0,
+    "result": "win"
+   },
+   {
+    "event_id": 15171692,
+    "fixture": "Nashville SC v Sporting Kansas City",
+    "competition": "MLS",
+    "kickoff": 1792024200,
+    "sport": "football",
+    "team": "Sporting Kansas City",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 2.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.44511775354611,
+    "venue": "away",
+    "chance": 0.692,
+    "fair_record": 1.4388247904296854,
+    "elo": [
+     1352,
+     1653
+    ],
+    "value": 0.0,
+    "result": "win"
+   },
+   {
+    "event_id": 15171689,
+    "fixture": "DC United v New York Red Bulls",
+    "competition": "MLS",
+    "kickoff": 1792020600,
+    "sport": "football",
+    "team": "DC United",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.4456110884202706,
+    "venue": "home",
+    "chance": 0.6917,
+    "fair_record": 1.5047884661273543,
+    "elo": [
+     1390,
+     1458
+    ],
+    "value": 3.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792017802,
+  "fair": 1.3044670316363467,
+  "legs": [
+   {
+    "event_id": 16391560,
+    "fixture": "Burnley v Wolverhampton",
+    "competition": "Championship",
+    "kickoff": 1792177200,
+    "sport": "football",
+    "team": "Burnley",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 10,
+    "fair": 1.3044670316363467,
+    "venue": null,
+    "chance": 0.7665966066965926,
+    "fair_record": 1.3182692392619466,
+    "elo": [
+     1457,
+     1554
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792017802,
+  "fair": 1.336560700028579,
+  "legs": [
+   {
+    "event_id": 16391560,
+    "fixture": "Burnley v Wolverhampton",
+    "competition": "Championship",
+    "kickoff": 1792177200,
+    "sport": "football",
+    "team": "Burnley",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 16.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 5,
+    "total": 10,
+    "fair": 1.336560700028579,
+    "venue": null,
+    "chance": 0.7481889898293563,
+    "fair_record": 1.3891278600121821,
+    "elo": [
+     1457,
+     1554
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792017802,
+  "fair": 1.4021103925210674,
+  "legs": [
+   {
+    "event_id": 16391560,
+    "fixture": "Burnley v Wolverhampton",
+    "competition": "Championship",
+    "kickoff": 1792177200,
+    "sport": "football",
+    "team": "Burnley",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.4021103925210674,
+    "venue": null,
+    "chance": 0.7132106040537565,
+    "fair_record": 1.360247543544176,
+    "elo": [
+     1457,
+     1554
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792017802,
+  "fair": 1.3170782194707384,
+  "legs": [
+   {
+    "event_id": 16285041,
+    "fixture": "Frosinone v Sassuolo",
+    "competition": "Serie A",
+    "kickoff": 1792176300,
+    "sport": "football",
+    "team": "Sassuolo",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.3170782194707384,
+    "venue": "away",
+    "chance": 0.7592563488004875,
+    "fair_record": 1.2507858726904335,
+    "elo": [
+     1554,
+     1612
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792017802,
+  "fair": 1.3284511890475574,
+  "legs": [
+   {
+    "event_id": 16285041,
+    "fixture": "Frosinone v Sassuolo",
+    "competition": "Serie A",
+    "kickoff": 1792176300,
+    "sport": "football",
+    "team": "Sassuolo",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 19,
+    "fair": 1.3284511890475574,
+    "venue": "away",
+    "chance": 0.7527562986465142,
+    "fair_record": 1.2236312116380215,
+    "elo": [
+     1554,
+     1612
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792017802,
+  "fair": 1.4672333633418546,
+  "legs": [
+   {
+    "event_id": 16285041,
+    "fixture": "Frosinone v Sassuolo",
+    "competition": "Serie A",
+    "kickoff": 1792176300,
+    "sport": "football",
+    "team": "Sassuolo",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4672333633418546,
+    "venue": "away",
+    "chance": 0.6815548398670153,
+    "fair_record": 1.2944556913566625,
+    "elo": [
+     1554,
+     1612
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792017802,
+  "fair": 1.4102564102564101,
+  "legs": [
+   {
+    "event_id": 16310977,
+    "fixture": "Le Mans v Toulouse",
+    "competition": "Ligue 1",
+    "kickoff": 1792176300,
+    "sport": "football",
+    "team": "Toulouse",
+    "player": "Mark McKenzie",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 27,
+    "total": 31,
+    "fair": 1.4102564102564101,
+    "venue": null,
+    "chance": 0.7090909090909091,
+    "fair_record": 1.1481481481481481,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792017802,
+  "fair": 1.4142406233444293,
+  "legs": [
+   {
+    "event_id": 16310977,
+    "fixture": "Le Mans v Toulouse",
+    "competition": "Ligue 1",
+    "kickoff": 1792176300,
+    "sport": "football",
+    "team": "Toulouse",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.4142406233444293,
+    "venue": "away",
+    "chance": 0.7070932509597813,
+    "fair_record": 1.427366804586868,
+    "elo": [
+     1564,
+     1583
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792017802,
+  "fair": 1.457142857142857,
+  "legs": [
+   {
+    "event_id": 16310977,
+    "fixture": "Le Mans v Toulouse",
+    "competition": "Ligue 1",
+    "kickoff": 1792176300,
+    "sport": "football",
+    "team": "Toulouse",
+    "player": "Aron D\u00f8nnum",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 23,
+    "total": 27,
+    "fair": 1.457142857142857,
+    "venue": null,
+    "chance": 0.6862745098039216,
+    "fair_record": 1.1739130434782608,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792017802,
+  "fair": 1.4963339561183175,
+  "legs": [
+   {
+    "event_id": 16421070,
+    "fixture": "Deportivo de A Coru\u00f1a v Levante UD",
+    "competition": "LaLiga",
+    "kickoff": 1792177200,
+    "sport": "football",
+    "team": "Levante UD",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 19,
+    "fair": 1.4963339561183175,
+    "venue": "away",
+    "chance": 0.6683000114453918,
+    "fair_record": 1.5032693913029807,
+    "elo": [
+     1568,
+     1597
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792017802,
+  "fair": 1.5062527570386588,
+  "legs": [
+   {
+    "event_id": 16421070,
+    "fixture": "Deportivo de A Coru\u00f1a v Levante UD",
+    "competition": "LaLiga",
+    "kickoff": 1792177200,
+    "sport": "football",
+    "team": "Levante UD",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.5062527570386588,
+    "venue": "away",
+    "chance": 0.6638991997372553,
+    "fair_record": 1.5469746068349168,
+    "elo": [
+     1568,
+     1597
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792017802,
+  "fair": 1.5483870967741935,
+  "legs": [
+   {
+    "event_id": 16421070,
+    "fixture": "Deportivo de A Coru\u00f1a v Levante UD",
+    "competition": "LaLiga",
+    "kickoff": 1792177200,
+    "sport": "football",
+    "team": "Levante UD",
+    "player": "Jon Ander Olasagasti",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 19,
+    "total": 24,
+    "fair": 1.5483870967741935,
+    "venue": null,
+    "chance": 0.6458333333333334,
+    "fair_record": 1.2631578947368423,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792017802,
+  "fair": 1.3090451662991123,
+  "legs": [
+   {
+    "event_id": 16434063,
+    "fixture": "Eintracht Frankfurt v 1. FC K\u00f6ln",
+    "competition": "Bundesliga",
+    "kickoff": 1792175400,
+    "sport": "football",
+    "team": "1. FC K\u00f6ln",
+    "player": null,
+    "stat": "Offsides",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 16,
+    "fair": 1.3090451662991123,
+    "venue": "away",
+    "chance": 0.7639155819406643,
+    "fair_record": 1.2336829555084992,
+    "elo": [
+     1572,
+     1620
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792017802,
+  "fair": 1.3621086937481524,
+  "legs": [
+   {
+    "event_id": 16434063,
+    "fixture": "Eintracht Frankfurt v 1. FC K\u00f6ln",
+    "competition": "Bundesliga",
+    "kickoff": 1792175400,
+    "sport": "football",
+    "team": "1. FC K\u00f6ln",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 18,
+    "fair": 1.3621086937481524,
+    "venue": "away",
+    "chance": 0.734155801655059,
+    "fair_record": 1.3680225984502106,
+    "elo": [
+     1572,
+     1620
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792017802,
+  "fair": 1.3797850322064824,
+  "legs": [
+   {
+    "event_id": 16434063,
+    "fixture": "Eintracht Frankfurt v 1. FC K\u00f6ln",
+    "competition": "Bundesliga",
+    "kickoff": 1792175400,
+    "sport": "football",
+    "team": "Eintracht Frankfurt",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.3797850322064824,
+    "venue": "home",
+    "chance": 0.7247505782845395,
+    "fair_record": 1.3693041142376885,
+    "elo": [
+     1620,
+     1572
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "baseball",
+  "snapshot_at": 1792018808,
+  "fair": 3.75,
+  "legs": [
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "Garrett Mitchell",
+    "stat": "Hits runs and RBIs",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 3.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "Jake Bauers",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.3846153846153846,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 1.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "Cooper Pratt",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.3846153846153846,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 3.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17193112,
+    "fixture": "Los Angeles Dodgers v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1792022400,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "Brice Turang",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1792018808,
+  "fair": 3.069444444444444,
+  "legs": [
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "Bo Nix",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "Marvin Mims Jr.",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10.0,
+    "hits": 10,
+    "total": 14,
+    "fair": 1.4,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Jaxon Smith-Njigba",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 89.5,
+    "over": true,
+    "alt": true,
+    "threshold": 90.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183749,
+    "fixture": "Denver Broncos v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1792109700,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Rashid Shaheed",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 12,
+    "total": 17,
+    "fair": 1.4166666666666665,
+    "venue": null,
+    "chance": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792018808,
+  "fair": 1.3085031052088223,
+  "legs": [
+   {
+    "event_id": 15238223,
+    "fixture": "Mirassol v Internacional",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1792191600,
+    "sport": "football",
+    "team": "Mirassol",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.3085031052088223,
+    "venue": "home",
+    "chance": 0.7642320419563783,
+    "fair_record": 1.3376765816986222,
+    "elo": [
+     1635,
+     1608
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792018808,
+  "fair": 1.3897529220793665,
+  "legs": [
+   {
+    "event_id": 15238223,
+    "fixture": "Mirassol v Internacional",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1792191600,
+    "sport": "football",
+    "team": "Internacional",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.3897529220793665,
+    "venue": "away",
+    "chance": 0.7195523636703616,
+    "fair_record": 1.4370862170577072,
+    "elo": [
+     1608,
+     1635
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792018808,
+  "fair": 1.4713142895018463,
+  "legs": [
+   {
+    "event_id": 15238223,
+    "fixture": "Mirassol v Internacional",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1792191600,
+    "sport": "football",
+    "team": "Mirassol",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.4713142895018463,
+    "venue": "home",
+    "chance": 0.6796644382068615,
+    "fair_record": 1.5842047330251567,
+    "elo": [
+     1635,
+     1608
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
  }
 ]
