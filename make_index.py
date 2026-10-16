@@ -115,6 +115,33 @@ def read_fixtures(path: Path) -> list[dict]:
     return out
 
 
+def research_card() -> str:
+    """A card pointing at tonight's hand-researched picks, while they are live.
+
+    Reads research_picks.json (see tonight.research_block). Nothing once the
+    file's `expires` has passed, so the front page never advertises a stale
+    night.
+    """
+    import html as _html
+    try:
+        data = json.loads((ROOT / "research_picks.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return ""
+    import time as _time
+    if _time.time() >= (data.get("expires") or 0):
+        return ""
+    picks = [p for g in data.get("groups") or [] for p in g.get("picks") or []]
+    lines = "".join(
+        f"<li>{_html.escape(p['selection'])} <small>{_html.escape(p['fixture'])}, "
+        f"{p['chance'] * 100:.0f}%, fair {p['fair']:.2f}</small></li>" for p in picks[:4])
+    return (f'<div class="pick" style="margin-bottom:12px">'
+            f'<h2>{_html.escape(data.get("title", "Researched picks"))} &middot; tonight</h2>'
+            f'<div class="sel">{len(picks)} picks checked against line-ups, team news and referees</div>'
+            f'<ol>{lines}</ol>'
+            f'<div class="odds"><a href="tonight.html">All {len(picks)}, with the reasons &rarr;</a></div>'
+            f'</div>')
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--keep-played", action="store_true", dest="keep_played",
@@ -137,7 +164,16 @@ def main() -> None:
     # Newest first, purely for the de-duplication below. The listing order of
     # the page is decided by kick-off time later, so this only affects which
     # copy of a repeated fixture wins.
-    freshest = sorted(files, key=lambda p: p.stat().st_mtime, reverse=True)
+    #
+    # A one-off build of a single match ("home-v-away.html", or a "mixed-"
+    # build) beats the league round for that match, however recently the
+    # round was saved. The one-off is built on purpose with more in it, player
+    # stats and the Line-ups tab; lineups_auto.py re-saves the round every
+    # time it attaches an XI, and on mtime alone that quietly sent the front
+    # page back to the round, which had no Line-ups tab.
+    def _one_off(p):
+        return "-v-" in p.stem or p.stem.startswith("mixed-")
+    freshest = sorted(files, key=lambda p: (_one_off(p), p.stat().st_mtime), reverse=True)
 
     now = datetime.now(tz=timezone.utc).timestamp()
 
@@ -205,7 +241,7 @@ def main() -> None:
         separators=(",", ":"),
     )
 
-    page = PAGE.replace("__PAYLOAD__", payload)
+    page = PAGE.replace("__PAYLOAD__", payload).replace("__RESEARCH__", research_card())
     out = ROOT / "index.html"
     out.write_text(page, encoding="utf-8")
 
@@ -501,6 +537,7 @@ footer { margin-top: 26px; color: var(--muted); font-size: 12.5px; }
       <button type="button" class="fold" id="picks-btn" aria-expanded="true"
               aria-controls="picks">Picks of the week <small id="picks-sport"></small></button>
     </div>
+    __RESEARCH__
     <div id="picks"></div>
   </aside>
 </div>

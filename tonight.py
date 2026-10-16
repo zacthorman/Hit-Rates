@@ -172,6 +172,51 @@ def acca_block(acca, wanted, target) -> str:
     )
 
 
+# ---------------------------------------------------- researched picks
+#
+# Hand-researched picks for a night, from research_picks.json beside this
+# file: the model's legs checked against team news, line-ups and referees.
+# Shown at the top of the page until the file's `expires` (unix time), then
+# silently dropped, so a stale file can never pass itself off as tonight's.
+
+def research_block(now: float) -> str:
+    import json
+    path = ROOT / "research_picks.json"
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return ""
+    if now >= (data.get("expires") or 0):
+        return ""
+    esc = html.escape
+    parts = [f"<section class='research'><h2>{esc(data.get('title', 'Researched picks'))}</h2>",
+             f"<p class='comp'>Written {esc(data.get('written', ''))}. {esc(data.get('intro', ''))}</p>"]
+    for group in data.get("groups") or []:
+        rows = "".join(
+            f"<tr><td>{esc(p['selection'])}<br><span class='sub'>{esc(p['fixture'])}"
+            f" &middot; {esc(p.get('why', ''))}</span></td>"
+            f"<td class='n'>{p['chance'] * 100:.0f}%</td>"
+            f"<td class='n'>{odds(p.get('fair'))}</td></tr>"
+            for p in group.get("picks") or [])
+        parts.append(
+            f"<h3>{esc(group.get('kickoff', ''))}</h3>"
+            f"<table><thead><tr><th>Selection</th><th class='n'>Chance</th>"
+            f"<th class='n'>Fair</th></tr></thead><tbody>{rows}</tbody></table>")
+        if group.get("avoid"):
+            parts.append(f"<p class='price'>{esc(group['avoid'])}</p>")
+    multi = data.get("multi")
+    if multi:
+        legs = "".join(f"<li>{esc(l)}</li>" for l in multi.get("legs") or [])
+        parts.append(f"<h3>One multiple</h3><ol class='legs'>{legs}</ol>"
+                     f"<p class='price'>About <b>{odds(multi.get('fair'))}</b> fair. "
+                     f"{esc(multi.get('note', ''))}</p>")
+    if data.get("caveats"):
+        items = "".join(f"<li>{esc(c)}</li>" for c in data["caveats"])
+        parts.append(f"<div class='warn'><ul class='legs'>{items}</ul></div>")
+    parts.append("</section>")
+    return "".join(parts)
+
+
 def build(hours: float | None) -> str:
     entries: list[tuple[dict, dict]] = []
     seen: set[tuple] = set()
@@ -198,7 +243,7 @@ def build(hours: float | None) -> str:
     span = f"the next {hours:g} hours" if hours else "everything still to come"
 
     if not window:
-        body = (f"<p class='none'>Nothing kicks off in {span}. "
+        body = research_block(now) + (f"<p class='none'>Nothing kicks off in {span}. "
                 f"The reports were built {built}.</p>")
         return PAGE.format(built=built, span=span, body=body,
                            stamp=time.strftime("%a %d %b, %H:%M %Z", time.localtime(now)))
@@ -239,7 +284,8 @@ def build(hours: float | None) -> str:
             f"<tbody>{singles}</tbody></table></section>"
         )
 
-    body = (f"<section><h2>Multi across the {len(window)} games</h2>{multi}</section>"
+    body = (research_block(now)
+            + f"<section><h2>Multi across the {len(window)} games</h2>{multi}</section>"
             + "".join(blocks))
     return PAGE.format(built=built, span=span, body=body,
                        stamp=time.strftime("%a %d %b, %H:%M %Z", time.localtime(now)))

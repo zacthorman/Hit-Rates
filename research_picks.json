@@ -1,0 +1,118 @@
+{
+ "title": "Europa League, researched picks",
+ "written": "Thu 15 Oct, 17:10 (Lyon v Palace player props added after confirmed line-ups)",
+ "expires": 1792098000,
+ "intro": "The model's strongest legs in the eight closest games on team strength, checked against tonight's team news, line-ups and referee appointments. Kept where the research backs the model; mostly cards and rotation. Fair is the least to accept.",
+ "groups": [
+  {
+   "kickoff": "17:45",
+   "picks": [
+    {
+     "fixture": "Lech Poznań v Bayer Leverkusen",
+     "selection": "Leverkusen under 5.5 shots on target",
+     "chance": 0.65,
+     "fair": 1.53,
+     "why": "Heavy rotation reported: Schick, Andrich, Medina and Diaby on the bench before Freiburg on Sunday. Strength expects 4.3."
+    },
+    {
+     "fixture": "Lech Poznań v Bayer Leverkusen",
+     "selection": "Leverkusen yellow card, second half",
+     "chance": 0.67,
+     "fair": 1.48,
+     "why": "Referee Milanović averages 5.2 yellows a game over his career (3.5 this season)."
+    },
+    {
+     "fixture": "Red Bull Salzburg v AC Milan",
+     "selection": "Milan over 0.5 yellow cards",
+     "chance": 0.76,
+     "fair": 1.32,
+     "why": "Referee Feșnic averages about 5 yellows a game. Milan need a result after losing to Benfica."
+    },
+    {
+     "fixture": "Red Bull Salzburg v AC Milan",
+     "selection": "Milan under 13.5 total shots",
+     "chance": 0.74,
+     "fair": 1.36,
+     "why": "Seven changes: Pulisic, Ramos and Modrić benched, Camarda up front. Risk: 17 shots against Benfica with a stronger side."
+    },
+    {
+     "fixture": "Torreense v Sunderland",
+     "selection": "Torreense yellow card, second half",
+     "chance": 0.68,
+     "fair": 1.48,
+     "why": "Three reds in a brawl at Tondela last time out, referee Jorgji averages 4.7 yellows, and they will be chasing the ball."
+    },
+    {
+     "fixture": "Olympique Lyonnais v Crystal Palace",
+     "selection": "Ismaïla Sarr 2+ shots",
+     "chance": 0.68,
+     "fair": 1.47,
+     "why": "Confirmed starter. 20 of 22 on the record; Mateta is out, so more of Palace's attack runs through him. Record alone said 1.10; shrunk on how player picks actually land."
+    },
+    {
+     "fixture": "Olympique Lyonnais v Crystal Palace",
+     "selection": "Corentin Tolisso 1+ shot on target",
+     "chance": 0.6,
+     "fair": 1.66,
+     "why": "Confirmed starter, 18 of 25. Also fouled in each of his last 10 (1+ fouled, short price)."
+    },
+    {
+     "fixture": "Olympique Lyonnais v Crystal Palace",
+     "selection": "Ismaïla Sarr 1+ shot on target",
+     "chance": 0.6,
+     "fair": 1.67,
+     "why": "16 of 22. Same reasoning as his shots line; do not double up with it unless the price is good on both."
+    }
+   ],
+   "avoid": "Lyon v Palace team cards: the model likes Palace over 1.5 yellows (71%), but referee Pinheiro has shown 2.5 a game this season. Short player lines from the line-up check (Wharton 1+ tackle, Tolisso and Nuamah 1+ fouled, all 10 of 10 lately) are fine for a builder, too short as singles. Celje v Omonia: nothing above 63%."
+  },
+  {
+   "kickoff": "20:00",
+   "picks": [
+    {
+     "fixture": "TSG Hoffenheim v Beşiktaş",
+     "selection": "Beşiktaş yellow card, second half",
+     "chance": 0.73,
+     "fair": 1.38,
+     "why": "Referee Visser is the heaviest carder on the night: 4.45 career, 8.25 a game in last season's Conference League. Thin away sample (10 to 11 games)."
+    },
+    {
+     "fixture": "TSG Hoffenheim v Beşiktaş",
+     "selection": "Hoffenheim yellow card, second half",
+     "chance": 0.67,
+     "fair": 1.48,
+     "why": "Same referee. Hoffenheim are in the Bundesliga drop zone and had a man sent off last weekend."
+    },
+    {
+     "fixture": "Celta Vigo v Juventus",
+     "selection": "Juventus over 0.5 yellow cards",
+     "chance": 0.79,
+     "fair": 1.27,
+     "why": "16 of 17 away. Referee van der Eijk is moderate (3.3 to 3.7 a game)."
+    },
+    {
+     "fixture": "Celta Vigo v Juventus",
+     "selection": "Celta under 12.5 total shots",
+     "chance": 0.69,
+     "fair": 1.44,
+     "why": "Celta have lost their last three Europa League games; strength expects 9.7."
+    }
+   ],
+   "avoid": "Line-ups land about 19:00: check them before betting. Marseille v Olympiacos second-half yellows are 72% each, but the referee (reported as Michael Oliver) has averaged 3.0 this season."
+  }
+ ],
+ "multi": {
+  "legs": [
+   "Milan over 0.5 yellow cards",
+   "Torreense yellow card, second half",
+   "Beşiktaş yellow card, second half"
+  ],
+  "fair": 2.5,
+  "note": "Three games, two kick-off times, and the referee backs the model on each."
+ },
+ "caveats": [
+  "The model knows records and team strength, not line-ups or referees. The adjustments here are judgement from the research.",
+  "The top of the board runs about 8 points ahead of what lands, so treat each chance as a ceiling.",
+  "Some line-up and injury details come from aggregator sites that disagreed. Lyon's XI rests on one source, and Leverkusen's was not labelled confirmed."
+ ]
+}

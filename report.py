@@ -5675,6 +5675,81 @@ function defRow(teamId, pos, stat) {
   return r ? { ...r, of: t.length } : null;
 }
 
+/* What the BEST man at a position got against this defence, against his own
+   usual. A run defence can rank tough on everyone's yards and still give a
+   genuinely good back his hundred: the Ravens were a "tough" run matchup the
+   week Bijan Robinson ran for about 100 on them. Per game: the leading player
+   at the position, his output that day divided by his own average in his
+   other games. Averaged, plus the biggest single day, so the page can say
+   who it was. Null under three games with a usable usual. */
+function defTopMan(defId, pos, stat) {
+  const key = `top|${defId}|${pos}|${stat}`;
+  if (DEF_CACHE.has(key)) return DEF_CACHE.get(key);
+  const idx = matchupIndex();
+  const { off } = defOffenceMap();
+  const byPos = idx.conceded.get(defId);
+  const games = new Map();
+  posList(byPos, pos).forEach(r => {
+    const v = (r.stats || {})[stat];
+    if (v === undefined || v === null) return;
+    const g = games.get(r.match_id);
+    if (!g || v > g.v) games.set(r.match_id, { v, player: r.player, date: r.date });
+  });
+  const ratios = [];
+  let best = null;
+  games.forEach((g, mid) => {
+    const team = off.get(`${defId}|${mid}`);
+    const own = posList(idx.own.get(team), pos)
+      .filter(r => r.player === g.player && r.match_id !== mid && (r.stats || {})[stat] != null);
+    if (own.length < 3) return;
+    const usual = own.reduce((a, r) => a + r.stats[stat], 0) / own.length;
+    if (usual <= 0) return;
+    const ratio = g.v / usual;
+    ratios.push({ ratio, date: g.date });
+    if (usual >= ((DEF_LADDER[stat] || [0])[1] || 0) && (!best || g.v > best.v)) best = { ...g, usual };
+  });
+  ratios.sort((a, b) => (a.date < b.date ? -1 : 1));
+  const out = ratios.length >= 3
+    ? { ratio: ratios.reduce((a, x) => a + x.ratio, 0) / ratios.length, n: ratios.length, best }
+    : null;
+  DEF_CACHE.set(key, out);
+  return out;
+}
+
+/* Who this defence is missing. A ranking earned with a shutdown corner is
+   not the defence that turns up without him: Denver were the toughest on
+   receivers with Pat Surtain II, and he was out. Not modelled, because one
+   absence is not a number, but put on the pick so it cannot be missed. */
+const DEF_COVER = { WR: ["CB", "S", "SAF", "DB", "FS", "SS"], TE: ["S", "SAF", "LB", "OLB", "ILB", "MLB", "CB"],
+                    RB: ["LB", "OLB", "ILB", "MLB", "DE", "DT", "NT", "DL", "S", "SAF"], QB: ["CB", "S", "SAF", "DE", "OLB", "DB"] };
+function defMissing(defIndex, pos) {
+  const want = DEF_COVER[pos] || [];
+  const regular = new Map();
+  ((DATA.players || [])[defIndex] || []).forEach(r => regular.set(r.player, (regular.get(r.player) || 0) + 1));
+  return [...nflOut(defIndex).keys()].filter(name => {
+    const row = nflInjuries(defIndex).find(x => x[0] === name);
+    return row && want.includes((row[1] || "").toUpperCase());
+  });
+}
+
+/* Is the player's role growing? Targets for anything caught, carries for
+   rushing, attempts for passing: the last three games against his last ten.
+   Volume leads yards, so a receiver whose targets jumped from six to nine is
+   a better bet than his ten-game yards say. Folded in at the square root and
+   capped at 15% either way, because three games is still three games. */
+const DEF_USAGE = { "Receiving yards": "Receiving targets", "Receiving receptions": "Receiving targets",
+                    "Rushing yards": "Rushing attempts", "Passing yards": "Passing attempts" };
+function usageTrend(p, stat) {
+  if (p.role) return null;
+  const u = (p.u || []).filter(x => x != null);
+  if (!DEF_USAGE[stat] || u.length < 5) return null;
+  const last = u.slice(-3), mean = a => a.reduce((x, y) => x + y, 0) / a.length;
+  const all = mean(u);
+  if (all <= 0) return null;
+  const adj = Math.min(1.15, Math.max(0.85, Math.sqrt(mean(last) / all)));
+  return { recent: mean(last), all, adj, word: DEF_USAGE[stat].replace("Receiving ", "").replace("Rushing attempts", "carries").replace("Passing attempts", "attempts") };
+}
+
 /* The Defences tab on gridiron pages: both defences in this fixture, every
    position and market that props are written on, in one grid. */
 const DEF_ROWS = [["QB", "Passing yards"], ["RB", "Rushing yards"], ["RB", "Receiving yards"],
@@ -5772,9 +5847,38 @@ function defPlayers(teamIndex, pos, stat, count) {
   const scale = qbScale(teamIndex, stat);
   return [...by.entries()].map(([name, rs]) => {
     rs.sort((a, b) => (a.date < b.date ? -1 : 1));
-    const v = rs.slice(-10).map(r => r.stats[stat] * scale);
-    return { name, v, avg: v.reduce((a, b) => a + b, 0) / v.length, scaled: scale !== 1 };
-  }).filter(p => p.v.length >= 5).sort((a, b) => b.avg - a.avg)
+    let v = rs.slice(-10).map(r => r.stats[stat] * scale);
+    const uStat = DEF_USAGE[stat];
+    let u = uStat ? rs.slice(-10).map(r => (r.stats || {})[uStat] ?? null) : [];
+    // A new role. When the starter goes down and the backup takes twenty
+    // carries a week, his ten-game record is mostly games from a different
+    // job: Emanuel Wilson had 3 and 9 carries before 21, 21 and 20, and the
+    // ten-game view would not offer him a line at all. So if his usage over
+    // the games since it jumped (at least three) runs at 1.6 times or more
+    // what it was before, he is judged on those games alone, and tagged.
+    let role = null;
+    if (uStat) {
+      const allU = rs.map(r => (r.stats || {})[uStat] ?? 0);
+      for (let k = Math.min(6, allU.length - 1); k >= 3; k--) {
+        const recent = allU.slice(-k), before = allU.slice(-k - 6, -k);
+        // Two games of the old job to compare against, or one if the new
+        // job has already lasted four.
+        if (before.length < (k >= 4 ? 1 : 2)) continue;
+        const mr = recent.reduce((a, b) => a + b, 0) / k;
+        const mb = before.reduce((a, b) => a + b, 0) / before.length;
+        // One quiet game is allowed inside the new role (Wilson's 9 carries
+        // between two 21s), but not the most recent one.
+        const kept = recent.filter(x => x >= mb * 1.3).length;
+        if (kept >= k - 1 && recent[k - 1] >= mb * 1.3 && mr >= Math.max(1, mb) * 1.6) {
+          role = { games: k, recent: mr, before: mb };
+          v = rs.slice(-k).map(r => r.stats[stat] * scale);
+          u = rs.slice(-k).map(r => (r.stats || {})[uStat] ?? null);
+          break;
+        }
+      }
+    }
+    return { name, v, u, role, avg: v.reduce((a, b) => a + b, 0) / v.length, scaled: scale !== 1 };
+  }).filter(p => p.v.length >= 5 || (p.role && p.v.length >= 3)).sort((a, b) => b.avg - a.avg)
     .slice(0, count || (pos === "QB" ? 1 : 2));
 }
 
@@ -5852,12 +5956,23 @@ function offencePropsHtml() {
     const r = defRow(teams[d].id, pos, stat);
     if (!r || !r.vsUsual) return;
     const share = (r.place - 1) / Math.max(1, r.of - 1);
-    defPlayers(1 - d, pos, stat).forEach(p => {
-      const item = { p, r, pos, stat, d, share };
-      if (share <= 0.34) {
-        const l = defLine(p, stat, r.vsUsual);
-        if (l) picks.push({ ...item, l, score: (l.k / l.n) * r.vsUsual });
-      } else if (share >= 0.66 && p.avg >= (DEF_LADDER[stat] || [0])[0]) {
+    const top = defTopMan(teams[d].id, pos, stat);
+    defPlayers(1 - d, pos, stat).forEach((p, rank) => {
+      // Every featured player gets a line now, not only those facing the
+      // softest third. The lead man is scaled by what lead men get against
+      // this defence (top), the second by the position as a whole; both by
+      // whether his role is growing.
+      const factor = rank === 0 && top ? top.ratio : r.vsUsual;
+      const usage = usageTrend(p, stat);
+      const adj = factor * (usage ? usage.adj : 1);
+      const item = { p, r, pos, stat, d, share, top: rank === 0 ? top : null, usage, factor: adj,
+                     missing: defMissing(d, pos) };
+      const l = defLine(p, stat, adj);
+      const beaten = top && top.ratio >= 0.95;
+      if (l && (share < 0.66 || beaten)) {
+        picks.push({ ...item, l, tier: share <= 0.34 ? "soft" : share < 0.66 ? "fair" : "tough",
+                     score: (l.k / l.n) * adj });
+      } else if (share >= 0.66 && !beaten && p.avg >= (DEF_LADDER[stat] || [0])[0]) {
         // Only players with a real role: a backup averaging 15 yards is not
         // a line anyone is choosing whether to take.
         fades.push(item);
@@ -5873,13 +5988,20 @@ function offencePropsHtml() {
   };
   const qbTag = p => p.scaled ? ` <span class="nfl-tag">QB-adjusted</span>` : "";
 
+  const tierTag = x => x.tier === "tough"
+    ? ` <span class="nfl-tag">tough D, top men still score</span>`
+    : x.tier === "fair" ? ` <span class="nfl-tag">middling D</span>` : "";
   const pickCard = x => `<div class="def-pick">
       <div class="def-pick-main"><span class="lu-dot lu-dot${1 - x.d}"></span>
-        <b>${escapeHtml(x.p.name)}</b> <span class="def-line">${x.l.line}+ ${statWordNfl(x.stat)}</span>${qbTag(x.p)}</div>
+        <b>${escapeHtml(x.p.name)}</b> <span class="def-line">${x.l.line}+ ${statWordNfl(x.stat)}</span>${qbTag(x.p)}${tierTag(x)}${x.p.role ? ` <span class="nfl-tag">new role: last ${x.p.role.games} games</span>` : ""}</div>
       <div class="def-pick-why">
         <span><b class="lu-hi">${x.l.k}/${x.l.n}</b> his last ${x.l.n}</span>
         <span>avg ${fmtN(x.p.avg)} &rarr; <b>${fmtN(x.l.proj)}</b> v this D</span>
-        <span>${escapeHtml(teams[x.d].name)}: <b class="lu-hi">${rankWord(x.r)}</b> v ${DEF_POS[x.pos]}, ${x.r.vsUsual.toFixed(2)}&times; usual</span>
+        <span>${escapeHtml(teams[x.d].name)}: <b class="${x.tier === "tough" ? "lu-mid" : "lu-hi"}">${rankWord(x.r)}</b> v ${DEF_POS[x.pos]}, ${x.r.vsUsual.toFixed(2)}&times; usual</span>
+        ${x.top ? `<span>lead ${DEF_POS[x.pos]} v them: <b>${x.top.ratio.toFixed(2)}&times;</b> their own usual${x.top.best ? `, best ${escapeHtml(x.top.best.player)} ${fmtN(x.top.best.v)} (usual ${fmtN(x.top.best.usual)})` : ""}</span>` : ""}
+        ${x.p.role ? `<span>${DEF_USAGE[x.stat] === "Rushing attempts" ? "carries" : "targets"} <b class="lu-hi">${fmtN(x.p.role.recent)}</b> a game since the jump, ${fmtN(x.p.role.before)} before</span>` : ""}
+        ${x.missing && x.missing.length ? `<span><b class="lu-hi">${escapeHtml(teams[x.d].name)} without ${x.missing.map(escapeHtml).join(", ")}</b>, not in the ranking</span>` : ""}
+        ${x.usage ? `<span>${x.usage.word} ${fmtN(x.usage.recent)} last 3 v ${fmtN(x.usage.all)}${x.usage.adj > 1.03 ? ` <b class="lu-hi">&#9650;</b>` : x.usage.adj < 0.97 ? ` <b class="lu-lo">&#9660;</b>` : ""}</span>` : ""}
       </div></div>`;
   const fadeLine = x => `<div class="def-fade"><span class="lu-dot lu-dot${1 - x.d}"></span>
       <b>${escapeHtml(x.p.name)}</b> ${statWordNfl(x.stat)}${qbTag(x.p)} <span class="lu-muted">&middot; ${escapeHtml(teams[x.d].name)} ${rankWord(x.r)} v ${DEF_POS[x.pos]}, ${x.r.vsUsual.toFixed(2)}&times; usual &middot; avg ${fmtN(x.p.avg)}</span></div>`;
@@ -5906,14 +6028,21 @@ function offencePropsHtml() {
 
   return `
     <h3 class="lu-h">Best lines v these defences</h3>
-    ${picks.length ? `<div class="lu-card">${picks.slice(0, 6).map(pickCard).join("")}</div>`
-      : `<div class="lu-card lu-empty">No soft matchup in this game where a player's record backs a line.</div>`}
-    ${fades.length ? `<h3 class="lu-h">Tough matchups: lower your line or avoid</h3><div class="lu-card">${fades.slice(0, 5).map(fadeLine).join("")}</div>` : ""}
+    ${picks.length ? `<div class="lu-card">${picks.slice(0, 8).map(pickCard).join("")}</div>`
+      : `<div class="lu-card lu-empty">No player in this game whose record, role and matchup back a line.</div>`}
+    ${fades.length ? `<h3 class="lu-h">Tough matchups that even top players struggle against: lower your line or avoid</h3><div class="lu-card">${fades.slice(0, 5).map(fadeLine).join("")}</div>` : ""}
     <div class="def-grid">${defCard(1)}${defCard(0)}</div>
     <details class="lu-more"><summary>How this is worked out</summary><p class="note">
       <b>vs usual</b>: what offences get from that position against this defence, divided by what the same offences
-      get everywhere else, so a soft schedule does not flatter it. <b>Best lines</b> take the highest ladder rung a
-      player has cleared 7 times in his last 10, where his average scaled by the defence still clears it by 10%.
+      get everywhere else, so a soft schedule does not flatter it. <b>lead v them</b>: what the best man at the
+      position got against this defence, against his own average, because a defence can rank tough on everyone
+      and still concede to a genuinely good player. <b>Best lines</b> take the highest ladder rung a player has
+      cleared 7 times in his last 10, where his average, scaled by the defence (the lead-man figure for the lead
+      man) and by his usage trend (targets or carries, last 3 v last 10, at most 15% either way), still clears it
+      by 10%. Tough defences only make the list when their lead-man figure is 0.95 or better. <b>New role</b>: a
+      player whose targets or carries jumped to 1.6 times what they were (every game since at 1.3 times or more
+      bar one, the latest included, at least three games) is judged on those games only. <b>Without</b>: defenders on the injury report as out at
+      positions that cover this one; the ranking was built with them, so it flatters the defence.
       <b>lead</b> is the top player at the position each game. &#9650;/&#9660; mark a defence whose last
       ${DEF_RECENT} games rank a long way from its season. <b>QB-adjusted</b> means the starting quarterback has
       changed, so the receiver's games are rescaled to the new man's passing before anything is counted.</p></details>`;

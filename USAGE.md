@@ -623,6 +623,17 @@ What it does not do is pick more winners. The top three per matchday land about 
 
 Known gaps: La Liga crashed the replay in `hitrates.league_ratings` (a divide by zero, pre-existing, not chased), so it is not in the fit. The slopes are fitted on this season's reports, a mild look-ahead for one number per stat. Builders and the parlay are unchanged.
 
+## NFL Defences tab: lines in every matchup (15 October)
+
+The Defences tab used to suggest a line only against the softest third of defences, so a game between two good defences showed nothing. It now assesses every featured player:
+
+- **Lead man v them.** What the best player at the position got against this defence, against his own usual. A defence can rank tough on everyone and still concede to a genuinely good player (Bijan Robinson's 100 yards against a "tough" Ravens run defence). The lead man's line is scaled by this; a tough defence only makes the list when it is 0.95 or better.
+- **Usage trend.** Targets, carries or attempts over the last 3 games against the last 10, folded in at the square root and capped at 15% either way.
+- **New role.** A player whose targets or carries jumped to 1.6 times what they were (every game since at 1.3 times or more bar one, the latest included, three games or more) is judged on those games only and tagged. Built for Emanuel Wilson taking Seattle's carries with Charbonnet out.
+- **Without.** Defenders on the injury report as out at positions that cover the line (corners and safeties for receivers, linebackers for backs and tight ends) are named on the pick. Not modelled: the ranking was built with them.
+
+Heuristic thresholds, not backtested yet: treat these as a shortlist to price up. The previous version is `report.py.bak-defalltiers`.
+
 ## Track record (`track.py`)
 
 The tool has no evidence yet that it beats the market, and neither does anything else after a few weeks. The only way to find out is to write picks down before kickoff at the price you could actually have got, settle them from the result, and count.
