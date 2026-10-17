@@ -518,23 +518,56 @@ class Side:
         if wdl and not home:
             wdl = (wdl[2], wdl[1], wdl[0])
         self.win_draw_loss = wdl
-        self.weights = []
-        xs = []
+        self.hfa = hfa
+        self.home = home
+        self.elo_gap = self.gap
+        self.market_gap = None
+        self.market_weight = 0.0
+        self.market_wdl = None
+        # Each past match: our rating minus theirs at the time, and the venue.
+        self._past = []
         for rec in sample:
             ts = _date_ts(rec.get("date"))
             o = r.rating_at(rec.get("opponent_id"), ts) if ts else None
             m = r.rating_at(team_id, ts) if ts else None
-            if o is None or m is None or self.gap is None:
+            self._past.append((None if o is None or m is None else m - o, rec.get("venue")))
+        self._derive()
+
+    def _derive(self) -> None:
+        """Similar-opposition weights and the shift, from whatever gap is
+        current (Elo alone, or Elo moved towards the market)."""
+        self.weights = []
+        xs = []
+        for diff, venue in self._past:
+            if diff is None or self.gap is None:
                 self.weights.append(1e-3)
             else:
-                d = (m - o) - self.gap
-                self.weights.append(math.exp(-0.5 * (d / SIMILAR_SIGMA) ** 2))
-            xs.append(None if o is None or m is None
-                      else (m - o + (hfa if rec.get("venue") == "home" else -hfa)) / 100)
+                self.weights.append(math.exp(-0.5 * ((diff - self.gap) / SIMILAR_SIGMA) ** 2))
+            xs.append(None if diff is None else (diff + (self.hfa if venue == "home" else -self.hfa)) / 100)
         known = [x for x in xs if x is not None]
         # How far tonight's gap, home advantage in, sits from the side's usual.
         self.shift = (None if self.gap is None or not known
-                      else (self.gap + (hfa if home else -hfa)) / 100 - sum(known) / len(known))
+                      else (self.gap + (self.hfa if self.home else -self.hfa)) / 100 - sum(known) / len(known))
+
+    def use_market(self, win: float, draw: float, loss: float, weight: float) -> None:
+        """Move tonight's gap towards the one the exchange's match odds imply.
+
+        The market's 1X2 is turned back into a rating gap on the same scale
+        as the Elo (expected score = win + half the draw, through the same
+        logistic, home advantage taken out), so the per-stat slopes fitted on
+        Elo still apply. The market knows things the ratings cannot: injuries,
+        rotation, a manager sacked on Tuesday. `weight` is how far to move,
+        set by how much money the market has seen.
+        """
+        e = min(max(win + draw / 2, 0.02), 0.98)
+        with_hfa = 400 * math.log10(e / (1 - e))
+        self.market_gap = with_hfa - (self.hfa if self.home else -self.hfa)
+        self.market_wdl = (win, draw, loss)
+        if self.gap is None:
+            return
+        self.market_weight = weight
+        self.gap = weight * self.market_gap + (1 - weight) * self.elo_gap
+        self._derive()
 
     def usable(self) -> bool:
         return self.gap is not None and self.team_games >= 5 and self.opp_games >= 5
@@ -546,6 +579,11 @@ class Side:
                "gap": round(self.gap) if self.gap is not None else None}
         if self.win_draw_loss:
             out["win"], out["draw"], out["loss"] = (round(x, 3) for x in self.win_draw_loss)
+        if self.market_gap is not None:
+            out["eloGap"] = round(self.elo_gap) if self.elo_gap is not None else None
+            out["marketGap"] = round(self.market_gap)
+            out["marketWeight"] = round(self.market_weight, 2)
+            out["marketWin"], out["marketDraw"], out["marketLoss"] = (round(x, 3) for x in self.market_wdl)
         return out
 
 

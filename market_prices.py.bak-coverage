@@ -1,0 +1,365 @@
+"""
+Betfair Exchange prices for every fixture in the built reports.
+
+    python market_prices.py              # fetch, next 7 days, all sports with reports
+    python market_prices.py --show       # what was matched, and what was not
+
+Step one of setting the site's numbers against the market. This fetches every
+market Betfair carries on each fixture the reports cover (football, NFL, MLB,
+darts), takes the margin off, and saves it all to market_prices.json, keyed by
+our own event id. Which of those markets line up with the site's own lines
+(match goals, both teams to score, corners, bookings, spreads, totals) is the
+next step, worked out from what the exchange actually lists rather than from
+guesses about its naming.
+
+Matching Betfair's fixtures to ours is by team names and kick-off time.
+Betfair writes "Man Utd" and "Nottm Forest"; SofaScore writes the full names.
+Anything that did not match is listed by --show so the alias table can grow.
+"""
+
+from __future__ import annotations
+
+import json
+import re
+import time
+import unicodedata
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+OUT = HERE / "market_prices.json"
+
+EVENT_TYPES = {"football": 1, "american-football": 6423, "baseball": 7511,
+               "basketball": 7522, "darts": 3503}
+
+_DROP = {"fc", "afc", "cf", "sc", "ac", "the", "club", "de", "fk", "sk", "cd", "ud", "sv",
+         "rc", "ssc", "as", "us", "if", "bk", "fsv", "tsg", "vfl", "vfb", "1", "04", "05"}
+ALIASES = {
+    "man utd": "manchester united", "man united": "manchester united", "man city": "manchester city",
+    "nottm forest": "nottingham forest", "spurs": "tottenham hotspur", "wolves": "wolverhampton wanderers",
+    "sheff utd": "sheffield united", "sheff wed": "sheffield wednesday", "qpr": "queens park rangers",
+    "west brom": "west bromwich albion", "psg": "paris saint germain", "inter": "inter milan",
+    "atletico madrid": "atletico madrid", "athletic bilbao": "athletic club", "betis": "real betis",
+    "leverkusen": "bayer leverkusen", "gladbach": "borussia monchengladbach", "dortmund": "borussia dortmund",
+    "bayern munich": "bayern munchen", "wycombe": "wycombe wanderers", "oxford utd": "oxford united",
+    "cambridge utd": "cambridge united", "peterborough": "peterborough united",
+}
+# Words that cannot identify a club on their own: "Paris" is in both Paris FC
+# and Paris Saint-Germain, "Real" in half of Spain.
+_GENERIC = {"paris", "real", "inter", "united", "city", "athletic", "sporting", "dynamo", "olympique",
+            "racing", "union", "red", "star", "new", "york", "los", "angeles", "san", "st", "saint",
+            "west", "north", "south", "east", "atletico", "deportivo", "club", "town", "county", "rovers"}
+_EXTRA = str.maketrans({"ł": "l", "ø": "o", "đ": "d", "ß": "ss", "æ": "ae", "ı": "i"})
+
+
+def norm(name: str) -> str:
+    s = unicodedata.normalize("NFKD", (name or "").lower().translate(_EXTRA)).encode("ascii", "ignore").decode()
+    s = re.sub(r"[^a-z0-9 ]", " ", s)
+    s = " ".join(s.split())
+    return ALIASES.get(s, s)
+
+
+# Word-level spellings: SofaScore v Betfair.
+_TOKEN = {"utd": "united", "lyonnais": "lyon", "rennais": "rennes", "brestois": "brest",
+          "mgladbach": "monchengladbach", "gladbach": "monchengladbach", "mineiro": "mg",
+          "louis": "louis", "coruna": "deportivo", "racing": "racing", "strasbourg": "strasbourg"}
+
+
+def tokens(name: str) -> set:
+    words = norm(name.replace("M'gladbach", "Monchengladbach").replace("St.", "St ")).split()
+    words = [_TOKEN.get(w, w) for w in words]
+    return {t for t in words if t not in _DROP and len(t) > 1} or set(words)
+
+
+def sim(a: str, b: str) -> float:
+    ta, tb = tokens(a), tokens(b)
+    if not ta or not tb:
+        return 0.0
+    inter = len(ta & tb)
+    # a shared prefix counts too: "Bournemouth" v "AFC Bournemouth", "Wolverhampton" v "Wolves"
+    for x in ta - tb:
+        if any(y.startswith(x[:5]) or x.startswith(y[:5]) for y in tb - ta if len(x) >= 4 and len(y) >= 4):
+            inter += 0.8
+    short, long_ = (ta, tb) if len(ta) <= len(tb) else (tb, ta)
+    # A short name wholly inside the long one is the same club: "Brighton" in
+    # "Brighton Hove Albion". Two names sharing one word are not: "Manchester
+    # United" and "Manchester City" score 0.5, under the bar.
+    if short <= long_ and (len(short) >= 2 or not short <= _GENERIC):
+        return 1.0
+    return inter / max(len(ta), len(tb))
+
+
+def our_fixtures(days: int = 7) -> dict:
+    import make_index
+    import weekend
+    now = time.time()
+    out = {}
+    for path in sorted((HERE / "reports").glob("*.html")):
+        if path.name.startswith("pick-"):
+            continue
+        for entry, meta in make_index.read_entries(path):
+            k = meta.get("kickoff") or 0
+            if not (now - 3 * 3600 < k < now + days * 86400):
+                continue
+            sport = weekend.sport_of(entry)
+            out[meta["id"]] = {"id": meta["id"], "home": meta["home"], "away": meta["away"],
+                               "kickoff": k, "sport": sport, "competition": meta.get("competition")}
+    return out
+
+
+def _split_event(name: str):
+    for sep in (" v ", " vs ", " @ ", " - "):
+        if sep in name:
+            a, b = name.split(sep, 1)
+            # Betfair writes US games "Away @ Home"
+            return (b, a) if sep == " @ " else (a, b)
+    return None
+
+
+def match(fixtures: dict, bf_events: list, sport: str):
+    pairs, used = {}, set()
+    for f in [x for x in fixtures.values() if x["sport"] == sport]:
+        best = None
+        for e in bf_events:
+            if e["id"] in used:
+                continue
+            sides = _split_event(e.get("name", ""))
+            if not sides:
+                continue
+            try:
+                start = time.mktime(time.strptime(e.get("openDate", "")[:19], "%Y-%m-%dT%H:%M:%S")) - time.timezone
+            except ValueError:
+                start = None
+            if start and abs(start - f["kickoff"]) > 4 * 3600:
+                continue
+            s = min(sim(f["home"], sides[0]), sim(f["away"], sides[1]))
+            s_swap = min(sim(f["home"], sides[1]), sim(f["away"], sides[0]))
+            score, swapped = (s, False) if s >= s_swap else (s_swap, True)
+            if score >= 0.6 and (best is None or score > best[0]):
+                best = (score, e, swapped)
+        if best:
+            used.add(best[1]["id"])
+            pairs[f["id"]] = (best[1], best[2], round(best[0], 2))
+    return pairs
+
+
+def _devig(runners):
+    """Margin off, line by line. A multi-line market (NFL totals and spreads,
+    Asian handicaps) is one market with a pair of runners per line, and taking
+    the margin off across all of them at once priced every line at nothing."""
+    groups = {}
+    for r in runners:
+        groups.setdefault(abs(r.get("handicap") or 0.0), []).append(r)
+    over = None
+    for rows in groups.values():
+        priced = [r for r in rows if r.get("price")]
+        tot = sum(1 / r["price"] for r in priced)
+        complete = len(priced) == len(rows) and tot > 0
+        for r in rows:
+            r["p"] = round((1 / r["price"]) / tot, 4) if complete and r.get("price") else None
+        if complete and (over is None or abs(tot - 1) < abs(over - 1)):
+            over = round(tot, 4)
+    return over
+
+
+def fetch(days: int = 7) -> dict:
+    import betfair_api as bf
+    bf.login()
+    fixtures = our_fixtures(days)
+    sports = sorted({f["sport"] for f in fixtures.values()})
+    out = {"fetched": time.time(), "events": {}, "unmatched": []}
+    for sport in sports:
+        et = EVENT_TYPES.get(sport)
+        if not et:
+            continue
+        events = bf.events(et, hours=days * 24)
+        pairs = match(fixtures, events, sport)
+        print(f"{sport}: {len(events)} on the exchange, {len(pairs)} of "
+              f"{sum(1 for f in fixtures.values() if f['sport'] == sport)} of ours matched")
+        for fid, f in fixtures.items():
+            if f["sport"] == sport and fid not in pairs:
+                out["unmatched"].append(f"{sport}: {f['home']} v {f['away']}")
+        for fid, (e, swapped, score) in pairs.items():
+            cat = bf.markets(e["id"])
+            books = {b["marketId"]: b for b in bf.prices([m["marketId"] for m in cat])}
+            markets = []
+            for m in cat:
+                book = books.get(m["marketId"]) or {}
+                by_sel = {(r["selectionId"], r.get("handicap", 0.0)): r for r in book.get("runners", [])}
+                runners = []
+                for r in m.get("runners", []):
+                    rb = by_sel.get((r["selectionId"], r.get("handicap", 0.0))) or \
+                         next((x for x in book.get("runners", []) if x["selectionId"] == r["selectionId"]), {})
+                    ex = rb.get("ex") or {}
+                    back = (ex.get("availableToBack") or [{}])[0].get("price")
+                    lay = (ex.get("availableToLay") or [{}])[0].get("price")
+                    price = (back + lay) / 2 if back and lay and lay / back < 1.3 else None
+                    runners.append({"name": r["runnerName"], "handicap": r.get("handicap", 0.0),
+                                    "back": back, "lay": lay, "price": price})
+                over = _devig(runners)
+                markets.append({"type": (m.get("description") or {}).get("marketType"),
+                                "name": m.get("marketName"), "runners": runners, "overround": over,
+                                "matched": book.get("totalMatched")})
+            out["events"][str(fid)] = {"betfair": e.get("name"), "start": e.get("openDate"),
+                                       "swapped": swapped, "score": score, "sport": sport, "markets": markets}
+    OUT.write_text(json.dumps(out, indent=0))
+    return out
+
+
+# ------------------------------------------------------------- linking
+
+def _player_key(name: str) -> str:
+    w = [t for t in norm(name).split() if len(t) > 1]
+    return (w[0][0] + " " + w[-1]) if len(w) >= 2 else (w[-1] if w else "")
+
+
+def _ou(m, over: bool):
+    want = "over" if over else "under"
+    for r in m["runners"]:
+        if r["name"].lower().startswith(want):
+            return r
+    return None
+
+
+def _yes(m, yes: bool):
+    for r in m["runners"]:
+        if r["name"].lower() == ("yes" if yes else "no"):
+            return r
+    return None
+
+
+def _quote(r, m):
+    if not r or r.get("p") is None:
+        return None
+    back, lay = r.get("back"), r.get("lay")
+    tight = bool(back and lay and lay / back < 1.10)
+    return {"p": r["p"], "back": back, "lay": lay, "matched": m.get("matched") or 0,
+            "tight": tight, "market": m.get("name")}
+
+
+def leg_quote(data: dict | None, fixture_id, leg: dict):
+    """The exchange's chance (margin off) and back price for one of the site's
+    legs, or None if the exchange has no market that is the same bet."""
+    if not data:
+        return None
+    ev = (data.get("events") or {}).get(str(fixture_id))
+    if not ev:
+        return None
+    stat, line, over = leg.get("stat"), leg.get("line"), bool(leg.get("over", True))
+    period = leg.get("period") or "ALL"
+    if period != "ALL" or leg.get("alt"):
+        return None
+    side = leg.get("teamIndex")
+    if ev.get("swapped") and side in (0, 1):
+        side = 1 - side
+    by_type = {}
+    for m in ev["markets"]:
+        by_type.setdefault(m["type"], []).append(m)
+
+    def one(t):
+        return (by_type.get(t) or [None])[0]
+
+    if leg.get("player"):
+        key = _player_key(leg["player"])
+        if stat == "Shots on target" and line == 0.5 and over:
+            m = one("SHOTS_ON_TARGET_P1")
+        elif stat == "Goals" and line == 0.5 and over:
+            m = one("TO_SCORE")
+        elif stat == "Anytime touchdown" and line == 0.5 and over:
+            m = one("TO_SCORE_A_TOUCHDOWN")
+        else:
+            return None
+        if not m:
+            return None
+        r = next((x for x in m["runners"] if _player_key(x["name"]) == key), None)
+        # Single-winner style lists (anyone to score) carry no per-runner
+        # margin to remove; quote the back price alone, flagged untight.
+        if r and r.get("p") is None and r.get("back"):
+            return {"p": round(1 / r["back"], 4), "back": r["back"], "lay": r.get("lay"),
+                    "matched": m.get("matched") or 0, "tight": False, "market": m.get("name"), "raw": True}
+        return _quote(r, m)
+
+    tag = f"{int(line * 10):02d}" if isinstance(line, (int, float)) else None
+    if stat == "Match goals" and tag:
+        m = one(f"OVER_UNDER_{tag}")
+        return _quote(_ou(m, over), m) if m else None
+    if stat == "Both teams to score" and line == 0.5:
+        m = one("BOTH_TEAMS_TO_SCORE")
+        return _quote(_yes(m, over), m) if m else None
+    if stat == "Match corners" and tag:
+        m = one(f"OVER_UNDER_{tag}_CORNR")
+        return _quote(_ou(m, over), m) if m else None
+    if stat == "Match cards" and tag:
+        m = one(f"OVER_UNDER_{tag}_CARDS")
+        return _quote(_ou(m, over), m) if m else None
+    if stat == "Goals" and tag and side in (0, 1):
+        m = one(f"TEAM_{'AB'[side]}_OVER_UNDER_{tag}")
+        return _quote(_ou(m, over), m) if m else None
+    return None
+
+
+def match_odds(data: dict | None, fixture_id):
+    """[home, draw, away] or [home, away] chances, margin off, our orientation."""
+    if not data:
+        return None
+    ev = (data.get("events") or {}).get(str(fixture_id))
+    if not ev:
+        return None
+    m = next((x for x in ev["markets"] if x["type"] == "MATCH_ODDS"), None)
+    if not m or any(r.get("p") is None for r in m["runners"]):
+        return None
+    names = [r["name"] for r in m["runners"]]
+    draw = next((r["p"] for r in m["runners"] if r["name"].lower() in ("the draw", "draw")), None)
+    teams = [r for r in m["runners"] if r["name"].lower() not in ("the draw", "draw")]
+    if len(teams) != 2:
+        return None
+    # Runners come in Betfair's own order, which is not the event name's: on
+    # "Chargers @ Chiefs" the Chargers are listed first. So the home runner is
+    # found by name, against whichever side of the event name is our home.
+    sides = _split_event(ev.get("betfair", "")) or ("", "")
+    our_home = sides[1] if ev.get("swapped") else sides[0]
+    h = max(teams, key=lambda r: sim(r["name"], our_home))
+    a = teams[1] if h is teams[0] else teams[0]
+    return {"home": h["p"], "draw": draw, "away": a["p"], "matched": m.get("matched") or 0}
+
+
+def load(max_hours: float = 12) -> dict | None:
+    try:
+        data = json.loads(OUT.read_text())
+    except (OSError, ValueError):
+        return None
+    if time.time() - data.get("fetched", 0) >= max_hours * 3600:
+        return None
+    # Priced again on load, so a file saved by an older version of the margin
+    # maths is read with the current one.
+    for ev in (data.get("events") or {}).values():
+        for m in ev.get("markets") or []:
+            m["overround"] = _devig(m.get("runners") or [])
+    return data
+
+
+def main():
+    import argparse
+    import collections
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--show", action="store_true")
+    ap.add_argument("--days", type=int, default=7)
+    args = ap.parse_args()
+    data = load(24 * 7) if args.show else fetch(args.days)
+    if not data:
+        print("nothing cached")
+        return
+    types = collections.Counter()
+    for ev in data["events"].values():
+        for m in ev["markets"]:
+            types[(ev["sport"], m["type"])] += 1
+    print(f"\n{len(data['events'])} fixtures priced, written to {OUT.name}")
+    for (sport, t), n in sorted(types.items()):
+        print(f"  {sport:<18} {t:<34} {n}")
+    if data["unmatched"]:
+        print(f"\nnot matched ({len(data['unmatched'])}):")
+        for u in data["unmatched"][:40]:
+            print("  ", u)
+
+
+if __name__ == "__main__":
+    main()

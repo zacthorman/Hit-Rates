@@ -44,3 +44,6 @@ launchd.err.log
 lineups_auto.log
 lineups_launchd.out.log
 lineups_launchd.err.log
+darts_prices.json
+darts_market_log.json
+market_prices.json

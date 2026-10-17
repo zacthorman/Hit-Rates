@@ -1245,5 +1245,101 @@
     "result": "win",
     "profit": 12.3,
     "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-16-1",
+    "kind": "single",
+    "logged_at": "2026-10-16T14:19:01+00:00",
+    "price": 1.3,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16434063,
+        "fixture": "Eintracht Frankfurt v 1. FC K\u00f6ln",
+        "kickoff": 1792175400,
+        "player": "1. FC K\u00f6ln",
+        "player_id": null,
+        "team": "1. FC K\u00f6ln",
+        "team_leg": true,
+        "stat": "Goals",
+        "period": "ALL",
+        "line": 0.5,
+        "over": true,
+        "model_k": 10,
+        "model_n": 10,
+        "model_p": 0.833,
+        "source": "bundesliga.html",
+        "value": 0.0,
+        "result": "lose"
+      }
+    ],
+    "result": "lose",
+    "profit": -10.0,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-16-2",
+    "kind": "single",
+    "logged_at": "2026-10-16T14:19:02+00:00",
+    "price": 1.74,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16421070,
+        "fixture": "Deportivo de A Coru\u00f1a v Levante UD",
+        "kickoff": 1792177200,
+        "player": "Roger Brugu\u00e9",
+        "player_id": 909554,
+        "team": "Levante UD",
+        "stat": "Shots",
+        "line": 1.0,
+        "model_k": 10,
+        "model_n": 10,
+        "model_p": 0.833,
+        "source": "laliga.html",
+        "value": 0.0,
+        "result": "lose"
+      }
+    ],
+    "result": "lose",
+    "profit": -10.0,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-16-3",
+    "kind": "single",
+    "logged_at": "2026-10-16T14:19:02+00:00",
+    "price": 1.35,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16391560,
+        "fixture": "Burnley v Wolverhampton",
+        "kickoff": 1792177200,
+        "player": "Burnley",
+        "player_id": null,
+        "team": "Burnley",
+        "team_leg": true,
+        "stat": "Goals",
+        "period": "ALL",
+        "line": 0.5,
+        "over": true,
+        "model_k": 10,
+        "model_n": 10,
+        "model_p": 0.833,
+        "source": "championship.html",
+        "value": 1.0,
+        "result": "win"
+      }
+    ],
+    "result": "win",
+    "profit": 3.5,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
   }
 ]

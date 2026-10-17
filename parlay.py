@@ -345,6 +345,8 @@ def alt_legs_for(entry, meta, floor: float = LEG_FLOOR,
                              if model.wilson_low(hits, total) > 0 else None),
                     "source": "record",
                     "crossLeague": bool(entry.get("fixture", {}).get("crossLeague")),
+                    "avg": round(sum(values) / len(values), 2),
+                    "last": [round(v, 1) for v in values[-5:]],
                 })
     return out
 

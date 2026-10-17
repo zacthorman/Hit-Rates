@@ -634,6 +634,65 @@ The Defences tab used to suggest a line only against the softest third of defenc
 
 Heuristic thresholds, not backtested yet: treat these as a shortlist to price up. The previous version is `report.py.bak-defalltiers`.
 
+## Betfair in the picks, and the Market check (16 October)
+
+`./publish.sh` fetches Betfair Exchange prices first (`market_prices.py`, needs
+`.betfair.env`), and they now feed the picks in four ways.
+
+1. **Strength.** Every football team leg (shots, corners, fouls, everything)
+   uses a strength gap moved towards the one Betfair's match odds imply: 80%
+   market when the match odds are tight and £2,000+ matched, 60% when tight,
+   40% otherwise. The market knows team news the ratings cannot.
+2. **The chance.** Where Betfair prices the bet itself or implies it, the
+   chance is a blend of ours and Betfair's. Covered: match goals (every line,
+   via the alt goal lines), first-half goals, BTTS, corners (8.5, 10.5 and the
+   band edges 9.5 and 12.5), cards, team goals (from Betfair's own team lines,
+   or else a Poisson goal model fitted to its match odds and goal lines),
+   player to score / 2+ / shots on target 1+ and 2+ / shown a card, NFL anytime
+   TD. Weight: 85% for a top market (tight, £5k+), 70% tight and traded, 50%
+   tight, 35% back-only lists, 30% thin. Before blending, the model's average
+   lean against Betfair across the round, per kind of bet, is taken off
+   ("anchoring"), so one bias does not show as a hundred edges.
+3. **Value.** Value = chance x (back - 1) x (1 - 5% commission) - (1 - chance),
+   at the back price on offer. Set `BETFAIR_COMMISSION=0.02` if yours is lower.
+   The **Value on Betfair** card lists up to five legs at 3%+ value, one per
+   match, not against their own last five. Any headline pick whose Betfair
+   price is 5%+ worse than fair is dropped from the picks.
+4. **Why.** Every pick carries `why` (why.py): the evidence for and against
+   (record, last five, average v line, similar opposition, what strength and
+   the projection expect, the market) and, behind a fold, how the chance was
+   built step by step.
+
+**Market check** (`exchange_eval.py`, market-check.html, linked on the front
+page). Each publish logs every Betfair-priced bet with four chances (model,
+model with its bias off, Betfair, blend) and the back price, first sighting
+and last before kick-off. It reports closing line value from day one (did
+the price move our way?), then as fixtures settle: log loss and Brier for
+each chance by market, calibration, and the profit from backing every value
+bet at the price offered. `exchange_eval.py fit` (run by publish) refits the
+blend weight per market once 30 bets have settled, and the margin inside
+back-only lists, into `exchange_weights.json`.
+
+    python exchange_eval.py report     # the scorecard in the terminal
+
+## Darts match markets (`darts_model.py`)
+
+Each darts page has a **Match** tab: who wins, total legs, handicap, the likely scores, match 180s and most 180s, all from one leg-level Elo over every cached PDC result since 2018 (about 3,100 matches), worked out exactly for the format. It is attached at build time by `report.write_report`, so `darts.sh` and `python rerender.py darts` both refresh it with no requests.
+
+    python darts_model.py              # top 30 ratings
+    python darts_model.py --backtest   # replay every match as of its own date
+    python darts_model.py --tune
+
+Replayed over 1,723 matches: favourite won 61%, log loss 0.657 against 0.693 for a coin flip, calibrated within a point or two up to 80%. Total legs run about 3 points high on long matches. Match 180s: 5.24 predicted, 5.29 actual over 506 matches. Two things tried and dropped: recent 3-dart average (worse on every fit), and SofaScore's `firstToServe`, which on finished matches names the winner 98% of the time and so leaks the result. The front page's darts picks open with a Match prices card.
+
+Where the Betfair Exchange prices a match, the winner chance is a blend leaning 75% on the market (log-odds scale), and every other darts market is recomputed from it. Model, exchange and the blend are shown side by side, and a gap over 12 points is flagged as a warning. `darts.sh` fetches prices first when `.betfair.env` exists; by hand it is `python darts_market.py` then `python rerender.py darts`. Each priced match is logged to `darts_market_log.json`, and once 100 have finished the weight is refitted from results (`darts_market.fit_weight`).
+
+## The picks correct themselves (`learner.py`)
+
+Every settled pick in `best_bets.json` is used to fit a correction from what the site said to what landed, per sport, team or player, and market family, pulled towards "no correction" as if 100 phantom legs said so, with a ten-day half-life. It is applied only while it beats no correction on the newest fifth of settled picks, checked every run, so it cannot make the picks worse on the evidence. It learns from `chance_base` (the chance before correction, recorded by besttrack from 16 October) so it never fits its own output. On 16 October it stayed off: the latest 233 picks said 70% and landed 71%. `learned.json` holds the current fit; the picks card says which state it is in.
+
+The player-leg shrink (`weekend.player_shrink`) learns the same way and is already on: 14 phantom games on 120 settled legs.
+
 ## Track record (`track.py`)
 
 The tool has no evidence yet that it beats the market, and neither does anything else after a few weeks. The only way to find out is to write picks down before kickoff at the price you could actually have got, settle them from the result, and count.

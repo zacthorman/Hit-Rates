@@ -5361,11 +5361,11 @@ function fillPlayerStats() {
   // "teams" and the team scans are exactly the darts bets.
   if (SPORT === "darts") {
     tabs.hidden = false;
-    ["players", "lineups", "best-player"].forEach(t => {
+    ["players", "best-player"].forEach(t => {
       const b = tabs.querySelector(`[data-tab="${t}"]`);
       if (b) b.hidden = true;
     });
-    const label = { team: "Stats", "best-team": "Best bets" };
+    const label = { team: "Stats", "best-team": "Best bets", lineups: "Match" };
     Object.entries(label).forEach(([t, text]) => {
       const b = tabs.querySelector(`[data-tab="${t}"]`);
       if (b) b.textContent = text;
@@ -6485,9 +6485,100 @@ function gsSectionHtml(shapes) {
       ${Math.round(GS_MIN_RECORD * 100)}%. &#9650;/&#9660; is the game-state change to his average.</p></details>`;
 }
 
+/* Darts: the match itself. Who wins, how many legs, by how much, the likely
+   scores and the 180s, all from one number, each man's chance of winning a
+   leg (darts_model.py). Fair prices are one over the chance. */
+function dartsMatchView(el) {
+  const m = DATA.dartsModel;
+  const T = DATA.teams;
+  if (!m) {
+    el.innerHTML = `<div class="lu-card lu-empty">No match model for this one: one of the players has no
+      results on record, or the format is not known yet.</div>`;
+    return;
+  }
+  const pct = x => `${Math.round(x * 100)}%`;
+  const fair = x => x > 0.005 ? (1 / x).toFixed(2) : "&mdash;";
+  const fmt = m.format[0] === "legs" ? `first to ${m.format[1]} legs` : `first to ${m.format[1]} sets, each first to ${m.format[2]} legs`;
+  const thin = Math.min(m.gamesA, m.gamesB) < 10;
+  const pa = m.winA, pb = 1 - m.winA;
+  const hasMkt = m.marketWinA != null;
+  const fav = x => x >= 0.5 ? escapeHtml(T[0].name) : escapeHtml(T[1].name);
+  const side = x => Math.round(Math.max(x, 1 - x) * 100);
+  const mktLine = hasMkt
+    ? `<div class="gs-vols">
+        <div class="gs-vol"><span>Model</span><b>${fav(m.modelWinA)} ${side(m.modelWinA)}%</b></div>
+        <div class="gs-vol"><span>Exchange</span><b>${fav(m.marketWinA)} ${side(m.marketWinA)}%</b></div>
+        <div class="gs-vol"><span>Used</span><b>${fav(pa)} ${side(pa)}%</b></div></div>`
+    : "";
+  const flag = hasMkt && m.flag
+    ? `<p class="gs-script"><b>The model and the exchange disagree by ${Math.round(Math.abs(m.modelWinA - m.marketWinA) * 100)} points.</b>
+        The model rates on results alone and its favourite wins 61% of the time; the market knows more. Read the gap
+        as a warning, not an edge.</p>`
+    : "";
+  const noMkt = !hasMkt
+    ? `<p class="gs-script">No exchange price for this match, so this is the model alone. It rates on results
+        only; check it against a bookmaker before trusting a big favourite.</p>`
+    : "";
+  const head = `<div class="lu-card gs-card">
+    <div class="gs-teams">
+      <div class="gs-side"><span class="gs-name"><span class="lu-dot lu-dot0"></span><b>${escapeHtml(T[0].name)}</b></span>
+        <span class="lu-muted">rating ${m.ratingA} &middot; ${m.gamesA} matches</span></div>
+      <div class="gs-side gs-r"><span class="gs-name"><span class="lu-dot lu-dot1"></span><b>${escapeHtml(T[1].name)}</b></span>
+        <span class="lu-muted">rating ${m.ratingB} &middot; ${m.gamesB} matches</span></div>
+    </div>
+    <div class="gs-poss"><b>${pct(pa)}</b><i class="gs-bar"><em style="width:${Math.round(pa * 100)}%"></em></i><b>${pct(pb)}</b></div>
+    <div class="gs-caption">to win the match &middot; fair ${fair(pa)} v ${fair(pb)} &middot; ${fmt}</div>
+    <div class="gs-vols">
+      <div class="gs-vol"><span>Leg</span><b>${pct(m.legA)} / ${pct(1 - m.legA)}</b></div>
+      ${m.expLegs != null ? `<div class="gs-vol"><span>Legs</span><b>${m.expLegs.toFixed(1)}</b></div>` : ""}
+      ${m.exp180 != null ? `<div class="gs-vol"><span>180s</span><b>${m.exp180.toFixed(1)}</b></div>` : ""}
+    </div>
+    ${mktLine}${flag}${noMkt}
+    ${thin ? `<p class="gs-script">Fewer than 10 matches on record for one player, so the rating is still settling: treat the price as rough.</p>` : ""}
+  </div>`;
+
+  const row = (label, p, extra) => `<div class="def-row">
+      <div class="def-row-top"><span>${label}</span><b>${pct(p)} &middot; ${fair(p)}</b></div>
+      <i class="def-bar"><em style="width:${Math.round(p * 100)}%"></em></i>${extra ? `<div class="def-sub">${extra}</div>` : ""}</div>`;
+
+  const totals = (m.totalLegs || []).map(([L, p]) =>
+    row(`Over ${L} legs`, p, `under ${pct(1 - p)} &middot; ${fair(1 - p)}`)).join("");
+  const hcp = (m.handicap || []).map(([h, a, b]) =>
+    row(`${escapeHtml(T[0].name)} -${h}`, a, `${escapeHtml(T[1].name)} -${h}: ${pct(b)} &middot; ${fair(b)}`)).join("");
+  const scores = (m.scores || []).slice(0, 8).map(([a, b, p]) =>
+    `<div class="gs-vol"><span>${a}-${b}</span><b>${pct(p)}</b></div>`).join("");
+  const t180 = (m.total180 || []).filter(([L]) => Math.abs(L - m.exp180) <= 3.1).map(([L, p]) =>
+    row(`Over ${L} 180s`, p, `under ${pct(1 - p)} &middot; ${fair(1 - p)}`)).join("");
+  const most = m.most180 ? `<div class="gs-vols">
+      <div class="gs-vol"><span>${escapeHtml(T[0].name)}</span><b>${pct(m.most180[0])} &middot; ${fair(m.most180[0])}</b></div>
+      <div class="gs-vol"><span>Tie</span><b>${pct(m.most180[1])} &middot; ${fair(m.most180[1])}</b></div>
+      <div class="gs-vol"><span>${escapeHtml(T[1].name)}</span><b>${pct(m.most180[2])} &middot; ${fair(m.most180[2])}</b></div></div>` : "";
+
+  el.innerHTML = head
+    + (totals ? `<h3 class="lu-h">Total legs</h3><div class="lu-card">${totals}</div>` : "")
+    + (hcp ? `<h3 class="lu-h">Handicap (legs)</h3><div class="lu-card">${hcp}</div>` : "")
+    + (scores ? `<h3 class="lu-h">Most likely scores</h3><div class="lu-card"><div class="gs-vols">${scores}</div></div>` : "")
+    + (t180 ? `<h3 class="lu-h">Match 180s</h3><div class="lu-card">${t180}
+        <div class="def-sub">${m.rate180[0].toFixed(2)} and ${m.rate180[1].toFixed(2)} a leg, from ${m.legs180[0]} and ${m.legs180[1]} legs with stats</div></div>` : "")
+    + (most ? `<h3 class="lu-h">Most 180s</h3><div class="lu-card">${most}</div>` : "")
+    + `<details class="lu-more"><summary>How this is worked out, and how good it is</summary><p class="note">
+      One leg-level rating per player over every cached PDC result since 2018, updated in date order with only
+      earlier matches, so a 6-4 counts as ten pieces of evidence. The chance of winning a leg comes from the
+      rating gap, with an edge for throwing first; the match, the legs and the scores are worked out exactly for
+      this format, averaged over who wins the bull. Replayed over 1,723 past matches it put its favourite through
+      61% of the time and was calibrated within a point or two at every level up to 80% (log loss 0.657 against
+      0.693 for a coin flip). Total legs run about 3 points high on the longer matches. 180s are each man's rate
+      per leg, shrunk towards the field, over the legs the scores say will be played: predicted 5.24 a match
+      against 5.29 actual over 506 matches. Where the Betfair Exchange prices the match, the winner chance used is a
+      blend leaning ${Math.round((m.marketWeight || 0.75) * 100)}% on the market, and every other number here is
+      recomputed from it so the page agrees with itself. The weight is refitted from results once enough
+      priced matches have finished.</p></details>`;
+}
+
 function lineupView() {
   const el = document.getElementById("lineups");
   if (!el) return;
+  if (SPORT === "darts") { dartsMatchView(el); return; }
   if (SPORT !== "football") { defenceView(el); return; }
   const store = DATA.lineups || {};
   const modes = ["predicted", "confirmed"].filter(m => store[m]);
@@ -7857,6 +7948,63 @@ def build_html(payload: dict) -> str:
 """
 
 
+def _attach_darts(payload: dict) -> None:
+    """Match markets for every darts fixture (darts_model.py): who wins, total
+    legs, handicap, correct score and 180s. Worked out at build time from the
+    cached results, so a rerender refreshes them with no requests. A failure
+    here never costs the report."""
+    fixtures = payload.get("fixtures") or []
+    darts = [f for f in fixtures if (f.get("fixture") or {}).get("sport") == "darts"]
+    if not darts:
+        return
+    try:
+        import darts_model
+        r = darts_model.ratings()
+        formats = {m["id"]: m["fmt"] for m in darts_model.load_matches()}
+    except Exception as exc:
+        print(f"  darts match markets skipped: {type(exc).__name__}: {exc}")
+        return
+    # Exchange prices, if a fresh darts_prices.json is on disk (darts_market.py).
+    try:
+        import darts_market
+        prices = darts_market.load()
+        weight = darts_market.fit_weight() or darts_market.MARKET_WEIGHT
+    except Exception:
+        darts_market, prices, weight = None, None, None
+    snapshots = []
+    for f in darts:
+        fx = f.get("fixture") or {}
+        teams = f.get("teams") or []
+        if len(teams) != 2:
+            continue
+        fmt = formats.get(fx.get("id"))
+        if fmt is None:
+            continue
+        market = (darts_market.market_chance(prices, teams[0].get("name"), teams[1].get("name"))
+                  if darts_market and prices else None)
+        try:
+            got = darts_model.markets(r, teams[0].get("id"), teams[1].get("id"), fmt, ts=fx.get("kickoff"))
+            if got and market is not None:
+                blended = darts_market.blend(got["modelWinA"], market, weight)
+                got = darts_model.markets(r, teams[0].get("id"), teams[1].get("id"), fmt,
+                                          ts=fx.get("kickoff"), win_override=blended)
+                got.update({"marketWinA": round(market, 4), "marketWeight": weight,
+                            "priced": prices.get("fetched"),
+                            "flag": abs(got["modelWinA"] - market) > darts_market.FLAG})
+                snapshots.append({"id": fx.get("id"), "fetched": prices.get("fetched"),
+                                  "model": got["modelWinA"], "market": market})
+        except Exception:
+            got = None
+        if got:
+            f["dartsModel"] = got
+    if snapshots and darts_market:
+        try:
+            darts_market.log_snapshot(snapshots)
+        except OSError:
+            pass
+
+
 def write_report(payload: dict, path: Path) -> Path:
+    _attach_darts(payload)
     path.write_text(build_html(payload), encoding="utf-8")
     return path

@@ -71,6 +71,11 @@ say "building darts for the next ${DAYS} day(s), pacing ${SOFA_DELAY_MIN}-${SOFA
 
 # Deliberately no curl_cffi fallback: if FlareSolverr drops mid-run the
 # circuit breaker stops the build rather than hammering SofaScore direct.
+# Exchange prices first, so the build blends them in (darts_market.py).
+# Optional: without .betfair.env the pages show the model alone and say so.
+if [ -f .betfair.env ]; then
+  "$PY" darts_market.py || say "Betfair prices not fetched (continuing with the model alone)"
+fi
 RUN=("$PY" run.py --darts "$DAYS" --games 20 --h2h --no-open)
 if command -v caffeinate >/dev/null 2>&1; then
   caffeinate -i "${RUN[@]}"

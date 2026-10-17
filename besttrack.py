@@ -64,6 +64,19 @@ def _leg(leg: dict, meta: dict, sport: str) -> dict:
         # context behind it, so a later calibration check can score the
         # number the site actually used rather than reconstruct it.
         "chance": leg.get("chance") or leg.get("pStrength") or leg.get("pShrunk"),
+        # Before the self-correction: what learner.py learns from, so it
+        # never fits its own output.
+        "chance_base": leg.get("chanceBase") or leg.get("pBase"),
+        # The exchange at snapshot time: its chance, the back price you could
+        # have taken, and the model's own chance before the blend. With these
+        # the record can say whether the picks made money, not only whether
+        # they landed.
+        "exchange_p": (leg.get("exchange") or {}).get("p") if leg.get("exchange") else None,
+        "exchange_back": (leg.get("exchange") or {}).get("back") if leg.get("exchange") else None,
+        "chance_model": leg.get("chanceModel") or leg.get("pModel"),
+        "chance_anchored": leg.get("chanceAnchored") or leg.get("pAnchored"),
+        "exchange_kind": (leg.get("exchange") or {}).get("kind") if leg.get("exchange") else None,
+        "value_at_pick": leg.get("value"),
         "fair_record": leg.get("fairRecord"),
         "elo": ([(leg.get("strength") or {}).get("team"), (leg.get("strength") or {}).get("opp")]
                 if leg.get("strength") else None),

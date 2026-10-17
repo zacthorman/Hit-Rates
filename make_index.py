@@ -432,6 +432,39 @@ PAGE = """<!DOCTYPE html>
 .pick details p { color: var(--muted); font-size: 0.78rem; line-height: 1.45;
                   margin: 6px 0 0; }
 .pick .flag { color: var(--today); font-weight: 600; }
+/* Pick cards, v2: the same anatomy for every card. A label and the price on
+   one line, the selection, the fixture, three numbers in chips, one short
+   strength line, and everything else behind the fold. */
+.pk-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.pk-top h2 { margin: 0; }
+.pk-price { font-size: 1.15rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.pk-price small { font-size: 0.68rem; font-weight: 600; color: var(--muted); letter-spacing: 0.05em;
+                  text-transform: uppercase; margin-right: 5px; }
+.pk-chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 10px; }
+.pk-chip { background: var(--page); border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; min-width: 0; }
+.pk-chip span { display: block; font-size: 0.64rem; color: var(--muted); text-transform: uppercase;
+                letter-spacing: 0.06em; }
+.pk-chip b { display: block; font-size: 0.95rem; font-variant-numeric: tabular-nums; white-space: nowrap;
+             overflow: hidden; text-overflow: ellipsis; }
+.pk-str { color: var(--muted); font-size: 0.78rem; margin-top: 8px; line-height: 1.4; }
+.pk-str b { color: var(--text); font-weight: 600; }
+.pick .pk-legs { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 0;
+                 border: 0; background: none; border-radius: 0; }
+.pk-leg { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; padding: 8px 0;
+          border-top: 1px solid var(--border); }
+.pk-leg:first-child { border-top: 0; padding-top: 2px; }
+.pk-leg .t { font-size: 0.86rem; font-weight: 600; line-height: 1.3; }
+.pk-leg .p { font-size: 0.9rem; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+.pk-leg .m { grid-column: 1 / -1; color: var(--muted); font-size: 0.74rem; line-height: 1.35; }
+.pk-learn { color: var(--muted); font-size: 0.72rem; margin: 2px 0 10px; }
+.pk-pos { color: var(--hit, #2e9d5b); font-weight: 650; }
+.pk-why { margin-top: 8px; display: grid; gap: 3px; }
+.pk-why div { font-size: 0.76rem; line-height: 1.4; padding-left: 16px; position: relative; }
+.pk-why .y::before { content: "+"; position: absolute; left: 2px; color: var(--hit, #2e9d5b); font-weight: 700; }
+.pk-why .n::before { content: "−"; position: absolute; left: 2px; color: var(--today, #c4622d); font-weight: 700; }
+.pk-why .n { color: var(--muted); }
+.pick ol.pk-steps { margin: 6px 0 0; padding-left: 18px; color: var(--muted); font-size: 0.76rem; line-height: 1.45; }
+.pk-val { font-size: 0.8rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 .pick.none { color: var(--muted); }
 body {
   margin: 0; padding: 0;
@@ -532,6 +565,7 @@ footer { margin-top: 26px; color: var(--muted); font-size: 12.5px; }
     <div class="quick">
       <a href="tonight.html">Tonight <span>next 8 hours &rarr;</span></a>
       <a href="best-bets-summary.html">Best bets summary <span>all sports &rarr;</span></a>
+      <a href="market-check.html">Market check <span>model v Betfair &rarr;</span></a>
     </div>
     <div class="rail-head">
       <button type="button" class="fold" id="picks-btn" aria-expanded="true"
@@ -739,30 +773,94 @@ function legText(l) {
     : `${escapeHtml(l.team)} ${market}${half(l.period)}`;
 }
 
-/* Team strength behind a football team leg, one muted line. Elo as of
-   kick-off for both sides, the chance of the leg's team winning, its record
-   against similar-strength opposition, and what strength and the league
-   projection expect against the line. Nothing for a leg without it. */
+/* Team strength, short: the two ratings and the chance of winning. The
+   similar-opposition record and what strength and the projection expect go
+   behind the fold, where they are read when wanted rather than every time. */
+function oppOf(l) {
+  return l.fixture ? (l.team === l.fixture.home ? l.fixture.away : l.fixture.home) : "opponent";
+}
 function strengthLine(l) {
   const s = l.strength;
   if (!s || s.team == null) return "";
-  const opp = l.fixture ? (l.team === l.fixture.home ? l.fixture.away : l.fixture.home) : "opponent";
   const pct = x => `${Math.round(x * 100)}%`;
-  const bits = [
-    `<b>${escapeHtml(l.team)} ${s.team}</b> (${s.teamLabel}) v <b>${escapeHtml(opp)} ${s.opp}</b> (${s.oppLabel})`,
-  ];
-  if (s.win != null) bits.push(`${pct(s.win)} to win`);
+  return `<div class="pk-str"><b>${escapeHtml(l.team)} ${s.team}</b> v ${escapeHtml(oppOf(l))} ${s.opp}`
+    + (s.win != null ? ` &middot; ${pct(s.win)} to win` : "") + `</div>`;
+}
+function strengthDetail(l) {
+  const s = l.strength;
+  if (!s || s.team == null) return "";
+  const bits = [`${escapeHtml(l.team)} rated ${s.teamLabel}, ${escapeHtml(oppOf(l))} ${s.oppLabel}`];
   if (s.similarN >= 2) bits.push(`${s.similarHits} of ${s.similarN} against similar opposition`);
-  else bits.push("no record against opposition this strong or weak");
+  else bits.push("nothing comparable in the record");
   const exp = [];
-  if (s.eloExpected != null) exp.push(`strength says ${s.eloExpected}`);
-  if (s.projection != null) exp.push(`projection ${s.projection}`);
-  if (exp.length) bits.push(`${exp.join(", ")} v a line of ${l.line}`);
-  return `<div class="str">${bits.join(" &middot; ")}</div>`;
+  if (s.eloExpected != null) exp.push(`strength expects ${s.eloExpected}`);
+  if (s.projection != null) exp.push(`the projection ${s.projection}`);
+  if (exp.length) bits.push(`${exp.join(" and ")} against a line of ${l.line}`);
+  return bits.join("; ") + ". ";
+}
+function chanceText(l) {
+  return l.chance != null ? `${Math.round(l.chance * 100)}%` : "&mdash;";
+}
+/* The exchange, where Betfair prices the same bet: its chance with the margin
+   off, the back price you could take, and what the pick is worth at it. */
+function exchangeLine(l) {
+  const x = l.exchange;
+  if (!x) return "";
+  const pct = p => `${Math.round(p * 100)}%`;
+  const v = l.value;
+  if (l.disagree != null) {
+    return `<div class="pk-str">Exchange ${pct(x.p)}, model ${pct(l.chanceModel)}: <b>${Math.round(Math.abs(l.disagree) * 100)} points apart</b>,
+      a warning rather than an edge; the chance used leans on the exchange.</div>`;
+  }
+  const val = v == null ? "" : v > 0.005
+    ? ` &middot; <b class="pk-pos">value +${Math.round(v * 100)}%</b> at ${fmtOdds(x.back)}`
+    : ` &middot; no value at ${fmtOdds(x.back)}`;
+  return `<div class="pk-str">Exchange ${pct(x.p)}, model ${pct(l.chanceModel)}${val}${x.tight ? "" : " &middot; thin market"}</div>`;
+}
+function thirdChip(s) {
+  return s.exchange && s.exchange.back ? ["Exchange", fmtOdds(s.exchange.back)] : ["Hold out", fmtOdds(s.need)];
+}
+function pkChips(items) {
+  return `<div class="pk-chips">${items.map(([k, v]) => `<div class="pk-chip"><span>${k}</span><b>${v}</b></div>`).join("")}</div>`;
+}
+function pkHead(label, price, priceLabel) {
+  return `<div class="pk-top"><h2>${label}</h2>${price == null ? "" : `<div class="pk-price"><small>${priceLabel || "fair"}</small>${fmtOdds(price)}</div>`}</div>`;
+}
+function legRow(l, extra) {
+  const where = l.fixture ? `${escapeHtml(l.fixture.home)} v ${escapeHtml(l.fixture.away)}` : "";
+  const s = l.strength;
+  const str = s && s.team != null ? ` &middot; ${s.team} v ${s.opp}` : "";
+  const ex = l.exchange && l.exchange.back
+    ? ` &middot; exchange ${fmtOdds(l.exchange.back)}${l.value > 0.005 ? ` <b class="pk-pos">+${Math.round(l.value * 100)}%</b>` : ""}` : "";
+  return `<li class="pk-leg"><span class="t">${legText(l)}</span><span class="p">${fmtOdds(l.fair)}</span>
+    <span class="m">${where}${where ? " &middot; " : ""}${l.hits}/${l.total}${l.chance != null ? " &middot; " + chanceText(l) : ""}${str}${ex}${extra || ""}</span></li>`;
 }
 
-function chanceText(l) {
-  return l.chance != null ? `${Math.round(l.chance * 100)}% chance` : "";
+/* Why a pick should land: the evidence for and against, then, behind a
+   fold, how its chance was built number by number (why.py writes these). */
+function whyList(l, max) {
+  const w = l.why;
+  if (!w) return "";
+  const pro = (w.for || []).slice(0, max || 4).map(t => `<div class="y">${escapeHtml(t)}</div>`);
+  const con = (w.against || []).slice(0, max || 3).map(t => `<div class="n">${escapeHtml(t)}</div>`);
+  return pro.length || con.length ? `<div class="pk-why">${pro.join("")}${con.join("")}</div>` : "";
+}
+function whySteps(l) {
+  const w = l.why;
+  if (!w || !w.steps || !w.steps.length) return "";
+  return `<ol class="pk-steps">${w.steps.map(t => `<li>${escapeHtml(t)}</li>`).join("")}</ol>`;
+}
+function whyFold(summary, l, extra) {
+  const steps = whySteps(l);
+  if (!steps && !extra) return "";
+  return `<details><summary>${summary}</summary>${steps}${extra ? `<p>${extra}</p>` : ""}</details>`;
+}
+function legsWhy(legs) {
+  const body = legs.map(l => `<p><b>${legText(l)}</b></p>${whyList(l, 3)}${whySteps(l)}`).join("");
+  return `<details><summary>why each leg</summary>${body}</details>`;
+}
+function valueText(v) {
+  return v == null ? "&mdash;" : `${v >= 0 ? "+" : "&minus;"}${Math.abs(v * 100).toFixed(1)}%`;
 }
 
 function note(summary, body) {
@@ -779,72 +877,99 @@ function renderPicks() {
   if (lab) lab.textContent = SPORT_LABELS[sport] || sport;
   const floor = DATA.picks.floor;
   const cards = [];
+  const learn = DATA.picks.learned;
+
+  if (p && p.matches && p.matches.length) {
+    const rows = p.matches.slice(0, 8).map(x => `<li class="pk-leg"><span class="t">${escapeHtml(x.fav)}</span>
+      <span class="p">${fmtOdds(x.fair)}</span>
+      <span class="m">${escapeHtml(x.home)} v ${escapeHtml(x.away)} &middot; ${Math.round(x.p * 100)}% to win${x.legs != null ? ` &middot; ${x.legs.toFixed(1)} legs` : ""}${x.s180 != null ? ` &middot; ${x.s180.toFixed(1)} 180s` : ""}</span></li>`).join("");
+    cards.push(`<div class="pick">
+      ${pkHead("Match prices", null, "")}
+      <div class="where">Favourite and fair price for each match; totals, handicaps and 180s on each match's Match tab.</div>
+      <ul class="pk-legs">${rows}</ul>
+      ${note("how good is this?",
+        `One leg-level rating per player over every PDC result since 2018. Replayed over 1,723 past matches it put
+         its favourite through 61% of the time and was calibrated within a point or two up to 80%. Fair is what the
+         chance is worth, not what anyone offers.`)}
+    </div>`);
+  }
 
   if (p && p.single) {
     const s = p.single;
     cards.push(`<div class="pick">
-      <h2>Best bet &middot; ${fmtOdds(floor)}+</h2>
+      ${pkHead(`Best bet &middot; ${fmtOdds(floor)}+`, s.fair)}
       <div class="sel">${legText(s)}</div>
-      <div class="where">${escapeHtml(s.fixture.home)} v ${escapeHtml(s.fixture.away)}</div>
-      <div class="odds"><b>${s.hits}/${s.total}</b>${s.venue ? " " + s.venue : ""}
-        &middot; ${chanceText(s)} &middot; fair <b>${fmtOdds(s.fair)}</b>, hold out for ${fmtOdds(s.need)}</div>
-      ${strengthLine(s)}
-      ${note("how solid is this?",
-        `Ranked on a calibrated chance, not the raw record: ${s.strength
-          ? "for a team leg that blends the record, the record against similar-strength opposition, what team strength expects and the league projection"
-          : "for a player leg, the record pulled towards a coin flip by as much as the site's own settled player picks say it should be"}.
-         ${s.fairRecord ? `The record alone would have priced it at ${fmtOdds(s.fairRecord)}. ` : ""}
-         Chosen from ${s.consideredGroups} separate questions this round; the floor
-         once that searching is paid for is
-         <span class="flag">${(s.adjusted * 100).toFixed(0)}%</span>. Asking for
-         ${fmtOdds(floor)}+ caps the chance at 50%, so price and evidence pull
-         against each other here.`)}
+      <div class="where">${escapeHtml(s.fixture.home)} v ${escapeHtml(s.fixture.away)}${s.venue ? ` &middot; record ${s.venue}` : ""}</div>
+      ${pkChips([["Chance", chanceText(s)], ["Record", `${s.hits}/${s.total}`], thirdChip(s)])}
+      ${strengthLine(s)}${exchangeLine(s)}
+      ${whyList(s)}
+      ${whyFold("how the chance was built", s,
+        `Ranked on a calibrated chance, not the raw record${s.fairRecord ? `, which alone would have priced it at ${fmtOdds(s.fairRecord)}` : ""}.
+         Chosen from ${s.consideredGroups} separate questions this round. Asking for ${fmtOdds(floor)}+
+         caps the chance at 50%, so price and evidence pull against each other here.`)}
     </div>`);
   }
 
-  if (p && p.double) {
-    const d = p.double;
+  if (p && p.value && p.value.legs && p.value.legs.length) {
+    const v = p.value;
+    const rows = v.legs.map(l => `<li class="pk-leg"><span class="t">${legText(l)}</span>
+      <span class="p">${fmtOdds(l.exchange.back)}</span>
+      <span class="m">${escapeHtml(l.fixture.home)} v ${escapeHtml(l.fixture.away)} &middot; ours ${chanceText(l)}
+        v Betfair ${Math.round(l.exchange.p * 100)}% &middot; <b class="pk-pos">${valueText(l.value)}</b>
+        ${l.exchange.kind === "back" ? " &middot; back-only list" : ""}</span>
+      </li>`).join("");
     cards.push(`<div class="pick">
-      <h2>Evens double</h2>
-      <div class="sel">2 legs &middot; ${fmtOdds(d.combined)}</div>
-      <ol>${d.legs.map(l => `<li>${legText(l)} &mdash; ${l.hits}/${l.total},
-        ${fmtOdds(l.fair)}<br><small>${escapeHtml(l.fixture.home)} v ${escapeHtml(l.fixture.away)}</small>${strengthLine(l)}</li>`).join("")}</ol>
-      ${note("why these two?",
-        `The pair most likely to both land (about ${(d.joint * 100).toFixed(0)}% on the
-         calibrated chances) among doubles priced around evens. Counts and 0.5 lines are left
-         out. ${d.sameGame ? "Both legs are in one game, so it goes on as a builder." :
-         "Two different games, so neither leg rides on the other."}`)}
+      ${pkHead("Value on Betfair", null, "")}
+      <div class="where">Priced on the exchange, worth more than the stake at the back price shown, after ${Math.round(v.commission * 100)}% commission.
+        ${v.positive} of ${v.quoted} bets Betfair prices cleared zero; these clear ${Math.round(v.min * 100)}%.</div>
+      <ul class="pk-legs">${rows}</ul>
+      ${legsWhy(v.legs)}
+      ${note("can I trust this?",
+        `Value uses our chance after it has been pulled towards Betfair's, so an edge has to survive the market
+         correcting it. The model's usual lean against the market on each kind of bet is taken off first, so a
+         bias repeated across a hundred legs does not show up as a hundred edges. It is unproven until enough
+         of these settle: the <a href="market-check.html">Market check</a> page tracks every one against the price it was offered at.`)}
     </div>`);
   }
 
   if (p && p.banker) {
     const s = p.banker;
     cards.push(`<div class="pick">
-      <h2>Banker</h2>
+      ${pkHead("Banker", s.fair)}
       <div class="sel">${legText(s)}</div>
       <div class="where">${escapeHtml(s.fixture.home)} v ${escapeHtml(s.fixture.away)}</div>
-      <div class="odds"><b>${s.hits}/${s.total}</b> &middot; ${chanceText(s)} &middot; fair <b>${fmtOdds(s.fair)}</b>,
-        hold out for ${fmtOdds(s.need)}</div>
-      ${strengthLine(s)}
-      ${note("what is a banker?",
-        `The single most likely to land, on the calibrated chance, among those
-         priced between 1.30 and 1.75 (${(s.adjusted * 100).toFixed(0)}% worst case
-         once the searching is paid for).`)}
+      ${pkChips([["Chance", chanceText(s)], ["Record", `${s.hits}/${s.total}`], thirdChip(s)])}
+      ${strengthLine(s)}${exchangeLine(s)}
+      ${whyList(s)}
+      ${whyFold("how the chance was built", s,
+        `The single most likely to land, on the calibrated chance, among those priced
+         between 1.30 and 1.75.`)}
+    </div>`);
+  }
+
+  if (p && p.double) {
+    const d = p.double;
+    cards.push(`<div class="pick">
+      ${pkHead("Evens double", d.combined)}
+      <ul class="pk-legs">${d.legs.map(l => legRow(l)).join("")}</ul>
+      ${legsWhy(d.legs)}
+      ${note("why these two?",
+        `The pair most likely to both land (about ${(d.joint * 100).toFixed(0)}% on the calibrated chances)
+         among doubles priced around evens. Counts and 0.5 lines are left out.
+         ${d.sameGame ? "Both legs are in one game, so it goes on as a builder." : "Two different games, so neither leg rides on the other."}`)}
     </div>`);
   }
 
   if (p && p.acca) {
     const a = p.acca;
     cards.push(`<div class="pick">
-      <h2>Best acca</h2>
-      <div class="sel">${a.legs.length} legs &middot; ${fmtOdds(a.combined)}</div>
-      <ol>${a.legs.map(l => `<li>${legText(l)} &mdash; ${l.hits}/${l.total},
-        ${fmtOdds(l.fair)}${strengthLine(l)}</li>`).join("")}</ol>
+      ${pkHead(`Acca &middot; ${a.legs.length} legs`, a.combined)}
+      <ul class="pk-legs">${a.legs.map(l => legRow(l)).join("")}</ul>
+      ${legsWhy(a.legs)}
       ${note("read this first",
         `One leg per match, so nothing rides twice on the same game.
-         ${a.short ? `Short of the ${fmtOdds(a.target)} target &mdash; reaching it
-         would have meant worse legs. ` : ""}These are fair prices, not offers: a
-         book has to beat every one for the multiple to be worth taking, and the
+         ${a.short ? `Short of the ${fmtOdds(a.target)} target: reaching it would have meant worse legs. ` : ""}These are
+         fair prices, not offers: a book has to beat every one for the multiple to be worth taking, and the
          margin compounds with each leg.`)}
     </div>`);
   }
@@ -853,52 +978,48 @@ function renderPicks() {
     const b = p.builder;
     const over = 100 * (b.naive / b.fair - 1);
     cards.push(`<div class="pick">
-      <h2>Best builder</h2>
+      ${pkHead("Builder", b.fair)}
       <div class="sel">${escapeHtml(b.team)}</div>
       <div class="where">${escapeHtml(b.fixture.home)} v ${escapeHtml(b.fixture.away)}</div>
-      <ol>${b.legs.map(l => `<li>${legText(l)} &mdash; ${l.hits}/${l.total}
-        alone</li>`).join("")}</ol>
-      <div class="odds">together <b>${b.hits}/${b.total}</b>
-        &middot; fair <b>${fmtOdds(b.fair)}</b></div>
+      ${pkChips([["Together", `${b.hits}/${b.total}`], ["Legs", b.legs.length], ["Multiplied", fmtOdds(b.naive)]])}
+      <ul class="pk-legs">${b.legs.map(l => `<li class="pk-leg"><span class="t">${legText(l)}</span>
+        <span class="p">${l.hits}/${l.total}</span></li>`).join("")}</ul>
       ${note("why not just multiply the legs?",
-        `Multiplying would say ${fmtOdds(b.naive)} &mdash;
-         <span class="flag">${over.toFixed(0)}% longer than the record supports</span>.
-         Same-team legs move together, so the product always flatters a builder.
-         This is priced by counting the matches where every leg actually landed.`)}
+        `Multiplying would say ${fmtOdds(b.naive)}, <span class="flag">${over.toFixed(0)}% longer than the record
+         supports</span>. Same-team legs move together, so the product always flatters a builder. This is priced by
+         counting the matches where every leg actually landed.`)}
     </div>`);
   }
 
   if (p && p.parlay) {
     const g = p.parlay;
     const gap = 100 * (g.naive / g.fair - 1);
-    const sides = g.sides.map(s =>
-      `${escapeHtml(s.team)} legs together <b>${s.hits}/${s.total}</b>`).join(" &middot; ");
+    const together = g.sides.map(s => `${s.hits}/${s.total}`).join(" &middot; ");
     cards.push(`<div class="pick">
-      <h2>Same-game parlay</h2>
-      <div class="sel">${g.legs.length} legs &middot; ${fmtOdds(g.fair)}</div>
+      ${pkHead(`Same-game parlay &middot; ${g.legs.length} legs`, g.fair)}
       <div class="where">${escapeHtml(g.fixture.home)} v ${escapeHtml(g.fixture.away)}</div>
-      <ol>${g.legs.map(l => `<li>${legText(l)} &mdash; ${l.hits}/${l.total}
-        alone</li>`).join("")}</ol>
-      <div class="odds">${sides} &middot; fair <b>${fmtOdds(g.fair)}</b>,
-        hold out for ${fmtOdds(g.need)}</div>
+      ${pkChips([["Together", together], ["Hold out", fmtOdds(g.need)], ["Multiplied", fmtOdds(g.naive)]])}
+      <ul class="pk-legs">${g.legs.map(l => `<li class="pk-leg"><span class="t">${legText(l)}</span>
+        <span class="p">${l.hits}/${l.total}</span></li>`).join("")}</ul>
       ${note("how is this priced?",
-        `Legs on the same team are counted together, out of the matches that
-         carried all of them, so nothing assumes they are independent &mdash;
-         multiplying them would have said ${fmtOdds(g.naive)}, ${gap >= 0
+        `Legs on the same team are counted together, out of the matches that carried all of them, so nothing
+         assumes they are independent. Multiplying them would have said ${fmtOdds(g.naive)}, ${gap >= 0
          ? `<span class="flag">${gap.toFixed(0)}% longer than the record supports</span>`
          : `${Math.abs(gap).toFixed(0)}% shorter than the record supports`}.
-         ${g.crossTeam ? `The two sides share no matches outside a head to head,
-         so their rates are multiplied rather than counted. Overs in one game
-         drift up together with the pace, so that product slightly understates
-         the real chance and quotes a price a shade longer than the truth.
-         ` : ""}Lines are the biggest number each man clears at least 65% of the
-         time, picked by fixing the rate and reading off the line rather than
-         hunting the ladder for the rung that flatters him.`)}
+         ${g.crossTeam ? `The two sides share no matches outside a head to head, so their rates are multiplied
+         rather than counted, which slightly understates the real chance. ` : ""}Lines are the biggest number each
+         man clears at least 65% of the time.`)}
     </div>`);
   }
 
+  const pc = x => `${Math.round(x * 100)}%`;
+  const learnLine = learn && learn.legs
+    ? `<div class="pk-learn">${learn.active
+        ? `Chances corrected from ${learn.legs} settled picks, refit ${escapeHtml(learn.updated || "")}.`
+        : `Checked against ${learn.legs} settled picks${learn.said != null ? `: the latest ${learn.test} said ${pc(learn.said)} and landed ${pc(learn.landed)}` : ""}, so no correction needed.`}</div>`
+    : "";
   box.innerHTML = cards.length
-    ? `<div class="picks">${cards.join("")}</div>`
+    ? `${learnLine}<div class="picks">${cards.join("")}</div>`
     : `<div class="picks"><div class="pick none">Nothing cleared the bar for
        ${escapeHtml(SPORT_LABELS[sport] || sport)} this round.</div></div>`;
 }

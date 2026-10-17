@@ -48,7 +48,25 @@ else
   exit 1
 fi
 
+# Betfair Exchange prices for every fixture in the reports, before the
+# index and the picks are built, so they blend them in (market_prices.py).
+# Optional: without .betfair.env the site runs on the model alone.
+if [ -f .betfair.env ]; then
+  "$PY" market_prices.py --days 3 >/dev/null && echo "  exchange prices refreshed" \
+    || echo "  exchange prices not fetched (continuing with the model alone)"
+fi
+# Score the model against Betfair (exchange_eval.py): settle what finished,
+# refit the blend weights from the results, so the picks below use them.
+if [ -f .betfair.env ]; then
+  "$PY" exchange_eval.py settle || echo "  exchange log not settled (continuing)"
+  "$PY" exchange_eval.py fit >/dev/null || echo "  exchange weights not refit (continuing)"
+fi
 "$PY" make_index.py
+# Then log every bet Betfair prices as it stands now, and render the page.
+if [ -f .betfair.env ]; then
+  "$PY" exchange_eval.py log || echo "  exchange log not updated (continuing)"
+fi
+"$PY" exchange_eval.py page >/dev/null || echo "  market-check.html not rebuilt (continuing)"
 
 # The small page.
 #
@@ -71,6 +89,7 @@ if [ -f tonight.html ]; then cp tonight.html "$STAGE"/; fi
 "$PY" besttrack.py snapshot || echo "  best bets not snapshotted (continuing)"
 "$PY" bets_page.py || echo "  best-bets-summary.html not rebuilt (continuing)"
 if [ -f best-bets-summary.html ]; then cp best-bets-summary.html "$STAGE"/; fi
+if [ -f market-check.html ]; then cp market-check.html "$STAGE"/; fi
 cp -R reports "$STAGE"/
 # Stops GitHub running the site through Jekyll, which it has no need to do
 # and which is the piece that failed during the outage.

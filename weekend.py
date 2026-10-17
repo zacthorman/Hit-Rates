@@ -39,6 +39,7 @@ from __future__ import annotations
 
 import itertools
 import math
+import os
 import re
 
 import markets
@@ -135,6 +136,10 @@ def legs_for(entry, meta):
                                      kickoff, venue == "home", sample)
             except Exception:
                 side = None
+            try:
+                _market_strength(side, meta, venue == "home")
+            except Exception:
+                pass
 
         # Only markets this competition's board actually carries. The feed
         # reports throw-ins for every league on earth; a book prices them in
@@ -205,6 +210,8 @@ def legs_for(entry, meta):
                         "source": price["source"],
                         "evidence": model.wilson_low(hits, len(values)),
                         "crossLeague": cross,
+                        "avg": round(sum(values) / len(values), 2),
+                        "last": [round(v, 1) for v in values[-5:]],
                     })
                     if chance:
                         _apply_strength(out[-1], chance, side)
@@ -297,12 +304,233 @@ def player_shrink() -> float:
     return _PLAYER_SHRINK["a"]
 
 
-def calibrate(legs):
-    """Give every football player leg its shrunk chance and price it from it.
+def _learn(legs):
+    """The self-correction (learner.py): refitted from every settled pick,
+    applied only while it beats leaving the chances alone on the newest ones.
+    The chance before it is kept as pBase, which is what besttrack records,
+    so the learner never learns from its own output."""
+    try:
+        import learner
+        m = learner.model()
+    except Exception:
+        return
+    for leg in legs:
+        if leg.get("pBase") is not None:
+            continue
+        fair = leg.get("fair")
+        base = leg.get("pStrength") or leg.get("pShrunk") or (
+            1 / fair if isinstance(fair, (int, float)) and fair > 1 else None)
+        if base is None:
+            continue
+        leg["pBase"] = base
+        if not m.get("active"):
+            continue
+        sport = (leg.get("fixture") or {}).get("sport", "football")
+        p = learner.apply(m, base, sport, leg.get("player"), leg.get("stat"))
+        if abs(p - base) < 1e-9:
+            continue
+        leg["pLearned"] = p
+        leg["fair"] = 1 / p
+        need = leg.get("need")
+        leg["need"] = max(need, leg["fair"]) if isinstance(need, (int, float)) and math.isfinite(need) else leg["fair"]
 
-    Team legs that strength has priced are left alone. Idempotent: a leg
-    already calibrated is skipped, so tonight.py and picks() can both call it.
+
+def calibrate(legs):
+    """Give every football player leg its shrunk chance and price it from it,
+    then apply the self-correction to every leg.
+
+    Team legs that strength has priced are left alone by the shrink.
+    Idempotent: a leg already calibrated is skipped, so tonight.py and
+    picks() can both call it.
     """
+    _calibrate_players(legs)
+    _learn(legs)
+    _exchange(legs)
+    return legs
+
+
+# ------------------------------------------------------------ the exchange
+#
+# Where Betfair prices the same bet, or implies it, the chance the picks use
+# is a blend of ours and the exchange's, margin removed, on the log-odds
+# scale (market_prices.leg_quote says what each kind of quote is). How much
+# the exchange counts depends on how real its price is, and once enough of
+# these legs have settled, on what the results say: exchange_eval.py --fit
+# writes exchange_weights.json, one weight per market family, and those
+# replace the defaults below wherever a family has the results to back one.
+#
+# Value is what a bet is worth at the price you can actually take: chance
+# times (back - 1) after Betfair's commission on the winnings, minus the
+# chance of losing. The chance in it is the blend, never the model alone,
+# so an edge has to survive the market pulling the number towards itself.
+EXCHANGE_W_DEEP = 0.85       # tight and £5,000+ matched: a top market (2.5 goals, BTTS)
+EXCHANGE_W_TRADED = 0.7      # tight spread and money matched
+EXCHANGE_W_TIGHT = 0.5       # tight spread, little matched
+EXCHANGE_W_LOOSE = 0.3       # wide spread or back price only
+EXCHANGE_W_BACK = 0.35       # back-only lists, margin estimated
+EXCHANGE_W_DERIVED = 0.5     # implied by the goal model off a tight market
+EXCHANGE_DISAGREE = 0.15     # model this far from the exchange: flag, do not price value
+COMMISSION = float(os.environ.get("BETFAIR_COMMISSION", "0.05"))
+# Market-informed strength: how far tonight's Elo gap moves towards the one
+# Betfair's match odds imply (strength.Side.use_market).
+MARKET_STRENGTH_W = {"traded": 0.8, "tight": 0.6, "loose": 0.4}
+_PRICES: dict = {}
+
+
+def _prices():
+    if "data" not in _PRICES:
+        try:
+            import market_prices
+            _PRICES["data"] = market_prices.load()
+            _PRICES["mod"] = market_prices
+        except Exception:
+            _PRICES["data"] = None
+    return _PRICES.get("data"), _PRICES.get("mod")
+
+
+def _fitted_weights() -> dict:
+    if "weights" not in _PRICES:
+        _PRICES["weights"] = {}
+        try:
+            import json
+            from pathlib import Path
+            w = json.loads((Path(__file__).parent / "exchange_weights.json").read_text())
+            _PRICES["weights"] = w.get("weights") or {}
+        except Exception:
+            pass
+    return _PRICES["weights"]
+
+
+def exchange_family(leg, q) -> str:
+    """The market family a quoted leg belongs to, for fitted weights and the
+    evaluation: stat, player or team, and the kind of quote."""
+    who = "player" if leg.get("player") else "team"
+    return f"{who}|{leg.get('stat')}|{(q or {}).get('kind', 'exchange')}"
+
+
+def ev_at(p: float, back: float | None, commission: float = None) -> float | None:
+    """Expected profit per unit staked at a back price, commission on wins."""
+    if not back or back <= 1:
+        return None
+    c = COMMISSION if commission is None else commission
+    return p * (back - 1) * (1 - c) - (1 - p)
+
+
+def _market_strength(side, meta, home: bool) -> None:
+    data, mp = _prices()
+    if not data or not mp or side is None:
+        return
+    try:
+        imp = mp.implied(data, (meta or {}).get("id"))
+    except Exception:
+        imp = None
+    if not imp or imp.get("win") is None or imp.get("draw") is None:
+        return
+    w, d, l = imp["win"], imp["draw"], imp["loss"]
+    if not home:
+        w, l = l, w
+    mo_tight = imp.get("tight")
+    weight = (MARKET_STRENGTH_W["traded"] if mo_tight and (imp.get("matched") or 0) >= 2000
+              else MARKET_STRENGTH_W["tight"] if mo_tight else MARKET_STRENGTH_W["loose"])
+    side.use_market(w, d, l, weight)
+
+
+def _exchange_weight(leg, q) -> float:
+    fitted = _fitted_weights().get(exchange_family(leg, q))
+    if fitted is not None:
+        return float(fitted)
+    kind = q.get("kind")
+    if kind == "back":
+        return EXCHANGE_W_BACK
+    if kind == "derived":
+        return EXCHANGE_W_DERIVED if q.get("tight") else EXCHANGE_W_LOOSE
+    return (EXCHANGE_W_DEEP if q["tight"] and q["matched"] >= 5000
+            else EXCHANGE_W_TRADED if q["tight"] and q["matched"] >= 500
+            else EXCHANGE_W_TIGHT if q["tight"] else EXCHANGE_W_LOOSE)
+
+
+def _lp(p):
+    p = min(max(p, 1e-4), 1 - 1e-4)
+    return math.log(p / (1 - p))
+
+
+# Market anchoring. Across a whole round the exchange is right on average,
+# so if the model sits above the market on a family of bets every week (on 16
+# October it rated nearly every team-goals under higher than Betfair did),
+# that is the model's bias, not a hundred separate edges. The average gap per
+# family, on the over side and the log-odds scale, is taken off the model
+# before it is compared with the market; what remains is how this bet
+# differs from the market more than the model usually does, which is the
+# only part that can be an edge. Shrunk towards none while a family has few
+# legs.
+ANCHOR_PRIOR = 20
+
+
+def _over_logit(p, over):
+    return _lp(p) if over else -_lp(p)
+
+
+def _exchange(legs):
+    data, mp = _prices()
+    if not data or not mp:
+        return
+    fresh = []
+    for leg in legs:
+        if leg.get("exchange") is not None:
+            continue
+        fid = (leg.get("fixture") or {}).get("id")
+        try:
+            q = mp.leg_quote(data, fid, leg)
+        except Exception:
+            q = None
+        leg["exchange"] = q or False
+        if q:
+            fresh.append((leg, q, chance(leg)))
+
+    gaps: dict = {}
+    for leg, q, model_p in fresh:
+        over = bool(leg.get("over", True))
+        gaps.setdefault(exchange_family(leg, q), []).append(
+            _over_logit(model_p, over) - _over_logit(q["p"], over))
+    bias = {f: (sum(g) / len(g)) * len(g) / (len(g) + ANCHOR_PRIOR) for f, g in gaps.items()}
+    # Back-only lists carry a margin that is only estimated, so their
+    # average sits a little high; anchoring up to it would manufacture value.
+    # There the model is only ever pulled down.
+    for f in bias:
+        if f.endswith("|back"):
+            bias[f] = max(bias[f], 0.0)
+
+    for leg, q, model_p in fresh:
+        over = bool(leg.get("over", True))
+        fam = exchange_family(leg, q)
+        b = bias.get(fam, 0.0)
+        adj_z = _lp(model_p) - (b if over else -b)
+        model_adj = 1 / (1 + math.exp(-adj_z))
+        w = _exchange_weight(leg, q)
+        z = w * _lp(q["p"]) + (1 - w) * adj_z
+        p = 1 / (1 + math.exp(-z))
+        leg["pModel"] = model_p
+        leg["pAnchored"] = model_adj
+        leg["anchor"] = {"family": fam, "legs": len(gaps.get(fam, [])), "bias": round(b, 3)}
+        leg["pExchange"] = p
+        leg["exchangeWeight"] = round(w, 2)
+        leg["fair"] = 1 / p
+        need = leg.get("need")
+        leg["need"] = max(need, leg["fair"]) if isinstance(need, (int, float)) and math.isfinite(need) else leg["fair"]
+        # Value is only claimed where it can mean something: a market that
+        # is a real price, and a model within 15 points of it once its usual
+        # bias is off. On 16 October the loudest "value" on the board was
+        # Fulham under 0.5 goals at +54%, the model saying 30% to a thin
+        # market's 15%. A gap that size is the model being wrong, so it is
+        # flagged as a disagreement instead.
+        gap = model_adj - q["p"]
+        if abs(gap) > EXCHANGE_DISAGREE:
+            leg["disagree"] = round(gap, 4)
+        elif q.get("back") and (q["tight"] or q.get("kind") == "back"):
+            leg["value"] = ev_at(p, q["back"])
+
+
+def _calibrate_players(legs):
     a = None
     for leg in legs:
         if not leg.get("player") or leg.get("pStrength") or leg.get("pShrunk"):
@@ -322,7 +550,8 @@ def calibrate(legs):
 
 def chance(leg) -> float:
     """The one probability the picks rank on (see the note above)."""
-    return leg.get("pStrength") or leg.get("pShrunk") or _shrunk(leg)
+    return (leg.get("pExchange") or leg.get("pLearned") or leg.get("pStrength")
+            or leg.get("pShrunk") or _shrunk(leg))
 
 
 def _prob(leg):
@@ -566,6 +795,29 @@ def _leg_public(leg):
         "player": leg.get("player"), "position": leg.get("position"),
     }
     out["chance"] = round(chance(leg), 4)
+    if leg.get("pBase") is not None:
+        out["chanceBase"] = round(leg["pBase"], 4)
+    if leg.get("exchange"):
+        q = leg["exchange"]
+        out["exchange"] = {"p": q["p"], "back": q.get("back"), "lay": q.get("lay"),
+                           "tight": q.get("tight"), "matched": round(q.get("matched") or 0)}
+        out["chanceModel"] = round(leg.get("pModel") or 0, 4)
+        if leg.get("value") is not None:
+            out["value"] = round(leg["value"], 4)
+        if leg.get("disagree") is not None:
+            out["disagree"] = leg["disagree"]
+    if leg.get("exchange"):
+        q = leg["exchange"]
+        out["exchange"].update({"kind": q.get("kind"), "market": q.get("market"),
+                                "weight": leg.get("exchangeWeight")})
+        if leg.get("pAnchored") is not None:
+            out["chanceAnchored"] = round(leg["pAnchored"], 4)
+            out["anchor"] = leg.get("anchor")
+        if q.get("lambda") is not None:
+            out["exchange"]["lambda"] = q["lambda"]
+    for k in ("avg", "last"):
+        if leg.get(k) is not None:
+            out[k] = leg[k]
     if leg.get("fairRecord") is not None:
         out["fairRecord"] = leg.get("fairRecord")
     if leg.get("pStrength"):
@@ -576,6 +828,11 @@ def _leg_public(leg):
     if leg.get("alt"):
         out["alt"] = True
         out["threshold"] = leg["threshold"]
+    try:
+        import why
+        out["why"] = why.reasons(leg)
+    except Exception:
+        pass
     return out
 
 
@@ -746,8 +1003,15 @@ def _shrunk(leg, a=2.0):
     return (leg["hits"] + a) / (leg["total"] + 2 * a)
 
 
+# A leg the exchange prices clearly shorter than its fair chance is a bet
+# you can only place at a bad price: out of the headline picks.
+BAD_PRICE = -0.05
+
+
 def _headline_ok(leg, sample=MIN_SAMPLE):
     if leg["total"] < sample or leg.get("stat") in PICK_COUNT_STATS:
+        return False
+    if leg.get("value") is not None and leg["value"] < BAD_PRICE:
         return False
     if not leg.get("player") and leg.get("line") == 0.5 and leg.get("over"):
         return False
@@ -817,6 +1081,44 @@ def best_banker(legs):
     out = _single_public(w)
     out["adjusted"] = w["adjusted"]
     return out
+
+
+# ------------------------------------------------------------ value bets
+#
+# The one list on the site picked on price rather than on chance: legs where
+# the blended chance, at the back price Betfair offers right now, after
+# commission, is worth more than the stake. Small edges only count past
+# VALUE_MIN, because the blend's own error is a few points either way.
+VALUE_MIN = 0.03
+VALUE_PRICE = (1.25, 6.0)
+VALUE_COUNT = 5
+
+
+def best_value(legs):
+    quoted = [l for l in legs if l.get("exchange")]
+    pool = [l for l in quoted
+            if l.get("value") is not None and l["value"] >= VALUE_MIN
+            and l.get("disagree") is None and l["total"] >= MIN_SAMPLE
+            and l.get("stat") not in PICK_COUNT_STATS
+            and VALUE_PRICE[0] <= (l["exchange"].get("back") or 0) <= VALUE_PRICE[1]]
+    # Not against its own last five: one landing in five is either a role
+    # that has changed or a run the market has already seen.
+    pool = [l for l in pool if not (l.get("last") and len(l["last"]) >= 4
+            and sum(1 for v in l["last"] if (v > l["line"]) == bool(l.get("over", True))) <= 1)]
+    pool.sort(key=lambda l: -l["value"])
+    chosen, used = [], set()
+    for l in pool:
+        k = (l["fixture"]["id"], l.get("player") or l.get("team"))
+        fk = l["fixture"]["id"]
+        if k in used or fk in used:
+            continue
+        used.update({k, fk})
+        chosen.append(l)
+        if len(chosen) >= VALUE_COUNT:
+            break
+    return {"legs": [_single_public(l) for l in chosen], "quoted": len(quoted),
+            "positive": sum(1 for l in quoted if (l.get("value") or 0) > 0),
+            "commission": COMMISSION, "min": VALUE_MIN}
 
 
 def best_builder(entries):
@@ -910,6 +1212,14 @@ def picks(entries, days=7, now=None):
     out = {"days": days, "floor": ODDS_FLOOR, "sports": [],
            "playerShrink": player_shrink(),
            "playerShrinkLegs": _PLAYER_SHRINK.get("legs")}
+    try:
+        import learner
+        m = learner.model()
+        chk = m.get("check") or {}
+        out["learned"] = {"legs": m.get("legs"), "active": bool(m.get("active")), "updated": m.get("updated"),
+                          "said": chk.get("said"), "landed": chk.get("landed"), "test": chk.get("test")}
+    except Exception:
+        pass
     for sport, group in by_sport.items():
         legs = []
         for entry, meta in group:
@@ -929,12 +1239,30 @@ def picks(entries, days=7, now=None):
             legs.extend(parlay.single_legs_for(entry, meta))
             legs.extend(parlay.alt_legs_for(entry, meta))
         calibrate(legs)
+        matches = None
+        if sport == "darts":
+            # The match markets from darts_model.py, one row per match, soonest
+            # first: who wins at what price, and how long it should run.
+            matches = []
+            for entry, meta in sorted(group, key=lambda x: x[1].get("kickoff") or 0):
+                dm = entry.get("dartsModel")
+                if not dm:
+                    continue
+                t = entry.get("teams") or [{}, {}]
+                fav = 0 if dm["winA"] >= 0.5 else 1
+                pw = dm["winA"] if fav == 0 else 1 - dm["winA"]
+                matches.append({"fixture": meta, "home": t[0].get("name"), "away": t[1].get("name"),
+                                "fav": t[fav].get("name"), "p": round(pw, 4), "fair": round(1 / pw, 2),
+                                "legs": dm.get("expLegs"), "s180": dm.get("exp180"),
+                                "kickoff": meta.get("kickoff"), "report": meta.get("report")})
         out["sports"].append({
+            "matches": matches,
             "sport": sport,
             "label": SPORT_LABELS.get(sport, sport.replace("-", " ").title()),
             "fixtures": len(group),
             "legs": len(legs),
             "single": best_single(legs),
+            "value": best_value(legs),
             "double": best_double(legs),
             "banker": best_banker(legs),
             "acca": best_acca(legs),

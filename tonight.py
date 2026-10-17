@@ -115,8 +115,28 @@ def leg_row(leg) -> str:
         else:
             bits.append("nothing comparable in the record")
         strength_note = f"<br><span class='sub'>{' &middot; '.join(bits)}</span>"
-    chance = leg.get("pStrength") or leg.get("pShrunk")
+    chance = weekend.chance(leg) if (leg.get("pStrength") or leg.get("pShrunk") or leg.get("pExchange")) else None
     record += f"<br><span class='sub'>{chance * 100:.0f}%</span>" if chance else ""
+    q = leg.get("exchange")
+    if q:
+        bits = [f"Betfair {q['p'] * 100:.0f}%"]
+        if q.get("back"):
+            bits.append(f"back {q['back']:.2f}")
+        if leg.get("value") is not None:
+            v = leg["value"]
+            bits.append(f"<b>{'+' if v >= 0 else '&minus;'}{abs(v) * 100:.1f}% value</b>")
+        elif leg.get("disagree") is not None:
+            bits.append(f"model {abs(leg['disagree']) * 100:.0f} pts off the market")
+        strength_note += f"<br><span class='sub'>{' &middot; '.join(bits)}</span>"
+    try:
+        import why
+        w = why.reasons(leg)
+        lines = ([f"+ {html.escape(t)}" for t in w["for"][:2]]
+                 + [f"&minus; {html.escape(t)}" for t in w["against"][:2]])
+        if lines:
+            strength_note += "<br><span class='sub'>" + "<br>".join(lines) + "</span>"
+    except Exception:
+        pass
     return (
         f"<tr><td>{html.escape(fmt_leg(leg))}{where}{strength_note}</td>"
         f"<td class='n'>{record}</td>"
