@@ -808,3 +808,17 @@ The obvious next moves:
 - **Opponent stats.** Currently each record holds the team's own numbers. Store the opponent's too and you get "cards conceded", "shots faced" and so on.
 - **Real lines.** Swap the median-derived line for a bookmaker's, and the hit rates become directly actionable rather than descriptive.
 - **A watchlist.** Run it across every fixture on a Saturday and surface only the stats above some threshold.
+
+## Match-result accas
+
+Who wins, from each report's goals projection and the Betfair prices in `market_prices.json`.
+
+```bash
+python match_result.py --league mls              # safest 2-leg win acca, next 24 hours
+python match_result.py --league mls --legs 3 --log   # 3 legs, logged to match_results.json
+python match_result.py                           # every football report at once
+python match_result.py settle                    # settle logged picks once games finish
+python match_result.py report                    # win rate, profit, model v market Brier score
+```
+
+"Safe" legs need the model and the market to agree on the favourite, ranked by the average of the two. "Value" legs are where the model beats the market by 10 points or more (`--edge`). The goals model has never been tested on match results, so treat value legs as disagreements until `report` has 100+ settled legs behind it.

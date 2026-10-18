@@ -37,6 +37,9 @@ is not there this returns nothing rather than a number with a shrug attached.
 
 from __future__ import annotations
 
+from datetime import datetime
+import json
+from pathlib import Path
 import itertools
 import math
 import os
@@ -623,6 +626,38 @@ def _played(games, sport="football"):
     return [g for g in games if g.get("stats")]
 
 
+# Manual role changes, for when a teammate arrives or returns and a player's
+# record describes a bigger share of the offence than he will get. Same idea as
+# nfl_starters.json for quarterbacks: you know before the data does, and there
+# are no games with the new man yet to measure the effect from.
+#
+#   nfl_roles.json
+#   {"Xavier Hutchinson": {"factor": 0.8, "until": "2026-11-08",
+#                          "because": "Marvin Harrison Jr. debuts 18 Oct"}}
+#
+# Every volume stat in the receiving family is scaled by factor before the
+# hits are counted, so a 3-catch game at 0.8 counts as 2.4. Rates and longs
+# are left alone. Entries past their until date are ignored, by which point
+# there are games with the new man in the record. The factor is a judgement,
+# not a fit: say why in "because" and delete the line once it stops applying.
+ROLES_FILE = Path(__file__).parent / "nfl_roles.json"
+ROLE_SKIP = re.compile(r"(average|per |long|dropped)", re.I)
+
+
+def _roles(today=None) -> dict:
+    try:
+        raw = json.loads(ROLES_FILE.read_text())
+    except Exception:
+        return {}
+    today = today or datetime.now().strftime("%Y-%m-%d")
+    return {name: r for name, r in raw.items()
+            if isinstance(r, dict) and r.get("factor") and str(r.get("until", "9999")) >= today}
+
+
+def _role_scaled(stat: str) -> bool:
+    return stat.startswith(("Receiving", "Rushing and receiving")) and not ROLE_SKIP.search(stat)
+
+
 def player_legs_for(entry, meta):
     """Every priceable player prop on one fixture, both directions.
 
@@ -649,6 +684,7 @@ def player_legs_for(entry, meta):
                         r"non-football|reserve)", re.I)
     injuries = entry.get("injuries") or {}
     qb_change = entry.get("qbChange") or {}
+    roles = _roles() if sport == "american-football" else {}
 
     for team_index, records in enumerate(entry.get("players") or []):
         if team_index >= len(teams):
@@ -679,6 +715,9 @@ def player_legs_for(entry, meta):
                           if (g.get("stats") or {}).get(stat) is not None]
                 if len(values) < MIN_PLAYER_SAMPLE:
                     continue
+                role = roles.get(name) if _role_scaled(stat) else None
+                if role:
+                    values = [v * float(role["factor"]) for v in values]
 
                 over_hits = sum(1 for v in values if v > line)
                 for over in (True, False):
@@ -699,6 +738,7 @@ def player_legs_for(entry, meta):
                         "p": price["p"], "source": price["source"],
                         "evidence": model.wilson_low(hits, len(values)),
                         "crossLeague": cross,
+                        "roleFactor": float(role["factor"]) if role else None,
                     })
     return out
 

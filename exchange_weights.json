@@ -1,7 +1,21 @@
 {
- "updated": "2026-10-16 22:21 UTC",
- "weights": {},
+ "updated": "2026-10-18 00:18 UTC",
+ "weights": {
+  "team|Goals|derived": 0.831,
+  "team|Goals|exchange": 0.699
+ },
  "backMargin": {},
- "fit": {},
- "settled": 11
+ "fit": {
+  "team|Goals|derived": {
+   "n": 98,
+   "raw": 1.0,
+   "default": 0.5
+  },
+  "team|Goals|exchange": {
+   "n": 33,
+   "raw": 1.0,
+   "default": 0.5
+  }
+ },
+ "settled": 231
 }

@@ -1,0 +1,106 @@
+[
+ {
+  "logged": 1792278868.2284584,
+  "kind": "safe",
+  "legs": [
+   {
+    "event_id": 15171713,
+    "kickoff": 1792290600,
+    "competition": "MLS",
+    "report": "mls",
+    "fixture": "Seattle Sounders FC v CF Montr\u00e9al",
+    "team": "Seattle Sounders FC",
+    "side": "home",
+    "goals": [
+     2.02,
+     0.91
+    ],
+    "model": 0.6315349142877601,
+    "market": 0.7051,
+    "chance": 0.66831745714388,
+    "back": 1.41,
+    "matched": 9371.71,
+    "agree": true,
+    "result": null
+   },
+   {
+    "event_id": 15171709,
+    "kickoff": 1792283400,
+    "competition": "MLS",
+    "report": "mls",
+    "fixture": "Austin FC v Vancouver Whitecaps",
+    "team": "Vancouver Whitecaps",
+    "side": "away",
+    "goals": [
+     1.06,
+     2.25
+    ],
+    "model": 0.6420528956692242,
+    "market": 0.5965,
+    "chance": 0.6192764478346121,
+    "back": 1.67,
+    "matched": 4763.0,
+    "agree": true,
+    "result": null
+   }
+  ],
+  "price": 2.3547,
+  "result": null
+ },
+ {
+  "logged": 1792278868.2284613,
+  "kind": "value",
+  "legs": [
+   {
+    "event_id": 15171703,
+    "kickoff": 1792279800,
+    "competition": "MLS",
+    "report": "mls",
+    "fixture": "Atlanta United v Inter Miami CF",
+    "team": "Inter Miami CF",
+    "side": "away",
+    "goals": [
+     1.14,
+     2.58
+    ],
+    "model": 0.683744540629628,
+    "market": 0.5129,
+    "chance": 0.598322270314814,
+    "back": 1.94,
+    "matched": 24286.2,
+    "agree": true,
+    "result": null
+   }
+  ],
+  "price": 1.94,
+  "result": null
+ },
+ {
+  "logged": 1792278868.2284615,
+  "kind": "value",
+  "legs": [
+   {
+    "event_id": 15171707,
+    "kickoff": 1792279800,
+    "competition": "MLS",
+    "report": "mls",
+    "fixture": "New York Red Bulls v Toronto FC",
+    "team": "Toronto FC",
+    "side": "away",
+    "goals": [
+     1.3,
+     1.34
+    ],
+    "model": 0.37855168235855063,
+    "market": 0.2196,
+    "chance": 0.2990758411792753,
+    "back": 4.5,
+    "matched": 36161.7,
+    "agree": false,
+    "result": null
+   }
+  ],
+  "price": 4.5,
+  "result": null
+ }
+]
