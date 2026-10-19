@@ -25,6 +25,7 @@ from __future__ import annotations
 import argparse
 import json
 import random
+import time
 import webbrowser
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -1429,6 +1430,11 @@ def main() -> None:
         "--max-fixtures", type=int, default=40, dest="max_fixtures",
         help="cap on how many darts matches one --darts run builds",
     )
+    parser.add_argument(
+        "--within-days", type=float, default=None, dest="within_days", metavar="DAYS",
+        help="with --league or --teams, only build fixtures kicking off in the "
+             "next DAYS days; none in range exits as 'No fixtures found'",
+    )
     parser.add_argument("--no-open", action="store_true", help="don't launch a browser")
     parser.add_argument("--demo", action="store_true", help="synthetic data, no network")
     args = parser.parse_args()
@@ -1601,6 +1607,21 @@ def main_for(args) -> None:
                 continue
             seen.add(event["id"])
             events.append(event)
+
+        # A horizon, for competitions that only play every few weeks. The
+        # Champions League's "next fixture" is three weeks away between
+        # matchdays, and without this the daily build rebuilt that far-off
+        # round every morning. The message keeps "No fixtures found" so the
+        # --leagues loop and update.py both read it as a quiet week.
+        within = getattr(args, "within_days", None)
+        if within is not None and events:
+            horizon = time.time() + within * 86400
+            later = [e for e in events if (e.get("startTimestamp") or 0) > horizon]
+            if later:
+                print(f"  {len(later)} fixture(s) more than {within} day(s) away, left out")
+            events = [e for e in events if (e.get("startTimestamp") or 0) <= horizon]
+            if not events:
+                raise SystemExit(f"No fixtures found within {within} day(s).")
 
         if not events:
             raise SystemExit("No fixtures found for any of those teams.")

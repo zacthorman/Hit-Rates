@@ -822,3 +822,17 @@ python match_result.py report                    # win rate, profit, model v mar
 ```
 
 "Safe" legs need the model and the market to agree on the favourite, ranked by the average of the two. "Value" legs are where the model beats the market by 10 points or more (`--edge`). The goals model has never been tested on match results, so treat value legs as disagreements until `report` has 100+ settled legs behind it.
+
+## Player lines and the full line log (18 October)
+
+**Player lines** (`playerlines.py`). Every other player leg is priced against the report's one line per stat for the whole squad. This picks each player's own line instead: the highest whole-number rung he has cleared in 7 of his last 10, with his last-10 average at least 10% over it. The same rule as the NFL Defences tab, now in Python for every sport. Only markets bookmakers list (shots, tackles, fouls, passes, saves; NFL yards, receptions, attempts, tackles, kicking; MLB hits, total bases, H+R+RBI, and pitcher props for starters only). Players ruled out on the NFL injury report are dropped, and once a line-up is confirmed only the XI (or the NFL actives) count. Priced through `model.price` and `weekend.calibrate`, so the chance carries the same shrink as every settled player pick. Shown as a **Player lines** table per fixture on tonight.html and recorded by besttrack as category `Player line`.
+
+    python playerlines.py --hours 24 --top 20
+
+Heuristic thresholds (7 of 10, 10% clear, 60% chance floor), not backtested yet. That is what the log below is for.
+
+**Line log** (`linelog.py`). besttrack records what the site chose. This records everything: every leg tonight.py can price plus every player-line candidate, first sighting before kick-off, settled the same way (a DNP voids). Run by publish.sh (snapshot) and update.py (settle).
+
+    python linelog.py report    # calibration by chance band, kind, sport and market; value bets at the Betfair price
+
+One JSON-lines file a month in `linelog/`, around 2 MB on a busy day, so it is gitignored and lives on this Mac with `cache/`. Back it up if the raw rows matter.

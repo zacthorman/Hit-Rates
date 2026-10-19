@@ -1,0 +1,49 @@
+# Virtual environment. Never commit this: it is thousands of files, it is
+# specific to your machine, and requirements.txt already describes it.
+.venv/
+
+# Cached API responses. Regenerable, and they would bloat the repo fast.
+# If you ever want to share a dataset, zip the folder rather than commit it.
+cache/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# macOS
+.DS_Store
+
+# Scratch output from the notebook. Delete this line if you want to keep it.
+live_matches.csv
+
+# Generated output. These are published to the gh-pages branch by
+# publish.sh rather than committed here, because a 3.5 MB report rewritten
+# every gameweek would put hundreds of megabytes into main's history for
+# files that rebuild from the cache in seconds.
+reports/
+index.html
+
+# The track record IS the point, so it is committed rather than ignored.
+# !picks.json
+
+# Scheduled-run bookkeeping. The log is machine-specific and the lock is
+# transient; update.json is config you may want to keep, so it is not ignored.
+update.log
+.last_run.json
+launchd.out.log
+launchd.err.log
+.update.lock
+
+# Betfair login details and session token. NEVER commit these: the repo is
+# public and update.py / publish.sh run `git add -A`.
+.betfair.env
+.betfair_session
+*.env
+
+# Line-up job logs
+lineups_auto.log
+lineups_launchd.out.log
+lineups_launchd.err.log
+darts_prices.json
+darts_market_log.json
+market_prices.json

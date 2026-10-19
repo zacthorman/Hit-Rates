@@ -64,6 +64,10 @@ DEFAULTS = {
     # buys the official's name and his card rate, which is shown and never
     # priced. Cheap enough to leave on.
     "referee": True,
+    # The Champions League and Europa League, each built in its own step
+    # whenever a matchday falls in the next this-many days. 0 turns it off.
+    "champions_league_days": 3,
+    "europa_league_days": 3,
     "prune": True,
     "push": True,
     # Slower than an interactive run on purpose. Nobody is waiting for this
@@ -412,6 +416,8 @@ def main() -> None:
             run([python, "bettrack.py", "settle"], args.dry, allow_fail=True)
             if Path("besttrack.py").exists():
                 run([python, "besttrack.py", "settle"], args.dry, allow_fail=True)
+            if Path("linelog.py").exists():
+                run([python, "linelog.py", "settle"], args.dry, allow_fail=True)
 
         # 1. Fetch and build. Each league is its own report, so one failing
         #    competition does not take the others down with it.
@@ -449,6 +455,32 @@ def main() -> None:
                 if settings.get("referee"):
                     nations.append("--referee")
                 run(nations, args.dry, allow_fail=True)
+
+            # 1b2. European club competitions: the Champions League (Tuesday
+            #      and Wednesday) and the Europa League (Thursday). Their own
+            #      step rather than names in "leagues", for two reasons that
+            #      kept the Champions League being taken back out of the list
+            #      by hand (added 7 Sep, removed 9 Sep). In the list, any
+            #      failure fails the whole league build and nothing is
+            #      published; here it is never fatal. And between matchdays
+            #      each club's next European game is weeks away, so each is
+            #      built only when a matchday is within its *_days setting,
+            #      a quiet "nothing on" the rest of the time. Same flags as the
+            #      domestic leagues, so the pages are built on the same evidence.
+            for name, key in (("Champions League", "champions_league_days"),
+                              ("Europa League", "europa_league_days")):
+                comp_days = settings.get(key)
+                if not comp_days:
+                    continue
+                say(f"building the {name}, next {comp_days} day(s)")
+                comp = [python, "run.py", "--league", name,
+                        "--games", str(settings["games"]),
+                        "--within-days", str(comp_days), "--no-open"]
+                for flag in ("players", "adjust", "tiers", "h2h",
+                             "newsignings", "referee"):
+                    if settings.get(flag):
+                        comp.append(f"--{flag}")
+                run(comp, args.dry, allow_fail=True)
 
             # 1c. The NFL. Its own step: 20 games rather than 38, and a
             #     week with no games simply finds nothing. Never fatal.

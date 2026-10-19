@@ -87,6 +87,8 @@ if [ -f tonight.html ]; then cp tonight.html "$STAGE"/; fi
 # Record the site's best bets as published (pre-kick-off only), then render
 # the Best bets summary page that tracks how they actually did.
 "$PY" besttrack.py snapshot || echo "  best bets not snapshotted (continuing)"
+# And every line the model prices, not just the chosen ones (linelog.py).
+"$PY" linelog.py snapshot || echo "  line log not snapshotted (continuing)"
 "$PY" bets_page.py || echo "  best-bets-summary.html not rebuilt (continuing)"
 if [ -f best-bets-summary.html ]; then cp best-bets-summary.html "$STAGE"/; fi
 if [ -f market-check.html ]; then cp market-check.html "$STAGE"/; fi

@@ -147,6 +147,14 @@ def snapshot(args=None) -> int:
                      key=lambda l: (-weekend.sort_value(l), -(l.get("total") or 0)))[:TOP_SINGLES]
         for l in own:
             add("Fixture single", [l], sport, l.get("fair"), meta)
+        # The player lines tonight.html shows, exactly as shown, so they are
+        # judged like every other pick the site puts forward.
+        try:
+            import playerlines
+            for l in playerlines.suggest(entry, meta):
+                add("Player line", [l], sport, l.get("fair"), meta)
+        except Exception as exc:
+            print(f"  player lines not recorded for {meta.get('home')} v {meta.get('away')}: {exc}")
 
     items = load()
     have = {_key(i) for i in items}

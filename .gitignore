@@ -47,3 +47,7 @@ lineups_launchd.err.log
 darts_prices.json
 darts_market_log.json
 market_prices.json
+
+# Every line the model prices (linelog.py), about 2 MB a busy day. Too big
+# for a public repo's history; it lives on this machine with cache/.
+linelog/

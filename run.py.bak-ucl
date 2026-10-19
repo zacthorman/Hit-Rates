@@ -1,0 +1,1642 @@
+"""
+Build a fixture hit-rate report.
+
+    python run.py --demo                        synthetic data, no network
+    python run.py --search espanyol             find a team's id
+    python run.py --team 2814                   list that team's next fixtures
+    python run.py --team 2814 --pick 0          build the report
+    python run.py --team 2814 --pick 0,1,2      three fixtures in one report
+    python run.py --teams 2814,2833,2817        each team's next fixture
+    python run.py --league premier_league       the whole next round
+    python run.py --leagues premier_league,championship,la_liga
+
+Add --players for per-player stats, --h2h for previous meetings,
+--adjust for opponent-adjusted projections, --newsignings to back-fill
+a new signing's thin sample from the club he just left, --referee for the
+match official and his card averages (display only).
+
+One report can hold several fixtures with a dropdown to switch between them.
+Teams in the same league share matches, and everything is cached, so the
+second and third fixtures cost far less than the first.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import random
+import webbrowser
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+
+import clubcolour
+import hitrates
+import report
+import sofascore_api as api
+
+OUT_DIR = Path(__file__).parent / "reports"
+
+
+
+# How many recent club games each player gets alongside his caps under
+# --club-form. Small on purpose: the report stays mostly international.
+CLUB_FORM_APPS = int(__import__("os").environ.get("CLUB_FORM_APPS", 3))
+
+def describe(event: dict) -> str:
+    tournament = event.get("tournament", {}).get("name", "?")
+    when = ""
+    if event.get("startTimestamp"):
+        when = datetime.fromtimestamp(
+            event["startTimestamp"], tz=timezone.utc
+        ).strftime("%a %d %b %H:%M")
+    # The event id is shown because track.py needs it, and hunting for it
+    # in a URL is a silly thing to make someone do.
+    return (
+        f"{when:>16}  {event['homeTeam']['name']} v {event['awayTeam']['name']}"
+        f"  ({tournament})\n"
+        f"{'':>18}event {event['id']}   "
+        f"home {event['homeTeam']['id']}   away {event['awayTeam']['id']}"
+    )
+
+
+def do_search(query: str, sport: str = "football") -> None:
+    teams = api.search_teams(query, None if sport == "any" else sport)
+    if not teams:
+        print(
+            f"\nNothing found for '{query}'.\n\n"
+            "The search endpoint may have moved too. You can always read a team id\n"
+            "straight off their SofaScore URL: the number at the end of\n"
+            "sofascore.com/team/football/espanyol/2814 is the id.\n"
+        )
+        return
+
+    print(f"\n{len(teams)} team(s):\n")
+    for team in sorted(teams, key=lambda t: t["name"]):
+        country = team.get("country", {}).get("name", "")
+        print(f"  {team['id']:>8}  {team['name']}  ({country})")
+    print("\nRe-run with --team ID.\n")
+
+
+def resolve_names(text: str, sport: str = "football") -> list[int]:
+    """Club names to team ids, one search request each.
+
+    Exists because the fixtures-by-date endpoint is dead, so everything has to
+    start from a team, and hunting twelve ids by hand before a kick-off is not
+    a thing anyone will do. Ambiguity is resolved towards an exact name match
+    first, then the shortest name, because searching "Basel" should give you
+    Basel rather than Basel Under 19.
+    """
+    ids: list[int] = []
+    for raw in text.split(","):
+        name = raw.strip()
+        if not name:
+            continue
+
+        # The built-in table first, so a blocked search endpoint cannot stop
+        # a fixture the rest of the API would build without complaint.
+        known = api.known_team_id(name)
+        if known is not None:
+            print(f"  {name}: {known} (built in, no lookup needed)")
+            ids.append(known)
+            continue
+
+        try:
+            teams = api.search_teams(name, None if sport == "any" else sport)
+        except Exception as exc:
+            print(f"  search failed for '{name}': {type(exc).__name__}")
+            print("  search/all is refused far more often than the data "
+                  "endpoints, and independently of them. Read the id off the "
+                  "team's page on sofascore.com -- the number at the end of "
+                  "the URL -- and use --teams instead.")
+            continue
+        if not teams:
+            print(f"  no team found for '{name}'")
+            continue
+
+        exact = [t for t in teams if t["name"].lower() == name.lower()]
+        pool = exact or teams
+        pick = min(pool, key=lambda t: len(t["name"]))
+
+        country = pick.get("country", {}).get("name", "")
+        note = "" if len(teams) == 1 else f"  (from {len(teams)} matches)"
+        print(f"  {name:<22} -> {pick['name']} {country and f'({country})'} "
+              f"id {pick['id']}{note}")
+        ids.append(pick["id"])
+
+    return ids
+
+
+def list_fixtures(events: list[dict], team_name: str) -> None:
+    if not events:
+        print(f"\nNo upcoming fixtures found for {team_name}.")
+        return
+    print(f"\nNext fixtures for {team_name}:\n")
+    for i, event in enumerate(events):
+        print(f"  [{i}] {describe(event)}")
+    print("\nRe-run with --pick N to build a report.")
+    print("Log a pick with:  python track.py add --event ID --team TEAM_ID ...\n")
+
+
+def team_next_fixture(team_id: int, tournament_id: int | None = None) -> dict | None:
+    """That team's next match, preferring one in the given competition.
+
+    Without the competition filter this returns whatever they play next,
+    which in August is often a European qualifier rather than a league game.
+    That matters twice over: you get the wrong fixture, and because the
+    fixture's competition drives the history filter, you also get both
+    teams' form in that competition only, which is a handful of matches.
+    """
+    upcoming = api.team_next_events(team_id)
+
+    if tournament_id is not None:
+        in_competition = [
+            e for e in upcoming
+            if e.get("tournament", {}).get("uniqueTournament", {}).get("id")
+            == tournament_id
+        ]
+        if in_competition:
+            return in_competition[0]
+        # Nothing scheduled in that competition. Say so rather than silently
+        # substituting a cup tie.
+        if upcoming:
+            other = upcoming[0].get("tournament", {}).get("name", "?")
+            print(
+                f"    team {team_id}: no upcoming fixture in this competition,"
+                f" next is {other}. Skipped."
+            )
+        return None
+
+    if upcoming:
+        return upcoming[0]
+
+    near = api.team_near_events(team_id)
+    return near.get("nextEvent") or near.get("previousEvent")
+
+
+_RATINGS_CACHE: dict = {}
+
+
+def _in_pool(ratings: dict, *team_ids: int) -> bool:
+    """Is any of these teams actually in the fitted ratings?
+
+    A rating exists only for clubs in the table the fit was built from. Asking
+    for one that is not there is not an error, it just returns nothing, which
+    is how a whole fixture can lose its projection without anything being
+    logged.
+    """
+    known = ratings.get("attack") or {}
+    return any(str(t) in known for t in team_ids)
+
+
+def _home_competition_id(records: list[list[dict]]) -> int | None:
+    """The competition these two clubs mostly play in.
+
+    Read off their own matches rather than the fixture's tag, because the tag
+    describes the round and these describe the teams. Cup ties and one-off
+    appearances are outvoted by a league season.
+    """
+    counts: dict[int, int] = {}
+    for team_records in records:
+        for record in team_records or []:
+            comp_id = record.get("tournament_id")
+            if isinstance(comp_id, int):
+                counts[comp_id] = counts.get(comp_id, 0) + 1
+    if not counts:
+        return None
+    return max(counts, key=counts.get)
+
+
+def league_ratings_for(tournament_id: int | None, games: int) -> tuple[dict, dict] | None:
+    """Fit attack and defence ratings for a whole competition.
+
+    Expensive the first time (every club's recent form) and free afterwards,
+    because the cache means a league round reuses matches it was fetching
+    anyway. Without ratings for the rest of the division there is nothing to
+    measure a team against, which is the whole point of the exercise.
+    """
+    if tournament_id is None:
+        return None
+    if tournament_id in _RATINGS_CACHE:
+        return _RATINGS_CACHE[tournament_id]
+
+    ids = api.tournament_team_ids(tournament_id)
+    if len(ids) < 4:
+        print("  not enough teams in the table to fit ratings, skipping adjustment")
+        _RATINGS_CACHE[tournament_id] = None
+        return None
+
+    print(f"  fitting ratings from {len(ids)} teams (first run is slow, then cached)")
+    by_team = {}
+    for i, team_id in enumerate(ids, start=1):
+        recs = hitrates.team_form(
+            team_id=team_id, team_name=f"team {team_id}",
+            tournament_id=tournament_id, limit=games, verbose=False,
+        )
+        if recs:
+            by_team[team_id] = recs
+        print(f"    {i}/{len(ids)} teams", end="\r")
+
+    if len(by_team) < 4:
+        _RATINGS_CACHE[tournament_id] = None
+        return None
+
+    names = hitrates.stat_names(*by_team.values())
+    ratings = hitrates.league_ratings(by_team, names)
+    print(f"    fitted from {len(by_team)} teams              ")
+
+    _RATINGS_CACHE[tournament_id] = (ratings, names)
+    return _RATINGS_CACHE[tournament_id]
+
+
+def team_colour(team_id: int) -> str | None:
+    """A club's kit colour, or None if the club has no usable one.
+
+    One cheap request per club, cached for a week. Kit colours change once a
+    season at most.
+
+    Primary, then secondary, then text, taking the first with an actual hue.
+    SofaScore's primary is the shirt's dominant colour, and for Spurs, Leeds,
+    Brentford, Sunderland and Fulham that is white, which is no use as a chart
+    colour. Their secondary is the colour you would name if asked.
+    """
+    data = api.get_json(f"team/{team_id}", max_age_hours=168, verbose=False) or {}
+    colours = (data.get("team") or data).get("teamColors") or {}
+    valid = [c for c in (colours.get("primary"), colours.get("secondary"),
+                         colours.get("text"))
+             if isinstance(c, str) and c.startswith("#")]
+    return clubcolour.best_of(*valid)
+
+
+def fixture_colours(home_id: int, away_id: int) -> dict:
+    """Chart colours for both clubs, in both modes.
+
+    Kit colours cannot be used raw: half of them fail contrast against one
+    background or the other, and a third of derbies are red against red. So
+    each is moved into a legible band and the pair is checked for separation,
+    including under red-green colour blindness. See clubcolour.py.
+    """
+    home_kit = team_colour(home_id)
+    away_kit = team_colour(away_id)
+
+    light = clubcolour.pair_for(home_kit, away_kit, "light")
+    dark = clubcolour.pair_for(home_kit, away_kit, "dark")
+
+    return {
+        "light": list(light),
+        "dark": list(dark),
+        "kits": [home_kit, away_kit],
+    }
+
+
+_TIER_CACHE: dict = {}
+
+# Which division sits directly below each one. Used to stack last season's
+# tables so a promoted club ranks below every club in the division above.
+DIVISION_BELOW = {
+    17: 18,     # Premier League -> Championship
+}
+
+# Competitions whose entrants come from different domestic leagues.
+#
+# Everywhere else a club's form is filtered to the competition being played,
+# which is right: the Premier League is the best guide to the Premier League.
+# Here it is wrong twice over. A club reaches the league phase having played
+# eight European matches a season at most, and on matchday one it has played
+# none at all, so the filter either returns nothing or returns a sample far
+# too thin to price off. Worse, collect_events keeps the filtered set the
+# moment it reaches five matches, so by midwinter one club in a tie can be
+# judged on six European games while its opponent, one match short of the
+# threshold, is judged on thirty-eight of everything. Two teams on the same
+# page, scored on different evidence, with nothing on the page to say so.
+#
+# So for these, form is drawn from every competition the club has played.
+# That sample is mostly domestic and it is not a like-for-like guide to
+# European football. It is the honest best available, and it is marked as
+# cross-league in the payload so the report can say so rather than quietly
+# discarding it.
+CROSS_LEAGUE_COMPETITIONS = {
+    7,      # UEFA Champions League
+    679,    # UEFA Europa League
+    # Nations League. A national side plays a handful of these a year, so
+    # its form is always World Cup, qualifiers and friendlies. Without this
+    # the page's wrong-competition guard threw away both teams' entire
+    # record, and Standout lines and Best teams came up empty however far
+    # the minimums were lowered.
+    10783,  # UEFA Nations League
+}
+
+
+def tier_map_for(tournament_id: int | None) -> dict:
+    """Club to standard of opposition, from last season's final tables.
+
+    Last season, not this one: in August the current table is three games
+    old and would put whoever won on the opening weekend in the top six.
+    """
+    if tournament_id is None:
+        return {}
+    if tournament_id in _TIER_CACHE:
+        return _TIER_CACHE[tournament_id]
+
+    tables = []
+    for tid in (tournament_id, DIVISION_BELOW.get(tournament_id)):
+        if tid is None:
+            continue
+        season = api.previous_season_id(tid)
+        if season is None:
+            continue
+        table = api.tournament_table(tid, season)
+        if table:
+            tables.append(table)
+            print(f"  read last season's table: {len(table)} clubs")
+
+    tier_map = hitrates.build_tier_map(tables)
+    if not tier_map:
+        print("  couldn't read last season's tables, skipping the tier view")
+    _TIER_CACHE[tournament_id] = tier_map
+    return tier_map
+
+
+def match_result(event: dict) -> dict | None:
+    """The score and per-stat outcome of a fixture that has been played.
+
+    Returns None for anything upcoming, which is the normal case and not a
+    failure. Fetching this costs one request per played fixture, and only for
+    fixtures already in the report, so it does not widen the crawl.
+    """
+    if (event.get("status") or {}).get("type") != "finished":
+        return None
+
+    raw = api.event_statistics(event["id"])
+    stats = hitrates.extract_match_stats(raw)
+    if not stats:
+        return None
+
+    return {
+        "home": event.get("homeScore", {}).get("current"),
+        "away": event.get("awayScore", {}).get("current"),
+        # {period: {stat: [home, away]}}, matching the projection's shape so
+        # the two can be compared directly in the page.
+        "stats": {
+            period: {name: list(pair) for name, pair in bucket.items()}
+            for period, bucket in stats.items()
+        },
+    }
+
+
+# Trips on the first sign that SofaScore is refusing, so a blocked run does
+# not keep spending its remaining goodwill on a garnish. The core build keeps
+# its own behaviour: if the refusals continue, its next real fetch raises
+# Blocked and stops things properly, exactly as it would have without this.
+_PREVIOUS_CLUB_DISABLED = False
+
+
+def _previous_club_records(team: dict, current_records: list[dict],
+                           before: float | None = None) -> list[dict]:
+    """hitrates.previous_club_form, wrapped so it can never cost the build.
+
+    This runs unattended at 7am, takes hours, and publishes at the end, so a
+    crash here would trade a whole day's report for a bonus feature. Every
+    failure - a moved endpoint, a malformed transfer date, anything - is
+    named out loud and swallowed, and the fixture goes out exactly as it
+    would have with the flag off. Blocked gets one step more than a shrug:
+    it means the site is refusing everyone, so trying again on the next
+    fixture would be hammering, and the feature switches itself off for the
+    rest of the run instead.
+    """
+    global _PREVIOUS_CLUB_DISABLED
+    if _PREVIOUS_CLUB_DISABLED:
+        return []
+    try:
+        return hitrates.previous_club_form(
+            team_id=team["id"],
+            team_name=team["name"],
+            current_records=current_records,
+            before=before,
+        )
+    except api.Blocked as exc:
+        _PREVIOUS_CLUB_DISABLED = True
+        print(f"    previous-club stats: blocked ({exc}). Feature off for "
+              f"the rest of this run; everything else continues.")
+        return []
+    except Exception as exc:
+        print(f"    previous-club stats failed for {team.get('name', '?')}: "
+              f"{type(exc).__name__}: {exc}. Continuing without them.")
+        return []
+
+
+# Same arrangement as _PREVIOUS_CLUB_DISABLED above, for the same reason:
+# this runs unattended, and a garnish must never cost the build.
+_REFEREE_DISABLED = False
+
+
+def _fixture_referee(event: dict) -> dict | None:
+    """The fixture's referee with his card averages, or None, never an error.
+
+    One request per fixture (the bare event record, cached for twelve hours),
+    parsed by hitrates.referee_card_rates. None covers both "nothing went
+    wrong but no referee has been appointed yet" - the normal case until a
+    few days before kick-off - and "something went wrong", and in either
+    case the fixture goes out exactly as it would with the flag off: the
+    payload simply has no referee key. Blocked switches the feature off for
+    the rest of the run, because retrying ninety times against a site that
+    is refusing turns a rate limit into a reputation problem.
+    """
+    global _REFEREE_DISABLED
+    if _REFEREE_DISABLED:
+        return None
+    try:
+        return hitrates.referee_card_rates(api.event_details(event["id"]))
+    except api.Blocked as exc:
+        _REFEREE_DISABLED = True
+        print(f"    referee: blocked ({exc}). Feature off for the rest of "
+              f"this run; everything else continues.")
+        return None
+    except Exception as exc:
+        print(f"    referee lookup failed for event {event.get('id', '?')}: "
+              f"{type(exc).__name__}: {exc}. Continuing without it.")
+        return None
+
+
+def _sample_age(records: list, event: dict) -> int | None:
+    """Days from the most recent match in either team's form to kick-off."""
+    kickoff = event.get("startTimestamp")
+    if not kickoff:
+        return None
+
+    newest = None
+    for team_records in records:
+        for record in team_records:
+            date = record.get("date")
+            if not date:
+                continue
+            if newest is None or date > newest:
+                newest = date
+
+    if not newest:
+        return None
+    try:
+        last = datetime.fromisoformat(newest).replace(tzinfo=timezone.utc)
+    except ValueError:
+        return None
+    return max(0, int((datetime.fromtimestamp(kickoff, tz=timezone.utc) - last).days))
+
+
+def build_fixture(
+    event: dict, games: int, players: bool, h2h: bool = False,
+    adjust: bool = False, all_stats: bool = False, tiers: bool = False,
+    newsignings: bool = False, referee: bool = False,
+    *, form_days: float | None = None, club_form: bool = False,
+) -> dict | None:
+    """Gather everything the report needs for one fixture."""
+    home = event["homeTeam"]
+    away = event["awayTeam"]
+    tournament = event.get("tournament", {})
+    unique_id = tournament.get("uniqueTournament", {}).get("id")
+
+    print(f"\n{home['name']} v {away['name']}  ({tournament.get('name', '?')})")
+    if unique_id is None:
+        print("  no competition id on this fixture, using all finished matches")
+
+    sport = ((tournament.get("category") or {})
+              .get("sport") or {}).get("slug") or "football"
+    # Darts is cross-competition by nature. A player's World Grand Prix record
+    # is one match a year; his real form is the Players Championships, Euro
+    # Tour and majors around it, all under different uniqueTournament ids.
+    cross_league = unique_id in CROSS_LEAGUE_COMPETITIONS or sport == "darts"
+    if cross_league:
+        print("  cross-league competition: form drawn from all competitions")
+
+    records = [
+        hitrates.team_form(
+            team_id=team["id"],
+            team_name=team["name"],
+            tournament_id=None if cross_league else unique_id,
+            limit=games,
+            sport=sport,
+            max_age_days=form_days,
+        )
+        for team in (home, away)
+    ]
+
+    if not any(records):
+        print("  no statistics for either team, skipping this fixture")
+        return None
+
+    names = hitrates.stat_names(*records, bettable_only=not all_stats, sport=sport)
+    lines = hitrates.suggest_lines(records, names)
+
+    kickoff = ""
+    if event.get("startTimestamp"):
+        kickoff = datetime.fromtimestamp(
+            event["startTimestamp"], tz=timezone.utc
+        ).strftime("%A %d %B %Y, %H:%M UTC")
+
+    entry = {
+        "fixture": {
+            "id": event["id"],
+            "home": home["name"],
+            "away": away["name"],
+            # A cross-competition tournament reports its stage in the name:
+            # "UEFA Nations League, League A, Gr. 3". Filed under that, every
+            # group became its own competition on the index. The parent name
+            # keeps them together. Domestic leagues are left alone, because
+            # the page compares this against each record's competition.
+            "competition": (
+                (tournament.get("uniqueTournament") or {}).get("name")
+                if cross_league else None
+            ) or tournament.get("name", "Football"),
+            "date": kickoff,
+            "kickoff": event.get("startTimestamp", 0),
+            "tournamentId": unique_id,
+            # Set when the two clubs come from different domestic leagues, so
+            # their form is all-competition by design rather than by accident.
+            # The report reads this to stop its own mismatch filter throwing
+            # away every row on the page.
+            "crossLeague": cross_league,
+            # Days between the newest match in the sample and this kick-off.
+            #
+            # A hit rate says nothing about when it was set, and the page had
+            # no way to tell a record built last Tuesday from one built last
+            # February. That distinction is the whole story for a season
+            # opener: an NFL side coming into week one has not played a
+            # competitive down since January, with a roster and a coordinator
+            # that have both moved since. Measured rather than hardcoded per
+            # sport, because a club returning from a winter break has the same
+            # problem in a milder form and deserves the same warning.
+            "staleDays": _sample_age(records, event),
+            # Which sport, straight from the feed. The index groups by this,
+            # and until every report carries it that grouping falls back to
+            # sniffing the stat names, which works only because football and
+            # American football share none of them.
+            "sport": ((tournament.get("category") or {})
+                      .get("sport") or {}).get("slug") or "football",
+        },
+        "teams": [
+            # The id matters as much as the name. A record stores the
+            # opponent's short name while this stores the full one, so the
+            # report cannot ask "did he play against this lot" by comparing
+            # strings: "Manchester City" never equals "Man City", and fuzzy
+            # matching offered Everton as the nearest thing to Coventry City.
+            {"name": home["name"], "id": home["id"], "side": "home"},
+            {"name": away["name"], "id": away["id"], "side": "away"},
+        ],
+        # What actually happened, when it already has. Carried in the payload
+        # so a played fixture can show whether its own projections held up,
+        # rather than the report going quiet the moment a match kicks off.
+        # None for anything still to come.
+        "result": match_result(event),
+        # Two chart colours derived from the clubs' actual kits. Worked out
+        # here rather than in the browser because it needs the kit colours
+        # from the API, and because the result is fixed for the fixture.
+        "colours": fixture_colours(home["id"], away["id"]),
+        "records": records,
+        "stats": names,
+        "lines": lines,
+    }
+
+    # No opponent adjustment across leagues, and no pretending otherwise.
+    #
+    # The ratings put every club on one scale by normalising within a pool of
+    # sides that have played enough common opponents to be comparable, and two
+    # clubs from different countries have played none. project_fixture would
+    # refuse the pair anyway on MIN_PAIR_LINKS, which is the Hull City guard
+    # doing exactly its job. The reason to stop earlier is the refit below: it
+    # falls back to the competition most common in the two clubs' records,
+    # which for a cross-league tie is one side's domestic league, and _in_pool
+    # is satisfied by finding either club in it. That yields a fit containing
+    # the home side and not the away side, and a projection built from it
+    # would look ordinary and be meaningless. Fitting 36 clubs to reach that
+    # also costs hours of requests.
+    if adjust and cross_league:
+        print("  no opponent adjustment: these clubs share no opposition to "
+              "calibrate against")
+        entry["ratingNotes"] = [
+            "These clubs play in different leagues and have no opponents in "
+            "common, so there is no shared scale to rate them on"
+        ]
+    elif adjust:
+        fitted = league_ratings_for(unique_id, games)
+
+        # The competition on a fixture is not always the competition its clubs
+        # play in. Malaga v Deportivo is tagged LaLiga because that is the
+        # tournament the round belongs to, but both are LaLiga 2 sides, so the
+        # fit was built from the 20 top-flight clubs and contained neither of
+        # them. The projection came back empty and the fixture silently lost
+        # every number, despite the two sharing 21 opponents and being as
+        # rateable as any pair in the report.
+        #
+        # So when neither side is in the fitted pool, refit from the division
+        # they actually play in, taken from the competition that appears most
+        # in their own recent matches.
+        if fitted and not _in_pool(fitted[0], home["id"], away["id"]):
+            own_id = _home_competition_id(records)
+            if own_id is not None and own_id != unique_id:
+                print(f"  neither club is in that division's table, "
+                      f"refitting from their own")
+                refitted = league_ratings_for(own_id, games)
+                if refitted and _in_pool(refitted[0], home["id"], away["id"]):
+                    fitted = refitted
+
+        if fitted:
+            ratings, league_names = fitted
+            projection = hitrates.project_fixture(
+                ratings, home["id"], away["id"], league_names
+            )
+            if projection:
+                entry["projection"] = projection
+                entry["ratingTeams"] = ratings.get("teams", 0)
+
+            # A projection is only as good as the matches behind it. A
+            # promoted club's recent form was played against opponents who
+            # are not in this division, so almost none of it can be used, and
+            # saying so beats printing a confident wrong number.
+            floor = ratings.get("minMatches", 0)
+            thin = []
+            for team in (home, away):
+                usable = hitrates.rating_coverage(ratings, team["id"])
+                if usable < floor:
+                    thin.append(
+                        f"{team['name']}: only {usable} of their recent matches "
+                        f"were against a team in this division, so no "
+                        f"opponent-adjusted projection is shown for them"
+                    )
+                    print(f"  {thin[-1]}")
+            if thin:
+                entry["ratingNotes"] = thin
+
+    # The standard-of-opposition view. It answers the question the ratings
+    # cannot when one side is promoted: not "how good is Coventry", which
+    # nothing here can know, but "what do Arsenal do to sides of that
+    # standard", which their own record answers directly.
+    # Not for a cross-league competition. The tier map is built by stacking
+    # last season's final tables, and there is no table that ranks a Spanish
+    # club against a German one. Asked for tid 7 it reads the previous
+    # European season instead, which before 2024 was a four-team group table,
+    # and everyone missing from it defaults to "bottom" -- so every opponent
+    # in the competition is labelled the weakest there is. That is not a
+    # degraded view, it is a confident wrong one, and it feeds projections.
+    if tiers and unique_id in CROSS_LEAGUE_COMPETITIONS:
+        print("  skipping the tier view: no table ranks these leagues against"
+              " each other")
+    elif tiers:
+        tier_map = tier_map_for(unique_id)
+        if tier_map:
+            entry["tiers"] = {
+                "map": {str(k): v for k, v in tier_map.items()},
+                "labels": hitrates.TIER_LABELS,
+                "of": [
+                    hitrates.tier_of(tier_map, home["id"]),
+                    hitrates.tier_of(tier_map, away["id"]),
+                ],
+            }
+
+            # If the fitted model gave up on one side, fall back to the
+            # other side's record against that standard, and mark it so the
+            # report can say where the number came from.
+            if "projection" not in entry or entry.get("ratingNotes"):
+                home_rated = hitrates.tier_of(tier_map, away["id"]) == "bottom"
+                rated_index = 0 if home_rated else 1
+                fallback = hitrates.tier_projection(
+                    rated_records=records[rated_index],
+                    tier_map=tier_map,
+                    opponent_id=(away if home_rated else home)["id"],
+                    rated_is_home=home_rated,
+                )
+                if fallback:
+                    entry["tierProjection"] = fallback
+                    entry["tierProjectionFrom"] = (home if home_rated else away)["name"]
+                    print(
+                        f"  tier projection from {entry['tierProjectionFrom']}'s "
+                        f"record against bottom-tier sides "
+                        f"({fallback['matches']} matches)"
+                    )
+
+    # Who the referee is and how card-happy he runs. DISPLAY ONLY, by
+    # explicit agreement: head-to-head history and possession both looked
+    # informative in backtests and turned out to be noise, so referee
+    # effects get shown and measured before they are ever trusted. Nothing
+    # here feeds a line, a projection or a price. Absence is normal, not
+    # failure: appointments land days before kick-off, so a fixture a week
+    # out has no referee key at all and the page stays quiet about it,
+    # rather than dressing "not known yet" up as 0.0 cards a game.
+    if referee:
+        ref = _fixture_referee(event)
+        if ref:
+            entry["referee"] = ref
+            rate = ref.get("yellowsPerGame")
+            note = (f"{rate} yellows/game over {ref['games']} matches"
+                    if rate is not None else "no card history on record")
+            print(f"  referee: {ref['name']}, {note}")
+
+    if h2h:
+        h2h_records = hitrates.head_to_head(
+            event_id=event["id"], home_id=home["id"], away_id=away["id"],
+            limit=games,
+            # The fixture's own kickoff as the cutoff. On the live path this
+            # excludes nothing, because every previous meeting predates a
+            # match that has not kicked off - and that is exactly why it is
+            # safe to pass unconditionally. The day this function is pointed
+            # at the past, the h2h feed holds this fixture's own result, and
+            # without the cutoff it would be read back as evidence.
+            before=event.get("startTimestamp") or None,
+        )
+        if any(h2h_records):
+            entry["h2h"] = h2h_records
+            # H2H needs its own lines: two teams meeting each other produce
+            # different numbers from their form against everyone else.
+            h2h_names = hitrates.stat_names(*h2h_records,
+                                            bettable_only=not all_stats,
+                                            sport=sport)
+            entry["h2hStats"] = h2h_names
+            entry["h2hLines"] = hitrates.suggest_lines(h2h_records, h2h_names)
+
+            # Player numbers for those same meetings.
+            #
+            # Without this the player head-to-head block can only see
+            # meetings that happen to sit inside the form window, because
+            # lineups are fetched per match and only form matches were ever
+            # fetched. Two clubs in different NFL divisions meet once in
+            # twenty games, so every card read "1/1" and looked like a thin
+            # record when it was really an unasked question.
+            #
+            # Needs --players: without it there is nothing on the page to
+            # show these against.
+            if players:
+                entry["h2hPlayers"] = hitrates.player_head_to_head(
+                    event_id=event["id"], home_id=home["id"], away_id=away["id"],
+                    home_name=home.get("name", ""), away_name=away.get("name", ""),
+                    limit=games,
+                    before=event.get("startTimestamp") or None,
+                    sport=sport,
+                )
+        else:
+            print("  no head to head data, skipping that view")
+
+    if players:
+        print("  player stats:")
+        # Caps are the sample. Club form, when asked for, is added further
+        # down as a light top-up, not a replacement: an England report built
+        # from Arsenal and Real Madrid games answered a different question
+        # from the one being bet on, and the page could not show those rows
+        # at all because none of their match ids were England matches.
+        player_records = [
+            hitrates.player_form(
+                team_id=team["id"],
+                team_name=team["name"],
+                tournament_id=None if cross_league else unique_id,
+                limit=games,
+                sport=sport,
+                max_age_days=form_days,
+            )
+            for team in (home, away)
+        ]
+        entry["players"] = player_records
+        entry["playerStats"] = hitrates.player_stat_names(
+            *player_records, bettable_only=not all_stats, sport=sport
+        )
+        entry["playerLines"] = hitrates.suggest_player_lines(
+            player_records, entry["playerStats"]
+        )
+
+        # Club form as a top-up. Appended after the stat list and lines are
+        # settled, so every line on the page is still set by the caps alone.
+        # Each player gets at most CLUB_FORM_APPS of his most recent club
+        # games, tagged former_club so the page admits them through the same
+        # door as a new signing's old-club record: labelled with where they
+        # came from, left out of head to head and tier filters. Ten caps plus
+        # three club games is mostly international, which is the point.
+        if club_form:
+            for side, team in enumerate((home, away)):
+                try:
+                    club_recs = hitrates.club_form_for_squad(
+                        team_id=team["id"], team_name=team["name"],
+                        max_age_days=form_days or 400, sport=sport,
+                    )
+                except Exception as exc:
+                    print(f"    {team['name']}: club form skipped ({type(exc).__name__})")
+                    continue
+                by_player: dict = {}
+                for r in club_recs:
+                    by_player.setdefault(r.get("player_id") or r.get("player"), []).append(r)
+                added = 0
+                for recs in by_player.values():
+                    recs.sort(key=lambda r: r.get("date") or "", reverse=True)
+                    for r in recs[:CLUB_FORM_APPS]:
+                        r["former_club"] = r.get("club") or {"name": "club", "id": None}
+                        player_records[side].append(r)
+                        added += 1
+                print(f"    {team['name']}: +{added} club record(s), "
+                      f"max {CLUB_FORM_APPS} per player")
+
+        # Previous-club stats for new signings, appended only after the stat
+        # list and the lines are settled. The ordering is deliberate: with
+        # the flag on, every number the report computes today comes out
+        # identical, and the imported records ride along as extra rows,
+        # each tagged "former_club", for the front end to draw on. Failure
+        # here must never cost the build - see _previous_club_records.
+        if newsignings:
+            for team_index, team in enumerate((home, away)):
+                extra = _previous_club_records(
+                    team, player_records[team_index],
+                    before=event.get("startTimestamp") or None,
+                )
+                if extra:
+                    player_records[team_index].extend(extra)
+
+    print_summary(entry)
+    return entry
+
+
+# Darts events that are not the PDC tour proper. They play most days, the
+# players have little or no statistics, and a sweep that includes them spends
+# hundreds of requests building empty fixtures. Matched against the
+# tournament name, case-insensitively. Override with --darts-skip.
+DARTS_SKIP = ("modus", "super series", "wdf", "challenge tour",
+              "development tour", "women", "youth", "legends", "junior",
+              "bdo", "winmau", "icons", "exhibition")
+
+
+# PDC tour players to start the darts sweep from. Every match one of these
+# plays in the window comes in, along with whoever he is drawn against, so the
+# list only has to touch each event, not name everyone in it. Ids read off the
+# cached darts feed; add to it as new names break through.
+DARTS_SEEDS = (
+    412122, 272992, 26280, 143420, 191218, 70916, 143410, 222544, 172078,
+    35951, 190416, 253804, 180890, 248244, 410446, 191330, 298580, 83897,
+    342180, 273922, 232576, 136796, 132048, 26272, 26110, 68642, 331967,
+    85671, 132040, 35969, 186078, 337886, 51537, 407830, 32762, 51766,
+    206512, 136790, 42237,
+)
+
+
+def _in_window(event: dict, now: float, until: float) -> bool:
+    if (event.get("status") or {}).get("type") != "notstarted":
+        return False
+    start = event.get("startTimestamp") or 0
+    if not now < start < until:
+        return False
+    home = (event.get("homeTeam") or {}).get("name", "")
+    away = (event.get("awayTeam") or {}).get("name", "")
+    # A draw not yet made comes through as TBD v TBD, and in darts a later
+    # round arrives as "Winner OF Match 16" before the earlier one is played.
+    # Neither is a player: one side has no record at all, so the page shows
+    # half a fixture. The next run picks the match up once the slot resolves.
+    names = (home + " " + away).lower()
+    placeholder = ("tbd" in names or "winner of" in names
+                   or "loser of" in names)
+    return bool(home and away) and not placeholder
+
+
+def darts_events(days: int, skip: tuple[str, ...] = DARTS_SKIP,
+                 limit: int = 40) -> list[dict]:
+    """Every not-yet-started PDC match in the next few days.
+
+    Darts has no league table, so --league cannot find the players, and the
+    day-by-day schedule endpoint 404s (check.py found that months ago for
+    football, and darts is the same). So this asks each seed player for his
+    next matches, the same team/events/next call every other path uses.
+    About forty requests, cached for six hours.
+    """
+    now = datetime.now(tz=timezone.utc).timestamp()
+    until = now + max(1, days) * 86400
+    found, seen, skipped = [], set(), {}
+    for player_id in DARTS_SEEDS:
+        for event in api.team_next_events(player_id):
+            if event["id"] in seen:
+                continue
+            seen.add(event["id"])
+            name = (event.get("tournament") or {}).get("name", "?")
+            if any(word in name.lower() for word in skip):
+                skipped[name] = skipped.get(name, 0) + 1
+                continue
+            if _in_window(event, now, until):
+                found.append(event)
+    found.sort(key=lambda e: e.get("startTimestamp") or 0)
+    if skipped:
+        print("  skipped (not PDC tour): "
+              + ", ".join(f"{k} ({v})" for k, v in sorted(skipped.items())))
+    if len(found) > limit:
+        print(f"  {len(found)} matches, keeping the first {limit} (--max-fixtures)")
+        found = found[:limit]
+    return found
+
+
+def nations_events(days: int, limit: int = 60) -> list[dict]:
+    """Every Nations League match in the next few days.
+
+    Not from the day-by-day schedule: that endpoint 404s, and FlareSolverr
+    hands the 404 back as a page, so the first version of this read an empty
+    schedule and built nothing. Tries the competition's own upcoming list
+    first, then falls back to asking each nation for its next matches, which
+    is the team/events/next call the club leagues already rely on.
+    """
+    now = datetime.now(tz=timezone.utc).timestamp()
+    until = now + max(1, days) * 86400
+    found, seen = {}, set()
+
+    def take(event):
+        unique = ((event.get("tournament") or {})
+                  .get("uniqueTournament") or {}).get("id")
+        if unique == 10783 and event["id"] not in seen and _in_window(event, now, until):
+            found[event["id"]] = event
+        seen.add(event["id"])
+
+    seasons = api.season_ids(10783, count=1)
+    if seasons:
+        for page in range(3):
+            data = api.get_json(
+                f"unique-tournament/10783/season/{seasons[0]}/events/next/{page}",
+                max_age_hours=6) or {}
+            events = data.get("events") or []
+            for event in events:
+                take(event)
+            if not data.get("hasNextPage"):
+                break
+
+    if not found:
+        print("  competition list empty, asking each nation instead")
+        for team_id in api.tournament_team_ids(10783):
+            for event in api.team_next_events(team_id):
+                take(event)
+
+    out = sorted(found.values(), key=lambda e: e.get("startTimestamp") or 0)
+    if len(out) > limit:
+        print(f"  {len(out)} matches, keeping the first {limit}")
+        out = out[:limit]
+    return out
+
+
+def build(
+    events: list[dict], games: int, open_browser: bool,
+    players: bool, h2h: bool = False, adjust: bool = False,
+    all_stats: bool = False, tiers: bool = False,
+    newsignings: bool = False, referee: bool = False,
+    *, form_days: float | None = None, club_form: bool = False,
+    out_name: str | None = None,
+) -> Path:
+    fixtures = []
+    for i, event in enumerate(events, start=1):
+        print(f"\n[{i}/{len(events)}]", end="")
+        entry = build_fixture(event, games, players, h2h, adjust, all_stats,
+                              tiers, newsignings, referee,
+                              form_days=form_days, club_form=club_form)
+        if entry:
+            fixtures.append(entry)
+
+    if not fixtures:
+        raise SystemExit(
+            "\nNo fixture produced any data.\n"
+            "Try --games 20, or check the competition filter if these are cup ties."
+        )
+
+    # Line-ups for the Line-ups tab: one request per fixture. Predicted XIs
+    # days out, the confirmed one when it is out. Never fatal.
+    try:
+        import lineup_data
+        got = sum(lineup_data.attach(entry) for entry in fixtures)
+        if got:
+            print(f"\n  line-ups attached for {got}/{len(fixtures)} fixture(s)")
+    except Exception as exc:
+        print(f"\n  line-ups skipped ({type(exc).__name__})")
+
+    # NFL: the injury report and any change at quarterback, so receivers are
+    # not priced off a passer who is not playing. Never fatal.
+    try:
+        import nfl_injuries
+        nfl = [e for e in fixtures if (e.get("fixture") or {}).get("sport") == "american-football"]
+        if nfl:
+            injuries = nfl_injuries.fetch()
+            for entry in nfl:
+                nfl_injuries.attach(entry, injuries)
+            changes = [(e["fixture"][s], q) for e in nfl for s, q in (e.get("qbChange") or {}).items()]
+            for team, q in changes:
+                print(f"  QB change, {team}: {q['from']} {q['reason']} -> {q['to'] or 'backup'}")
+    except Exception as exc:
+        print(f"\n  NFL injuries skipped ({type(exc).__name__})")
+
+    payload = {"fixtures": fixtures, "periods": hitrates.PERIODS}
+
+    OUT_DIR.mkdir(exist_ok=True)
+    first = fixtures[0]["fixture"]
+    comps = {f["fixture"]["competition"] for f in fixtures}
+
+    if out_name:
+        # A sweep across several competitions that still wants one stable
+        # URL, e.g. darts.html for every PDC event in the next few days.
+        slug = out_name
+    elif len(fixtures) == 1:
+        slug = f"{first['home']}-v-{first['away']}"
+    elif len(comps) == 1:
+        # A whole division's round, named for the competition alone.
+        #
+        # The fixture count used to be in here, and it was the single biggest
+        # source of confusion in this project. A round of 10 wrote
+        # premier-league-10-fixtures.html; next week's round of 11 wrote a new
+        # file and left the old one published forever, still serving whatever
+        # numbers were true when it was built. Twice in one afternoon a bug was
+        # reported against a stale file that had already been fixed, and the
+        # warning about it went to a log nobody reads.
+        #
+        # A stable name means each league has exactly one URL that is always
+        # current, links stay valid, and there are no orphans to prune.
+        slug = first["competition"]
+    else:
+        slug = f"mixed-{first['home']}"
+    # Accents are folded to ASCII before the filter, not left to isalnum.
+    #
+    # Python counts an accented letter as alphanumeric, so Brazil's league
+    # wrote brasileirao-betano.html with a tilde in the filename. It serves,
+    # but it has to be percent-encoded in a URL, which makes a link that
+    # survives being copied into a message a matter of luck. The rest of this
+    # function exists to give each league one stable URL; a character that
+    # renders differently depending on who is handling it works against that.
+    import unicodedata
+    folded = unicodedata.normalize("NFKD", slug.lower().replace(" ", "-"))
+    slug = "".join(c for c in folded
+                   if (c.isalnum() and not unicodedata.combining(c)) or c == "-")
+
+    path = OUT_DIR / f"{slug}.html"
+
+    # A cross-competition tournament is never built as one round: the
+    # Nations League comes in batches of a few --teams at a time. With one
+    # stable file per competition, each batch used to overwrite the last and
+    # the 5pm games vanished when the 7.45pm ones were built. Carry forward
+    # any fixture from the file on disk that this build does not replace and
+    # that has not long since finished.
+    if len(comps) == 1 and all(f["fixture"].get("crossLeague") for f in fixtures) \
+            and path.exists():
+        import re
+        try:
+            old = json.loads(re.search(r"const ALL = (\{.*?\});\n",
+                                       path.read_text(encoding="utf-8"), re.S).group(1))
+        except Exception:
+            old = {}
+        have = {f["fixture"]["id"] for f in fixtures}
+        cutoff = datetime.now(tz=timezone.utc).timestamp() - 4 * 3600
+        kept = [f for f in old.get("fixtures", [])
+                if f.get("fixture", {}).get("id") not in have
+                and (f.get("fixture", {}).get("kickoff") or 0) > cutoff]
+        if kept:
+            fixtures.extend(kept)
+            fixtures.sort(key=lambda f: (f["fixture"].get("kickoff") or 0,
+                                         f["fixture"].get("home", "")))
+            payload["fixtures"] = fixtures
+            print(f"\n  kept {len(kept)} fixture(s) already in {path.name}")
+
+    report.write_report(payload, path)
+
+    print(f"\n\n{len(fixtures)} fixture(s) written to {path}")
+    print(api.cache_summary())
+
+    if open_browser:
+        webbrowser.open(path.resolve().as_uri())
+
+    return path
+
+
+def print_summary(entry: dict, period: str = "ALL") -> None:
+    """A readable version in the terminal, so the HTML is optional.
+
+    Only the full match is printed here. The halves are in the report, where
+    there's room for them.
+    """
+    names = [t["name"] for t in entry["teams"]]
+    stats = entry["stats"].get(period, [])
+    lines = entry["lines"].get(period, {})
+    if not stats:
+        return
+
+    width = max((len(s) for s in stats), default=10)
+
+    print(f"\n  {'stat':<{width}}  {'line':>6}  {names[0][:16]:>16}  {names[1][:16]:>16}")
+    print("  " + "-" * (width + 46))
+
+    for stat in stats:
+        line = lines.get(stat)
+        if line is None:
+            continue
+        cells = []
+        for records in entry["records"]:
+            hits, total = hitrates.hit_rate(records, stat, line, period)
+            cells.append(f"{hits}/{total}" if total else "no data")
+        print(f"  {stat:<{width}}  {line:>6}  {cells[0]:>16}  {cells[1]:>16}")
+
+
+def demo() -> Path:
+    """Synthetic data, so the report can be checked without network access."""
+    rng = random.Random(7)
+    team_stats = [
+        ("Goals", 2, 1),
+        ("Total shots", 12, 4),
+        ("Shots on target", 4, 2),
+        ("Corner kicks", 5, 2),
+        ("Offsides", 2, 1),
+        ("Fouls", 12, 3),
+        ("Yellow cards", 2, 1),
+        ("Throw-ins", 20, 5),
+    ]
+    opponents = ["Betis", "Barca", "Rayo", "Levante", "Madrid",
+                 "Sevilla", "Athletic", "Osasuna", "Sociedad", "Getafe"]
+    positions = ["G", "D", "D", "D", "M", "M", "F", "F", "M", "M"]
+
+    def make_matches(strength: float, competition: str = "LaLiga (demo data)") -> list[dict]:
+        matches = []
+        for i in range(10):
+            full = {
+                name: max(0, round(rng.gauss(mean * strength, spread)))
+                for name, mean, spread in team_stats
+            }
+            # Split each total across the halves, second half a shade busier,
+            # which is roughly how real matches behave.
+            first = {k: round(v * rng.uniform(0.35, 0.55)) for k, v in full.items()}
+            second = {k: v - first[k] for k, v in full.items()}
+
+            # What the opposition managed. Independent of `full` on purpose,
+            # so the For and Against views are visibly different in the demo.
+            opp = {
+                name: max(0, round(rng.gauss(mean * (2 - strength), spread)))
+                for name, mean, spread in team_stats
+            }
+            opp_first = {k: round(v * rng.uniform(0.35, 0.55)) for k, v in opp.items()}
+            opp_second = {k: v - opp_first[k] for k, v in opp.items()}
+            matches.append({
+                "id": rng.randint(10**6, 10**7),
+                "date": f"2026-0{3 + i // 5}-{(i * 3) % 28 + 1:02d}",
+                "opponent": opponents[i],
+                "opponent_id": 1000 + i,
+                "venue": "home" if i % 2 == 0 else "away",
+                "goals_for": rng.randint(0, 3),
+                "goals_against": rng.randint(0, 3),
+                "result": rng.choice(["W", "D", "L"]),
+                "competition": competition,
+                "stats": {"ALL": full, "1ST": first, "2ND": second},
+                "against": {"ALL": opp, "1ST": opp_first, "2ND": opp_second},
+            })
+        return matches
+
+    def make_players(squad: list[str], matches: list[dict]) -> list[dict]:
+        out = []
+        for match in matches:
+            for name, pos in zip(squad, positions):
+                if rng.random() < 0.15:      # rotation and injuries
+                    continue
+                attacking = pos in ("F", "M")
+                out.append({
+                    "player": name,
+                    "player_id": abs(hash(name)) % 100000,
+                    "position": pos,
+                    "started": rng.random() > 0.2,
+                    "match_id": match["id"],
+                    "date": match["date"],
+                    "opponent": match["opponent"],
+                    "venue": match["venue"],
+                    "minutes": rng.choice([90, 90, 90, 78, 64, 21]),
+                    "stats": {
+                        "Shots": max(0, round(rng.gauss(2.2 if attacking else 0.4, 1.3))),
+                        "Shots on target": max(0, round(rng.gauss(0.9 if attacking else 0.2, 0.9))),
+                        "Tackles": max(0, round(rng.gauss(1.8, 1.2))),
+                        "Passes": max(0, round(rng.gauss(45 if pos == "D" else 30, 14))),
+                        "Fouls": max(0, round(rng.gauss(1.1, 1.0))),
+                        "Rating": round(rng.gauss(6.9, 0.6), 1),
+                    },
+                })
+        return out
+
+    # Real kit primaries, so the colour handling is exercised by the demo.
+    DEMO_KITS = {
+        "Espanyol": "#0072ce", "Levante UD": "#004b9b",
+        "Getafe": "#005999", "Rayo Vallecano": "#ffffff",
+    }
+
+    SQUADS = {
+        "Espanyol": ["Dmitrovic", "El Hilali", "Riedel", "Cabrera", "Exposito",
+                     "Dolan", "R. Fernandez", "Pere Milla", "Urko Gonzalez", "Calatrava"],
+        "Levante UD": ["Cardenas", "Toljan", "Elgezabal", "Sanchez", "Rey",
+                       "Romero", "Etta Eyong", "Morales", "Vencedor", "Brugue"],
+        "Getafe": ["Soria", "Duarte", "Alderete", "Iglesias", "Milla",
+                   "Maksimovic", "Mayoral", "Uche", "Arambarri", "Santi"],
+        "Rayo Vallecano": ["Batalla", "Balliu", "Lejeune", "Mumin", "Valentin",
+                           "Ciss", "De Frutos", "Camello", "Palazon", "Perez"],
+    }
+
+    def one(home: str, away: str, promoted: bool = False) -> dict:
+        # One fixture has a "promoted" away side so the mismatch guard and the
+        # tier fallback are both visible; the other has two same-division
+        # sides so the matchup scan has something legitimate to find.
+        matches = [
+            make_matches(1.15),
+            make_matches(0.9, "Segunda (demo data)" if promoted
+                         else "LaLiga (demo data)"),
+        ]
+        names = hitrates.stat_names(*matches)
+        meetings = [make_matches(1.05)[:6], make_matches(0.95)[:6]]
+        h2h_names = hitrates.stat_names(*meetings)
+        players = [make_players(SQUADS[home], matches[0]),
+                   make_players(SQUADS[away], matches[1])]
+        pnames = hitrates.player_stat_names(*players)
+        return {
+            "fixture": {
+                "id": rng.randint(10**6, 10**7),
+                "home": home,
+                "away": away,
+                "competition": "LaLiga (demo data)",
+                "date": "Sunday 16 August 2026, 18:00 UTC",
+                "kickoff": 4102444800,   # far future, so the demo never hides
+            },
+            "teams": [{"name": home, "side": "home"}, {"name": away, "side": "away"}],
+            "colours": {
+                "light": list(clubcolour.pair_for(
+                    DEMO_KITS.get(home), DEMO_KITS.get(away), "light")),
+                "dark": list(clubcolour.pair_for(
+                    DEMO_KITS.get(home), DEMO_KITS.get(away), "dark")),
+                "kits": [DEMO_KITS.get(home), DEMO_KITS.get(away)],
+            },
+            "records": matches,
+            "stats": names,
+            "lines": hitrates.suggest_lines(matches, names),
+            "players": players,
+            "playerStats": pnames,
+            "playerLines": hitrates.suggest_player_lines(players, pnames),
+            "projection": {
+                "ALL": {name: [round(mean * 1.15 * 0.8, 1), round(mean * 0.7, 1)]
+                        for name, mean, _ in team_stats},
+            },
+            "ratingTeams": 20,
+            "h2h": meetings,
+            "h2hStats": h2h_names,
+            "h2hLines": hitrates.suggest_lines(meetings, h2h_names),
+        }
+
+    # A demo tier map, so the Opposition control and the promoted-side
+    # fallback can both be checked without touching the network. The ten
+    # demo opponents are stacked top to bottom in the order they are listed.
+    demo_tiers = {
+        str(1000 + i): ("top" if i < 3 else "upper" if i < 5
+                        else "lower" if i < 7 else "bottom")
+        for i in range(10)
+    }
+
+    fixtures = [one("Espanyol", "Levante UD"),
+                one("Getafe", "Rayo Vallecano", promoted=True)]
+
+    for entry in fixtures:
+        entry["tiers"] = {
+            "map": demo_tiers,
+            "labels": hitrates.TIER_LABELS,
+            "of": ["upper", "bottom"],
+        }
+
+    # Second fixture stands in for Arsenal v Coventry: the away side cannot
+    # be rated, so the fitted projection is removed and the estimate from the
+    # rated side's record against bottom-tier opposition takes its place.
+    promoted = fixtures[1]
+    promoted.pop("projection", None)
+    promoted["ratingNotes"] = [
+        "Rayo Vallecano: only 1 of their recent matches were against a team "
+        "in this division, so no opponent-adjusted projection is shown for them"
+    ]
+    promoted["tierProjection"] = hitrates.tier_projection(
+        rated_records=promoted["records"][0],
+        tier_map={1000 + i: v for i, v in enumerate(
+            ["top", "top", "top", "upper", "upper", "lower", "lower",
+             "bottom", "bottom", "bottom"])},
+        opponent_id=9999,
+        rated_is_home=True,
+        min_matches=2,
+    )
+    promoted["tierProjectionFrom"] = "Getafe"
+    for entry in fixtures:
+        print_summary(entry)
+
+    OUT_DIR.mkdir(exist_ok=True)
+    path = OUT_DIR / "demo.html"
+    report.write_report({"fixtures": fixtures, "periods": hitrates.PERIODS}, path)
+    print(f"\nWritten to {path}")
+    return path
+
+
+def parse_picks(text: str, limit: int) -> list[int]:
+    picks = []
+    for part in text.split(","):
+        part = part.strip()
+        if not part:
+            continue
+        value = int(part)
+        if not 0 <= value < limit:
+            raise SystemExit(f"--pick values must be between 0 and {limit - 1}")
+        picks.append(value)
+    return picks
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument("--search", help="find a team id by name")
+    parser.add_argument(
+        "--sport", default="football",
+        help="which sport --search and --names look in: football (the "
+             "default), american-football, basketball, darts, or 'any'. A "
+             "darts competitor is a person, and searching for one while the "
+             "filter says football returns nothing at all",
+    )
+    parser.add_argument("--team", type=int, help="team id, from --search")
+    parser.add_argument("--teams", help="comma-separated team ids, next fixture of each")
+    parser.add_argument(
+        "--names",
+        help="comma-separated club NAMES, resolved to ids automatically, then "
+             "the next fixture of each. Use when you know who is playing but "
+             "not their ids: --names \"Benfica,Fenerbahce,Basel\"",
+    )
+    parser.add_argument(
+        "--league",
+        help="a whole competition's next round, e.g. premier_league, la_liga",
+    )
+    parser.add_argument(
+        "--leagues",
+        help="several competitions, comma separated. One report each.",
+    )
+    parser.add_argument("--pick", help="index, or comma-separated indices, from the list")
+    parser.add_argument("--games", type=int, default=10, help="matches per team")
+    parser.add_argument(
+        "--form-days", type=float, default=None, dest="form_days",
+        help="also cap the form window by age, in days. For internationals: "
+             "a national side plays ten matches in fourteen months, so "
+             "'last 10' reaches back past a manager and most of a squad. "
+             "Try 400 for one season's worth of caps",
+    )
+    parser.add_argument(
+        "--club-form", action="store_true", dest="club_form",
+        help="for international fixtures: pull each squad member's record "
+             "from his CLUB rather than from his caps, tagged with where it "
+             "came from. Six caps prices nothing; twenty club games does. "
+             "Costs roughly 100 requests per squad, so it is off by default",
+    )
+    parser.add_argument("--show", type=int, default=5, help="how many fixtures to list")
+    parser.add_argument(
+        "--all-stats", action="store_true", dest="all_stats",
+        help="keep every stat, not just the ones you can bet on",
+    )
+    parser.add_argument(
+        "--adjust", action="store_true",
+        help="fit opponent-adjusted ratings and project this fixture",
+    )
+    parser.add_argument(
+        "--h2h", action="store_true",
+        help="also fetch previous meetings between the two teams",
+    )
+    parser.add_argument(
+        "--players", action="store_true",
+        help="also fetch per-player stats (one extra request per match)",
+    )
+    parser.add_argument(
+        "--newsignings", action="store_true",
+        help="pull a new signing's record in from the club he just left, "
+             "tagged with where it came from, so a two-appearance sample "
+             "becomes something usable (needs --players)",
+    )
+    parser.add_argument(
+        "--referee", action="store_true",
+        help="name the match referee and his card averages, one extra "
+             "request per fixture. Display only: never fed into any line, "
+             "projection or price",
+    )
+    parser.add_argument(
+        "--tiers", action="store_true",
+        help="split each team's record by the standard of the opposition, "
+             "and project promoted fixtures from the rated side's record "
+             "against bottom-tier opponents (wants --games 38)",
+    )
+    parser.add_argument(
+        "--nations", type=int, nargs="?", const=7, default=None, metavar="DAYS",
+        help="every UEFA Nations League match in the next DAYS days "
+             "(default 7), one report at reports/uefa-nations-league.html",
+    )
+    parser.add_argument(
+        "--darts", type=int, nargs="?", const=3, default=None, metavar="DAYS",
+        help="every PDC darts match in the next DAYS days (default 3), one "
+             "report at reports/darts.html. Form is drawn from all "
+             "competitions, since no single darts event has enough of it",
+    )
+    parser.add_argument(
+        "--darts-skip", dest="darts_skip", default=None,
+        help="comma-separated words; darts tournaments whose name contains "
+             "any of them are left out. Replaces the built-in list "
+             "(Modus, WDF, Challenge Tour, Women's Series and so on)",
+    )
+    parser.add_argument(
+        "--max-fixtures", type=int, default=40, dest="max_fixtures",
+        help="cap on how many darts matches one --darts run builds",
+    )
+    parser.add_argument("--no-open", action="store_true", help="don't launch a browser")
+    parser.add_argument("--demo", action="store_true", help="synthetic data, no network")
+    args = parser.parse_args()
+
+    if args.demo:
+        demo()
+        return
+
+    if args.search:
+        do_search(args.search, args.sport)
+        return
+
+    # Several divisions in one go. Each gets its own report rather than one
+    # enormous file, so the index reads as a list of rounds and no single
+    # page has to carry a hundred fixtures.
+    if args.leagues:
+        wanted = [x.strip() for x in args.leagues.split(",") if x.strip()]
+        built, failed, empty = [], [], []
+        for name in wanted:
+            print(f"\n{'=' * 60}\n{name}\n{'=' * 60}")
+            try:
+                sub = argparse.Namespace(**vars(args))
+                sub.leagues = None
+                sub.league = name
+                sub.no_open = True
+                main_for(sub)
+                built.append(name)
+            except SystemExit as exc:
+                print(f"  {name} failed: {exc}")
+                # A competition with nothing on this week is not a fault. The
+                # Champions League plays eight matchdays a season, so for most
+                # of the year "no fixtures" is the correct answer and must not
+                # stop the other seven leagues being published. Anything else
+                # -- a name that does not resolve, a team list that would not
+                # read, a fixture that produced no data at all -- is a real
+                # failure and the run is not clean.
+                if "No fixtures found" in str(exc):
+                    empty.append(name)
+                else:
+                    failed.append(name)
+
+        print(f"\n\nBuilt {len(built)} report(s): {', '.join(built) or 'none'}")
+        if empty:
+            print(f"Nothing on this week: {', '.join(empty)}")
+        print("Now run: python make_index.py")
+
+        # A competition that failed used to be a line in the middle of a
+        # fourteen hour log and an exit code of zero, so update.py published a
+        # site with a league quietly missing from it and called that success.
+        # The run is only clean if everything asked for was built.
+        if failed:
+            raise SystemExit(
+                f"Failed: {', '.join(failed)}. "
+                f"{len(built)} of {len(wanted)} report(s) built; the others are "
+                "missing from this run, and any older report for them is stale."
+            )
+        return
+
+    main_for(args)
+
+
+def main_for(args) -> None:
+    league_filter = None
+
+    if getattr(args, "nations", None) is not None:
+        print(f"Reading the Nations League schedule for the next {args.nations} day(s)...")
+        events = nations_events(args.nations)
+        if not events:
+            dropped = api.last_transport_error()
+            if dropped:
+                raise SystemExit(f"Couldn't reach SofaScore ({dropped}).")
+            raise SystemExit("No fixtures found: no Nations League in that window.")
+        print(f"\n{len(events)} match(es) to build:")
+        for event in events:
+            print(f"  {describe(event)}")
+        build(events, args.games, not args.no_open, args.players, args.h2h,
+              False, args.all_stats, False, False, args.referee,
+              form_days=args.form_days, club_form=args.club_form)
+        return
+
+    if getattr(args, "darts", None) is not None:
+        skip = DARTS_SKIP
+        if args.darts_skip is not None:
+            skip = tuple(w.strip().lower() for w in args.darts_skip.split(",")
+                         if w.strip())
+        print(f"Reading the darts schedule for the next {args.darts} day(s)...")
+        events = darts_events(args.darts, skip, args.max_fixtures)
+        if not events:
+            dropped = api.last_transport_error()
+            if dropped:
+                raise SystemExit(f"Couldn't reach SofaScore ({dropped}).")
+            raise SystemExit("No fixtures found: no PDC darts in that window.")
+        print(f"\n{len(events)} match(es) to build:")
+        for event in events:
+            print(f"  {describe(event)}")
+        # No --players (darts has no lineups) and no --adjust (there is no
+        # league to fit ratings over). --h2h is worth having: the top forty
+        # meet each other constantly.
+        build(events, args.games, not args.no_open, False, args.h2h, False,
+              args.all_stats, False, False, False,
+              form_days=args.form_days, out_name="darts")
+        return
+
+    # A whole competition: read the team list off the league table, then
+    # take each team's next fixture. Two teams playing each other collapse
+    # to one fixture, so 20 clubs give you a 10-match round.
+    if args.league:
+        tournament_id = api.tournament_id_for(args.league)
+        if tournament_id is None:
+            key = args.league.lower().replace("-", "_").replace(" ", "_")
+            if key.isdigit():
+                tournament_id = int(key)
+            else:
+                raise SystemExit(
+                    f"Unknown league '{args.league}'. Known: "
+                    + ", ".join(sorted(api.TOURNAMENTS))
+                    + "\nOr pass a uniqueTournament id directly."
+                )
+
+        print(f"Reading the {args.league} team list...")
+        ids = api.tournament_team_ids(tournament_id)
+        if not ids:
+            # An empty team list has two completely different causes that look
+            # identical from here, and the old message asserted the wrong one.
+            # If the last request never reached SofaScore, the endpoint is
+            # fine and the network was not -- telling someone to go rewrite
+            # check.py for a DNS blip wastes an evening.
+            dropped = api.last_transport_error()
+            if dropped:
+                raise SystemExit(
+                    f"\nCouldn't reach SofaScore at all ({dropped}) while reading "
+                    f"the team list.\nNothing is wrong with the endpoint: the "
+                    f"request never left the machine.\n"
+                    "\nCheck the connection and run the same command again. If the "
+                    "machine\nhad just woken up, that is usually all it was."
+                )
+            raise SystemExit(
+                "\nCouldn't read the team list. The request got through and came "
+                "back empty,\nso that endpoint may have moved, the same way the "
+                "fixtures one did.\nAdd these to check.py and run it:\n"
+                f"  unique-tournament/{tournament_id}/seasons\n"
+                f"  unique-tournament/{tournament_id}/season/SEASON_ID/standings/total\n"
+                "\nIn the meantime --teams with a comma-separated list still works."
+            )
+        print(f"  {len(ids)} teams")
+        args.teams = ",".join(str(i) for i in ids)
+        league_filter = tournament_id
+
+    # Names first: resolve them to ids and then fall through to exactly the
+    # same path --teams uses, so there is only one code path to trust.
+    if args.names:
+        print("Resolving club names...")
+        found = resolve_names(args.names, args.sport)
+        if not found:
+            raise SystemExit("None of those names resolved to a team.")
+        args.teams = ",".join(str(i) for i in found)
+
+    # Several teams: take each one's next fixture, de-duplicated in case two
+    # of them happen to be playing each other.
+    if args.teams:
+        ids = [int(x.strip()) for x in args.teams.split(",") if x.strip()]
+        events, seen = [], set()
+        for team_id in ids:
+            event = team_next_fixture(team_id, league_filter)
+            if not event:
+                if league_filter is None:
+                    print(f"  no fixture found for team {team_id}")
+                continue
+            if event["id"] in seen:
+                continue
+            seen.add(event["id"])
+            events.append(event)
+
+        if not events:
+            raise SystemExit("No fixtures found for any of those teams.")
+
+        print(f"\n{len(events)} fixture(s) to build:")
+        for event in events:
+            print(f"  {describe(event)}")
+
+        build(events, args.games, not args.no_open, args.players,
+              args.h2h, args.adjust, args.all_stats, args.tiers,
+              args.newsignings, args.referee,
+              form_days=args.form_days, club_form=args.club_form)
+        return
+
+    if args.team is None:
+        parser.print_help()
+        print("\nStart with:  python run.py --search espanyol\n")
+        return
+
+    info = api.get_json(f"team/{args.team}", max_age_hours=168) or {}
+    team_name = info.get("team", {}).get("name", f"team {args.team}")
+
+    events = api.team_next_events(args.team)[: args.show]
+    if not events:
+        fallback = team_next_fixture(args.team)
+        events = [fallback] if fallback else []
+
+    if args.pick is None:
+        list_fixtures(events, team_name)
+        return
+
+    picks = parse_picks(args.pick, len(events))
+    build([events[i] for i in picks], args.games, not args.no_open,
+          args.players, args.h2h, args.adjust, args.all_stats, args.tiers,
+          args.newsignings, args.referee)
+
+
+if __name__ == "__main__":
+    main()

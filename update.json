@@ -20,6 +20,8 @@
   "delay_min": 3.0,
   "delay_max": 6.0,
   "nations_days": 7,
+  "champions_league_days": 3,
+  "europa_league_days": 3,
   "nfl": true,
   "darts": 3,
   "mlb": true

@@ -145,6 +145,25 @@ def leg_row(leg) -> str:
     )
 
 
+def player_row(leg) -> str:
+    """One playerlines.py suggestion: the player's own rung, and why."""
+    trend = leg.get("trend")
+    note = [f"avg {leg['avg']:.1f} last {leg['recentN']}"]
+    if trend and abs(trend - 1) >= 0.1:
+        note.append(f"last 3 {'up' if trend > 1 else 'down'} {abs(trend - 1) * 100:.0f}%")
+    if leg.get("lineupStatus"):
+        note.append(leg["lineupStatus"])
+    return (
+        f"<tr><td>{html.escape(fmt_leg(leg))}"
+        f"<br><span class='sub'>{html.escape(leg.get('team') or '')} &middot; "
+        f"{' &middot; '.join(html.escape(n) for n in note)}</span></td>"
+        f"<td class='n'>{leg['recentHits']}/{leg['recentN']}"
+        f"<br><span class='sub'>{leg['hits']}/{leg['total']} all</span></td>"
+        f"<td class='n'>{leg['chance'] * 100:.0f}%</td>"
+        f"<td class='n'>{odds(leg.get('fair'))}</td></tr>"
+    )
+
+
 def builder_block(builder) -> str:
     """A same-game builder, with the correlation discount shown rather than hidden."""
     if not builder:
@@ -293,6 +312,12 @@ def build(hours: float | None) -> str:
         )[:SINGLES_PER_FIXTURE]
 
         singles = "".join(leg_row(l) for l in own) or "<tr><td colspan='4'>nothing qualified</td></tr>"
+        try:
+            import playerlines
+            plines = "".join(player_row(l) for l in playerlines.suggest(entry, meta))
+        except Exception as exc:          # never cost the page its other sections
+            plines = f"<tr><td colspan='4'>player lines unavailable ({html.escape(str(exc))})</td></tr>"
+        plines = plines or "<tr><td colspan='4'>nothing qualified</td></tr>"
         blocks.append(
             f"<section><h2>{kick} &middot; {html.escape(meta['home'])} v "
             f"{html.escape(meta['away'])}</h2>"
@@ -301,7 +326,13 @@ def build(hours: float | None) -> str:
             f"<h3>Best singles here</h3>"
             f"<table><thead><tr><th>Selection</th><th class='n'>Record</th>"
             f"<th class='n'>Fair</th><th class='n'>Need</th></tr></thead>"
-            f"<tbody>{singles}</tbody></table></section>"
+            f"<tbody>{singles}</tbody></table>"
+            f"<h3>Player lines</h3>"
+            f"<p class='sub'>Each player's own line: the highest he has cleared in 7 of his "
+            f"last 10, with his average 10% clear of it. Back at the fair price or longer.</p>"
+            f"<table><thead><tr><th>Selection</th><th class='n'>Last 10</th>"
+            f"<th class='n'>Chance</th><th class='n'>Fair</th></tr></thead>"
+            f"<tbody>{plines}</tbody></table></section>"
         )
 
     body = (research_block(now)
