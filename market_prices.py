@@ -231,7 +231,11 @@ def fetch(days: int = 7) -> dict:
                 markets.append({"type": (m.get("description") or {}).get("marketType"),
                                 "name": m.get("marketName"), "runners": runners, "overround": over,
                                 "matched": book.get("totalMatched")})
-            out["events"][str(fid)] = {"betfair": e.get("name"), "start": e.get("openDate"),
+            # bfEvent: Betfair's own event id. Paddy Power shares the platform,
+            # and paddypower_prices.py tries it as Paddy Power's event id,
+            # checking the team names on what comes back before trusting it.
+            out["events"][str(fid)] = {"betfair": e.get("name"), "bfEvent": e.get("id"),
+                                       "start": e.get("openDate"),
                                        "swapped": swapped, "score": score, "sport": sport, "markets": markets}
     OUT.write_text(json.dumps(out, indent=0))
     return out

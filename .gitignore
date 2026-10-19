@@ -51,3 +51,7 @@ market_prices.json
 # Every line the model prices (linelog.py), about 2 MB a busy day. Too big
 # for a public repo's history; it lives on this machine with cache/.
 linelog/
+
+# Paddy Power line record (pplog.py), kept on this machine like linelog/
+pplog/
+.paddypower_off

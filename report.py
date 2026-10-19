@@ -1105,6 +1105,185 @@ input[type=number]::-webkit-inner-spin-button {
 .numbtn:hover { background: var(--tint); border-color: var(--baseline); }
 .numbtn:active { transform: scale(.94); }
 .price-input { width: 74px; min-width: 74px; }
+/* ---- Players tab: squads and profiles */
+.pp-mode { margin: 0 0 14px; }
+#odds-strip { margin: 0 0 12px; }
+.mo-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 9px 12px;
+  background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; font-size: 13.5px; }
+.mo-label { font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); font-weight: 620; }
+.mo-cell { display: inline-flex; align-items: baseline; gap: 6px; }
+.mo-cell b { font-variant-numeric: tabular-nums; }
+.mo-cell small, .mo-muted { color: var(--muted); font-size: 12px; }
+.mo-muted { margin-left: auto; }
+.pp-wrap .mo-strip { margin-bottom: 14px; }
+.pp-teams { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.pp-teamcard { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+.pp-team { all: unset; cursor: pointer; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 9px; width: 100%; }
+.pp-team b { font-size: 18px; font-weight: 680; }
+.pp-team .pp-sub { flex-basis: 100%; }
+.pp-go { margin-left: auto; color: var(--muted); font-size: 13px; }
+.pp-team .pp-go { position: relative; top: -2px; }
+.pp-sub { color: var(--text-secondary); font-size: 13px; font-weight: 400; }
+.pp-xilabel { font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); font-weight: 620; margin: 12px 0 7px; }
+.pp-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.pp-chip { border: 1px solid var(--border); background: var(--tint); color: var(--text-primary); border-radius: 999px;
+  padding: 5px 10px; font: inherit; font-size: 13px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.pp-chip:hover, .pp-row:hover { border-color: var(--baseline); }
+.pp-crumbs { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 12px; }
+.pp-back { border: 1px solid var(--border); background: var(--control-bg); color: var(--text-primary); border-radius: 8px;
+  padding: 6px 11px; font: inherit; font-size: 13px; cursor: pointer; }
+.pp-section { font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); font-weight: 620; margin: 18px 0 8px; }
+.pp-row { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; font: inherit; color: var(--text-primary);
+  background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 9px 12px; margin-bottom: 6px; cursor: pointer; }
+.pp-row .lu-shirt { min-width: 22px; text-align: center; }
+.pp-name { display: flex; flex-direction: column; min-width: 150px; }
+.pp-name small { color: var(--muted); font-size: 12px; }
+.pp-tags { display: flex; flex-wrap: wrap; gap: 5px; flex: 1; justify-content: flex-end; }
+.pp-tag { font-size: 11.5px; background: var(--tint); border-radius: 6px; padding: 3px 7px; color: var(--text-secondary); white-space: nowrap; }
+.pp-tag b { color: var(--hit); }
+.pp-tag.pp-card { color: var(--text-primary); background: rgba(232, 185, 35, 0.22); }
+.pp-hero { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
+.pp-hero .swatch { margin-right: 6px; }
+.pp-big { font-size: 22px; font-weight: 700; }
+.pp-hero .pp-sub { margin: 4px 0 12px; }
+.pp-hero .mo-strip { margin: 0; }
+.lu-badge.pp-out { color: var(--miss); }
+.pp-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(440px, 1fr)); }
+.pp-stat { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+.pp-stat-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 8px; }
+.pp-stat-head b { font-size: 15px; }
+.pp-stat-head span { color: var(--muted); font-size: 12px; text-align: right; }
+.pp-why { font-size: 12.5px; color: var(--text-secondary); margin: 0 0 8px; line-height: 1.45; }
+.pp-seq { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
+.pp-seq span { min-width: 24px; text-align: center; border-radius: 6px; padding: 2px 4px; font-size: 12px; font-variant-numeric: tabular-nums; }
+.pp-hit { background: rgba(12, 163, 12, 0.16); }
+.pp-miss { background: var(--tint); color: var(--muted); }
+.pp-rung { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 8px 0; border-top: 1px solid var(--grid); }
+.pp-line { font-weight: 680; min-width: 54px; }
+.pp-rec { color: var(--text-secondary); font-size: 12.5px; min-width: 120px; flex: 1; }
+.pp-kv { display: inline-flex; flex-direction: column; font-variant-numeric: tabular-nums; min-width: 46px; }
+.pp-kv small { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.pp-bf b { color: var(--team-1); }
+.pp-in input { width: 64px; font: inherit; font-size: 13px; padding: 2px 5px; border: 1px solid var(--border);
+  border-radius: 6px; background: var(--control-bg); color: var(--text-primary); }
+.pp-edge { font-weight: 680; }
+.pp-pos { color: var(--hit); }
+.pp-neg { color: var(--miss); }
+@media (max-width: 560px) {
+  .pp-grid { grid-template-columns: 1fr; }
+  .pp-row { flex-wrap: wrap; }
+  .pp-tags { justify-content: flex-start; flex-basis: 100%; }
+  .mo-muted { margin-left: 0; flex-basis: 100%; }
+}
+
+/* ---- Jarvis-style charts and the Team stats cards */
+.jchart { width: 100%; height: auto; display: block; }
+.jchart .jg { stroke: var(--grid); }
+.jchart .jt, .jchart .jx { fill: var(--muted); font-size: 9px; }
+.jchart .jline { stroke: var(--text-secondary); stroke-dasharray: 3 4; }
+.jchart .jll { fill: var(--text-primary); font-size: 10px; font-weight: 650; }
+.jchart .jv { fill: var(--text-primary); font-size: 10px; font-weight: 650; }
+.jchart .jhit { fill: var(--hit); stroke: var(--surface-1); stroke-width: 2; }
+.jchart .jmiss { fill: var(--surface-1); stroke: var(--miss); stroke-width: 2; }
+.jring { width: 100%; height: auto; display: block; }
+.jring .jseg-hit { stroke: var(--hit); stroke-width: 7; stroke-linecap: round; }
+.jring .jseg-miss { stroke: var(--miss); stroke-width: 2.5; stroke-linecap: round; opacity: 0.85; }
+.jring .jr1 { fill: var(--text-primary); font-size: 20px; font-weight: 650; }
+.jring .jr2 { fill: var(--muted); font-size: 10px; }
+.tmode { margin: 0 0 14px; }
+.tc-card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+.tc-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-bottom: 6px; }
+.tc-head b { font-size: 15px; }
+.tc-head .proj { margin: 0; }
+.tc-step { display: inline-flex; align-items: center; gap: 4px; }
+.tc-step button { border: 1px solid var(--border); background: var(--control-bg); color: var(--text-primary);
+  border-radius: 7px; width: 28px; height: 26px; font: inherit; cursor: pointer; }
+.tc-line { min-width: 48px; text-align: center; font-weight: 650; font-variant-numeric: tabular-nums; }
+.tc-side { border-top: 1px solid var(--grid); padding-top: 8px; margin-top: 6px; }
+.tc-sidehead { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.tc-meta { color: var(--muted); font-size: 12px; }
+.tc-team { display: inline-flex; align-items: center; gap: 7px; font-weight: 620; font-size: 13.5px; }
+.tc-body { display: grid; grid-template-columns: 92px 1fr; gap: 10px; align-items: center; }
+.pp-chartwrap { margin: 2px 0 6px; }
+@media (max-width: 560px) {
+  .tc-body { grid-template-columns: 70px 1fr; gap: 6px; }
+}
+
+/* ---- Team stats: list down the side, one chart */
+#tcards { display: block; }
+.tv { display: grid; grid-template-columns: 250px 1fr; gap: 14px; align-items: start; }
+.tv-list { display: flex; flex-direction: column; gap: 3px; position: sticky; top: 10px;
+  max-height: calc(100vh - 20px); overflow-y: auto; background: var(--surface-1);
+  border: 1px solid var(--border); border-radius: 12px; padding: 6px; }
+.tl-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%;
+  border: 0; background: transparent; color: var(--text-primary); font: inherit; font-size: 13.5px;
+  text-align: left; padding: 8px 9px; border-radius: 8px; cursor: pointer; }
+.tl-item:hover { background: var(--tint); }
+.tl-item.tl-on { background: var(--control-active); color: var(--control-active-text); }
+.tl-name { display: flex; flex-direction: column; }
+.tl-name small { font-size: 11px; opacity: 0.65; }
+.tl-badges { display: flex; gap: 4px; flex: none; }
+.tl-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; font-variant-numeric: tabular-nums;
+  padding: 2px 6px; border-radius: 6px; background: var(--tint); }
+.tl-on .tl-badge { background: rgba(255,255,255,0.14); }
+.tl-badge i { width: 7px; height: 7px; border-radius: 2px; display: inline-block; }
+.tl-badge.tl-hi { font-weight: 700; }
+.tv-main { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; min-width: 0; }
+.tv-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.tv-head h3 { margin: 0; font-size: 20px; }
+.tv-head .proj { margin: 0; }
+.tv-controls { display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 12px 0; }
+.tv-seg button { font-size: 12.5px; }
+.tv-rings { display: flex; flex-wrap: wrap; gap: 10px 26px; margin-bottom: 6px; }
+.tv-ring { display: flex; align-items: center; gap: 10px; }
+.tv-ringsvg { width: 78px; }
+.tv-ringtxt { display: flex; flex-direction: column; gap: 3px; }
+.tv-ringtxt small { color: var(--muted); font-size: 12px; }
+.tv-chart .jbig .jx, .tv-chart .jbig .jt { font-size: 12px; }
+.tv-chart .jbig .jv, .tv-chart .jbig .jll { font-size: 13px; }
+.tv-note { margin: 4px 0 0; }
+@media (max-width: 760px) {
+  .tv { grid-template-columns: 1fr; }
+  .tv-list { position: static; flex-direction: row; overflow-x: auto; max-height: none; padding: 5px; }
+  .tl-item { flex: none; width: auto; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .tv-main { padding: 12px; }
+}
+
+/* ---- strongest lines */
+.pp-tag.pp-hi { background: rgba(12, 163, 12, 0.16); color: var(--text-primary); }
+.pp-tag.pp-mid { background: rgba(12, 163, 12, 0.08); color: var(--text-primary); }
+.pp-tag b { color: inherit; }
+.pp-strong { display: flex; flex-direction: column; gap: 4px; background: var(--surface-1);
+  border: 1px solid var(--border); border-radius: 12px; padding: 6px; }
+.pp-srow { display: grid; grid-template-columns: 22px 10px 1fr 44px 44px 110px; align-items: center; gap: 10px;
+  border: 0; background: transparent; color: var(--text-primary); font: inherit; text-align: left;
+  padding: 7px 8px; border-radius: 8px; cursor: pointer; }
+.pp-srow:hover { background: var(--tint); }
+.pp-rank { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 12px; }
+.pp-sname { display: flex; flex-direction: column; min-width: 0; }
+.pp-sname small { color: var(--text-secondary); font-size: 12px; }
+.pp-srec { color: var(--text-secondary); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.pp-spct { font-weight: 700; font-variant-numeric: tabular-nums; }
+.pp-sbar { height: 6px; background: var(--track); border-radius: 3px; overflow: hidden; }
+.pp-sbar i { display: block; height: 100%; background: var(--hit); }
+.pp-order { margin: 4px 0 8px; }
+.pp-schips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+.pp-schip { border: 1px solid var(--border); background: var(--control-bg); color: var(--text-primary);
+  border-radius: 999px; padding: 4px 11px; font: inherit; font-size: 12.5px; cursor: pointer; }
+.pp-schip[aria-pressed="true"] { background: var(--control-active); color: var(--control-active-text); border-color: transparent; }
+.tl-order { display: flex; gap: 4px; padding: 2px 2px 6px; }
+.tl-order button { flex: 1; font-size: 12px; }
+.tl-pct { font-size: 10.5px; opacity: 0.7; margin-left: 2px; }
+@media (max-width: 560px) {
+  .pp-srow { grid-template-columns: 18px 8px 1fr 38px 40px; }
+  .pp-sbar { display: none; }
+}
+
+.pp-ppp b { color: #0b8a4a; }
+.pp-ppcard .pp-line { min-width: 170px; font-weight: 600; }
+
+.pp-edge.pp-long { color: var(--muted); font-weight: 500; }
+
 """
 
 JS = """
@@ -1646,6 +1825,7 @@ function updateRow(row) {
 
 function updateAll() {
   boardEl.querySelectorAll(".stat-row").forEach(updateRow);
+  teamCards();
   const teamRows = activeRecords().map(filtered);
   document.getElementById("sample").textContent =
     teamRows.map((r, i) => `${DATA.teams[i].name}: ${r.length} matches`)
@@ -5110,6 +5290,7 @@ function playerRow(p, stat, line, teamIndex, price) {
 
 function playerView() {
   if (!hasPlayers()) return;
+  if (pMode === "squads") { squadView(); return; }
   PLAYER_ROWS = [];
 
   const stat = document.getElementById("pstat").value;
@@ -5349,6 +5530,1183 @@ function playerView() {
   panel.innerHTML = blocks.join("");
 }
 
+/* ------------------------------------------------ squads and player profiles
+
+   The Players tab opens on the two sides rather than a stat table. Tap a
+   side (or a name in its XI) and then a player, and his profile shows every
+   market he has a record in: the last ten, the rate per 90 and a short
+   ladder of lines, each with our chance, a fair price, a rough bookmaker
+   price and the edge between them. Football adds two markets the stat table
+   could never show, to be booked and to score. The old by-stat table is
+   still one button away ("Compare by stat").
+
+   Three prices, kept apart on purpose:
+   - Ours: the same pricePlayer() chance the rest of the page uses, on the
+     filters above and adjusted for this matchup.
+   - Betfair: the exchange's price where it lists the market (to score,
+     shots on target 1+ and 2+, shown a card), from reports/markets.json,
+     which publish.sh writes beside the reports.
+   - Est. bookie: what a bookmaker pricing off his whole record would
+     roughly offer, the calibrated chance over every match on file with
+     BOOK_MARGIN added. A guide, not a scraped price, and the page says so.
+     Type the real price into the box and the edge uses that instead.
+
+   The booking and scoring models are heuristic and not backtested. */
+
+let pMode = "squads";
+let pState = { fx: null, team: null, player: null };
+let MARKETS = null;
+let MARKETS_AT = null;
+const PRICE_IN = {};
+
+/* Assumed bookmaker margin on a single player prop, as a mark-up on the
+   implied chance. A judgement call, not a fitted number: set it from real
+   prices once a few have been typed in against the estimate. */
+const BOOK_MARGIN = 0.12;
+
+/* Cards per foul when a side has too few fouls on file to measure its own. */
+const CARDS_PER_FOUL_DEFAULT = 0.13;
+
+const PP_HEADLINE = [["Fouled", 0.5], ["Fouls", 0.5], ["Shots", 0.5],
+                     ["Shots on target", 0.5], ["Tackles", 0.5]];
+
+function normName(s) {
+  return String(s || "").normalize("NFKD").replace(/[^a-zA-Z ]/g, "")
+    .toLowerCase().split(" ").filter(Boolean).join(" ");
+}
+
+function fixtureMarket(fx) {
+  fx = fx || DATA;
+  if (!MARKETS || !fx || !fx.fixture) return null;
+  return MARKETS[String(fx.fixture.id)] || null;
+}
+
+function playerMarket(name) {
+  const m = fixtureMarket();
+  return m && m.players ? m.players[normName(name)] || null : null;
+}
+
+function loadMarkets() {
+  if (typeof fetch !== "function" || location.protocol === "file:") return;
+  fetch("markets.json", { cache: "no-store" })
+    .then(r => (r.ok ? r.json() : null))
+    .then(j => {
+      if (!j || !j.events) return;
+      MARKETS = j.events;
+      MARKETS_AT = j.fetched || null;
+      oddsStrip();
+      if (tab === "players") playerView();
+    })
+    .catch(() => {});
+}
+
+function matchOddsHtml() {
+  const m = fixtureMarket();
+  if (!m || !m.match) return "";
+  const o = m.match;
+  const cell = (label, r, t) => r && r.price
+    ? `<span class="mo-cell">${t === undefined ? "" :
+        `<span class="swatch" style="background:var(${VARS[t]})"></span>`}
+        <span>${escapeHtml(label)}</span><b>${fmtOdds(r.price)}</b>
+        <small>${Math.round(r.p * 100)}%</small></span>`
+    : "";
+  const when = MARKETS_AT
+    ? new Date(MARKETS_AT * 1000).toLocaleString("en-GB",
+        { weekday: "short", hour: "2-digit", minute: "2-digit" })
+    : "";
+  return `<div class="mo-strip"><span class="mo-label">To win</span>
+    ${cell(DATA.teams[0].name, o.home, 0)}${cell("Draw", o.draw)}${cell(DATA.teams[1].name, o.away, 1)}
+    <span class="mo-muted">Betfair${o.matched ? ", £" + Number(o.matched).toLocaleString("en-GB") + " matched" : ""}${when ? ", " + when : ""}</span></div>`;
+}
+
+function oddsStrip() {
+  const el = document.getElementById("odds-strip");
+  if (!el) return;
+  el.innerHTML = matchOddsHtml();
+  el.hidden = !el.innerHTML;
+}
+
+function teamWinText(t) {
+  const m = fixtureMarket();
+  if (!m || !m.match) return "";
+  const r = t === 0 ? m.match.home : m.match.away;
+  return r && r.price ? `to win ${fmtOdds(r.price)} (${Math.round(r.p * 100)}%)` : "";
+}
+
+/* The same rows playerView() reads, under the same filters, by player. */
+function squadPlayers(teamIndex) {
+  const records = (DATA.players || [])[teamIndex] || [];
+  const allowed = new Set(filtered(activeRecords()[teamIndex]).map(m => m.id));
+  const importsOk = source !== "h2h" && tier === "all";
+  const byPlayer = new Map();
+  for (const r of records) {
+    if (!(allowed.has(r.match_id)
+          || (importsOk && r.former_club && (venue === "all" || r.venue === venue)))) continue;
+    if (!byPlayer.has(r.player)) byPlayer.set(r.player, []);
+    byPlayer.get(r.player).push(r);
+  }
+  byPlayer.forEach(rows => rows.sort((a, b) => (a.date < b.date ? -1 : 1)));
+  return byPlayer;
+}
+
+/* Every match on file for him, no filters: the record a bookmaker sees. */
+function allPlayed(teamIndex, name) {
+  return ((DATA.players || [])[teamIndex] || []).filter(r => r.player === name);
+}
+
+function currentXI(t) {
+  const store = DATA.lineups || {};
+  const lu = store.confirmed || store.predicted;
+  if (!lu) return null;
+  const side = t === 0 ? lu.home : lu.away;
+  if (!side) return null;
+  return { confirmed: !!store.confirmed, formation: side.formation || "",
+           xi: side.xi || [], missing: (side.missing || []).map(m => m[0]) };
+}
+
+/* Real appearances only, oldest first. */
+function gatedApps(played) {
+  const gated = reportsMinutes(played);
+  return played.filter(g => gated
+    ? (g.minutes || 0) >= MIN_MINUTES
+    : Object.keys(g.stats || {}).length > 0);
+}
+
+/* Rate per 90 with a missing key read as nought. */
+function rate90(played, stat) {
+  const apps = gatedApps(played);
+  const mins = apps.reduce((s, g) => s + (g.minutes || 0), 0);
+  if (mins <= 0) return null;
+  return apps.reduce((s, g) => s + ((g.stats || {})[stat] || 0), 0) / mins * 90;
+}
+
+function expectedMinutesOf(played) {
+  const m = gatedApps(played).map(g => g.minutes || 0).sort((a, b) => a - b);
+  return m.length ? Math.min(90, m[Math.floor(m.length / 2)]) : 0;
+}
+
+/* What sort of player he is, from what he does per 90 rather than the
+   G/D/M/F SofaScore gives. The point is the Mac Allister and Szoboszlai
+   case: two "midfielders", one doing the covering and the fouling. */
+function roleOf(played, pos) {
+  if (SPORT !== "football") return "";
+  if (pos === "G") return "Goalkeeper";
+  const r = s => rate90(played, s) || 0;
+  const def = r("Tackles") + r("Fouls") + r("Interceptions");
+  const att = r("Shots") + r("Key passes") + 3 * r("xG");
+  if (pos === "F") return def > att ? "Pressing forward" : "Forward";
+  if (pos === "D") return att >= 0.6 * def ? "Attacking defender" : "Defender";
+  if (pos === "M") {
+    if (def >= 1.5 * att) return "Holding midfielder";
+    if (att >= 1.3 * def) return "Attacking midfielder";
+    return "Box-to-box midfielder";
+  }
+  return "";
+}
+
+function lastRate(played, stat, line, count) {
+  const apps = gatedApps(played).slice(-(count || 10));
+  const v = apps.map(g => (g.stats || {})[stat] ?? 0);
+  const k = v.filter(x => x > line).length;
+  return { k, n: v.length, p: v.length ? k / v.length : 0 };
+}
+
+let FOULED90_BASE = null;
+/* Average fouled per 90 among regular outfield players across the whole
+   report, the yardstick for "the man he is up against draws a lot". */
+function fouledBase() {
+  if (FOULED90_BASE !== null) return FOULED90_BASE;
+  let v = 0, m = 0;
+  for (const fx of ALL.fixtures) for (const side of fx.players || []) for (const r of side) {
+    if (r.position === "G" || (r.minutes || 0) < MIN_MINUTES) continue;
+    v += (r.stats || {}).Fouled || 0; m += r.minutes || 0;
+  }
+  FOULED90_BASE = m > 0 ? v / m * 90 : 1;
+  return FOULED90_BASE;
+}
+
+/* Who he is likely to be up against, from the line-up shapes. */
+function opponentsFor(t, name) {
+  const store = DATA.lineups || {};
+  const lu = store.confirmed || store.predicted;
+  if (!lu || !lu.home || !lu.away) return [];
+  const shapes = [luShape(lu.home), luShape(lu.away)];
+  const me = shapes[t].lines.flat().find(q => q.name === name);
+  if (!me) return [];
+  return luOpponents(me, shapes[1 - t]);
+}
+
+/* To be booked. Fouls per 90 times this side's cards per foul, over his
+   expected minutes, scaled by how many fouls the side is projected to give
+   away in this match, and by how much the men he is up against get fouled.
+   Poisson for at least one card. Heuristic, not backtested. */
+function cardCase(t, name, played, neutral) {
+  if (SPORT !== "football") return null;
+  const apps = gatedApps(played);
+  if (apps.length < 3) return null;
+  const fouls90 = rate90(played, "Fouls");
+  if (fouls90 === null) return null;
+  const expMin = expectedMinutesOf(played);
+  let F = 0, Y = 0;
+  for (const r of filtered(DATA.records[t] || [])) {
+    const s = (r.stats || {}).ALL || {};
+    F += s.Fouls || 0; Y += s["Yellow cards"] || 0;
+  }
+  const perFoul = F >= 30 ? Y / F : CARDS_PER_FOUL_DEFAULT;
+  const matchAdj = neutral ? 1 : playerAdjustment("Fouls", t);
+  const opps = (neutral ? [] : opponentsFor(t, name)).map(o => {
+    const rec = allPlayed(1 - t, o.name);
+    return { name: o.name, fouled90: rec.length ? rate90(rec, "Fouled") : null };
+  });
+  const known = opps.filter(o => o.fouled90 !== null);
+  let oppAdj = 1;
+  if (known.length) {
+    const avg = known.reduce((s, o) => s + o.fouled90, 0) / known.length;
+    oppAdj = Math.min(1.2, Math.max(0.85, Math.sqrt(avg / fouledBase())));
+  }
+  const lam = fouls90 * (expMin / 90) * perFoul * matchAdj * oppAdj;
+  return { p: 1 - Math.exp(-lam), lam, fouls90, perFoul, matchAdj, oppAdj, opps, expMin,
+           n: apps.length };
+}
+
+/* To score. Expected goals and goals per 90, blended 60/40 where the feed
+   carries xG, over his expected minutes, scaled by this side's projected
+   goals against its usual. Heuristic, not backtested. */
+function scoreCase(t, played, neutral) {
+  if (SPORT !== "football") return null;
+  const apps = gatedApps(played);
+  if (apps.length < 3) return null;
+  const goals90 = rate90(played, "Goals") || 0;
+  const hasXg = apps.some(g => (g.stats || {}).xG !== undefined);
+  const xg90 = hasXg ? rate90(played, "xG") || 0 : null;
+  const rate = hasXg ? 0.6 * xg90 + 0.4 * goals90 : goals90;
+  const expMin = expectedMinutesOf(played);
+  const adj = neutral ? 1 : playerAdjustment("Goals", t);
+  const lam = rate * (expMin / 90) * adj;
+  return { p: 1 - Math.exp(-lam), lam, goals90, xg90, expMin, adj, n: apps.length };
+}
+
+function estBookie(p) {
+  if (!(p > 0)) return null;
+  return 1 / Math.min(0.96, p * (1 + BOOK_MARGIN));
+}
+
+function lineLabel(line) {
+  return Number.isInteger(line + 0.5) ? `${line + 0.5}+` : `over ${line}`;
+}
+
+function rungsFor(stat, vals) {
+  // Centred on his own numbers rather than one squad-wide line, so a
+  // quarterback's 245 passing yards and a back's 10 rushing yards both get
+  // lines worth reading: three at most, starting from the highest he clears
+  // eight times in ten, stopping once he clears it under one time in five.
+  const sorted = vals.slice().sort((a, b) => a - b);
+  const med = sorted[Math.floor(sorted.length / 2)] || 0;
+  let cands;
+  if (med >= 5) {
+    const step = Math.max(5, Math.round(med * 0.25 / 5) * 5);
+    cands = [med - 3 * step, med - 2 * step, med - step, med, med + step]
+      .map(x => Math.floor(x) + 0.5).filter(x => x > 0);
+  } else {
+    cands = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5];
+  }
+  cands = [...new Set(cands)];
+  const rate = l => vals.filter(v => v > l).length / vals.length;
+  let start = 0;
+  cands.forEach((l, i) => { if (rate(l) >= 0.8) start = i; });
+  const out = [];
+  for (let i = start; i < cands.length && out.length < 3; i++) {
+    if (out.length && rate(cands[i]) < 0.2) break;
+    out.push(cands[i]);
+  }
+  return out.length ? out : [cands[0]];
+}
+
+function betfairFor(name, stat, line) {
+  const pm = playerMarket(name);
+  if (!pm) return null;
+  if (stat === "Goals" && line === 0.5) return pm.score || null;
+  if (stat === "Shots on target" && line === 0.5) return pm.sot1 || null;
+  if (stat === "Shots on target" && line === 1.5) return pm.sot2 || null;
+  return null;
+}
+
+function edgeHtml(p, price) {
+  if (!(price > 1) || !(p > 0)) return `<span class="pp-edge">&ndash;</span>`;
+  const e = p * price - 1;
+  const cls = e >= 0.03 ? "pp-pos" : e <= -0.03 ? "pp-neg" : "";
+  return `<span class="pp-edge ${cls}">${e >= 0 ? "+" : ""}${Math.round(e * 100)}%</span>`;
+}
+
+/* One priced line in a profile. `ours` and `book` are chances; `bf` the
+   Betfair runner if listed. The edge is ours against, in order: a price you
+   typed, Betfair's back price, the bookmaker estimate. */
+function rungHtml(key, label, record, ours, book, bf, addIndex) {
+  const est = estBookie(book);
+  const typed = PRICE_IN[key];
+  const parts = String(key).split("|");
+  const ppp = parts.length === 4 ? ppPrice(parts[1], parts[2], parseFloat(parts[3]), true) : null;
+  const ref = typed || ppp || (bf && bf.back) || est;
+  return `<div class="pp-rung" data-pkey="${escapeHtml(key)}" data-pp="${ours}" data-pdef="${ppp || (bf && bf.back) || est || ""}">
+    <span class="pp-line">${label}</span>
+    <span class="pp-rec">${record}</span>
+    <span class="pp-kv"><small>Ours</small><b>${Math.round(ours * 100)}%</b></span>
+    <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(ours))}</b></span>
+    ${ppp ? `<span class="pp-kv pp-ppp"><small>Paddy Power</small><b>${fmtOdds(ppp)}</b></span>` : ""}
+    ${bf ? `<span class="pp-kv pp-bf" title="Betfair Exchange back price${bf.mid ? ", mid " + fmtOdds(bf.mid) : ""}"><small>Betfair</small><b>${fmtOdds(bf.back)}</b></span>` : ""}
+    <span class="pp-kv" title="A rough guide to what a bookmaker pricing off his whole record would offer: the chance over every match on file, plus a ${Math.round(BOOK_MARGIN * 100)}% margin. Not a scraped price."><small>Est. bookie</small><b>${est ? "~" + fmtOdds(est) : "&ndash;"}</b></span>
+    <label class="pp-kv pp-in"><small>Your price</small><input type="number" step="0.01" min="1.01" inputmode="decimal" data-spin="1" data-pprice="${escapeHtml(key)}" value="${typed || ""}" placeholder="price"></label>
+    <span class="pp-kv"><small>Edge</small>${edgeHtml(ours, ref)}</span>
+    ${addIndex === null ? "" : (() => {
+      const entry = PLAYER_ROWS[addIndex];
+      const inSlip = SLIP.some(s => s.key === rowKey(entry.row));
+      return `<button type="button" class="add-btn" data-padd="${addIndex}" data-in="${inSlip ? 1 : 0}">${inSlip ? "Added" : "Add"}</button>`;
+    })()}
+  </div>`;
+}
+
+function seqHtml(played, stat, line) {
+  const apps = gatedApps(played).slice(-10);
+  if (!apps.length) return "";
+  return `<div class="pp-seq" title="Last ${apps.length}, oldest first">` + apps.map(g => {
+    const v = (g.stats || {})[stat] ?? 0;
+    const shown = Number.isInteger(v) ? v : v.toFixed(1);
+    return `<span class="${v > line ? "pp-hit" : "pp-miss"}" title="${escapeHtml(g.date || "")} v ${escapeHtml(g.opponent || "")}">${shown}</span>`;
+  }).join("") + `</div>`;
+}
+
+function profileChart(played, stat, line, t) {
+  const pts = gatedApps(played).slice(-10).map(g => ({
+    v: (g.stats || {})[stat] ?? 0, label: oppAbbrev(g.opponent),
+    tip: `${g.date || ""} ${g.venue === "home" ? "v" : "at"} ${g.opponent || ""}` }));
+  if (!pts.length) return "";
+  return `<div class="pp-chartwrap">${jChart(pts, line, VARS[t], stat)}</div>`;
+}
+
+function playerStatsFor(pos) {
+  return (DATA.playerStats || []).filter(s =>
+    s !== "Minutes" && (pos === "G" ? s !== "Shots" && s !== "Shots on target" && s !== "Goals"
+                                    : s !== "Saves"));
+}
+
+/* ------------------------------------------------- strongest lines
+
+   Every line a player has a record in, ranked by our chance, so the
+   strongest ones read off the top of the page for any sport. A line is
+   kept between 55% and 92%: below that it is not a strong line, and above
+   it the price is too short to be worth a bet. Ours is the same pricePlayer()
+   chance the profile shows, on his last ten under the filters. */
+const STRONG_MIN = 0.55, STRONG_MAX = 0.92;
+let pOrder = "lineup";
+const BEST_CACHE = new Map();
+let pStrongStat = "all";
+
+/* Our chance first; level on that (the record-only branch tops out at the
+   same number for every perfect ten), the full record breaks the tie, then
+   the bigger sample. */
+function strongOrder(a, b) {
+  return (b.p - a.p) || (b.all - a.all) || (b.nAll - a.nAll);
+}
+
+/* Left out of "All" on the fixture list only, because a passes line clears
+   so reliably it would fill the list. It has its own chip. */
+const STRONG_ALL_SKIP = new Set(["Passes"]);
+
+function playerBestLines(t, name, played) {
+  const key = [DATA.fixture.id, t, name, games, venue, tier, source, period].join("|");
+  if (BEST_CACHE.has(key)) return BEST_CACHE.get(key);
+  const pos = played[0].position || "";
+  const recent = gatedApps(played).slice(-10);
+  const out = [];
+  for (const stat of playerStatsFor(pos)) {
+    const sApps = appearances(played, stat);
+    const vals = sApps.map(a => a.value);
+    if (!vals.some(v => v > 0)) continue;
+    const recentApps = appearances(recent, stat);
+    if (recentApps.length < 5) continue;
+    const adj = playerAdjustment(stat, t);
+    for (const line of rungsFor(stat, vals)) {
+      const price = pricePlayer(recentApps, line, true, adj, null);
+      if (!(price.p >= STRONG_MIN && price.p <= STRONG_MAX)) continue;
+      const r = lastRate(played, stat, line);
+      const kAll = vals.filter(v => v > line).length;
+      out.push({ t, name, stat, line, p: price.p, k: r.k, n: r.n, all: kAll / vals.length, nAll: vals.length });
+    }
+  }
+  out.sort(strongOrder);
+  BEST_CACHE.set(key, out);
+  return out;
+}
+
+function strongChip(b, withName) {
+  const cls = b.p >= 0.8 ? "pp-hi" : b.p >= 0.68 ? "pp-mid" : "";
+  return `<span class="pp-tag ${cls}">${withName ? `<b class="pp-who">${escapeHtml(b.name)}</b> ` : ""}${
+    escapeHtml(b.stat)} ${escapeHtml(lineLabel(b.line))} &middot; ${b.k}/${b.n} &middot; <b>${Math.round(b.p * 100)}%</b></span>`;
+}
+
+/* The strongest player lines in the whole fixture, both sides. Players in
+   a known XI only, once there is one; everyone with five recent
+   appearances otherwise. */
+function strongestCandidates() {
+  const rows = [];
+  [0, 1].forEach(t => {
+    const xi = currentXI(t);
+    const names = xi && xi.xi.length ? new Set(xi.xi.map(p => p.name)) : null;
+    squadPlayers(t).forEach((played, name) => {
+      if (names && !names.has(name)) return;
+      if (!gatedApps(played).length) return;
+      rows.push(...playerBestLines(t, name, played));
+    });
+  });
+  return rows;
+}
+
+/* The strongest player lines in the whole fixture, both sides, one per
+   player. Players in a known XI only, once there is one. */
+function strongestInFixture(limit, stat) {
+  const all = strongestCandidates().filter(b =>
+    stat === "all" ? !STRONG_ALL_SKIP.has(b.stat) : b.stat === stat);
+  all.sort(strongOrder);
+  const seen = new Set(), out = [];
+  for (const b of all) {
+    const k = b.t + "|" + b.name;
+    if (seen.has(k)) continue;
+    seen.add(k); out.push(b);
+    if (out.length >= (limit || 15)) break;
+  }
+  return out;
+}
+
+function strongestHtml() {
+  const cands = strongestCandidates();
+  if (!cands.length) return "";
+  const counts = new Map();
+  cands.forEach(b => counts.set(b.stat, (counts.get(b.stat) || 0) + 1));
+  const statsHere = [...counts.entries()].sort((a, b) => b[1] - a[1]).map(e => e[0]);
+  if (pStrongStat !== "all" && !counts.has(pStrongStat)) pStrongStat = "all";
+  const top = strongestInFixture(15, pStrongStat);
+  const chips = [["all", "All"], ...statsHere.map(s => [s, s])].map(([v, t]) =>
+    `<button type="button" class="pp-schip" data-pstrong="${escapeHtml(v)}" aria-pressed="${v === pStrongStat}">${escapeHtml(t)}</button>`).join("");
+  return `<div class="pp-section">Strongest player lines</div>
+    <div class="pp-schips">${chips}</div>
+    <div class="pp-strong">${top.map((b, i) => `<button type="button" class="pp-srow" data-pteam="${b.t}" data-pplayer="${escapeHtml(b.name)}">
+      <span class="pp-rank">${i + 1}</span>
+      <span class="swatch" style="background:var(${VARS[b.t]})"></span>
+      <span class="pp-sname"><b>${escapeHtml(b.name)}</b><small>${escapeHtml(b.stat)} ${escapeHtml(lineLabel(b.line))}</small></span>
+      <span class="pp-srec">${b.k}/${b.n}</span>
+      <span class="pp-spct">${Math.round(b.p * 100)}%</span>
+      <span class="pp-sbar"><i style="width:${Math.round(b.p * 100)}%"></i></span>
+    </button>`).join("")}</div>`;
+}
+
+/* ------------------------------------------------- Paddy Power
+
+   Real Paddy Power prices, when paddypower_prices.py has fetched the game
+   (reports/paddypower.json, merged into markets.json). Each Paddy Power line
+   is read as a stat, a line and a side, so our chance can be worked out at
+   exactly Paddy Power's line, over or under, and set against its price.
+   NFL market names are mapped; others are shown once their names are known. */
+
+const PP_STAT = {
+  "Receiving Yds": "Receiving yards", "Alt Receiving Yds": "Receiving yards",
+  "Rushing Yds": "Rushing yards", "Alt Rushing Yds": "Rushing yards",
+  "Passing Yds": "Passing yards", "Alt Passing Yds": "Passing yards",
+  "Total Receptions": "Receiving receptions", "Alt Receptions": "Receiving receptions",
+  "Rushing + Receiving Yds": "Rushing and receiving yards",
+  "Alt Rushing + Receiving Yds": "Rushing and receiving yards",
+  "Passing + Rushing Yds": "Passing and rushing yards",
+  "Alt Passing + Rushing Yds": "Passing and rushing yards",
+  "Passing TDs": "Passing touchdowns", "Alt Passing TDs": "Passing touchdowns",
+  "Any Time Touchdown Scorer": "Anytime touchdown",
+  // Football: the event page carries the scorer market by default.
+  "Player To Score": "Goals", "Anytime Goalscorer": "Goals",
+};
+
+/* One player's Paddy Power lines as {stat, line, over, price, label}. */
+function ppLines(name) {
+  const m = fixtureMarket();
+  const rows = m && m.pp && m.pp.players ? m.pp.players[normName(name)] : null;
+  if (!rows) return [];
+  const out = [];
+  for (const r of rows) {
+    const stat = PP_STAT[r.m];
+    if (!stat) continue;
+    if (stat === "Anytime touchdown" || stat === "Goals") {
+      out.push({ stat, line: 0.5, over: true, price: r.p,
+                 label: stat === "Goals" ? "to score" : "Anytime TD", market: r.m });
+      continue;
+    }
+    if (r.o === "OVER" || r.o === "UNDER") {
+      if (r.l == null) continue;
+      out.push({ stat, line: r.l, over: r.o === "OVER", price: r.p,
+                 label: `${r.o === "OVER" ? "Over" : "Under"} ${r.l}`, market: r.m });
+      continue;
+    }
+    const n = parseFloat(String(r.s).replace(/[^0-9.].*$/, ""));
+    if (!(n > 0)) continue;
+    out.push({ stat, line: n - 0.5, over: true, price: r.p, label: `${n}+`, market: r.m });
+  }
+  return out;
+}
+
+function ppPrice(name, stat, line, over) {
+  const hit = ppLines(name).find(x => x.stat === stat && x.line === line && x.over === (over !== false));
+  return hit ? hit.price : null;
+}
+
+/* Our chance at a Paddy Power line: the same pricePlayer() as everywhere,
+   on his last ten under the filters, matchup-adjusted. */
+function ppValued(t, name, played) {
+  const lines = ppLines(name);
+  if (!lines.length) return [];
+  const recent = gatedApps(played).slice(-10);
+  const adj = {};
+  const out = [];
+  for (const x of lines) {
+    const apps = appearances(recent, x.stat);
+    if (apps.length < 4) continue;
+    const a = adj[x.stat] ?? (adj[x.stat] = playerAdjustment(x.stat, t));
+    // Always priced as the over and turned round for an under, so the two
+    // sides of one line add up to 100%. Pricing the under directly runs it
+    // through the record calibration a second time, and both sides of
+    // McCaffrey's 59.5 came out at 46%.
+    let overPrice = pricePlayer(apps, x.line, true, a, null);
+    // Football to-score: the xG-based scoreCase, half last ten and half
+    // everything, as on the profile. A goals record alone is too noisy.
+    if (x.stat === "Goals" && SPORT === "football") {
+      const sc = (() => {
+        const r = scoreCase(t, recent), f = scoreCase(t, played);
+        if (!r || !f) return null;
+        return 1 - Math.exp(-(r.lam + f.lam) / 2);
+      })();
+      if (sc === null) continue;
+      overPrice = Object.assign({}, overPrice, { p: sc, fair: fairOdds(sc) });
+    }
+    const price = x.over ? overPrice : Object.assign({}, overPrice,
+      { p: 1 - overPrice.p, fair: fairOdds(1 - overPrice.p) });
+    const vals = apps.map(q => q.value);
+    const k = vals.filter(v => x.over ? v > x.line : v <= x.line).length;
+    const last5 = gatedApps(played).slice(-5).map(g => (g.stats || {})[x.stat] ?? 0);
+    const k5 = last5.filter(v => x.over ? v > x.line : v <= x.line).length;
+    out.push(Object.assign({}, x, { t, name, p: price.p, edge: price.p * x.price - 1,
+      k, n: vals.length, k5, n5: last5.length, priced: price }));
+  }
+  // Lines we think are more likely than not first, best edge first; long
+  // shots after. An edge on a 2-in-10 record is noise, not value.
+  out.sort((a, b) => ((b.p >= 0.5) - (a.p >= 0.5)) || (b.edge - a.edge));
+  return out;
+}
+
+/* Injury status from the NFL report the page already carries. */
+function injuryOf(t, name) {
+  const side = (DATA.injuries || {})[t === 0 ? "home" : "away"] || [];
+  const hit = side.find(r => normName(r[0]) === normName(name));
+  return hit ? hit[2] : null;
+}
+const INJ_OUT = /^(Out|Injured Reserve|Suspension|Doubtful)/;
+
+function ppRowHtml(v, withName) {
+  const long = v.p < 0.5;
+  const cls = long ? "pp-long" : v.edge >= 0.05 ? "pp-pos" : v.edge <= -0.05 ? "pp-neg" : "";
+  const inj = injuryOf(v.t, v.name);
+  const row = playerRow({ name: v.name, hits: v.k, vals: Array(v.n).fill(0) }, v.stat, v.line, v.t, v.priced);
+  row.over = v.over;
+  const idx = PLAYER_ROWS.push({ row, price: v.priced }) - 1;
+  const inSlip = SLIP.some(s => s.key === rowKey(row));
+  return `<div class="pp-rung">
+    <span class="pp-line">${withName ? `<b>${escapeHtml(v.name)}</b>${inj ? ` <span class="lu-badge pp-out">${escapeHtml(inj)}</span>` : ""}<br>` : ""}${escapeHtml(v.stat)} ${escapeHtml(v.label)}</span>
+    <span class="pp-rec">${v.k5}/${v.n5} last 5 &middot; ${v.k}/${v.n} last ${v.n}</span>
+    <span class="pp-kv"><small>Ours</small><b>${Math.round(v.p * 100)}%</b></span>
+    <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(v.p))}</b></span>
+    <span class="pp-kv pp-ppp"><small>Paddy Power</small><b>${fmtOdds(v.price)}</b></span>
+    <span class="pp-kv"><small>${long ? "Long shot" : "Edge"}</small><span class="pp-edge ${cls}">${v.edge >= 0 ? "+" : ""}${Math.round(v.edge * 100)}%</span></span>
+    <button type="button" class="add-btn" data-padd="${idx}" data-in="${inSlip ? 1 : 0}">${inSlip ? "Added" : "Add"}</button>
+  </div>`;
+}
+
+function ppCardHtml(t, name, played) {
+  const vals = ppValued(t, name, played);
+  if (!vals.length) return "";
+  const m = fixtureMarket();
+  const when = m && m.pp && m.pp.at ? new Date(m.pp.at * 1000).toLocaleString("en-GB",
+    { weekday: "short", hour: "2-digit", minute: "2-digit" }) : "";
+  return `<div class="pp-section">Paddy Power lines${when ? " &middot; prices from " + when : ""}</div>
+    <div class="pp-stat pp-ppcard">${vals.map(v => ppRowHtml(v)).join("")}
+    <p class="note">Every Paddy Power line for him, best value first. Ours is worked out at Paddy Power's own line, over or under. Prices move: check before betting.</p></div>`;
+}
+
+/* Best value across the whole game, for the Players front page. */
+function ppBestHtml() {
+  const m = fixtureMarket();
+  if (!m || !m.pp) return "";
+  const rows = [];
+  const best = new Map();
+  [0, 1].forEach(t => squadPlayers(t).forEach((played, name) => {
+    if (!gatedApps(played).length) return;
+    if (INJ_OUT.test(injuryOf(t, name) || "")) return;
+    ppValued(t, name, played).forEach(v => {
+      if (!(v.p >= 0.5 && v.edge > 0 && v.n >= 5)) return;
+      // Football to-score is logged but not called value until the results
+      // say how far off it runs (pplog.py UNCALIBRATED).
+      if (SPORT === "football" && v.stat === "Goals") return;
+      // "Over 2.5" and "3+" are the same bet: keep the better price.
+      const k = [t, name, v.stat, v.line, v.over].join("|");
+      if (!best.has(k) || best.get(k).price < v.price) best.set(k, v);
+    });
+  }));
+  rows.push(...best.values());
+  if (!rows.length) return "";
+  rows.sort((a, b) => b.edge - a.edge);
+  return `<div class="pp-section">Best value at Paddy Power</div>
+    <div class="pp-stat pp-ppcard">${rows.slice(0, 12).map(v => ppRowHtml(v, true)).join("")}
+    <p class="note">Lines where our chance (50% or more) beats Paddy Power's price, biggest edge first. Players ruled out are left off; anyone questionable is marked, so check the inactives. Ours leans on the last ten games and is not proven on player bets: treat a big edge as a reason to look closer, not a certainty.</p></div>`;
+}
+
+function squadHome() {
+  const blocks = [0, 1].map(t => {
+    const byPlayer = squadPlayers(t);
+    const xi = currentXI(t);
+    const names = xi && xi.xi.length
+      ? xi.xi.map(p => `<button type="button" class="pp-chip" data-pteam="${t}" data-pplayer="${escapeHtml(p.name)}">
+          <span class="lu-shirt">${escapeHtml(p.shirt ?? "")}</span>${escapeHtml(p.name)}</button>`).join("")
+      : "";
+    return `<div class="pp-teamcard">
+      <button type="button" class="pp-team" data-pteam="${t}">
+        <span class="swatch" style="background:var(${VARS[t]})"></span>
+        <b>${escapeHtml(DATA.teams[t].name)}</b>
+        <span class="pp-sub">${byPlayer.size} players${teamWinText(t) ? " &middot; " + teamWinText(t) : ""}</span>
+        <span class="pp-go">Squad &rsaquo;</span>
+      </button>
+      ${names ? `<div class="pp-xilabel">${xi.confirmed ? "Confirmed" : "Predicted"} XI${xi.formation ? " &middot; " + escapeHtml(xi.formation) : ""}</div>
+        <div class="pp-chips">${names}</div>` : `<div class="pp-xilabel">No line-up yet</div>`}
+    </div>`;
+  });
+  return `<div class="pp-teams">${blocks.join("")}</div>${ppBestHtml()}${strongestHtml()}`;
+}
+
+function squadList(t) {
+  const byPlayer = squadPlayers(t);
+  const xi = currentXI(t);
+  const xiNames = xi ? xi.xi.map(p => p.name) : [];
+  const shirts = new Map(xi ? xi.xi.map(p => [p.name, p.shirt]) : []);
+  const order = { G: 0, D: 1, M: 2, F: 3 };
+  const entries = [...byPlayer.entries()].filter(([, played]) => gatedApps(played).length);
+  const row = ([name, played]) => {
+    const pos = played[0].position || "";
+    const role = roleOf(played, pos);
+    const chips = playerBestLines(t, name, played).slice(0, 3).map(b => strongChip(b)).join("");
+    const card = cardCase(t, name, played);
+    const cardTag = card && card.p >= 0.2
+      ? `<span class="pp-tag pp-card">Card ${Math.round(card.p * 100)}%</span>` : "";
+    return `<button type="button" class="pp-row" data-pteam="${t}" data-pplayer="${escapeHtml(name)}">
+      <span class="lu-shirt">${escapeHtml(shirts.get(name) ?? "")}</span>
+      <span class="pp-name"><b>${escapeHtml(name)}</b><small>${escapeHtml(role || POSITION_NAME[pos] || pos)} &middot; ${gatedApps(played).length} apps</small></span>
+      <span class="pp-tags">${chips}${cardTag}</span>
+      <span class="pp-go">&rsaquo;</span>
+    </button>`;
+  };
+  const top = e => (playerBestLines(t, e[0], e[1])[0] || { p: 0 }).p;
+  const orderSeg = `<div class="seg pp-order">
+    <button type="button" data-porder="lineup" aria-pressed="${pOrder === "lineup"}">${xiNames.length ? "Line-up" : "Position"}</button>
+    <button type="button" data-porder="strong" aria-pressed="${pOrder === "strong"}">Strongest</button></div>`;
+  if (pOrder === "strong") {
+    const ranked = entries.slice().sort((a, b) => top(b) - top(a));
+    return `<div class="pp-crumbs"><button type="button" class="pp-back" data-pback="home">&lsaquo; Both teams</button></div>
+      <h2 class="team-title"><span class="swatch" style="background:var(${VARS[t]})"></span>${escapeHtml(DATA.teams[t].name)}
+        <span class="pp-sub">${teamWinText(t)}</span></h2>
+      ${orderSeg}
+      <p class="note">Ranked by each player's strongest line: our chance, last ten under the filters, 55 to 92%.</p>
+      ${ranked.map(row).join("")}`;
+  }
+  const inXi = xiNames.map(n => entries.find(([name]) => name === n)).filter(Boolean);
+  const rest = entries.filter(([name]) => !xiNames.includes(name))
+    .sort((a, b) => (order[a[1][0].position] ?? 9) - (order[b[1][0].position] ?? 9)
+                    || gatedApps(b[1]).length - gatedApps(a[1]).length);
+  const missingXi = xiNames.filter(n => !byPlayer.has(n));
+  return `<div class="pp-crumbs"><button type="button" class="pp-back" data-pback="home">&lsaquo; Both teams</button></div>
+    <h2 class="team-title"><span class="swatch" style="background:var(${VARS[t]})"></span>${escapeHtml(DATA.teams[t].name)}
+      <span class="pp-sub">${teamWinText(t)}</span></h2>
+    ${orderSeg}
+    ${inXi.length ? `<div class="pp-section">${xi.confirmed ? "Confirmed" : "Predicted"} XI</div>${inXi.map(row).join("")}` : ""}
+    ${missingXi.length ? `<p class="note">In the XI with no record in this report: ${missingXi.map(escapeHtml).join(", ")}</p>` : ""}
+    ${xi && xi.missing.length ? `<p class="note gs-missing"><b>Missing:</b> ${xi.missing.map(escapeHtml).join(", ")}</p>` : ""}
+    <div class="pp-section">${inXi.length ? "Rest of the squad" : "Squad"}</div>
+    ${rest.map(row).join("") || `<p class="note">No one else with an appearance under these filters.</p>`}`;
+}
+
+function profileView(t, name) {
+  const byPlayer = squadPlayers(t);
+  const played = byPlayer.get(name);
+  const back = `<div class="pp-crumbs"><button type="button" class="pp-back" data-pback="home">&lsaquo; Both teams</button>
+    <button type="button" class="pp-back" data-pback="team">&lsaquo; ${escapeHtml(DATA.teams[t].name)}</button></div>`;
+  if (!played || !gatedApps(played).length) {
+    return back + `<p class="note">${escapeHtml(name)} has no appearance on file under these filters.</p>`;
+  }
+  const pos = played[0].position || "";
+  const role = roleOf(played, pos);
+  const apps = gatedApps(played);
+  const avgMin = apps.reduce((s, g) => s + (g.minutes || 0), 0) / apps.length;
+  const xi = currentXI(t);
+  const status = !xi ? "" : xi.xi.some(p => p.name === name)
+    ? `<span class="lu-badge ${xi.confirmed ? "lu-conf" : ""}">${xi.confirmed ? "Starting" : "Predicted to start"}</span>`
+    : xi.missing.includes(name) ? `<span class="lu-badge pp-out">Missing</span>`
+    : `<span class="lu-badge">${xi.confirmed ? "Not starting" : "Not in predicted XI"}</span>`;
+  const fullRec = allPlayed(t, name);
+  const oppName = DATA.teams[1 - t].name;
+  // Ours reads his last ten appearances under the filters, the form a
+  // "9 of his last 10" case is about; the bookmaker estimate reads every
+  // match on file. The edge is the gap between the two.
+  const recent = apps.slice(-10);
+
+  let html = back + `<div class="pp-hero">
+    <div><span class="swatch" style="background:var(${VARS[t]})"></span>
+      <b class="pp-big">${escapeHtml(name)}</b> ${status}</div>
+    <div class="pp-sub">${escapeHtml(DATA.teams[t].name)} &middot; ${escapeHtml(role || POSITION_NAME[pos] || pos)}
+      &middot; ${apps.length} apps here${avgMin > 0 ? ", " + Math.round(avgMin) + " min average" : ""}
+      ${teamWinText(t) ? " &middot; side " + teamWinText(t) : ""}</div>
+  </div>`;
+
+  // Booked and to score.
+  const markets = [];
+  // Ten matches of fouls or goals is a thin read on its own, so ours for
+  // these two is half his last ten and half everything under the filters.
+  const halfAndHalf = (a, b) => {
+    if (a && b) a.p = 1 - Math.exp(-(a.lam + b.lam) / 2);
+    return a;
+  };
+  const card = halfAndHalf(cardCase(t, name, recent), cardCase(t, name, played));
+  if (card) {
+    const cardFull = cardCase(t, name, fullRec.length ? fullRec : played, true);
+    const bf = (playerMarket(name) || {}).card || null;
+    const opp = card.opps.length
+      ? ` Up against ${card.opps.map(o => `${escapeHtml(o.name)}${o.fouled90 !== null ? " (fouled " + o.fouled90.toFixed(1) + "/90)" : ""}`).join(" and ")}, x${card.oppAdj.toFixed(2)}.`
+      : "";
+    markets.push(`<div class="pp-stat pp-market">
+      <div class="pp-stat-head"><b>To be booked</b>
+        <span>${card.fouls90.toFixed(2)} fouls/90 &middot; ${Math.round(card.expMin)} min expected</span></div>
+      <p class="pp-why">${card.fouls90.toFixed(2)} fouls per 90 over his last ${card.n}, and ${escapeHtml(DATA.teams[t].name)} get a card for every ${(1 / card.perFoul).toFixed(1)} fouls.
+        Projected to foul ${card.matchAdj >= 1 ? "more" : "less"} than usual here (x${card.matchAdj.toFixed(2)}).${opp}
+        The chance is half this form and half his full record under the filters. Heuristic, not backtested: card history per player is not in the data yet, so this works from fouls.</p>
+      ${profileChart(recent, "Fouls", 0.5, t)}
+      ${rungHtml(`${DATA.fixture.id}|${name}|card`, "Card", `fouls, last ${card.n}`, card.p,
+                 cardFull ? cardFull.p : null, bf, null)}
+    </div>`);
+  }
+  const score = halfAndHalf(scoreCase(t, recent), scoreCase(t, played));
+  if (score && pos !== "G") {
+    const bf = (playerMarket(name) || {}).score || null;
+    const goalsApps = appearances(played, "Goals");
+    const p0 = { name, hits: goalsApps.filter(a => a.value > 0.5).length, vals: goalsApps.map(a => a.value) };
+    const price = { p: score.p, fair: fairOdds(score.p), need: fairOdds(score.p) };
+    const row = playerRow(p0, "Goals", 0.5, t, price);
+    const idx = PLAYER_ROWS.push({ row, price }) - 1;
+    const scoreFull = scoreCase(t, fullRec.length ? fullRec : played, true);
+    const r10 = lastRate(played, "Goals", 0.5);
+    markets.push(`<div class="pp-stat pp-market">
+      <div class="pp-stat-head"><b>To score</b>
+        <span>${score.xg90 !== null ? score.xg90.toFixed(2) + " xG/90 &middot; " : ""}${score.goals90.toFixed(2)} goals/90</span></div>
+      <p class="pp-why">${score.xg90 !== null ? "60% expected goals, 40% actual goals, " : "Goals "}per 90 over ${Math.round(score.expMin)} expected minutes,
+        ${score.adj >= 1 ? "up" : "down"} x${score.adj.toFixed(2)} for what ${escapeHtml(DATA.teams[t].name)} are projected to score against ${escapeHtml(oppName)}. Heuristic, not backtested.</p>
+      ${profileChart(played, "Goals", 0.5, t)}
+      ${rungHtml(`${DATA.fixture.id}|${name}|score`, "Anytime", `${r10.k}/${r10.n} last ${r10.n}`, score.p,
+                 scoreFull ? scoreFull.p : null, bf, idx)}
+    </div>`);
+  }
+
+  const bestHere = playerBestLines(t, name, played).slice(0, 6);
+  if (bestHere.length) {
+    html += `<div class="pp-section">His strongest lines</div><div class="pp-chips">${bestHere.map(b => strongChip(b)).join("")}</div>`;
+  }
+
+  html += ppCardHtml(t, name, played);
+
+  // Every stat he has a record in.
+  const adjCache = {};
+  const stats = playerStatsFor(pos).map(stat => {
+    const sApps = appearances(played, stat);
+    if (!sApps.length) return "";
+    const vals = sApps.map(a => a.value);
+    // Never done it in this window: nothing to price, and a record-only
+    // chance off 0/10 would only invent an edge.
+    if (!vals.some(v => v > 0)) return "";
+    const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+    const per = rate90(played, stat);
+    const adjustment = adjCache[stat] ?? (adjCache[stat] = playerAdjustment(stat, t));
+    const prior = positionPrior(byPlayer, pos, stat, name);
+    const fullApps = appearances(fullRec, stat);
+    const recentApps = appearances(recent, stat);
+    const rungs = rungsFor(stat, vals).map(line => {
+      const price = pricePlayer(recentApps.length ? recentApps : sApps, line, true, adjustment, prior);
+      const book = pricePlayer(fullApps.length ? fullApps : sApps, line, true, 1, prior);
+      const hits = vals.filter(v => v > line).length;
+      const p0 = { name, hits, vals };
+      const row = playerRow(p0, stat, line, t, price);
+      const idx = PLAYER_ROWS.push({ row, price }) - 1;
+      const r10 = lastRate(played, stat, line);
+      const rec = `${r10.k}/${r10.n} last ${r10.n}${vals.length > r10.n ? ` &middot; ${hits}/${vals.length} all` : ""}`;
+      return rungHtml(`${DATA.fixture.id}|${name}|${stat}|${line}`, lineLabel(line), rec,
+                      price.p, book.p, betfairFor(name, stat, line), idx);
+    }).join("");
+    const firstLine = rungsFor(stat, vals)[0] ?? 0.5;
+    return `<div class="pp-stat">
+      <div class="pp-stat-head"><b>${escapeHtml(stat)}</b>
+        <span>avg ${avg.toFixed(1)}${per !== null ? " &middot; " + per.toFixed(2) + "/90" : ""}${
+          Math.abs(adjustment - 1) >= 0.05 ? ` &middot; matchup x${adjustment.toFixed(2)}` : ""}</span></div>
+      ${profileChart(played, stat, firstLine, t)}
+      ${rungs}
+    </div>`;
+  }).join("");
+
+  html += (markets.length ? `<div class="pp-section">Player markets</div><div class="pp-grid">${markets.join("")}</div>` : "")
+    + `<div class="pp-section">By stat</div><div class="pp-grid">${stats}</div>
+    <p class="note">Ours is this page's chance from his last ten appearances under the filters above, adjusted for ${escapeHtml(oppName)} and shrunk the way settled player picks say it should be. Est. bookie is a guide, not a scraped price:
+    the chance over every match on file plus a ${Math.round(BOOK_MARGIN * 100)}% margin, which is roughly how a bookmaker prices a player line.
+    Betfair is the exchange's back price where it lists the market. Type the real price in and the edge uses it.
+    A void bet on a player who does not play is a void, not a loss.</p>`;
+  return html;
+}
+
+function squadView() {
+  const panel = document.getElementById("players");
+  panel.classList.remove("two-up");
+  document.querySelector(".wrap").classList.remove("wide");
+  if (pState.fx !== DATA) pState = { fx: DATA, team: null, player: null };
+  PLAYER_ROWS = [];
+  let html;
+  if (pState.player !== null && pState.team !== null) html = profileView(pState.team, pState.player);
+  else if (pState.team !== null) html = squadList(pState.team);
+  else html = squadHome();
+  panel.innerHTML = `<div class="pp-wrap">${html}</div>`;
+}
+
+function setPlayerMode(mode) {
+  pMode = mode;
+  document.querySelectorAll("[data-pmode]").forEach(b =>
+    b.setAttribute("aria-pressed", b.dataset.pmode === mode));
+  const stat = mode === "stat";
+  ["pstat-controls", "pstat-note"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.hidden = !stat;
+  });
+  if (!stat) { const n = document.getElementById("pnote"); if (n) n.hidden = true; }
+  playerView();
+}
+
+document.getElementById("pp-mode")?.addEventListener("click", e => {
+  const b = e.target.closest("[data-pmode]");
+  if (b) setPlayerMode(b.dataset.pmode);
+});
+
+document.getElementById("players").addEventListener("click", e => {
+  if (pMode !== "squads") return;
+  const back = e.target.closest("[data-pback]");
+  if (back) {
+    if (back.dataset.pback === "home") pState.team = null;
+    pState.player = null;
+    squadView();
+    window.scrollTo({ top: document.querySelector(".tabs").offsetTop - 8 });
+    return;
+  }
+  const ps = e.target.closest("[data-pstrong]");
+  if (ps) { pStrongStat = ps.dataset.pstrong; squadView(); return; }
+  const ord = e.target.closest("[data-porder]");
+  if (ord) { pOrder = ord.dataset.porder; squadView(); return; }
+  const pick = e.target.closest("[data-pteam]");
+  if (pick) {
+    pState.fx = DATA;
+    pState.team = parseInt(pick.dataset.pteam, 10);
+    pState.player = pick.dataset.pplayer ?? null;
+    squadView();
+    window.scrollTo({ top: document.querySelector(".tabs").offsetTop - 8 });
+  }
+});
+
+document.getElementById("players").addEventListener("input", e => {
+  const inp = e.target.closest("input[data-pprice]");
+  if (!inp) return;
+  const v = parseFloat(inp.value);
+  if (v > 1) PRICE_IN[inp.dataset.pprice] = v; else delete PRICE_IN[inp.dataset.pprice];
+  const rung = inp.closest(".pp-rung");
+  const edge = rung && rung.querySelector(".pp-edge");
+  if (!edge) return;
+  const ours = parseFloat(rung.dataset.pp);
+  const def = parseFloat(rung.dataset.pdef);
+  edge.outerHTML = edgeHtml(ours, v > 1 ? v : def);
+});
+
+/* ---------------------------------------------- Jarvis-style charts
+
+   The same picture Jarvis shows on a pick: a ring of the last games, a
+   segment per game, green and thick for a hit and thin red for a miss, with
+   the count in the middle; and a line chart of the values with the line
+   dashed across it, a filled green dot over the line and a hollow red one
+   under it, so the count reads in greyscale too. The polyline is in the
+   team's colour. Hover a dot for the date and opponent. */
+
+const SVG_W = 470, SVG_H = 170;
+
+function jNum(v) {
+  return Number.isInteger(v) ? String(v) : (Math.round(v * 10) / 10).toString();
+}
+
+function jStep(raw) {
+  const p = Math.pow(10, Math.floor(Math.log10(raw || 1)));
+  return [1, 2, 5, 10].map(k => k * p).find(s => s >= raw) || 10 * p;
+}
+
+/* points: [{v, label, tip}], oldest first. */
+function jChart(points, line, colorVar, unit) {
+  const W = SVG_W, H = SVG_H, L = 30, R = 38, T = 16, B = 24;
+  const n = points.length;
+  if (!n) return "";
+  const pw = W - L - R, ph = H - T - B;
+  const lo = Math.min(0, ...points.map(p => p.v));
+  const max = Math.max(...points.map(p => p.v), line, 0.5);
+  const tick = jStep((max - lo) * 1.1 / 4);
+  const top = Math.ceil((max * 1.1) / tick) * tick;
+  const x = i => L + (n > 1 ? (i * pw) / (n - 1) : pw / 2);
+  const y = v => T + ph - ((v - lo) / ((top - lo) || 1)) * ph;
+  let s = `<svg class="jchart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${
+    escapeHtml(unit)}, last ${n}, against the ${jNum(line)} line">`;
+  for (let v = lo; v <= top + 1e-9; v += tick) {
+    if (Math.abs(y(v) - y(line)) >= 6) {
+      s += `<line x1="${L}" x2="${W - R}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}" class="jg"/>`;
+    }
+    s += `<text x="${L - 6}" y="${(y(v) + 3).toFixed(1)}" text-anchor="end" class="jt">${jNum(v)}</text>`;
+  }
+  s += `<line x1="${L}" x2="${W - R}" y1="${y(line).toFixed(1)}" y2="${y(line).toFixed(1)}" class="jline"/>`;
+  s += `<text x="${W - R + 4}" y="${(y(line) + 3).toFixed(1)}" class="jll">${escapeHtml(lineLabel(line))}</text>`;
+  s += `<polyline points="${points.map((p, i) => `${x(i).toFixed(1)},${y(p.v).toFixed(1)}`).join(" ")}"
+    fill="none" style="stroke:var(${colorVar})" stroke-width="1.8" opacity="0.9"/>`;
+  points.forEach((p, i) => {
+    const hit = p.v > line;
+    s += `<circle cx="${x(i).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="4" class="${hit ? "jhit" : "jmiss"}">
+      <title>${escapeHtml(p.tip || "")}: ${jNum(p.v)} ${escapeHtml(unit)} ${hit ? "(over)" : "(under)"}</title></circle>`;
+    if (n <= 12 || i % 2 === n % 2) {
+      s += `<text x="${x(i).toFixed(1)}" y="${H - 7}" text-anchor="middle" class="jx">${escapeHtml(p.label || "")}</text>`;
+    }
+  });
+  // Value labels on the best and the latest, as Jarvis does.
+  let best = 0;
+  points.forEach((p, i) => { if (p.v > points[best].v) best = i; });
+  for (const i of new Set([best, n - 1])) {
+    s += `<text x="${x(i).toFixed(1)}" y="${(y(points[i].v) - 9).toFixed(1)}" text-anchor="middle" class="jv">${jNum(points[i].v)}</text>`;
+  }
+  return s + `</svg>`;
+}
+
+function jRing(points, line) {
+  const n = points.length;
+  if (!n) return "";
+  const cx = 60, cy = 60, r = 50, gap = n > 1 ? 3.2 : 0;
+  const hits = points.filter(p => p.v > line).length;
+  let s = `<svg class="jring" viewBox="0 0 120 120" role="img" aria-label="${hits} of the last ${n} over the line">`;
+  const pt = a => [cx + r * Math.cos(a * Math.PI / 180), cy + r * Math.sin(a * Math.PI / 180)];
+  points.forEach((p, i) => {
+    const hit = p.v > line;
+    if (n === 1) {
+      s += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" class="${hit ? "jseg-hit" : "jseg-miss"}"/>`;
+      return;
+    }
+    const a0 = -90 + (i * 360) / n + gap / 2, a1 = -90 + ((i + 1) * 360) / n - gap / 2;
+    const [x0, y0] = pt(a0), [x1, y1] = pt(a1);
+    s += `<path d="M${x0.toFixed(2)},${y0.toFixed(2)} A${r},${r} 0 0 1 ${x1.toFixed(2)},${y1.toFixed(2)}"
+      fill="none" class="${hit ? "jseg-hit" : "jseg-miss"}"><title>${escapeHtml(p.tip || "")}: ${jNum(p.v)}</title></path>`;
+  });
+  s += `<text x="${cx}" y="${cy + 6}" text-anchor="middle" class="jr1">${hits}/${n}</text>`;
+  s += `<text x="${cx}" y="${cy + 22}" text-anchor="middle" class="jr2">over</text>`;
+  return s + `</svg>`;
+}
+
+function oppAbbrev(name) {
+  const w = String(name || "").replace(/[^A-Za-z ]/g, "").split(" ").filter(x => x.length > 2 && !["FC", "AFC", "The"].includes(x));
+  return (w[0] || name || "").slice(0, 3).toUpperCase();
+}
+
+/* ------------------------------------------------- Team stats as one chart
+
+   The Team stats tab is one view, not a card per stat. The stat list sits
+   down the side, always open; tap one and the chart beside it switches to
+   it. Above the chart: which side (both, home, away), which period (full,
+   1st, 2nd), how many games, and the line. Both sides share one chart,
+   each in its own colour, with a ring each for the hit count. Same picture
+   as Jarvis's pick cards. The side and period buttons drive the same
+   controls as the Filters panel, so everything else on the page agrees.
+   The original board is one tap away ("Table"). */
+
+let teamMode = "cards";
+let tcStat = null;
+let tcLast = 10;
+
+/* series: [{pts: [{v, tip, label}], colorVar}]. x is game order, oldest
+   first, aligned on the newest game, so "last 10" lines up across sides. */
+function jChart2(series, line, unit, labels) {
+  const W = 640, H = 260, L = 34, R = 40, T = 20, B = 28;
+  const n = Math.max(...series.map(s => s.pts.length));
+  if (!n) return "";
+  const pw = W - L - R, ph = H - T - B;
+  const all = series.flatMap(s => s.pts.map(p => p.v));
+  const lo = Math.min(0, ...all);
+  const max = Math.max(...all, line, 0.5);
+  const tick = jStep((max - lo) * 1.1 / 5);
+  const top = Math.ceil((max * 1.1) / tick) * tick;
+  const x = i => L + (n > 1 ? (i * pw) / (n - 1) : pw / 2);
+  const y = v => T + ph - ((v - lo) / ((top - lo) || 1)) * ph;
+  let s = `<svg class="jchart jbig" viewBox="0 0 ${W} ${H}" role="img" aria-label="${escapeHtml(unit)} against the ${jNum(line)} line">`;
+  for (let v = lo; v <= top + 1e-9; v += tick) {
+    if (Math.abs(y(v) - y(line)) >= 6) {
+      s += `<line x1="${L}" x2="${W - R}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}" class="jg"/>`;
+    }
+    s += `<text x="${L - 6}" y="${(y(v) + 3).toFixed(1)}" text-anchor="end" class="jt">${jNum(v)}</text>`;
+  }
+  s += `<line x1="${L}" x2="${W - R}" y1="${y(line).toFixed(1)}" y2="${y(line).toFixed(1)}" class="jline"/>`;
+  s += `<text x="${W - R + 4}" y="${(y(line) + 3).toFixed(1)}" class="jll">${escapeHtml(lineLabel(line))}</text>`;
+  for (const se of series) {
+    const off = n - se.pts.length;
+    s += `<polyline points="${se.pts.map((p, i) => `${x(i + off).toFixed(1)},${y(p.v).toFixed(1)}`).join(" ")}"
+      fill="none" style="stroke:var(${se.colorVar})" stroke-width="2.2" opacity="0.9"/>`;
+  }
+  for (const se of series) {
+    const off = n - se.pts.length;
+    se.pts.forEach((p, i) => {
+      const hit = p.v > line;
+      s += `<circle cx="${x(i + off).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="4.5" class="${hit ? "jhit" : "jmiss"}"
+        ${hit ? "" : `style="stroke:var(${se.colorVar})"`}><title>${escapeHtml(p.tip || "")}: ${jNum(p.v)} ${escapeHtml(unit)}</title></circle>`;
+    });
+    const last = se.pts[se.pts.length - 1];
+    if (last) s += `<text x="${x(n - 1).toFixed(1)}" y="${(y(last.v) - 10).toFixed(1)}" text-anchor="middle" class="jv">${jNum(last.v)}</text>`;
+  }
+  const step = n > 14 ? 2 : 1;
+  for (let i = 0; i < n; i += step) {
+    const lab = labels ? labels[i] : (i === n - 1 ? "latest" : `${i - n + 1}`);
+    s += `<text x="${x(i).toFixed(1)}" y="${H - 8}" text-anchor="middle" class="jx">${escapeHtml(lab || "")}</text>`;
+  }
+  return s + `</svg>`;
+}
+
+function tcPoints(rows, name, which) {
+  return rows
+    .map(r => ({ v: statValue(r, name, which), r }))
+    .filter(p => p.v !== undefined && p.v !== null)
+    .map(p => ({ v: p.v, label: oppAbbrev(p.r.opponent),
+                 tip: `${p.r.date} ${p.r.venue === "home" ? "v" : "at"} ${p.r.opponent}` }));
+}
+
+function teamCards() {
+  const el = document.getElementById("tcards");
+  if (!el) return;
+  const board = document.getElementById("board");
+  const cards = teamMode === "cards";
+  el.hidden = !cards;
+  if (board) board.hidden = cards;
+  if (!cards) return;
+
+  const lines = activeLines();
+  const stats = visibleStats();
+  if (!stats.length) { el.innerHTML = `<p class="note">Nothing matches these filters.</p>`; return; }
+  if (!stats.includes(tcStat)) tcStat = stats[0];
+  const teamRows = activeRecords().map(filtered);
+  const shown = focusedIndexes();
+
+  // The list down the side: every stat, each side's last-N count beside it.
+  const list = stats.map(name => {
+    const line = lines[name];
+    const badges = shown.map(i => {
+      const pts = tcPoints(teamRows[i], name, bucketFor(i)).slice(-tcLast);
+      if (!pts.length) return "";
+      const k = pts.filter(p => p.v > line).length, r = k / pts.length;
+      return `<span class="tl-badge ${r >= 0.8 ? "tl-hi" : r >= 0.6 ? "tl-mid" : ""}"><i style="background:var(${VARS[i]})"></i>${k}/${pts.length}<span class="tl-pct">${Math.round(r * 100)}%</span></span>`;
+    }).join("");
+    return `<button type="button" class="tl-item${name === tcStat ? " tl-on" : ""}" data-tcstat="${escapeHtml(name)}">
+      <span class="tl-name">${escapeHtml(name)}<small>${escapeHtml(lineLabel(line))}</small></span>
+      <span class="tl-badges">${badges}</span></button>`;
+  }).join("");
+
+  const name = tcStat, line = lines[name];
+  const series = [], rings = [];
+  shown.forEach(i => {
+    const which = bucketFor(i);
+    const pts = tcPoints(teamRows[i], name, which);
+    const last = pts.slice(-tcLast);
+    const suffix = measure === "for" ? "" : (which === "against" ? " conceded" : " for");
+    if (last.length) series.push({ pts: last, colorVar: VARS[i] });
+    const all = pts.filter(p => p.v > line).length;
+    const avg = pts.length ? pts.reduce((a, p) => a + p.v, 0) / pts.length : 0;
+    rings.push(`<div class="tv-ring">
+      <div class="tv-ringsvg">${jRing(last, line)}</div>
+      <div class="tv-ringtxt"><span class="tc-team"><span class="swatch" style="background:var(${VARS[i]})"></span>${escapeHtml(DATA.teams[i].name)}${suffix}</span>
+        <small>${pts.length ? `${all}/${pts.length} all &middot; avg ${jNum(avg)}` : "no data"}</small></div>
+    </div>`);
+  });
+  const labels = series.length === 1 ? series[0].pts.map(p => p.label) : null;
+
+  const seg = (attr, items, cur) => `<div class="seg tv-seg">${items.map(([v, t]) =>
+    `<button type="button" ${attr}="${v}" aria-pressed="${String(v) === String(cur)}">${escapeHtml(t)}</button>`).join("")}</div>`;
+  const periods = [["ALL", "Full"], ["1ST", "1st half"], ["2ND", "2nd half"]].filter(([p]) => DATA.lines[p]);
+
+  el.innerHTML = `<div class="tv">
+    <nav class="tv-list" aria-label="Stats">
+      <div class="seg tl-order">
+        <button type="button" data-tcsort="default" aria-pressed="${sort !== "strongest"}">Standard</button>
+        <button type="button" data-tcsort="strongest" aria-pressed="${sort === "strongest"}">Strongest</button>
+      </div>${list}</nav>
+    <section class="tv-main">
+      <div class="tv-head">
+        <h3>${escapeHtml(name)}</h3>
+        <div class="tc-step">
+          <button type="button" data-tstep="-1" aria-label="Lower the line">&minus;</button>
+          <span class="tc-line">${escapeHtml(lineLabel(line))}</span>
+          <button type="button" data-tstep="1" aria-label="Raise the line">+</button>
+        </div>
+        ${projectionHtml(name, line)}
+      </div>
+      <div class="tv-controls">
+        ${seg("data-tcfocus", [["both", "Both"], ["0", DATA.teams[0].name], ["1", DATA.teams[1].name]], focus)}
+        ${periods.length > 1 ? seg("data-tcperiod", periods, period) : ""}
+        ${seg("data-tclast", [[5, "Last 5"], [10, "Last 10"], [20, "Last 20"]], tcLast)}
+      </div>
+      <div class="tv-rings">${rings.join("")}</div>
+      <div class="tv-chart">${jChart2(series, line, name, labels)}</div>
+      <p class="note tv-note">Oldest on the left, newest on the right. Filled dot: over the line. Hollow: under. Hover a dot for the match.</p>
+    </section>
+  </div>`;
+}
+
+function setTeamMode(mode) {
+  teamMode = mode;
+  document.querySelectorAll("[data-tmode]").forEach(b =>
+    b.setAttribute("aria-pressed", b.dataset.tmode === mode));
+  teamCards();
+}
+
+document.getElementById("tmode")?.addEventListener("click", e => {
+  const b = e.target.closest("[data-tmode]");
+  if (b) setTeamMode(b.dataset.tmode);
+});
+
+document.getElementById("tcards")?.addEventListener("click", e => {
+  const pick = e.target.closest("[data-tcstat]");
+  if (pick) { tcStat = pick.dataset.tcstat; teamCards(); return; }
+  // Side and period go through the Filters panel's own buttons, so the
+  // whole page moves together.
+  const f = e.target.closest("[data-tcfocus]");
+  if (f) { document.querySelector(`[data-focus="${f.dataset.tcfocus}"]`)?.click(); return; }
+  const p = e.target.closest("[data-tcperiod]");
+  if (p) { document.querySelector(`[data-period="${p.dataset.tcperiod}"]`)?.click(); return; }
+  const so = e.target.closest("[data-tcsort]");
+  if (so) { document.querySelector(`[data-sort="${so.dataset.tcsort}"]`)?.click(); return; }
+  const l = e.target.closest("[data-tclast]");
+  if (l) { tcLast = parseInt(l.dataset.tclast, 10); teamCards(); return; }
+  const b = e.target.closest("[data-tstep]");
+  if (!b) return;
+  const name = tcStat;
+  const lines = activeLines();
+  const next = snapLine((lines[name] ?? 0.5) + parseInt(b.dataset.tstep, 10));
+  const row = [...document.querySelectorAll("#board .stat-row")].find(r => r.dataset.stat === name);
+  if (row) setLine(row, next); else lines[name] = next;
+  teamCards();
+});
+
 /* Two trimmed tables need about 1590px plus margins. Below that the squads
    stack and the Team control above does the work instead. */
 const TWO_UP_MIN = 1640;
@@ -5515,6 +6873,7 @@ function applyFixture() {
   document.title = `${DATA.fixture.home} v ${DATA.fixture.away}: hit rates`;
 
   fillPlayerStats();
+  oddsStrip();
   render();
   if (tab === "players") playerView();
   if (tab === "standout") standoutView();
@@ -7542,6 +8901,7 @@ function enhanceNumbers(root) {
 new MutationObserver(() => enhanceNumbers()).observe(
   document.body, { childList: true, subtree: true });
 enhanceNumbers();
+loadMarkets();
 """
 
 
@@ -7745,6 +9105,7 @@ def build_html(payload: dict) -> str:
   </div>
 </div>
 
+<div id="odds-strip" hidden></div>
 <div class="tabs" role="tablist">
   <button type="button" data-tab="team" aria-selected="true">Team stats</button>
   <button type="button" data-tab="players" aria-selected="false">Players</button>
@@ -7758,11 +9119,20 @@ def build_html(payload: dict) -> str:
 <div class="panel" data-panel="team">
   <div id="result"></div>
   <div id="mismatch"></div>
-  <div class="board" id="board"></div>
+  <div class="seg tmode" id="tmode">
+    <button type="button" data-tmode="cards" aria-pressed="true">Chart</button>
+    <button type="button" data-tmode="table" aria-pressed="false">Table</button>
+  </div>
+  <div id="tcards"></div>
+  <div class="board" id="board" hidden></div>
 </div>
 
 <div class="panel" data-panel="players" hidden>
-  <div class="controls">
+  <div class="seg pp-mode" id="pp-mode">
+    <button type="button" data-pmode="squads" aria-pressed="true">Squads</button>
+    <button type="button" data-pmode="stat" aria-pressed="false">Compare by stat</button>
+  </div>
+  <div class="controls" id="pstat-controls" hidden>
     <div class="control-group">
       <span class="control-label">Stat</span>
       <select id="pstat"></select>
@@ -7778,7 +9148,7 @@ def build_html(payload: dict) -> str:
              aria-label="Minimum appearances">
     </div>
   </div>
-  <p class="note">
+  <p class="note" id="pstat-note" hidden>
     Full match only: SofaScore does not publish player numbers by half.
     Players who have left the club are excluded, and so is any match where they
     played under 45 minutes, because a bet on a player who does not appear is

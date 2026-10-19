@@ -284,8 +284,18 @@ def calib_legs() -> list[dict]:
 
 
 def _tail(k, n, p):
-    """P(X <= k) for Binomial(n, p): how surprising a shortfall is."""
-    return sum(math.comb(n, i) * p ** i * (1 - p) ** (n - i) for i in range(k + 1))
+    """P(X <= k) for Binomial(n, p): how surprising a shortfall is.
+
+    Summed in log space: math.comb(n, i) outgrows a float once n passes about
+    a thousand, which the record did on 19 Oct 2026 and which crashed
+    bets_page.py with an OverflowError."""
+    if n <= 0:
+        return 1.0
+    p = min(max(p, 1e-12), 1 - 1e-12)
+    lp, lq = math.log(p), math.log1p(-p)
+    lg = math.lgamma(n + 1)
+    return min(1.0, sum(math.exp(lg - math.lgamma(i + 1) - math.lgamma(n - i + 1) + i * lp + (n - i) * lq)
+                        for i in range(k + 1)))
 
 
 def _market_kind(l):

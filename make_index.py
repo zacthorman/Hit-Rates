@@ -566,6 +566,7 @@ footer { margin-top: 26px; color: var(--muted); font-size: 12.5px; }
       <a href="tonight.html">Tonight <span>next 8 hours &rarr;</span></a>
       <a href="best-bets-summary.html">Best bets summary <span>all sports &rarr;</span></a>
       <a href="market-check.html">Market check <span>model v Betfair &rarr;</span></a>
+      <a href="pp-results.html">Paddy Power results <span>what hit, what paid &rarr;</span></a>
     </div>
     <div class="rail-head">
       <button type="button" class="fold" id="picks-btn" aria-expanded="true"

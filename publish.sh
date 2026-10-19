@@ -55,6 +55,19 @@ if [ -f .betfair.env ]; then
   "$PY" market_prices.py --days 3 >/dev/null && echo "  exchange prices refreshed" \
     || echo "  exchange prices not fetched (continuing with the model alone)"
 fi
+# Paddy Power's real prices for games in the next 30 hours (paddypower_prices.py).
+# Deliberately gentle: 15 to 30 seconds between games, capped per run and per
+# day, nothing refetched inside 4 hours, and a 24 hour stop on the first
+# refusal. `touch .paddypower_off` switches it off completely.
+"$PY" paddypower_prices.py || echo "  paddypower prices not fetched (continuing)"
+# The same prices for the pages themselves, read in the browser: match odds,
+# Betfair's player markets and Paddy Power's (markets_sidecar.py).
+"$PY" markets_sidecar.py || echo "  reports/markets.json not written (continuing)"
+# The Paddy Power record (pplog.py): settle what finished, log every line on
+# games not yet started with our chance at it, then the results page.
+"$PY" pplog.py settle || echo "  pp log not settled (continuing)"
+"$PY" pplog.py snapshot || echo "  pp log not updated (continuing)"
+"$PY" pplog.py page >/dev/null || echo "  pp-results.html not rebuilt (continuing)"
 # Score the model against Betfair (exchange_eval.py): settle what finished,
 # refit the blend weights from the results, so the picks below use them.
 if [ -f .betfair.env ]; then
@@ -92,6 +105,7 @@ if [ -f tonight.html ]; then cp tonight.html "$STAGE"/; fi
 "$PY" bets_page.py || echo "  best-bets-summary.html not rebuilt (continuing)"
 if [ -f best-bets-summary.html ]; then cp best-bets-summary.html "$STAGE"/; fi
 if [ -f market-check.html ]; then cp market-check.html "$STAGE"/; fi
+if [ -f pp-results.html ]; then cp pp-results.html "$STAGE"/; fi
 cp -R reports "$STAGE"/
 # Stops GitHub running the site through Jekyll, which it has no need to do
 # and which is the piece that failed during the outage.
