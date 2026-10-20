@@ -185,9 +185,15 @@ def player_lines(page: dict) -> list[dict]:
         mtype = m.get("marketType", "")
         name = m.get("marketName", "")
         player, sep, market = name.partition(" - ")
-        is_player = mtype.startswith("PLAYER_X") or mtype in (
-            "ANY_TIME_TOUCHDOWN_SCORER", "ANYTIME_GOALSCORER", "TO_SCORE",
-            "PLAYER_TO_BE_CARDED", "TO_BE_CARDED")
+        # NFL: PLAYER_X_* (one market per player, "Name - Market").
+        # Football: one market per line with every player as a runner,
+        # e.g. PLAYER_TO_HAVE_2_OR_MORE_SHOTS. First-half and each-half
+        # versions are skipped: there are no player numbers by half.
+        halves = ("FIRST_HALF" in mtype or "1ST_HALF" in mtype or "EACH_HALF" in mtype)
+        is_player = (mtype.startswith("PLAYER_X")
+                     or (mtype.startswith("PLAYER_TO_") and not halves)
+                     or mtype in ("ANY_TIME_TOUCHDOWN_SCORER", "ANYTIME_GOALSCORER", "TO_SCORE",
+                                  "TO_BE_BOOKED", "ANYTIME_ASSIST"))
         if not is_player:
             continue
         for r in m.get("runners", []):

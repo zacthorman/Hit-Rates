@@ -54,7 +54,7 @@ VALUE_MIN_N = 5       # games behind it; three is not a record
 # Logged but never called value until the record says how far off they are.
 # Football to-score came out at 23% on average across 207 lines on 20 Oct
 # against Paddy Power's 17% implied, which still includes their margin.
-UNCALIBRATED = {("football", "Goals")}
+UNCALIBRATED = {("football", "Goals"), ("football", "Card")}
 BANDS = ((0, .4), (.4, .5), (.5, .6), (.6, .7), (.7, .8), (.8, .9), (.9, 1.01))
 
 # Paddy Power market name -> the site's stat. Mirrors PP_STAT in report.py.
@@ -72,6 +72,15 @@ PP_STAT = {
     "Player To Score": "Goals", "Anytime Goalscorer": "Goals",
 }
 YES_MARKETS = {"Anytime touchdown", "Goals"}
+
+# Football markets are one per line, every player a runner: "Player To Have
+# 2 Or More Shots". Mirrors PP_PATTERNS in report.py.
+PP_PATTERNS = [
+    (re.compile(r"^Player To Have (\d+) Or More Shots$"), "Shots"),
+    (re.compile(r"^Player To Commit (\d+) Or More Fouls$"), "Fouls"),
+    (re.compile(r"^Player To Be Fouled (\d+) Or More Times$"), "Fouled"),
+]
+PP_YES = {"Player Shown a Card": "Card", "Player Assists": "Assists"}
 
 
 # ------------------------------------------------------------------ storage
@@ -113,7 +122,15 @@ def _norm(s: str) -> str:
 
 def read_line(l: dict):
     """(stat, line, over, label) for one Paddy Power selection, or None."""
-    stat = PP_STAT.get(l.get("market"))
+    market = l.get("market") or ""
+    for rx, st in PP_PATTERNS:
+        m = rx.match(market)
+        if m:
+            return st, int(m.group(1)) - 0.5, True, f"{m.group(1)}+"
+    if market in PP_YES:
+        st = PP_YES[market]
+        return st, 0.5, True, "to be booked" if st == "Card" else "1+"
+    stat = PP_STAT.get(market)
     if not stat:
         return None
     if stat in YES_MARKETS:
@@ -166,6 +183,32 @@ def _score_chance(played: list[dict], adj: float, mins: int) -> float | None:
         rate = 0.6 * xg + 0.4 * goals if xg is not None else goals
         ms = sorted(x["minutes"] for x in g)
         return rate * min(90, ms[len(ms) // 2]) / 90 * adj
+    a, b = lam(played[-10:]), lam(played)
+    if a is None or b is None:
+        return None
+    return 1 - math.exp(-(a + b) / 2)
+
+
+def _card_chance(played: list[dict], entry: dict, t: int, mins: int) -> float | None:
+    """The page's To be booked: fouls per 90 times the side's cards per foul,
+    over expected minutes, times the side's projected fouls against its
+    usual; half last ten, half every match. Heuristic: logged, not value."""
+    recs = [r for r in (entry.get("records") or [[], []])[t]]
+    F = sum(((r.get("stats") or {}).get("ALL") or {}).get("Fouls", 0) or 0 for r in recs)
+    Y = sum(((r.get("stats") or {}).get("ALL") or {}).get("Yellow cards", 0) or 0 for r in recs)
+    per_foul = Y / F if F >= 30 else 0.13
+    adj = _adjustment(entry, t, "Fouls")
+
+    def lam(games):
+        g = [x for x in games if (x.get("minutes") or 0) >= mins]
+        if len(g) < 3:
+            return None
+        m = sum(x["minutes"] for x in g)
+        if m <= 0:
+            return None
+        f90 = sum((x.get("stats") or {}).get("Fouls", 0) or 0 for x in g) / m * 90
+        ms = sorted(x["minutes"] for x in g)
+        return f90 * min(90, ms[len(ms) // 2]) / 90 * per_foul * adj
     a, b = lam(played[-10:]), lam(played)
     if a is None or b is None:
         return None
@@ -240,13 +283,17 @@ def snapshot(args=None) -> int:
             if not who:
                 continue
             t, name = who
-            apps = model.appearances(squads[t][name], stat, fill, mins)
+            apps = model.appearances(squads[t][name], "Fouls" if stat == "Card" else stat, fill, mins)
             recent = apps[-10:]
             if len(recent) < 3:
                 continue
             adj = _adjustment(entry, t, stat)
             if sport == "football" and stat == "Goals":
                 p_over = _score_chance(squads[t][name], adj, mins)
+                if p_over is None:
+                    continue
+            elif stat == "Card":
+                p_over = _card_chance(squads[t][name], entry, t, mins)
                 if p_over is None:
                     continue
             else:
@@ -256,6 +303,10 @@ def snapshot(args=None) -> int:
             hit = (lambda v: v > line) if over else (lambda v: v <= line)
             k10 = sum(1 for v in vals if hit(v))
             k5 = sum(1 for v in vals[-5:] if hit(v))
+            if stat == "Card":
+                # No card record in the box scores (cards_backfill.py will
+                # bring one); the fouls behind the estimate are not it.
+                k10 = k5 = None
             row = {
                 "event_id": int(fid), "pp_event": ev.get("ppEvent"),
                 "fixture": f"{meta['home']} v {meta['away']}", "competition": meta.get("competition"),
@@ -334,7 +385,7 @@ def settle(args=None) -> int:
                 continue
             if st != "finished":
                 continue
-            v = besttrack._player_value(r, r["sport"])
+            v = _card_value(r) if r["stat"] == "Card" else besttrack._player_value(r, r["sport"])
             if v is None:
                 continue
             if v == "dnp":
@@ -351,12 +402,29 @@ def settle(args=None) -> int:
     return done
 
 
+def _card_value(r: dict):
+    """1 if booked, 0 if played and not, 'dnp' if he did not play.
+    Cards are not in the box score, so the match's incidents decide it."""
+    import besttrack
+    import sofascore_api as api
+    played = besttrack._player_value(dict(r, stat="Minutes"), r["sport"])
+    if played == "dnp" or played is None:
+        return played
+    data = api.get_json(f"event/{r['event_id']}/incidents", max_age_hours=6, verbose=False)
+    if not data:
+        return None
+    for inc in data.get("incidents") or []:
+        if inc.get("incidentType") == "card" and _norm((inc.get("player") or {}).get("name", "")) == _norm(r["player"]):
+            return 1.0
+    return 0.0
+
+
 # ------------------------------------------------------------------ scoring
 
 def is_value(r: dict, snap: str = "first") -> bool:
     s = r.get(snap) or {}
     return (s.get("chance", 0) >= VALUE_MIN_P and s.get("edge", -1) >= VALUE_EDGE
-            and r.get("n10", 0) >= VALUE_MIN_N
+            and (r.get("n10") or 0) >= VALUE_MIN_N
             and (r.get("sport"), r.get("stat")) not in UNCALIBRATED)
 
 
@@ -464,8 +532,10 @@ def page(args=None) -> Path:
         val = "" if r.get("value") is None else f"{r['value']:g}"
         when = time.strftime("%a %d %b %H:%M", time.localtime(r["kickoff"]))
         inj = f' <span class="tag">{e(r["injury"])}</span>' if r.get("injury") else ""
+        rec = ("&ndash;" if r.get("k5") is None
+               else f"{r['k5']}/{r['n5']} &middot; {r['k10']}/{r['n10']}")
         return (f"<tr><td>{when}</td><td><b>{e(r['player'])}</b>{inj}<br><small>{e(r['fixture'])}</small></td>"
-                f"<td>{e(r['stat'])} {e(r['label'])}</td><td>{r['k5']}/{r['n5']} &middot; {r['k10']}/{r['n10']}</td>"
+                f"<td>{e(r['stat'])} {e(r['label'])}</td><td>{rec}</td>"
                 f"<td>{_pct(s_['chance'])}</td><td>{s_['price']:.2f}</td>"
                 f"<td class='{_cls(s_['edge'])}'>{_pct(s_['edge'], True)}</td>"
                 f"<td class='res {res}'>{res}{(' (' + val + ')') if val else ''}</td></tr>")

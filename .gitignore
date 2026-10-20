@@ -55,3 +55,4 @@ linelog/
 # Paddy Power line record (pplog.py), kept on this machine like linelog/
 pplog/
 .paddypower_off
+.cards_off

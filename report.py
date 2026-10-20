@@ -6022,6 +6022,14 @@ const PP_STAT = {
   "Player To Score": "Goals", "Anytime Goalscorer": "Goals",
 };
 
+/* Football: one market per line, every player a runner. Mirrors pplog.py. */
+const PP_PATTERNS = [
+  [/^Player To Have (\\d+) Or More Shots$/, "Shots"],
+  [/^Player To Commit (\\d+) Or More Fouls$/, "Fouls"],
+  [/^Player To Be Fouled (\\d+) Or More Times$/, "Fouled"],
+];
+const PP_YES = { "Player Shown a Card": "Card", "Player Assists": "Assists" };
+
 /* One player's Paddy Power lines as {stat, line, over, price, label}. */
 function ppLines(name) {
   const m = fixtureMarket();
@@ -6029,6 +6037,18 @@ function ppLines(name) {
   if (!rows) return [];
   const out = [];
   for (const r of rows) {
+    const pat = PP_PATTERNS.find(([rx]) => rx.test(r.m));
+    if (pat) {
+      const n = parseInt(r.m.match(pat[0])[1], 10);
+      out.push({ stat: pat[1], line: n - 0.5, over: true, price: r.p, label: `${n}+`, market: r.m });
+      continue;
+    }
+    if (PP_YES[r.m]) {
+      const st = PP_YES[r.m];
+      out.push({ stat: st, line: 0.5, over: true, price: r.p,
+                 label: st === "Card" ? "to be booked" : "1+", market: r.m });
+      continue;
+    }
     const stat = PP_STAT[r.m];
     if (!stat) continue;
     if (stat === "Anytime touchdown" || stat === "Goals") {
@@ -6063,6 +6083,16 @@ function ppValued(t, name, played) {
   const adj = {};
   const out = [];
   for (const x of lines) {
+    if (x.stat === "Card") {
+      // To be booked: the profile's fouls-based cardCase, half last ten and
+      // half everything. Heuristic: shown, never counted as value.
+      const r = cardCase(t, name, recent), f = cardCase(t, name, played);
+      if (!r || !f) continue;
+      const p = 1 - Math.exp(-(r.lam + f.lam) / 2);
+      out.push(Object.assign({}, x, { t, name, p, edge: p * x.price - 1, k: 0, n: r.n,
+        k5: null, n5: null, priced: { p, fair: fairOdds(p), need: fairOdds(p) }, heuristic: true }));
+      continue;
+    }
     const apps = appearances(recent, x.stat);
     if (apps.length < 4) continue;
     const a = adj[x.stat] ?? (adj[x.stat] = playerAdjustment(x.stat, t));
@@ -6109,13 +6139,23 @@ function ppRowHtml(v, withName) {
   const long = v.p < 0.5;
   const cls = long ? "pp-long" : v.edge >= 0.05 ? "pp-pos" : v.edge <= -0.05 ? "pp-neg" : "";
   const inj = injuryOf(v.t, v.name);
+  if (v.stat === "Card") {
+    return `<div class="pp-rung">
+    <span class="pp-line">${withName ? `<b>${escapeHtml(v.name)}</b><br>` : ""}To be booked</span>
+    <span class="pp-rec">fouls-based estimate, not yet calibrated</span>
+    <span class="pp-kv"><small>Ours</small><b>${Math.round(v.p * 100)}%</b></span>
+    <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(v.p))}</b></span>
+    <span class="pp-kv pp-ppp"><small>Paddy Power</small><b>${fmtOdds(v.price)}</b></span>
+    <span class="pp-kv"><small>Edge</small><span class="pp-edge pp-long">${v.edge >= 0 ? "+" : ""}${Math.round(v.edge * 100)}%</span></span>
+  </div>`;
+  }
   const row = playerRow({ name: v.name, hits: v.k, vals: Array(v.n).fill(0) }, v.stat, v.line, v.t, v.priced);
   row.over = v.over;
   const idx = PLAYER_ROWS.push({ row, price: v.priced }) - 1;
   const inSlip = SLIP.some(s => s.key === rowKey(row));
   return `<div class="pp-rung">
     <span class="pp-line">${withName ? `<b>${escapeHtml(v.name)}</b>${inj ? ` <span class="lu-badge pp-out">${escapeHtml(inj)}</span>` : ""}<br>` : ""}${escapeHtml(v.stat)} ${escapeHtml(v.label)}</span>
-    <span class="pp-rec">${v.k5}/${v.n5} last 5 &middot; ${v.k}/${v.n} last ${v.n}</span>
+    <span class="pp-rec">${v.k5 === null ? "fouls-based estimate" : `${v.k5}/${v.n5} last 5 &middot; ${v.k}/${v.n} last ${v.n}`}</span>
     <span class="pp-kv"><small>Ours</small><b>${Math.round(v.p * 100)}%</b></span>
     <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(v.p))}</b></span>
     <span class="pp-kv pp-ppp"><small>Paddy Power</small><b>${fmtOdds(v.price)}</b></span>
@@ -6148,7 +6188,7 @@ function ppBestHtml() {
       if (!(v.p >= 0.5 && v.edge > 0 && v.n >= 5)) return;
       // Football to-score is logged but not called value until the results
       // say how far off it runs (pplog.py UNCALIBRATED).
-      if (SPORT === "football" && v.stat === "Goals") return;
+      if (SPORT === "football" && (v.stat === "Goals" || v.stat === "Card")) return;
       // "Over 2.5" and "3+" are the same bet: keep the better price.
       const k = [t, name, v.stat, v.line, v.over].join("|");
       if (!best.has(k) || best.get(k).price < v.price) best.set(k, v);
