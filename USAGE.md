@@ -868,3 +868,44 @@ It reads the feed Paddy Power's own event page uses (`apisms.paddypower.com/smsp
 - Paddy Power's event id is tried as Betfair's (`bfEvent`, now saved by `market_prices.py`). The team names on the reply must match; a mismatch or a 400 records that the mapping does not hold and it stops asking.
 
 `python paddypower_prices.py --status` shows the caps, any lockout, the id mapping and what is held. `--event <id>` prints one game's lines. Run from `publish.sh` after the Betfair fetch; `markets_sidecar.py` merges `reports/paddypower.json` into `reports/markets.json`. NFL market names are mapped to the site's stats (`PP_STAT` in report.py); football markets are shown once their names have been seen. Unders are priced as one minus the over, so both sides of a line add to 100%; lines under 50% are shown as long shots and never count as value.
+
+## Player model (`fmodel_live.py`, 20 October)
+
+The football player chances on the site now come from a model built and tested
+on 6,788 matches, not from the player's own record alone. For each starter it
+looks at his form, how his team and the opponent play, what the opponent
+concedes to his position, the two opposition players nearest him in the
+formation, his team-mates on the same line, head to head and league strength.
+
+Lines covered: shots 1+, 2+, 3+; shots on target 1+, 2+; fouls 1+, 2+;
+fouled 1+, 2+, 3+; tackles 1+, 2+, 3+; to score; to assist. Everything else
+(passes, saves, higher lines, other sports) still uses the old chance.
+
+How good it is, out of sample (July to October 2026, matches it never saw):
+it beat the old chance on all 15 lines, including after fixing the old one's
+calibration, and when it says 65% the line hits about 65% of the time (within
+about a point at every level). The old chance was 5 to 13 points out, mostly
+too close to 50%. Full numbers: `fmodel/training/results_auto.csv`.
+
+How it runs: `publish.sh` runs `fmodel_live.py` before the prices and the
+Paddy Power log. It reads `cache/` only (no requests) and writes
+`reports/fmodel.json`. The line-ups job republishes when a confirmed XI
+lands, so chances move from the predicted XI to the real one about an hour
+before kick-off. First run takes a couple of minutes; after that it keeps a
+cache in `fmodel/` and takes about a minute.
+
+Things to know:
+
+- It assumes the player starts. A player not in the predicted or confirmed XI
+  keeps the old chance, so before line-ups are out treat non-starters' lines
+  with care.
+- Value rows priced by it say "model", and "predicted XI" until the
+  confirmed one is in. An edge over 40% says "check team news": a gap that
+  big is more often the bookie knowing something than the bookie being wrong.
+- To score now counts as value when the model priced it (it is calibrated).
+  Cards still do not.
+- The Paddy Power log records the model's chance and the old one side by side
+  (`source`, `site_chance`), so the two can be compared on real results.
+- How it was built and how to retrain: `fmodel/training/README.md`.
+- To switch it off, delete or rename `reports/fmodel.json` and comment out the
+  `fmodel_live.py` line in `publish.sh`. The pages fall back on their own.

@@ -241,6 +241,32 @@ def _match_player(pp_key: str, squads: list[dict]):
 
 # ------------------------------------------------------------------ snapshot
 
+def _fmodel() -> dict:
+    """reports/fmodel.json (fmodel_live.py): event id -> {normalised name: player}."""
+    try:
+        j = json.loads((ROOT / "reports" / "fmodel.json").read_text())
+    except (OSError, ValueError, NameError):
+        try:
+            j = json.loads((Path(__file__).parent / "reports" / "fmodel.json").read_text())
+        except (OSError, ValueError):
+            return {}
+    out = {}
+    for eid, ev in (j.get("events") or {}).items():
+        out[eid] = {"confirmed": bool(ev.get("confirmed")),
+                    "players": {_norm(n): pl for n, pl in (ev.get("players") or {}).items()}}
+    return out
+
+
+def _fmodel_p(fm: dict, fid: str, name: str, stat: str, line: float):
+    """The backtested model's chance of over `line`, or None."""
+    ev = fm.get(fid)
+    pl = ev and ev["players"].get(_norm(name))
+    k = line + 0.5
+    if not pl or abs(k - round(k)) > 1e-9:
+        return None
+    return ((pl.get("lines") or {}).get(stat) or {}).get(str(int(round(k))))
+
+
 def snapshot(args=None) -> int:
     import markets
     import model
@@ -257,6 +283,7 @@ def snapshot(args=None) -> int:
         for r in _read(path):
             existing[_key(r)] = (path, r)
     new_rows, touched = [], set()
+    fm = _fmodel()
     for fid, ev in (pp.get("events") or {}).items():
         if fid not in fixtures:
             continue
@@ -298,6 +325,10 @@ def snapshot(args=None) -> int:
                     continue
             else:
                 p_over = model.price_player(recent, line, True, adj, None, sport)["p"]
+            site_over = p_over
+            m_over = _fmodel_p(fm, fid, name, stat, line) if sport == "football" else None
+            if m_over is not None:
+                p_over = m_over
             p = p_over if over else 1 - p_over
             vals = [a["value"] for a in recent]
             hit = (lambda v: v > line) if over else (lambda v: v <= line)
@@ -318,6 +349,12 @@ def snapshot(args=None) -> int:
             key = _key(row)
             snap = {"t": round(now), "price": l["price"], "chance": round(p, 4),
                     "edge": round(p * l["price"] - 1, 4)}
+            if m_over is not None:
+                # The model's chance is the one logged; the old one is kept
+                # beside it so the two can be compared on results.
+                snap["source"] = "fmodel"
+                snap["site_chance"] = round(site_over if over else 1 - site_over, 4)
+                snap["confirmed_xi"] = fm[fid]["confirmed"]
             # "Over 2.5" and "3+" are one bet: keep the better price.
             if key in touched:
                 prev = next((x for x in new_rows if _key(x) == key), None) \
@@ -425,7 +462,8 @@ def is_value(r: dict, snap: str = "first") -> bool:
     s = r.get(snap) or {}
     return (s.get("chance", 0) >= VALUE_MIN_P and s.get("edge", -1) >= VALUE_EDGE
             and (r.get("n10") or 0) >= VALUE_MIN_N
-            and (r.get("sport"), r.get("stat")) not in UNCALIBRATED)
+            and ((r.get("sport"), r.get("stat")) not in UNCALIBRATED
+                 or (s.get("source") == "fmodel" and r.get("stat") != "Card")))
 
 
 def _profit(r: dict, snap: str = "first") -> float:

@@ -60,6 +60,11 @@ fi
 # day, nothing refetched inside 4 hours, and a 24 hour stop on the first
 # refusal. `touch .paddypower_off` switches it off completely.
 "$PY" paddypower_prices.py || echo "  paddypower prices not fetched (continuing)"
+# The backtested player model (fmodel_live.py): a chance for every starter in
+# the predicted or confirmed XI of each football fixture in the next week, at
+# 15 lines. Read by the pages and by pplog below. Reads the cache only, no
+# requests. Without it the pages fall back to their own chances.
+"$PY" fmodel_live.py || echo "  fmodel.json not written (continuing with the site's own chances)"
 # The same prices for the pages themselves, read in the browser: match odds,
 # Betfair's player markets and Paddy Power's (markets_sidecar.py).
 "$PY" markets_sidecar.py || echo "  reports/markets.json not written (continuing)"

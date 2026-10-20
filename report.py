@@ -3782,8 +3782,8 @@ function scanPlayerBets(minSample) {
             }
           }
 
-          const price = pricePlayer(apps, line, true, adjustment,
-            positionPrior(byPlayer, played[0].position || "", stat, name));
+          const price = withModel(pricePlayer(apps, line, true, adjustment,
+            positionPrior(byPlayer, played[0].position || "", stat, name)), name, stat, line, true, fx);
           if (!isFinite(price.fair)) return;
 
           // The opponent's half, over the same match window the player's
@@ -5181,8 +5181,8 @@ function customRow() {
       if (!byName.has(r.player)) byName.set(r.player, []);
       byName.get(r.player).push(r);
     });
-    const price_ = pricePlayer(apps, line, over, playerAdjustment(stat, teamIndex),
-      positionPrior(byName, mine[0].position || "", stat, playerName));
+    const price_ = withModel(pricePlayer(apps, line, over, playerAdjustment(stat, teamIndex),
+      positionPrior(byName, mine[0].position || "", stat, playerName)), playerName, stat, line, over, fx);
 
     return {
       player: playerName,
@@ -5425,8 +5425,8 @@ function playerView() {
       }));
       const strong = p.pct >= STRONG_HIGH || p.pct <= STRONG_LOW;
 
-      const price = pricePlayer(p.apps, line, true, adjustment,
-        positionPrior(byPlayer, p.pos, stat, p.name));
+      const price = withModel(pricePlayer(p.apps, line, true, adjustment,
+        positionPrior(byPlayer, p.pos, stat, p.name)), p.name, stat, line, true);
       const row = playerRow(p, stat, line, teamIndex, price);
       const inSlip = SLIP.some(s => s.key === rowKey(row));
       const index = PLAYER_ROWS.push({ row, price }) - 1;
@@ -5598,6 +5598,67 @@ function loadMarkets() {
       if (tab === "players") playerView();
     })
     .catch(() => {});
+}
+
+/* ------------------------------------------------- the backtested model
+
+   reports/fmodel.json, written by fmodel_live.py before every publish: a
+   chance for each starter in the predicted or confirmed XI at 15 football
+   lines (shots 1-3+, shots on target 1-2+, fouls 1-2+, fouled 1-3+,
+   tackles 1-3+, to score, to assist). It is trained on team and opponent
+   style, the players he lines up against, partners, head to head and
+   league strength as well as his own form, and in the out-of-sample test
+   (July 2026 on) it beat pricePlayer on all 15 lines and was within about a
+   point of the truth at every chance level. See USAGE.md, "Player model".
+
+   Where it has a chance it replaces pricePlayer's; anywhere else (other
+   lines, other sports, a player with under three full games on file) the
+   page keeps its own. It assumes the player starts. */
+let FMODEL = null;
+
+function loadFModel() {
+  if (typeof fetch !== "function" || location.protocol === "file:") return;
+  fetch("fmodel.json", { cache: "no-store" })
+    .then(r => (r.ok ? r.json() : null))
+    .then(j => {
+      if (!j || !j.events) return;
+      const out = {};
+      for (const [id, ev] of Object.entries(j.events)) {
+        const by = {};
+        for (const [n, pl] of Object.entries(ev.players || {})) by[normName(n)] = pl;
+        out[id] = { confirmed: !!ev.confirmed, players: by };
+      }
+      FMODEL = out;
+      BEST_CACHE.clear();
+      if (tab === "players") playerView();
+    })
+    .catch(() => {});
+}
+
+function modelEvent(fx) {
+  fx = fx || DATA;
+  if (!FMODEL || SPORT !== "football" || !fx || !fx.fixture) return null;
+  return FMODEL[String(fx.fixture.id)] || null;
+}
+
+/* The model's chance of OVER `line` for this player, or null. */
+function modelP(name, stat, line, fx) {
+  const ev = modelEvent(fx);
+  const pl = ev && ev.players[normName(name)];
+  if (!pl) return null;
+  const k = line + 0.5;
+  if (!Number.isInteger(k)) return null;
+  const v = ((pl.lines || {})[stat] || {})[String(k)];
+  return typeof v === "number" ? v : null;
+}
+
+/* pricePlayer's answer with the model's chance swapped in, when it has one. */
+function withModel(price, name, stat, line, over, fx) {
+  const p = modelP(name, stat, line, fx);
+  if (p === null || !price) return price;
+  const q = over ? p : 1 - p;
+  return Object.assign({}, price, { p: q, fair: fairOdds(q), need: fairOdds(q),
+    source: "fmodel", siteP: price.p });
 }
 
 function matchOddsHtml() {
@@ -5926,7 +5987,7 @@ function playerBestLines(t, name, played) {
     if (recentApps.length < 5) continue;
     const adj = playerAdjustment(stat, t);
     for (const line of rungsFor(stat, vals)) {
-      const price = pricePlayer(recentApps, line, true, adj, null);
+      const price = withModel(pricePlayer(recentApps, line, true, adj, null), name, stat, line, true);
       if (!(price.p >= STRONG_MIN && price.p <= STRONG_MAX)) continue;
       const r = lastRate(played, stat, line);
       const kAll = vals.filter(v => v > line).length;
@@ -6100,10 +6161,10 @@ function ppValued(t, name, played) {
     // sides of one line add up to 100%. Pricing the under directly runs it
     // through the record calibration a second time, and both sides of
     // McCaffrey's 59.5 came out at 46%.
-    let overPrice = pricePlayer(apps, x.line, true, a, null);
+    let overPrice = withModel(pricePlayer(apps, x.line, true, a, null), name, x.stat, x.line, true);
     // Football to-score: the xG-based scoreCase, half last ten and half
     // everything, as on the profile. A goals record alone is too noisy.
-    if (x.stat === "Goals" && SPORT === "football") {
+    if (x.stat === "Goals" && SPORT === "football" && overPrice.source !== "fmodel") {
       const sc = (() => {
         const r = scoreCase(t, recent), f = scoreCase(t, played);
         if (!r || !f) return null;
@@ -6135,6 +6196,17 @@ function injuryOf(t, name) {
 }
 const INJ_OUT = /^(Out|Injured Reserve|Suspension|Doubtful)/;
 
+/* Under a value row: whether the chance is the model's, whether it rests on
+   a predicted XI, and a warning when the edge is too big to take on trust. */
+function modelNote(v) {
+  if (!v.priced || v.priced.source !== "fmodel") return "";
+  const ev = modelEvent();
+  const bits = ["model"];
+  if (ev && !ev.confirmed) bits.push("predicted XI");
+  if (v.edge > 0.4) bits.push("<b>big edge: check team news</b>");
+  return " &middot; " + bits.join(" &middot; ");
+}
+
 function ppRowHtml(v, withName) {
   const long = v.p < 0.5;
   const cls = long ? "pp-long" : v.edge >= 0.05 ? "pp-pos" : v.edge <= -0.05 ? "pp-neg" : "";
@@ -6155,7 +6227,7 @@ function ppRowHtml(v, withName) {
   const inSlip = SLIP.some(s => s.key === rowKey(row));
   return `<div class="pp-rung">
     <span class="pp-line">${withName ? `<b>${escapeHtml(v.name)}</b>${inj ? ` <span class="lu-badge pp-out">${escapeHtml(inj)}</span>` : ""}<br>` : ""}${escapeHtml(v.stat)} ${escapeHtml(v.label)}</span>
-    <span class="pp-rec">${v.k5 === null ? "fouls-based estimate" : `${v.k5}/${v.n5} last 5 &middot; ${v.k}/${v.n} last ${v.n}`}</span>
+    <span class="pp-rec">${v.k5 === null ? "fouls-based estimate" : `${v.k5}/${v.n5} last 5 &middot; ${v.k}/${v.n} last ${v.n}`}${modelNote(v)}</span>
     <span class="pp-kv"><small>Ours</small><b>${Math.round(v.p * 100)}%</b></span>
     <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(v.p))}</b></span>
     <span class="pp-kv pp-ppp"><small>Paddy Power</small><b>${fmtOdds(v.price)}</b></span>
@@ -6187,8 +6259,10 @@ function ppBestHtml() {
     ppValued(t, name, played).forEach(v => {
       if (!(v.p >= 0.5 && v.edge > 0 && v.n >= 5)) return;
       // Football to-score is logged but not called value until the results
-      // say how far off it runs (pplog.py UNCALIBRATED).
-      if (SPORT === "football" && (v.stat === "Goals" || v.stat === "Card")) return;
+      // say how far off it runs (pplog.py UNCALIBRATED), unless the
+      // backtested model priced it, which is calibrated.
+      if (SPORT === "football" && v.stat === "Card") return;
+      if (SPORT === "football" && v.stat === "Goals" && (v.priced || {}).source !== "fmodel") return;
       // "Over 2.5" and "3+" are the same bet: keep the better price.
       const k = [t, name, v.stat, v.line, v.over].join("|");
       if (!best.has(k) || best.get(k).price < v.price) best.set(k, v);
@@ -6376,7 +6450,8 @@ function profileView(t, name) {
     const fullApps = appearances(fullRec, stat);
     const recentApps = appearances(recent, stat);
     const rungs = rungsFor(stat, vals).map(line => {
-      const price = pricePlayer(recentApps.length ? recentApps : sApps, line, true, adjustment, prior);
+      const price = withModel(pricePlayer(recentApps.length ? recentApps : sApps, line, true, adjustment, prior),
+                              name, stat, line, true);
       const book = pricePlayer(fullApps.length ? fullApps : sApps, line, true, 1, prior);
       const hits = vals.filter(v => v > line).length;
       const p0 = { name, hits, vals };
@@ -8942,6 +9017,7 @@ new MutationObserver(() => enhanceNumbers()).observe(
   document.body, { childList: true, subtree: true });
 enhanceNumbers();
 loadMarkets();
+loadFModel();
 """
 
 

@@ -56,3 +56,6 @@ linelog/
 pplog/
 .paddypower_off
 .cards_off
+
+# fmodel_live.py history cache (rebuilt from cache/ when missing)
+fmodel/.history_cache*
