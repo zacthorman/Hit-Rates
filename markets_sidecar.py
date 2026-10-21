@@ -87,8 +87,23 @@ def build(data: dict) -> dict:
             by.setdefault(l["key"], []).append(
                 {"m": l["market"], "s": l.get("selection") or "", "o": l.get("side"),
                  "l": l.get("line"), "p": l["price"]})
+        team = e.get("team") or []
+        if by or team:
+            events.setdefault(fid, {})["pp"] = {"at": e.get("fetchedAt"), "players": by, "team": team,
+                                                "home": e.get("ppHome") or "", "away": e.get("ppAway") or ""}
+    # Bet365, when bet365_prices.py holds any (via Oddschecker): same shape.
+    try:
+        b3 = json.loads((HERE / "reports" / "bet365.json").read_text())
+    except (OSError, ValueError):
+        b3 = {}
+    for fid, e in (b3.get("events") or {}).items():
+        by = {}
+        for l in e.get("lines", []):
+            by.setdefault(l["key"], []).append(
+                {"m": l["market"], "s": l.get("selection") or "", "o": l.get("side"),
+                 "l": l.get("line"), "p": l["price"]})
         if by:
-            events.setdefault(fid, {})["pp"] = {"at": e.get("fetchedAt"), "players": by}
+            events.setdefault(fid, {})["b365"] = {"at": e.get("fetchedAt"), "players": by}
     return {"fetched": data.get("fetched"), "events": events}
 
 
@@ -103,7 +118,8 @@ def main() -> int:
     n = len(payload["events"])
     p = sum(len(e.get("players", {})) for e in payload["events"].values())
     q = sum(1 for e in payload["events"].values() if e.get("pp"))
-    print(f"  markets.json: {n} events, {p} Betfair player prices, Paddy Power on {q} game(s)")
+    b = sum(1 for e in payload["events"].values() if e.get("b365"))
+    print(f"  markets.json: {n} events, {p} Betfair player prices, Paddy Power on {q} game(s), Bet365 on {b}")
     return 0
 
 

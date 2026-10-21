@@ -59,3 +59,13 @@ pplog/
 
 # fmodel_live.py history cache (rebuilt from cache/ when missing)
 fmodel/.history_cache*
+
+# Bet365 via Oddschecker: off switch and the hand-run odds dumps
+.bet365_off
+liverpool-villarreal.txt
+mancity-aek.txt
+psg-barca.txt
+
+# Claude's backups before a patch, and the bin
+*.bak-*
+_to_delete/

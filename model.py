@@ -366,6 +366,15 @@ def price(
 PLAYER_CALIBRATION_A = -0.0227
 PLAYER_CALIBRATION_B = 0.4454
 
+# Basketball has its own fit. Applying the football constants to NBA player
+# bets made them far too cautious: on the 4,817 established player bets that
+# `backtest.py --league NBA --games 20 --players` settled (March to June 2026,
+# run 21 Oct 2026) they said 74% and landed 82%. Fitted the same way, on the
+# raw log-odds; fitted on either half it improved the other (Brier 0.139 to
+# 0.129, and 0.139 to 0.135). Refit once this season has a few weeks in: the
+# fit is end of season and playoffs.
+PLAYER_CALIBRATION_BY_SPORT = {"basketball": (0.3381, 0.5482)}
+
 
 # ------------------------------------------------- the record-only branch
 #
@@ -429,12 +438,13 @@ def calibrate_record(p: float, sport: str = "football",
     return 1 / (1 + math.exp(-z))
 
 
-def calibrate_player(p: float) -> float:
+def calibrate_player(p: float, sport: str = "football") -> float:
     """The established player branch's stated probability, shrunk to what
     bets stated like it actually landed at. Same shape as calibrate(), fitted
     separately on player bets; see the constants above for the ledger."""
     p = min(1 - 1e-9, max(1e-9, p))
-    z = PLAYER_CALIBRATION_A + PLAYER_CALIBRATION_B * math.log(p / (1 - p))
+    a, b = PLAYER_CALIBRATION_BY_SPORT.get(sport, (PLAYER_CALIBRATION_A, PLAYER_CALIBRATION_B))
+    z = a + b * math.log(p / (1 - p))
     return 1 / (1 + math.exp(-z))
 
 
@@ -841,8 +851,8 @@ def price_player(apps, line, over, adjustment, prior, sport="football"):
     # `need` keeps its place on the pessimistic side of `fair`. Only this
     # branch -- the blend and record branches above quote raw numbers on
     # purpose; see calibrate_player().
-    p = calibrate_player(p)
-    p_low = calibrate_player(p_low)
+    p = calibrate_player(p, sport)
+    p_low = calibrate_player(p_low, sport)
 
     return {
         "p": p,

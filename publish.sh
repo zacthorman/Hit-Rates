@@ -60,6 +60,13 @@ fi
 # day, nothing refetched inside 4 hours, and a 24 hour stop on the first
 # refusal. `touch .paddypower_off` switches it off completely.
 "$PY" paddypower_prices.py || echo "  paddypower prices not fetched (continuing)"
+# Bet365's player prices via Oddschecker (bet365_prices.py), for games whose
+# match page was saved with `python bet365_prices.py --add URL`. One batched
+# request per game, refetched at most every 4 hours (45 minutes close to
+# kick-off), paced and capped per day by oddschecker_client.py. Needs
+# FlareSolverr only when the saved cookies have expired. `touch .bet365_off`
+# switches it off.
+"$PY" bet365_prices.py || echo "  bet365 prices not fetched (continuing)"
 # The backtested player model (fmodel_live.py): a chance for every starter in
 # the predicted or confirmed XI of each football fixture in the next week, at
 # 15 lines. Read by the pages and by pplog below. Reads the cache only, no

@@ -185,7 +185,9 @@ class Backtester:
             self.ratings_cache[key] = None
             return None
 
-        names = hitrates.stat_names(*by_team.values())
+        # Missed in the sport threading above: an NBA fit rated only
+        # football stats, so no basketball bet was ever model-priced.
+        names = hitrates.stat_names(*by_team.values(), sport=self.sport)
         fitted = (hitrates.league_ratings(by_team, names), names)
         self.ratings_cache[key] = fitted
         return fitted

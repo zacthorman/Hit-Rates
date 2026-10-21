@@ -70,6 +70,11 @@ PP_STAT = {
     "Passing TDs": "Passing touchdowns", "Alt Passing TDs": "Passing touchdowns",
     "Any Time Touchdown Scorer": "Anytime touchdown",
     "Player To Score": "Goals", "Anytime Goalscorer": "Goals",
+    # Basketball: paddypower_prices.py names them; side and line are set.
+    "Points": "Points", "Rebounds": "Rebounds", "Assists": "Assists",
+    "Made Threes": "Three pointers made", "Blocks": "Blocks", "Steals": "Steals",
+    "Pts + Reb + Ast": "Points rebounds and assists", "Pts + Reb": "Points and rebounds",
+    "Pts + Ast": "Points and assists", "Reb + Ast": "Rebounds and assists",
 }
 YES_MARKETS = {"Anytime touchdown", "Goals"}
 

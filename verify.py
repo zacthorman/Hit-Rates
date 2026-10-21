@@ -95,7 +95,9 @@ def extract_js() -> str:
 
     player_cal = re.search(
         r"const PLAYER_CALIBRATION_A = [-\d.]+;\s*\n"
-        r"const PLAYER_CALIBRATION_B = [-\d.]+;", js)
+        r"const PLAYER_CALIBRATION_B = [-\d.]+;"
+        # and the per-sport fits that follow it (basketball, 21 Oct 2026)
+        r"(?:\s*/\*.*?\*/\s*\nconst PLAYER_CALIBRATION_BY_SPORT = \{[^}]*\};)?", js, re.S)
     if not player_cal:
         raise SystemExit(
             "could not find the player calibration constants in report.py's JS")

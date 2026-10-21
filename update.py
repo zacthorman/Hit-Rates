@@ -513,6 +513,17 @@ def main() -> None:
                      "--players", "--adjust", "--h2h", "--no-open"],
                     args.dry, allow_fail=True)
 
+            # 1f. The NBA. Same shape as the NFL and MLB steps, but only games
+            #     in the next two days: there are games most nights, and a
+            #     whole slate of thirty teams every run would be the slowest
+            #     build here for pages that are stale by tomorrow. Never fatal.
+            if settings.get("nba"):
+                say("building the NBA slate")
+                run([python, "run.py", "--league", "NBA", "--games", "20",
+                     "--players", "--adjust", "--h2h", "--within-days", "2",
+                     "--no-open"],
+                    args.dry, allow_fail=True)
+
         # 2. Re-render, so reports built by older code pick up new page
         #    features. Cheap: the data is already inside each file.
         if not run([python, "rerender.py"], args.dry):

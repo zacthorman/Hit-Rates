@@ -207,7 +207,8 @@ def _home_competition_id(records: list[list[dict]]) -> int | None:
     return max(counts, key=counts.get)
 
 
-def league_ratings_for(tournament_id: int | None, games: int) -> tuple[dict, dict] | None:
+def league_ratings_for(tournament_id: int | None, games: int,
+                       sport: str = "football") -> tuple[dict, dict] | None:
     """Fit attack and defence ratings for a whole competition.
 
     Expensive the first time (every club's recent form) and free afterwards,
@@ -241,7 +242,10 @@ def league_ratings_for(tournament_id: int | None, games: int) -> tuple[dict, dic
         _RATINGS_CACHE[tournament_id] = None
         return None
 
-    names = hitrates.stat_names(*by_team.values())
+    # The sport has to be passed: stat_names defaults to football, and an NBA
+    # fit came back rating only goals, BTTS and fouls, so no basketball line
+    # was ever adjusted for the opponent (found 21 Oct 2026).
+    names = hitrates.stat_names(*by_team.values(), sport=sport)
     ratings = hitrates.league_ratings(by_team, names)
     print(f"    fitted from {len(by_team)} teams              ")
 
@@ -616,7 +620,7 @@ def build_fixture(
             "common, so there is no shared scale to rate them on"
         ]
     elif adjust:
-        fitted = league_ratings_for(unique_id, games)
+        fitted = league_ratings_for(unique_id, games, sport)
 
         # The competition on a fixture is not always the competition its clubs
         # play in. Malaga v Deportivo is tagged LaLiga because that is the
@@ -634,7 +638,7 @@ def build_fixture(
             if own_id is not None and own_id != unique_id:
                 print(f"  neither club is in that division's table, "
                       f"refitting from their own")
-                refitted = league_ratings_for(own_id, games)
+                refitted = league_ratings_for(own_id, games, sport)
                 if refitted and _in_pool(refitted[0], home["id"], away["id"]):
                     fitted = refitted
 

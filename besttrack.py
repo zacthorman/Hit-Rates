@@ -212,11 +212,24 @@ def _player_value(leg, sport):
     import hitrates
     import markets
     import sofascore_api as api
-    data = api.get_json(f"event/{leg['event_id']}/lineups", max_age_hours=6, verbose=False) or {}
+    import time
+    # The line-ups must have been read after the match, not before it. This
+    # took any copy up to six hours old, and lineups_auto.py saves one about
+    # an hour before kick-off, with no statistics in it. Every football
+    # player in it then settled on zero: on 20 Oct 2026 the pp log graded
+    # 0 of 46 fouls lines and 0 of 66 fouled lines a win, and -460 units.
+    # Settling waits until three hours after kick-off, so anything saved
+    # before that is from before the final whistle and is fetched again.
+    after = max(0.05, (time.time() - leg["kickoff"]) / 3600 - 3)
+    data = api.get_json(f"event/{leg['event_id']}/lineups", max_age_hours=after, verbose=False) or {}
     fill = markets.ZERO_FILL_BY_SPORT.get(sport, hitrates.PLAYER_ZERO_FILL) or hitrates.PLAYER_ZERO_FILL
     for side in ("home", "away"):
         for p in (data.get(side) or {}).get("players", []) or []:
             if (p.get("player") or {}).get("name") == leg["player"]:
+                # No statistics at all is a player who never came on (or a
+                # copy from before the match): a void, never a zero.
+                if not p.get("statistics"):
+                    return "dnp"
                 vals = hitrates._player_stat_values(p.get("statistics") or {}, zero_fill=fill)
                 return vals.get(leg["stat"], 0.0) if vals else "dnp"
     return "dnp"

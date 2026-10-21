@@ -1142,6 +1142,11 @@ input[type=number]::-webkit-inner-spin-button {
 .pp-tag { font-size: 11.5px; background: var(--tint); border-radius: 6px; padding: 3px 7px; color: var(--text-secondary); white-space: nowrap; }
 .pp-tag b { color: var(--hit); }
 .pp-tag.pp-card { color: var(--text-primary); background: rgba(232, 185, 35, 0.22); }
+.vd { font-size: 11px; font-weight: 680; letter-spacing: 0.04em; text-transform: uppercase; border-radius: 6px; padding: 3px 7px; white-space: nowrap; }
+.vd-take { background: rgba(12, 163, 12, 0.18); color: var(--hit); }
+.vd-ok { background: rgba(232, 185, 35, 0.22); color: var(--text-primary); }
+.vd-avoid { background: rgba(220, 60, 60, 0.16); color: var(--miss); }
+.vd-long { background: var(--tint); color: var(--muted); }
 .pp-hero { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
 .pp-hero .swatch { margin-right: 6px; }
 .pp-big { font-size: 22px; font-weight: 700; }
@@ -2385,13 +2390,170 @@ const PLAYER_STAT_TO_TEAM = {
    always was. */
 const PLAYER_SCAN_ALLOW = new Set(__PLAYER_SCAN_ALLOW__);
 
+/* When there is no projection for the match, the odds stand in for it.
+
+   A projection needs both sides rated on one scale, which a cross-league
+   game (every Champions League tie, most cup ties) does not have, so
+   playerAdjustment() used to fall back to 1 there: no adjustment at all.
+   AEK Athens' forwards were priced off their Greek league shots as though
+   Manchester City were a Greek side, and a 2.6-shot Varga came out at 50%
+   for 3+ shots at the Etihad (20 Oct 2026).
+
+   Betfair's match odds already rate both sides on one scale. They are
+   turned into each side's expected goals (a Poisson fit to home, draw and
+   away), and the side's expected goals in this game over its own goals per
+   game is the adjustment. Shots fall less than goals against a strong side
+   (more of them blocked or from distance), so shots take the ratio to the
+   power 0.7 and shots on target to 0.8; goals take it whole. Not
+   backtested: an informed default, and the page says when it is in use.
+   Tackles and fouls stay neutral, as before. */
+const ODDS_ADJ_POWER = { "Total shots": 0.7, "Shots on target": 0.8, "Goals": 1 };
+const LAMBDA_CACHE = new Map();
+
+function goalLambdas(fx = DATA) {
+  const id = fx && fx.fixture ? String(fx.fixture.id) : null;
+  if (!id || !MARKETS) return null;
+  if (LAMBDA_CACHE.has(id)) return LAMBDA_CACHE.get(id);
+  const o = (MARKETS[id] || {}).match;
+  const ph = o && o.home && o.home.p, pd = o && o.draw && o.draw.p, pa = o && o.away && o.away.p;
+  let best = null;
+  if (ph > 0 && pd > 0 && pa > 0) {
+    const pois = l => {
+      const out = [Math.exp(-l)];
+      for (let k = 1; k <= 10; k++) out.push(out[k - 1] * l / k);
+      return out;
+    };
+    let err = Infinity;
+    for (let lh = 0.15; lh <= 4.5; lh += 0.05) {
+      const h = pois(lh);
+      for (let la = 0.15; la <= 4.5; la += 0.05) {
+        const a = pois(la);
+        let H = 0, D = 0, A = 0;
+        for (let i = 0; i <= 10; i++) for (let j = 0; j <= 10; j++) {
+          const q = h[i] * a[j];
+          if (i > j) H += q; else if (i === j) D += q; else A += q;
+        }
+        const e = (H - ph) * (H - ph) + (D - pd) * (D - pd) + (A - pa) * (A - pa);
+        if (e < err) { err = e; best = [lh, la]; }
+      }
+    }
+  }
+  LAMBDA_CACHE.set(id, best);
+  return best;
+}
+
+/* Basketball's version, and a better one: Paddy Power prices each side's
+   points total directly, so there is no Poisson fit to do. The over and
+   under at the main line, margin removed, say how far the market's
+   expectation sits from the line (team points spread about 12 a game), and
+   that over the side's own points per game is the adjustment. Points take it
+   whole; assists and threes ride most of it (more points, more made shots to
+   assist); rebounds only a little (they follow misses and pace, not scoring).
+   Steals, blocks and turnovers stay neutral. Same role as the football one:
+   only used when the ratings cannot rate the pair (opening night, when both
+   sides' last 20 were mostly the playoff series against each other). Not
+   backtested; the page says when it is in use. */
+const BB_ODDS_POWER = { "Points": 1, "Field goals": 1, "Assists": 0.8, "3 pointers": 0.8,
+                        "Free throws": 0.8, "Rebounds": 0.4 };
+const BB_POINTS_SD = 12;
+
+function probit(p) {
+  // Acklam's rational approximation, plenty for 0.2 < p < 0.8.
+  const a = [-39.6968302866538, 220.946098424521, -275.928510446969, 138.357751867269, -30.6647980661472, 2.50662827745924];
+  const b = [-54.4760987982241, 161.585836858041, -155.698979859887, 66.8013118877197, -13.2806815528857];
+  const q = p - 0.5, r = q * q;
+  return (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) * q
+       / (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1);
+}
+
+function bbExpectedPoints(teamIndex, fx = DATA) {
+  if (fx !== DATA) return null;
+  const m = fixtureMarket(fx);
+  const lines = (m && m.pp && m.pp.team) || [];
+  const order = ppTeamOrder();
+  const scope = order[0] === teamIndex ? "home" : "away";
+  const mine = lines.filter(l => l.stat === "Points" && l.scope === scope);
+  const over = mine.find(l => l.over), under = mine.find(l => !l.over && over && l.line === over.line);
+  if (!over || !under) return null;
+  const po = 1 / over.price, pu = 1 / under.price;
+  const pOver = Math.min(0.8, Math.max(0.2, po / (po + pu)));
+  return over.line + BB_POINTS_SD * probit(pOver);
+}
+
+function bbOddsAdjustment(stat, teamIndex, fx = DATA) {
+  const teamStat = PLAYER_STAT_TO_TEAM[stat];
+  const power = BB_ODDS_POWER[teamStat];
+  if (!power) return null;
+  const e = bbExpectedPoints(teamIndex, fx);
+  if (!e) return null;
+  const pts = filtered(fx.records[teamIndex]).map(r => ((r.stats || {}).ALL || {})["Points"])
+    .filter(v => v !== undefined && v !== null);
+  if (pts.length < 5) return null;
+  const mean = pts.reduce((a, b) => a + b, 0) / pts.length;
+  if (mean < 60) return null;
+  return Math.min(1.3, Math.max(0.75, Math.pow(e / mean, power)));
+}
+
+function oddsAdjustment(stat, teamIndex, fx = DATA) {
+  if (SPORT === "basketball") return bbOddsAdjustment(stat, teamIndex, fx);
+  const power = ODDS_ADJ_POWER[PLAYER_STAT_TO_TEAM[stat]];
+  if (!power || SPORT !== "football") return null;
+  const lam = goalLambdas(fx);
+  if (!lam) return null;
+  const goals = filtered(fx.records[teamIndex]).map(r => (r.stats.ALL || {})["Goals"])
+    .filter(v => v !== undefined && v !== null);
+  if (goals.length < 5) return null;
+  const mean = goals.reduce((s, v) => s + v, 0) / goals.length;
+  if (mean <= 0.2) return null;
+  return Math.min(2.5, Math.max(0.2, Math.pow(lam[teamIndex] / mean, power)));
+}
+
+/* The backtested model reads the opponent's numbers in the opponent's own
+   league, so it cannot see the gap between two leagues: it priced AEK's Koita
+   at 79% for a shot at the Etihad, about what he manages at home in Greece.
+   In a cross-league game (no projection, odds in use) its chance is turned
+   into an expected count (the Poisson rate giving that chance at that line),
+   scaled by the same odds adjustment as the site's numbers, and priced back.
+   Shots and shots on target only, as for the site's numbers. */
+function crossLeagueModel(price, stat, line, t, fx = DATA) {
+  if (!price || price.source !== "fmodel" || !ODDS_ADJ_POWER[PLAYER_STAT_TO_TEAM[stat]]) return price;
+  if (opponentBasis(stat, t, fx) !== "odds") return price;
+  const a = oddsAdjustment(stat, t, fx);
+  const k = Math.round(line + 0.5);
+  if (!a || !(k >= 1) || !(price.p > 0 && price.p < 1)) return price;
+  const tail = lam => {
+    let term = Math.exp(-lam), cdf = term;
+    for (let i = 1; i < k; i++) { term *= lam / i; cdf += term; }
+    return 1 - cdf;
+  };
+  let lo = 0.001, hi = 30;
+  for (let i = 0; i < 60; i++) {
+    const mid = (lo + hi) / 2;
+    if (tail(mid) < price.p) lo = mid; else hi = mid;
+  }
+  const p = Math.min(0.995, Math.max(0.005, tail(((lo + hi) / 2) * a)));
+  return Object.assign({}, price, { p, fair: fairOdds(p), need: fairOdds(p),
+    modelRaw: price.p, crossLeague: a });
+}
+
+/* How a player line is adjusted for the opponent: "projection", "odds" or
+   null when it is not adjusted at all. */
+function opponentBasis(stat, teamIndex, fx = DATA) {
+  const teamStat = PLAYER_STAT_TO_TEAM[stat];
+  if (!teamStat) return null;
+  const proj = ((fx.projection || {})["ALL"] || {})[teamStat]
+            || (fx.tierProjection ? (fx.tierProjection.stats || {})[teamStat] : null);
+  if (proj && proj[teamIndex] !== undefined) return "projection";
+  return oddsAdjustment(stat, teamIndex, fx) !== null ? "odds" : null;
+}
+
 function playerAdjustment(stat, teamIndex, fx = DATA) {
   const teamStat = PLAYER_STAT_TO_TEAM[stat];
   if (!teamStat) return 1;
 
   const proj = ((fx.projection || {})["ALL"] || {})[teamStat]
             || (fx.tierProjection ? (fx.tierProjection.stats || {})[teamStat] : null);
-  if (!proj || proj[teamIndex] === undefined) return 1;
+  if (!proj || proj[teamIndex] === undefined) return oddsAdjustment(stat, teamIndex, fx) ?? 1;
 
   const rows = filtered(fx.records[teamIndex]);
   const values = rows.map(r => (r.stats.ALL || {})[teamStat])
@@ -2532,6 +2694,15 @@ const POOL_SPREAD = 0.5;
    update.json, MIN_MINUTES, or the player pricing maths changes. */
 const PLAYER_CALIBRATION_A = -0.0227;
 const PLAYER_CALIBRATION_B = 0.4454;
+/* Basketball has its own fit. Applying the football constants to NBA player
+bets made them far too cautious: on the 4,817 established player bets that
+`backtest.py --league NBA --games 20 --players` settled (March to June 2026,
+run 21 Oct 2026) they said 74% and landed 82%. Fitted the same way, on the
+raw log-odds; fitted on either half it improved the other (Brier 0.139 to
+0.129, and 0.139 to 0.135). Refit once this season has a few weeks in: the
+fit is end of season and playoffs.
+   Mirrors PLAYER_CALIBRATION_BY_SPORT in model.py. */
+const PLAYER_CALIBRATION_BY_SPORT = { basketball: [0.3381, 0.5482] };
 
 /* The record-only branch, which until now was quoted raw.
 
@@ -2562,7 +2733,8 @@ function calibrateRecord(p, kind) {
 
 function calibratePlayer(p) {
   p = Math.min(1 - 1e-9, Math.max(1e-9, p));
-  const z = PLAYER_CALIBRATION_A + PLAYER_CALIBRATION_B * Math.log(p / (1 - p));
+  const [a, b] = PLAYER_CALIBRATION_BY_SPORT[SPORT] || [PLAYER_CALIBRATION_A, PLAYER_CALIBRATION_B];
+  const z = a + b * Math.log(p / (1 - p));
   return 1 / (1 + Math.exp(-z));
 }
 
@@ -5596,6 +5768,7 @@ function loadMarkets() {
       MARKETS_AT = j.fetched || null;
       oddsStrip();
       if (tab === "players") playerView();
+      if (tab === "value") valueView();
     })
     .catch(() => {});
 }
@@ -5907,12 +6080,15 @@ function rungHtml(key, label, record, ours, book, bf, addIndex) {
   const typed = PRICE_IN[key];
   const parts = String(key).split("|");
   const ppp = parts.length === 4 ? ppPrice(parts[1], parts[2], parseFloat(parts[3]), true) : null;
-  const ref = typed || ppp || (bf && bf.back) || est;
-  return `<div class="pp-rung" data-pkey="${escapeHtml(key)}" data-pp="${ours}" data-pdef="${ppp || (bf && bf.back) || est || ""}">
-    <span class="pp-line">${label}</span>
+  const b3 = parts.length === 4 ? ppPrice(parts[1], parts[2], parseFloat(parts[3]), true, "b365") : null;
+  const ref = typed || b3 || ppp || (bf && bf.back) || est;
+  const real = typed || b3 || ppp || (bf && bf.back);
+  return `<div class="pp-rung" data-pkey="${escapeHtml(key)}" data-pp="${ours}" data-pdef="${b3 || ppp || (bf && bf.back) || est || ""}">
+    ${real ? verdictHtml({ p: ours, price: real, n: 5 }) : ""}<span class="pp-line">${label}</span>
     <span class="pp-rec">${record}</span>
     <span class="pp-kv"><small>Ours</small><b>${Math.round(ours * 100)}%</b></span>
     <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(ours))}</b></span>
+    ${b3 ? `<span class="pp-kv pp-ppp"><small>Bet365</small><b>${fmtOdds(b3)}</b></span>` : ""}
     ${ppp ? `<span class="pp-kv pp-ppp"><small>Paddy Power</small><b>${fmtOdds(ppp)}</b></span>` : ""}
     ${bf ? `<span class="pp-kv pp-bf" title="Betfair Exchange back price${bf.mid ? ", mid " + fmtOdds(bf.mid) : ""}"><small>Betfair</small><b>${fmtOdds(bf.back)}</b></span>` : ""}
     <span class="pp-kv" title="A rough guide to what a bookmaker pricing off his whole record would offer: the chance over every match on file, plus a ${Math.round(BOOK_MARGIN * 100)}% margin. Not a scraped price."><small>Est. bookie</small><b>${est ? "~" + fmtOdds(est) : "&ndash;"}</b></span>
@@ -6081,6 +6257,11 @@ const PP_STAT = {
   "Any Time Touchdown Scorer": "Anytime touchdown",
   // Football: the event page carries the scorer market by default.
   "Player To Score": "Goals", "Anytime Goalscorer": "Goals",
+  // Basketball: paddypower_prices.py names them; side and line are set.
+  "Points": "Points", "Rebounds": "Rebounds", "Assists": "Assists",
+  "Made Threes": "Three pointers made", "Blocks": "Blocks", "Steals": "Steals",
+  "Pts + Reb + Ast": "Points rebounds and assists", "Pts + Reb": "Points and rebounds",
+  "Pts + Ast": "Points and assists", "Reb + Ast": "Rebounds and assists",
 };
 
 /* Football: one market per line, every player a runner. Mirrors pplog.py. */
@@ -6088,13 +6269,67 @@ const PP_PATTERNS = [
   [/^Player To Have (\\d+) Or More Shots$/, "Shots"],
   [/^Player To Commit (\\d+) Or More Fouls$/, "Fouls"],
   [/^Player To Be Fouled (\\d+) Or More Times$/, "Fouled"],
+  [/^Player To Have (\\d+) Or More Shots On Target$/, "Shots on target"],
+  [/^Player To Make (\\d+) Or More Tackles$/, "Tackles"],
+  [/^Player To Have (\\d+) Or More Assists$/, "Assists"],
 ];
 const PP_YES = { "Player Shown a Card": "Card", "Player Assists": "Assists" };
+/* The bookmakers the pages carry prices for, by their key in markets.json. */
+const BOOKS = { pp: "Paddy Power", b365: "Bet365" };
+
+/* Take, acceptable or avoid, for one priced line.
+   Take: more likely than not by our numbers, the price beats our chance by
+   5% or more, and the record behind it is five games or more.
+   Acceptable: more likely than not and about fair (within 5% either way),
+   or value we cannot fully vouch for: a thin record or the card estimate.
+   Long shot: under 50% by our numbers. However big the edge looks, it rests
+   on one or two games in ten, so it is never called take or acceptable.
+   Avoid: the price is more than 5% worse than our chance. */
+function verdictOf(v) {
+  if (!(v.price > 1) || !(v.p > 0)) return null;
+  const e = v.p * v.price - 1;
+  if (e < -0.05) return "avoid";
+  // The card estimate is never "take": it is uncalibrated, and on 20 Oct
+  // 2026 it showed edges of +80% to +150% on players at 9.0 to 12.0, which
+  // is the estimate being wrong, not value. Under 50%, like any bet under
+  // 50%, it is a long shot; acceptable only above that and 5% clear.
+  if (v.heuristic) return v.p >= 0.5 && e >= 0.05 ? "ok" : "long";
+  if (v.p < 0.5) return "long";
+  // Nothing adjusted it for the opponent (no projection, no match odds, no
+  // model): it can be acceptable, never take.
+  // Two guards before anything is called take, found on NBA opening night
+  // (21 Oct 2026), when the model called 116 of 561 Paddy Power lines take:
+  //   * stale data: no competitive game in two months means every record is
+  //     last season's (for the NBA, mostly playoffs, heavier minutes for the
+  //     starters), so the whole board leans one way and that is not value;
+  //   * on basketball, an edge over 30% on a player line is our number being
+  //     off, as on the football team lines.
+  // Both can still be acceptable. Lift the second once pplog has settled a
+  // few weeks of NBA lines and says how far off the model runs.
+  const stale = DATA && DATA.fixture && DATA.fixture.staleDays;
+  const tooBig = SPORT === "basketball" && e > 0.3;
+  if (e >= 0.05 && (v.n || 0) >= 5 && !v.unadjusted && !stale && !tooBig) return "take";
+  return "ok";
+}
+
+function verdictHtml(v) {
+  const k = verdictOf(v);
+  if (!k) return "";
+  const text = { take: "Take", ok: "Acceptable", long: "Long shot", avoid: "Avoid" }[k];
+  const why = {
+    take: "More likely than not, and the price beats our chance by 5% or more, on a record of five games or more",
+    ok: "More likely than not and close to a fair price, or value resting on a thin record or an estimate",
+    long: "Under 50% by our numbers: a big edge here is noise, not value",
+    avoid: "The price is more than 5% worse than our chance",
+  }[k];
+  return `<span class="vd vd-${k}" title="${why}">${text}</span>`;
+}
+
 
 /* One player's Paddy Power lines as {stat, line, over, price, label}. */
-function ppLines(name) {
+function ppLines(name, src = "pp") {
   const m = fixtureMarket();
-  const rows = m && m.pp && m.pp.players ? m.pp.players[normName(name)] : null;
+  const rows = m && m[src] && m[src].players ? m[src].players[normName(name)] : null;
   if (!rows) return [];
   const out = [];
   for (const r of rows) {
@@ -6127,18 +6362,18 @@ function ppLines(name) {
     if (!(n > 0)) continue;
     out.push({ stat, line: n - 0.5, over: true, price: r.p, label: `${n}+`, market: r.m });
   }
-  return out;
+  return out.map(o => Object.assign(o, { src }));
 }
 
-function ppPrice(name, stat, line, over) {
-  const hit = ppLines(name).find(x => x.stat === stat && x.line === line && x.over === (over !== false));
+function ppPrice(name, stat, line, over, src = "pp") {
+  const hit = ppLines(name, src).find(x => x.stat === stat && x.line === line && x.over === (over !== false));
   return hit ? hit.price : null;
 }
 
 /* Our chance at a Paddy Power line: the same pricePlayer() as everywhere,
    on his last ten under the filters, matchup-adjusted. */
-function ppValued(t, name, played) {
-  const lines = ppLines(name);
+function ppValued(t, name, played, src = "pp") {
+  const lines = ppLines(name, src);
   if (!lines.length) return [];
   const recent = gatedApps(played).slice(-10);
   const adj = {};
@@ -6162,6 +6397,7 @@ function ppValued(t, name, played) {
     // through the record calibration a second time, and both sides of
     // McCaffrey's 59.5 came out at 46%.
     let overPrice = withModel(pricePlayer(apps, x.line, true, a, null), name, x.stat, x.line, true);
+    overPrice = crossLeagueModel(overPrice, x.stat, x.line, t);
     // Football to-score: the xG-based scoreCase, half last ten and half
     // everything, as on the profile. A goals record alone is too noisy.
     if (x.stat === "Goals" && SPORT === "football" && overPrice.source !== "fmodel") {
@@ -6179,9 +6415,55 @@ function ppValued(t, name, played) {
     const k = vals.filter(v => x.over ? v > x.line : v <= x.line).length;
     const last5 = gatedApps(played).slice(-5).map(g => (g.stats || {})[x.stat] ?? 0);
     const k5 = last5.filter(v => x.over ? v > x.line : v <= x.line).length;
+    const basis = opponentBasis(x.stat, t);
     out.push(Object.assign({}, x, { t, name, p: price.p, edge: price.p * x.price - 1,
-      k, n: vals.length, k5, n5: last5.length, priced: price }));
+      k, n: vals.length, k5, n5: last5.length, priced: price,
+      unadjusted: price.source !== "fmodel" && !basis,
+      oddsAdj: price.source !== "fmodel" && basis === "odds" }));
   }
+  // One ladder per stat. The model scores 15 lines and the site prices the
+  // rest, and the two used to disagree on the same player: Zini's 3+ shots
+  // came out at 28% from the model and his 4+ at 42% from the site. Above
+  // the model's top line each line now keeps the site's step down from the
+  // line below it, applied to the model's chance; and no line is ever priced
+  // above the line below it.
+  const byStat = {};
+  out.forEach(v => {
+    if (v.over && v.priced && !v.heuristic) (byStat[v.stat] = byStat[v.stat] || []).push(v);
+  });
+  Object.values(byStat).forEach(list => {
+    list.sort((a, b) => a.line - b.line);
+    const seen = new Map();
+    list.forEach(v => { if (!seen.has(v.line) || v.priced.source === "fmodel") seen.set(v.line, v); });
+    const rungs = [...seen.values()];
+    let anchor = null;
+    for (const v of rungs) {
+      if (v.priced.source === "fmodel") { anchor = v; continue; }
+      if (!anchor) continue;
+      const siteA = anchor.priced.siteP ?? anchor.p;
+      const siteV = v.priced.siteP ?? v.p;
+      const p = siteA > 0 ? Math.min(anchor.p, anchor.p * Math.min(1, siteV / siteA)) : anchor.p;
+      list.filter(w => w.line === v.line && w.priced.source !== "fmodel").forEach(w => {
+        w.p = p; w.edge = p * w.price - 1; w.unadjusted = false;
+        w.priced = Object.assign({}, w.priced, { p, fair: fairOdds(p), need: fairOdds(p),
+          source: "fmodel-tail", siteP: siteV });
+      });
+      anchor = Object.assign({}, v, { p, priced: { source: "fmodel-tail", siteP: siteV } });
+    }
+    // Monotone from the top down: a lower line never sits under a higher one.
+    let floor = 0;
+    [...rungs].reverse().forEach(v => {
+      const same = list.filter(w => w.line === v.line);
+      const p = Math.max(floor, ...same.map(w => w.p));
+      same.forEach(w => {
+        if (w.p < p) {
+          w.p = p; w.edge = p * w.price - 1;
+          w.priced = Object.assign({}, w.priced, { p, fair: fairOdds(p), need: fairOdds(p) });
+        }
+      });
+      floor = p;
+    });
+  });
   // Lines we think are more likely than not first, best edge first; long
   // shots after. An edge on a 2-in-10 record is noise, not value.
   out.sort((a, b) => ((b.p >= 0.5) - (a.p >= 0.5)) || (b.edge - a.edge));
@@ -6199,9 +6481,12 @@ const INJ_OUT = /^(Out|Injured Reserve|Suspension|Doubtful)/;
 /* Under a value row: whether the chance is the model's, whether it rests on
    a predicted XI, and a warning when the edge is too big to take on trust. */
 function modelNote(v) {
-  if (!v.priced || v.priced.source !== "fmodel") return "";
+  if (!v.priced || (v.priced.source !== "fmodel" && v.priced.source !== "fmodel-tail")) {
+    if (v.unadjusted) return " &middot; <b>no opponent adjustment</b>";
+    return v.oddsAdj ? " &middot; opponent from the match odds" : "";
+  }
   const ev = modelEvent();
-  const bits = ["model"];
+  const bits = [v.priced.source === "fmodel-tail" ? "model, extended" : "model"];
   if (ev && !ev.confirmed) bits.push("predicted XI");
   if (v.edge > 0.4) bits.push("<b>big edge: check team news</b>");
   return " &middot; " + bits.join(" &middot; ");
@@ -6213,11 +6498,11 @@ function ppRowHtml(v, withName) {
   const inj = injuryOf(v.t, v.name);
   if (v.stat === "Card") {
     return `<div class="pp-rung">
-    <span class="pp-line">${withName ? `<b>${escapeHtml(v.name)}</b><br>` : ""}To be booked</span>
+    ${verdictHtml(v)}<span class="pp-line">${withName ? `<b>${escapeHtml(v.name)}</b><br>` : ""}To be booked</span>
     <span class="pp-rec">fouls-based estimate, not yet calibrated</span>
     <span class="pp-kv"><small>Ours</small><b>${Math.round(v.p * 100)}%</b></span>
     <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(v.p))}</b></span>
-    <span class="pp-kv pp-ppp"><small>Paddy Power</small><b>${fmtOdds(v.price)}</b></span>
+    <span class="pp-kv pp-ppp"><small>${BOOKS[v.src || "pp"]}</small><b>${fmtOdds(v.price)}</b></span>
     <span class="pp-kv"><small>Edge</small><span class="pp-edge pp-long">${v.edge >= 0 ? "+" : ""}${Math.round(v.edge * 100)}%</span></span>
   </div>`;
   }
@@ -6226,37 +6511,41 @@ function ppRowHtml(v, withName) {
   const idx = PLAYER_ROWS.push({ row, price: v.priced }) - 1;
   const inSlip = SLIP.some(s => s.key === rowKey(row));
   return `<div class="pp-rung">
-    <span class="pp-line">${withName ? `<b>${escapeHtml(v.name)}</b>${inj ? ` <span class="lu-badge pp-out">${escapeHtml(inj)}</span>` : ""}<br>` : ""}${escapeHtml(v.stat)} ${escapeHtml(v.label)}</span>
+    ${verdictHtml(v)}<span class="pp-line">${withName ? `<b>${escapeHtml(v.name)}</b>${inj ? ` <span class="lu-badge pp-out">${escapeHtml(inj)}</span>` : ""}<br>` : ""}${escapeHtml(v.stat)} ${escapeHtml(v.label)}</span>
     <span class="pp-rec">${v.k5 === null ? "fouls-based estimate" : `${v.k5}/${v.n5} last 5 &middot; ${v.k}/${v.n} last ${v.n}`}${modelNote(v)}</span>
     <span class="pp-kv"><small>Ours</small><b>${Math.round(v.p * 100)}%</b></span>
     <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(v.p))}</b></span>
-    <span class="pp-kv pp-ppp"><small>Paddy Power</small><b>${fmtOdds(v.price)}</b></span>
+    <span class="pp-kv pp-ppp"><small>${BOOKS[v.src || "pp"]}</small><b>${fmtOdds(v.price)}</b></span>
     <span class="pp-kv"><small>${long ? "Long shot" : "Edge"}</small><span class="pp-edge ${cls}">${v.edge >= 0 ? "+" : ""}${Math.round(v.edge * 100)}%</span></span>
     <button type="button" class="add-btn" data-padd="${idx}" data-in="${inSlip ? 1 : 0}">${inSlip ? "Added" : "Add"}</button>
   </div>`;
 }
 
-function ppCardHtml(t, name, played) {
-  const vals = ppValued(t, name, played);
+function ppCardHtml(t, name, played, src = "pp") {
+  const vals = ppValued(t, name, played, src);
   if (!vals.length) return "";
   const m = fixtureMarket();
-  const when = m && m.pp && m.pp.at ? new Date(m.pp.at * 1000).toLocaleString("en-GB",
+  const book = BOOKS[src];
+  const when = m && m[src] && m[src].at ? new Date(m[src].at * 1000).toLocaleString("en-GB",
     { weekday: "short", hour: "2-digit", minute: "2-digit" }) : "";
-  return `<div class="pp-section">Paddy Power lines${when ? " &middot; prices from " + when : ""}</div>
+  const n = { take: 0, ok: 0, long: 0, avoid: 0 };
+  vals.forEach(v => { const k = verdictOf(v); if (k) n[k]++; });
+  const sum = `${n.take} to take &middot; ${n.ok} acceptable &middot; ${n.long} long shots &middot; ${n.avoid} to avoid`;
+  return `<div class="pp-section">${book} lines${when ? " &middot; prices from " + when : ""} &middot; ${sum}</div>
     <div class="pp-stat pp-ppcard">${vals.map(v => ppRowHtml(v)).join("")}
-    <p class="note">Every Paddy Power line for him, best value first. Ours is worked out at Paddy Power's own line, over or under. Prices move: check before betting.</p></div>`;
+    <p class="note">Every ${book} line for him, best value first, each marked take, acceptable, long shot or avoid. Ours is worked out at ${book}'s own line. Prices move: check before betting.</p></div>`;
 }
 
 /* Best value across the whole game, for the Players front page. */
-function ppBestHtml() {
+function ppBestHtml(src = "pp") {
   const m = fixtureMarket();
-  if (!m || !m.pp) return "";
+  if (!m || !m[src]) return "";
   const rows = [];
   const best = new Map();
   [0, 1].forEach(t => squadPlayers(t).forEach((played, name) => {
     if (!gatedApps(played).length) return;
     if (INJ_OUT.test(injuryOf(t, name) || "")) return;
-    ppValued(t, name, played).forEach(v => {
+    ppValued(t, name, played, src).forEach(v => {
       if (!(v.p >= 0.5 && v.edge > 0 && v.n >= 5)) return;
       // Football to-score is logged but not called value until the results
       // say how far off it runs (pplog.py UNCALIBRATED), unless the
@@ -6271,9 +6560,213 @@ function ppBestHtml() {
   rows.push(...best.values());
   if (!rows.length) return "";
   rows.sort((a, b) => b.edge - a.edge);
-  return `<div class="pp-section">Best value at Paddy Power</div>
+  return `<div class="pp-section">Best value at ${BOOKS[src]}</div>
     <div class="pp-stat pp-ppcard">${rows.slice(0, 12).map(v => ppRowHtml(v, true)).join("")}
-    <p class="note">Lines where our chance (50% or more) beats Paddy Power's price, biggest edge first. Players ruled out are left off; anyone questionable is marked, so check the inactives. Ours leans on the last ten games and is not proven on player bets: treat a big edge as a reason to look closer, not a certainty.</p></div>`;
+    <p class="note">Lines where our chance (50% or more) beats ${BOOKS[src]}'s price, biggest edge first. Players ruled out are left off; anyone questionable is marked, so check the inactives. Ours leans on the last ten games and is not proven on player bets: treat a big edge as a reason to look closer, not a certainty.</p></div>`;
+}
+
+/* ------------------------------------------------- Team lines
+
+   Paddy Power's team markets on the same reply as the player ones (no extra
+   request): each side's corners, cards, fouls and shots on target, and the
+   match corners and cards. Priced with the same count model as the team
+   bets (probOver, then calibrate), from the last ten games under the filters.
+
+   The expectation, in order of trust:
+     1. the fixture's opponent-adjusted projection, when it has one;
+     2. in a cross-league game, the side's own average scaled by the match
+        odds (corners to the power 0.5, shots 0.7, shots on target 0.8, as for
+        the players). Fouls and cards are not scaled: they follow the referee
+        and the league more than the opponent;
+     3. otherwise the side's own average, marked unadjusted, so it can be
+        acceptable but never take.
+   Match totals add the two sides' expectations, with the spread read from
+   the per-match totals in both records. */
+// Corners follow territory: the underdog's fall further than its shots do,
+// so they take the full ratio. First try (0.5) called Villarreal over 4.5
+// corners at Anfield a +52% take against Paddy Power's 2.75 (20 Oct 2026).
+// 1 then went too far the other way: Bodo/Glimt expected 2.0 corners in
+// Naples against a record of 4 unders in 10. 0.7, as for shots.
+const TEAM_ODDS_POWER = { "Corner kicks": 0.7, "Total shots": 0.7, "Shots on target": 0.8 };
+const TEAM_STAT_LABEL = { "Corner kicks": "corners", "Yellow cards": "cards", "Fouls": "fouls",
+                          "Shots on target": "shots on target", "Total shots": "shots" };
+
+function ppTeamOrder() {
+  // Paddy Power's home and away against the page's teams, by name.
+  const m = fixtureMarket();
+  const pp = m && m.pp;
+  if (!pp || !pp.home) return [0, 1];
+  const words = s => new Set(normName(s).split(" ").filter(w => w.length >= 3
+    && !["the", "club", "real", "sporting", "city", "united"].includes(w)));
+  const overlap = (a, b) => { const A = words(a); let n = 0; words(b).forEach(w => { if (A.has(w)) n++; }); return n; };
+  const t0 = DATA.teams[0].name, t1 = DATA.teams[1].name;
+  const straight = overlap(pp.home, t0) + overlap(pp.away, t1);
+  const crossed = overlap(pp.home, t1) + overlap(pp.away, t0);
+  return crossed > straight ? [1, 0] : [0, 1];
+}
+
+function teamExpected(stat, t) {
+  const proj = ((DATA.projection || {}).ALL || {})[stat];
+  if (proj && proj[t] !== undefined && proj[t] > 0) return { e: proj[t], basis: "projection" };
+  const vals = filtered(DATA.records[t]).slice(-10).map(r => ((r.stats || {}).ALL || {})[stat])
+    .filter(v => v !== undefined && v !== null);
+  if (vals.length < 3) return null;
+  const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
+  const power = TEAM_ODDS_POWER[stat];
+  if (isCrossLeague(DATA) && power && SPORT === "football") {
+    const lam = goalLambdas(DATA);
+    const goals = filtered(DATA.records[t]).map(r => ((r.stats || {}).ALL || {})["Goals"])
+      .filter(v => v !== undefined && v !== null);
+    const g = goals.length ? goals.reduce((a, b) => a + b, 0) / goals.length : 0;
+    if (lam && goals.length >= 5 && g > 0.2) {
+      const adj = Math.min(2.5, Math.max(0.2, Math.pow(lam[t] / g, power)));
+      return { e: mean * adj, basis: "odds", adj };
+    }
+  }
+  return { e: mean, basis: "record" };
+}
+
+function teamValued() {
+  const m = fixtureMarket();
+  const lines = (m && m.pp && m.pp.team) || [];
+  if (!lines.length || SPORT !== "football") return [];
+  const order = ppTeamOrder();
+  const out = [];
+  lines.forEach(l => {
+    let vals, exp, name, unadjusted = false, basis;
+    if (l.scope === "match") {
+      const a = teamExpected(l.stat, 0), b = teamExpected(l.stat, 1);
+      if (!a || !b) return;
+      exp = a.e + b.e;
+      basis = a.basis === b.basis ? a.basis : "record";
+      unadjusted = a.basis === "record" || b.basis === "record";
+      vals = [0, 1].flatMap(t => filtered(DATA.records[t]).slice(-10).map(r => {
+        const f = ((r.stats || {}).ALL || {})[l.stat], g = (((r.against || {}).ALL) || {})[l.stat];
+        return f === undefined || f === null || g === undefined || g === null ? null : f + g;
+      })).filter(v => v !== null);
+      name = "Match";
+    } else {
+      const t = order[l.scope === "home" ? 0 : 1];
+      const x = teamExpected(l.stat, t);
+      if (!x) return;
+      exp = x.e; basis = x.basis; unadjusted = x.basis === "record";
+      vals = filtered(DATA.records[t]).slice(-10).map(r => ((r.stats || {}).ALL || {})[l.stat])
+        .filter(v => v !== undefined && v !== null);
+      name = DATA.teams[t].name;
+      l = Object.assign({}, l, { t });
+    }
+    if (vals.length < 5 || !(exp > 0)) return;
+    let p = probOver(l.line, exp, vals);
+    if (!l.over) p = 1 - p;
+    p = calibrate(p);
+    const hits = vals.filter(v => l.over ? v > l.line : v < l.line).length;
+    // Not backtested on team markets yet: an edge over 30% on a main line is
+    // far more likely our number being off than Paddy Power's, so it can be
+    // acceptable but never take.
+    const edge = p * l.price - 1;
+    // The record has to agree before it is a take: at least half the last
+    // games landed, and the expectation within half and double the side's
+    // own average (the same sanity check priceRow() makes on team bets).
+    const own = vals.reduce((a, b) => a + b, 0) / vals.length;
+    const disagree = hits / vals.length < 0.5
+      || (l.scope !== "match" && (exp < 0.5 * own || exp > 2 * own));
+    out.push({
+      team: true, t: l.t, name, stat: l.stat, line: l.line, over: l.over, price: l.price,
+      src: "pp", p, edge, k: hits, n: vals.length, expected: exp, basis,
+      unadjusted: unadjusted || edge > 0.3 || disagree, suspect: edge > 0.3, disagree,
+      label: `${TEAM_STAT_LABEL[l.stat] || l.stat} ${l.over ? "over" : "under"} ${l.line}`,
+    });
+  });
+  // "Over 5.5" and "6 or more" can both appear: keep the better price.
+  const best = new Map();
+  out.forEach(v => {
+    const k = [v.name, v.stat, v.line, v.over].join("|");
+    if (!best.has(k) || best.get(k).price < v.price) best.set(k, v);
+  });
+  return [...best.values()];
+}
+
+function teamRowHtml(v) {
+  const long = v.p < 0.5;
+  const cls = long ? "pp-long" : v.edge >= 0.05 ? "pp-pos" : v.edge <= -0.05 ? "pp-neg" : "";
+  const basis = { projection: "opponent-adjusted projection", odds: "opponent from the match odds",
+                  record: "own record, no opponent adjustment" }[v.basis];
+  return `<div class="pp-rung">
+    ${verdictHtml(v)}<span class="pp-line"><b>${escapeHtml(v.name)}</b><br>${escapeHtml(v.label)}</span>
+    <span class="pp-rec">${v.k}/${v.n} last ${v.n} &middot; expect ${v.expected.toFixed(1)} &middot; ${basis}${v.suspect ? " &middot; edge too big to trust" : v.disagree ? " &middot; record disagrees" : ""}</span>
+    <span class="pp-kv"><small>Ours</small><b>${Math.round(v.p * 100)}%</b></span>
+    <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(v.p))}</b></span>
+    <span class="pp-kv pp-ppp"><small>${BOOKS[v.src]}</small><b>${fmtOdds(v.price)}</b></span>
+    <span class="pp-kv"><small>${long ? "Long shot" : "Edge"}</small><span class="pp-edge ${cls}">${v.edge >= 0 ? "+" : ""}${Math.round(v.edge * 100)}%</span></span>
+  </div>`;
+}
+
+function teamValueHtml() {
+  const vals = teamValued();
+  if (!vals.length) return "";
+  const g = { take: [], ok: [], long: [], avoid: [] };
+  vals.forEach(v => { const k = verdictOf(v); if (k) g[k].push(v); });
+  g.take.sort((a, b) => b.edge - a.edge);
+  g.ok.sort((a, b) => b.edge - a.edge);
+  const rows = g.take.concat(g.ok);
+  return `<div class="pp-section">Team lines${g.take.length ? ` &middot; ${g.take.length} to take` : ""} (${rows.length})</div>
+    <div class="pp-stat pp-ppcard">${rows.length ? rows.slice(0, 30).map(teamRowHtml).join("")
+      : `<p class="note">Nothing worth taking or acceptable in the team markets.</p>`}
+    <p class="note">Paddy Power's corners, cards, fouls and shots-on-target lines for each side and the match, priced off the last ten games. Left off: ${g.long.length} long shot${g.long.length === 1 ? "" : "s"} and ${g.avoid.length} priced worse than our chance. Cards and fouls follow the referee as much as the teams: treat those as the weaker calls.</p></div>`;
+}
+
+/* ------------------------------------------------- Value tab
+
+   Every bookmaker line on the game (Bet365 and Paddy Power), priced by us
+   with the same ppValued() the profiles use and sorted into take,
+   acceptable and avoid. Where both books price the same line, the better
+   price is the one shown. */
+function valueView() {
+  const el = document.getElementById("valuetab");
+  if (!el) return;
+  if (!hasPlayers()) {
+    el.innerHTML = `<p class="note">No player markets for this game.</p>`;
+    return;
+  }
+  const m = fixtureMarket();
+  const srcs = Object.keys(BOOKS).filter(s => m && m[s]);
+  if (!srcs.length) {
+    el.innerHTML = `<p class="note">No Bet365 or Paddy Power prices for this game yet. They show here once a publish has fetched them.</p>`;
+    return;
+  }
+  PLAYER_ROWS = [];
+  const best = new Map();
+  [0, 1].forEach(t => squadPlayers(t).forEach((played, name) => {
+    if (!gatedApps(played).length) return;
+    if (INJ_OUT.test(injuryOf(t, name) || "")) return;
+    srcs.forEach(src => ppValued(t, name, played, src).forEach(v => {
+      const k = [t, name, v.stat, v.line, v.over].join("|");
+      if (!best.has(k) || best.get(k).price < v.price) best.set(k, v);
+    }));
+  }));
+  const groups = { take: [], ok: [], long: [], avoid: [] };
+  best.forEach(v => { const k = verdictOf(v); if (k) groups[k].push(v); });
+  groups.take.sort((a, b) => b.edge - a.edge);
+  groups.ok.sort((a, b) => b.edge - a.edge);
+  const when = srcs.map(s => m[s].at
+    ? `${BOOKS[s]} ${new Date(m[s].at * 1000).toLocaleString("en-GB", { weekday: "short", hour: "2-digit", minute: "2-digit" })}`
+    : BOOKS[s]).join(" &middot; ");
+  const block = (title, list, note) => list.length
+    ? `<div class="pp-section">${title} (${list.length})</div>
+       <div class="pp-stat pp-ppcard">${list.slice(0, 40).map(v => ppRowHtml(v, true)).join("")}
+       <p class="note">${note}</p></div>`
+    : "";
+  const basis = opponentBasis("Shots", 0);
+  const oppNote = basis === "odds"
+    ? (SPORT === "basketball" ? " The ratings cannot rate this pair yet, so the opponent comes from Paddy Power's team points totals."
+       : " These two sides play in different leagues, so the opponent's strength comes from Betfair's match odds.")
+    : !basis ? " <b>No opponent adjustment for this game</b> (no projection and no match odds), so nothing is called take unless the backtested model priced it." : "";
+  el.innerHTML = `<p class="note">Prices from ${when}. Each line is our chance against the better of the two prices.${oppNote} Prices move: check before betting.</p>`
+    + teamValueHtml()
+    + (block("Take", groups.take, "More likely than not, and the price beats our chance by 5% or more, on a record of five games or more. Biggest edge first.")
+       || `<div class="pp-section">Take</div><p class="note">Nothing to take on this game at the current prices.</p>`)
+    + block("Acceptable", groups.ok, "More likely than not and close to a fair price, or value we cannot fully vouch for: a thin record or the card estimate. Fine as part of a slip, not on its own.")
+    + `<p class="note">Left off: ${groups.long.length} long shot${groups.long.length === 1 ? "" : "s"} (under 50% by our numbers) and ${groups.avoid.length} line${groups.avoid.length === 1 ? "" : "s"} priced worse than our chance. Every line is still on each player's profile.</p>`;
 }
 
 function squadHome() {
@@ -6295,7 +6788,7 @@ function squadHome() {
         <div class="pp-chips">${names}</div>` : `<div class="pp-xilabel">No line-up yet</div>`}
     </div>`;
   });
-  return `<div class="pp-teams">${blocks.join("")}</div>${ppBestHtml()}${strongestHtml()}`;
+  return `<div class="pp-teams">${blocks.join("")}</div>${ppBestHtml("b365")}${ppBestHtml()}${strongestHtml()}`;
 }
 
 function squadList(t) {
@@ -6432,6 +6925,7 @@ function profileView(t, name) {
     html += `<div class="pp-section">His strongest lines</div><div class="pp-chips">${bestHere.map(b => strongChip(b)).join("")}</div>`;
   }
 
+  html += ppCardHtml(t, name, played, "b365");
   html += ppCardHtml(t, name, played);
 
   // Every stat he has a record in.
@@ -6834,7 +7328,7 @@ function fillPlayerStats() {
   // "teams" and the team scans are exactly the darts bets.
   if (SPORT === "darts") {
     tabs.hidden = false;
-    ["players", "best-player"].forEach(t => {
+    ["players", "best-player", "value"].forEach(t => {
       const b = tabs.querySelector(`[data-tab="${t}"]`);
       if (b) b.hidden = true;
     });
@@ -6993,6 +7487,7 @@ function applyFixture() {
   if (tab === "players") playerView();
   if (tab === "standout") standoutView();
   if (onBest()) bestBetsView();
+  if (tab === "value") valueView();
   lineupPick = null;
   if (tab === "lineups") lineupView();
 }
@@ -7017,6 +7512,7 @@ function switchTab(target) {
   if (target === "players") playerView();
   else document.querySelector(".wrap").classList.remove("wide");
   if (target === "standout") standoutView();
+  if (target === "value") valueView();
   if (panel === "best") bestBetsView();
   if (target === "slip") slipView();
   if (target === "lineups") lineupView();
@@ -7088,7 +7584,10 @@ function defPerGame(records, stat) {
    safety are different questions, but a nose tackle and a defensive tackle
    are the same one, so these are pooled into three groups. */
 const DEF_GROUPS = { DL: ["DE", "DT", "DL", "NT"], DB: ["CB", "SAF", "DB", "S", "FS", "SS"],
-                     LB: ["LB", "OLB", "ILB", "MLB"] };
+                     LB: ["LB", "OLB", "ILB", "MLB"],
+                     // Basketball: SofaScore lists G, GF, F, FG, FC, C, CF.
+                     // Pooled by the first letter, the role he mostly plays.
+                     BBG: ["G", "GF"], BBF: ["F", "FG", "FC"], BBC: ["C", "CF"] };
 function posList(byPos, pos) {
   if (!byPos) return [];
   const g = DEF_GROUPS[pos];
@@ -7411,7 +7910,97 @@ function nflStatusHtml() {
       <span class="lu-muted">${when ? "ESPN, " + escapeHtml(when) + ". " : ""}Out, doubtful and IR are left out of every pick below.</span></div>${lines}</div>` : "");
 }
 
+/* The Defences tab on basketball pages. Same measure as gridiron: per
+   defence and position, what that position produced against them over its
+   own usual (1.15x = 15% more than normal), ranked across every defence in
+   the file. Then each player's last ten scaled by that, against Paddy
+   Power's main line where there is one. */
+const BB_DEF_STATS = ["Points", "Rebounds", "Assists", "Three pointers made", "Points rebounds and assists"];
+const BB_DEF_POS = { BBG: "Guards", BBF: "Forwards", BBC: "Centres" };
+const BB_STAT_WORD = { "Points": "points", "Rebounds": "rebounds", "Assists": "assists",
+  "Three pointers made": "threes", "Points rebounds and assists": "PRA" };
+
+function bbPosGroup(pos) {
+  return Object.keys(BB_DEF_POS).find(g => DEF_GROUPS[g].includes(pos)) || null;
+}
+
+function basketballDefenceHtml() {
+  const teams = DATA.teams;
+  const rankWord = r => {
+    const share = (r.place - 1) / Math.max(1, r.of - 1);
+    return share <= 0.5 ? `${r.place}${ordinal(r.place)} softest` : `${r.of - r.place + 1}${ordinal(r.of - r.place + 1)} toughest`;
+  };
+  const defCard = d => {
+    const rows = Object.keys(BB_DEF_POS).flatMap(pos => BB_DEF_STATS.map(stat => {
+      const r = defRow(teams[d].id, pos, stat);
+      if (!r || !r.vsUsual) return "";
+      const soft = 1 - (r.place - 1) / Math.max(1, r.of - 1);
+      const cls = soft >= 0.66 ? "def-soft" : soft <= 0.34 ? "def-tough" : "";
+      const recent = r.recent ? ` &middot; last ${DEF_RECENT}: ${r.recent.toFixed(2)}&times;` : "";
+      return `<div class="def-row ${cls}">
+        <div class="def-row-top"><span>${BB_DEF_POS[pos]} &middot; ${BB_STAT_WORD[stat]}</span><b>${rankWord(r)}</b></div>
+        <i class="def-bar"><em style="width:${Math.round(soft * 100)}%"></em></i>
+        <div class="def-sub">${r.vsUsual.toFixed(2)}&times; usual &middot; ${fmtN(r.perGame)}/game${recent}</div>
+      </div>`;
+    })).join("");
+    return `<div class="lu-card"><div class="lu-who"><span class="lu-dot lu-dot${d}"></span><b>${escapeHtml(teams[d].name)} defence</b>
+      <span class="lu-muted">longer bar = softer</span></div>${rows || `<p class="note">Not enough games against this defence in the file yet.</p>`}</div>`;
+  };
+
+  // Players: last ten scaled by the defence, against the main line.
+  const picks = [];
+  [0, 1].forEach(t => {
+    const d = 1 - t;
+    squadPlayers(t).forEach((played, name) => {
+      const apps = gatedApps(played);
+      if (apps.length < 5) return;
+      if (INJ_OUT.test(injuryOf(t, name) || "")) return;
+      const pos = bbPosGroup(played[played.length - 1].position || "");
+      if (!pos) return;
+      const recent = apps.slice(-10);
+      BB_DEF_STATS.forEach(stat => {
+        const r = defRow(teams[d].id, pos, stat);
+        if (!r || !r.vsUsual) return;
+        const vals = recent.map(g => (g.stats || {})[stat]).filter(v => v !== undefined && v !== null);
+        if (vals.length < 5) return;
+        const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+        if (avg < 1) return;
+        const factor = Math.min(1.25, Math.max(0.8, r.vsUsual));
+        const proj = avg * factor;
+        const main = ppLines(name, "pp").filter(x => x.stat === stat && x.over && /^Over/.test(x.label));
+        const line = main.length ? main.reduce((a, b) => Math.abs(b.price - 1.9) < Math.abs(a.price - 1.9) ? b : a) : null;
+        const gap = line ? (proj - line.line) / Math.max(1, line.line) : null;
+        picks.push({ t, name, pos, stat, r, avg, proj, factor, line, gap,
+          hits: line ? vals.filter(v => v > line.line).length : null, n: vals.length });
+      });
+    });
+  });
+  const withLine = picks.filter(x => x.line && Math.abs(x.gap) >= 0.08 && Math.abs(x.factor - 1) >= 0.05
+    && Math.sign(x.gap) === Math.sign(x.factor - 1));
+  withLine.sort((a, b) => Math.abs(b.gap) - Math.abs(a.gap));
+  const pick = x => `<div class="def-pick">
+      <div class="def-pick-main"><span class="lu-dot lu-dot${x.t}"></span>
+        <b>${escapeHtml(x.name)}</b> ${x.gap > 0 ? "over" : "under"} ${x.line.line} ${BB_STAT_WORD[x.stat]}
+        <span class="lu-muted">&middot; Paddy ${fmtOdds(x.line.price)} for the over &middot; ${x.hits}/${x.n} over it last ${x.n}</span></div>
+      <div class="def-sub">avg ${fmtN(x.avg)}, ${x.factor.toFixed(2)}&times; v ${escapeHtml(DATA.teams[1 - x.t].name)} (${rankWord(x.r)} v ${BB_DEF_POS[x.pos].toLowerCase()}) = <b>${fmtN(x.proj)}</b></div>
+    </div>`;
+  const stale = DATA.fixture && DATA.fixture.staleDays
+    ? `<p class="note"><b>Early-season numbers.</b> These defences are measured on last season's games, playoffs included, and rosters have changed since. Treat the rankings as a rough guide until a few weeks of this season are in.</p>` : "";
+  return `${stale}
+    <h3 class="lu-h">Lines the matchup points to</h3>
+    ${withLine.length ? `<div class="lu-card">${withLine.slice(0, 10).map(pick).join("")}</div>`
+      : `<div class="lu-card lu-empty">No Paddy Power line in this game sits far enough from what the matchup says.${(fixtureMarket() || {}).pp ? "" : " (No Paddy Power prices for this game yet.)"}</div>`}
+    <div class="def-grid">${defCard(1)}${defCard(0)}</div>
+    <details class="lu-more"><summary>How this is worked out</summary><p class="note">
+      For each defence and position (guards, forwards, centres), every game's total for that position is divided by
+      what the same offence usually gets from it in its other games, then averaged: 1.15&times; means opponents get 15%
+      more than normal. That takes the schedule out. A player's last ten is scaled by it (held between 0.8 and 1.25)
+      and set against Paddy Power's main line; only gaps of 8% or more, pointing the same way as the matchup, are listed.
+      Not backtested: a guide to where to look, not a price.</p></details>`;
+}
+
 function defenceView(el) {
+  if (SPORT === "basketball") { el.innerHTML = basketballDefenceHtml(); return; }
   const teams = DATA.teams;
   const status = (DATA.lineups || {}).confirmed
     ? `<span class="lu-badge lu-conf">Inactives applied</span>`
@@ -8492,6 +9081,20 @@ document.getElementById("players").addEventListener("click", e => {
   document.getElementById("slip-count").textContent = SLIP.length ? ` (${SLIP.length})` : "";
 });
 
+document.getElementById("valuetab")?.addEventListener("click", e => {
+  const btn = e.target.closest("button[data-padd]");
+  if (!btn) return;
+  const entry = PLAYER_ROWS[parseInt(btn.dataset.padd, 10)];
+  if (!entry) return;
+  const key = rowKey(entry.row);
+  const at = SLIP.findIndex(s => s.key === key);
+  if (at >= 0) SLIP.splice(at, 1);
+  else SLIP.push({ key, row: entry.row, price: 0 });
+  valueView();
+  slipView();
+  document.getElementById("slip-count").textContent = SLIP.length ? ` (${SLIP.length})` : "";
+});
+
 document.getElementById("bestbets").addEventListener("click", e => {
   const btn = e.target.closest("button[data-badd]");
   if (!btn) return;
@@ -9229,6 +9832,7 @@ def build_html(payload: dict) -> str:
   <button type="button" data-tab="best-player" aria-selected="false">Best players</button>
   <button type="button" data-tab="best-team" aria-selected="false">Best teams</button>
   <button type="button" data-tab="standout" aria-selected="false">Standout lines</button>
+  <button type="button" data-tab="value" aria-selected="false">Value</button>
   <button type="button" data-tab="slip" aria-selected="false">My slip<span id="slip-count"></span></button>
 </div>
 
@@ -9353,6 +9957,10 @@ def build_html(payload: dict) -> str:
   </div>
 
   <div id="bestbets"></div>
+</div>
+
+<div class="panel" data-panel="value" hidden>
+  <div id="valuetab"></div>
 </div>
 
 <div class="panel" data-panel="standout" hidden>
