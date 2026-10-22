@@ -167,6 +167,19 @@ That lazy `.*?` walks a page of up to 33 MB one character at a time, at about ha
 - **Live game-state test:** run separately with `GAMESTATE_LIVE=1`, it passed too, with 5 tests and 8 subtests.
 - **Without built reports**, the suite gives 68 passed and 4 skipped.
 
+## After merging oct21-work (22 October, later)
+
+`oct21-work` moved on while this was in review. It added the cards model, the team lines, the US models audit and the 22 October proof, along with seven new test files. It was merged into `code-health`, and the only conflict was in USAGE.md, where both sides had added a section; both sections were kept. The USAGE files table and test list now include the new modules (`cards_model.py`, `value_cap.py`, `teamlines.py`, `teamline_backtest.py`) and the new write-ups.
+
+**Replay after the merge.** The replay was run again, with the new `oct21-work` as "before" and the merged `code-health` as "after":
+- 158 output files are byte-for-byte identical.
+- 8 differ only in build timestamps.
+- None needed numbers rounded to match.
+
+So the health changes still change no output on top of the new work. The container was busier for this pair of runs, and the totals were 507 s before and 312 s after (`usmodel_live`: 152 s down to 30 s).
+
+**Tests after the merge.** All 15 test files were run with built reports present, including a Champions League report replayed from the 13 to 14 October matchday, with `GAMESTATE_LIVE=1`, and with statsmodels and scikit-learn installed for the team-lines and audit tests. The result was **173 passed, 0 skipped** (plus 9 subtests), and no test wrote to a committed file.
+
 ## Found, not changed
 
 These need a decision from you rather than a health pass:
