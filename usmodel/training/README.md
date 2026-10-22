@@ -39,3 +39,12 @@ Order of play:
 Scored at three lines per player-game built from his own earlier games (his
 last-10 median, and 25-30% either side, the ladder rungs). Results: see
 `results.md` beside this file.
+
+## Audit (22 October 2026)
+
+`audit_us.py` stress-tests the design: rolling-origin backtests (each season,
+or each month on a one-season cache), the pipeline above rebuilt at every
+origin, game-level bootstrap intervals, and the page's take rule against a
+synthetic book. `audit_report.py` turns its output into tables. Results and
+the verdict: `US-MODELS-AUDIT.md` at the repo root; how to run it on the
+Mac's NBA cache is in its section 8.
