@@ -955,3 +955,17 @@ Backtested on fmodel-style splits (train to January 2026, validation February to
 - **Team markets** (`nba_team_train.py`, `usmodel/nba_team.json`): each side's last-10 average and the opponent's last-10 conceded, home, priced as negative binomial. The game-state LightGBM did not beat that on validation for any stat once a leak in the first version was fixed (the live parity test caught the away side's "opponent concedes" including the same game), so every stat uses the simple model, with pace added for assists only.
 
 `usmodel_live.py` now also writes, per NBA game, each side's game state and team prices into `reports/usmodel.json`; `tonight.html` re-prices NBA team legs from them ("Backtested NBA team model") and ends each NBA game with **How the game will go**: the model score and total, the pace clash, likely margin and blowout risk (starters sitting the fourth), third game in four nights, rest gap, altitude, and who is out with who gains (usmodel's expected points against each player's usual). These lines explain the game; they do not move the chances beyond the team model.
+
+## Scorer audit (`scorer_audit.py`, 22 October)
+
+A walk-forward audit of the player legs the pages lean on most: to score, shots and shots on target. Every starter since 1 July 2026 (when fmodel's training ended) is replayed with only what was known before kick-off, and each chance the pages can show is scored against the result: the record, the shrunk record, the Players tab's own chance, the game-state model, fmodel, and tonight.html's blend. Full tables and the verdict: [SCORER-AUDIT.md](SCORER-AUDIT.md).
+
+    python -B scorer_audit.py build   # about 20 minutes, reads cache/ only
+    python -B scorer_audit.py test    # a minute: tables, and refits the two files below
+
+What it found: fmodel is calibrated and was left alone. tonight.html's chance and the Players tab's fallback both ran high on the low lines (to score on tonight.html said 24% where 11% landed), because both pull towards 50%. Two fixes, each kept only where a version chosen on earlier months beat the page on every later month:
+
+- `fmodel/tonight_blend.json`: the weight `context.py` gives fmodel against the shrunk record, per line (1.0 for to score, shots 3+ and shots on target; 0.9 for shots 2+; shots 1+ stays half and half). To score now gets fmodel on tonight.html.
+- `fmodel/site_calib.json`: a Platt map per line on the Players tab's own shots and shots on target chance where fmodel has none, injected by `report.py` at render.
+
+Delete either file to go back to the old numbers. The `test` step rewrites both and drops any line whose fix stops holding, so rerun it when the cache has grown. Tests: `python -B -m unittest tests.test_scorer_audit`.

@@ -1354,6 +1354,28 @@ def team_model_mu(stat: str, team_id, opp_id, home: bool, f_own: str, f_opp: str
 
 _gs_adjust_simple = gs_adjust
 
+# fmodel's names for the player stats it prices (fmodel.json lines). To score is
+# here and not in PLAYER_FIT: the game-state fit has no goals model.
+FM_STAT = {**PLAYER_FIT, "goals": "Goals"}
+
+# How much of a player leg's chance is fmodel's and how much the shrunk record's.
+# scorer_audit.py found the half and half too high on every low line, because
+# the record is pulled towards 50% (it said 24% for to score where 11% landed),
+# and writes a weight to fmodel/tonight_blend.json only for a line where a
+# weight chosen on earlier months beat the half and half on every later month.
+# Any other line keeps the half and half.
+_BLEND: dict = {}
+
+
+def blend_weight(stat: str, k: int) -> float:
+    if "weights" not in _BLEND:
+        try:
+            _BLEND["weights"] = json.loads((ROOT / "fmodel" / "tonight_blend.json").read_text())["weights"]
+        except (OSError, ValueError, KeyError):
+            _BLEND["weights"] = {}
+    w = _BLEND["weights"].get(f"{stat}|{k}")
+    return float(w) if isinstance(w, (int, float)) and 0 <= w <= 1 else 0.5
+
 
 def gs_adjust(leg: dict, entry: dict, gs: dict | None) -> dict | None:  # noqa: F811
     """Backtested chance for a leg: team model for team legs, fmodel for player legs.
@@ -1382,16 +1404,21 @@ def gs_adjust(leg: dict, entry: dict, gs: dict | None) -> dict | None:  # noqa: 
         return _gs_adjust_simple(leg, entry, gs)
     teams = entry.get("teams") or [{}, {}]
     if leg.get("player"):
-        stat = PLAYER_FIT.get((leg.get("stat") or "").lower())
+        stat = FM_STAT.get((leg.get("stat") or "").lower())
         ev = (entry.get("fixture") or {}).get("id")
         p = fm_chance(ev, leg["player"], stat, k) if stat else None
         if p is None or not over:
             return _gs_adjust_simple(leg, entry, gs)
         simple = _gs_adjust_simple(leg, entry, gs) or {}
         # the leg's own chance already carries fmodel where the site blends it
-        chance = base if leg.get("chance_model") is not None else (base + p) / 2
+        if leg.get("chance_model") is not None:
+            chance = base
+        else:
+            w = blend_weight(stat, k)
+            chance = w * p + (1 - w) * base
+        # oppf None: no game-state fit reaches this stat (to score), so there is no factor to show
         return {"chance": chance, "base": base, "model": p, "plain": simple.get("plain", p),
-                "factor": simple.get("factor", 1.0), "oppf": simple.get("oppf", 1.0), "kind": "player model"}
+                "factor": simple.get("factor", 1.0), "oppf": simple.get("oppf"), "kind": "player model"}
     stat = TEAM_LEG_STAT.get(leg.get("stat") or "")
     if not stat:
         return None
