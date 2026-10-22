@@ -1,0 +1,85 @@
+{
+ "generated": "2026-10-22T12:38:15+00:00",
+ "rows": 13576,
+ "select_end": "2026-06-01",
+ "overround": 0.09,
+ "take_shortfall": 0.0409,
+ "note": "teamline_backtest.py: a team line is a take only in a market with pass true, priced by the team model, at an edge of at least threshold and at most 30%.",
+ "markets": {
+  "Corner kicks|side": {
+   "pass": true,
+   "threshold": 0.05,
+   "why": [],
+   "model_kind": "gbm",
+   "alpha_match": null,
+   "lines": 31156,
+   "matches": 3117
+  },
+  "Corner kicks|match": {
+   "pass": false,
+   "threshold": null,
+   "why": [
+    "not clearly better than the base on log loss",
+    "not clearly better than the base on brier",
+    "the 7.5% threshold did not hold from June"
+   ],
+   "model_kind": "gbm",
+   "alpha_match": 0.014267964782118637,
+   "lines": 15585,
+   "matches": 3117
+  },
+  "Yellow cards|side": {
+   "pass": false,
+   "threshold": null,
+   "why": [
+    "no threshold up to 30% paid against the proxy book on January to May"
+   ],
+   "model_kind": "gbm",
+   "alpha_match": null,
+   "lines": 27904,
+   "matches": 3100
+  },
+  "Yellow cards|match": {
+   "pass": false,
+   "threshold": null,
+   "why": [
+    "the 5.0% threshold did not hold from June"
+   ],
+   "model_kind": "gbm",
+   "alpha_match": 0.0,
+   "lines": 15482,
+   "matches": 3100
+  },
+  "Fouls|side": {
+   "pass": false,
+   "threshold": null,
+   "why": [
+    "no threshold up to 30% paid against the proxy book on January to May"
+   ],
+   "model_kind": "gbm",
+   "alpha_match": null,
+   "lines": 31140,
+   "matches": 3114
+  },
+  "Shots on target|side": {
+   "pass": true,
+   "threshold": 0.05,
+   "why": [],
+   "model_kind": "gbm",
+   "alpha_match": null,
+   "lines": 31127,
+   "matches": 3117
+  },
+  "Total shots|side": {
+   "pass": false,
+   "threshold": null,
+   "why": [
+    "the deployed model is the linear fit itself, so it cannot disagree with the proxy book"
+   ],
+   "model_kind": "linear",
+   "alpha_match": null,
+   "lines": 30910,
+   "matches": 3091
+  }
+ }
+}

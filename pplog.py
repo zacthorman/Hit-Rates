@@ -485,10 +485,18 @@ def _clv(r: dict):
     return a / b - 1 if b else None
 
 
+def cap_value(rows: list[dict], snap: str = "first") -> list[dict]:
+    """Value bets with no more than value_cap.MAX_PER_PLAYER per player per
+    game, his biggest edges kept: eight lines on one player are one bet."""
+    import value_cap
+    rows = sorted(rows, key=lambda r: -(r.get(snap) or {}).get("edge", 0))
+    return value_cap.cap_per_player(rows, key=lambda r: (r.get("event_id"), r.get("player")))
+
+
 def summary() -> dict:
     rows = all_rows()
     done = [r for r in rows if r["result"] in ("win", "lose")]
-    val = [r for r in done if is_value(r)]
+    val = cap_value([r for r in done if is_value(r)])
     strong = [r for r in done if r["first"]["chance"] >= 0.7]
 
     def block(sel):
@@ -510,7 +518,7 @@ def summary() -> dict:
             if lo <= r["first"]["chance"] < hi:
                 return f"{int(lo*100)}-{min(int(hi*100), 100)}%"
 
-    open_val = [r for r in rows if r["result"] is None and is_value(r, "last")]
+    open_val = cap_value([r for r in rows if r["result"] is None and is_value(r, "last")], "last")
     moved = [c for r in rows if is_value(r) and r["first"]["t"] != r["last"]["t"]
              for c in [_clv(r)] if c is not None]
     return {
@@ -594,7 +602,7 @@ def page(args=None) -> Path:
     body = f"""
 <h1>Paddy Power results</h1>
 <p class="lede">Every Paddy Power player line the site has seen, our chance at the time, and how it landed.
-Value bets are lines where ours was 50%+ and beat Paddy Power's price by 5%+, at the price first seen, 1 unit each.
+Value bets are lines where ours was 50%+ and beat Paddy Power's price by 5%+, at the price first seen, 1 unit each, and only each player's biggest edge in a game (lines on one player land together).
 {s['logged']} logged &middot; {s['settled']} settled &middot; {s['open']} open &middot; {s['void']} void (did not play).
 Updated {time.strftime('%a %d %b %H:%M')}.</p>
 <div class="cards">

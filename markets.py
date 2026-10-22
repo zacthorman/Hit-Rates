@@ -341,8 +341,9 @@ CORE_FOOTBALL = {
 }
 
 # Leagues where the board is deep enough for the rest of FOOTBALL_STATS.
-# Keyed on the competition name as it arrives in the payload, matched loosely
-# so "Serie A, Group Stage" still finds "Serie A".
+# Keyed on the competition name as it arrives in the payload, matched through
+# sofascore_api.competition_key so "Serie A, Group Stage", "La Liga" and
+# "LALIGA" all find their league.
 DEEP_MARKETS = {
     "Premier League": FOOTBALL_STATS,
     "Championship": CORE_FOOTBALL | {"Fouls", "Offsides", "Throw-ins"},
@@ -363,9 +364,10 @@ def stats_for_competition(sport: str, competition: str | None) -> set:
     allowed = stats_for(sport)
     if sport != "football":
         return allowed
-    name = (competition or "").split(",")[0].strip()
+    from sofascore_api import competition_key
+    name = competition_key(competition)
     for league, markets_ in DEEP_MARKETS.items():
-        if league.lower() == name.lower():
+        if competition_key(league) == name:
             return allowed & markets_
     return allowed & CORE_FOOTBALL
 
@@ -397,9 +399,10 @@ def player_stats_for_competition(sport: str, competition: str | None) -> set:
     allowed = player_stats_for(sport)
     if sport != "football":
         return allowed
-    name = (competition or "").split(",")[0].strip()
+    from sofascore_api import competition_key
+    name = competition_key(competition)
     for league, markets_ in DEEP_PLAYER_MARKETS.items():
-        if league.lower() == name.lower():
+        if competition_key(league) == name:
             return allowed & markets_
     return allowed & CORE_FOOTBALL_PLAYER
 
