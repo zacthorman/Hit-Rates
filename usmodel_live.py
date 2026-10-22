@@ -199,6 +199,10 @@ def run_sport(sport: str, days: float, now: float) -> dict:
     M2, T2, P2 = U.add_upcoming(M, T, P, games, sport, out_ids=out_ids, squads=squads(), lineups=lineups)
     wanted = {g["match"] for g in games}
     F = U.features(M2, T2, P2, sport, only=wanted)
+    if F.empty:
+        # No rows at all (no upcoming game, or nobody with three games behind
+        # him) has no columns either, so there is no F.match to filter on.
+        return {}
     F = F[F.match.isin(wanted)].copy()
     if F.empty:
         return {}

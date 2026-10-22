@@ -30,9 +30,9 @@ Python's hash seed is fixed so set ordering cannot differ between runs.
 
 `compare` walks both trees and reports every output file that differs
 (source files, *.py, *.sh, *.md and tests/, are left out: those are what
-changed on purpose). Text files
-that differ only in timestamps are compared again with the timestamps masked
-and every number rounded to 12 significant figures, and reported separately.
+changed on purpose). A text file that differs is compared again with its
+timestamps masked, and failing that with every number also rounded to 12
+significant figures; each tier is reported separately.
 """
 
 from __future__ import annotations
@@ -286,6 +286,7 @@ SKIP_SUFFIXES = {".py", ".sh", ".md", ".ipynb"}
 STAMP = re.compile(
     r"\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:?\d{2}| ?UTC)?"
     r"|\b\d{1,2}:\d{2}(:\d{2})? ?UTC\b"
+    r"|\b(Mon|Tue|Wed|Thu|Fri|Sat|Sun) \d{1,2} [A-Z][a-z]{2} \d{2}:\d{2}\b"
     r"|\b1[78]\d{8}(\.\d+)?\b")
 NUMBER = re.compile(r"-?\d+\.\d+(e[-+]?\d+)?")
 
@@ -300,16 +301,19 @@ def _files(root: Path) -> dict[str, Path]:
     return out
 
 
+def _masked(text: str) -> str:
+    return STAMP.sub("<time>", text)
+
+
 def _loose(text: str) -> str:
-    text = STAMP.sub("<time>", text)
-    return NUMBER.sub(lambda m: f"{float(m.group(0)):.12g}", text)
+    return NUMBER.sub(lambda m: f"{float(m.group(0)):.12g}", _masked(text))
 
 
 def compare(before: Path, after: Path) -> int:
     a, b = _files(before), _files(after)
     only_a = sorted(set(a) - set(b))
     only_b = sorted(set(b) - set(a))
-    same = loose = 0
+    same = masked = loose = 0
     differ = []
     for rel in sorted(set(a) & set(b)):
         x, y = a[rel].read_bytes(), b[rel].read_bytes()
@@ -317,15 +321,21 @@ def compare(before: Path, after: Path) -> int:
             same += 1
             continue
         try:
-            if _loose(x.decode()) == _loose(y.decode()):
-                loose += 1
-                print(f"  same once timestamps are masked: {rel}")
-                continue
+            tx, ty = x.decode(), y.decode()
         except UnicodeDecodeError:
-            pass
-        differ.append(rel)
+            differ.append(rel)
+            continue
+        if _masked(tx) == _masked(ty):
+            masked += 1
+            print(f"  same once timestamps are masked: {rel}")
+        elif _loose(tx) == _loose(ty):
+            loose += 1
+            print(f"  same to 12 significant figures once timestamps are masked: {rel}")
+        else:
+            differ.append(rel)
     print(f"{same} file(s) identical byte for byte")
-    print(f"{loose} file(s) identical once timestamps are masked")
+    print(f"{masked} file(s) identical once timestamps are masked")
+    print(f"{loose} file(s) equal number for number to 12 significant figures")
     for rel in only_a:
         print(f"  only in {before.name}: {rel}")
     for rel in only_b:
