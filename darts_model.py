@@ -40,7 +40,7 @@ import functools
 import glob
 import json
 import math
-import os
+import probability
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -60,8 +60,7 @@ SHRINK = 0.8
 DEFAULTS = {"k_leg": K_LEG, "k_set": K_SET, "throw": THROW, "new": NEW_PLAYER, "shrink": SHRINK}
 
 
-def _p(x: float) -> float:
-    return 1 / (1 + math.exp(-x))
+_p = probability.sigmoid
 
 
 def gap_logit(ra: float, rb: float) -> float:

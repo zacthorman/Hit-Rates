@@ -27,7 +27,7 @@ import json
 import random
 import time
 import webbrowser
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 import clubcolour
@@ -1507,10 +1507,10 @@ def main() -> None:
             )
         return
 
-    main_for(args)
+    main_for(args, parser)
 
 
-def main_for(args) -> None:
+def main_for(args, parser=None) -> None:
     league_filter = None
 
     if getattr(args, "nations", None) is not None:
@@ -1651,7 +1651,8 @@ def main_for(args) -> None:
         return
 
     if args.team is None:
-        parser.print_help()
+        if parser is not None:
+            parser.print_help()
         print("\nStart with:  python run.py --search espanyol\n")
         return
 

@@ -22,7 +22,6 @@ Run it after building reports, then commit and push.
 from __future__ import annotations
 
 import argparse
-import html
 import json
 import re
 from datetime import datetime, timezone

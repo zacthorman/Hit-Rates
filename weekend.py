@@ -42,6 +42,7 @@ import json
 from pathlib import Path
 import itertools
 import math
+import probability
 import collections
 import os
 import re
@@ -453,9 +454,7 @@ def _exchange_weight(leg, q) -> float:
             else EXCHANGE_W_TIGHT if q["tight"] else EXCHANGE_W_LOOSE)
 
 
-def _lp(p):
-    p = min(max(p, 1e-4), 1 - 1e-4)
-    return math.log(p / (1 - p))
+_lp = probability.logit
 
 
 # Market anchoring. Across a whole round the exchange is right on average,
@@ -1177,7 +1176,7 @@ HEADLINE_SAMPLE = 15
 
 
 def _shrunk(leg, a=2.0):
-    return (leg["hits"] + a) / (leg["total"] + 2 * a)
+    return probability.shrink(leg["hits"], leg["total"], a)
 
 
 # A leg the exchange prices clearly shorter than its fair chance is a bet

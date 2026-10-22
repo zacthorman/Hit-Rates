@@ -33,6 +33,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import probability
 import re
 from datetime import datetime, timezone
 from pathlib import Path
@@ -72,8 +73,7 @@ def prior() -> float:
 
 
 def adjusted(k: int, n: int, a: float | None = None) -> float:
-    a = prior() if a is None else a
-    return (k + a) / (n + 2 * a)
+    return probability.shrink(k, n, prior() if a is None else a)
 
 
 # ------------------------------------------------------------ report lookup
@@ -398,7 +398,7 @@ def _write_lessons(cal: dict, legs: list[dict]) -> None:
 
 
 def report(args) -> None:
-    cal = fit_and_write()
+    fit_and_write()
     print(LESSONS.read_text())
     open_ = [b for b in load() if b["result"] is None]
     if open_:

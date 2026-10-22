@@ -36,6 +36,7 @@ from __future__ import annotations
 
 import json
 import math
+import probability
 import time
 from pathlib import Path
 
@@ -68,12 +69,10 @@ def group_of(sport: str | None, player) -> str:
 
 
 def _logit(p):
-    p = min(max(p, 1e-3), 1 - 1e-3)
-    return math.log(p / (1 - p))
+    return probability.logit(p, 1e-3)
 
 
-def _sig(z):
-    return 1 / (1 + math.exp(-z))
+_sig = probability.sigmoid
 
 
 def settled_legs(items=None) -> list[dict]:

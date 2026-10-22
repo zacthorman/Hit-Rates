@@ -34,7 +34,6 @@ to build a rate from. Not a gap worth faking with a fraction of the full game.
 from __future__ import annotations
 
 import itertools
-import math
 
 import markets
 import model
