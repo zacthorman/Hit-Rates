@@ -209,9 +209,12 @@ def main(argv=None):
     # meta order matters: the shipped run stopped at its first crash
     work = [(rows_path, gbm_stats(a.meta), n) for n in a.scenarios.split(",")]
     t0 = time.time()
+    res = []
     with ProcessPoolExecutor(a.jobs) as ex:
-        res = [r for rs in ex.map(run_scenario, work) for r in rs]
-    Path(a.out).write_text(json.dumps(res))
+        # each scenario is written as it finishes, so a stopped run keeps what it had
+        for rs in ex.map(run_scenario, work):
+            res += rs
+            Path(a.out).write_text(json.dumps(res))
     print(f"{len(res)} runs in {time.time() - t0:.0f}s -> {a.out}")
 
 
