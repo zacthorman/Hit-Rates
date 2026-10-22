@@ -611,10 +611,9 @@ def main() -> None:
     player_skipped = 0
 
     for name in wanted:
-        key = name.lower().replace("-", "_").replace(" ", "_")
-        tournament_id = api.TOURNAMENTS.get(key)
-        if tournament_id is None and key.isdigit():
-            tournament_id = int(key)
+        # Through tournament_id_for, not TOURNAMENTS.get: "LaLiga" lowered to
+        # "laliga", which is not a key, and the league was skipped.
+        tournament_id = api.tournament_id_for(name)
         if tournament_id is None:
             print(f"unknown league '{name}', skipping")
             continue
