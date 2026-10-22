@@ -161,7 +161,14 @@ def mean(v):
     return float(np.mean(v)) if v else np.nan
 
 
-def features(M, T, P, sport):
+def features(M, T, P, sport, only=None):
+    """One row per player per game, from earlier games only.
+
+    only: match ids to build rows for (the live scorer's upcoming games).
+    Every game still feeds the histories, so those rows come out exactly as
+    they would in a full build; the other rows, which the live scorer threw
+    away, are simply not built. None builds them all, as training needs.
+    """
     c = CFG[sport]
     M = M.sort_values("ts")
     if "upcoming" not in P:
@@ -271,67 +278,18 @@ def features(M, T, P, sport):
     for ts, block in P.groupby("ts", sort=True):
         updates = []
         for mid, pm in block.groupby("match", sort=False):
-            el = pre_elo.get(mid, (1500, 1500))
-            # regulars per team: top 7 by the regular key over their last 10 team games
-            present = listed.get(mid, set(pm.pid)) | set(pm.pid)
-            team_missing = {}
-            for team in pm.team.unique():
-                mates = [pid for pid, hh in hist.items() if hh and hh[-1]["team"] == team
-                         and ts - hh[-1]["ts"] < 30 * 86400]
-                prof_r = sorted(((mean([x[c["regular_key"]] for x in hist[q][-10:]]), q) for q in mates),
-                                reverse=True)[:7]
-                miss = [q for v, q in prof_r if q not in present]
-                team_missing[team] = {
-                    "miss_n": len(miss),
-                    "miss_key": sum(mean([x[c["regular_key"]] for x in hist[q][-10:]]) for q in miss),
-                    **{f"miss_{s}": sum(mean([x[s] for x in hist[q][-10:]]) for q in miss)
-                       for s in c["targets"][:4]},
-                }
-            # The rest of the side tonight, from each player's own record
-            # wherever it was made: a star arriving (Kawhi Leonard at the
-            # Raptors, Oct 2026) takes shots off everyone, and missing_*
-            # only knows about team-mates who are absent.
-            rk, rmin = c["regular"]
-            own = {}
-            for q_pid, q_team, q_grp in roster.get(mid, list(zip(pm.pid, pm.team, pm.pgrp))):
-                hq = hist[q_pid][-10:]
-                if not hq:
-                    continue
-                if sport == "nfl" and q_grp not in ("RB", "WR", "TE"):
-                    continue
-                vals = {s_: mean([x[s_] for x in hq]) for s_ in c["mate_stats"]}
-                if mean([x[rk] for x in hq]) >= rmin or (sport == "nfl" and mean([x["rush_att"] for x in hq]) >= 5):
-                    own[q_pid] = (q_team, vals)
-            for r in pm.itertuples(index=False):
-                hh = hist[r.pid]
-                if len(hh) < 3:
-                    continue
-                f = {"match": mid, "ts": ts, "pid": r.pid, "name": r.name, "team": r.team, "opp": r.opp,
-                     "season": r.season, "home": r.home, "pos": r.pgrp, "starter": r.starter,
-                     "playoff": float(bool(playoff_of.get(mid, False)))}
-                f.update(profile(hh, stats, c["targets"], ts))
-                me, op = (el[0], el[1]) if r.home else (el[1], el[0])
-                f["elo_me"], f["elo_op"], f["elo_diff"] = me, op, me - op
-                f.update(team_feat.get((mid, r.team), {}))
-                f.update({"o" + k: v for k, v in team_feat.get((mid, r.opp), {}).items()})
-                cf = conc_feat.get((mid, r.opp), {})
-                for s in c["targets"]:
-                    f["oc_" + s] = cf.get(f"{r.pgrp}|{s}", np.nan)
-                f.update(team_missing.get(r.team, {}))
-                for s_ in c["mate_stats"]:
-                    tot = sum(v[s_] for q, (tm, v) in own.items() if tm == r.team and q != r.pid
-                              and not math.isnan(v[s_]))
-                    f["mate_" + s_] = tot
-                    mine = f.get(f"{s_}_m10", np.nan)
-                    f["mate_share_" + s_] = (mine / (mine + tot)) if tot + (mine or 0) > 0 and not pd.isna(mine) else np.nan
-                hv = h2h[(r.pid, r.opp)]
-                f["h2h_n"] = len(hv)
-                for s in c["targets"][:6]:
-                    f["h2h_" + s] = mean([x[s] for x in hv])
-                for s in c["targets"]:
-                    f["y_" + s] = getattr(r, s)
-                f["y_mins"] = r.mins
-                rows.append(f)
+            if only is not None and mid not in only:
+                # Not a row anyone will read. Touch the same history keys the
+                # full build touches (a defaultdict lookup adds the key, and
+                # the order of hist decides the order regulars are found in),
+                # then fall through to the updates below.
+                for q_pid, _, _ in roster.get(mid, list(zip(pm.pid, pm.team, pm.pgrp))):
+                    hist[q_pid]
+                for pid in pm.pid:
+                    hist[pid]
+            else:
+                _rows_for(mid, pm, ts, hist, h2h, rows, pre_elo, listed, roster, c, sport,
+                          stats, playoff_of, team_feat, conc_feat)
             for r in pm.itertuples(index=False):
                 if r.upcoming:
                     continue
@@ -342,6 +300,72 @@ def features(M, T, P, sport):
             hist[pid].append(d)
             h2h[(pid, opp)].append(d)
     return pd.DataFrame(rows)
+
+
+def _rows_for(mid, pm, ts, hist, h2h, rows, pre_elo, listed, roster, c, sport,
+              stats, playoff_of, team_feat, conc_feat):
+    """The feature rows for one game, from the histories as they stand."""
+    el = pre_elo.get(mid, (1500, 1500))
+    # regulars per team: top 7 by the regular key over their last 10 team games
+    present = listed.get(mid, set(pm.pid)) | set(pm.pid)
+    team_missing = {}
+    for team in pm.team.unique():
+        mates = [pid for pid, hh in hist.items() if hh and hh[-1]["team"] == team
+                 and ts - hh[-1]["ts"] < 30 * 86400]
+        prof_r = sorted(((mean([x[c["regular_key"]] for x in hist[q][-10:]]), q) for q in mates),
+                        reverse=True)[:7]
+        miss = [q for v, q in prof_r if q not in present]
+        team_missing[team] = {
+            "miss_n": len(miss),
+            "miss_key": sum(mean([x[c["regular_key"]] for x in hist[q][-10:]]) for q in miss),
+            **{f"miss_{s}": sum(mean([x[s] for x in hist[q][-10:]]) for q in miss)
+               for s in c["targets"][:4]},
+        }
+    # The rest of the side tonight, from each player's own record
+    # wherever it was made: a star arriving (Kawhi Leonard at the
+    # Raptors, Oct 2026) takes shots off everyone, and missing_*
+    # only knows about team-mates who are absent.
+    rk, rmin = c["regular"]
+    own = {}
+    for q_pid, q_team, q_grp in roster.get(mid, list(zip(pm.pid, pm.team, pm.pgrp))):
+        hq = hist[q_pid][-10:]
+        if not hq:
+            continue
+        if sport == "nfl" and q_grp not in ("RB", "WR", "TE"):
+            continue
+        vals = {s_: mean([x[s_] for x in hq]) for s_ in c["mate_stats"]}
+        if mean([x[rk] for x in hq]) >= rmin or (sport == "nfl" and mean([x["rush_att"] for x in hq]) >= 5):
+            own[q_pid] = (q_team, vals)
+    for r in pm.itertuples(index=False):
+        hh = hist[r.pid]
+        if len(hh) < 3:
+            continue
+        f = {"match": mid, "ts": ts, "pid": r.pid, "name": r.name, "team": r.team, "opp": r.opp,
+             "season": r.season, "home": r.home, "pos": r.pgrp, "starter": r.starter,
+             "playoff": float(bool(playoff_of.get(mid, False)))}
+        f.update(profile(hh, stats, c["targets"], ts))
+        me, op = (el[0], el[1]) if r.home else (el[1], el[0])
+        f["elo_me"], f["elo_op"], f["elo_diff"] = me, op, me - op
+        f.update(team_feat.get((mid, r.team), {}))
+        f.update({"o" + k: v for k, v in team_feat.get((mid, r.opp), {}).items()})
+        cf = conc_feat.get((mid, r.opp), {})
+        for s in c["targets"]:
+            f["oc_" + s] = cf.get(f"{r.pgrp}|{s}", np.nan)
+        f.update(team_missing.get(r.team, {}))
+        for s_ in c["mate_stats"]:
+            tot = sum(v[s_] for q, (tm, v) in own.items() if tm == r.team and q != r.pid
+                      and not math.isnan(v[s_]))
+            f["mate_" + s_] = tot
+            mine = f.get(f"{s_}_m10", np.nan)
+            f["mate_share_" + s_] = (mine / (mine + tot)) if tot + (mine or 0) > 0 and not pd.isna(mine) else np.nan
+        hv = h2h[(r.pid, r.opp)]
+        f["h2h_n"] = len(hv)
+        for s in c["targets"][:6]:
+            f["h2h_" + s] = mean([x[s] for x in hv])
+        for s in c["targets"]:
+            f["y_" + s] = getattr(r, s)
+        f["y_mins"] = r.mins
+        rows.append(f)
 
 
 def profile(hh, stats, targets, ts):

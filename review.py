@@ -42,9 +42,8 @@ from __future__ import annotations
 
 import argparse
 import json
-import math
+import probability
 import statistics
-import sys
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -192,14 +191,7 @@ def explain(bet: dict) -> str:
     return f"badly wrong: expected {exp:.1f}, got {got:.0f}"
 
 
-def wilson(hits: int, total: int, z: float = 1.96) -> tuple[float, float]:
-    if not total:
-        return 0.0, 1.0
-    p = hits / total
-    denom = 1 + z * z / total
-    centre = p + z * z / (2 * total)
-    spread = z * math.sqrt((p * (1 - p) + z * z / (4 * total)) / total)
-    return max(0.0, (centre - spread) / denom), min(1.0, (centre + spread) / denom)
+wilson = probability.wilson
 
 
 def effective_n(rows: list[dict]) -> float:
