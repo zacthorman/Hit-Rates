@@ -356,17 +356,36 @@ def single_legs_for(entry, meta):
     return alt_legs_for(entry, meta, floor=SINGLE_FLOOR, guard=SINGLE_GUARD)
 
 
+# _games_by_player, remembered per team list. team_joint asks for the same
+# team's index once per candidate parlay, 15,000 times a build, and rebuilding
+# it each time was the slowest thing make_index and besttrack did. Keyed on
+# the list itself (held, so its id cannot be reused) and its length; the
+# records inside are never modified once a report is read, and the index
+# holds the record dicts themselves rather than copies.
+_GAMES_INDEX: dict = {}
+
+
 def _games_by_player(entry, team_index):
     """One team's appearances, indexed by player then match."""
     players = entry.get("players") or []
     if team_index >= len(players):
         return {}
+    sport = weekend.sport_of(entry)
+    key = (id(players[team_index]), team_index, sport)
+    hit = _GAMES_INDEX.get(key)
+    if hit is not None and hit[0] is players[team_index] and hit[1] == len(players[team_index]):
+        return hit[2]
+    indexed = _index_games(players[team_index], sport)
+    _GAMES_INDEX[key] = (players[team_index], len(players[team_index]), indexed)
+    return indexed
+
+
+def _index_games(records, sport):
     grouped: dict[str, list] = {}
-    for record in players[team_index]:
+    for record in records:
         name = record.get("player")
         if name:
             grouped.setdefault(name, []).append(record)
-    sport = weekend.sport_of(entry)
     return {name: {g.get("match_id"): g for g in weekend._played(games, sport)}
             for name, games in grouped.items()}
 

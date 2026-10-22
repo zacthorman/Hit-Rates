@@ -44,6 +44,7 @@ MODELS = ROOT / "fmodel"
 OUT = ROOT / "reports" / "fmodel.json"
 sys.path.insert(0, str(MODELS))
 from fmodel_trees import Model  # noqa: E402
+import pagedata
 
 PSTATS = {
     "totalShots": "shots", "onTargetScoringAttempt": "sot", "fouls": "fouls",
@@ -216,7 +217,7 @@ def upcoming(days, known_matches, simulate=None):
             if Path(f).name.startswith("pick-"):
                 continue
             text = Path(f).read_text(encoding="utf-8")
-            m = re.search(r"const ALL = (\{.*?\});\n", text, re.S)
+            m = pagedata.search(text)
             if not m:
                 continue
             for entry in json.loads(m.group(1)).get("fixtures", []):

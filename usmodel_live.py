@@ -197,8 +197,9 @@ def run_sport(sport: str, days: float, now: float) -> dict:
     out_names = ruled_out(sport) | news_out
     out_ids = set(P[P.name.map(lambda n: norm(n) in out_names)].pid) if out_names else set()
     M2, T2, P2 = U.add_upcoming(M, T, P, games, sport, out_ids=out_ids, squads=squads(), lineups=lineups)
-    F = U.features(M2, T2, P2, sport)
-    F = F[F.match.isin({g["match"] for g in games})].copy()
+    wanted = {g["match"] for g in games}
+    F = U.features(M2, T2, P2, sport, only=wanted)
+    F = F[F.match.isin(wanted)].copy()
     if F.empty:
         return {}
     F["pos_c"] = F.pos.astype("category").cat.codes  # same mapping as training below

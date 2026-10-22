@@ -34,13 +34,13 @@ import argparse
 import json
 import math
 import probability
-import re
 from datetime import datetime, timezone
 from pathlib import Path
 
 import hitrates
 import markets
 import sofascore_api as api
+import pagedata
 
 HERE = Path(__file__).parent
 BETS = HERE / "bets.json"
@@ -89,7 +89,7 @@ def _report_fixture(event_id: int):
             continue
         if str(event_id) not in text:
             continue
-        m = re.search(r"const ALL = (\{.*?\});\n", text, re.S)
+        m = pagedata.search(text)
         if not m:
             continue
         for f in json.loads(m.group(1)).get("fixtures", []):

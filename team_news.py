@@ -35,6 +35,7 @@ import unicodedata
 import urllib.request
 from datetime import datetime
 from pathlib import Path
+import pagedata
 
 ROOT = Path(__file__).parent
 ESPN = {"american-football": ("nfl", "https://site.api.espn.com/apis/site/v2/sports/football/nfl/injuries"),
@@ -187,7 +188,7 @@ def refresh(dry: bool = False) -> int:
         if path.name.startswith("pick-") or path.name == "darts.html":
             continue
         text = path.read_text(encoding="utf-8")
-        m = re.search(r"const ALL = (\{.*?\});\n", text, re.S)
+        m = pagedata.search(text)
         if not m:
             continue
         payload = json.loads(m.group(1))

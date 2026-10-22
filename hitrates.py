@@ -14,6 +14,7 @@ never throws an error and quietly ruins everything downstream.
 
 from __future__ import annotations
 
+import functools
 import statistics as stats_lib
 from datetime import datetime, timezone
 
@@ -476,6 +477,7 @@ PLAYER_STAT_ORDER = [
 ]
 
 
+@functools.lru_cache(maxsize=None)
 def _pretty(key: str) -> str:
     """camelCase to something readable, for keys not in the lookup."""
     out = ""
