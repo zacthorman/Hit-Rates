@@ -60,7 +60,7 @@ MATCH_STATS = {"Match goals", "Both teams to score", "Match corners", "Match car
                "Both teams carded"}
 
 SHORT_COMP = {
-    "UEFA Champions League": "UCL", "UEFA Europa League": "UEL",
+    "UEFA Champions League": "UCL", "UEFA Europa League": "UEL", "UEFA Conference League": "UECL",
     "UEFA Conference League": "UECL", "UEFA Europa Conference League": "UECL",
     "Premier League": "PL", "Championship": "Champ", "EFL Cup": "EFL Cup",
     "FA Cup": "FA Cup", "LaLiga": "LaLiga", "Bundesliga": "BL", "Serie A": "Serie A",
@@ -1567,3 +1567,62 @@ def nba_story(entry: dict, meta: dict) -> dict:
                        else f"so their shots and minutes go elsewhere: look at {names[i]}'s other starters' overs.")))
     lines.sort(key=lambda x: -x[0])
     return {"lines": [(r, s) for _, r, s in lines[:7]], "score": score, "state": st, "names": names}
+
+
+# ----------------------------------------------------------------- NFL script
+# usmodel_live.py writes each side's pre-game script (nflgame.py) into
+# reports/usmodel.json. Display only: it explains the game, it does not move
+# the chances (no market passed the 22 Oct 2026 backtest).
+
+
+def nfl_story(entry: dict, meta: dict) -> dict:
+    ev = _usmodel().get(str((entry.get("fixture") or {}).get("id"))) or {}
+    teams = entry.get("teams") or []
+    st_all = ev.get("state") or {}
+    if len(teams) < 2 or not st_all:
+        return {"lines": [], "score": None}
+    names = [t.get("name") for t in teams]
+    st = [st_all.get(n) or {} for n in names]
+    num = lambda v: isinstance(v, (int, float))  # noqa: E731
+    g = lambda i, k: st[i].get(k)  # noqa: E731
+    lines: list[tuple[str, str]] = []
+    score = None
+    ef, ea = g(0, "s_exp_for"), g(0, "s_exp_against")
+    if num(ef) and num(ea):
+        score = {"home": ef, "away": ea, "total": ef + ea}
+    m = g(0, "s_exp_margin")
+    if num(m):
+        fav, by = (0, m) if m >= 0 else (1, -m)
+        if by >= 7:
+            lines.append((f"{names[fav]} are expected to win by about {by:.0f}, from points scored and allowed over the last 10 plus home field.",
+                          f"so {names[1 - fav]} should be chasing: more passes and fewer runs for them, while {names[fav]} run the clock late. "
+                          f"Treat it as a lean only, since it did not improve the yardage model in the backtest."))
+        else:
+            lines.append((f"Close on paper: {names[0]} by {m:+.0f} on points form plus home field.",
+                          "so no strong script either way; each side should play close to its usual run and pass mix."))
+    pm, po = g(0, "s_exp_plays"), g(1, "s_exp_plays")
+    if num(pm) and num(po):
+        tot = pm + po
+        tag = "fast" if tot >= 126 else ("slow" if tot <= 114 else "normal")
+        lines.append((f"Expected plays: {names[0]} {pm:.0f}, {names[1]} {po:.0f} (about {tot:.0f} in all, a {tag} game).",
+                      "so volume overs (attempts, carries, targets, tackles) get a little help." if tag == "fast" else
+                      ("so volume overs have less to work with." if tag == "slow" else "so volume should be about usual.")))
+    for i in (0, 1):
+        pr, sens = g(i, "s_pass_rate_me"), g(i, "s_script_sens")
+        if num(pr) and num(sens) and sens >= 0.2:
+            lines.append((f"{names[i]} pass {pr * 100:.0f}% of plays, and {sens * 100:.0f} points more when behind by 8 or more than when ahead by 8 or more.",
+                          f"so {names[i]}'s play-calling follows the scoreboard: if they fall behind, their QB and receivers get the volume."))
+    if g(0, "s_short_week") == 1 and g(1, "s_short_week") == 1:
+        lines.append(("Both sides are on a short week (a Thursday game).",
+                      "so expect tired legs on both sides and simpler game plans. Rest is no edge for either side."))
+    for i in (0, 1):
+        if g(i, "s_short_week") == 1 and g(1 - i, "s_short_week") == 1:
+            continue
+        if g(i, "s_short_week") == 1:
+            lines.append((f"{names[i]} are on a short week.", f"so {names[i]} have less time to prepare and recover."))
+        elif g(i, "s_bye") == 1:
+            lines.append((f"{names[i]} are coming off a bye or a long rest.", f"so {names[i]} come in fresh, with an extra week to plan."))
+    lines.append(("Backtest note: game script did not significantly improve any NFL market (NFL_GS_BACKTEST.md). "
+                  "On the unseen games it made passing yards worse.",
+                  "so use these lines to read the game, not as a reason to back a QB yards over."))
+    return {"lines": lines, "score": score}

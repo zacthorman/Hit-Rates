@@ -29,6 +29,8 @@ that was.
 
 import argparse
 import html
+
+import boostcheck
 import time
 from pathlib import Path
 
@@ -88,8 +90,47 @@ def legs_of(entry, meta) -> list:
             continue
         seen.add(key)
         out.append(leg)
+    # Nobody who will not play. Found 22 Oct 2026: four of Juventus v
+    # Rennes' six player bets were on players listed out (Locatelli, Yildiz,
+    # Conceicao, Lepaul). Out = in either side's missing list or injury
+    # report as out; once a side's XI is confirmed, only its starters.
+    gone, starters = unavailable(entry)
+    out = [l for l in out if not l.get("player")
+           or (_nm(l["player"]) not in gone
+               and (not starters.get(l.get("team")) or _nm(l["player"]) in starters[l.get("team")]))]
     # Same calibrated prices the picks use, so a leg reads the same here.
     return weekend.calibrate(out)
+
+
+def _nm(name) -> str:
+    import unicodedata
+    f = unicodedata.normalize("NFKD", str(name or "").lower())
+    return "".join(c for c in f if c.isalnum() and not unicodedata.combining(c))
+
+
+def unavailable(entry) -> tuple[set, dict]:
+    """(names out, {team name: confirmed starters}) from line-ups and team news."""
+    gone, starters = set(), {}
+    lu = entry.get("lineups") or {}
+    teams = entry.get("teams") or []
+    for kind in ("predicted", "confirmed", "news"):
+        for side in ("home", "away"):
+            for m in ((lu.get(kind) or {}).get(side) or {}).get("missing") or []:
+                if m and m[0]:
+                    gone.add(_nm(m[0]))
+    for side in ("home", "away"):
+        for r in (entry.get("injuries") or {}).get(side) or []:
+            if isinstance(r, (list, tuple)) and len(r) > 2 and str(r[2]).lower().startswith("out"):
+                gone.add(_nm(r[0]))
+    conf = lu.get("confirmed") or {}
+    for i, side in enumerate(("home", "away")):
+        xi = [x.get("name") for x in (conf.get(side) or {}).get("xi") or []]
+        if xi and i < len(teams):
+            starters[teams[i].get("name")] = {_nm(n) for n in xi}
+    # a confirmed starter is playing, whatever an older report said
+    for names in starters.values():
+        gone -= names
+    return gone, starters
 
 
 def odds(x) -> str:
@@ -327,6 +368,26 @@ def nba_story_block(entry, meta) -> str:
     parts.append("<p class='sub'>Pace, ratings, blowout rate and rest are from each side's last 10 (usgame.py). "
                  "The NBA team model is the simple one: in the backtest the game-state version did not beat "
                  "it on validation, so these lines explain the game rather than move the chances.</p></div>")
+    return "".join(parts)
+
+
+def nfl_story_block(entry, meta) -> str:
+    esc = html.escape
+    try:
+        import context
+        st = context.nfl_story(entry, meta)
+    except Exception as exc:
+        return f"<p class='sub'>Game script unavailable ({esc(str(exc))})</p>"
+    if not st.get("lines"):
+        return "<p class='none'>No game script for this game yet.</p>"
+    parts = ["<div class='story'>"]
+    sc = st.get("score")
+    if sc:
+        parts.append(f"<p class='call'><b>Points form:</b> {esc(meta['home'])} {sc['home']:.0f}, "
+                     f"{esc(meta['away'])} {sc['away']:.0f} <span class='sub'>(each side's last 10 scored "
+                     f"and the other's allowed; a guide, not a model)</span></p>")
+    items = "".join(f"<li>{esc(_possessive(r))} <b>{esc(_possessive(so[0].upper() + so[1:]))}</b></li>" for r, so in st["lines"])
+    parts.append(f"<p class='call'><b>Why</b></p><ol class='why'>{items}</ol></div>")
     return "".join(parts)
 
 
@@ -582,32 +643,42 @@ def build(hours: float | None) -> str:
         return PAGE.format(built=built, span=span, body=body,
                            stamp=time.strftime("%a %d %b, %H:%M %Z", time.localtime(now)))
 
-    # ---------------------------------------------------------- the multi
-    legs = []
-    for entry, meta in window:
-        legs.extend(legs_of(entry, meta))
-
-    multi = "".join(
-        acca_block(weekend.best_acca(legs, wanted=w, target=t), w, t)
-        for w, t in ACCA_SHAPES
-    )
-
-    # ------------------------------------------------------ the same games
-    blocks = []
+    # ------------------------------------------------------------ per game
+    # Two big tabs, team lines and player lines (22 Oct 2026, Zac: less
+    # scrolling). Each game is one collapsed row with its best bet showing;
+    # open it for the case, the game state and the boost check (team) or the
+    # player bets (player). Player bets follow the line-ups: once a side's XI
+    # is confirmed, only its starters are offered.
+    team_legs_all, player_legs_all = [], []
+    team_rows, player_rows = [], []
     lead_log = []
-    for entry, meta in window:
+
+    def tonight_chance(l):
+        g = l.get("gs")
+        if g:
+            return g["chance"]
+        c = weekend.chance(l) if (l.get("pStrength") or l.get("pShrunk") or l.get("pExchange")) else None
+        return c if c is not None else 0
+
+    def rank(pool):
+        return sorted(pool, key=lambda l: (-tonight_chance(l) * (l.get("fair") or 1) ** 0.5,
+                                           -(l.get("total") or 0)))
+
+    def singles_table(rows):
+        body = "".join(leg_row(l, ent) for l, ent in rows) or "<tr><td colspan='4'>nothing qualified</td></tr>"
+        return ("<table><thead><tr><th>Selection</th><th class='n'>Record</th>"
+                f"<th class='n'>Fair</th><th class='n'>Need</th></tr></thead><tbody>{body}</tbody></table>")
+
+    for n, (entry, meta) in enumerate(window):
         kick = time.strftime("%H:%M", time.localtime(meta["kickoff"]))
-        football = ((entry.get("fixture") or {}).get("sport") or "football") == "football"
-        basketball = ((entry.get("fixture") or {}).get("sport") or "") == "basketball"
+        sport = (entry.get("fixture") or {}).get("sport") or "football"
+        football, basketball, american = sport == "football", sport == "basketball", sport == "american-football"
         builders = weekend.builders_for(entry, meta) or []
         best = max(builders, key=lambda b: b.get("evidence", 0)) if builders else None
 
-        pool = sorted(
-            [l for l in legs_of(entry, meta)
-             if isinstance(l.get("fair"), (int, float))
-             and l["fair"] >= MIN_PRICE],
-            key=lambda l: (-weekend.sort_value(l), -(l.get("total") or 0)),
-        )[:SINGLES_PER_FIXTURE * 4]
+        legs = legs_of(entry, meta)
+        pool = sorted([l for l in legs if isinstance(l.get("fair"), (int, float)) and l["fair"] >= MIN_PRICE],
+                      key=lambda l: (-weekend.sort_value(l), -(l.get("total") or 0)))[:SINGLES_PER_FIXTURE * 4]
         gs = None
         try:
             import context
@@ -616,58 +687,123 @@ def build(hours: float | None) -> str:
                 l["gs"] = context.gs_adjust(l, entry, gs)
         except Exception:
             gs = None
-        # The game state re-ranks the pool: a leg it lifts can climb into the
-        # six, and one it cuts can fall out. Legs it cannot reach keep their
-        # own chance, so nothing is promoted just for being unreachable.
-        def tonight_chance(l):
-            g = l.get("gs")
-            if g:
-                return g["chance"]
-            c = weekend.chance(l) if (l.get("pStrength") or l.get("pShrunk") or l.get("pExchange")) else None
-            return c if c is not None else 0
-        own = sorted(pool, key=lambda l: (-tonight_chance(l) * (l.get("fair") or 1) ** 0.5,
-                                          -(l.get("total") or 0)))[:SINGLES_PER_FIXTURE]
+        own = rank(pool)[:SINGLES_PER_FIXTURE]
         lead_log.append((meta, own[0] if own else None, tonight_chance(own[0]) if own else None))
+        team_pool = rank([l for l in pool if not l.get("player")])
+        player_pool = rank([l for l in pool if l.get("player")])
+        team_legs_all.extend(l for l in legs if not l.get("player"))
+        player_legs_all.extend(l for l in legs if l.get("player"))
 
-        singles = "".join(leg_row(l, entry) for l in own) or "<tr><td colspan='4'>nothing qualified</td></tr>"
+        lu = (entry.get("lineups") or {})
+        xi = ("<span class='tag ok'>line-ups confirmed</span>" if lu.get("confirmed")
+              else "<span class='tag'>predicted line-ups</span>" if lu.get("predicted") else "")
+        title = (f"<span class='ko'>{kick}</span> {html.escape(meta['home'])} v {html.escape(meta['away'])}"
+                 f"<span class='comp'> &middot; {html.escape(meta['competition'])}</span>")
+
+        def summary(lead):
+            if not lead:
+                return "<span class='lead none'>nothing cleared the bar</span>"
+            return (f"<span class='lead'>{html.escape(fmt_leg(lead))} &middot; fair "
+                    f"<b>{odds(lead.get('fair'))}</b></span>")
+
+        # team side
+        tlead = team_pool[0] if team_pool else None
+        story = (story_block(entry, meta, gs) if football
+                 else nba_story_block(entry, meta) if basketball
+                 else nfl_story_block(entry, meta) if american else "")
+        builder_is_team = bool(best) and not any(l.get("player") for l in best.get("legs") or [])
+        bets_html = ((f"<h3>The case</h3>{case_block(entry, meta, tlead, gs)}" if football
+                      else f"<h3>The case</h3>{lead_only(tlead)}")
+                     + f"<h3>Best team bets</h3>{singles_table([(l, entry) for l in team_pool[:SINGLES_PER_FIXTURE]])}"
+                     + (f"<h3>Same-game builder</h3>{builder_block(best)}" if builder_is_team or not best else ""))
+        tabs = [("Bets", "bets", bets_html)]
+        if story:
+            tabs.append(("Game state", "state", f"<h3>How the game will go</h3>{story}"))
+        if football:
+            tabs.append(("Boost check", "boostp", f"<h3>Check a boost or bet builder</h3>{boostcheck.boost_tab(entry, meta, n)}"))
+        inner = "<div class='tabs'>"
+        for i, (label, cls, _) in enumerate(tabs):
+            inner += (f"<input type='radio' name='g{n}' id='g{n}{i}'{' checked' if i == 0 else ''}>"
+                      f"<label for='g{n}{i}'>{label}</label>")
+        inner += "".join(f"<div class='pane p{i}'>{body}</div>" for i, (_, _, body) in enumerate(tabs)) + "</div>"
+        team_rows.append(f"<details class='game'><summary>{title}<br>{summary(tlead)}</summary>{inner}</details>")
+
+        # player side
+        if not player_pool and not football:
+            pass
+        plead = player_pool[0] if player_pool else None
         try:
             import playerlines
             plines = "".join(player_row(l) for l in playerlines.suggest(entry, meta))
         except Exception as exc:          # never cost the page its other sections
             plines = f"<tr><td colspan='4'>player lines unavailable ({html.escape(str(exc))})</td></tr>"
         plines = plines or "<tr><td colspan='4'>nothing qualified</td></tr>"
-        blocks.append(
-            f"<section><h2>{kick} &middot; {html.escape(meta['home'])} v "
-            f"{html.escape(meta['away'])}</h2>"
-            f"<p class='comp'>{html.escape(meta['competition'])}</p>"
-            + (f"<h3>The case</h3>{case_block(entry, meta, own[0] if own else None, gs)}"
-               if football else f"<h3>The case</h3>{lead_only(own[0] if own else None)}")
-            + f"<h3>Same-game builder</h3>{builder_block(best)}"
-            f"<h3>Best singles here</h3>"
-            f"<table><thead><tr><th>Selection</th><th class='n'>Record</th>"
-            f"<th class='n'>Fair</th><th class='n'>Need</th></tr></thead>"
-            f"<tbody>{singles}</tbody></table>"
-            f"<h3>Player lines</h3>"
-            f"<p class='sub'>Each player's own line: the highest he has cleared in 7 of his "
-            f"last 10, with his average 10% clear of it. Back at the fair price or longer.</p>"
-            f"<table><thead><tr><th>Selection</th><th class='n'>Last 10</th>"
-            f"<th class='n'>Chance</th><th class='n'>Fair</th></tr></thead>"
-            f"<tbody>{plines}</tbody></table>"
-            + (f"<h3>How the game will go</h3>{story_block(entry, meta, gs)}" if football
-               else (f"<h3>How the game will go</h3>{nba_story_block(entry, meta)}" if basketball else ""))
-            + "</section>"
-        )
+        pbody = (f"<h3>Best player bets</h3>{singles_table([(l, entry) for l in player_pool[:SINGLES_PER_FIXTURE]])}"
+                 + (f"<h3>Same-game builder</h3>{builder_block(best)}" if best and not builder_is_team else "")
+                 + "<h3>Each player's own line</h3>"
+                 "<p class='sub'>The highest line he has cleared in 7 of his last 10, with his average 10% "
+                 "clear of it. Back at the fair price or longer.</p>"
+                 "<table><thead><tr><th>Selection</th><th class='n'>Last 10</th>"
+                 f"<th class='n'>Chance</th><th class='n'>Fair</th></tr></thead><tbody>{plines}</tbody></table>")
+        player_rows.append(f"<details class='game'><summary>{title} {xi}<br>{summary(plead)}</summary>{pbody}</details>")
 
     try:
         write_leads(lead_log, now)
     except Exception:
         pass
-    body = (results_block(now) + research_block(now)
-            + f"<section><h2>Multi across the {len(window)} games</h2>{multi}</section>"
-            + "".join(blocks))
-    return PAGE.format(built=built, span=span, body=body,
-                       stamp=time.strftime("%a %d %b, %H:%M %Z", time.localtime(now)))
 
+    def multi(legs):
+        return "".join(acca_block(weekend.best_acca(legs, wanted=w, target=t), w, t) for w, t in ACCA_SHAPES) \
+            or "<p class='none'>Nothing to build a multi from.</p>"
+
+    until = max(m["kickoff"] for _, m in window) + 60
+    team_pane = ("<p class='sub'>Tap a game for the case, how it should go, and the boost check.</p>"
+                 + "".join(team_rows)
+                 + f"<details class='game'><summary><b>Team multi across the games</b></summary>{multi(team_legs_all)}</details>")
+    player_pane = (f"<h2 class='first'>Bookie value bets</h2>{boostcheck.value_box(now, until)}"
+                   "<p class='sub'>Tap a game for its player bets. Once a line-up is confirmed only its "
+                   "starters are offered.</p>"
+                   + "".join(player_rows)
+                   + f"<details class='game'><summary><b>Player multi across the games</b></summary>{multi(player_legs_all)}</details>")
+    body = (research_block(now)
+            + "<div class='main'>"
+            "<input type='radio' name='main' id='mt' checked><label for='mt'>Team lines</label>"
+            "<input type='radio' name='main' id='mp'><label for='mp'>Player lines</label>"
+            f"<div class='mpane team'>{team_pane}</div><div class='mpane player'>{player_pane}</div></div>"
+            + (f"<details class='game'><summary><b>Last night's leads</b></summary>{results_block(now)}</details>"
+               if results_block(now) else ""))
+    page = PAGE.format(built=built, span=span, body=body,
+                       stamp=time.strftime("%a %d %b, %H:%M %Z", time.localtime(now)))
+    return (page.replace("</style>", boostcheck.CSS + LAYOUT_CSS + "</style>", 1)
+                .replace("</body>", boostcheck.script() + "</body>", 1))
+
+
+LAYOUT_CSS = """
+.main > input { position:absolute; opacity:0; pointer-events:none; }
+.main > label { display:inline-block; width:calc(50% - 4px); text-align:center; padding:12px 0; margin:14px 0 6px;
+  font-size:17px; font-weight:700; border:1px solid var(--line); border-radius:10px; cursor:pointer; color:var(--muted); }
+.main > label + input + label { margin-left:4px; }
+.main > input:checked + label { background:var(--fg); color:var(--bg); border-color:var(--fg); }
+.main > input:focus-visible + label { outline:2px solid var(--accent); outline-offset:2px; }
+.main .mpane { display:none; }
+.main > input:nth-of-type(1):checked ~ .team, .main > input:nth-of-type(2):checked ~ .player { display:block; }
+details.game { border-top:1px solid var(--line); }
+details.game > summary { list-style:none; cursor:pointer; padding:10px 22px 10px 0; position:relative; font-size:15px; }
+details.game > summary::-webkit-details-marker { display:none; }
+details.game > summary::after { content:'+'; position:absolute; right:2px; top:10px; color:var(--muted); font-size:18px; }
+details.game[open] > summary::after { content:'\\2212'; }
+details.game > summary .ko { font-weight:700; margin-right:4px; }
+details.game > summary .comp { font-size:12px; }
+details.game > summary .lead { font-size:13px; color:var(--muted); }
+details.game[open] { padding-bottom:10px; }
+.tag { display:inline-block; font-size:11px; padding:1px 7px; border-radius:999px; border:1px solid var(--line);
+  color:var(--muted); margin-left:4px; vertical-align:1px; }
+.tag.ok { border-color:#2e8b57; color:#2e8b57; }
+h2.first { margin-top:12px; }
+.tabs .p0, .tabs .p1, .tabs .p2 { display:none; }
+.tabs > input:nth-of-type(1):checked ~ .p0, .tabs > input:nth-of-type(2):checked ~ .p1,
+.tabs > input:nth-of-type(3):checked ~ .p2 { display:block; }
+"""
 
 PAGE = """<!DOCTYPE html>
 <html lang="en"><head>
@@ -722,12 +858,21 @@ table.form td {{ padding:3px 4px; font-size:13px; }}
 .why {{ padding-left:20px; }}
 .why li {{ margin:6px 0; }}
 .mark.win {{ color:#2e8b57; }} .mark.lose {{ color:#c0392b; }}
+.tabs > input {{ position:absolute; opacity:0; pointer-events:none; }}
+.tabs > label {{ display:inline-block; margin:10px 6px 0 0; padding:6px 14px; font-size:14px;
+  font-weight:600; border:1px solid var(--line); border-radius:999px; cursor:pointer; color:var(--muted); }}
+.tabs > input:checked + label {{ background:var(--fg); color:var(--bg); border-color:var(--fg); }}
+.tabs > input:focus-visible + label {{ outline:2px solid var(--accent); outline-offset:2px; }}
+.tabs .pane {{ display:none; }}
+.tabs > input:nth-of-type(1):checked ~ .bets {{ display:block; }}
+.tabs > input:nth-of-type(2):checked ~ .state {{ display:block; }}
+.tabs > input:nth-of-type(3):checked ~ .boostp {{ display:block; }}
 .warn {{ border-left:3px solid var(--accent); padding:10px 14px; margin:16px 0;
   font-size:13.5px; color:var(--muted); }}
 </style></head><body>
 <h1>Tonight</h1>
 <p class="stamp">{span} &middot; page made {stamp} &middot; numbers from reports built {built}</p>
-<div class="warn">
+<details class="warn"><summary>How to read Fair and Need</summary>
 Fair and Need are what the evidence implies, not what anyone is offering.
 For a football team leg that evidence includes team strength (Elo as of
 kick-off, shown under the selection) as well as the record; a player leg's
@@ -735,14 +880,14 @@ record is pulled towards a coin flip by as much as past picks show it should be.
 <b>Need</b> is the price the evidence supports once the sample size is paid for,
 and it is the one to bet off. Neither includes the bookmaker's margin, which
 runs 5&ndash;8% a market and compounds with every leg you add.
-</div>
+</details>
 {body}
-<div class="warn">
+<details class="warn"><summary>Why multiples are worse than their legs</summary>
 A multiple is worse than its legs. The margin compounds, the legs in one round
 are correlated, and the shop sells accumulators because they are the most
 profitable thing on the counter. The same-game prices above already carry that
 discount; the cross-game ones do not, and are therefore optimistic.
-</div>
+</details>
 </body></html>
 """
 

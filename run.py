@@ -322,6 +322,7 @@ DIVISION_BELOW = {
 CROSS_LEAGUE_COMPETITIONS = {
     7,      # UEFA Champions League
     679,    # UEFA Europa League
+    17015,  # UEFA Conference League
     # Nations League. A national side plays a handful of these a year, so
     # its form is always World Cup, qualifiers and friendlies. Without this
     # the page's wrong-competition guard threw away both teams' entire

@@ -89,6 +89,9 @@ TOURNAMENTS = {
     "uefa_champions_league": 7,
     "europa_league": 679,
     "uefa_europa_league": 679,
+    # 17015, read off the cache's event feed on 22 Oct 2026.
+    "conference_league": 17015,
+    "uefa_conference_league": 17015,
     "nfl": 9464,
     "national_football_league": 9464,
     "mls": 242,
