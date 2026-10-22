@@ -79,3 +79,5 @@ _stage_tmp/
 .last_good/
 .rejected/
 *.html.tmp
+.build_status.json
+*.json.tmp

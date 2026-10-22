@@ -3,11 +3,20 @@
 What can go wrong between `update.py` starting and the site going live, what
 now stops each failure, and the test that proves the stop works.
 
-The rule throughout: **a page that fails a check never replaces the one that
-is live.** The run stops before `publish.sh` pushes anything, says why in one
-line (in `update.log`, in `.last_run.json`, and in the macOS notification),
-and the last good copy of the page is put back on disk so the next run cannot
-pick up the broken one by accident either.
+Two rules run through it.
+
+* **A page that fails a check never replaces the one that is live.** An
+  empty, cut-off or malformed page stops the run before `publish.sh` pushes
+  anything, says why in one line (in `update.log`, in `.last_run.json`, and in
+  the macOS notification), and the last good copy of the page is put back on
+  disk so the next run cannot pick up the broken one by accident either.
+* **A failed fetch costs only that feed.** When one league or one sport
+  cannot be fetched (refused, unreachable, or an empty answer that
+  contradicts yesterday's page), nothing is written for it, so its pages stay
+  as yesterday's. The run logs a `WARNING` line, every other feed is built,
+  checked and published as normal, and the status and notification say which
+  feed is stale. Only every feed failing at once stops the publish, because
+  then there is nothing new to publish and SofaScore is refusing this machine.
 
 Nothing here changes a model, a price, a line or a betting rule. The checks
 only read the shape of a page (does it end, does its data parse, does it hold
@@ -38,8 +47,9 @@ and every command `update.py` would launch goes to a fake runner.
 3. Check FlareSolverr is healthy (restart it if not).
 4. **New:** `site_guard.snapshot()` keeps a copy of every page that passes the checks in `.last_good/`.
 5. Settle tracked bets (`bettrack.py`, `besttrack.py`, `linelog.py`). Never fatal.
-6. `run.py --leagues ...` builds each domestic league. Fatal if any league fails.
-7. Optional builds, each its own `run.py`: Nations League, Champions League, Europa League, NFL, darts, MLB, NBA.
+6. `run.py --leagues ... --status-file .build_status.json` builds each domestic league and writes what each came to: built, nothing on, or fetch failed. A league whose fetch failed keeps yesterday's page; any other failure is fatal.
+7. Optional builds, each its own `run.py`: Nations League, Champions League, Europa League, NFL, darts, MLB, NBA. Exit 0 is built, exit 3 (`BAD_FETCH`) is a failed fetch that keeps yesterday's pages for that sport, anything else is "nothing on" as before.
+   - **New:** `update.check_feeds` stops the run if no feed was built and at least one failed to fetch.
 8. **New:** `site_guard.vet()` checks every report, with the stale-cache check for the ones this run wrote.
 9. `rerender.py` rewrites every report from the data inside it.
 10. **New:** `site_guard.vet()` again, since rerender rewrote them all.
@@ -59,14 +69,14 @@ team's next game, `hitrates.team_form` each side's record, then
 
 | # | Failure path (before this change) | What now guards it | Test that proves it |
 |---|---|---|---|
-| 1 | **A fetch that gives up.** `get_json` returns `None` after a 5xx or an unexpected status on every attempt. The caller reads `None` as "no events", so `team_next_events` returns `[]`, every team has no next game, and `run.py` exits "No fixtures found", which `--leagues` and `update.py` both treat as a quiet week. The league silently drops off the site. | `get_json` records it (`note_failure`). `run.bad_fetch_reason` turns "No fixtures found" plus any noted failure into a failed league, or exit code 3 (`BAD_FETCH`) for a single-league build. | `FetchLayer.test_server_errors_until_the_retries_run_out_are_noted`, `RunBuild.test_leagues_with_every_fixture_list_refused_is_a_failed_league`, `RunBuild.test_single_league_bad_fetch_exits_bad_fetch` |
+| 1 | **A fetch that gives up.** `get_json` returns `None` after a 5xx or an unexpected status on every attempt. The caller reads `None` as "no events", so `team_next_events` returns `[]`, every team has no next game, and `run.py` exits "No fixtures found", which `--leagues` and `update.py` both treat as a quiet week. The league silently drops off the site. | `get_json` records it (`note_failure`). `run.bad_fetch_reason` turns "No fixtures found" plus any noted failure into a failed fetch: exit code 3 (`BAD_FETCH`), with the league named in the status file. That feed keeps yesterday's page and is warned about (rows 23 to 27). | `FetchLayer.test_server_errors_until_the_retries_run_out_are_noted`, `RunBuild.test_leagues_with_every_fixture_list_refused_is_a_failed_fetch`, `RunBuild.test_single_league_bad_fetch_exits_bad_fetch` |
 | 2 | **An empty or non-JSON response.** A 200 with an empty or HTML body returns `None` with only a printed line, same path as 1. | Noted as a failure, then as 1. | `FetchLayer.test_empty_body_that_is_not_json_is_noted` |
 | 3 | **An error body dressed as a 200** (FlareSolverr's `{"error": {"code": 500}}`). Returned `None`, same path as 1. | Noted as a failure. A 404 error body is not, because SofaScore answers "no next fixture" with a 404. | `FetchLayer.test_error_body_dressed_as_200_is_noted`, control `FetchLayer.test_a_genuine_404_is_not_a_failure`, `FetchLayer.test_empty_events_list_is_a_real_answer` |
 | 4 | **A missing field.** A 200 whose body lacks `events` (SofaScore changing the shape of an answer) read as an empty fixture list, same path as 1. | `team_next_events` notes it as a failure. | `FetchLayer.test_body_missing_the_events_field_is_noted` |
-| 5 | **Refused outright.** `Blocked` (five 403s in a row) killed `run.py` with a traceback. In the optional steps (Nations, Champions League, Europa League, NFL, darts, MLB, NBA) every non-zero exit was ignored, so the run carried on and published with that sport's page silently stale. | `run.main` turns `Blocked` into exit code 3. `update.optional_build` stops the run on exit code 3, while still ignoring the ordinary "nothing on" exit. | `FetchLayer.test_repeated_refusals_raise_blocked`, `RunBuild.test_blocked_exits_bad_fetch`, `UpdateRun.test_bad_fetch_in_an_optional_step_stops_the_publish` |
-| 6 | **SofaScore unreachable in an optional step.** "Couldn't reach SofaScore" and "Couldn't read the team list" were ignored like a quiet week. | Both exit 3, so the run stops. | `RunBuild.test_unreachable_schedule_exits_bad_fetch`, `RunBuild.test_empty_team_list_exits_bad_fetch` |
-| 7 | **A competition renamed or renumbered at SofaScore.** Every team's next game sits under a new competition id, nothing matches the old one, and "No fixtures found" passes as a quiet week. | `run.known_upcoming` reads the reports on disk: if yesterday's page lists games in that competition still to come (within the same horizon the build used), today's "none" is a failed fetch, not a quiet week. | `RunBuild.test_renamed_competition_contradicting_yesterdays_page_fails`, `RunBuild.test_single_league_within_days_contradicted_by_page_on_disk`, controls `RunBuild.test_leagues_quiet_week_still_passes`, `RunBuild.test_single_league_quiet_week_is_not_bad_fetch`, `RunBuild.test_games_beyond_the_horizon_do_not_contradict` |
-| 8 | **A competition renamed in `update.json`.** Already loud ("Unknown league"), and already fatal. Now covered by a test. | Unchanged behaviour, now tested. | `RunBuild.test_renamed_competition_in_update_json_fails` |
+| 5 | **Refused outright.** `Blocked` (five 403s in a row) killed `run.py` with a traceback. In the optional steps (Nations, Champions League, Europa League, NFL, darts, MLB, NBA) every non-zero exit was ignored, so the run carried on and published with that sport's page silently stale. | `run.main` turns `Blocked` into exit code 3. `update.optional_build` records exit code 3 as a failed fetch for that sport and warns, while still ignoring the ordinary "nothing on" exit. | `FetchLayer.test_repeated_refusals_raise_blocked`, `RunBuild.test_blocked_exits_bad_fetch`, `UpdateRun.test_one_sport_refused_keeps_its_pages_and_publishes_the_rest` |
+| 6 | **SofaScore unreachable.** In an optional step, "Couldn't reach SofaScore" and "Couldn't read the team list" were ignored like a quiet week; in `--leagues` they failed the whole run. | Both are a failed fetch (exit 3) everywhere, so that feed keeps yesterday's pages and is warned about. | `RunBuild.test_unreachable_schedule_exits_bad_fetch`, `RunBuild.test_empty_team_list_exits_bad_fetch` |
+| 7 | **A competition renamed or renumbered at SofaScore.** Every team's next game sits under a new competition id, nothing matches the old one, and "No fixtures found" passes as a quiet week. | `run.known_upcoming` reads the reports on disk: if yesterday's page lists games in that competition still to come (within the same horizon the build used), today's "none" is a failed fetch, not a quiet week, and that page is kept. | `RunBuild.test_renamed_competition_contradicting_yesterdays_page_fails`, `RunBuild.test_single_league_within_days_contradicted_by_page_on_disk`, controls `RunBuild.test_leagues_quiet_week_still_passes`, `RunBuild.test_single_league_quiet_week_is_not_bad_fetch`, `RunBuild.test_games_beyond_the_horizon_do_not_contradict` |
+| 8 | **A competition renamed in `update.json`.** Already loud ("Unknown league"), and already fatal. Now covered by a test. | Unchanged: a config mistake, not a fetch, so it still stops the run, as does a league whose fixtures produced no data at all. | `RunBuild.test_renamed_competition_in_update_json_fails`, `RunBuild.test_league_that_produced_no_data_is_still_fatal`, `UpdateRun.test_league_build_failing_for_another_reason_still_stops` |
 | 9 | **A stale cache.** The cache judges age by file mtime, so anything that touches the files (unpacking `cache_backtest.tar.zst`, a restore, a copied folder) makes last week's "next fixtures" look fresh. The page is built from games already played, then `make_index --prune` deletes it and the league vanishes. | `team_next_events` throws away a cached list whose every game kicked off over 3 hours ago and asks again. `site_guard` rejects a report written this run whose every fixture kicked off over 6 hours ago. | `FetchLayer.test_stale_cached_fixture_list_is_refetched`, control `FetchLayer.test_fresh_cached_fixture_list_is_used_without_a_request`, `ReportChecks.test_fresh_report_from_stale_cache`, `KeepYesterday.test_vet_only_applies_staleness_to_this_runs_reports`, `UpdateRun.test_stale_cache_build_stops_the_publish` |
 | 10 | **A half-written cache file.** Already handled (dropped and refetched). Now tested. | Unchanged, now tested. | `FetchLayer.test_half_written_cache_file_is_refetched` |
 | 11 | **A page cut off part way.** `report.write_report`, `make_index` and `tonight.py` used `write_text`, which empties the file before writing. A crash, a full disk or the Mac sleeping mid-write left half a page that every later step read as real. | `site_guard.atomic_write` writes beside the page and renames over it, so a failure leaves yesterday's page whole. All three writers use it. | `AtomicWrites.test_failed_write_leaves_the_old_page_whole`, `AtomicWrites.test_write_report_is_atomic` |
@@ -81,6 +91,11 @@ team's next game, `hitrates.team_form` each side's record, then
 | 20 | **A failed report check retried as a publish.** The next run republishes the reports on disk only after a git or `publish.sh` failure. | The report check's message does not match those, so a run stopped by the guard is never resumed as a publish. | `UpdateRun.test_report_failure_is_not_resumed_as_a_publish` |
 | 21 | **The guard blocking a good run.** | A full fake run with good pages reaches `publish.sh`; the real committed `tonight.html`, `best-bets-summary.html`, `market-check.html` and `pp-results.html` pass the page check. | `UpdateRun.test_good_run_publishes`, `ReportChecks.test_good_report_passes`, `IndexChecks.test_good_index_passes`, `KeepYesterday.test_vet_passes_good_reports` |
 | 22 | **A dry run reporting failure.** Found while making this change: once the runner returned exit codes, `--dry-run` returned `True` where 0 was meant and failed its first step. | Fixed before commit; a dry run launches nothing and writes no status. | `DryRun.test_dry_run_launches_nothing_and_passes` |
+| 23 | **One blocked feed froze the whole site.** The first version of this change stopped the publish on any failed fetch, so SofaScore blocking one feed (the NBA, say) would have held every other sport at yesterday's pages for as long as the block lasted. | A failed fetch now costs only that feed: `update.optional_build` and the `--leagues` status file record it, `keep_yesterday` logs `WARNING: <feed>: the fetch failed. Keeping yesterday's <feed> pages`, the rest is built, checked by `site_guard` and published, and `.last_run.json` and the notification name the stale feed. | `UpdateRun.test_one_sport_refused_keeps_its_pages_and_publishes_the_rest` |
+| 24 | **One league's fetch failing inside `--leagues` failed every league.** All domestic leagues are one `run.py` process, so one refused league made the step exit non-zero and nothing was published. | `run.py --leagues` carries on past a league whose fetch failed, writes `built`, `empty`, `failed` and `bad_fetch` to `--status-file`, and exits 3 when the only problems are failed fetches. `update.py` keeps yesterday's page for each league in `bad_fetch` and publishes the rest. | `RunBuild.test_one_league_refused_the_others_still_build`, `UpdateRun.test_one_league_refused_keeps_its_page_and_publishes_the_rest` |
+| 25 | **The circuit breaker tripping part way through `--leagues`.** `Blocked` used to end the whole process, so leagues already built were never reported and the rest never ran. | The league that tripped it and every league after it are marked as failed fetches without another request (asking again would be the hammering the breaker exists to stop), and those built before it are published. | `RunBuild.test_blocked_marks_the_rest_without_asking_again` |
+| 26 | **Every feed failing at once.** Publishing then would only re-stamp yesterday's site as today's. | `update.check_feeds` stops the run when no feed was built and at least one failed to fetch. Feeds with nothing on are counted in neither. | `UpdateRun.test_every_feed_refused_at_once_stops_the_publish` |
+| 27 | **A failed feed hiding a broken page.** A partial run must not loosen the page checks. | The report and index checks run on every page whatever happened to the feeds; an empty, cut-off or malformed page still stops the publish. | `UpdateRun.test_one_sport_refused_does_not_excuse_an_empty_page` |
 
 ## Swallowed exceptions reviewed and left alone
 
@@ -93,6 +108,7 @@ report and index checks above.
 | `update._flare_healthy` | Treated as unhealthy, so the container is restarted, and the run stops if that fails. Loud. |
 | `update.notify` | The macOS notification only. The failure is still in the log and the status file. |
 | `run.build`: line-ups, NFL injuries, team news | That extra on the page. Printed as "skipped". |
+| `report._attach_team_lines` (merged from oct21-work): the team-lines gate and each fixture's team model | The team model's numbers on that page; `teamValued()` then calls no team line a take. Printed. |
 | `run.build_fixture`: club form for internationals | That squad's club records. Printed. |
 | `run._previous_club_records`, `run._fixture_referee` (both also catch `Blocked`) | A new signing's old-club rows and the referee's name, both display only. The feature is switched off for the run; the next core request that is refused still raises `Blocked`, because the refusal count is not reset. |
 | `run.build`: reading the old Nations League file to carry fixtures forward | The carried fixtures; the new ones are still written. |
@@ -104,15 +120,23 @@ report and index checks above.
 
 ## What changes for the person running it
 
-* A bad fetch in any step now stops the whole publish, including the
-  previously optional sports. The site stays on yesterday's pages until the
-  fetch works. If one sport is refused for days and you want the rest
-  published meanwhile, switch that sport off in `update.json` (for example
-  `"nba": false`) until it recovers.
-* The reason is the last line of `update.log`, and `python update.py --status`
-  shows it.
-* `.last_good/` holds the pages that are known to be good and `.rejected/`
-  holds the ones that were refused. Both are ignored by git.
+* A feed whose fetch fails keeps yesterday's pages and the rest of the site is
+  published. Look for `WARNING:` in `update.log`; `python update.py --status`
+  ends its outcome line with "yesterday's pages kept for ..." and a macOS
+  notification says the same. Nothing needs doing unless it persists; if one
+  feed is refused for days, raise `delay_min` and `delay_max` or switch that
+  sport off in `update.json` until it recovers.
+* A kept page still loses its finished fixtures to `make_index --prune`, as
+  every page always has, so a feed that stays blocked past its last listed
+  game drops off the front page rather than advertising games already played.
+* The run still stops, and publishes nothing, when a page is empty, cut off or
+  malformed, when the index is, when every feed fails to fetch at once, and
+  for a failure that is not a fetch (an unknown league name, a league whose
+  fixtures produced no data at all). The reason is the last line of
+  `update.log`.
+* `.last_good/` holds the pages that are known to be good, `.rejected/` the
+  ones that were refused, and `.build_status.json` what each league came to on
+  the last run. All are ignored by git.
 * When a "No fixtures found" happens, `run.py` reads the reports on disk to
   check the answer against yesterday's page. That costs a few seconds on a
   quiet day for the Champions League and Europa League steps, and nothing

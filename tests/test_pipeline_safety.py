@@ -253,12 +253,69 @@ class RunBuild(Tmp):
             patcher.start()
             self.addCleanup(patcher.stop)
 
-    def test_leagues_with_every_fixture_list_refused_is_a_failed_league(self):
+    def status(self):
+        return json.loads((self.dir / "status.json").read_text())
+
+    def test_leagues_with_every_fixture_list_refused_is_a_failed_fetch(self):
         self.fetch(failing=True)
         with self.assertRaises(SystemExit) as ctx:
-            self.main("--leagues", "Premier League")
-        self.assertIn("Failed: Premier League", str(ctx.exception.code))
+            self.main("--leagues", "Premier League",
+                      "--status-file", str(self.dir / "status.json"))
+        self.assertEqual(ctx.exception.code, site_guard.BAD_FETCH)
+        self.assertIn("gave up", self.status()["bad_fetch"]["Premier League"])
         self.assertEqual(list(self.reports.glob("*.html")), [])
+
+    def fake_leagues(self, outcomes):
+        """main_for per league: "built" writes a page, "refused" fails the
+        fetch, "blocked" trips the circuit breaker."""
+        tried = []
+
+        def main_for(sub):
+            tried.append(sub.league)
+            what = outcomes[sub.league]
+            if what == "built":
+                self.write(sub.league.lower().replace(" ", "-") + ".html", Pages.good_report)
+            elif what == "refused":
+                api.note_failure("team/1/events/next/0", "gave up after 6 attempts")
+                raise SystemExit("No fixtures found for any of those teams.")
+            elif what == "blocked":
+                raise api.Blocked("5 refusals in a row")
+        patcher = mock.patch.object(run, "main_for", main_for)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        return tried
+
+    def test_one_league_refused_the_others_still_build(self):
+        self.fake_leagues({"Premier League": "built", "Brasileirao": "refused",
+                           "La Liga": "built"})
+        with self.assertRaises(SystemExit) as ctx:
+            self.main("--leagues", "Premier League,Brasileirao,La Liga",
+                      "--status-file", str(self.dir / "status.json"))
+        self.assertEqual(ctx.exception.code, site_guard.BAD_FETCH)
+        status = self.status()
+        self.assertEqual(status["built"], ["Premier League", "La Liga"])
+        self.assertEqual(list(status["bad_fetch"]), ["Brasileirao"])
+        self.assertEqual(sorted(p.name for p in self.reports.glob("*.html")),
+                         ["la-liga.html", "premier-league.html"])
+
+    def test_blocked_marks_the_rest_without_asking_again(self):
+        tried = self.fake_leagues({"Premier League": "built", "Serie A": "blocked",
+                                   "La Liga": "built"})
+        with self.assertRaises(SystemExit) as ctx:
+            self.main("--leagues", "Premier League,Serie A,La Liga",
+                      "--status-file", str(self.dir / "status.json"))
+        self.assertEqual(ctx.exception.code, site_guard.BAD_FETCH)
+        self.assertEqual(tried, ["Premier League", "Serie A"])
+        self.assertEqual(list(self.status()["bad_fetch"]), ["Serie A", "La Liga"])
+
+    def test_league_that_produced_no_data_is_still_fatal(self):
+        # Not a fetch failure: exit 1, which update.py treats as a stop.
+        def main_for(sub):
+            raise SystemExit("\nNo fixture produced any data.")
+        with mock.patch.object(run, "main_for", main_for):
+            with self.assertRaises(SystemExit) as ctx:
+                self.main("--leagues", "Premier League")
+        self.assertIn("Failed: Premier League", str(ctx.exception.code))
 
     def test_leagues_quiet_week_still_passes(self):
         # Control: nothing failed and nothing was expected, so it is quiet.
@@ -275,8 +332,10 @@ class RunBuild(Tmp):
                   "homeTeam": {"id": 1, "name": "A"}, "awayTeam": {"id": 2, "name": "B"}}]
         self.fetch(events=moved)
         with self.assertRaises(SystemExit) as ctx:
-            self.main("--leagues", "Premier League")
-        self.assertIn("Failed: Premier League", str(ctx.exception.code))
+            self.main("--leagues", "Premier League",
+                      "--status-file", str(self.dir / "status.json"))
+        self.assertEqual(ctx.exception.code, site_guard.BAD_FETCH)
+        self.assertIn("renamed", self.status()["bad_fetch"]["Premier League"])
         self.assertEqual(self.reports.joinpath("premier-league.html").read_text(),
                          Pages.good_report, "yesterday's page must be left as it was")
 
@@ -618,7 +677,9 @@ class UpdateRun(Tmp):
         line = " ".join(command)
         self.calls.append(line)
         if "--leagues" in line:
-            self.build()
+            self.status_file = Path(command[command.index("--status-file") + 1])
+            code = self.build()             # a page writer returns a Path
+            return code if isinstance(code, int) else 0
         elif "NFL" in line:
             return self.nfl_code
         elif "make_index.py" in line:
@@ -669,11 +730,58 @@ class UpdateRun(Tmp):
         self.assertEqual((code, published), (1, False))
         self.assertIn("stale cache", status["message"])
 
-    def test_bad_fetch_in_an_optional_step_stops_the_publish(self):
+    def test_one_sport_refused_keeps_its_pages_and_publishes_the_rest(self):
+        nfl = self.write("nfl.html", Pages.good_report)
+        os.utime(nfl, (NOW - 86400, NOW - 86400))
+        self.nfl_code = site_guard.BAD_FETCH
+        code, status, published = self.go()
+        self.assertEqual((code, status["ok"], published), (0, True, True))
+        self.assertIn("yesterday's pages kept for NFL", status["message"])
+        self.assertEqual(nfl.read_text(), Pages.good_report)
+        self.assertIn("WARNING: NFL", (self.dir / "update.log").read_text())
+
+    def test_one_league_refused_keeps_its_page_and_publishes_the_rest(self):
+        brazil = self.write("brasileirao.html", Pages.good_report)
+        os.utime(brazil, (NOW - 86400, NOW - 86400))
+
+        def build():
+            self.write("premier-league.html", Pages.good_report)
+            self.status_file.write_text(json.dumps({
+                "built": ["Premier League"], "empty": [], "failed": [],
+                "bad_fetch": {"Brasileirao": "gave up after 6 attempts"}}))
+            return site_guard.BAD_FETCH
+        self.build = build
+        code, status, published = self.go()
+        self.assertEqual((code, status["ok"], published), (0, True, True))
+        self.assertIn("Brasileirao", status["message"])
+        self.assertEqual(brazil.read_text(), Pages.good_report)
+
+    def test_every_feed_refused_at_once_stops_the_publish(self):
+        def build():
+            self.status_file.write_text(json.dumps({
+                "built": [], "empty": [], "failed": [],
+                "bad_fetch": {"Premier League": "SofaScore is refusing"}}))
+            return site_guard.BAD_FETCH
+        self.build = build
+        self.nfl_code = site_guard.BAD_FETCH
+        code, status, published = self.go()
+        self.assertEqual((code, status["ok"], published), (1, False, False))
+        self.assertIn("every feed failed", status["message"])
+
+    def test_one_sport_refused_does_not_excuse_an_empty_page(self):
+        self.write("premier-league.html", Pages.good_report)
+        self.build = lambda: self.write(
+            "premier-league.html", with_payload(Pages.good_report, {"fixtures": []}))
         self.nfl_code = site_guard.BAD_FETCH
         code, status, published = self.go()
         self.assertEqual((code, published), (1, False))
-        self.assertIn("NFL fetch failed", status["message"])
+        self.assertIn("zero fixtures", status["message"])
+
+    def test_league_build_failing_for_another_reason_still_stops(self):
+        self.build = lambda: 1
+        code, status, published = self.go()
+        self.assertEqual((code, published), (1, False))
+        self.assertIn("league build failed", status["message"])
 
     def test_empty_index_stops_the_publish(self):
         orig = self.runner

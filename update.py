@@ -16,7 +16,9 @@ Meant to be run on a schedule. What it does, in order:
 Between those, site_guard.py checks every report and the index. A page that
 is empty, cut off, unreadable or built from a stale fixture list stops the run
 before anything is published, and its last good copy is put back on disk.
-PIPELINE-SAFETY.md lists every check and the test that proves it.
+A feed whose fetch fails (one league, or one sport) keeps yesterday's pages
+and the run carries on with a warning; only every feed failing at once stops
+it. PIPELINE-SAFETY.md lists every check and the test that proves it.
 
 Every step is checked before the next one runs. A failed fetch must not lead
 to a published site, because a half-built report looks exactly like a working
@@ -252,19 +254,47 @@ def run(command: list[str], dry: bool, allow_fail: bool = False) -> bool:
     return True
 
 
-def optional_build(command: list[str], dry: bool, label: str) -> None:
-    """A build step that may find nothing on, but must not hide a failed fetch.
+def optional_build(command: list[str], dry: bool, label: str,
+                   feeds: dict) -> None:
+    """A build step that may find nothing on, and may fail to fetch.
 
-    These steps were all allow_fail, because "no NFL games this week" exits
-    non-zero and is normal. So was a SofaScore that refused every request,
-    which left the old page up and logged nothing worse than a line in the
-    middle of the log. run.py now exits BAD_FETCH for that case, and only
-    that case stops the run.
+    "No NFL games this week" exits non-zero and is normal, so it is let
+    through as it always was. A failed fetch (run.py's BAD_FETCH: refused,
+    unreachable, or an empty answer that contradicts yesterday's page) used to
+    look the same. Now it is recorded and warned about: that sport keeps
+    yesterday's pages and every other sport is still built and published.
+    Only every feed failing at once stops the run (see check_feeds).
     """
     code = run_code(command, dry)
-    if code == site_guard.BAD_FETCH:
-        fail(f"the {label} fetch failed, nothing was published "
-             "(the live site keeps yesterday's pages)")
+    if code == 0:
+        feeds["built"].append(label)
+    elif code == site_guard.BAD_FETCH:
+        keep_yesterday(feeds, label, "the fetch failed")
+
+
+def keep_yesterday(feeds: dict, label: str, why: str) -> None:
+    feeds["kept"][label] = why
+    say(f"WARNING: {label}: {why}. Keeping yesterday's {label} pages; "
+        "everything else is still built and published.")
+
+
+def check_feeds(feeds: dict) -> None:
+    """Stop when every feed that had anything to fetch failed at once.
+
+    One sport refused is a stale page for that sport. Every sport refused is
+    SofaScore refusing this machine, and publishing would only re-stamp
+    yesterday's site as today's.
+    """
+    if feeds["kept"] and not feeds["built"]:
+        fail("every feed failed to fetch ("
+             + ", ".join(feeds["kept"]) + "), nothing was published")
+
+
+def read_build_status(path: Path) -> dict:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
 
 
 def run_code(command: list[str], dry: bool) -> int:
@@ -404,6 +434,10 @@ def main() -> None:
     os.environ["SOFA_DELAY_MIN"] = str(settings["delay_min"])
     os.environ["SOFA_DELAY_MAX"] = str(settings["delay_max"])
 
+    # What each feed came to: built, or kept at yesterday's pages because its
+    # fetch failed (with why). Quiet ones ("nothing on") are in neither.
+    feeds: dict = {"built": [], "kept": {}}
+
     try:
         say("=" * 62)
         say(f"update starting, python {python}")
@@ -485,7 +519,25 @@ def main() -> None:
                 if settings.get(flag):
                     command.append(f"--{flag}")
 
-            if not run(command, args.dry):
+            status_file = ROOT / ".build_status.json"
+            status_file.unlink(missing_ok=True)
+            command += ["--status-file", str(status_file)]
+
+            # A league whose fetch failed keeps yesterday's page and the rest
+            # go ahead. Any other failure (a league name that does not resolve,
+            # a fixture that produced no data at all) still stops the run.
+            code = run_code(command, args.dry)
+            status = read_build_status(status_file)
+            if code in (0, site_guard.BAD_FETCH):
+                feeds["built"] += status.get("built", leagues if code == 0 else [])
+                bad = status.get("bad_fetch")
+                if code == site_guard.BAD_FETCH and not bad:
+                    bad = {name: "the fetch failed" for name in leagues
+                           if name not in feeds["built"]}
+                for name, why in (bad or {}).items():
+                    keep_yesterday(feeds, name, why)
+            else:
+                say(f"  FAILED with exit code {code}")
                 say("build failed, stopping before anything is published")
                 say("if the log above shows repeated 403s, SofaScore is refusing:")
                 say("  raise delay_min and delay_max in update.json, and build")
@@ -505,7 +557,7 @@ def main() -> None:
                            "--no-open", "--players", "--h2h"]
                 if settings.get("referee"):
                     nations.append("--referee")
-                optional_build(nations, args.dry, "Nations League")
+                optional_build(nations, args.dry, "Nations League", feeds)
 
             # 1b2. European club competitions: the Champions League (Tuesday
             #      and Wednesday) and the Europa League (Thursday). Their own
@@ -531,7 +583,7 @@ def main() -> None:
                              "newsignings", "referee"):
                     if settings.get(flag):
                         comp.append(f"--{flag}")
-                optional_build(comp, args.dry, name)
+                optional_build(comp, args.dry, name, feeds)
 
             # 1c. The NFL. Its own step: 20 games rather than 38, and a
             #     week with no games simply finds nothing. Never fatal.
@@ -539,7 +591,7 @@ def main() -> None:
                 say("building the NFL slate")
                 optional_build([python, "run.py", "--league", "NFL", "--games", "20",
                                 "--players", "--adjust", "--h2h", "--no-open"],
-                               args.dry, "NFL")
+                               args.dry, "NFL", feeds)
 
             # 1d. Darts. Every PDC tour match in the next few days, swept
             #     from the seed players in run.py, one page at darts.html.
@@ -552,7 +604,7 @@ def main() -> None:
                 say(f"building darts, next {darts_days} day(s)")
                 optional_build([python, "run.py", "--darts", str(darts_days),
                                 "--games", "20", "--h2h", "--no-open"],
-                               args.dry, "darts")
+                               args.dry, "darts", feeds)
 
             # 1e. MLB. Same shape as the NFL step: the 30-team list, each
             #     team's next game in competition 11205. In October only the
@@ -562,7 +614,7 @@ def main() -> None:
                 say("building the MLB slate")
                 optional_build([python, "run.py", "--league", "MLB", "--games", "20",
                                 "--players", "--adjust", "--h2h", "--no-open"],
-                               args.dry, "MLB")
+                               args.dry, "MLB", feeds)
 
             # 1f. The NBA. Same shape as the NFL and MLB steps, but only games
             #     in the next two days: there are games most nights, and a
@@ -573,7 +625,9 @@ def main() -> None:
                 optional_build([python, "run.py", "--league", "NBA", "--games", "20",
                                 "--players", "--adjust", "--h2h", "--within-days", "2",
                                 "--no-open"],
-                               args.dry, "NBA")
+                               args.dry, "NBA", feeds)
+
+            check_feeds(feeds)
 
         # 1z. Every report checked before anything else reads it. Only the
         #     ones written by this run get the stale-cache check: rerender
@@ -635,7 +689,14 @@ def main() -> None:
         elapsed = int(time.time() - started)
         say(f"done in {elapsed}s")
         if not args.dry:
-            write_status(True, f"completed in {elapsed}s")
+            message = f"completed in {elapsed}s"
+            if feeds["kept"]:
+                kept = ", ".join(feeds["kept"])
+                message += f", yesterday's pages kept for {kept} (fetch failed)"
+                say(f"WARNING: published with yesterday's pages for {kept}")
+                notify("Football stats published with a stale feed",
+                       f"Fetch failed for {kept}; those pages are yesterday's.")
+            write_status(True, message)
 
     finally:
         if not args.dry and LOCK.exists():
