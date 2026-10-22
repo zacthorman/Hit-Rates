@@ -765,22 +765,133 @@ One-time setup: Settings, Pages, Source "Deploy from a branch", Branch `gh-pages
 
 Commit source changes to `main` as normal. Only generated output goes to `gh-pages`.
 
+## What runs when
+
+Everything scheduled runs on the Mac. Nothing here is a cloud job.
+
+| When | What | Started by |
+|---|---|---|
+| Every day, 07:00 | `update.py`: settle (`bettrack.py`, `besttrack.py`, `linelog.py`), build every league in `update.json` with `run.py`, then the Nations League, Champions League, Europa League, NFL, darts, MLB and NBA steps, `rerender.py`, `make_index.py --prune`, commit, `publish.sh`, then `tactics_fetch.py` | launchd, `com.zacthorman.football.plist` |
+| Every publish | `publish.sh`: `market_prices.py` (with `.betfair.env`), `paddypower_prices.py`, `bet365_prices.py`, `team_news.py`, `fmodel_live.py`, `usmodel_live.py`, `markets_sidecar.py`, `pplog.py settle` and `snapshot`, `teamlog.py settle` and `snapshot`, `pplog.py page`, `exchange_eval.py settle` and `fit` (with `.betfair.env`), `make_index.py`, `exchange_eval.py log` and `page`, `tonight.py --hours 8`, `besttrack.py snapshot`, `linelog.py snapshot`, `bets_page.py`, then the push to `gh-pages` | `update.py`, `lineups_auto.py`, `catchup.sh`, or by hand |
+| Every 15 minutes | `lineups_auto.py`: confirmed line-ups about an hour before kick-off, then a republish | launchd, `com.zacthorman.lineups.plist` |
+| Weekly, Mondays 05:34 | `teammodel_train.py --weekly`: small, checked update of the team model, logged to `teammodel/CHANGELOG.md` | scheduled task `football-models-weekly-mac` |
+| Weekly, by hand | `gs_backtest.py build` then `gs_backtest.py test`, so `gs_fit.json` keeps up with the cache | you |
+| By hand, when needed | `darts.sh`, `nfl_fit.sh`, `catchup.sh`, `backfill.py`, `cards_backfill.py`, `strength.py --slopes` or `--tune`, `nba_team_train.py`, a full `teammodel_train.py`, `match_result.py`, the probes | you |
+
 ## The files
+
+**Build and publish**
 
 | File | What it does |
 |---|---|
-| `run.py` | Command line entry point. Start here. |
+| `run.py` | Command line entry point for one report or a whole round. Start here. |
+| `update.py` | The daily job: settle, build, re-render, index, commit, publish, then tactical data. |
+| `publish.sh` | Prices, models and logs for the site, then force-pushes it to `gh-pages`. |
+| `catchup.sh` | Rebuilds only the leagues last night's job missed, then indexes and publishes. |
+| `darts.sh` | The darts page: every PDC match in the next few days. |
+| `nfl_fit.sh` | Fits the NFL and builds next week's slate once the football job is done. Does not publish. |
+| `rerender.py` | Rebuilds every report's HTML from the data inside it, no requests. |
+| `make_index.py` | The front page: every upcoming fixture, soonest first, and the four picks. |
+| `tonight.py` | `tonight.html`: the small page of what is on soon. |
+| `lineups_auto.py` | Confirmed line-ups an hour before kick-off, then a republish. |
+| `lineup_data.py` | Predicted and confirmed line-ups attached to each fixture at build time. |
+| `team_news.py` | Who is out, per fixture, for every sport. |
+| `nfl_injuries.py` | NFL injury report and quarterback changes. |
+| `enrich_derived.py` | Writes the derived gridiron markets into a report already on disk. |
+| `replay_build.py` | Replays the whole page build from `cache/` with a frozen clock, timed, and diffs two runs (22 October). |
+
+**Data**
+
+| File | What it does |
+|---|---|
 | `sofascore_api.py` | Fetching and caching. Every response saved to `cache/` before parsing. |
-| `hitrates.py` | Parses match statistics, builds each team's form, works out the lines. |
-| `report.py` | Generates the HTML. |
-| `publish.sh` | Pushes the built site to gh-pages without growing the repo. |
-| `track.py` | Logs picks before kickoff, settles them, reports honestly. |
+| `hitrates.py` | Parses match statistics, builds each team's and player's form, works out the lines. |
+| `markets.py` | Which markets exist per sport, and what they are called. |
+| `tactics_fetch.py` | Average positions, shot maps, momentum and incidents, fetched gently (21 October). |
+| `backfill.py` | Whole NBA and NFL seasons of box scores into the cache, for the backtests (21 October). |
+| `cards_backfill.py` | Per-player card history, spread over a day. |
+| `clubcolour.py` | Kit colours turned into readable chart colours. |
+| `nfl_teams.py` | NFL team names to SofaScore ids. |
+
+**Models**
+
+| File | What it does |
+|---|---|
+| `model.py` | The count model in Python (Poisson, negative binomial, binomial; calibration). |
+| `probability.py` | The shared probability helpers: logit, sigmoid, Platt calibration, Wilson, shrink, Poisson and negative binomial tails (22 October). |
+| `strength.py` | One Elo rating per club from the cache, and the strength-aware picks. |
+| `fmodel_live.py` | The backtested football player model, live: `reports/fmodel.json`. |
+| `usmodel_live.py` | The backtested NBA and NFL player models, plus NBA team prices: `reports/usmodel.json` (21 October). |
+| `usfeatures.py` | NBA and NFL player features, shared by training and the live scorer (21 October). |
+| `usgame.py` | NBA game state: pace, ratings, expected total and margin, blowout risk, rest (21 October). |
+| `nba_team_train.py` | Trains and exports the NBA team-stats models (21 October). |
+| `teamstyle.py` | Team style, tactics and shape features from `cache/` (21 October). |
+| `teammodel_train.py` | Trains, tests and exports the football team-stats model; `--weekly` for the Monday update (21 October). |
+| `gs_backtest.py` | Walk-forward backtest of the game state and the fit the pages use, `gs_fit.json` (21 October). |
 | `gamestate.py` | The Line-ups tab's player lines as JSON. Reads only. |
-| `make_index.py` | Builds the front page listing every report. |
-| `check.py` | Probes endpoints when something breaks. |
-| `explore.ipynb` | Your notebook. Keep it for experimenting. |
+| `context.py` | The case for each fixture on `tonight.html` (21 October). |
+| `darts_model.py` | Darts match markets from a leg-level Elo. |
+| `learner.py` | The picks' own correction, refitted from their results. |
+| `playerlines.py` | Each player's own line, not one line per stat for the squad. |
+| `fmodel/fmodel_trees.py` | Scores exported LightGBM trees without LightGBM. |
+
+**Pages and picks**
+
+| File | What it does |
+|---|---|
+| `report.py` | Generates each report's HTML and the JavaScript inside it. |
+| `pagedata.py` | Finds the dataset inside a built report (22 October). |
+| `weekend.py` | The four picks across every built report. |
+| `parlay.py` | Same-game parlays with alt lines. |
+| `picker.py` | A clean bet picker built from the reports. |
+| `player_bets.py` | Player props for one report, ranked. |
+| `match_result.py` | Match-result accas from the goals projection and the exchange. |
+| `why.py`, `explain.py` | The reasons behind a pick, and the working behind a projection. |
+| `bets_page.py` | `best-bets-summary.html`. |
+| `challenge.py` | The rolling 1.8 to 2.2 challenge. |
+
+**Prices**
+
+| File | What it does |
+|---|---|
+| `market_prices.py` | Betfair Exchange prices for every fixture in the reports. |
+| `betfair_api.py` | The Betfair API client. |
+| `markets_sidecar.py` | `reports/markets.json`, the prices the pages read in the browser. |
+| `paddypower_prices.py` | Paddy Power's prices, read gently. |
+| `bet365_prices.py` | Bet365 player prices via Oddschecker (21 October). |
+| `oddschecker_client.py` | The Oddschecker client, with FlareSolverr as a fallback (21 October). |
+| `bet365_odds.py` | Prints only Bet365's prices for given market ids (21 October). |
+| `darts_market.py` | Betfair darts prices against the model. |
+| `exchange_eval.py` | Scores the model against Betfair and tunes the blend. |
+| `market_check.py` | The model against real bookmaker prices. |
+
+**Records**
+
+| File | What it does |
+|---|---|
+| `track.py` | Logs picks before kick-off, settles them, reports honestly. |
+| `bettrack.py` | Every best bet, settled from the box score, with lessons. |
+| `besttrack.py` | Every best bet the site publishes, settled. |
+| `linelog.py` | Every line the model prices, settled. |
+| `pplog.py` | Every Paddy Power player line, our chance and the result. |
+| `teamlog.py` | The same for Paddy Power team lines (21 October). |
+| `review.py` | Why each of a report's bets landed or missed. |
+| `backtest.py` | Every bet the model would have made, settled from the cache. |
+
+**Checks and probes**
+
+| File | What it does |
+|---|---|
+| `verify.py` | `model.py` against the JavaScript in `report.py`. |
+| `check.py`, `check_sport.py`, `check_nfl.py` | What SofaScore returns, endpoint by endpoint. |
+| `canary.py` | One request: is SofaScore answering? |
+| `betfair_probe.py`, `oddschecker_probe.py` | Does the Betfair connection work; where Oddschecker keeps its ids. |
+| `tests/` | The test suite, below. |
 | `TEST.md` | The 21 questions. |
 | `PLAN.md` | What this was meant to be, and what's left. |
+| `CODE-HEALTH.md` | The 22 October health pass: what changed, timings, and the output comparison. |
+
+**Tests.** `python -B -m pytest -q tests` (or `python -B -m unittest tests.test_<name>`). Eight files: `test_besttrack_team_value`, `test_bettrack_team`, `test_context`, `test_exchange`, `test_gamestate`, `test_pagedata`, `test_probability`, `test_strength`. Three tests read built reports and skip without them; `GAMESTATE_LIVE=1` adds every football fixture in `reports/` to the game-state parity test. None of them writes to a committed file.
 
 ## How the lines are chosen
 
@@ -955,3 +1066,20 @@ Backtested on fmodel-style splits (train to January 2026, validation February to
 - **Team markets** (`nba_team_train.py`, `usmodel/nba_team.json`): each side's last-10 average and the opponent's last-10 conceded, home, priced as negative binomial. The game-state LightGBM did not beat that on validation for any stat once a leak in the first version was fixed (the live parity test caught the away side's "opponent concedes" including the same game), so every stat uses the simple model, with pace added for assists only.
 
 `usmodel_live.py` now also writes, per NBA game, each side's game state and team prices into `reports/usmodel.json`; `tonight.html` re-prices NBA team legs from them ("Backtested NBA team model") and ends each NBA game with **How the game will go**: the model score and total, the pace clash, likely margin and blowout risk (starters sitting the fourth), third game in four nights, rest gap, altitude, and who is out with who gains (usmodel's expected points against each player's usual). These lines explain the game; they do not move the chances beyond the team model.
+
+## Code health (22 October)
+
+A pass that changes no output, written up in `CODE-HEALTH.md`.
+
+- **`probability.py`.** The probability helpers that had been copied between modules (logit, sigmoid, Platt calibration, Wilson, the pseudo-count shrink, Poisson and negative binomial tails, method-of-moments overdispersion) live here once. Every old name (`model.wilson_low`, `context._nb_at_least`, `weekend._lp` and the rest) still works, as an alias or a one-line wrapper. `tests/test_probability.py` checks each against its old body with `==`, not almost-equal. Look-alikes that are not bit-equal (`darts_model.poisson_tail`, `gamestate.pois_at_least`, `besttrack._tail`, `market_prices._pois`, `usmodel_live.calibrate`) were left where they are, with the reason in `probability.py`.
+- **`pagedata.py`.** Twelve modules found a report's dataset with the same lazy regular expression, which crawled through a multi-megabyte page for half a second each time. One `str.find` version now, pinned to the old regex by `tests/test_pagedata.py`.
+- **`replay_build.py`.** Replays the daily build from `cache/` alone: a fixed weekend presented as upcoming, every SofaScore request answered from the cache, every other request refused, the clock frozen (`pip install libfaketime`). Two runs can then be compared file by file. It never publishes and writes only inside the folder it is given.
+
+```bash
+git archive oct21-work | tar -x -C /tmp/before
+git archive code-health | tar -x -C /tmp/after
+python replay_build.py run /tmp/before
+python replay_build.py run /tmp/after
+python replay_build.py compare /tmp/before /tmp/after
+python replay_build.py run /tmp/after --profile   # a cProfile per step
+```

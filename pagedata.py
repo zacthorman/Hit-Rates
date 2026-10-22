@@ -2,12 +2,12 @@
 The dataset embedded in a built report page, found without a regular expression.
 
 Every report carries its data as `const ALL = {...};` followed by a newline,
-and fourteen modules each found it with their own copy of
+and twelve modules each found it with their own copy of
 
     re.search(r"const ALL = (\\{.*?\\});\\n", text, re.S)
 
-That lazy `.*?` steps through a 2 to 20 MB page one character at a time and
-cost about half a second a report, every time anything read one: make_index
+That lazy `.*?` steps through a page of up to 33 MB one character at a time
+and cost about half a second a report, every time anything read one: make_index
 twice, tonight, besttrack, linelog, rerender and more, each over every report.
 
 search() returns exactly what that regex returned (an object whose group(1)
