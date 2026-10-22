@@ -71,8 +71,15 @@ SHORT_COMP = {
 # ------------------------------------------------------------------ helpers
 
 def _short(comp: str | None) -> str:
+    # Matched through competition_key, so a stage ("UEFA Champions League,
+    # Knockout stage") or a respelling ("La Liga") still finds its short name.
+    from sofascore_api import competition_key
     comp = comp or ""
-    return SHORT_COMP.get(comp, comp if len(comp) <= 12 else comp[:11] + ".")
+    key = competition_key(comp)
+    for name, short in SHORT_COMP.items():
+        if competition_key(name) == key:
+            return short
+    return comp if len(comp) <= 12 else comp[:11] + "."
 
 
 def _finished(r: dict) -> bool:
