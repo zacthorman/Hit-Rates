@@ -67,6 +67,18 @@ def decisions(res):
     return pd.DataFrame(rows).fillna(0)
 
 
+def shifts(res):
+    """How far the weekly candidate moved the holdout's chances (MAX_SHIFT is 3%)."""
+    out = {}
+    for sc in sorted({r["scenario"] for r in res}):
+        x = [w["fixed"]["shift"] for r in res if r["scenario"] == sc for w in r["weeks"] if "shift" in w["fixed"]]
+        out[sc] = {"weeks with a candidate": float(len(x)), "median move": float(pd.Series(x).median()),
+                   "largest move": float(max(x)), "over 3% (halved)": float(sum(v > 0.03 for v in x))}
+    t = pd.DataFrame(out).T
+    t.index.name = "scenario"
+    return t
+
+
 def main(path):
     res = json.loads(open(path).read())
     D = frame(res)
@@ -101,10 +113,16 @@ def main(path):
     print("\n### Decisions over all weeks (summed over stats)\n")
     cols = [c for c in ("adopted", "rejected", "too few", "crashed", "skipped (earlier stat crashed)", "halved",
                         "adopt_helped", "reject_helped", "slack_used", "halved_worse_than_old") if c in dec]
-    t = dec.groupby(["scenario", "path"])[cols].sum().astype(int)
+    t = dec.groupby(["scenario", "path"])[cols].sum().astype(int).astype(str)
+    # the as_run path is not given the counterfactual (it equals shipped unless a crash happened)
+    for c in ("adopt_helped", "reject_helped"):
+        if c in t:
+            t.loc[t.index.get_level_values(1) == "as_run", c] = "n/a"
     t.index = [f"{a} {b}" for a, b in t.index]
     t.index.name = "scenario, path"
     print(md(t, "{}"))
+    print("\n### Size of the weekly move\n")
+    print(md(shifts(res), "{:.4f}"))
     if {"B", "B-bad"} <= set(D.scenario):
         print("\n### Bad week (B-bad minus B, all stats pooled; positive is worse)\n")
         a = pooled(D[D.scenario == "B-bad"], ["week", "path"]).unstack()[list(PATHS)]
