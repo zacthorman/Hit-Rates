@@ -228,7 +228,15 @@ def _player_value(leg, sport):
             if (p.get("player") or {}).get("name") == leg["player"]:
                 # No statistics at all is a player who never came on (or a
                 # copy from before the match): a void, never a zero.
-                if not p.get("statistics"):
+                st = p.get("statistics") or {}
+                if not st:
+                    return "dnp"
+                # An unused substitute is listed with a statistics block but
+                # no minutes: a void, not a zero. 20 Oct 2026: 52 of the
+                # Champions League fouls and shots lines were graded lost
+                # this way (Akhomach, Kerkez and others on the bench).
+                mins_key = {"football": "minutesPlayed", "basketball": "secondsPlayed"}.get(sport)
+                if mins_key and not st.get(mins_key):
                     return "dnp"
                 vals = hitrates._player_stat_values(p.get("statistics") or {}, zero_fill=fill)
                 return vals.get(leg["stat"], 0.0) if vals else "dnp"

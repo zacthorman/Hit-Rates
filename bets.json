@@ -1371,5 +1371,35 @@
     "result": "win",
     "profit": 13.6,
     "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-22-1",
+    "kind": "single",
+    "logged_at": "2026-10-22T08:20:09+00:00",
+    "price": 2.59,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16814813,
+        "fixture": "Philadelphia 76ers v Cleveland Cavaliers",
+        "kickoff": 1792710000,
+        "player": "Jarrett Allen",
+        "player_id": 885222,
+        "team": "Cleveland Cavaliers",
+        "stat": "Points and assists",
+        "line": 13.0,
+        "model_k": 8,
+        "model_n": 10,
+        "model_p": 0.7,
+        "source": "nba.html",
+        "value": null,
+        "result": null
+      }
+    ],
+    "result": null,
+    "profit": null,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
   }
 ]

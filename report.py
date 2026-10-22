@@ -2702,7 +2702,7 @@ raw log-odds; fitted on either half it improved the other (Brier 0.139 to
 0.129, and 0.139 to 0.135). Refit once this season has a few weeks in: the
 fit is end of season and playoffs.
    Mirrors PLAYER_CALIBRATION_BY_SPORT in model.py. */
-const PLAYER_CALIBRATION_BY_SPORT = { basketball: [0.3381, 0.5482] };
+const PLAYER_CALIBRATION_BY_SPORT = {};  // basketball fit withdrawn 21 Oct 2026: see model.py
 
 /* The record-only branch, which until now was quoted raw.
 
@@ -5789,6 +5789,38 @@ function loadMarkets() {
    page keeps its own. It assumes the player starts. */
 let FMODEL = null;
 
+/* reports/usmodel.json, written by usmodel_live.py before every publish: the
+   backtested NBA and NFL player models (LightGBM on form, team and opponent
+   style, Elo, what the defence concedes to his position, missing team-mates
+   and head to head), a chance at every line for each player expected to
+   play. Out of sample (NFL from December 2025, NBA from April 2026) the blend
+   of it with the site's own chance beat the site on 11 of 12 NFL markets and
+   every NBA one. It is used exactly where the football model is: see
+   withModel(). */
+let USMODEL = null;
+
+function loadUSModel() {
+  if (SPORT !== "basketball" && SPORT !== "american-football") return;
+  if (typeof fetch !== "function" || location.protocol === "file:") return;
+  fetch("usmodel.json", { cache: "no-store" })
+    .then(r => (r.ok ? r.json() : null))
+    .then(j => {
+      if (!j || !j.events) return;
+      const events = {};
+      for (const [id, ev] of Object.entries(j.events)) {
+        const by = {};
+        for (const [n, pl] of Object.entries(ev.players || {})) by[normName(n)] = pl;
+        // confirmed: the model used a confirmed line-up (usmodel_live.py)
+        events[id] = { confirmed: !!ev.confirmed, players: by };
+      }
+      USMODEL = { events, blend: (j.blend || {})[SPORT] || {} };
+      BEST_CACHE.clear();
+      if (tab === "players") playerView();
+      if (tab === "value") valueView();
+    })
+    .catch(() => {});
+}
+
 function loadFModel() {
   if (typeof fetch !== "function" || location.protocol === "file:") return;
   fetch("fmodel.json", { cache: "no-store" })
@@ -5810,8 +5842,9 @@ function loadFModel() {
 
 function modelEvent(fx) {
   fx = fx || DATA;
-  if (!FMODEL || SPORT !== "football" || !fx || !fx.fixture) return null;
-  return FMODEL[String(fx.fixture.id)] || null;
+  if (!fx || !fx.fixture) return null;
+  if (SPORT === "football") return FMODEL ? FMODEL[String(fx.fixture.id)] || null : null;
+  return USMODEL ? USMODEL.events[String(fx.fixture.id)] || null : null;
 }
 
 /* The model's chance of OVER `line` for this player, or null. */
@@ -5827,11 +5860,24 @@ function modelP(name, stat, line, fx) {
 
 /* pricePlayer's answer with the model's chance swapped in, when it has one. */
 function withModel(price, name, stat, line, over, fx) {
-  const p = modelP(name, stat, line, fx);
+  let p = modelP(name, stat, line, fx);
   if (p === null || !price) return price;
+  // NBA and NFL: the model's chance blended with the site's own, recalibrated,
+  // with the weights fitted on the validation period (usmodel.json "blend").
+  const bl = SPORT !== "football" && USMODEL && USMODEL.blend[stat];
+  if (bl) {
+    const lg = q => { q = Math.min(1 - 1e-4, Math.max(1e-4, q)); return Math.log(q / (1 - q)); };
+    const sg = z => 1 / (1 + Math.exp(-z));
+    const siteOver = over ? price.p : 1 - price.p;
+    const sf = sg(bl.site_cal[0] + bl.site_cal[1] * lg(siteOver));
+    p = sg(bl.blend[0] + bl.blend[1] * lg(p) + bl.blend[2] * lg(sf));
+  }
   const q = over ? p : 1 - p;
+  const ev = modelEvent(fx);
+  const pl = ev && ev.players[normName(name)];
+  const mu = pl && pl.mu ? pl.mu[stat] : undefined;
   return Object.assign({}, price, { p: q, fair: fairOdds(q), need: fairOdds(q),
-    source: "fmodel", siteP: price.p });
+    source: "fmodel", us: SPORT !== "football", siteP: price.p, modelMu: mu });
 }
 
 function matchOddsHtml() {
@@ -6306,8 +6352,12 @@ function verdictOf(v) {
   //     off, as on the football team lines.
   // Both can still be acceptable. Lift the second once pplog has settled a
   // few weeks of NBA lines and says how far off the model runs.
-  const stale = DATA && DATA.fixture && DATA.fixture.staleDays;
-  const tooBig = SPORT === "basketball" && e > 0.3;
+  // staleDays is set on every fixture; stale means past the 60-day line the
+  // page's own warning uses (fixed 21 Oct 2026: it blocked every take).
+  const stale = DATA && DATA.fixture && (DATA.fixture.staleDays || 0) > 60;
+  // NBA and NFL: the backtested model is about as sharp as Paddy Power on
+  // real lines (checked 21 Oct 2026), so a gap that wide is more likely ours.
+  const tooBig = (SPORT === "basketball" || SPORT === "american-football") && e > 0.3;
   if (e >= 0.05 && (v.n || 0) >= 5 && !v.unadjusted && !stale && !tooBig) return "take";
   return "ok";
 }
@@ -6470,13 +6520,35 @@ function ppValued(t, name, played, src = "pp") {
   return out;
 }
 
-/* Injury status from the NFL report the page already carries. */
+/* Team news for every sport (team_news.py): the confirmed line-up, ESPN's
+   injury report (NBA, NFL) and SofaScore's missing players. */
 function injuryOf(t, name) {
   const side = (DATA.injuries || {})[t === 0 ? "home" : "away"] || [];
   const hit = side.find(r => normName(r[0]) === normName(name));
   return hit ? hit[2] : null;
 }
-const INJ_OUT = /^(Out|Injured Reserve|Suspension|Doubtful)/;
+const INJ_OUT = /^(Out|Injured Reserve|Suspen|Doubtful|Inactive|Not in squad|Bench)/;
+
+/* Who is out, above the Value tab: only men with a recent record, so it
+   reads as news rather than the whole treatment room. */
+function teamNewsHtml() {
+  const inj = DATA.injuries;
+  if (!inj || SPORT === "darts") return "";
+  const sides = [0, 1].map(t => {
+    const recent = squadPlayers(t);
+    const rows = (inj[t === 0 ? "home" : "away"] || []).filter(r => INJ_OUT.test(r[2] || "")
+      && recent.has(r[0]) && gatedApps(recent.get(r[0])).length >= 3);
+    return rows.length ? `<span class="lu-dot lu-dot${t}"></span> <b>${escapeHtml(DATA.teams[t].name)}</b> without `
+      + rows.map(r => `${escapeHtml(r[0])} <small>(${escapeHtml(r[2])})</small>`).join(", ") : "";
+  }).filter(Boolean);
+  const src = [inj.source, inj.fetched].filter(Boolean).join(", ");
+  const how = SPORT === "football"
+    ? "They are left off below, and the model prices the XI without them."
+    : "They are left off below, and the model prices their team-mates with them missing.";
+  // data-tuck: it is the news itself, so tuckProse() never folds it away
+  return `<p class="note gs-missing" data-tuck="1"><b>Team news</b>${src ? ` (${escapeHtml(src)})` : ""}: `
+    + (sides.length ? sides.join(" &nbsp; ") + ". " + how : "nobody with a recent record is out.") + `</p>`;
+}
 
 /* Under a value row: whether the chance is the model's, whether it rests on
    a predicted XI, and a warning when the edge is too big to take on trust. */
@@ -6487,7 +6559,9 @@ function modelNote(v) {
   }
   const ev = modelEvent();
   const bits = [v.priced.source === "fmodel-tail" ? "model, extended" : "model"];
-  if (ev && !ev.confirmed) bits.push("predicted XI");
+  if (typeof v.priced.modelMu === "number") bits[0] = `model expects ${fmtN(v.priced.modelMu)}`;
+  if (ev && !ev.confirmed) bits.push(SPORT === "football" ? "predicted XI" : "before the line-up");
+  if (ev && ev.confirmed && SPORT !== "football") bits.push("confirmed line-up");
   if (v.edge > 0.4) bits.push("<b>big edge: check team news</b>");
   return " &middot; " + bits.join(" &middot; ");
 }
@@ -6673,7 +6747,11 @@ function teamValued() {
     out.push({
       team: true, t: l.t, name, stat: l.stat, line: l.line, over: l.over, price: l.price,
       src: "pp", p, edge, k: hits, n: vals.length, expected: exp, basis,
-      unadjusted: unadjusted || edge > 0.3 || disagree, suspect: edge > 0.3, disagree,
+      // Never "take" for now: on 21 Oct 2026, 26 of the 30 takes on the
+      // European pages were team corners, all from the cross-league odds
+      // scaling, which has never been tested against results. Acceptable at
+      // most until the team lines are logged and settled like the player ones.
+      unadjusted: true, suspect: edge > 0.3, disagree,
       label: `${TEAM_STAT_LABEL[l.stat] || l.stat} ${l.over ? "over" : "under"} ${l.line}`,
     });
   });
@@ -6712,7 +6790,7 @@ function teamValueHtml() {
   return `<div class="pp-section">Team lines${g.take.length ? ` &middot; ${g.take.length} to take` : ""} (${rows.length})</div>
     <div class="pp-stat pp-ppcard">${rows.length ? rows.slice(0, 30).map(teamRowHtml).join("")
       : `<p class="note">Nothing worth taking or acceptable in the team markets.</p>`}
-    <p class="note">Paddy Power's corners, cards, fouls and shots-on-target lines for each side and the match, priced off the last ten games. Left off: ${g.long.length} long shot${g.long.length === 1 ? "" : "s"} and ${g.avoid.length} priced worse than our chance. Cards and fouls follow the referee as much as the teams: treat those as the weaker calls.</p></div>`;
+    <p class="note">Paddy Power's corners, cards, fouls and shots-on-target lines for each side and the match, priced off the last ten games. Left off: ${g.long.length} long shot${g.long.length === 1 ? "" : "s"} and ${g.avoid.length} priced worse than our chance. Not yet tested against results, so none is called take: acceptable at most. Cards and fouls follow the referee as much as the teams: treat those as the weaker calls.</p></div>`;
 }
 
 /* ------------------------------------------------- Value tab
@@ -6762,6 +6840,7 @@ function valueView() {
        : " These two sides play in different leagues, so the opponent's strength comes from Betfair's match odds.")
     : !basis ? " <b>No opponent adjustment for this game</b> (no projection and no match odds), so nothing is called take unless the backtested model priced it." : "";
   el.innerHTML = `<p class="note">Prices from ${when}. Each line is our chance against the better of the two prices.${oppNote} Prices move: check before betting.</p>`
+    + teamNewsHtml()
     + teamValueHtml()
     + (block("Take", groups.take, "More likely than not, and the price beats our chance by 5% or more, on a record of five games or more. Biggest edge first.")
        || `<div class="pp-section">Take</div><p class="note">Nothing to take on this game at the current prices.</p>`)
@@ -7984,7 +8063,7 @@ function basketballDefenceHtml() {
         <span class="lu-muted">&middot; Paddy ${fmtOdds(x.line.price)} for the over &middot; ${x.hits}/${x.n} over it last ${x.n}</span></div>
       <div class="def-sub">avg ${fmtN(x.avg)}, ${x.factor.toFixed(2)}&times; v ${escapeHtml(DATA.teams[1 - x.t].name)} (${rankWord(x.r)} v ${BB_DEF_POS[x.pos].toLowerCase()}) = <b>${fmtN(x.proj)}</b></div>
     </div>`;
-  const stale = DATA.fixture && DATA.fixture.staleDays
+  const stale = DATA.fixture && (DATA.fixture.staleDays || 0) > 60
     ? `<p class="note"><b>Early-season numbers.</b> These defences are measured on last season's games, playoffs included, and rosters have changed since. Treat the rankings as a rough guide until a few weeks of this season are in.</p>` : "";
   return `${stale}
     <h3 class="lu-h">Lines the matchup points to</h3>
@@ -9621,6 +9700,7 @@ new MutationObserver(() => enhanceNumbers()).observe(
 enhanceNumbers();
 loadMarkets();
 loadFModel();
+loadUSModel();
 """
 
 

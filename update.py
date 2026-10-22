@@ -558,6 +558,15 @@ def main() -> None:
             if not run(["./publish.sh"], args.dry):
                 fail("publish.sh failed, the site was not updated")
 
+        # 5. Tactical data (tactics_fetch.py): average positions, shot maps,
+        #    momentum and incidents per match, and Understat's pressing
+        #    numbers. After the publish on purpose, so the site is never held
+        #    up by the backfill, and never fatal.
+        if not args.dry:
+            say("fetching tactical data (after publishing, never fatal)")
+            run([python, "tactics_fetch.py", "--budget", str(settings.get("tactics_budget", 1500))],
+                args.dry, allow_fail=True)
+
         elapsed = int(time.time() - started)
         say(f"done in {elapsed}s")
         if not args.dry:

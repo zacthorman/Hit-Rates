@@ -42,6 +42,7 @@ import json
 from pathlib import Path
 import itertools
 import math
+import collections
 import os
 import re
 
@@ -680,8 +681,10 @@ def player_legs_for(entry, meta):
     # NFL: nobody on the injury report as out, and no passing or receiving
     # leg for a side whose quarterback has changed, since every one of those
     # records was built with the other man throwing. See nfl_injuries.py.
+    # Every sport now: team_news.py fills entry["injuries"] from the
+    # confirmed line-up, ESPN (NBA, NFL) and SofaScore's missing players.
     out_re = re.compile(r"^(out|doubtful|injured reserve|ir\b|suspen|pup|physically unable|"
-                        r"non-football|reserve)", re.I)
+                        r"non-football|reserve|inactive|not in squad|bench)", re.I)
     injuries = entry.get("injuries") or {}
     qb_change = entry.get("qbChange") or {}
     roles = _roles() if sport == "american-football" else {}
@@ -946,6 +949,123 @@ def group_count(legs) -> int:
                 for l in legs})
 
 
+
+# ------------------------------------------------------------ bookmaker check
+#
+# The pick used to be quoted at our own fair price, whether or not anyone
+# offered the bet. Each leg now carries the best price Paddy Power or Bet365
+# actually has for it (same player or side, stat, line and direction), read
+# from reports/paddypower.json and reports/bet365.json with pplog's reader,
+# and the headline single is taken from legs a book offers at or above our
+# fair price whenever there are any. Paddy Power prices about 30 hours out,
+# so early in the week the pick falls back to the unpriced best, marked so.
+
+def _book_index() -> dict:
+    import pplog
+    out = {}
+    root = Path(__file__).parent / "reports"
+    for fname, book in (("paddypower.json", "Paddy Power"), ("bet365.json", "Bet365")):
+        try:
+            data = json.loads((root / fname).read_text())
+        except (OSError, ValueError):
+            continue
+        for fid, ev in (data.get("events") or {}).items():
+            for l in ev.get("lines", []):
+                got = pplog.read_line(l)
+                if not got:
+                    continue
+                stat, line, over, _ = got
+                k = (str(fid), "p", l.get("key") or pplog._norm(l.get("player", "")), stat, float(line), bool(over))
+                if k not in out or l["price"] > out[k][1]:
+                    out[k] = (book, l["price"])
+            for l in ev.get("team", []) or []:
+                k = (str(fid), "t", (l["scope"], ev.get("ppHome") or ""), l["stat"], float(l["line"]), bool(l["over"]))
+                if k not in out or l["price"] > out[k][1]:
+                    out[k] = (book, l["price"])
+    return out
+
+
+def _pp_swapped(pp_home: str, fx: dict) -> int:
+    """1 when Paddy Power's home side is our away side (ppTeamOrder's word
+    overlap: "Ararat-Armenia" against "FC Ararat-Armenia" shares no first word)."""
+    import pplog
+    stop = {"the", "club", "real", "sporting", "city", "united", "fc", "afc", "cf"}
+    words = lambda t: {w for w in pplog._norm(t.replace("-", " ")).split() if len(w) >= 3 and w not in stop}
+    h = words(pp_home)
+    return int(len(h & words(fx.get("away", ""))) > len(h & words(fx.get("home", ""))))
+
+
+def attach_books(legs) -> int:
+    """Set leg["book"] = {"name", "price"} where a book offers the leg."""
+    import pplog
+    idx = _book_index()
+    if not idx:
+        return 0
+    team_keys = collections.defaultdict(list)
+    for k in idx:
+        if k[1] == "t":
+            team_keys[k[0]].append(k)
+    n = 0
+    for leg in legs:
+        fx = leg.get("fixture") or {}
+        fid = str(fx.get("id"))
+        line = leg.get("line")
+        if line is None or leg.get("period", "ALL") != "ALL":
+            continue
+        if leg.get("player"):
+            k = (fid, "p", pplog._norm(leg["player"]), leg["stat"], float(line), bool(leg["over"]))
+            hit = idx.get(k)
+        else:
+            hit = None
+            for k in team_keys.get(fid, []):
+                (scope, pp_home) = k[2]
+                if scope == "match" or k[3] != leg["stat"] or k[4] != float(line) or k[5] != bool(leg["over"]):
+                    continue
+                side = (0 if scope == "home" else 1) ^ _pp_swapped(pp_home, fx)
+                if side == leg.get("teamIndex"):
+                    hit = idx[k]
+                    break
+        if hit:
+            leg["book"] = {"name": hit[0], "price": hit[1]}
+            n += 1
+    return n
+
+
+def us_model(legs) -> int:
+    """NBA and NFL player legs: the backtested model's chance (usmodel.json),
+    blended with this leg's own exactly as the page's withModel() does, so the
+    pick of the week and the Value tab agree."""
+    try:
+        um = json.loads((Path(__file__).parent / "reports" / "usmodel.json").read_text())
+    except (OSError, ValueError):
+        return 0
+    import pplog
+    lg = lambda q: math.log(min(1 - 1e-4, max(1e-4, q)) / (1 - min(1 - 1e-4, max(1e-4, q))))
+    sg = lambda z: 1 / (1 + math.exp(-z))
+    n = 0
+    for leg in legs:
+        if not leg.get("player") or leg.get("line") is None:
+            continue
+        # NBA and NFL stat names never overlap, so the stat says which sport
+        bl = next((b[leg["stat"]] for b in (um.get("blend") or {}).values() if leg["stat"] in b), None)
+        ev = (um.get("events") or {}).get(str((leg.get("fixture") or {}).get("id")))
+        if not bl or not ev:
+            continue
+        pl = next((v for k, v in ev["players"].items() if pplog._norm(k) == pplog._norm(leg["player"])), None)
+        k = leg["line"] + 0.5
+        p_new = ((pl or {}).get("lines", {}).get(leg["stat"]) or {}).get(str(int(k))) if float(k).is_integer() else None
+        if p_new is None:
+            continue
+        site_over = leg["p"] if leg["over"] else 1 - leg["p"]
+        sf = sg(bl["site_cal"][0] + bl["site_cal"][1] * lg(site_over))
+        p_over = sg(bl["blend"][0] + bl["blend"][1] * lg(p_new) + bl["blend"][2] * lg(sf))
+        p = p_over if leg["over"] else 1 - p_over
+        leg["p"], leg["fair"] = p, 1 / p
+        leg["need"] = max(leg.get("need") or 0, leg["fair"])
+        leg["source"] = "usmodel"
+        n += 1
+    return n
+
 def best_single(legs):
     """The best-evidenced bet that still pays the floor or longer.
 
@@ -956,7 +1076,22 @@ def best_single(legs):
     ones closest to being a coin flip. That is the honest shape of the
     question, not a fault in the sort.
     """
-    eligible = [l for l in legs if l["fair"] >= ODDS_FLOOR and _headline_ok(l)]
+    # A bet a book actually offers, at evens or longer and no shorter than
+    # our fair price, whenever there is one; otherwise the unpriced best.
+    # ...and no more than 30% over it: a bigger gap is far more often our
+    # number being wrong (a role change, a new team-mate) than the book's.
+    # Cross-league legs are left out: this path has no opponent
+    # adjustment for them, and a Viking forward's Norwegian shots record at
+    # Villa Park is the AEK problem of 20 Oct 2026 over again.
+    confirmed = [l for l in legs if _headline_ok(l) and l.get("book")
+                 and not l.get("crossLeague")
+                 # the record has to agree: at least half its games landed
+                 and l.get("total") and l["hits"] / l["total"] >= 0.5
+                 # as on the Value tab: football to-score and cards are not
+                 # called value until the results say how far off they run
+                 and not (l.get("player") and l["stat"] in ("Goals", "Card", "Yellow cards"))
+                 and max(ODDS_FLOOR, l["fair"]) <= l["book"]["price"] <= l["fair"] * 1.3]
+    eligible = confirmed or [l for l in legs if l["fair"] >= ODDS_FLOOR and _headline_ok(l)]
     if not eligible:
         return None
 
@@ -966,6 +1101,8 @@ def best_single(legs):
 
     winner = max(eligible, key=rank_key)
     out = _single_public(winner)
+    out["book"] = winner.get("book")
+    out["confirmed"] = bool(confirmed)
     out["adjusted"] = winner["adjusted"]
     out["z"] = z
     out["consideredGroups"] = group_count(legs)
@@ -1279,6 +1416,11 @@ def picks(entries, days=7, now=None):
             legs.extend(parlay.single_legs_for(entry, meta))
             legs.extend(parlay.alt_legs_for(entry, meta))
         calibrate(legs)
+        try:
+            us_model(legs)
+            attach_books(legs)
+        except Exception as exc:  # never lose the picks to this
+            print(f"  book prices not attached: {type(exc).__name__}: {exc}")
         matches = None
         if sport == "darts":
             # The match markets from darts_model.py, one row per match, soonest

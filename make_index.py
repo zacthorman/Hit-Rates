@@ -269,8 +269,11 @@ def main() -> None:
         else:
             direction = "over" if one["over"] else "under"
             market = f"{direction} {one['line']} {one['stat'].lower()}"
+        book = one.get("book")
+        priced = (f"{book['name']} {book['price']:.2f} (fair {one['fair']:.2f})" if book and one.get("confirmed")
+                  else f"fair {one['fair']:.2f}, not yet priced at Paddy Power or Bet365")
         print(f"  {block['label']} pick of the week: {who} {market} "
-              f"at {one['fair']:.2f} ({one['hits']}/{one['total']})")
+              f"at {priced} ({one['hits']}/{one['total']})")
     for competition in competitions:
         count = sum(1 for f in fixtures if f["competition"] == competition)
         print(f"  {competition}: {count}")

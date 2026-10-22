@@ -909,3 +909,49 @@ Things to know:
 - How it was built and how to retrain: `fmodel/training/README.md`.
 - To switch it off, delete or rename `reports/fmodel.json` and comment out the
   `fmodel_live.py` line in `publish.sh`. The pages fall back on their own.
+
+## The case for each fixture (`context.py`, 21 October)
+
+Modelled on the detail a good tipster preview gives (a saved Upper90 Tips Champions League reel): every pick argued, not just priced. Each fixture on `tonight.html` now opens with **The case**:
+
+- **Call.** A predicted score with home, draw and away chances. Where the report has a goals projection it is used; for cross-league ties Elo decides the result and recent xG only the number of goals, and the line says which. Untested against results.
+- **Lead.** The top single on the page, with its fair and need prices.
+- **The argument.** One paragraph in the order a preview makes it: how each side comes in, what the opponent concedes in the lead bet's stat, then the facts that bear on that kind of bet (a cards bet gets the referee, not clean sheets). "Nothing for us here" when no leg qualified.
+- **Facts.** Only the unusual ones: conceded in 9 of 10, 1 point from 2 games, plays again in 3 days, without a player who started 8 of the last 10, referee well above or below 4 yellows a game.
+- **Each side.** The last five results with date, competition, opponent, score and W/D/L; the last ten as counts (won, scored in, conceded in, clean sheets, BTTS, 3+ goals); xG for and against over the last five; points and table position in this competition (from a cached standings table when fresh, since the records cannot tell qualifiers from the league phase); the next three fixtures; who is missing and how often they started.
+
+Every team single also gets an **opponent allows** line: what the opposition concedes in that stat at the matching venue, in this competition when there are 4+ games and otherwise in all, with how many of those games beat the line. "Bodo allow 25.0 total shots a game away in this competition (last 9): 9 of 9 went over 14.5" is the shape.
+
+Nothing here changes a chance or a ranking: it is the argument, not the model. It reads only what is on disk (the report payloads and `cache/`), so it adds no fetching. Tests: `python -B -m unittest tests.test_context`.
+
+## Game state, backtested (`gs_backtest.py`, 21 October)
+
+The game state now prices bets rather than describing them. `gs_backtest.py build` gathers every cached match with statistics and line-ups (7,177 and 6,777 on 21 October); `gs_backtest.py test` replays them in date order with only pre-match information and fits, per stat, how much four things move the count: the side's or player's own last-10 average, what tonight's opponent allows over its last 10, home or away, and tonight's predicted share of the ball against the share this side usually has. Each version is scored on later matches it was not fitted on, and the fit goes to `gs_fit.json` with the table in `GS_BACKTEST.md`.
+
+What it found: what the opponent allows is the big signal for every stat; possession adds a measurable amount only for player shots, shots on target and tackles, and team corners, tackles, clearances and saves, so its term is off for the rest (fouls, cards, team shots); and the old unfitted possession factor made fouls and tackles worse than ignoring the game state. Player chances land within about two points at 1+ and run a little cautious at 2+ and 3+.
+
+On `tonight.html` every team and player single the model reaches shows "Backtested model X% (opponent ×a, game state ×b; Y% before the game state). With the record: Z%", the singles are ranked on Z, the lead is the top of that list, and each fixture's Game state box lists **Tonight leans to** (model at 60%+ and 8+ points above the player's record, the bets a record filter throws away) and **Tonight works against** (good records the model marks down). Re-run `build` and `test` weekly so the fit keeps up with the cache.
+
+Also new on the page: current streaks of eight or more (e.g. under 3.5 goals in 9 straight), a minutes note on player legs (share of minutes, record in 60+ minute games, whether the misses came in short games), the opponent's league rank when it is in the top or bottom five for the stat it allows, and **Last night's leads**: each fixture's lead is written to `lead_log.json` before kick-off and ticked or crossed from `best_bets.json`, with how many the page expected to land.
+
+## How the game will go, tactics and the team model (21 October, late)
+
+**How the game will go** is the last section of every football fixture on `tonight.html`: the likeliest score, each side's shape from the line-up (double or single pivot, who plays behind the striker, back three), each side's style in words, and a numbered **Why** list in the form "X plays a double pivot against three attacking midfielders, so the pivot has more ground to cover: expect tackles and fouls (Rice: 2+ tackles 67%)". Style words (press hard, sit off, go long, build short, attack wide, camp in the final third, bodies in the box, run with the ball, foul a lot) are used only when a side is in the top or bottom quarter of every team on the site. Player numbers in the reasons are fmodel's.
+
+**The team model** (`teamstyle.py`, `teammodel_train.py`, `teammodel/`). Team bets (shots on target, corners, fouls, tackles, cards, big chances, saves, and the linear fallback for shots, clearances, offsides) are priced by a model trained on every cached match with tactical features: pressing (opposition passes per defensive action), directness, crossing and crosses allowed, territory, box touches for and against, dribbling, fouling, xG, tonight's formation and shape, the clashes between the two styles, predicted possession and Elo. Per stat, LightGBM with all of that only replaced the linear model where it won on April to June validation; out of sample from July it improved shots on target 2.2%, tackles 1.3%, big chances 1.0%, cards 0.6%, corners 0.3%, fouls 0.2%. `teamstyle.py` is the one feature module for training, the weekly update and the page, so they cannot drift; the page scores the exported trees with `fmodel/fmodel_trees.py`, checked equal to LightGBM to 1e-14.
+
+**Player bets** use fmodel's backtested chance (`reports/fmodel.json`) where it covers the player. Adding the same tactical group to fmodel was tested on every line and changed nothing measurable (all within 0.1%), so fmodel is unchanged until the new data below is in.
+
+**Weekly, in small steps.** The scheduled task `football-models-weekly-mac` (Mondays 05:34) runs `teammodel_train.py --weekly`: each kept model continues from last week's with 40 trees at a low learning rate on recency-weighted data (half-life 120 days), is scored against last week's on the latest 21 days it did not train on, is adopted only if no worse, and has any change of more than 3% on average halved. Every week is written to `teammodel/CHANGELOG.md`. A full refit (`teammodel_train.py` without `--weekly`) needs lightgbm, statsmodels and scipy and is for when the data changes shape, e.g. once the tactical backfill lands.
+
+**New tactical data** (`tactics_fetch.py`, run by `update.py` after publishing, never fatal): SofaScore average positions, shot maps (with fast-break, set-piece, open-play situations), attack momentum and incidents for every finished match, teams with upcoming fixtures first, budget 1,500 requests a day (`tactics_budget` in update.json); and, only if you create `.understat_on`, Understat's league pages (PPDA and deep completions); off by default since its robots rules disallow automated access. `tactics_fetch.py --status` shows progress. Once enough is held, line height, team length and width, full-back height, pivot dropping, counter-attack threat and chasing behaviour go into teamstyle.py and both models are re-tested.
+
+## NBA game state and team model (21 October, late)
+
+`usgame.py` computes each NBA side's game state strictly from earlier games: pace (possessions = FGA + 0.44 FTA - offensive rebounds + turnovers, from the player box scores), offensive and defensive rating, expected points for and against, total and margin, blowout rate (games ending 15+ apart), each player's minutes in blowouts against close games, games in the last four days, the rest gap and altitude. One module for training and live; a finished game replayed as upcoming gives identical features.
+
+Backtested on fmodel-style splits (train to January 2026, validation February to March, out of sample from April):
+- **Player markets:** adding the game state to usmodel changed nothing measurable (all within 0.5%, mostly slightly worse); usmodel already carries each opponent's points for and against, Elo and missing team-mates. usmodel is unchanged.
+- **Team markets** (`nba_team_train.py`, `usmodel/nba_team.json`): each side's last-10 average and the opponent's last-10 conceded, home, priced as negative binomial. The game-state LightGBM did not beat that on validation for any stat once a leak in the first version was fixed (the live parity test caught the away side's "opponent concedes" including the same game), so every stat uses the simple model, with pace added for assists only.
+
+`usmodel_live.py` now also writes, per NBA game, each side's game state and team prices into `reports/usmodel.json`; `tonight.html` re-prices NBA team legs from them ("Backtested NBA team model") and ends each NBA game with **How the game will go**: the model score and total, the pace clash, likely margin and blowout risk (starters sitting the fourth), third game in four nights, rest gap, altitude, and who is out with who gains (usmodel's expected points against each player's usual). These lines explain the game; they do not move the chances beyond the team model.

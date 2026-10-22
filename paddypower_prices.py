@@ -58,6 +58,7 @@ MIN_GAP = 15          # seconds between requests, at least
 JITTER = 15           # plus up to this much, randomised
 MAX_PER_RUN = 15      # games per run
 MAX_PER_DAY = 60      # games per day, across all runs
+RESERVE_CLOSE = 15    # of those, kept for games inside 3 hours of kick-off
 WINDOW_HOURS = 30     # only games kicking off within this
 FRESH_HOURS = 4       # do not refetch a game inside this
 FRESH_CLOSE = 1       # ...or this, in the last 3 hours before kick-off
@@ -431,10 +432,25 @@ def run() -> int:
             print(f"  paddypower: not fetching, {why}")
             return 0
         todo = candidates(st)
-        room = min(MAX_PER_RUN, MAX_PER_DAY - count_today(st))
-        if room <= 0:
+        # The last RESERVE_CLOSE requests of the day are kept for games inside
+        # three hours of kick-off, when prices move and line-ups land. On 21
+        # October the cap was spent on Thursday's games and the NBA by early
+        # afternoon, and the evening's Champions League prices were five hours
+        # old at kick-off.
+        left = MAX_PER_DAY - count_today(st)
+        close = [c for c in todo if c[0] - now() < 3 * 3600]
+        far = [c for c in todo if c[0] - now() >= 3 * 3600]
+        take = close[:min(MAX_PER_RUN, left)]
+        far_room = min(MAX_PER_RUN - len(take), left - RESERVE_CLOSE)
+        take += far[:max(0, far_room)]
+        if left <= 0:
             print(f"  paddypower: daily cap of {MAX_PER_DAY} reached")
             return 0
+        if not take:
+            print(f"  paddypower: nothing to fetch ({left} left today, {RESERVE_CLOSE} kept for kick-off)")
+            return 0
+        room = len(take)
+        todo = take
         data = load_out()
         events = data.setdefault("events", {})
         got = 0

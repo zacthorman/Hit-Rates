@@ -373,7 +373,12 @@ PLAYER_CALIBRATION_B = 0.4454
 # raw log-odds; fitted on either half it improved the other (Brier 0.139 to
 # 0.129, and 0.139 to 0.135). Refit once this season has a few weeks in: the
 # fit is end of season and playoffs.
-PLAYER_CALIBRATION_BY_SPORT = {"basketball": (0.3381, 0.5482)}
+# Withdrawn 21 Oct 2026, the day after it went in. It was fitted on the lines
+# the scan picks (a player's strongest records), and on bookmaker-style lines
+# it pushed the site further towards the over: at a player's median line NBA
+# overs landed 37% while the site said 57%. NBA and NFL lines are now priced
+# by the backtested model (usmodel_live.py) blended with this; see USAGE.md.
+PLAYER_CALIBRATION_BY_SPORT = {}
 
 
 # ------------------------------------------------- the record-only branch

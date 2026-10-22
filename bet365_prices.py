@@ -206,6 +206,58 @@ def load_events() -> dict:
     return out
 
 
+def drop_ambiguous(lines: list[dict]) -> list[dict]:
+    """Settle players Oddschecker names differently in different markets.
+
+    It does not always name a player the same way in every market. Two cases,
+    told apart by which name carries most of the markets:
+
+    - An alias: "Herman Haugen" in most markets and "Herman Johan Haugen" in
+      one, never both in the same market. The longer, rarer name is the same
+      man, so its lines are renamed to the common one and kept.
+    - Ambiguous: on 21 October Inter v Shakhtar had "Pedrinho" only in the
+      shots market while "Pedrinho da Silva" and "Pedro Henrique Azevedo"
+      carried everything else. Matched by name the 2.20 landed on the wrong
+      player (Bet365's own page had Pedrinho da Silva at 1.33). A short name
+      that is the rarer one, sits inside two or more longer names, or is
+      priced in the same market as the longer name could be someone else,
+      so its lines are dropped rather than guessed.
+    """
+    def key(l):
+        return norm(l.get("player") or "")
+    types: dict[str, set] = {}
+    for l in lines:
+        if l.get("player"):
+            types.setdefault(key(l), set()).add(l.get("type") or l.get("market"))
+    toks = {n: set(n.split()) for n in types if n}
+    rename, drop = {}, set()
+    for n in toks:
+        longer = [m for m in toks if m != n and toks[n] and toks[n] < toks[m]]
+        if not longer:
+            continue
+        if len(longer) >= 2:
+            drop.add(n)
+            continue
+        m = longer[0]
+        if types[n] & types[m]:
+            drop.add(n)                   # both priced in one market: two people
+        elif len(types[m]) <= len(types[n]):
+            rename[m] = n                 # the long name is a rare alias
+        else:
+            drop.add(n)                   # the short name is the odd one out
+    if drop or rename:
+        print(f"  bet365: names merged {sorted(rename.items())}, dropped as ambiguous {sorted(drop)}")
+    out = []
+    for l in lines:
+        k = key(l)
+        if k in drop:
+            continue
+        if k in rename:
+            l = dict(l, player=next(x.get("player") for x in lines if key(x) == rename[k]), key=rename[k])
+        out.append(l)
+    return out
+
+
 def run() -> int:
     if OFF.exists():
         print("  bet365: switched off (.bet365_off)")
@@ -264,7 +316,7 @@ def run() -> int:
                 unmatched += 1
                 print(f"  bet365: {first.get('subeventName')} not matched to a fixture")
                 continue
-            lines = [l for m in markets for l in lines_for(m)]
+            lines = drop_ambiguous([l for m in markets for l in lines_for(m)])
             held[fid] = {"ocEvent": first.get("subeventId"), "name": first.get("subeventName"),
                          "page": page.name, "kickoff": kickoff, "fetchedAt": time.time(), "lines": lines}
             fetched += 1

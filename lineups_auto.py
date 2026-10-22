@@ -100,6 +100,11 @@ def main() -> None:
                         nfl_injuries.attach(entry)
                     except Exception:
                         pass
+                try:
+                    import team_news   # who is out, from the line-up just fetched
+                    team_news.attach(entry)
+                except Exception:
+                    pass
                 if (entry.get("lineups") or {}).get("confirmed"):
                     got.append(f'{entry["fixture"]["home"]} v {entry["fixture"]["away"]}')
         if got:

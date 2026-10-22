@@ -1019,6 +1019,16 @@ def build(
     except Exception as exc:
         print(f"\n  NFL injuries skipped ({type(exc).__name__})")
 
+    # Team news for every sport (team_news.py): who is out, from the line-ups
+    # just attached, ESPN for the NBA and NFL, and SofaScore's missing lists.
+    try:
+        import team_news
+        news = sum(team_news.attach(entry) for entry in fixtures)
+        if news:
+            print(f"  team news attached for {news}/{len(fixtures)} fixture(s)")
+    except Exception as exc:
+        print(f"\n  team news skipped ({type(exc).__name__})")
+
     payload = {"fixtures": fixtures, "periods": hitrates.PERIODS}
 
     OUT_DIR.mkdir(exist_ok=True)

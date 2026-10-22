@@ -14,10 +14,27 @@ from __future__ import annotations
 import sofascore_api as api
 
 
+def _missing(block: dict) -> list:
+    """[name, reason code, "missing" or "doubtful", description]. Older code
+    reads only the first two."""
+    return [[(m.get("player") or {}).get("name"), m.get("reason"), m.get("type"), m.get("description")]
+            for m in block.get("missingPlayers", []) or []]
+
+
 def fetch(event_id: int, max_age_hours: float = 1.0) -> dict | None:
     data = api.get_json(f"event/{event_id}/lineups", max_age_hours=max_age_hours, verbose=False)
-    if not data or not (data.get("home") or {}).get("players"):
+    if not data:
         return None
+    if not (data.get("home") or {}).get("players"):
+        # No line-up yet. SofaScore still lists who is missing (the NBA does
+        # this all day before tip-off), which is team news worth keeping.
+        if not any((data.get(s) or {}).get("missingPlayers") for s in ("home", "away")):
+            return None
+        out = {"confirmed": False, "newsOnly": True}
+        for side in ("home", "away"):
+            out[side] = {"formation": "", "xi": [], "bench": [],
+                         "missing": _missing(data.get(side) or {})}
+        return out
     out = {"confirmed": bool(data.get("confirmed"))}
     for side in ("home", "away"):
         block = data.get(side) or {}
@@ -28,8 +45,7 @@ def fetch(event_id: int, max_age_hours: float = 1.0) -> dict | None:
                    for p in block.get("players", []) if not p.get("substitute")],
             "bench": [(p.get("player") or {}).get("name")
                       for p in block.get("players", []) if p.get("substitute")],
-            "missing": [((m.get("player") or {}).get("name"), m.get("reason"))
-                        for m in block.get("missingPlayers", []) or []],
+            "missing": _missing(block),
         }
     return out
 
@@ -43,6 +59,10 @@ def attach(entry: dict, max_age_hours: float = 1.0) -> bool:
     if not lu:
         return False
     store = entry.setdefault("lineups", {})
+    if lu.get("newsOnly"):
+        # kept apart, so the Line-ups tab never draws an empty XI
+        store["news"] = lu
+        return True
     if lu["confirmed"]:
         store["confirmed"] = lu
     else:

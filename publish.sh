@@ -71,7 +71,13 @@ fi
 # the predicted or confirmed XI of each football fixture in the next week, at
 # 15 lines. Read by the pages and by pplog below. Reads the cache only, no
 # requests. Without it the pages fall back to their own chances.
+# Team news (team_news.py): who is out in each game in the next 36 hours,
+# written into the reports before the models score them. NBA and NFL take
+# one SofaScore request a game (cached two hours) and ESPN's injury report
+# (cached three hours); football reuses the line-ups already fetched.
+"$PY" team_news.py || echo "  team news not refreshed (continuing with what the reports hold)"
 "$PY" fmodel_live.py || echo "  fmodel.json not written (continuing with the site's own chances)"
+"$PY" usmodel_live.py || echo "  usmodel.json not written (NBA and NFL keep the site's own chances)"
 # The same prices for the pages themselves, read in the browser: match odds,
 # Betfair's player markets and Paddy Power's (markets_sidecar.py).
 "$PY" markets_sidecar.py || echo "  reports/markets.json not written (continuing)"
@@ -79,6 +85,8 @@ fi
 # games not yet started with our chance at it, then the results page.
 "$PY" pplog.py settle || echo "  pp log not settled (continuing)"
 "$PY" pplog.py snapshot || echo "  pp log not updated (continuing)"
+"$PY" teamlog.py settle || echo "  team log not settled (continuing)"
+"$PY" teamlog.py snapshot || echo "  team log not updated (continuing)"
 "$PY" pplog.py page >/dev/null || echo "  pp-results.html not rebuilt (continuing)"
 # Score the model against Betfair (exchange_eval.py): settle what finished,
 # refit the blend weights from the results, so the picks below use them.

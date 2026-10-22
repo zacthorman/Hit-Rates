@@ -95,7 +95,10 @@ def _month_file(ts: float) -> Path:
 
 
 def _files() -> list[Path]:
-    return sorted(DIR.glob("*.jsonl")) if DIR.exists() else []
+    # teamlog.py writes team-YYYY-MM.jsonl into the same folder; those rows
+    # have no player and are teamlog's to read, so they are left out here.
+    # Reading them crashed every snapshot from 21 October (KeyError 'player').
+    return sorted(p for p in DIR.glob("*.jsonl") if not p.name.startswith("team-")) if DIR.exists() else []
 
 
 def _read(path: Path) -> list[dict]:

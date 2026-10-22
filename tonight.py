@@ -96,7 +96,7 @@ def odds(x) -> str:
     return f"{x:.2f}" if isinstance(x, (int, float)) and x == x and x != float("inf") else "&mdash;"
 
 
-def leg_row(leg) -> str:
+def leg_row(leg, entry=None) -> str:
     hits, total = leg.get("hits"), leg.get("total")
     record = f"{hits}/{total}" if total else "&mdash;"
     # The venue split is printed because it repeatedly changes the answer, and
@@ -128,6 +128,28 @@ def leg_row(leg) -> str:
         elif leg.get("disagree") is not None:
             bits.append(f"model {abs(leg['disagree']) * 100:.0f} pts off the market")
         strength_note += f"<br><span class='sub'>{' &middot; '.join(bits)}</span>"
+    if entry is not None:
+        try:
+            import context
+            a = context.opp_allows(leg, entry)
+            if a:
+                strength_note += f"<br><span class='allow'>{html.escape(a['text'])}</span>"
+            g = leg.get("gs")
+            if g:
+                bits = [f"opponent &times;{g['oppf']:.2f}"]
+                if abs(g["factor"] - 1) >= 0.02:
+                    bits.append(f"game state &times;{g['factor']:.2f}")
+                kind = g.get("kind") or "model"
+                before = (f"; {g['plain'] * 100:.0f}% before the game state"
+                          if abs(g["plain"] - g["model"]) >= 0.005 else "")
+                strength_note += (f"<br><span class='gs'>Backtested {html.escape(kind)} <b>{g['model'] * 100:.0f}%</b> "
+                                  f"({', '.join(bits)}{before}). "
+                                  f"With the record: <b>{g['chance'] * 100:.0f}%</b></span>")
+            mn = context.minutes_note(entry, leg) if leg.get("player") else None
+            if mn:
+                strength_note += f"<br><span class='sub'>Minutes: {html.escape(mn)}</span>"
+        except Exception:
+            pass
     try:
         import why
         w = why.reasons(leg)
@@ -143,6 +165,208 @@ def leg_row(leg) -> str:
         f"<td class='n'>{odds(leg.get('fair'))}</td>"
         f"<td class='n'>{odds(leg.get('need'))}</td></tr>"
     )
+
+
+def _form_table(side) -> str:
+    rows = "".join(
+        f"<tr><td class='sub'>{html.escape(f['date'])}</td><td class='sub'>{html.escape(f['comp'])}</td>"
+        f"<td>{'v' if f['venue'] == 'H' else '@'} {html.escape(f['opp'])}</td>"
+        f"<td class='n'>{f['gf']}-{f['ga']}</td><td class='n'><span class='res {f['res']}'>{f['res']}</span></td></tr>"
+        for f in reversed(side["form"]))
+    return f"<table class='form'><tbody>{rows}</tbody></table>"
+
+
+def _side_block(side, comp) -> str:
+    """One team's card: form, the last ten in counts, xG, table, what comes next, who is out."""
+    esc = html.escape
+    c = side["counts"]
+    lines = []
+    if c["n"]:
+        lines.append(f"Last {c['n']}: won {c['won']}, scored in {c['scored']}, conceded in {c['conceded']}, "
+                     f"clean sheets {c['clean']}, BTTS {c['btts']}, 3+ goals {c['over25']} "
+                     f"({c['gf']} for, {c['ga']} against)")
+    x = side.get("xg")
+    if x:
+        lines.append(f"xG last {x['n']}: {x['for']:.1f} for, {x['against']:.1f} against "
+                     f"({x['for_pg']:.2f} and {x['against_pg']:.2f} a game)")
+    tb = side.get("table")
+    if tb and tb.get("played"):
+        pos = f", {tb['pos']}{context_ordinal(tb['pos'])} of {tb['of']}" if tb.get("pos") else ""
+        lines.append(f"{esc(comp)}: {tb['points']} pts from {tb['played']}{pos}")
+    if side.get("next"):
+        nxt = " &middot; ".join(
+            f"{'v' if n['venue'] == 'H' else '@'} {esc(n['opp'])} ({esc(n['comp'])}, {esc(n['date'])})"
+            for n in side["next"])
+        lines.append(f"Next: {nxt}")
+    if side.get("absences"):
+        out = ", ".join(
+            f"{esc(a['name'])} ({esc(a['status'].split(' (')[0].lower())}, {a['starts']}/{a['of']} starts)"
+            for a in side["absences"][:5])
+        lines.append(f"Missing: {out}")
+    body = "".join(f"<p class='sub line'>{l}</p>" for l in lines)
+    return f"<div class='side'><h4>{esc(side['name'] or '')}</h4>{_form_table(side)}{body}</div>"
+
+
+def context_ordinal(n) -> str:
+    import context
+    return context._ordinal(n)
+
+
+def gs_block(gs) -> str:
+    """How the game should go, and the bets that changes."""
+    esc = html.escape
+    if not gs:
+        return ""
+    parts = ["<div class='gsbox'><p class='call'><b>Game state</b> <span class='sub'>("
+             + esc(gs["xi"]) + ("; weights from a walk-forward backtest, see GS_BACKTEST.md)" if gs.get("fitted")
+                               else "; no backtest fit found, adjustments off)") + "</span></p>"]
+    if gs.get("poss"):
+        t = gs["teams"]
+        parts.append(
+            f"<p class='sub line'>Expected possession: {esc(t[0])} {gs['poss'][0]:.0f}% "
+            f"(usually {gs['usual'][0]:.0f}%), {esc(t[1])} {gs['poss'][1]:.0f}% (usually {gs['usual'][1]:.0f}%). "
+            f"Recent xG: {esc(t[0])} {gs['xg'][0]:.2f} for, {gs['xga'][0]:.2f} against; "
+            f"{esc(t[1])} {gs['xg'][1]:.2f} for, {gs['xga'][1]:.2f} against.</p>")
+    parts.append(f"<p class='argue gsarg'>{esc(gs['script'])}</p>")
+    if gs.get("leans"):
+        rows = "".join(
+            f"<li>{esc(r['player'])} {r['line']}+ {esc(r['stat'].lower())} <span class='sub'>({esc(r['team'])})</span>: "
+            f"record {r['k']}/{r['n']}, model <b>{r['chance'] * 100:.0f}%</b> "
+            f"(opponent &times;{r['oppf']:.2f}, game state &times;{r['ball']:.2f}; {r['avg']:.1f} &rarr; {r['mu']:.1f} a game)</li>"
+            for r in gs["leans"])
+        parts.append(f"<p class='call'><b>Tonight leans to</b> <span class='sub'>(the matchup and game state rate these above their records)</span></p><ul class='facts'>{rows}</ul>")
+    if gs.get("against"):
+        rows = "".join(
+            f"<li>{esc(r['player'])} {r['line']}+ {esc(r['stat'].lower())} <span class='sub'>({esc(r['team'])})</span>: "
+            f"record {r['k']}/{r['n']} looks good, but model {r['chance'] * 100:.0f}% tonight "
+            f"(opponent &times;{r['oppf']:.2f}, game state &times;{r['ball']:.2f})</li>"
+            for r in gs["against"])
+        parts.append(f"<p class='call'><b>Tonight works against</b></p><ul class='facts'>{rows}</ul>")
+    parts.append("</div>")
+    return "".join(parts)
+
+
+def case_block(entry, meta, lead, gs=None) -> str:
+    """The reel-style argument for a fixture: the call, the bet, why, then the evidence."""
+    try:
+        import context
+        b = context.brief(entry, meta)
+    except Exception as exc:          # never cost the page its other sections
+        return f"<p class='sub'>Context unavailable ({html.escape(str(exc))})</p>"
+    esc = html.escape
+    comp = context._short(meta.get("competition"))
+    parts = ["<div class='case'>"]
+    sc = b.get("score")
+    if sc:
+        parts.append(
+            f"<p class='call'><b>Call:</b> {esc(meta['home'])} {sc['home']}-{sc['away']} {esc(meta['away'])}"
+            f" <span class='sub'>&middot; home {sc['ph'] * 100:.0f}% &middot; draw {sc['pd'] * 100:.0f}% "
+            f"&middot; away {sc['pa'] * 100:.0f}% &middot; {sc['lh'] + sc['la']:.1f} goals expected "
+            f"&middot; {esc(sc['source'])}</span></p>")
+    allows, why_for = None, None
+    if lead:
+        try:
+            allows = context.opp_allows(lead, entry)
+        except Exception:
+            allows = None
+        try:
+            import why
+            why_for = why.reasons(lead).get("for")
+        except Exception:
+            why_for = None
+        parts.append(f"<p class='call'><b>Lead:</b> {esc(fmt_leg(lead))} &middot; fair "
+                     f"<b>{odds(lead.get('fair'))}</b>, need <b>{odds(lead.get('need'))}</b></p>")
+    argument = context.case(lead, b, allows, why_for)
+    if gs and gs.get("poss"):
+        argument += " " + gs["script"]
+        g = (lead or {}).get("gs")
+        if g:
+            argument += (f" The backtested {g.get('kind') or 'model'} makes this bet {g['model'] * 100:.0f}%; "
+                         f"with the record, {g['chance'] * 100:.0f}%.")
+    parts.append(f"<p class='argue'>{esc(argument)}</p>")
+    parts.append(gs_block(gs))
+    if b.get("facts"):
+        parts.append("<ul class='facts'>" + "".join(f"<li>{esc(f)}</li>" for f in b["facts"]) + "</ul>")
+    sides = [s for s in (b.get("home"), b.get("away")) if s]
+    parts.append("<div class='sides'>" + "".join(_side_block(s, comp) for s in sides) + "</div>")
+    parts.append("</div>")
+    return "".join(parts)
+
+
+def _possessive(text: str) -> str:
+    """'Hawks's' -> 'Hawks'' and 'Stade Rennais's' -> 'Stade Rennais''."""
+    import re
+    return re.sub(r"(\w)s's\b", r"\1s'", text)
+
+
+def lead_only(lead) -> str:
+    """Outside football the case is just the lead: the argument and story are football's."""
+    if not lead:
+        return "<p class='none'>Nothing for us here: no leg cleared the bar on the evidence.</p>"
+    return (f"<p class='call'><b>Lead:</b> {html.escape(fmt_leg(lead))} &middot; fair "
+            f"<b>{odds(lead.get('fair'))}</b>, need <b>{odds(lead.get('need'))}</b></p>")
+
+
+def nba_story_block(entry, meta) -> str:
+    esc = html.escape
+    try:
+        import context
+        st = context.nba_story(entry, meta)
+    except Exception as exc:
+        return f"<p class='sub'>Game story unavailable ({esc(str(exc))})</p>"
+    if not st.get("lines"):
+        return "<p class='none'>No team model or game state for this game yet.</p>"
+    parts = ["<div class='story'>"]
+    sc = st.get("score")
+    if sc:
+        parts.append(f"<p class='call'><b>Most likely:</b> {esc(meta['home'])} {sc['home']:.0f}, "
+                     f"{esc(meta['away'])} {sc['away']:.0f} <span class='sub'>(total {sc['total']:.0f}; "
+                     f"team model)</span></p>")
+    items = "".join(f"<li>{esc(_possessive(r))} <b>{esc(_possessive(so[0].upper() + so[1:]))}</b></li>" for r, so in st["lines"])
+    parts.append(f"<p class='call'><b>Why</b></p><ol class='why'>{items}</ol>")
+    parts.append("<p class='sub'>Pace, ratings, blowout rate and rest are from each side's last 10 (usgame.py). "
+                 "The NBA team model is the simple one: in the backtest the game-state version did not beat "
+                 "it on validation, so these lines explain the game rather than move the chances.</p></div>")
+    return "".join(parts)
+
+
+def story_block(entry, meta, gs) -> str:
+    """How the game will go: shapes, styles, the likely script, and the reasoning."""
+    esc = html.escape
+    try:
+        import context
+        b = context.brief(entry, meta)
+        st = context.story(entry, meta, gs, b)
+    except Exception as exc:
+        return f"<p class='sub'>Match story unavailable ({esc(str(exc))})</p>"
+    parts = ["<div class='story'>"]
+    sc = b.get("score")
+    if sc:
+        parts.append(f"<p class='call'><b>Most likely:</b> {esc(meta['home'])} {sc['home']}-{sc['away']} "
+                     f"{esc(meta['away'])} <span class='sub'>(home {sc['ph'] * 100:.0f}%, draw "
+                     f"{sc['pd'] * 100:.0f}%, away {sc['pa'] * 100:.0f}%)</span></p>")
+    for side in st["sides"]:
+        sh = side.get("shape") or {}
+        bits = []
+        if sh.get("formation"):
+            bits.append(f"{esc(sh['formation'])}{'' if sh.get('confirmed') else ' (predicted)'}")
+        if sh.get("pivot"):
+            kind = "double pivot" if len(sh["pivot"]) == 2 else ("single pivot" if len(sh["pivot"]) == 1 else "midfield three")
+            bits.append(f"{kind}: {esc(', '.join(sh['pivot']))}")
+        if sh.get("attack_mids"):
+            bits.append(f"behind the striker: {esc(', '.join(sh['attack_mids']))}")
+        words = side.get("words") or []
+        how = ("They " + "; ".join(esc(w) for w in words) + ".") if words else "No style stands out against the rest of the site."
+        parts.append(f"<p class='line'><b>{esc(side['name'] or '')}</b> "
+                     f"<span class='sub'>{' &middot; '.join(bits)}</span><br>{how}</p>")
+    if st["lines"]:
+        items = "".join(f"<li>{esc(_possessive(r))} <b>{esc(_possessive(so[0].upper() + so[1:]))}</b></li>" for r, so in st["lines"])
+        parts.append(f"<p class='call'><b>Why</b></p><ol class='why'>{items}</ol>")
+    else:
+        parts.append("<p class='none'>No clash between the two styles stands out enough to call.</p>")
+    parts.append("<p class='sub'>Style words are used only when a side is in the top or bottom quarter of "
+                 "every team on the site. Player chances are the backtested player model's.</p></div>")
+    return "".join(parts)
 
 
 def player_row(leg) -> str:
@@ -256,6 +480,72 @@ def research_block(now: float) -> str:
     return "".join(parts)
 
 
+# ---------------------------------------------------------- the results card
+#
+# Each fixture's lead is written to lead_log.json before kick-off (append and
+# update until kick-off, never after), and settled against best_bets.json,
+# which besttrack.py settles from the result. The card shows the last day's
+# leads ticked or crossed, and how many the page expected to land, so the
+# page is marked on its own calls.
+
+LEAD_LOG = ROOT / "lead_log.json"
+KEY = ("event_id", "team", "player", "stat", "period", "line", "over")
+
+
+def _leg_key(l) -> tuple:
+    return tuple(l.get(k) for k in KEY)
+
+
+def write_leads(rows, now) -> None:
+    import json
+    try:
+        log = json.loads(LEAD_LOG.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        log = {}
+    for meta, leg, chance in rows:
+        if not leg or meta["kickoff"] <= now:
+            continue
+        log[str(meta["id"])] = {
+            "event_id": meta["id"], "fixture": f"{meta['home']} v {meta['away']}",
+            "competition": meta.get("competition"), "kickoff": meta["kickoff"],
+            "selection": fmt_leg(leg), "chance": chance, "fair": leg.get("fair"),
+            **{k: leg.get(k) for k in KEY if k != "event_id"}, "written": now}
+    LEAD_LOG.write_text(json.dumps(log, indent=1), encoding="utf-8")
+
+
+def results_block(now) -> str:
+    import json
+    try:
+        log = json.loads(LEAD_LOG.read_text(encoding="utf-8"))
+        bets = json.loads((ROOT / "best_bets.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return ""
+    settled = {}
+    for b in bets:
+        for l in b.get("legs") or []:
+            if l.get("result") in ("win", "lose"):
+                settled[_leg_key(l)] = l["result"]
+    recent = [r for r in log.values() if now - 36 * 3600 <= r["kickoff"] <= now - 2 * 3600]
+    if not recent:
+        return ""
+    rows, won, done, expect = [], 0, 0, 0.0
+    for r in sorted(recent, key=lambda r: r["kickoff"]):
+        res = settled.get(_leg_key(r))
+        mark = {"win": "&#10003;", "lose": "&#10007;"}.get(res, "&middot;")
+        if res:
+            done += 1
+            won += res == "win"
+            expect += r.get("chance") or 0
+        rows.append(f"<tr><td><span class='mark {res or ''}'>{mark}</span> {html.escape(r['selection'])}"
+                    f"<br><span class='sub'>{html.escape(r['fixture'])}</span></td>"
+                    f"<td class='n'>{(r.get('chance') or 0) * 100:.0f}%</td></tr>")
+    summary = (f"{won} of {done} landed; the page expected {expect:.1f}." if done
+               else "Not settled yet.")
+    return (f"<section class='results'><h2>Last night's leads</h2><p class='comp'>{summary}</p>"
+            f"<table><thead><tr><th>Lead</th><th class='n'>Said</th></tr></thead>"
+            f"<tbody>{''.join(rows)}</tbody></table></section>")
+
+
 def build(hours: float | None) -> str:
     entries: list[tuple[dict, dict]] = []
     seen: set[tuple] = set()
@@ -271,6 +561,11 @@ def build(hours: float | None) -> str:
             seen.add(key)
             entries.append((entry, meta))
 
+    try:
+        import context
+        context.set_entries(entries)
+    except Exception:
+        pass
     now = time.time()
     horizon = now + hours * 3600 if hours else float("inf")
     window = sorted(
@@ -282,7 +577,7 @@ def build(hours: float | None) -> str:
     span = f"the next {hours:g} hours" if hours else "everything still to come"
 
     if not window:
-        body = research_block(now) + (f"<p class='none'>Nothing kicks off in {span}. "
+        body = results_block(now) + research_block(now) + (f"<p class='none'>Nothing kicks off in {span}. "
                 f"The reports were built {built}.</p>")
         return PAGE.format(built=built, span=span, body=body,
                            stamp=time.strftime("%a %d %b, %H:%M %Z", time.localtime(now)))
@@ -299,19 +594,42 @@ def build(hours: float | None) -> str:
 
     # ------------------------------------------------------ the same games
     blocks = []
+    lead_log = []
     for entry, meta in window:
         kick = time.strftime("%H:%M", time.localtime(meta["kickoff"]))
+        football = ((entry.get("fixture") or {}).get("sport") or "football") == "football"
+        basketball = ((entry.get("fixture") or {}).get("sport") or "") == "basketball"
         builders = weekend.builders_for(entry, meta) or []
         best = max(builders, key=lambda b: b.get("evidence", 0)) if builders else None
 
-        own = sorted(
+        pool = sorted(
             [l for l in legs_of(entry, meta)
              if isinstance(l.get("fair"), (int, float))
              and l["fair"] >= MIN_PRICE],
             key=lambda l: (-weekend.sort_value(l), -(l.get("total") or 0)),
-        )[:SINGLES_PER_FIXTURE]
+        )[:SINGLES_PER_FIXTURE * 4]
+        gs = None
+        try:
+            import context
+            gs = context.game_state(meta)
+            for l in pool:
+                l["gs"] = context.gs_adjust(l, entry, gs)
+        except Exception:
+            gs = None
+        # The game state re-ranks the pool: a leg it lifts can climb into the
+        # six, and one it cuts can fall out. Legs it cannot reach keep their
+        # own chance, so nothing is promoted just for being unreachable.
+        def tonight_chance(l):
+            g = l.get("gs")
+            if g:
+                return g["chance"]
+            c = weekend.chance(l) if (l.get("pStrength") or l.get("pShrunk") or l.get("pExchange")) else None
+            return c if c is not None else 0
+        own = sorted(pool, key=lambda l: (-tonight_chance(l) * (l.get("fair") or 1) ** 0.5,
+                                          -(l.get("total") or 0)))[:SINGLES_PER_FIXTURE]
+        lead_log.append((meta, own[0] if own else None, tonight_chance(own[0]) if own else None))
 
-        singles = "".join(leg_row(l) for l in own) or "<tr><td colspan='4'>nothing qualified</td></tr>"
+        singles = "".join(leg_row(l, entry) for l in own) or "<tr><td colspan='4'>nothing qualified</td></tr>"
         try:
             import playerlines
             plines = "".join(player_row(l) for l in playerlines.suggest(entry, meta))
@@ -322,7 +640,9 @@ def build(hours: float | None) -> str:
             f"<section><h2>{kick} &middot; {html.escape(meta['home'])} v "
             f"{html.escape(meta['away'])}</h2>"
             f"<p class='comp'>{html.escape(meta['competition'])}</p>"
-            f"<h3>Same-game builder</h3>{builder_block(best)}"
+            + (f"<h3>The case</h3>{case_block(entry, meta, own[0] if own else None, gs)}"
+               if football else f"<h3>The case</h3>{lead_only(own[0] if own else None)}")
+            + f"<h3>Same-game builder</h3>{builder_block(best)}"
             f"<h3>Best singles here</h3>"
             f"<table><thead><tr><th>Selection</th><th class='n'>Record</th>"
             f"<th class='n'>Fair</th><th class='n'>Need</th></tr></thead>"
@@ -332,10 +652,17 @@ def build(hours: float | None) -> str:
             f"last 10, with his average 10% clear of it. Back at the fair price or longer.</p>"
             f"<table><thead><tr><th>Selection</th><th class='n'>Last 10</th>"
             f"<th class='n'>Chance</th><th class='n'>Fair</th></tr></thead>"
-            f"<tbody>{plines}</tbody></table></section>"
+            f"<tbody>{plines}</tbody></table>"
+            + (f"<h3>How the game will go</h3>{story_block(entry, meta, gs)}" if football
+               else (f"<h3>How the game will go</h3>{nba_story_block(entry, meta)}" if basketball else ""))
+            + "</section>"
         )
 
-    body = (research_block(now)
+    try:
+        write_leads(lead_log, now)
+    except Exception:
+        pass
+    body = (results_block(now) + research_block(now)
             + f"<section><h2>Multi across the {len(window)} games</h2>{multi}</section>"
             + "".join(blocks))
     return PAGE.format(built=built, span=span, body=body,
@@ -372,6 +699,29 @@ th, td {{ text-align:left; padding:6px 4px; border-bottom:1px solid var(--line);
 th {{ color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase;
   letter-spacing:.04em; }}
 .n {{ text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }}
+.case {{ font-size:14px; }}
+.call {{ margin:4px 0; }}
+.argue {{ margin:8px 0; padding:8px 12px; border-left:3px solid var(--fg); }}
+.facts {{ margin:6px 0 10px; padding-left:20px; }}
+.facts li {{ margin:2px 0; }}
+.sides {{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }}
+@media (max-width:620px) {{ .sides {{ grid-template-columns:1fr; }} }}
+.side h4 {{ margin:8px 0 2px; font-size:14px; }}
+.side .line {{ margin:4px 0; }}
+table.form td {{ padding:3px 4px; font-size:13px; }}
+.res {{ display:inline-block; min-width:20px; text-align:center; border-radius:4px;
+  font-weight:700; font-size:12px; color:#fff; }}
+.res.W {{ background:#2e8b57; }} .res.D {{ background:#8a8a8a; }} .res.L {{ background:#c0392b; }}
+.allow {{ font-size:13px; font-weight:600; }}
+.gs {{ font-size:13px; }}
+.gsbox {{ margin:10px 0; padding:8px 12px; border:1px solid var(--line); border-radius:6px; }}
+.gsarg {{ border-left-color:var(--accent); }}
+.mark {{ display:inline-block; width:18px; font-weight:700; }}
+.story {{ font-size:14px; }}
+.story .line {{ margin:8px 0; }}
+.why {{ padding-left:20px; }}
+.why li {{ margin:6px 0; }}
+.mark.win {{ color:#2e8b57; }} .mark.lose {{ color:#c0392b; }}
 .warn {{ border-left:3px solid var(--accent); padding:10px 14px; margin:16px 0;
   font-size:13.5px; color:var(--muted); }}
 </style></head><body>
