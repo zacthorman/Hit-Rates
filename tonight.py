@@ -34,6 +34,7 @@ from pathlib import Path
 
 import make_index
 import parlay
+import value_cap
 import weekend
 
 ROOT = Path(__file__).resolve().parent
@@ -642,9 +643,11 @@ def build(hours: float | None) -> str:
             gs = None
         # The game state re-ranks the pool: a leg it lifts can climb into the
         # six, and one it cuts can fall out (tonight_chance, above).
+        # One leg per player (value_cap.py): two legs on one player land
+        # together, so a second is the same bet twice, not a second bet.
         sport = weekend.sport_of(entry)
-        own = sorted(pool, key=lambda l: (-tonight_chance(l, sport) * (l.get("fair") or 1) ** 0.5,
-                                          -(l.get("total") or 0)))[:SINGLES_PER_FIXTURE]
+        own = value_cap.cap_per_player(sorted(pool, key=lambda l: (-tonight_chance(l, sport) * (l.get("fair") or 1) ** 0.5,
+                                                                   -(l.get("total") or 0))))[:SINGLES_PER_FIXTURE]
         lead_log.append(({**meta, "sport": sport},
                          own[0] if own else None, tonight_chance(own[0], sport) if own else None))
 
