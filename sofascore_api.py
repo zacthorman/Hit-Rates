@@ -110,6 +110,10 @@ TOURNAMENTS = {
     "brasileirao": 325,
     "brasileirao_serie_a": 325,
     "brazil_serie_a": 325,
+    # The feed's own names for it, which a record or fixture carries as its
+    # competition. Both are in the cache; neither resolved before 22 Oct 2026.
+    "campeonato_brasileiro_serie_a": 325,
+    "brasileirao_betano": 325,
     # International football. 10783, read off the tournament's own URL rather
     # than from search, which was returning 403 at the time.
     #
@@ -159,6 +163,25 @@ def known_team_id(name: str) -> int | None:
         c for c in (name or "").lower() if c.isalnum()))
 
 
+def competition_key(name: str | None) -> str:
+    """One spelling for a competition name: "LaLiga", "La Liga", "la-liga",
+    "LA LIGA" and "la_liga" are all "laliga".
+
+    Lower case, accents and punctuation gone, and anything after the first
+    comma dropped, because the feed names a stage that way ("NFL, Regular
+    Season", "UEFA Champions League, Knockout stage") and the stage is never
+    what a lookup means. Every table keyed on a competition name should be
+    matched through this, not compared as written: that comparison is how
+    LaLiga, the Champions League and Brazil were each skipped in silence.
+    """
+    import unicodedata
+    # Accents are stripped as well as punctuation. Python counts an accented
+    # letter as alphanumeric, so "Brasileirao" and "Brasileirao" written with
+    # the tilde squash to different strings and only one of them would match.
+    folded = unicodedata.normalize("NFKD", (name or "").split(",")[0].lower())
+    return "".join(c for c in folded if c.isalnum() and not unicodedata.combining(c))
+
+
 def tournament_id_for(name: str) -> int | None:
     """Competition name to id, forgiving about how it is written.
 
@@ -170,19 +193,12 @@ def tournament_id_for(name: str) -> int | None:
     """
     if not name:
         return None
-
-    # Accents are stripped as well as punctuation. Python counts an accented
-    # letter as alphanumeric, so "Brasileirao" and "Brasileirao" written with
-    # the tilde squash to different strings and only one of them would match.
-    # That is the same class of bug as the LaLiga one above, and it would fail
-    # the same silent way.
-    import unicodedata
-    folded = unicodedata.normalize("NFKD", name.lower())
-    squashed = "".join(c for c in folded if c.isalnum() and not unicodedata.combining(c))
+    squashed = competition_key(name)
     for key, tournament_id in TOURNAMENTS.items():
-        if "".join(c for c in key if c.isalnum()) == squashed:
+        if competition_key(key) == squashed:
             return tournament_id
-    return None
+    # A bare id, as backtest.py --league 8 has always allowed.
+    return int(name) if str(name).strip().isdigit() else None
 
 
 _session = None

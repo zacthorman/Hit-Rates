@@ -1904,13 +1904,23 @@ def league_ratings(
             for _ in range(25):
                 new_att, new_def = {}, {}
 
+                # The guard is on the product, not the rating. On a thin early
+                # season fit a rating can collapse faster than geometrically
+                # (La Liga's first-half offsides reached 3e-257 in 25 passes),
+                # and once it is subnormal, times a small league average such
+                # as first-half red cards, it rounds to exactly 0.0 while the
+                # rating itself still tests > 0. That was the La Liga divide by
+                # zero. A collapsed rating carries no information either way,
+                # so the observation is skipped, as it is for a zero rating.
                 for t in ids:
                     a_vals, d_vals = [], []
                     for opp, mine, theirs in observations(t):
-                        if dfn[opp] > 0:
-                            a_vals.append(mine / (base * dfn[opp]))
-                        if att[opp] > 0:
-                            d_vals.append(theirs / (base * att[opp]))
+                        den = base * dfn[opp]
+                        if den > 0:
+                            a_vals.append(mine / den)
+                        den = base * att[opp]
+                        if den > 0:
+                            d_vals.append(theirs / den)
                     new_att[t] = sum(a_vals) / len(a_vals) if a_vals else att[t]
                     new_def[t] = sum(d_vals) / len(d_vals) if d_vals else dfn[t]
 

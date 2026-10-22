@@ -176,7 +176,12 @@ def features(M, T, P, sport, only=None):
     if sport == "nfl":
         P["td"] = P.rush_td + P.rec_td
         P["mins"] = 60.0          # NFL box scores carry no minutes
-        played = (P.has_stats == 1) | (P.upcoming == 1)
+        # Everyone in the line-up played (SofaScore lists about 35 a side,
+        # not the 46+ actives): one with no statistics is a game of zeros.
+        # Keeping only those with statistics chose rows by the result: a
+        # receiver with no catch, a guaranteed under, was never a row, and
+        # his blank game never reached his form. Fixed 22 Oct 2026.
+        played = pd.Series(True, index=P.index)
     else:
         played = (P.mins > 0) | (P.upcoming == 1)
     # Who was there is the active list (known before kick-off), not who
@@ -404,7 +409,7 @@ def add_upcoming(M, T, P, games, sport, out_ids=frozenset(), squads=None, lineup
     starts, as the real line-up did in training."""
     c = CFG[sport]
     rows = []
-    Pp = P[(P.has_stats == 1) if sport == "nfl" else (P.mins > 0)].sort_values("ts")
+    Pp = (P if sport == "nfl" else P[P.mins > 0]).sort_values("ts")   # as features(): listed is played
     for g in games:
         for team, opp, home in ((g["home"], g["away"], 1), (g["away"], g["home"], 0)):
             tg = Pp[Pp.team == team]

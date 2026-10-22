@@ -466,6 +466,33 @@ def score(F):
     return out
 
 
+def add_cards(events: dict, live=None) -> None:
+    """To be booked from the cards model (cards_model.py) for every starter
+    already in `events`: lines["Card"]["1"], and each side's expected cards
+    under ev["cards"]. Same XI as the rest of the file."""
+    import cards_model
+    live = live or cards_model.Live(CACHE)
+    ids = team_ids()
+    for eid, ev in events.items():
+        lu = load(CACHE / f"event_{eid}_lineups.json")
+        if not lu or int(eid) not in ids:
+            continue
+        home, away, comp = ids[int(eid)]
+        by_pid = {pl["pid"]: pl for pl in ev["players"].values()}
+        cards = {}
+        for side, team, opp in (("home", home, away), ("away", away, home)):
+            xi = [{"pid": (p.get("player") or {}).get("id"), "pos": p.get("position")}
+                  for p in (lu.get(side) or {}).get("players", []) if not p.get("substitute")]
+            m = live.side_mu(team, opp, side == "home", comp)
+            if m:
+                cards[side] = round(m["mu"], 3)
+            for pid, p in live.player_chances(team, opp, side == "home", comp, xi).items():
+                if pid in by_pid:
+                    by_pid[pid]["lines"]["Card"] = {"1": round(p, 4)}
+        if cards:
+            ev["cards"] = cards
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--days", type=float, default=7)
@@ -488,6 +515,10 @@ def main(argv=None):
             s, k = name.rsplit("_", 1)
             lines.setdefault(SITE_NAME[s], {})[k] = round(float(p[i]), 4)
         ev["players"][r.name] = {"pid": int(r.pid), "team": int(r.team), "pos": r.pos, "lines": lines}
+    try:
+        add_cards(events)
+    except Exception as exc:              # never cost the page its other chances
+        print(f"fmodel: card chances skipped ({exc})")
     OUT.write_text(json.dumps({"generated": int(time.time()), "model": "fmodel v1 (backtest 2026-10-20)",
                                "events": events}), encoding="utf-8")
     n = sum(len(e["players"]) for e in events.values())

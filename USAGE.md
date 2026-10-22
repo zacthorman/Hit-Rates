@@ -621,7 +621,7 @@ Its stated chances land within a point or two of what happened from 20% to 80%. 
 
 What it does not do is pick more winners. The top three per matchday land about as often as the old ranking's (bankers 72.7% against 70.6%, best singles 45.5% against 50.8%, both inside the noise). The gain is that the numbers are true and the Champions League gets real picks. The top of the board still runs about 8 points ahead of what lands, because choosing the best of thousands of honest estimates picks the lucky ones; treat the top pick's chance as a ceiling.
 
-Known gaps: La Liga crashed the replay in `hitrates.league_ratings` (a divide by zero, pre-existing, not chased), so it is not in the fit. The slopes are fitted on this season's reports, a mild look-ahead for one number per stat. Builders and the parlay are unchanged.
+Known gaps: La Liga crashed the replay in `hitrates.league_ratings` (a divide by zero), so it is not in the fit. Fixed 22 October: on a thin early-season fit a rating collapses towards zero, and once it is small enough, `base * rating` rounds to 0.0 while the rating still tests above zero, so the guard now checks the product. The cached Premier League fit for 18 January 2026 (first-half red cards) failed the same way and is the test (`tests/test_league_ratings.py`); see PROOF-2026-10-22.md. La Liga still needs the replay rerun to join the fit. The slopes are fitted on this season's reports, a mild look-ahead for one number per stat. Builders and the parlay are unchanged.
 
 ## NFL Defences tab: lines in every matchup (15 October)
 
@@ -827,6 +827,9 @@ Everything scheduled runs on the Mac. Nothing here is a cloud job.
 | `nba_team_train.py` | Trains and exports the NBA team-stats models (21 October). |
 | `teamstyle.py` | Team style, tactics and shape features from `cache/` (21 October). |
 | `teammodel_train.py` | Trains, tests and exports the football team-stats model; `--weekly` for the Monday update (21 October). |
+| `cards_model.py` | The cards model, its walk-forward backtest and `cards_fit.json` (22 October). |
+| `teamlines.py` | Which team-line markets have earned a take, and the chance the page prices them at (22 October). |
+| `teamline_backtest.py` | Walk-forward backtest of the team lines and the take threshold per market, `teamlines_gate.json` (22 October). |
 | `gs_backtest.py` | Walk-forward backtest of the game state and the fit the pages use, `gs_fit.json` (21 October). |
 | `gamestate.py` | The Line-ups tab's player lines as JSON. Reads only. |
 | `context.py` | The case for each fixture on `tonight.html` (21 October). |
@@ -841,6 +844,7 @@ Everything scheduled runs on the Mac. Nothing here is a cloud job.
 |---|---|
 | `report.py` | Generates each report's HTML and the JavaScript inside it. |
 | `pagedata.py` | Finds the dataset inside a built report (22 October). |
+| `value_cap.py` | How many singles one player may take, and the backtest that chose it (22 October). |
 | `weekend.py` | The four picks across every built report. |
 | `parlay.py` | Same-game parlays with alt lines. |
 | `picker.py` | A clean bet picker built from the reports. |
@@ -889,9 +893,10 @@ Everything scheduled runs on the Mac. Nothing here is a cloud job.
 | `tests/` | The test suite, below. |
 | `TEST.md` | The 21 questions. |
 | `PLAN.md` | What this was meant to be, and what's left. |
+| `CARDS-MODEL.md`, `TEAM-LINES.md`, `US-MODELS-AUDIT.md`, `PROOF-2026-10-22.md` | The 22 October write-ups: the cards model, the team lines, the NBA and NFL models audit, and the proof of the 21 October work (scripts in `proof/`). |
 | `CODE-HEALTH.md` | The 22 October health pass: what changed, timings, and the output comparison. |
 
-**Tests.** `python -B -m pytest -q tests` (or `python -B -m unittest tests.test_<name>`). Eight files: `test_besttrack_team_value`, `test_bettrack_team`, `test_context`, `test_exchange`, `test_gamestate`, `test_pagedata`, `test_probability`, `test_strength`. Three tests read built reports and skip without them; `GAMESTATE_LIVE=1` adds every football fixture in `reports/` to the game-state parity test. None of them writes to a committed file.
+**Tests.** `python -B -m pytest -q tests` (or `python -B -m unittest tests.test_<name>`). Fifteen files: `test_besttrack_team_value`, `test_bettrack_team`, `test_cards_model`, `test_context`, `test_exchange`, `test_gamestate`, `test_leads`, `test_league_names`, `test_league_ratings`, `test_pagedata`, `test_probability`, `test_strength`, `test_teamlines`, `test_us_audit`, `test_value_cap`. Some read built reports or the cache and skip without them; `GAMESTATE_LIVE=1` adds every football fixture in `reports/` to the game-state parity test. None of them writes to a committed file.
 
 ## How the lines are chosen
 
@@ -955,7 +960,7 @@ The Players tab now opens on the two sides, each with its predicted or confirmed
 - **Role.** Worked out from what he does per 90, not SofaScore's G/D/M/F: tackles plus fouls plus interceptions against shots plus key passes plus three times xG. Midfielders split into holding, box-to-box and attacking, so two "midfielders" in the same XI read differently.
 - **Profile.** Every stat with a record: the last ten as chips, avg and per 90, and up to three lines. Each line shows the last-ten record and the full record, **Ours** (pricePlayer on his last ten under the filters, matchup-adjusted and calibrated), **Fair**, **Betfair** where the exchange lists it, **Est. bookie**, a box to type the real price, and the **Edge** (ours times price, minus one) against the typed price, else Betfair's back, else the estimate. Add puts it on the slip.
 - **Est. bookie** is not a scraped price. It is the calibrated chance over every match on file, unadjusted, with `BOOK_MARGIN` (12%) on the implied chance, which is roughly how a bookmaker prices a player line. The margin is a judgement call; set it from real prices once a few have been typed in.
-- **To be booked** (football): fouls per 90 times the side's yellow cards per foul over its filtered window, over his expected minutes, times the side's projected fouls here against its usual (`playerAdjustment("Fouls")`), times a factor for the men he is up against on the line-up (their fouled per 90 against the report average, square-rooted, held to 0.85 to 1.2). Half last ten, half the full filtered record. **Heuristic and not backtested.** Per-player card history is not fetched (it needs SofaScore's incidents endpoint per match), so this works from fouls.
+- **To be booked** (football): fouls per 90 times the side's yellow cards per foul over its filtered window, over his expected minutes, times the side's projected fouls here against its usual (`playerAdjustment("Fouls")`), times a factor for the men he is up against on the line-up (their fouled per 90 against the report average, square-rooted, held to 0.85 to 1.2). Half last ten, half the full filtered record. **Heuristic and not backtested.** Per-player card history is not fetched (it needs SofaScore's incidents endpoint per match), so this works from fouls. Where `reports/fmodel.json` carries a Card chance (the cards model, 22 October, below) that is shown instead.
 - **To score** (football): 60% xG and 40% goals per 90, over expected minutes, times the side's projected goals here against its usual. Half last ten, half full record. **Heuristic and not backtested.**
 - **Match odds.** A strip above the tabs on every fixture shows Betfair's price and chance for home, draw and away. `markets_sidecar.py` writes `reports/markets.json` from `market_prices.json` (match odds plus the player markets Betfair lists: to score, shots on target 1+ and 2+, shown a card), run by `publish.sh` straight after `market_prices.py`, and each page fetches it on open. Opened as a local file the strip and Betfair columns are simply absent.
 
@@ -1066,6 +1071,16 @@ Backtested on fmodel-style splits (train to January 2026, validation February to
 - **Team markets** (`nba_team_train.py`, `usmodel/nba_team.json`): each side's last-10 average and the opponent's last-10 conceded, home, priced as negative binomial. The game-state LightGBM did not beat that on validation for any stat once a leak in the first version was fixed (the live parity test caught the away side's "opponent concedes" including the same game), so every stat uses the simple model, with pace added for assists only.
 
 `usmodel_live.py` now also writes, per NBA game, each side's game state and team prices into `reports/usmodel.json`; `tonight.html` re-prices NBA team legs from them ("Backtested NBA team model") and ends each NBA game with **How the game will go**: the model score and total, the pace clash, likely margin and blowout risk (starters sitting the fourth), third game in four nights, rest gap, altitude, and who is out with who gains (usmodel's expected points against each player's usual). These lines explain the game; they do not move the chances beyond the team model.
+
+## Cards model and one bet per player (`cards_model.py`, `value_cap.py`, 22 October)
+
+Team yellow cards on `tonight.html` are priced by a cards model: own and provoked cards over 10 and 38 games, the competition's card rate, both sides' fouls and the Elo gap, with SofaScore's missing 0-0 rows counted as 0-0s. Walk-forward it beat the team model on all four held-out windows, and the page's fouls heuristic summed over the XI by more. `fmodel_live.py` writes each starter's To be booked from it into `reports/fmodel.json`: the side's expected cards, the starters' 86% share, split by fouls per 90 over expected minutes. The split is not backtested, because the cache has no per-player cards, and card lines are still never value. Value lists, "Best singles here", the recorded fixture singles and the Paddy Power value record now take one line per player per game, because legs on one player land together.
+
+    python -B cards_model.py test     # the backtest tables
+    python -B cards_model.py fit      # refit cards_fit.json (delete the file to switch the model off)
+    python -B value_cap.py            # the cap's backtest, from pplog/ when it is on this machine
+
+Full results and the honest verdict: `CARDS-MODEL.md`.
 
 ## Code health (22 October)
 

@@ -93,10 +93,11 @@ class SettleTest(unittest.TestCase):
         import sofascore_api as api
 
         tmp = Path(tempfile.mkdtemp())
-        saved_store = besttrack.STORE
+        saved_store, saved_leads = besttrack.STORE, besttrack.LEAD_LOG
         saved = (api.get_json, api.event_statistics, hitrates.extract_match_stats)
         try:
             besttrack.STORE = tmp / "best_bets.json"
+            besttrack.LEAD_LOG = tmp / "lead_log.json"   # settle also tracks logged leads
             past = int(time.time()) - 4 * 3600  # settle waits 3 hours after kick-off
             base = {"event_id": 1, "kickoff": past, "sport": "football", "player": None, "team": "Home FC",
                     "stat": "Yellow cards", "period": "2ND", "line": 0.5,
@@ -112,7 +113,7 @@ class SettleTest(unittest.TestCase):
             self.assertEqual((over["legs"][0]["value"], over["legs"][0]["result"]), (0.0, "lose"))
             self.assertEqual((under["legs"][0]["value"], under["legs"][0]["result"]), (0.0, "win"))
         finally:
-            besttrack.STORE = saved_store
+            besttrack.STORE, besttrack.LEAD_LOG = saved_store, saved_leads
             api.get_json, api.event_statistics, hitrates.extract_match_stats = saved
             shutil.rmtree(tmp)
 

@@ -1391,6 +1391,7 @@ def picks(entries, days=7, now=None):
     try:
         import learner
         m = learner.model()
+        learner.save(m)     # the card below reports this fit; record it beside the page
         chk = m.get("check") or {}
         out["learned"] = {"legs": m.get("legs"), "active": bool(m.get("active")), "updated": m.get("updated"),
                           "said": chk.get("said"), "landed": chk.get("landed"), "test": chk.get("test")}
