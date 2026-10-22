@@ -1327,6 +1327,9 @@ def _team_model():
         _TM.update(models=models, state=teamstyle.State.from_cache(CACHE, keep_rows=False))
     except Exception as exc:
         _TM["error"] = str(exc)
+        # Said once per run: team legs fall back to the simple model, and a
+        # ShapeError from teamstyle.load is a parser to fix, not a quiet day.
+        print(f"  team model off, team legs use the simple model: {type(exc).__name__}: {exc}")
     return _TM
 
 

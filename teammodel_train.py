@@ -17,7 +17,9 @@ Weekly (--weekly): continue each kept model from its saved booster with a
 few trees at a low learning rate on recency-weighted data, score old and new
 on the latest three weeks (which the update did not train on), and adopt the
 new one only if it is no worse. A chance moving by more than MAX_SHIFT on
-average is pulled halfway back, and every week is written to CHANGELOG.md.
+average is pulled halfway back before that test, so the model tested is the
+model adopted, and every week is written to CHANGELOG.md. TEAM-MODEL-CHECK.md
+has the week-by-week audit of this rule (teammodel_audit.py).
 """
 from __future__ import annotations
 
@@ -138,6 +140,40 @@ def full(cache, out):
         fh.write("\n".join(lines) + "\n")
 
 
+def weekly_candidate(lgb, old, Xtr, ytr, wtr, Xh):
+    """This week's candidate: old plus WEEKLY_TREES trees on the matches before
+    the holdout, halved when it moves the holdout's chances by more than
+    MAX_SHIFT on average. Takes no holdout labels, so it cannot peek at them."""
+    d = lgb.Dataset(Xtr, ytr, weight=wtr)
+    new = lgb.train(WEEKLY, d, WEEKLY_TREES, init_model=old, keep_training_booster=True)
+    mo, mn = old.predict(Xh), new.predict(Xh)
+    shift = float(np.mean(np.abs(mn - mo) / np.maximum(mo, 1e-6)))
+    if shift <= MAX_SHIFT:
+        return new, shift, False
+    # Too big a jump for one week: keep about half of it. A fresh Dataset: the
+    # first one has freed its raw data, and LightGBM refuses to set a second
+    # init model on it ("Cannot set predictor after freed raw data"), which
+    # is what the shipped rule did, so every halving crashed the weekly run.
+    d = lgb.Dataset(Xtr, ytr, weight=wtr)
+    new = lgb.train(dict(WEEKLY, learning_rate=WEEKLY["learning_rate"] / 2), d, WEEKLY_TREES,
+                    init_model=old, keep_training_booster=True)
+    return new, shift, True
+
+
+def weekly_step(lgb, old, Xtr, ytr, wtr, Xh, yh, own_h, alpha):
+    """One stat's weekly decision: (the model to adopt, or None to keep old; a report).
+
+    The candidate is built first and only then scored on the holdout, so the
+    model scored is the one adopted (halving included), and it is adopted only
+    if it is no worse than the old one there, with no slack."""
+    new, shift, halved = weekly_candidate(lgb, old, Xtr, ytr, wtr, Xh)
+    mo, mn = old.predict(Xh), new.predict(Xh)
+    llo, lln = tail_ll(yh, mo, own_h, alpha), tail_ll(yh, mn, own_h, alpha)
+    rep = {"before": llo, "after": lln, "shift": shift, "halved": halved,
+           "adopted_shift": float(np.mean(np.abs(mn - mo) / np.maximum(mo, 1e-6)))}
+    return (new if lln <= llo else None), rep
+
+
 def weekly(cache, out):
     import lightgbm as lgb
     R = rows(cache)
@@ -147,6 +183,7 @@ def weekly(cache, out):
     age_days = (now - R.ts) / 86400
     w = np.power(0.5, age_days / HALF_LIFE_DAYS)
     lines = [f"\n## {datetime.now(timezone.utc).strftime('%Y-%m-%d')}: weekly update\n"]
+    failed = []
     for s, e in meta["stats"].items():
         if e.get("use") != "gbm":
             continue
@@ -157,34 +194,34 @@ def weekly(cache, out):
         if h.sum() < 50 or (~h).sum() < 500:
             lines.append(f"- {s}: too few new matches, unchanged")
             continue
-        old = lgb.Booster(model_file=str(out / f"{slug(s)}.txt"))
-        d = lgb.Dataset(X.loc[~h, f], y[~h], weight=w.loc[X.index][~h].values)
-        new = lgb.train(WEEKLY, d, WEEKLY_TREES, init_model=old, keep_training_booster=True)
-        mo, mn = old.predict(X.loc[h, f]), new.predict(X.loc[h, f])
-        a = e.get("alpha_gbm", 0.05)
-        own = X.loc[h, "own_" + s].values
-        llo, lln = tail_ll(y[h], mo, own, a), tail_ll(y[h], mn, own, a)
-        shift = float(np.mean(np.abs(mn - mo) / np.maximum(mo, 1e-6)))
-        if lln > llo + 1e-4:
-            lines.append(f"- {s}: update rejected (latest {HOLDOUT_DAYS} days: {llo:.4f} before, {lln:.4f} after)")
+        try:
+            old = lgb.Booster(model_file=str(out / f"{slug(s)}.txt"))
+            new, r = weekly_step(lgb, old, X.loc[~h, f], y[~h], w.loc[X.index][~h].values, X.loc[h, f], y[h],
+                                 X.loc[h, "own_" + s].values, e.get("alpha_gbm", 0.05))
+        except Exception as exc:
+            # One stat failing used to abort the run after earlier stats were
+            # saved but before meta.json and this log were written. Now it is
+            # logged, the rest still run, and the exit code says so.
+            failed.append(s)
+            lines.append(f"- {s}: update FAILED, unchanged ({type(exc).__name__}: {exc})")
             continue
-        note = ""
-        if shift > MAX_SHIFT:
-            # Too big a jump for one week: keep half of it.
-            new = lgb.train(dict(WEEKLY, learning_rate=WEEKLY["learning_rate"] / 2), d, WEEKLY_TREES,
-                            init_model=old, keep_training_booster=True)
-            note = f" (moved {shift * 100:.1f}% on average, halved)"
+        scores = f"latest {HOLDOUT_DAYS} days: {r['before']:.4f} before, {r['after']:.4f} after"
+        if new is None:
+            lines.append(f"- {s}: update rejected ({scores})")
+            continue
+        note = f" (moved {r['shift'] * 100:.1f}% on average, halved)" if r["halved"] else ""
         new.save_model(str(out / f"{slug(s)}.txt"))
         with gzip.open(out / f"{slug(s)}.json.gz", "wt") as fh:
             json.dump(new.dump_model(), fh)
         e["trees"] = new.num_trees()
-        lines.append(f"- {s}: updated, {WEEKLY_TREES} trees added{note} (latest {HOLDOUT_DAYS} days: "
-                     f"{llo:.4f} before, {lln:.4f} after)")
+        lines.append(f"- {s}: updated, {WEEKLY_TREES} trees added{note} ({scores})")
     meta["weekly"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
     (out / "meta.json").write_text(json.dumps(meta, indent=1))
     with open(out / "CHANGELOG.md", "a") as fh:
         fh.write("\n".join(lines) + "\n")
     print("\n".join(lines))
+    if failed:
+        raise SystemExit(f"weekly update failed for {', '.join(failed)}")
 
 
 def main(argv=None):
