@@ -314,11 +314,94 @@ def _poisson(k: int, lam: float) -> float:
     return math.exp(-lam) * lam ** k / math.factorial(k)
 
 
+# ------------------------------------------------------------ open model
+# Goals per side from both teams' styles (research/open_eval.py, 22 Oct 2026):
+# a Poisson GLM on recent xG for and against, home and Elo, times trees on
+# every teamstyle feature plus a few clashes (counter-attack threat against a
+# high line, press against build-up, both sides' openness). Out of sample it
+# beat the GLM on the result (1X2 log loss -0.54%, Holm p < 0.001) and moved
+# underdogs the right way; totals and both-to-score were no worse but not
+# significantly better. Used for the result and the goals split everywhere.
+
+_OPEN: dict = {}
+
+
+def open_features(x: dict) -> dict:
+    """The m_* clashes, computed exactly as in training."""
+    g = lambda k: x.get(k, float("nan"))  # noqa: E731
+    out = dict(x)
+    poss = g("tk_k_poss")
+    out["m_counter"] = g("tk_k_xg") / max(poss, 20) if poss == poss else float("nan")
+    out["m_opp_high_line"] = g("opp_conc_Offsides")
+    out["m_counter_v_line"] = out["m_counter"] * out["m_opp_high_line"]
+    ppda = g("tk_k_ppda")
+    out["m_press_v_build"] = (1 / ppda) * (1 - 10 * g("ok_k_direct")) if ppda == ppda and ppda > 0 else float("nan")
+    out["m_open_both"] = g("tk_k_xg") * g("ok_k_xg") * g("tk_k_xga") * g("ok_k_xga")
+    return out
+
+
+def open_mu_from_features(x: dict, home: bool) -> float | None:
+    if not _OPEN:
+        try:
+            import gzip
+            from fmodel.fmodel_trees import Tree
+            meta = json.loads((ROOT / "teammodel" / "open_meta.json").read_text())
+            with gzip.open(ROOT / "teammodel" / "open_goals.json.gz", "rt") as fh:
+                d = json.load(fh)
+            _OPEN.update(meta=meta, trees=[Tree(t["tree_structure"]) for t in d["tree_info"]])
+        except Exception as exc:  # noqa: BLE001
+            _OPEN["error"] = str(exc)
+    if "trees" not in _OPEN:
+        return None
+    x = open_features(x)
+    xg, xga = x.get("tk_k_xg"), x.get("ok_k_xga")
+    if not xg or not xga or xg != xg or xga != xga or xg <= 0 or xga <= 0 or x.get("elo_diff") is None:
+        return None
+    b = _OPEN["meta"]["glm"]
+    eta = (b["const"] + b["l_xg"] * math.log(xg) + b["l_xga"] * math.log(xga)
+           + b["is_home"] * float(bool(home)) + b["elo_diff"] * x["elo_diff"])
+    import numpy as np
+    row = np.array([[float(x.get(f, float("nan")) if x.get(f) is not None else float("nan"))
+                     for f in _OPEN["meta"]["features"]]])
+    raw = sum(t.predict(row)[0] for t in _OPEN["trees"])
+    return math.exp(eta + raw)
+
+
+def open_mu(entry: dict) -> tuple | None:
+    """(home goals, away goals) expected from the open model, or None."""
+    teams = entry.get("teams") or []
+    if len(teams) < 2 or not teams[0].get("id") or not teams[1].get("id"):
+        return None
+    tm = _team_model()
+    if "state" not in tm:
+        return None
+    sides = [t.get("side") or ("home" if i == 0 else "away") for i, t in enumerate(teams[:2])]
+    hi = 0 if sides[0] == "home" else 1
+    ai = 1 - hi
+    fh, fa = (shape(entry, "home") or {}).get("formation") or "", (shape(entry, "away") or {}).get("formation") or ""
+    try:
+        xh = tm["state"].features_for(teams[hi]["id"], teams[ai]["id"], True, fh, fa)
+        xa = tm["state"].features_for(teams[ai]["id"], teams[hi]["id"], False, fa, fh)
+        lh, la = open_mu_from_features(xh, True), open_mu_from_features(xa, False)
+    except Exception:  # noqa: BLE001
+        return None
+    return (lh, la) if lh and la else None
+
+
 def score(entry: dict, hrecs: list[dict], arecs: list[dict]) -> dict | None:
     """The single most likely scoreline, and where the goal means came from."""
     proj = ((entry.get("projection") or {}).get("ALL") or {}).get("Goals")
     source = "goals projection"
-    if isinstance(proj, list) and len(proj) == 2 and all(isinstance(x, (int, float)) for x in proj):
+    fx = entry.get("fixture") or {}
+    # Same-league games only: the profiles are built from each side's own
+    # league, and a Turkish side's numbers are not a Premier League side's
+    # (Besiktas came out 67% to beat Palace). European ties keep Elo + xG.
+    om = (open_mu(entry) if (fx.get("sport") or "football") == "football" and not fx.get("crossLeague")
+          else None)
+    if om:
+        lh, la = om
+        source = "style model (both sides' profiles; backtested)"
+    elif isinstance(proj, list) and len(proj) == 2 and all(isinstance(x, (int, float)) for x in proj):
         lh, la = float(proj[0]), float(proj[1])
     else:
         hx, ax = xg(hrecs, COUNT_N), xg(arecs, COUNT_N)

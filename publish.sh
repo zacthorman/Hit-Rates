@@ -81,6 +81,9 @@ fi
 # The same prices for the pages themselves, read in the browser: match odds,
 # Betfair's player markets and Paddy Power's (markets_sidecar.py).
 "$PY" markets_sidecar.py || echo "  reports/markets.json not written (continuing)"
+# The Game state tab on every football report (gamestate_live.py): result and
+# goals from the score model, how the game goes, and the lines it backs.
+"$PY" gamestate_live.py || echo "  reports/gamestate.json not written (continuing)"
 # The Paddy Power record (pplog.py): settle what finished, log every line on
 # games not yet started with our chance at it, then the results page.
 "$PY" pplog.py settle || echo "  pp log not settled (continuing)"
