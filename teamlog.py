@@ -8,10 +8,19 @@
 The player record (pplog.py) has been settling Paddy Power's player lines since
 October; the team lines the Value tab added on 20 Oct 2026 had no record at
 all, and on 21 Oct they were 26 of the 30 "takes" on the European pages. The
-page now calls none of them a take. This builds the evidence to decide
+page then called none of them a take. This builds the evidence to decide
 whether it should: every line, the price first and last seen, and what our
 number was at the time (the expectation and how it was made, so any spread
 or calibration can be tried on it later), then the result.
+
+Since teamline_backtest.py (TEAM-LINES.md), a team line can be a take only in
+a market that passed it, priced by the team model. So each line also carries
+the team model's chance and expected count, its market, and at each price
+seen the verdict teamlines.verdict() gives that chance (the page's rule: in a
+passed market it is the page's own verdict; in a failed one the page still
+prices from the record, and neither is ever a take). `report` splits the
+settled lines by market and verdict: the takes in a passed market are the
+ones the backtest has to be right about.
 
 Written to pplog/team-YYYY-MM.jsonl, beside the player log. Football only (the
 NBA and NFL team totals are points, which Betfair prices sharper). Reads the
@@ -120,8 +129,24 @@ def _expected(entry: dict, stat: str, t: int, lam) -> tuple[float, str, list] | 
 
 # ------------------------------------------------------------------ snapshot
 
+def _models(entry: dict) -> dict:
+    """teamlines.side_models(), or {} when the team model cannot be read."""
+    try:
+        import teamlines
+        return teamlines.side_models(entry)
+    except Exception as exc:
+        print(f"team log: team model skipped ({type(exc).__name__}: {exc})")
+        return {}
+
+
+def _verdict(row: dict, price: float):
+    import teamlines
+    return teamlines.verdict(row["tl_market"], row.get("model_p"), price) if row.get("model_p") else None
+
+
 def snapshot(args=None) -> int:
     import playerlines
+    import teamlines
     try:
         pp = json.loads(PP.read_text())
         mk = json.loads(MARKETS.read_text()).get("events") or {}
@@ -144,6 +169,7 @@ def snapshot(args=None) -> int:
         teams = entry.get("teams") or [{}, {}]
         order = _order(ev.get("ppHome") or "", teams)
         lam = _lambdas((mk.get(fid) or {}).get("match") or {})
+        models = _models(entry)
         for l in ev["team"]:
             if l["scope"] == "match":
                 a, b = _expected(entry, l["stat"], 0, lam), _expected(entry, l["stat"], 1, lam)
@@ -151,6 +177,7 @@ def snapshot(args=None) -> int:
                     continue
                 exp, basis = a[0] + b[0], (a[1] if a[1] == b[1] else "mixed")
                 vals, side, side_idx = None, "Match", None
+                shown = len(a[2]) >= 5 and len(b[2]) >= 5
             else:
                 t = order[0 if l["scope"] == "home" else 1]
                 x = _expected(entry, l["stat"], t, lam)
@@ -159,12 +186,17 @@ def snapshot(args=None) -> int:
                 exp, basis, vals = x
                 side = teams[t].get("name")
                 side_idx = t
+                shown = len(vals) >= 5     # teamValued() shows no line on fewer
             row = {"event_id": int(fid), "fixture": f"{meta['home']} v {meta['away']}",
                    "competition": meta.get("competition"), "kickoff": meta["kickoff"],
                    "cross_league": bool((entry.get("fixture") or {}).get("crossLeague")),
                    "scope": l["scope"], "team": side, "side": side_idx, "stat": l["stat"], "line": l["line"],
-                   "over": l["over"], "market": l.get("market")}
-            snap = {"t": round(now), "price": l["price"]}
+                   "over": l["over"], "market": l.get("market"),
+                   "tl_market": teamlines.market_key(l["stat"], l["scope"])}
+            mc = teamlines.model_chance(models, l["stat"], l["scope"], side_idx, l["line"], l["over"])
+            row.update({"model_p": round(mc[0], 4) if mc and shown else None,
+                        "model_mu": round(mc[1], 3) if mc else None})
+            snap = {"t": round(now), "price": l["price"], "verdict": _verdict(row, l["price"])}
             key = _key(row)
             if key in existing:
                 path, old = existing[key]
@@ -238,6 +270,28 @@ def settle(args=None) -> int:
     return done
 
 
+def summary(rows: list[dict]) -> dict:
+    """{(market, verdict): {n, won, said, pl}} over settled lines, at the last price seen.
+
+    The verdict is the page's at that price; lines logged before the team
+    model was recorded have none and count as "unpriced"."""
+    import teamlines
+    by = collections.defaultdict(list)
+    for r in rows:
+        if r.get("result") not in ("win", "lose"):
+            continue
+        key = r.get("tl_market") or teamlines.market_key(r["stat"], r["scope"])
+        by[(key, (r.get("last") or r["first"]).get("verdict") or "unpriced")].append(r)
+    out = {}
+    for k, rs in by.items():
+        price = lambda r: (r.get("last") or r["first"])["price"]  # noqa: E731
+        ps = [r["model_p"] for r in rs if r.get("model_p") is not None]
+        out[k] = {"n": len(rs), "won": sum(r["result"] == "win" for r in rs),
+                  "said": sum(ps) / len(ps) if ps else None,
+                  "pl": sum((price(r) - 1) if r["result"] == "win" else -1 for r in rs)}
+    return out
+
+
 def report(args=None) -> None:
     rows = [r for p in _files() for r in _read(p) if r["result"] in ("win", "lose")]
     if not rows:
@@ -251,6 +305,13 @@ def report(args=None) -> None:
         pl = sum((r["first"]["price"] - 1) if r["result"] == "win" else -1 for r in rs)
         print(f"  {stat:16} {basis:10} {len(rs):4} lines, won {won / len(rs):.0%}, "
               f"every line {pl:+.1f}u ({pl / len(rs):+.0%})")
+    import teamlines
+    print("\n  by market and the page's verdict at the last price (team model's chance where it priced the line):")
+    for (key, v), x in sorted(summary(rows).items()):
+        said = f", said {x['said']:.0%}" if x["said"] is not None else ""
+        passed = " (passed)" if teamlines.market_gate(key) else ""
+        print(f"  {teamlines.market_name(key):28}{passed:9} {v:9} {x['n']:4} lines, won {x['won'] / x['n']:.0%}"
+              f"{said}, {x['pl']:+.1f}u ({x['pl'] / x['n']:+.0%})")
 
 
 def main() -> None:

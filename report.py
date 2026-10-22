@@ -6366,6 +6366,10 @@ function verdictOf(v) {
   // NBA and NFL: the backtested model is about as sharp as Paddy Power on
   // real lines (checked 21 Oct 2026), so a gap that wide is more likely ours.
   const tooBig = (SPORT === "basketball" || SPORT === "american-football") && e > 0.3;
+  // Team lines: take only when the team model priced the line in a market
+  // that passed teamline_backtest.py, from that market's threshold to the 30%
+  // cap (teamlines.verdict() is the same rule for teamlog.py).
+  if (v.team) return v.tested && e >= v.threshold && e <= 0.3 && (v.n || 0) >= 5 && !stale ? "take" : "ok";
   if (e >= 0.05 && (v.n || 0) >= 5 && !v.unadjusted && !stale && !tooBig) return "take";
   return "ok";
 }
@@ -6756,10 +6760,13 @@ function teamValued() {
     let p = probOver(l.line, exp, vals);
     if (!l.over) p = 1 - p;
     p = calibrate(p);
+    // A market that passed teamline_backtest.py (TEAM-LINES.md) is priced by
+    // the team model, the number that was tested, and only those can be take.
+    const tested = teamModelChance(l);
+    if (tested) { p = tested.p; exp = tested.mu; basis = "model"; }
     const hits = vals.filter(v => l.over ? v > l.line : v < l.line).length;
-    // Not backtested on team markets yet: an edge over 30% on a main line is
-    // far more likely our number being off than Paddy Power's, so it can be
-    // acceptable but never take.
+    // An edge over 30% on a main line is far more likely our number being
+    // off than Paddy Power's, so it can be acceptable but never take.
     const edge = p * l.price - 1;
     // The record has to agree before it is a take: at least half the last
     // games landed, and the expectation within half and double the side's
@@ -6770,11 +6777,13 @@ function teamValued() {
     out.push({
       team: true, t: l.t, name, stat: l.stat, line: l.line, over: l.over, price: l.price,
       src: "pp", p, edge, k: hits, n: vals.length, expected: exp, basis,
-      // Never "take" for now: on 21 Oct 2026, 26 of the 30 takes on the
-      // European pages were team corners, all from the cross-league odds
-      // scaling, which has never been tested against results. Acceptable at
-      // most until the team lines are logged and settled like the player ones.
-      unadjusted: true, suspect: edge > 0.3, disagree,
+      // On 21 Oct 2026, 26 of the 30 takes on the European pages were team
+      // corners from the cross-league odds scaling, never tested against
+      // results. Since the backtest (22 Oct 2026) a team line is take only
+      // when the team model prices it in a market that passed, from that
+      // market's threshold (verdictOf); everything else is acceptable at most.
+      tested: !!tested, threshold: tested ? tested.threshold : null,
+      unadjusted: !tested, suspect: edge > 0.3, disagree,
       label: `${TEAM_STAT_LABEL[l.stat] || l.stat} ${l.over ? "over" : "under"} ${l.line}`,
     });
   });
@@ -6787,11 +6796,36 @@ function teamValued() {
   return [...best.values()];
 }
 
+/* The team model's chance for a Paddy Power team line, when its market
+   passed teamline_backtest.py. report.py attaches each side's expected count
+   and spread (DATA.teamModel, from context.team_model_mu) and the passed
+   markets (ALL.teamLineGate) at build time; a match total adds the two sides
+   and takes the spread the backtest fitted on match totals. */
+function teamModelChance(l) {
+  const gate = ((ALL.teamLineGate || {}).markets || {})[`${l.stat}|${l.scope === "match" ? "match" : "side"}`];
+  const sides = (DATA.teamModel || {})[l.stat];
+  if (!gate || !sides) return null;
+  let mu, alpha;
+  if (l.scope === "match") {
+    if (!sides[0] || !sides[1] || !(gate.alpha_match >= 0)) return null;
+    mu = sides[0].mu + sides[1].mu; alpha = gate.alpha_match;
+  } else {
+    const x = sides[l.t];
+    if (!x) return null;
+    mu = x.mu; alpha = x.alpha;
+  }
+  if (!(mu > 0)) return null;
+  const k = Math.floor(l.line);
+  const under = alpha < 1e-6 ? poissonCdf(k, mu) : negBinCdf(k, mu, 1 / alpha);
+  return { p: l.over ? 1 - under : under, mu, threshold: gate.threshold };
+}
+
 function teamRowHtml(v) {
   const long = v.p < 0.5;
   const cls = long ? "pp-long" : v.edge >= 0.05 ? "pp-pos" : v.edge <= -0.05 ? "pp-neg" : "";
   const basis = { projection: "opponent-adjusted projection", odds: "opponent from the match odds",
-                  record: "own record, no opponent adjustment" }[v.basis];
+                  record: "own record, no opponent adjustment",
+                  model: "team model, backtested" }[v.basis];
   return `<div class="pp-rung">
     ${verdictHtml(v)}<span class="pp-line"><b>${escapeHtml(v.name)}</b><br>${escapeHtml(v.label)}</span>
     <span class="pp-rec">${v.k}/${v.n} last ${v.n} &middot; expect ${v.expected.toFixed(1)} &middot; ${basis}${v.suspect ? " &middot; edge too big to trust" : v.disagree ? " &middot; record disagrees" : ""}</span>
@@ -6813,7 +6847,18 @@ function teamValueHtml() {
   return `<div class="pp-section">Team lines${g.take.length ? ` &middot; ${g.take.length} to take` : ""} (${rows.length})</div>
     <div class="pp-stat pp-ppcard">${rows.length ? rows.slice(0, 30).map(teamRowHtml).join("")
       : `<p class="note">Nothing worth taking or acceptable in the team markets.</p>`}
-    <p class="note">Paddy Power's corners, cards, fouls and shots-on-target lines for each side and the match, priced off the last ten games. Left off: ${g.long.length} long shot${g.long.length === 1 ? "" : "s"} and ${g.avoid.length} priced worse than our chance. Not yet tested against results, so none is called take: acceptable at most. Cards and fouls follow the referee as much as the teams: treat those as the weaker calls.</p></div>`;
+    <p class="note">Paddy Power's corners, cards, fouls and shots-on-target lines for each side and the match, priced off the last ten games. Left off: ${g.long.length} long shot${g.long.length === 1 ? "" : "s"} and ${g.avoid.length} priced worse than our chance. ${teamGateNote()} Cards and fouls follow the referee as much as the teams: treat those as the weaker calls.</p></div>`;
+}
+
+function teamGateNote() {
+  const g = ALL.teamLineGate || {};
+  const passed = Object.keys(g.markets || {}).map(k => {
+    const [stat, scope] = k.split("|");
+    return `${TEAM_STAT_LABEL[stat] || stat} (${scope === "match" ? "match total" : "one side"}) from a ${Math.round(g.markets[k].threshold * 100)}% edge`;
+  });
+  if (!passed.length) return "No team market has passed the backtest, so none is called take: acceptable at most.";
+  const short = g.shortfall > 0 ? ` A take's chance runs high (the backtest's takes landed ${Math.round(g.shortfall * 100)} points below it), so read its edge as smaller than shown.` : "";
+  return `Only markets that passed the backtest can be take, priced by the team model: ${passed.join(", ")}. Every other team line is acceptable at most.${short}`;
 }
 
 /* ------------------------------------------------- Value tab
@@ -10210,7 +10255,36 @@ def _attach_darts(payload: dict) -> None:
             pass
 
 
+def _attach_team_lines(payload: dict) -> None:
+    """The team model's numbers for the team lines in markets that passed
+    teamline_backtest.py (TEAM-LINES.md): each side's expected count and
+    spread on every football fixture, and the passed markets with their
+    thresholds. teamValued() calls a team line take only from these. Nothing
+    passed, nothing attached; a failure here never costs the report."""
+    try:
+        import teamlines
+        gate = teamlines.page_gate()
+    except Exception as exc:
+        print(f"  team lines gate skipped: {type(exc).__name__}: {exc}")
+        return
+    payload["teamLineGate"] = gate
+    if not gate["markets"]:
+        return
+    stats = sorted({k.split("|")[0] for k in gate["markets"]})
+    for f in payload.get("fixtures") or []:
+        if ((f.get("fixture") or {}).get("sport") or "football") != "football":
+            continue
+        try:
+            models = teamlines.side_models(f, stats)
+        except Exception as exc:
+            print(f"  team model skipped: {type(exc).__name__}: {exc}")
+            return
+        if models:
+            f["teamModel"] = models
+
+
 def write_report(payload: dict, path: Path) -> Path:
     _attach_darts(payload)
+    _attach_team_lines(payload)
     path.write_text(build_html(payload), encoding="utf-8")
     return path
