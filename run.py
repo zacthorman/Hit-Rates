@@ -33,6 +33,7 @@ from pathlib import Path
 import clubcolour
 import hitrates
 import report
+import site_guard
 import sofascore_api as api
 
 OUT_DIR = Path(__file__).parent / "reports"
@@ -1343,7 +1344,75 @@ def parse_picks(text: str, limit: int) -> list[int]:
     return picks
 
 
+def known_upcoming(tournament_id: int | None, within_days: float | None = None,
+                   reports_dir: Path | None = None, now: float | None = None) -> int:
+    """Fixtures in this competition that the reports on disk say are still to come.
+
+    Yesterday's page is evidence. If it lists Premier League games for
+    Saturday and today's fetch says there are none, today's fetch is wrong,
+    whatever it printed: the competition was renamed or renumbered upstream,
+    or every team's fixture list came back empty. Counted only within the
+    same horizon the build used, so a Champions League matchday three weeks
+    out does not contradict "nothing in the next three days".
+    """
+    reports_dir = reports_dir or OUT_DIR
+    if tournament_id is None or not reports_dir.exists():
+        return 0
+    now = time.time() if now is None else now
+    until = now + within_days * 86400 if within_days is not None else float("inf")
+    found = set()
+    for path in reports_dir.glob("*.html"):
+        data, _ = site_guard.report_payload(path)
+        for entry in (data or {}).get("fixtures", []):
+            fx = entry.get("fixture") or {} if isinstance(entry, dict) else {}
+            kickoff = fx.get("kickoff") or 0
+            if fx.get("tournamentId") == tournament_id and now < kickoff <= until:
+                found.add(fx.get("id"))
+    return len(found)
+
+
+def bad_fetch_reason(message: str, league: str | None, mark: int,
+                     within_days: float | None = None) -> str | None:
+    """Why a "No fixtures found" is really a failed fetch, or None if it is not.
+
+    run.py says "No fixtures found" for a quiet week, and update.py and the
+    --leagues loop both let that through without publishing a failure. It is
+    also exactly what comes back when every request for the fixture list was
+    refused or answered with the wrong shape, which is how a league used to
+    vanish from the site with a clean exit code.
+    """
+    if "No fixtures found" not in message:
+        return None
+    failed = api.failures_since(mark)
+    if failed:
+        return (f"the fetch failed, not a quiet week: {len(failed)} request(s) "
+                f"came back unusable, first {failed[0]}")
+    dropped = api.last_transport_error()
+    if dropped:
+        return f"the fetch failed, not a quiet week: could not reach SofaScore ({dropped})"
+    if league:
+        tid = api.tournament_id_for(league)
+        if tid is None and league.isdigit():
+            tid = int(league)
+        expected = known_upcoming(tid, within_days)
+        if expected:
+            return (f"the reports on disk list {expected} upcoming {league} "
+                    "fixture(s) and today's fetch found none: the competition "
+                    "may have been renamed or renumbered at SofaScore")
+    return None
+
+
 def main() -> None:
+    try:
+        _main()
+    except api.Blocked as exc:
+        # Being refused is a failed fetch, never a quiet week. Its own exit
+        # code, so update.py stops the publish even in the optional steps.
+        print(f"\nBlocked: {exc}")
+        raise SystemExit(site_guard.BAD_FETCH)
+
+
+def _main() -> None:
     parser = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -1469,6 +1538,7 @@ def main() -> None:
         built, failed, empty = [], [], []
         for name in wanted:
             print(f"\n{'=' * 60}\n{name}\n{'=' * 60}")
+            mark = api.failure_mark()
             try:
                 sub = argparse.Namespace(**vars(args))
                 sub.leagues = None
@@ -1478,6 +1548,11 @@ def main() -> None:
                 built.append(name)
             except SystemExit as exc:
                 print(f"  {name} failed: {exc}")
+                bad = bad_fetch_reason(str(exc), name, mark, args.within_days)
+                if bad:
+                    print(f"  {name}: {bad}")
+                    failed.append(name)
+                    continue
                 # A competition with nothing on this week is not a fault. The
                 # Champions League plays eight matchdays a season, so for most
                 # of the year "no fixtures" is the correct answer and must not
@@ -1507,7 +1582,20 @@ def main() -> None:
             )
         return
 
-    main_for(args)
+    mark = api.failure_mark()
+    try:
+        main_for(args)
+    except SystemExit as exc:
+        bad = bad_fetch_reason(str(exc), args.league, mark, args.within_days)
+        text = str(exc).strip()
+        if not bad and text.startswith(("Couldn't reach SofaScore",
+                                        "Couldn't read the team list")):
+            bad = "the fetch returned nothing to build from"
+        if bad:
+            print(text)
+            print(f"\nBad fetch: {bad}")
+            raise SystemExit(site_guard.BAD_FETCH)
+        raise
 
 
 def main_for(args) -> None:

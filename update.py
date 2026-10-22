@@ -13,6 +13,11 @@ Meant to be run on a schedule. What it does, in order:
     3. Rebuild the index and drop fixtures that have kicked off
     4. Commit, push, and publish to GitHub Pages
 
+Between those, site_guard.py checks every report and the index. A page that
+is empty, cut off, unreadable or built from a stale fixture list stops the run
+before anything is published, and its last good copy is put back on disk.
+PIPELINE-SAFETY.md lists every check and the test that proves it.
+
 Every step is checked before the next one runs. A failed fetch must not lead
 to a published site, because a half-built report looks exactly like a working
 one and you would bet off it.
@@ -34,6 +39,8 @@ import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+
+import site_guard
 
 ROOT = Path(__file__).parent
 CONFIG = ROOT / "update.json"
@@ -238,6 +245,29 @@ def show_status() -> None:
 
 
 def run(command: list[str], dry: bool, allow_fail: bool = False) -> bool:
+    code = run_code(command, dry)
+    if code != 0 and not allow_fail:
+        say(f"  FAILED with exit code {code}")
+        return False
+    return True
+
+
+def optional_build(command: list[str], dry: bool, label: str) -> None:
+    """A build step that may find nothing on, but must not hide a failed fetch.
+
+    These steps were all allow_fail, because "no NFL games this week" exits
+    non-zero and is normal. So was a SofaScore that refused every request,
+    which left the old page up and logged nothing worse than a line in the
+    middle of the log. run.py now exits BAD_FETCH for that case, and only
+    that case stops the run.
+    """
+    code = run_code(command, dry)
+    if code == site_guard.BAD_FETCH:
+        fail(f"the {label} fetch failed, nothing was published "
+             "(the live site keeps yesterday's pages)")
+
+
+def run_code(command: list[str], dry: bool) -> int:
     """Run a command, streaming its output into the log as it happens.
 
     Streaming rather than capturing, which is how this was written first. A
@@ -252,7 +282,7 @@ def run(command: list[str], dry: bool, allow_fail: bool = False) -> bool:
     """
     say("  $ " + " ".join(command))
     if dry:
-        return True
+        return 0
 
     env = dict(os.environ, PYTHONUNBUFFERED="1")
     process = subprocess.Popen(
@@ -269,11 +299,7 @@ def run(command: list[str], dry: bool, allow_fail: bool = False) -> bool:
                 say("    " + line.rstrip())
 
     process.wait()
-
-    if process.returncode != 0 and not allow_fail:
-        say(f"  FAILED with exit code {process.returncode}")
-        return False
-    return True
+    return process.returncode
 
 
 def run_with_retries(command: list[str], dry: bool,
@@ -294,6 +320,22 @@ def run_with_retries(command: list[str], dry: bool,
         time.sleep(delay)
         delay *= 2
     return False
+
+
+def check_reports(since: float | None) -> None:
+    """Stop the run if any report is unfit to publish, keeping yesterday's.
+
+    site_guard puts the last good copy of each bad report back (or moves it
+    aside when there is none), so the page on disk is the one already live.
+    """
+    problems = site_guard.vet(since=since)
+    if not problems:
+        say("report check passed")
+        return
+    say("report check FAILED:")
+    for line in problems:
+        say(f"  {line}")
+    fail(f"report check failed, {problems[0]}; nothing was published")
 
 
 def python_exe() -> str:
@@ -350,7 +392,9 @@ def main() -> None:
     if not args.dry:
         LOCK.write_text(str(os.getpid()), encoding="utf-8")
 
-    started = time.time()
+    # A second early, so a report written in the same second still counts as
+    # built by this run.
+    started = time.time() - 1
     settings = load_config()
     python = python_exe()
 
@@ -407,6 +451,13 @@ def main() -> None:
             if not ensure_flaresolverr():
                 fail("FlareSolverr is not answering, nothing was fetched")
 
+        # Keep a copy of every page that is fit to publish before anything is
+        # rebuilt. A page that fails site_guard later is replaced by its copy
+        # from here, so a bad build can never overwrite a good page for good.
+        if not args.dry:
+            kept = site_guard.snapshot()
+            say(f"kept a last good copy of {kept} report(s)")
+
         # 0. Settle yesterday's tracked bets before anything else touches the
         #    network, so LESSONS.md and calibration.json are current by the time
         #    anyone reads today's picks. Never fatal: a settle problem must not
@@ -454,7 +505,7 @@ def main() -> None:
                            "--no-open", "--players", "--h2h"]
                 if settings.get("referee"):
                     nations.append("--referee")
-                run(nations, args.dry, allow_fail=True)
+                optional_build(nations, args.dry, "Nations League")
 
             # 1b2. European club competitions: the Champions League (Tuesday
             #      and Wednesday) and the Europa League (Thursday). Their own
@@ -480,15 +531,15 @@ def main() -> None:
                              "newsignings", "referee"):
                     if settings.get(flag):
                         comp.append(f"--{flag}")
-                run(comp, args.dry, allow_fail=True)
+                optional_build(comp, args.dry, name)
 
             # 1c. The NFL. Its own step: 20 games rather than 38, and a
             #     week with no games simply finds nothing. Never fatal.
             if settings.get("nfl"):
                 say("building the NFL slate")
-                run([python, "run.py", "--league", "NFL", "--games", "20",
-                     "--players", "--adjust", "--h2h", "--no-open"],
-                    args.dry, allow_fail=True)
+                optional_build([python, "run.py", "--league", "NFL", "--games", "20",
+                                "--players", "--adjust", "--h2h", "--no-open"],
+                               args.dry, "NFL")
 
             # 1d. Darts. Every PDC tour match in the next few days, swept
             #     from the seed players in run.py, one page at darts.html.
@@ -499,9 +550,9 @@ def main() -> None:
             darts_days = settings.get("darts")
             if darts_days:
                 say(f"building darts, next {darts_days} day(s)")
-                run([python, "run.py", "--darts", str(darts_days),
-                     "--games", "20", "--h2h", "--no-open"],
-                    args.dry, allow_fail=True)
+                optional_build([python, "run.py", "--darts", str(darts_days),
+                                "--games", "20", "--h2h", "--no-open"],
+                               args.dry, "darts")
 
             # 1e. MLB. Same shape as the NFL step: the 30-team list, each
             #     team's next game in competition 11205. In October only the
@@ -509,9 +560,9 @@ def main() -> None:
             #     nobody does, so this finds nothing and moves on. Never fatal.
             if settings.get("mlb"):
                 say("building the MLB slate")
-                run([python, "run.py", "--league", "MLB", "--games", "20",
-                     "--players", "--adjust", "--h2h", "--no-open"],
-                    args.dry, allow_fail=True)
+                optional_build([python, "run.py", "--league", "MLB", "--games", "20",
+                                "--players", "--adjust", "--h2h", "--no-open"],
+                               args.dry, "MLB")
 
             # 1f. The NBA. Same shape as the NFL and MLB steps, but only games
             #     in the next two days: there are games most nights, and a
@@ -519,15 +570,23 @@ def main() -> None:
             #     build here for pages that are stale by tomorrow. Never fatal.
             if settings.get("nba"):
                 say("building the NBA slate")
-                run([python, "run.py", "--league", "NBA", "--games", "20",
-                     "--players", "--adjust", "--h2h", "--within-days", "2",
-                     "--no-open"],
-                    args.dry, allow_fail=True)
+                optional_build([python, "run.py", "--league", "NBA", "--games", "20",
+                                "--players", "--adjust", "--h2h", "--within-days", "2",
+                                "--no-open"],
+                               args.dry, "NBA")
+
+        # 1z. Every report checked before anything else reads it. Only the
+        #     ones written by this run get the stale-cache check: rerender
+        #     below rewrites them all, so after it every file looks new.
+        if not args.dry:
+            check_reports(started)
 
         # 2. Re-render, so reports built by older code pick up new page
         #    features. Cheap: the data is already inside each file.
         if not run([python, "rerender.py"], args.dry):
             fail("re-rendering the reports failed")
+        if not args.dry:
+            check_reports(None)
 
         # 3. Index. Played fixtures come off the front page here.
         index = [python, "make_index.py"]
@@ -535,6 +594,12 @@ def main() -> None:
             index.append("--prune")
         if not run(index, args.dry):
             fail("rebuilding the index failed")
+        if not args.dry:
+            bad = site_guard.index_problems(ROOT / "index.html", site_guard.REPORTS)
+            if bad:
+                put_back = site_guard.restore_index()
+                fail(f"{bad[0]}, nothing was published"
+                     + (" (yesterday's index put back)" if put_back else ""))
 
         # 4. Publish. Only if there is something to publish.
         if args.no_push or not settings.get("push"):

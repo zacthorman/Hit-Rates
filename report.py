@@ -10179,6 +10179,7 @@ def _attach_darts(payload: dict) -> None:
 
 
 def write_report(payload: dict, path: Path) -> Path:
+    import site_guard
     _attach_darts(payload)
-    path.write_text(build_html(payload), encoding="utf-8")
+    site_guard.atomic_write(path, build_html(payload))
     return path

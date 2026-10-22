@@ -757,7 +757,8 @@ def main(argv=None) -> None:
 
     page = build(None if args.all else args.hours)
     out = ROOT / "tonight.html"
-    out.write_text(page, encoding="utf-8")
+    import site_guard
+    site_guard.atomic_write(out, page)
     print(f"Wrote {out} ({len(page)/1024:.0f} KB)")
 
 

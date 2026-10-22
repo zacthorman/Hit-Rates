@@ -372,6 +372,28 @@ def last_transport_error() -> str | None:
     return _last_transport_error
 
 
+# Every request that came back with nothing usable, in order: refused until
+# the retries ran out, a server error, a body that was not JSON, an error body
+# dressed as a 200, or a 200 missing the field the caller reads. A genuine 404
+# is not here, because SofaScore answers "this team has no next fixture" with
+# one. run.py reads this to tell "nothing on this week" apart from "the fetch
+# failed and came back empty", which otherwise print the same message.
+_failures: list[str] = []
+
+
+def note_failure(path: str, reason: str) -> None:
+    _failures.append(f"{reason} on {path}")
+
+
+def failure_mark() -> int:
+    """A bookmark, so a caller can ask what failed since it started."""
+    return len(_failures)
+
+
+def failures_since(mark: int = 0) -> list[str]:
+    return _failures[mark:]
+
+
 def _cache_file(path: str) -> Path:
     """Human-readable cache filename, so you can browse what you've collected.
 
@@ -431,6 +453,7 @@ def get_json(
             except json.JSONDecodeError:
                 if verbose:
                     print(f"    non-JSON response on {path}")
+                note_failure(path, "non-JSON response")
                 return None
             # FlareSolverr reports the page Chrome rendered, so an API 404
             # arrives as status 200 with {"error": {"code": 404}} as the body.
@@ -439,6 +462,8 @@ def get_json(
                 code = (data.get("error") or {}).get("code")
                 if verbose:
                     print(f"    {code} on {path} (error body)")
+                if code != 404:
+                    note_failure(path, f"error body {code}")
                 return None
             cache_file.write_text(json.dumps(data))
             # Sleep only after a real network call. Cache hits return above,
@@ -478,6 +503,7 @@ def get_json(
             print(f"    unexpected {response.status_code} on {path}")
         time.sleep(2**attempt)
 
+    note_failure(path, f"gave up after {ATTEMPTS} attempts")
     return None
 
 
@@ -628,10 +654,30 @@ def _team_ids_from_fixtures(tournament_id: int, season_id: int) -> list[int]:
     return ids
 
 
+# A cached "next fixtures" answer is thrown away and asked for again when
+# every game in it kicked off longer ago than this. The cache age is read off
+# the file's mtime, and anything that touches the file (a restore, an unpacked
+# archive, a copied cache folder) makes last week's fixture list look fresh.
+STALE_NEXT_HOURS = 3
+
+
 def team_next_events(team_id: int, page: int = 0) -> list[dict]:
     """A team's upcoming fixtures, soonest first."""
-    data = get_json(f"team/{team_id}/events/next/{page}", max_age_hours=6)
-    return (data or {}).get("events", [])
+    path = f"team/{team_id}/events/next/{page}"
+    data = get_json(path, max_age_hours=6)
+    events = (data or {}).get("events", []) if isinstance(data, dict) else []
+    starts = [e.get("startTimestamp") or 0 for e in events if isinstance(e, dict)]
+    if starts and max(starts) < time.time() - STALE_NEXT_HOURS * 3600:
+        print(f"    cached fixture list for team {team_id} is stale, refetching")
+        _cache_file(path).unlink(missing_ok=True)
+        data = get_json(path, max_age_hours=6)
+        events = (data or {}).get("events", []) if isinstance(data, dict) else []
+    if data is not None and (not isinstance(data, dict) or "events" not in data):
+        # A 200 without the field. Read as "no fixtures" it is a quiet week;
+        # it is really SofaScore changing the shape of the answer.
+        note_failure(path, "answer has no 'events' field")
+        return []
+    return [e for e in events if isinstance(e, dict)]
 
 
 def team_near_events(team_id: int) -> dict:
