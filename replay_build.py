@@ -28,7 +28,9 @@ replays the same steps against a fixed weekend that is already in the cache:
 It never runs publish.sh, never touches git, and writes only inside WORKDIR.
 Python's hash seed is fixed so set ordering cannot differ between runs.
 
-`compare` walks both trees and reports every file that differs. Text files
+`compare` walks both trees and reports every output file that differs
+(source files, *.py, *.sh, *.md and tests/, are left out: those are what
+changed on purpose). Text files
 that differ only in timestamps are compared again with the timestamps masked
 and every number rounded to 12 significant figures, and reported separately.
 """
@@ -278,7 +280,9 @@ def run_all(workdir: Path, at_text: str, profile: bool = False) -> None:
 
 # ------------------------------------------------------------ the compare
 
-SKIP_PARTS = {"cache", "_replay", "__pycache__", ".git"}
+SKIP_PARTS = {"cache", "_replay", "__pycache__", ".git", "tests"}
+# Source, not output: the two trees are expected to differ here.
+SKIP_SUFFIXES = {".py", ".sh", ".md", ".ipynb"}
 STAMP = re.compile(
     r"\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:?\d{2}| ?UTC)?"
     r"|\b\d{1,2}:\d{2}(:\d{2})? ?UTC\b"
@@ -290,7 +294,8 @@ def _files(root: Path) -> dict[str, Path]:
     out = {}
     for path in root.rglob("*"):
         rel = path.relative_to(root)
-        if path.is_file() and not path.is_symlink() and not (set(rel.parts) & SKIP_PARTS):
+        if (path.is_file() and not path.is_symlink() and not (set(rel.parts) & SKIP_PARTS)
+                and path.suffix not in SKIP_SUFFIXES and ".bak-" not in path.name):
             out[str(rel)] = path
     return out
 
