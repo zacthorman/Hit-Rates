@@ -1330,8 +1330,31 @@ def _team_model():
     return _TM
 
 
-def team_model_mu(stat: str, team_id, opp_id, home: bool, f_own: str, f_opp: str):
+# Yellow cards have their own model (cards_model.py, cards_fit.json): own and
+# provoked cards over 10 and 38 games, the competition's card rate, fouls
+# and Elo, with SofaScore's missing 0-0 rows counted as 0-0s. Walk-forward
+# it beat the team model on every window (CARDS-MODEL.md), so it replaces
+# it for that stat; anything it cannot reach falls back to the team model.
+_CM: dict = {}
+
+
+def _cards_model():
+    if not _CM:
+        try:
+            import cards_model
+            _CM["live"] = cards_model.Live(CACHE)
+        except Exception as exc:
+            _CM["error"] = str(exc)
+    return _CM.get("live")
+
+
+def team_model_mu(stat: str, team_id, opp_id, home: bool, f_own: str, f_opp: str, tid=None):
     """Expected count and spread for one side's stat tonight, or None."""
+    if stat == "Yellow cards":
+        cm = _cards_model()
+        r = cm.side_mu(team_id, opp_id, home, tid) if cm else None
+        if r:
+            return r
     tm = _team_model()
     m = (tm.get("models") or {}).get(stat)
     if not m or "state" not in tm:
@@ -1398,7 +1421,8 @@ def gs_adjust(leg: dict, entry: dict, gs: dict | None) -> dict | None:  # noqa: 
     side = teams[t].get("side")
     sh_me, sh_op = shape(entry, side) or {}, shape(entry, "away" if side == "home" else "home") or {}
     r = team_model_mu(stat, teams[t].get("id"), teams[1 - t].get("id"), side == "home",
-                      sh_me.get("formation"), sh_op.get("formation"))
+                      sh_me.get("formation"), sh_op.get("formation"),
+                      tid=(entry.get("fixture") or {}).get("tournamentId"))
     if not r:
         return _gs_adjust_simple(leg, entry, gs)
     p = _nb_at_least(k, r["mu"], r["alpha"])

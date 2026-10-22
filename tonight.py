@@ -34,6 +34,7 @@ from pathlib import Path
 
 import make_index
 import parlay
+import value_cap
 import weekend
 
 ROOT = Path(__file__).resolve().parent
@@ -625,8 +626,10 @@ def build(hours: float | None) -> str:
                 return g["chance"]
             c = weekend.chance(l) if (l.get("pStrength") or l.get("pShrunk") or l.get("pExchange")) else None
             return c if c is not None else 0
-        own = sorted(pool, key=lambda l: (-tonight_chance(l) * (l.get("fair") or 1) ** 0.5,
-                                          -(l.get("total") or 0)))[:SINGLES_PER_FIXTURE]
+        # One leg per player (value_cap.py): two legs on one player land
+        # together, so a second is the same bet twice, not a second bet.
+        own = value_cap.cap_per_player(sorted(pool, key=lambda l: (-tonight_chance(l) * (l.get("fair") or 1) ** 0.5,
+                                                                   -(l.get("total") or 0))))[:SINGLES_PER_FIXTURE]
         lead_log.append((meta, own[0] if own else None, tonight_chance(own[0]) if own else None))
 
         singles = "".join(leg_row(l, entry) for l in own) or "<tr><td colspan='4'>nothing qualified</td></tr>"

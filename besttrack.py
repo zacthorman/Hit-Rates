@@ -94,6 +94,7 @@ def snapshot(args=None) -> int:
     import make_index
     import parlay
     import tonight
+    import value_cap
     import weekend
 
     now = time.time()
@@ -142,9 +143,11 @@ def snapshot(args=None) -> int:
 
     for entry, meta in upcoming:
         sport = weekend.sport_of(entry)
-        own = sorted([l for l in tonight.legs_of(entry, meta)
-                      if isinstance(l.get("fair"), (int, float)) and l["fair"] >= tonight.MIN_PRICE],
-                     key=lambda l: (-weekend.sort_value(l), -(l.get("total") or 0)))[:TOP_SINGLES]
+        # One leg per player, as tonight.html shows them (value_cap.py).
+        own = value_cap.cap_per_player(
+            sorted([l for l in tonight.legs_of(entry, meta)
+                    if isinstance(l.get("fair"), (int, float)) and l["fair"] >= tonight.MIN_PRICE],
+                   key=lambda l: (-weekend.sort_value(l), -(l.get("total") or 0))))[:TOP_SINGLES]
         for l in own:
             add("Fixture single", [l], sport, l.get("fair"), meta)
         # The player lines tonight.html shows, exactly as shown, so they are
