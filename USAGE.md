@@ -621,7 +621,7 @@ Its stated chances land within a point or two of what happened from 20% to 80%. 
 
 What it does not do is pick more winners. The top three per matchday land about as often as the old ranking's (bankers 72.7% against 70.6%, best singles 45.5% against 50.8%, both inside the noise). The gain is that the numbers are true and the Champions League gets real picks. The top of the board still runs about 8 points ahead of what lands, because choosing the best of thousands of honest estimates picks the lucky ones; treat the top pick's chance as a ceiling.
 
-Known gaps: La Liga crashed the replay in `hitrates.league_ratings` (a divide by zero, pre-existing, not chased), so it is not in the fit. The slopes are fitted on this season's reports, a mild look-ahead for one number per stat. Builders and the parlay are unchanged.
+Known gaps: La Liga crashed the replay in `hitrates.league_ratings` (a divide by zero), so it is not in the fit. Fixed 22 October: on a thin early-season fit a rating collapses towards zero, and once it is small enough, `base * rating` rounds to 0.0 while the rating still tests above zero, so the guard now checks the product. The cached Premier League fit for 18 January 2026 (first-half red cards) failed the same way and is the test (`tests/test_league_ratings.py`); see PROOF-2026-10-22.md. La Liga still needs the replay rerun to join the fit. The slopes are fitted on this season's reports, a mild look-ahead for one number per stat. Builders and the parlay are unchanged.
 
 ## NFL Defences tab: lines in every matchup (15 October)
 
