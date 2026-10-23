@@ -1,7 +1,8 @@
 """
 Which of the page's betting flags have earned their place? A read-only review.
 
-    python rule_review.py            # print every table in RULE-REVIEW.md
+    python rule_review.py                          # print every table in RULE-REVIEW.md
+    python rule_review.py acceptable [--pplog DIR]  # the Paddy Power verdict tiers from pplog/
 
 Every rule on the site that calls a bet value, take, acceptable or a pick is
 measured here against what has actually settled, in two ways:
@@ -285,10 +286,21 @@ def pp_rows(folder: Path = PPLOG) -> list[dict]:
     return rows
 
 
-def pp_verdict(p: float, price: float, n: int = 5, heuristic: bool = False) -> str | None:
-    """report.py verdictOf after this review, in Python, for the tests and for
-    scoring pplog: nothing is called take; a price that beats our chance by 5%
-    or more is avoid, like one 5% worse."""
+# Football player lines where our chance runs high (ACCEPTABLE-CHECK.md):
+# acceptable there is a long shot. report.py RUNS_HIGH.
+RUNS_HIGH_STATS = {"Fouls", "Fouled", "Tackles"}
+
+
+def runs_high(stat, line, sport="football", over=True) -> bool:
+    return sport == "football" and over is not False and stat in RUNS_HIGH_STATS and (line or 0) >= 1.5
+
+
+def pp_verdict(p: float, price: float, n: int = 5, heuristic: bool = False, stat: str | None = None,
+               line: float | None = None, sport: str = "football", over: bool = True) -> str | None:
+    """report.py verdictOf for a player line, in Python, for the tests and
+    for scoring pplog: nothing is called take; a price that beats our chance
+    by 5% or more is avoid, like one 5% worse; the card estimate and the
+    lines where our chance runs high are long shots, never acceptable."""
     if not (price > 1) or not (p > 0):
         return None
     e = p * price - 1
@@ -298,7 +310,9 @@ def pp_verdict(p: float, price: float, n: int = 5, heuristic: bool = False) -> s
         return "long"
     if e >= PP_EDGE:
         return "avoid"
-    return "long" if heuristic else "ok"
+    if heuristic or runs_high(stat, line, sport, over):
+        return "long"
+    return "ok"
 
 
 def pp_verdict_before(p: float, price: float, n: int = 5, heuristic: bool = False,
@@ -341,6 +355,102 @@ def pp_from_log(rows: list[dict]) -> list[dict]:
                             "said": mean_or_none(r["first"]["chance"] for r in bets),
                             "roi": mean_or_none(r["_ret"] for r in bets), "lo": lo, "hi": hi})
     return out
+
+
+# --------------------------------------------------- Paddy Power: acceptable
+
+PRICE_BANDS = ((1.0, 1.5), (1.5, 2.0), (2.0, 3.0), (3.0, 5.0), (5.0, 1e9))
+VERDICT_NAMES = {"ok": "acceptable", "long": "long shot", "avoid": "avoid"}
+
+
+def price_band(price: float) -> str:
+    for lo, hi in PRICE_BANDS:
+        if lo <= price < hi:
+            return f"{lo:.2f}-{hi:.2f}" if hi < 1e8 else f"{lo:.2f}+"
+    return "?"
+
+
+def acceptable_rows(rows: list[dict]) -> list[dict]:
+    """Every settled pplog line with the verdict the page gives it now, at
+    the price and chance first seen."""
+    out = []
+    for r in rows:
+        f = r.get("first") or {}
+        if r.get("result") not in ("win", "lose") or not f.get("price") or f.get("chance") is None:
+            continue
+        v = pp_verdict(f["chance"], f["price"], r.get("n10") or 0, heuristic=r.get("stat") == "Card",
+                       stat=r.get("stat"), line=r.get("line"), sport=r.get("sport") or "football",
+                       over=r.get("over", True))
+        if v is None:
+            continue
+        last = (r.get("last") or {}).get("price")
+        out.append({"event_id": r["event_id"], "kickoff": r["kickoff"], "sport": r.get("sport") or "football",
+                    "stat": r.get("stat"), "side": "over" if r.get("over", True) else "under",
+                    "verdict": v, "p": f["chance"], "price": f["price"], "won": r["result"] == "win",
+                    "ret": (f["price"] - 1) if r["result"] == "win" else -1.0,
+                    "shortened": (last < f["price"]) if last and f.get("t") != (r.get("last") or {}).get("t") else None,
+                    "source": f.get("source") or "site"})
+    return out
+
+
+def acceptable_block(rows: list[dict]) -> dict:
+    """Landed against said and the return at the price first seen, with 95%
+    intervals resampling whole fixtures."""
+    if not rows:
+        return {"n": 0}
+    n = len(rows)
+    out = {"n": n, "won": sum(r["won"] for r in rows), "said": sum(r["p"] for r in rows) / n,
+           "profit": sum(r["ret"] for r in rows)}
+    out["landed"] = out["won"] / n
+    out["gap"] = out["landed"] - out["said"]
+    out["roi"] = out["profit"] / n
+    out["gap_lo"], out["gap_hi"] = A.cluster_boot(rows, lambda rs: (sum(r["won"] for r in rs) - sum(r["p"] for r in rs))
+                                                  / len(rs) if rs else None, n=1000)
+    out["roi_lo"], out["roi_hi"] = A.cluster_boot(rows, lambda rs: sum(r["ret"] for r in rs) / len(rs) if rs else None,
+                                                  n=1000)
+    seen = [r["shortened"] for r in rows if r["shortened"] is not None]
+    out["shortened"] = sum(seen) / len(seen) if seen else None
+    return out
+
+
+def acceptable_scoreboard(rows: list[dict]) -> str:
+    """The verdict tiers on the Paddy Power record: by verdict, then by sport,
+    stat and price band within each, and the earlier and later halves of the
+    record by kick-off."""
+    A_rows = acceptable_rows(rows)
+    if not A_rows:
+        return "No settled Paddy Power lines in pplog/."
+    head = ["Bets", "Won", "Said", "Landed", "Landed minus said", "95%", "Profit", "ROI", "95%",
+            "Price shortened"]
+
+    def cells(b):
+        if not b.get("n"):
+            return [0] + ["-"] * 9
+        return [b["n"], b["won"], pct(b["said"], False), pct(b["landed"], False), pct(b["gap"]),
+                iv(b["gap_lo"], b["gap_hi"]), f"{b['profit']:+.1f}u", pct(b["roi"]), iv(b["roi_lo"], b["roi_hi"]),
+                pct(b["shortened"], False) if b["shortened"] is not None else "-"]
+
+    ko = sorted(r["kickoff"] for r in A_rows)
+    mid = ko[len(ko) // 2]
+    out = [f"{len(A_rows):,} settled Paddy Power lines, verdicts as the page gives them now, at the price first seen. "
+           f"Earlier half: kick-off before {day(mid)}; later half: from it.\n"]
+    rows_out = []
+    for v in ("ok", "long", "avoid"):
+        for label, sel in (("all", lambda r: True), ("earlier", lambda r: r["kickoff"] < mid),
+                           ("later", lambda r: r["kickoff"] >= mid)):
+            rows_out.append([VERDICT_NAMES[v], label] + cells(acceptable_block(
+                [r for r in A_rows if r["verdict"] == v and sel(r)])))
+    out.append(table(["Verdict", "Half"] + head, rows_out))
+    for title, key in (("sport", lambda r: r["sport"]), ("stat", lambda r: f"{r['sport']} · {r['stat']} {r['side']}"),
+                       ("price band", lambda r: price_band(r["price"])), ("chance from", lambda r: r["source"])):
+        groups = defaultdict(list)
+        for r in A_rows:
+            if r["verdict"] == "ok":
+                groups[key(r)].append(r)
+        out.append(f"\nAcceptable by {title}:\n")
+        out.append(table([title.capitalize()] + head,
+                         [[k] + cells(acceptable_block(g)) for k, g in sorted(groups.items(), key=lambda kv: -len(kv[1]))]))
+    return "\n".join(out)
 
 
 def _text(s: str) -> str:
@@ -528,7 +638,16 @@ MEASURE_HEAD = ["Bets", "Site said", "Betfair said", "Seen at close", "Worth at 
                 "Won", "ROI", "95%"]
 
 
-def main() -> None:
+def main(argv=None) -> None:
+    import argparse
+    a = argparse.ArgumentParser(description="The page's betting rules against what settled.")
+    a.add_argument("cmd", nargs="?", choices=("all", "acceptable"), default="all")
+    a.add_argument("--pplog", default=str(PPLOG), help="folder of pplog *.jsonl files (default pplog/)")
+    args = a.parse_args(argv)
+    if args.cmd == "acceptable":
+        rows = pp_rows(Path(args.pplog))
+        print(acceptable_scoreboard(rows) if rows else f"No pplog files in {args.pplog}.")
+        return
     log = json.loads(LOG.read_text())
     res = A.resolve(log, A.load_sources(log))
     rows = bet_rows(log, res)
@@ -555,8 +674,9 @@ def main() -> None:
                   f"{m['profit']:+.2f}u"] for label, m in (("Before", before), ("After", after))]) + "\n")
 
     print("## 3. Paddy Power: take (ours 50%+, beats the price by 5%+, five games+)\n")
-    log_rows = pp_rows()
+    log_rows = pp_rows(Path(args.pplog))
     if log_rows:
+        print(acceptable_scoreboard(log_rows) + "\n")
         print(table(["Period", "Verdicts", "Verdict", "Bets", "Won", "Said", "ROI", "95%"],
                     [[x["period"], x["when"], x["verdict"], x["n"], x["won"], pct(x["said"], False),
                       pct(x["roi"]), iv(x["lo"], x["hi"])] for x in pp_from_log(log_rows)]) + "\n")

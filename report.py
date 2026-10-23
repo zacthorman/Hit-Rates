@@ -6163,7 +6163,9 @@ function rungHtml(key, label, record, ours, book, bf, addIndex) {
   const ref = typed || b3 || ppp || (bf && bf.back) || est;
   const real = typed || b3 || ppp || (bf && bf.back);
   return `<div class="pp-rung" data-pkey="${escapeHtml(key)}" data-pp="${ours}" data-pdef="${b3 || ppp || (bf && bf.back) || est || ""}">
-    ${real ? verdictHtml({ p: ours, price: real, n: 5 }) : ""}<span class="pp-line">${label}</span>
+    ${real ? verdictHtml({ p: ours, price: real, n: 5, over: true,
+                           stat: parts.length === 4 ? parts[2] : null,
+                           line: parts.length === 4 ? parseFloat(parts[3]) : null }) : ""}<span class="pp-line">${label}</span>
     <span class="pp-rec">${record}</span>
     <span class="pp-kv"><small>Ours</small><b>${Math.round(ours * 100)}%</b></span>
     <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(ours))}</b></span>
@@ -6366,7 +6368,8 @@ const BOOKS = { pp: "Paddy Power", b365: "Bet365" };
    they would have landed 50% (95% 43% to 58%). An edge that size has been
    our number being wrong, so it is marked avoid, like a price 5% worse.
    Acceptable: more likely than not and about fair (within 5% either way).
-   Not yet measured directly; rule_review.py does so from pplog/.
+   Replayed over the cache (ACCEPTABLE-CHECK.md) it holds for starters,
+   except on the lines RUNS_HIGH names, which are long shots instead.
    Long shot: under 50% by our numbers. However big the edge looks, it rests
    on one or two games in ten, so it is never called acceptable.
    Avoid: the price is more than 5% worse than our chance, or more than 5%
@@ -6389,7 +6392,19 @@ function verdictOf(v) {
   // 2026 it showed edges of +80% to +150% on players at 9.0 to 12.0, which
   // is the estimate being wrong, not value.
   if (v.heuristic) return "long";
+  // Football fouls, fouled and tackles at 2 or more: our number runs high
+  // there (ACCEPTABLE-CHECK.md). Replayed over the cache, starters we made
+  // 50%+ on those lines landed 7.6 points under what we said before
+  // September and 7.3 under from September (95% -8.6 to -5.9), so a price
+  // fair by our numbers lost about 13%. A long shot, not acceptable.
+  if (RUNS_HIGH(v)) return "long";
   return "ok";
+}
+
+/* The player lines where our chance has run high: see verdictOf. */
+const RUNS_HIGH_STATS = new Set(["Fouls", "Fouled", "Tackles"]);
+function RUNS_HIGH(v) {
+  return SPORT === "football" && !v.team && v.over !== false && RUNS_HIGH_STATS.has(v.stat) && v.line >= 1.5;
 }
 
 function verdictHtml(v) {
@@ -6399,7 +6414,7 @@ function verdictHtml(v) {
   const why = {
     take: "More likely than not, and the price beats our chance by 5% or more, on a record of five games or more",
     ok: "More likely than not and close to a fair price by our numbers",
-    long: "Under 50% by our numbers: a big edge here is noise, not value",
+    long: "Under 50% by our numbers, or a football fouls, fouled or tackles line at 2 or more, where our number has run high: a big edge here is noise, not value",
     avoid: "The price is more than 5% worse than our chance, or more than 5% better: on Paddy Power's settled lines an edge that size has been our number being wrong",
   }[k];
   return `<span class="vd vd-${k}" title="${why}">${text}</span>`;

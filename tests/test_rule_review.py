@@ -147,7 +147,9 @@ class Verdict(unittest.TestCase):
 
     @unittest.skipUnless(NODE, "node not installed")
     def test_page_matches_mirror_and_never_takes(self):
-        fn = js_function((ROOT / "report.py").read_text(), "verdictOf")
+        src = (ROOT / "report.py").read_text()
+        fn = ('const RUNS_HIGH_STATS = new Set(["Fouls", "Fouled", "Tackles"]);\n'
+              + js_function(src, "verdictOf") + js_function(src, "RUNS_HIGH"))
         rng = random.Random(1)
         grid = [(round(rng.uniform(0.05, 0.98), 3), round(rng.uniform(1.02, 12), 2), rng.random() < 0.2,
                  rng.randint(0, 10), rng.random() < 0.3) for _ in range(2000)]
