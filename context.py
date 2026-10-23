@@ -37,6 +37,7 @@ from __future__ import annotations
 
 import json
 import math
+import probability
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -320,8 +321,7 @@ def _split_to(total: float, edge: float) -> tuple[float, float]:
     return total * share, total * (1 - share)
 
 
-def _poisson(k: int, lam: float) -> float:
-    return math.exp(-lam) * lam ** k / math.factorial(k)
+_poisson = probability.poisson_pmf
 
 
 # The scoreline model. Walk-forward over 3,595 cached matches (CASE-SCORE.md),
@@ -709,22 +709,7 @@ def gs_fit() -> dict:
     return _FIT
 
 
-def _nb_at_least(k: int, mu: float, alpha: float) -> float:
-    if k <= 0:
-        return 1.0
-    if alpha < 1e-6:
-        cdf, term = 0.0, math.exp(-mu)
-        for i in range(k):
-            cdf += term
-            term *= mu / (i + 1)
-        return max(0.0, 1 - cdf)
-    r = 1 / alpha
-    p = r / (r + mu)
-    cdf, term = 0.0, p ** r
-    for i in range(k):
-        cdf += term
-        term *= (i + r) / (i + 1) * (1 - p)
-    return max(0.0, 1 - cdf)
+_nb_at_least = probability.nb_at_least
 
 
 def _model(scope: str, stat: str, own: float, allow: float, f: float, home: bool | None = None):

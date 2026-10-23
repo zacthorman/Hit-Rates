@@ -32,6 +32,7 @@ sys.path.insert(0, str(ROOT))
 
 import learner  # noqa: E402
 import make_index  # noqa: E402
+import pagedata  # noqa: E402
 import report  # noqa: E402
 import run  # noqa: E402
 import site_guard  # noqa: E402
@@ -75,9 +76,10 @@ class Pages:
 
 def with_payload(text: str, payload) -> str:
     """The same page with its embedded data swapped for payload."""
-    match = site_guard.REPORT_PAYLOAD.search(text)
+    old = pagedata.payload_text(text)
+    start = text.index("const ALL = ") + len("const ALL = ")
     body = payload if isinstance(payload, str) else json.dumps(payload)
-    return text[:match.start(1)] + body + text[match.end(1):]
+    return text[:start] + body + text[start + len(old):]
 
 
 def index_page(fixtures: list[dict]) -> str:

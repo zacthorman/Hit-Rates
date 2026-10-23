@@ -34,6 +34,8 @@ import sys
 import time
 from pathlib import Path
 
+import pagedata
+
 ROOT = Path(__file__).parent
 REPORTS = ROOT / "reports"
 # The most recent copy of each page that passed every check. Taken at the
@@ -61,7 +63,10 @@ ONE_SIDED_MIN_FIXTURES = 4
 # was built from a stale cache: the "next fixtures" it read were last week's.
 STALE_AFTER_HOURS = 6
 
-REPORT_PAYLOAD = re.compile(r"const ALL = (\{.*?\});\n", re.S)
+# pagedata's two str.find calls, not the lazy regex: they return the same
+# payload, and the regex costs about half a second per report, which this file
+# would pay several times a run over every report (code-health, PAGEDATA).
+REPORT_PAYLOAD = pagedata.PAYLOAD
 INDEX_PAYLOAD = re.compile(r"const DATA = (\{.*?\});\n", re.S)
 
 REQUIRED_FIXTURE_FIELDS = ("id", "home", "away", "kickoff")

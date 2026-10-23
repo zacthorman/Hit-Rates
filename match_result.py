@@ -33,6 +33,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import probability
 import time
 from datetime import datetime
 from pathlib import Path
@@ -49,7 +50,7 @@ MAX_GOALS = 10
 
 
 def _pois(lam: float, k: int) -> float:
-    return math.exp(-lam) * lam ** k / math.factorial(k)
+    return probability.poisson_pmf(k, lam)
 
 
 def outcome_probs(home_goals: float, away_goals: float) -> tuple[float, float, float]:

@@ -27,7 +27,7 @@ import json
 import random
 import time
 import webbrowser
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 import clubcolour
@@ -35,6 +35,7 @@ import hitrates
 import report
 import site_guard
 import sofascore_api as api
+import pagedata
 
 OUT_DIR = Path(__file__).parent / "reports"
 
@@ -1081,10 +1082,9 @@ def build(
     # that has not long since finished.
     if len(comps) == 1 and all(f["fixture"].get("crossLeague") for f in fixtures) \
             and path.exists():
-        import re
         try:
-            old = json.loads(re.search(r"const ALL = (\{.*?\});\n",
-                                       path.read_text(encoding="utf-8"), re.S).group(1))
+            old = json.loads(pagedata.search(
+                                       path.read_text(encoding="utf-8")).group(1))
         except Exception:
             old = {}
         have = {f["fixture"]["id"] for f in fixtures}
@@ -1628,7 +1628,7 @@ def _main() -> None:
 
     mark = api.failure_mark()
     try:
-        main_for(args)
+        main_for(args, parser)
     except SystemExit as exc:
         text = str(exc).strip()
         bad = fetch_failure(text, args.league, mark, args.within_days)
@@ -1639,7 +1639,7 @@ def _main() -> None:
         raise
 
 
-def main_for(args) -> None:
+def main_for(args, parser=None) -> None:
     league_filter = None
 
     if getattr(args, "nations", None) is not None:
@@ -1780,7 +1780,8 @@ def main_for(args) -> None:
         return
 
     if args.team is None:
-        parser.print_help()
+        if parser is not None:
+            parser.print_help()
         print("\nStart with:  python run.py --search espanyol\n")
         return
 

@@ -22,15 +22,14 @@ Run it after building reports, then commit and push.
 from __future__ import annotations
 
 import argparse
-import html
 import json
-import re
 from datetime import datetime, timezone
 from pathlib import Path
 
 import picker
 import site_guard
 import weekend
+import pagedata
 
 ROOT = Path(__file__).parent
 REPORTS = ROOT / "reports"
@@ -55,7 +54,7 @@ def read_payload(path: Path) -> dict:
     except OSError:
         text = ""
     if text:
-        payload = re.search(r"const ALL = (\{.*?\});\n", text, re.S)
+        payload = pagedata.search(text)
         if payload:
             try:
                 data = json.loads(payload.group(1))
