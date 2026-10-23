@@ -31,6 +31,7 @@ import argparse
 import html
 
 import boostcheck
+import sharp
 import time
 from pathlib import Path
 
@@ -757,10 +758,12 @@ def build(hours: float | None) -> str:
             or "<p class='none'>Nothing to build a multi from.</p>"
 
     until = max(m["kickoff"] for _, m in window) + 60
-    team_pane = ("<p class='sub'>Tap a game for the case, how it should go, and the boost check.</p>"
+    team_pane = (f"<h2 class='first'>Paddy Power v Betfair</h2>{sharp.box(now, until, True)}"
+                 "<p class='sub'>Tap a game for the case, how it should go, and the boost check.</p>"
                  + "".join(team_rows)
                  + f"<details class='game'><summary><b>Team multi across the games</b></summary>{multi(team_legs_all)}</details>")
-    player_pane = (f"<h2 class='first'>Bookie value bets</h2>{boostcheck.value_box(now, until)}"
+    player_pane = (f"<h2 class='first'>Paddy Power v Betfair</h2>{sharp.box(now, until, False)}"
+                   f"<h2>Bookie value bets (our model)</h2>{boostcheck.value_box(now, until)}"
                    "<p class='sub'>Tap a game for its player bets. Once a line-up is confirmed only its "
                    "starters are offered.</p>"
                    + "".join(player_rows)
@@ -775,7 +778,7 @@ def build(hours: float | None) -> str:
     page = PAGE.format(built=built, span=span, body=body,
                        stamp=time.strftime("%a %d %b, %H:%M %Z", time.localtime(now)))
     return (page.replace("</style>", boostcheck.CSS + LAYOUT_CSS + "</style>", 1)
-                .replace("</body>", boostcheck.script() + "</body>", 1))
+                .replace("</body>", boostcheck.script() + sharp.SCRIPT + "</body>", 1))
 
 
 LAYOUT_CSS = """

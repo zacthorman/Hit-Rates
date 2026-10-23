@@ -90,7 +90,11 @@ fi
 "$PY" pplog.py snapshot || echo "  pp log not updated (continuing)"
 "$PY" teamlog.py settle || echo "  team log not settled (continuing)"
 "$PY" teamlog.py snapshot || echo "  team log not updated (continuing)"
+# Each of those Paddy Power lines checked against Betfair's price (sharp.py):
+# the soft-v-sharp check the value bots run, written into the same rows.
+"$PY" sharp.py stamp || echo "  betfair check not stamped (continuing)"
 "$PY" pplog.py page >/dev/null || echo "  pp-results.html not rebuilt (continuing)"
+"$PY" papertrade.py --page >/dev/null || echo "  papertrade.html not rebuilt (continuing)"
 # Score the model against Betfair (exchange_eval.py): settle what finished,
 # refit the blend weights from the results, so the picks below use them.
 if [ -f .betfair.env ]; then
@@ -129,6 +133,7 @@ if [ -f tonight.html ]; then cp tonight.html "$STAGE"/; fi
 if [ -f best-bets-summary.html ]; then cp best-bets-summary.html "$STAGE"/; fi
 if [ -f market-check.html ]; then cp market-check.html "$STAGE"/; fi
 if [ -f pp-results.html ]; then cp pp-results.html "$STAGE"/; fi
+if [ -f papertrade.html ]; then cp papertrade.html "$STAGE"/; fi
 cp -R reports "$STAGE"/
 # Stops GitHub running the site through Jekyll, which it has no need to do
 # and which is the piece that failed during the outage.

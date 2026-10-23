@@ -64,8 +64,10 @@ def header(entry, meta) -> str:
         f"<tr><td>Both teams to score</td><td class='n'>{pct(btts)}</td><td class='n'>{fair(btts)}</td></tr>"
         "</tbody></table>"
         f"<p class='sub'>Expected goals {esc(meta['home'])} {sc['lh']:.2f}, {esc(meta['away'])} {sc['la']:.2f}: "
-        f"<b>{tag}</b>. Over/under and both-to-score come from these two numbers; in the backtest the style model "
-        "improved the result significantly and was no worse on totals.</p></div>")
+        f"<b>{tag}</b>. Over/under and both-to-score come from these two numbers. Checked against Betfair's own "
+        "prices on 85 games, the exchange was clearly better on goals; against closing bookmaker odds on 2,579 league "
+        "games it was worse on the result too, and backing its disagreements lost 3&ndash;13%. Use these as a read "
+        "of the game, not as a price to bet against the market.</p></div>")
 
 
 def targets(entry, meta, gs) -> str:

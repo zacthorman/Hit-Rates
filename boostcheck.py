@@ -87,6 +87,7 @@ def value_bets(now: float, until: float) -> tuple[list[dict], dict]:
         out.append({"fixture": r["fixture"], "kickoff": r["kickoff"], "player": r["player"], "stat": r["stat"],
                     "label": r["label"], "market": r.get("market"), "price": s["price"], "p": p, "site": site,
                     "kelly": kelly, "fetched": s.get("t"), "proven": g["proven"],
+                    "first_price": (r.get("first") or {}).get("price"),
                     "xi": "confirmed" if ev.get("confirmed") else "predicted"})
     # one bet per game (legs in one game move together), best first
     out.sort(key=lambda b: -b["kelly"])
@@ -99,6 +100,16 @@ def value_bets(now: float, until: float) -> tuple[list[dict], dict]:
         if len(pick) == MAX_BETS:
             break
     return pick, seg
+
+
+def _move(b) -> str:
+    """The price when first logged, if it has moved: lines the model liked
+    shortened 3.6% on average before kick-off (papertrade/CLV check, 22 Oct)."""
+    f = b.get("first_price")
+    if not f or abs(f - b["price"]) < 0.01:
+        return ""
+    arrow = "&darr;" if b["price"] < f else "&uarr;"
+    return f"<div class='sub'>{arrow} from {f:.2f}</div>"
 
 
 def value_box(now: float, until: float) -> str:
@@ -130,7 +141,7 @@ def value_box(now: float, until: float) -> str:
         tag = ("<span class='tag ok'>starting</span>" if b["xi"] == "confirmed"
                else "<span class='tag'>predicted XI</span>")
         rows.append(f"<tr data-k='{b['kelly']:.5f}'><td>{esc(sel)} {tag}<div class='sub'>{ko} &middot; "
-                    f"{esc(b['fixture'])}</div></td><td class='n'>{b['price']:.2f}</td>"
+                    f"{esc(b['fixture'])}</div></td><td class='n'>{b['price']:.2f}{_move(b)}</td>"
                     f"<td class='n'>{b['p'] * 100:.0f}%</td><td class='n'>{100 / b['price']:.0f}%</td>"
                     f"<td class='n stake'>&ndash;</td></tr>")
     fetched = max((b["fetched"] or 0) for b in bets)
