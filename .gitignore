@@ -81,3 +81,6 @@ _stage_tmp/
 *.html.tmp
 .build_status.json
 *.json.tmp
+
+# Full results of case_score_backtest.py, regenerable from the cache.
+case_score_results.json

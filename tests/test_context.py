@@ -80,6 +80,50 @@ class Score(unittest.TestCase):
         self.assertGreater(sc["home"], sc["away"])
 
 
+class ScoreModel(unittest.TestCase):
+    """context.score() reads the fitted model first, the old route after.
+
+    A tiny league is fitted and put in place of the cache-wide model, so
+    these never depend on what is in cache/."""
+
+    def setUp(self):
+        import scoremodels
+        ms, ts = [], 1_700_000_000
+        for _ in range(6):
+            for h, a, hg, ag in ((1, 2, 3, 0), (2, 1, 0, 2), (1, 3, 2, 1), (3, 1, 0, 1),
+                                 (2, 3, 1, 1), (3, 2, 1, 1)):
+                ms.append({"home": h, "away": a, "hg": hg, "ag": ag, "ts": ts})
+                ts += 86400
+        self.saved = dict(context._SCORE_MODEL)
+        context._SCORE_MODEL["m"] = scoremodels.TeamGoals("poisson", 1460, 2.0).fit(ms, ts)
+
+    def tearDown(self):
+        context._SCORE_MODEL.clear()
+        context._SCORE_MODEL.update(self.saved)
+
+    def test_model_route_when_both_sides_are_known(self):
+        sc = context.score(entry([], []), [], [])     # Napoli id 1 at home to Bodo id 2
+        self.assertEqual(sc["source"], "team attack and defence ratings (backtested)")
+        self.assertAlmostEqual(sc["ph"] + sc["pd"] + sc["pa"], 1.0, places=6)
+        self.assertGreater(sc["ph"], sc["pa"])
+        self.assertGreater(sc["home"], sc["away"])
+        self.assertGreater(sc["lh"], sc["la"])
+
+    def test_unknown_side_falls_back_to_the_projection(self):
+        e = entry([], [])
+        e["teams"][1]["id"] = 999
+        e["projection"] = {"ALL": {"Goals": [0.5, 2.5]}}
+        sc = context.score(e, [], [])
+        self.assertEqual(sc["source"], "goals projection")
+        self.assertGreater(sc["away"], sc["home"])
+
+    def test_no_model_falls_back(self):
+        context._SCORE_MODEL["m"] = None
+        e = entry([], [])
+        e["projection"] = {"ALL": {"Goals": [2.4, 0.6]}}
+        self.assertEqual(context.score(e, [], [])["source"], "goals projection")
+
+
 class Case(unittest.TestCase):
     def test_pass_when_nothing_qualified(self):
         self.assertTrue(context.case(None, {"facts": []}, None).startswith("Nothing for us here"))

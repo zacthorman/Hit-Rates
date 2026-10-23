@@ -21,8 +21,11 @@ Everything here is read from what is already on disk, never fetched:
               position when a cached standings table has the team in it
   next        the next three fixtures after this one (cache/team_*_events_next_0)
   absences    the injury list, each name with how often he started lately
-  score       the most likely scoreline, from the report's goals projection
-              where there is one, otherwise from recent xG (untested, labelled)
+  score       the likeliest result and score, with home, draw and away
+              chances, from an independent Poisson model of every club's
+              attack and defence (scoremodels.py, chosen and walk-forward
+              tested in CASE-SCORE.md); the older goals-projection and xG
+              route only when the model has never seen one of the sides
   facts       the handful of those that are actually unusual, in plain sentences
   opp_allows  per leg: what the opposition concedes in that stat, at the
               matching venue, in this competition when there are enough games
@@ -321,8 +324,69 @@ def _poisson(k: int, lam: float) -> float:
     return math.exp(-lam) * lam ** k / math.factorial(k)
 
 
+# The scoreline model. Walk-forward over 3,595 cached matches (CASE-SCORE.md),
+# the route below this (the report's goals projection, or recent xG with the
+# Elo re-split) scored 0.2153 ranked probability score and 1.0364 log loss on
+# the home, draw and away chances; this model scored 0.2101 and 1.0134, and
+# was better in all four test windows. Dixon-Coles and a bivariate Poisson
+# did no better: the low-score correction moved the fourth decimal and the
+# shared component fitted to nothing. The half-life and ridge are the best
+# pooled validation setting from those windows' training data. Fitted once
+# per process on every competitive result in the cache, so it needs no
+# match statistics and covers cup ties and European nights.
+SCORE_KIND = "poisson"
+SCORE_HALF_LIFE = 1460.0
+SCORE_RIDGE = 2.0
+_SCORE_MODEL: dict = {}
+
+
+def score_matches(cache: Path = CACHE) -> list[dict]:
+    """Every competitive result in the cache, as the scoreline model reads them."""
+    import strength
+    return [{"home": e["home"], "away": e["away"], "hg": e["hg"], "ag": e["ag"], "ts": e["ts"]}
+            for e in strength.load_events(cache)
+            if e["kind"] != "friendly" and e["home"] is not None and e["away"] is not None]
+
+
+def _score_model():
+    if "m" not in _SCORE_MODEL:
+        try:
+            import scoremodels
+            _SCORE_MODEL["m"] = scoremodels.TeamGoals(SCORE_KIND, SCORE_HALF_LIFE, SCORE_RIDGE).fit(
+                score_matches(), time.time())
+        except Exception:
+            _SCORE_MODEL["m"] = None
+    return _SCORE_MODEL["m"]
+
+
+def _model_score(entry: dict) -> dict | None:
+    teams = entry.get("teams") or []
+    home = next((t for t in teams if t.get("side") == "home"), None)
+    away = next((t for t in teams if t.get("side") == "away"), None)
+    if not home or not away:
+        return None
+    m = _score_model()
+    if m is None or not (m.knows(home.get("id")) and m.knows(away.get("id"))):
+        return None
+    import scoremodels
+    grid = m.grid(home["id"], away["id"])
+    lh, la = m.expected_goals(home["id"], away["id"])
+    ph, pd, pa = scoremodels.outcome_probs(grid)
+    bi, bj, pb = scoremodels.pick_score(grid)
+    return {"home": bi, "away": bj, "lh": lh, "la": la, "p": pb, "ph": ph, "pd": pd, "pa": pa,
+            "source": "team attack and defence ratings (backtested)"}
+
+
 def score(entry: dict, hrecs: list[dict], arecs: list[dict]) -> dict | None:
     """The single most likely scoreline, and where the goal means came from."""
+    modelled = _model_score(entry)
+    if modelled:
+        return modelled
+    return legacy_score(entry, hrecs, arecs)
+
+
+def legacy_score(entry: dict, hrecs: list[dict], arecs: list[dict]) -> dict | None:
+    """The route before CASE-SCORE.md, kept for sides the model has not seen."""
     proj = ((entry.get("projection") or {}).get("ALL") or {}).get("Goals")
     source = "goals projection"
     if isinstance(proj, list) and len(proj) == 2 and all(isinstance(x, (int, float)) for x in proj):
