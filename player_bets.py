@@ -24,16 +24,16 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 from pathlib import Path
 
 import model
 import weekend
+import pagedata
 
 
 def load(path: Path) -> tuple[dict, dict]:
     text = path.read_text(encoding="utf-8")
-    match = re.search(r"const ALL = (\{.*?\});\n", text, re.S)
+    match = pagedata.search(text)
     if not match:
         raise SystemExit(f"{path} has no payload in it")
     data = json.loads(match.group(1))

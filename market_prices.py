@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import json
 import math
+import probability
 import re
 import time
 import unicodedata
@@ -398,9 +399,7 @@ def _probs(lh: float, la: float):
     return home, draw, away, tot
 
 
-def _lg(p):
-    p = min(max(p, 1e-4), 1 - 1e-4)
-    return math.log(p / (1 - p))
+_lg = probability.logit
 
 
 _GOALS: dict = {}
@@ -433,7 +432,6 @@ def goal_model(data: dict | None, fixture_id):
                 lines.append((int(mm.group(1)) + 0.5, r["p"], m.get("matched") or 0))
     if not lines:
         return None
-    targets = [(_lg(mo["home"]), None, 2.0), (_lg(mo["away"]), None, 2.0)]
 
     def err(lh, la):
         h, d, a, tot = _probs(lh, la)
@@ -610,7 +608,6 @@ def match_odds(data: dict | None, fixture_id):
     m = next((x for x in ev["markets"] if x["type"] == "MATCH_ODDS"), None)
     if not m or any(r.get("p") is None for r in m["runners"]):
         return None
-    names = [r["name"] for r in m["runners"]]
     draw = next((r["p"] for r in m["runners"] if r["name"].lower() in ("the draw", "draw")), None)
     teams = [r for r in m["runners"] if r["name"].lower() not in ("the draw", "draw")]
     if len(teams) != 2:

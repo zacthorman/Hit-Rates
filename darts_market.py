@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import json
 import math
+import probability
 import re
 import time
 import unicodedata
@@ -122,9 +123,7 @@ def market_chance(prices: dict | None, home: str, away: str) -> float | None:
     return None
 
 
-def _logit(p):
-    p = min(max(p, 1e-4), 1 - 1e-4)
-    return math.log(p / (1 - p))
+_logit = probability.logit
 
 
 def blend(model_p: float, market_p: float, w: float | None = None) -> float:

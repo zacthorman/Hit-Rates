@@ -5,15 +5,28 @@
 Synthetic events only, no cache needed, except the last test, which reads the
 built reports if there are any and is skipped otherwise.
 """
-import math
 import sys
 import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+import learner   # noqa: E402
 import strength  # noqa: E402
 import weekend   # noqa: E402
+
+
+def setUpModule():
+    # weekend.calibrate refits learner's correction, which writes it to
+    # learned.json. That file is committed, so a test run must not touch it.
+    import tempfile
+    global _scratch
+    _scratch = tempfile.TemporaryDirectory()
+    learner.OUT = Path(_scratch.name) / "learned.json"
+
+
+def tearDownModule():
+    _scratch.cleanup()
 
 
 def ev(i, ts, home, away, hg, ag, tid=1, kind="league"):

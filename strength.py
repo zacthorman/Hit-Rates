@@ -43,7 +43,7 @@ import bisect
 import glob
 import json
 import math
-import os
+import probability
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -488,9 +488,8 @@ def fit_slopes(report_dir: Path = HERE / "reports", r: "Ratings | None" = None) 
     return out
 
 
-def _logit(p: float) -> float:
-    p = min(max(p, 1e-3), 1 - 1e-3)
-    return math.log(p / (1 - p))
+def _logit(p):
+    return probability.logit(p, 1e-3)
 
 
 def _date_ts(date: str | None) -> float | None:
@@ -603,8 +602,6 @@ def leg_chance(side: Side, sample_values: list, keep: list[bool], hits: int, n: 
     if len(ws) != n or not ws:
         return None
     sw = sum(ws)
-    sw2 = sum(w * w for w in ws)
-    neff = sw * sw / sw2 if sw2 else 0.0
     landed = [(v > line) == over for v in vals]
     wh = sum(w for w, h in zip(ws, landed) if h)
     shr = (hits + 2) / (n + 4)

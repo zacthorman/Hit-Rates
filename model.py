@@ -21,6 +21,7 @@ the network stack to price a bet.
 from __future__ import annotations
 
 import math
+import probability
 
 # Each side of a matchup must clear this on its own before the pair is scored.
 MATCHUP_FLOOR = 0.65
@@ -34,19 +35,7 @@ Z_95 = 1.645
 DISPERSION_PRIOR = 8.0
 
 
-def wilson_low(hits: int, total: int, z: float = 1.96) -> float:
-    """Lower bound of the Wilson interval for a proportion.
-
-    The honest version of hits/total. Five from five is not 100%, it is
-    "somewhere above 57%", and this is the number that says so.
-    """
-    if total == 0:
-        return 0.0
-    p = hits / total
-    denom = 1 + z * z / total
-    centre = p + z * z / (2 * total)
-    spread = z * math.sqrt((p * (1 - p) + z * z / (4 * total)) / total)
-    return max(0.0, (centre - spread) / denom)
+wilson_low = probability.wilson_low
 
 
 # Shrinkage of the model's stated log-odds towards its fixed point, fitted by
@@ -87,56 +76,16 @@ def calibrate(p: float) -> float:
     It is deliberately NOT applied to the record-only fallback, which never
     goes through the count model and already flags itself as blunt.
     """
-    p = min(1 - 1e-9, max(1e-9, p))
-    z = CALIBRATION_A + CALIBRATION_B * math.log(p / (1 - p))
-    return 1 / (1 + math.exp(-z))
+    return probability.platt(p, CALIBRATION_A, CALIBRATION_B)
 
 
-def poisson_cdf(k: int, mean: float) -> float:
-    """P(X <= k). Summed forwards rather than via a gamma function because k
-    is always small here and the loop is exact."""
-    if mean <= 0:
-        return 1.0
-    if k < 0:
-        return 0.0
-    term = math.exp(-mean)
-    total = term
-    for i in range(1, k + 1):
-        term *= mean / i
-        total += term
-    return min(1.0, total)
+poisson_cdf = probability.poisson_cdf
 
 
-def neg_bin_cdf(k: int, mean: float, size: float) -> float:
-    """P(X <= k) for a negative binomial with the given mean and dispersion.
-
-    Parameterised by mean and `size` rather than by the usual r and p, because
-    the mean is what the projection gives us and the dispersion is what the
-    sample gives us. Computed in logs to stay stable when size is large.
-    """
-    if mean <= 0:
-        return 1.0
-    if k < 0:
-        return 0.0
-    p = size / (size + mean)
-    total = 0.0
-    for i in range(k + 1):
-        log_pmf = (
-            math.lgamma(i + size) - math.lgamma(i + 1) - math.lgamma(size)
-            + size * math.log(p) + i * math.log1p(-p)
-        )
-        total += math.exp(log_pmf)
-    return min(1.0, total)
+neg_bin_cdf = probability.neg_bin_cdf
 
 
-def binom_cdf(k: int, n: int, p: float) -> float:
-    """P(X <= k) for a binomial. The narrow end of the count family."""
-    if k < 0:
-        return 0.0
-    if k >= n:
-        return 1.0
-    p = min(1.0, max(0.0, p))
-    return sum(math.comb(n, i) * p ** i * (1 - p) ** (n - i) for i in range(k + 1))
+binom_cdf = probability.binom_cdf
 
 
 def dispersion(values: list[float], prior: float = DISPERSION_PRIOR) -> float:
@@ -264,7 +213,6 @@ def price(
     record and marks itself, because an invented expectation is worse than an
     honest blunt number.
     """
-    record_p = hits / total if total else 0.0
     record_need = 1 / wilson_low(hits, total) if wilson_low(hits, total) > 0 else math.inf
 
     if expected is None or expected <= 0 or len(values) < 3:
@@ -283,8 +231,6 @@ def price(
 
     n = len(values)
     mean = sum(values) / n
-    var = sum((x - mean) ** 2 for x in values) / (n - 1)
-    se = math.sqrt(max(var, 1e-9) / n)
 
     # `fair` prices the match's own randomness. `need` prices that plus the
     # fact that the expectation came from a handful of matches, by widening
@@ -422,7 +368,7 @@ def smooth_rate(hits: int, total: int) -> float:
     """A hit rate that cannot claim certainty. See RECORD_CALIBRATION."""
     if total <= 0:
         return 0.0
-    return (hits + RECORD_SMOOTHING) / (total + 2 * RECORD_SMOOTHING)
+    return probability.shrink(hits, total, RECORD_SMOOTHING)
 
 
 def calibrate_record(p: float, sport: str = "football",
@@ -438,19 +384,15 @@ def calibrate_record(p: float, sport: str = "football",
     if not fit:
         return p
     a, b = fit
-    p = min(1 - 1e-9, max(1e-9, p))
-    z = a + b * math.log(p / (1 - p))
-    return 1 / (1 + math.exp(-z))
+    return probability.platt(p, a, b)
 
 
 def calibrate_player(p: float, sport: str = "football") -> float:
     """The established player branch's stated probability, shrunk to what
     bets stated like it actually landed at. Same shape as calibrate(), fitted
     separately on player bets; see the constants above for the ledger."""
-    p = min(1 - 1e-9, max(1e-9, p))
     a, b = PLAYER_CALIBRATION_BY_SPORT.get(sport, (PLAYER_CALIBRATION_A, PLAYER_CALIBRATION_B))
-    z = a + b * math.log(p / (1 - p))
-    return 1 / (1 + math.exp(-z))
+    return probability.platt(p, a, b)
 
 
 # ------------------------------------------------------------ the scan gate

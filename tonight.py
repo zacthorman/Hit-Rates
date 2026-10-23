@@ -34,6 +34,7 @@ from pathlib import Path
 
 import make_index
 import parlay
+import value_cap
 import weekend
 
 ROOT = Path(__file__).resolve().parent
@@ -488,9 +489,10 @@ def research_block(now: float) -> str:
 #
 # Each fixture's lead is written to lead_log.json before kick-off (append and
 # update until kick-off, never after), and settled against best_bets.json,
-# which besttrack.py settles from the result. The card shows the last day's
-# leads ticked or crossed, and how many the page expected to land, so the
-# page is marked on its own calls.
+# which besttrack.py settles from the result. besttrack.track_leads adds any
+# lead the snapshot missed, so every lead logged here has a leg to settle.
+# The card shows the last day's leads ticked or crossed, and how many the
+# page expected to land, so the page is marked on its own calls.
 
 LEAD_LOG = ROOT / "lead_log.json"
 KEY = ("event_id", "team", "player", "stat", "period", "line", "over")
@@ -498,6 +500,29 @@ KEY = ("event_id", "team", "player", "stat", "period", "line", "over")
 
 def _leg_key(l) -> tuple:
     return tuple(l.get(k) for k in KEY)
+
+
+def tonight_chance(l, sport: str | None = None) -> float:
+    """The chance a fixture's lead is picked on and logged with.
+
+    The game state's chance where it reaches the leg. Legs it cannot reach
+    keep their own chance, so nothing is promoted just for being unreachable,
+    and a leg with no calibrated chance at all ranks last on 0.
+
+    Darts is the exception. No darts leg has a game state, strength, shrunk
+    or exchange chance, so every darts leg scored 0: the 13 darts leads of
+    22 Oct 2026 were logged at 0% and picked on sample size alone. Darts gets
+    weekend.chance, the shrunk record its weekend picks already use. On the
+    best darts leg per match the site has settled (52 legs) it said 65% and
+    71% landed, so it errs cautious; see PROOF-2026-10-22.md.
+    """
+    g = l.get("gs")
+    if g:
+        return g["chance"]
+    if sport == "darts":
+        return weekend.chance(l)
+    c = weekend.chance(l) if (l.get("pStrength") or l.get("pShrunk") or l.get("pExchange")) else None
+    return c if c is not None else 0
 
 
 def write_leads(rows, now) -> None:
@@ -511,7 +536,7 @@ def write_leads(rows, now) -> None:
             continue
         log[str(meta["id"])] = {
             "event_id": meta["id"], "fixture": f"{meta['home']} v {meta['away']}",
-            "competition": meta.get("competition"), "kickoff": meta["kickoff"],
+            "competition": meta.get("competition"), "sport": meta.get("sport"), "kickoff": meta["kickoff"],
             "selection": fmt_leg(leg), "chance": chance, "fair": leg.get("fair"),
             **{k: leg.get(k) for k in KEY if k != "event_id"}, "written": now}
     LEAD_LOG.write_text(json.dumps(log, indent=1), encoding="utf-8")
@@ -621,17 +646,14 @@ def build(hours: float | None) -> str:
         except Exception:
             gs = None
         # The game state re-ranks the pool: a leg it lifts can climb into the
-        # six, and one it cuts can fall out. Legs it cannot reach keep their
-        # own chance, so nothing is promoted just for being unreachable.
-        def tonight_chance(l):
-            g = l.get("gs")
-            if g:
-                return g["chance"]
-            c = weekend.chance(l) if (l.get("pStrength") or l.get("pShrunk") or l.get("pExchange")) else None
-            return c if c is not None else 0
-        own = sorted(pool, key=lambda l: (-tonight_chance(l) * (l.get("fair") or 1) ** 0.5,
-                                          -(l.get("total") or 0)))[:SINGLES_PER_FIXTURE]
-        lead_log.append((meta, own[0] if own else None, tonight_chance(own[0]) if own else None))
+        # six, and one it cuts can fall out (tonight_chance, above).
+        # One leg per player (value_cap.py): two legs on one player land
+        # together, so a second is the same bet twice, not a second bet.
+        sport = weekend.sport_of(entry)
+        own = value_cap.cap_per_player(sorted(pool, key=lambda l: (-tonight_chance(l, sport) * (l.get("fair") or 1) ** 0.5,
+                                                                   -(l.get("total") or 0))))[:SINGLES_PER_FIXTURE]
+        lead_log.append(({**meta, "sport": sport},
+                         own[0] if own else None, tonight_chance(own[0], sport) if own else None))
 
         singles = "".join(leg_row(l, entry) for l in own) or "<tr><td colspan='4'>nothing qualified</td></tr>"
         try:

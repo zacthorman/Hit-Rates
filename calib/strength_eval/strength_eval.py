@@ -129,7 +129,11 @@ class Eval(backtest.Backtester):
 out_path = sys.argv[2]; since = backtest.parse_date(sys.argv[3]); leagues = sys.argv[4].split(",")
 allrows = []
 for name in leagues:
-    tid = api.TOURNAMENTS.get(name)
+    # tournament_id_for, not TOURNAMENTS.get: "LaLiga" is not a key, so it
+    # gave None, an empty roster and "0 fixtures" without a word of warning.
+    tid = api.tournament_id_for(name)
+    if tid is None:
+        raise SystemExit(f"unknown league '{name}'")
     roster = api.tournament_team_ids(tid)
     seen, fixtures = set(), []
     for team_id in roster:
