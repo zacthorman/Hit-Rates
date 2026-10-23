@@ -15,6 +15,31 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+### Running the tests
+
+The suite needs a few more packages than the pipeline (pytest, numpy, scipy,
+statsmodels, scikit-learn, and zstandard for unpacking `cache_backtest.tar.zst`).
+They are in `requirements-dev.txt`, which includes `requirements.txt`:
+
+```bash
+pip install -r requirements-dev.txt
+.venv/bin/python -B -m pytest tests
+```
+
+Without them, `tests/test_teamlines.py` and `tests/test_us_audit.py` skip most
+of their tests instead of failing, so a short skip list is the sign that
+everything is installed. With everything in place, only three tests skip, and
+those need built reports in `reports/` or `GAMESTATE_LIVE=1`.
+
+A test run never changes a tracked file. Under pytest, `tests/conftest.py`
+points `learner.py`'s output at a temporary file through
+`HITRATES_LEARNED_JSON`, and fails the run if the real `learned.json` changed.
+The live pipeline never sets that variable, so it keeps writing `learned.json`
+as before. `tests/test_tracked_files.py` runs every other test file again
+without that redirect, and fails if `learned.json` or any other tracked file
+differs afterwards. It doubles the run time. Set `HITRATES_SKIP_TRACKED=1` to
+leave it out of a quick run.
+
 ## Use
 
 ```bash
