@@ -805,6 +805,12 @@ function strengthDetail(l) {
 function chanceText(l) {
   return l.chance != null ? `${Math.round(l.chance * 100)}%` : "&mdash;";
 }
+/* Whether a value figure is shown as value: above the bar weekend.VALUE_SHOW
+   sets, and never while that is off (RULE-REVIEW.md). */
+function valueClaimed(v) {
+  const bar = DATA.picks && DATA.picks.valueShow;
+  return v != null && bar != null && v > bar;
+}
 /* The exchange, where Betfair prices the same bet: its chance with the margin
    off, the back price you could take, and what the pick is worth at it. */
 function exchangeLine(l) {
@@ -816,7 +822,7 @@ function exchangeLine(l) {
     return `<div class="pk-str">Exchange ${pct(x.p)}, model ${pct(l.chanceModel)}: <b>${Math.round(Math.abs(l.disagree) * 100)} points apart</b>,
       a warning rather than an edge; the chance used leans on the exchange.</div>`;
   }
-  const val = v == null ? "" : v > 0.005
+  const val = v == null ? "" : valueClaimed(v)
     ? ` &middot; <b class="pk-pos">value +${Math.round(v * 100)}%</b> at ${fmtOdds(x.back)}`
     : ` &middot; no value at ${fmtOdds(x.back)}`;
   return `<div class="pk-str">Exchange ${pct(x.p)}, model ${pct(l.chanceModel)}${val}${x.tight ? "" : " &middot; thin market"}</div>`;
@@ -835,7 +841,7 @@ function legRow(l, extra) {
   const s = l.strength;
   const str = s && s.team != null ? ` &middot; ${s.team} v ${s.opp}` : "";
   const ex = l.exchange && l.exchange.back
-    ? ` &middot; exchange ${fmtOdds(l.exchange.back)}${l.value > 0.005 ? ` <b class="pk-pos">+${Math.round(l.value * 100)}%</b>` : ""}` : "";
+    ? ` &middot; exchange ${fmtOdds(l.exchange.back)}${valueClaimed(l.value) ? ` <b class="pk-pos">+${Math.round(l.value * 100)}%</b>` : ""}` : "";
   return `<li class="pk-leg"><span class="t">${legText(l)}</span><span class="p">${fmtOdds(l.fair)}</span>
     <span class="m">${where}${where ? " &middot; " : ""}${l.hits}/${l.total}${l.chance != null ? " &middot; " + chanceText(l) : ""}${str}${ex}${extra || ""}</span></li>`;
 }

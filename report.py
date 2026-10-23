@@ -6324,41 +6324,29 @@ const PP_YES = { "Player Shown a Card": "Card", "Player Assists": "Assists" };
 const BOOKS = { pp: "Paddy Power", b365: "Bet365" };
 
 /* Take, acceptable or avoid, for one priced line.
-   Take: more likely than not by our numbers, the price beats our chance by
-   5% or more, and the record behind it is five games or more.
-   Acceptable: more likely than not and about fair (within 5% either way),
-   or value we cannot fully vouch for: a thin record or the card estimate.
+   Take: no longer given (RULE-REVIEW.md, 23 Oct 2026). It was ours 50%+,
+   the price beating our chance by 5% or more, on five games or more. On
+   Paddy Power's settled lines those won 57 of 177 against 63% said, ROI
+   -34%, and the 154 settled after the first 23 made -37% (95% about -51%
+   to -20%). Even if every football loss among them had really been a win,
+   they would have landed 50% (95% 43% to 58%). An edge that size has been
+   our number being wrong, so it is marked avoid, like a price 5% worse.
+   Acceptable: more likely than not and about fair (within 5% either way).
+   Not yet measured directly; rule_review.py does so from pplog/.
    Long shot: under 50% by our numbers. However big the edge looks, it rests
-   on one or two games in ten, so it is never called take or acceptable.
-   Avoid: the price is more than 5% worse than our chance. */
+   on one or two games in ten, so it is never called acceptable.
+   Avoid: the price is more than 5% worse than our chance, or more than 5%
+   better than it. */
 function verdictOf(v) {
   if (!(v.price > 1) || !(v.p > 0)) return null;
   const e = v.p * v.price - 1;
   if (e < -0.05) return "avoid";
-  // The card estimate is never "take": it is uncalibrated, and on 20 Oct
-  // 2026 it showed edges of +80% to +150% on players at 9.0 to 12.0, which
-  // is the estimate being wrong, not value. Under 50%, like any bet under
-  // 50%, it is a long shot; acceptable only above that and 5% clear.
-  if (v.heuristic) return v.p >= 0.5 && e >= 0.05 ? "ok" : "long";
   if (v.p < 0.5) return "long";
-  // Nothing adjusted it for the opponent (no projection, no match odds, no
-  // model): it can be acceptable, never take.
-  // Two guards before anything is called take, found on NBA opening night
-  // (21 Oct 2026), when the model called 116 of 561 Paddy Power lines take:
-  //   * stale data: no competitive game in two months means every record is
-  //     last season's (for the NBA, mostly playoffs, heavier minutes for the
-  //     starters), so the whole board leans one way and that is not value;
-  //   * on basketball, an edge over 30% on a player line is our number being
-  //     off, as on the football team lines.
-  // Both can still be acceptable. Lift the second once pplog has settled a
-  // few weeks of NBA lines and says how far off the model runs.
-  // staleDays is set on every fixture; stale means past the 60-day line the
-  // page's own warning uses (fixed 21 Oct 2026: it blocked every take).
-  const stale = DATA && DATA.fixture && (DATA.fixture.staleDays || 0) > 60;
-  // NBA and NFL: the backtested model is about as sharp as Paddy Power on
-  // real lines (checked 21 Oct 2026), so a gap that wide is more likely ours.
-  const tooBig = (SPORT === "basketball" || SPORT === "american-football") && e > 0.3;
-  if (e >= 0.05 && (v.n || 0) >= 5 && !v.unadjusted && !stale && !tooBig) return "take";
+  if (e >= 0.05) return "avoid";
+  // The card estimate is never acceptable: it is uncalibrated, and on 20 Oct
+  // 2026 it showed edges of +80% to +150% on players at 9.0 to 12.0, which
+  // is the estimate being wrong, not value.
+  if (v.heuristic) return "long";
   return "ok";
 }
 
@@ -6368,9 +6356,9 @@ function verdictHtml(v) {
   const text = { take: "Take", ok: "Acceptable", long: "Long shot", avoid: "Avoid" }[k];
   const why = {
     take: "More likely than not, and the price beats our chance by 5% or more, on a record of five games or more",
-    ok: "More likely than not and close to a fair price, or value resting on a thin record or an estimate",
+    ok: "More likely than not and close to a fair price by our numbers",
     long: "Under 50% by our numbers: a big edge here is noise, not value",
-    avoid: "The price is more than 5% worse than our chance",
+    avoid: "The price is more than 5% worse than our chance, or more than 5% better: on Paddy Power's settled lines an edge that size has been our number being wrong",
   }[k];
   return `<span class="vd vd-${k}" title="${why}">${text}</span>`;
 }
@@ -6620,7 +6608,8 @@ function ppBestHtml(src = "pp") {
     if (!gatedApps(played).length) return;
     if (INJ_OUT.test(injuryOf(t, name) || "")) return;
     ppValued(t, name, played, src).forEach(v => {
-      if (!(v.p >= 0.5 && v.edge > 0 && v.n >= 5)) return;
+      // Below a 5% edge only: a bigger one is marked avoid (verdictOf).
+      if (!(v.p >= 0.5 && v.edge > 0 && v.edge < 0.05 && v.n >= 5)) return;
       // Football to-score is logged but not called value until the results
       // say how far off it runs (pplog.py UNCALIBRATED), unless the
       // backtested model priced it, which is calibrated.
@@ -6636,7 +6625,7 @@ function ppBestHtml(src = "pp") {
   rows.sort((a, b) => b.edge - a.edge);
   return `<div class="pp-section">Best value at ${BOOKS[src]}</div>
     <div class="pp-stat pp-ppcard">${rows.slice(0, 12).map(v => ppRowHtml(v, true)).join("")}
-    <p class="note">Lines where our chance (50% or more) beats ${BOOKS[src]}'s price, biggest edge first. Players ruled out are left off; anyone questionable is marked, so check the inactives. Ours leans on the last ten games and is not proven on player bets: treat a big edge as a reason to look closer, not a certainty.</p></div>`;
+    <p class="note">Lines where our chance (50% or more) beats ${BOOKS[src]}'s price by under 5%, biggest edge first; a bigger edge has been our number being wrong. Players ruled out are left off; anyone questionable is marked, so check the inactives. Ours leans on the last ten games and is not proven on player bets: treat a big edge as a reason to look closer, not a certainty.</p></div>`;
 }
 
 /* ------------------------------------------------- Team lines
