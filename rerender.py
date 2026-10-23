@@ -23,11 +23,11 @@ Run this after any change to report.py, then rebuild the index:
 from __future__ import annotations
 
 import json
-import re
 import sys
 from pathlib import Path
 
 import report
+import pagedata
 
 # Note this file imports report, not hitrates. Re-rendering a saved page is a
 # pure formatting job: the data is already in the file. Keeping the API stack
@@ -37,7 +37,7 @@ import report
 ROOT = Path(__file__).parent
 REPORTS = ROOT / "reports"
 
-PAYLOAD = re.compile(r"const ALL = (\{.*?\});\n", re.S)
+PAYLOAD = pagedata.PAYLOAD
 
 
 def payload_of(path: Path) -> dict | None:
