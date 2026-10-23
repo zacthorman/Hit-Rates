@@ -44,6 +44,7 @@ MODELS = ROOT / "fmodel"
 OUT = ROOT / "reports" / "fmodel.json"
 sys.path.insert(0, str(MODELS))
 from fmodel_trees import Model  # noqa: E402
+import pagedata
 
 PSTATS = {
     "totalShots": "shots", "onTargetScoringAttempt": "sot", "fouls": "fouls",
@@ -216,7 +217,7 @@ def upcoming(days, known_matches, simulate=None):
             if Path(f).name.startswith("pick-"):
                 continue
             text = Path(f).read_text(encoding="utf-8")
-            m = re.search(r"const ALL = (\{.*?\});\n", text, re.S)
+            m = pagedata.search(text)
             if not m:
                 continue
             for entry in json.loads(m.group(1)).get("fixtures", []):
@@ -300,12 +301,15 @@ def profile(hh):
     return out
 
 
-def features(M, T, P, future):
+def features(M, T, P, future, emit=None):
     """Backtest features (features.py), returning rows for `future` matches only.
 
     Matches in `future` are scored but never written into any history, so one
-    upcoming game cannot feed another.
+    upcoming game cannot feed another. `emit` (scorer_audit.py) also returns
+    rows for finished matches, built before each is written into the history,
+    so a replay of the cache sees exactly what the page would have seen.
     """
+    emit = emit or set()
     M = M.sort_values("ts", kind="stable")
     P = P[P.mins > 0].copy()
     elo = defaultdict(lambda: 1500.0)
@@ -391,7 +395,7 @@ def features(M, T, P, future):
     for mid, pm in P.groupby("match", sort=False):
         is_future = mid in future
         ts = pm.ts.iloc[0]
-        if is_future:
+        if is_future or mid in emit:
             prof = {r.pid: profile(hist[r.pid]) for r in pm.itertuples(index=False)}
             el = pre_elo.get(mid, (1500, 1500))
             lg = league_feat.get(mid, {})
@@ -440,7 +444,8 @@ def features(M, T, P, future):
                     v = [x for x in hh if x.get("cov_" + s, True)]
                     f["h2h_" + s] = per90([x[s] for x in v], [x["mins"] for x in v]) if v else np.nan
                 rows.append(f)
-            continue
+            if is_future:
+                continue
         for r in pm.itertuples(index=False):
             d = {s: getattr(r, s) for s in STATS}
             d.update({"mins": r.mins, "starter": r.starter, "ts": r.ts, "team": r.team})
@@ -465,6 +470,33 @@ def score(F):
     return out
 
 
+def add_cards(events: dict, live=None) -> None:
+    """To be booked from the cards model (cards_model.py) for every starter
+    already in `events`: lines["Card"]["1"], and each side's expected cards
+    under ev["cards"]. Same XI as the rest of the file."""
+    import cards_model
+    live = live or cards_model.Live(CACHE)
+    ids = team_ids()
+    for eid, ev in events.items():
+        lu = load(CACHE / f"event_{eid}_lineups.json")
+        if not lu or int(eid) not in ids:
+            continue
+        home, away, comp = ids[int(eid)]
+        by_pid = {pl["pid"]: pl for pl in ev["players"].values()}
+        cards = {}
+        for side, team, opp in (("home", home, away), ("away", away, home)):
+            xi = [{"pid": (p.get("player") or {}).get("id"), "pos": p.get("position")}
+                  for p in (lu.get(side) or {}).get("players", []) if not p.get("substitute")]
+            m = live.side_mu(team, opp, side == "home", comp)
+            if m:
+                cards[side] = round(m["mu"], 3)
+            for pid, p in live.player_chances(team, opp, side == "home", comp, xi).items():
+                if pid in by_pid:
+                    by_pid[pid]["lines"]["Card"] = {"1": round(p, 4)}
+        if cards:
+            ev["cards"] = cards
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--days", type=float, default=7)
@@ -487,6 +519,10 @@ def main(argv=None):
             s, k = name.rsplit("_", 1)
             lines.setdefault(SITE_NAME[s], {})[k] = round(float(p[i]), 4)
         ev["players"][r.name] = {"pid": int(r.pid), "team": int(r.team), "pos": r.pos, "lines": lines}
+    try:
+        add_cards(events)
+    except Exception as exc:              # never cost the page its other chances
+        print(f"fmodel: card chances skipped ({exc})")
     OUT.write_text(json.dumps({"generated": int(time.time()), "model": "fmodel v1 (backtest 2026-10-20)",
                                "events": events}), encoding="utf-8")
     n = sum(len(e["players"]) for e in events.values())

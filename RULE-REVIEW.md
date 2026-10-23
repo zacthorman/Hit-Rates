@@ -14,10 +14,12 @@ measures each one against what has settled, and changes the ones the evidence sa
    (`weekend.VALUE_SHOW = None`, `make_index.py valueClaimed`, `tonight.py leg_row`). The figure is still
    worked out and logged, because the bad-price guard uses it and `exchange_eval.py` keeps tracking it. Setting
    `VALUE_SHOW` back to a number turns the claim on again, with every other filter unchanged.
-2. **Paddy Power "Take" is gone.** `report.py verdictOf` no longer returns take. A price that beats our chance
-   by 5% or more is now marked avoid, the same as a price 5% worse. The card estimate is never acceptable.
-   "Best value at Paddy Power" lists only edges under 5%, so it no longer leads with lines the verdict marks
-   avoid.
+2. **Paddy Power "Take" is gone for player lines.** `report.py verdictOf` no longer returns take on a player
+   line. A price that beats our chance by 5% or more is now marked avoid, the same as a price 5% worse. The
+   card estimate is never acceptable. "Best value at Paddy Power" lists only edges under 5%, so it no longer
+   leads with lines the verdict marks avoid. Team lines keep their own rule from the team-lines work
+   (`teamlines.verdict`, `TEAM-LINES.md`): take only inside a market that passed its walk-forward backtest,
+   acceptable otherwise. The evidence here is on player lines and does not cover them.
 3. **Kept as they were:** the 15-point disagreement flag, the -5% bad-price guard, Paddy Power "Acceptable"
    and the headline picks. The first two hold up; the last two are not shown to lose (details below).
 
@@ -29,20 +31,20 @@ Paddy Power".
 
 | Rule | Where | What it claims | Record it can be tested on | Verdict |
 |---|---|---|---|---|
-| "value +n%" beside a pick | `weekend.py:531` (`_exchange`), `make_index.py:816` (`exchangeLine`, `legRow`) | Blended chance at Betfair's back price, after 5% commission, worth over 0.5% | `exchange_log.json`, first and last sighting | **Loses at the close. Removed.** |
-| "Value on Betfair" list | `weekend.py:1288` (`best_value`, `VALUE_MIN` 3%) | As above, 3% or more, with filters | `exchange_log.json` | **Loses at the close. Removed** (follows the claim). |
-| tonight.py value figure | `tonight.py:129` | Prints the same figure, signed | as above | **Removed**, as on the index. |
-| Disagreement flag | `weekend.py:376`, `:531` (`EXCHANGE_DISAGREE` 0.15) | Model 15+ points from Betfair: not value, flagged instead | `exchange_log.json` | **Holds. Kept.** |
-| Bad-price guard | `weekend.py:1185` (`BAD_PRICE` -5%) | Out of the headline picks | `exchange_log.json` | **Holds. Kept.** |
-| Paddy Power "Take" | `report.py:6340` (`verdictOf`); scored by `pplog.is_value` | Ours 50%+, beats the price by 5%+, five games+ | `pp-results.html`, every committed copy; `pplog/` where kept | **Loses, outside the noise. Removed.** |
-| Paddy Power "Acceptable" | `report.py:6340` | Ours 50%+, price within 5% of fair | Only indirectly (calibration) | **Unproven. Kept.** |
-| "Best value at Paddy Power" | `report.py:6602` (`ppBestHtml`) | Ours 50%+, beats the price | As take, for edges of 5%+ | **Capped below 5%** to match the verdict. |
+| "value +n%" beside a pick | `weekend.py:530` (`_exchange`), `make_index.py:825` (`exchangeLine`, `legRow`) | Blended chance at Betfair's back price, after 5% commission, worth over 0.5% | `exchange_log.json`, first and last sighting | **Loses at the close. Removed.** |
+| "Value on Betfair" list | `weekend.py:1287` (`best_value`, `VALUE_MIN` 3%) | As above, 3% or more, with filters | `exchange_log.json` | **Loses at the close. Removed** (follows the claim). |
+| tonight.py value figure | `tonight.py:130` | Prints the same figure, signed | as above | **Removed**, as on the index. |
+| Disagreement flag | `weekend.py:377`, `:530` (`EXCHANGE_DISAGREE` 0.15) | Model 15+ points from Betfair: not value, flagged instead | `exchange_log.json` | **Holds. Kept.** |
+| Bad-price guard | `weekend.py:1184` (`BAD_PRICE` -5%) | Out of the headline picks | `exchange_log.json` | **Holds. Kept.** |
+| Paddy Power "Take" | `report.py:6374` (`verdictOf`); scored by `pplog.is_value` | Ours 50%+, beats the price by 5%+, five games+ | `pp-results.html`, every committed copy; `pplog/` where kept | **Loses, outside the noise. Removed** on player lines; team lines keep their backtested gate. |
+| Paddy Power "Acceptable" | `report.py:6374` | Ours 50%+, price within 5% of fair | Only indirectly (calibration) | **Unproven. Kept.** |
+| "Best value at Paddy Power" | `report.py:6659` (`ppBestHtml`) | Ours 50%+, beats the price | As take, for edges of 5%+ | **Capped below 5%** to match the verdict. |
 | Headline picks (best bet, banker, double, acca, builder, parlay, fixture singles, player lines) | `weekend.py` `best_*`, `parlay.py` | Most likely to land at a fair price; no bookmaker price claimed | `best_bets.json`, results only | **Not shown to lose at their own price. Kept.** |
 
-Not treated as flags, and left alone: the green colour on an edge of +3% or more (`report.py:6114 edgeHtml`,
-`:6756 teamRowHtml`), which colours a number rather than recommending a bet; the "value" sort on the stat table
+Not treated as flags, and left alone: the green colour on an edge of +3% or more (`report.py:6147 edgeHtml`,
+`:6842 teamRowHtml`), which colours a number rather than recommending a bet; the "value" sort on the stat table
 (`report.py:4230 valueEdge`), which orders rows by how far the projection moves the record; the strongest
-lines (`report.py:6182`), which rank on chance with no price; and the blend weights and back-only margin in
+lines (`report.py:6215`), which rank on chance with no price; and the blend weights and back-only margin in
 `exchange_weights.json`, which the exchange-log audit already showed were fitted on false zeros and should be
 refitted on verified results separately.
 

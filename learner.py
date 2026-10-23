@@ -36,6 +36,7 @@ from __future__ import annotations
 
 import json
 import math
+import probability
 import time
 from pathlib import Path
 
@@ -68,12 +69,10 @@ def group_of(sport: str | None, player) -> str:
 
 
 def _logit(p):
-    p = min(max(p, 1e-3), 1 - 1e-3)
-    return math.log(p / (1 - p))
+    return probability.logit(p, 1e-3)
 
 
-def _sig(z):
-    return 1 / (1 + math.exp(-z))
+_sig = probability.sigmoid
 
 
 def settled_legs(items=None) -> list[dict]:
@@ -206,8 +205,14 @@ _MODEL: dict | None = None
 
 
 def model() -> dict:
-    """The live correction, refitted once per process from best_bets.json and
-    written to learned.json so the page and the summary can say what it did."""
+    """The live correction, refitted once per process from best_bets.json.
+
+    Fitting only: it does not write learned.json. It used to, so anything
+    that priced a leg rewrote a committed file: the test suite
+    (tests/test_strength.py), the strength replay and any one-off script,
+    each with a fit from whatever best_bets.json it happened to see. The
+    record is written by save(), from weekend.picks() (the run that builds
+    the picks card that reports it) and from `python learner.py`."""
     global _MODEL
     if _MODEL is not None:
         return _MODEL
@@ -217,15 +222,19 @@ def model() -> dict:
         chk = check(legs)
         m["check"] = chk
         m["active"] = bool(chk.get("ok"))
-        try:
-            OUT.write_text(json.dumps(m, indent=1))
-        except OSError:
-            pass
         _MODEL = m
     except Exception as exc:
         print(f"  learner off: {type(exc).__name__}: {exc}")
         _MODEL = {"groups": {}, "active": False, "legs": 0}
     return _MODEL
+
+
+def save(m: dict | None = None) -> None:
+    """Write the live fit to learned.json, so the page and the summary can say what it did."""
+    try:
+        OUT.write_text(json.dumps(m if m is not None else model(), indent=1))
+    except OSError:
+        pass
 
 
 def main():
@@ -238,6 +247,7 @@ def main():
         print(json.dumps(check(legs), indent=1))
         return
     m = model()
+    save(m)
     print(f"{m['legs']} settled legs, correction {'ON' if m.get('active') else 'OFF'}; check: {m.get('check')}")
     for g, v in sorted(m["groups"].items()):
         print(f"  {g:<26} {v['legs']:>4} legs  said {v['said']:.3f} landed {v['landed']:.3f}  "

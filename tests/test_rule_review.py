@@ -163,6 +163,32 @@ console.log(JSON.stringify(grid.map(([p, price, heuristic, n, unadjusted]) =>
         for (p, price, heur, n, unadj), v in zip(grid, got):
             self.assertEqual(v, R.pp_verdict(p, price, n, heur), (p, price, heur, n, unadj))
 
+    @unittest.skipUnless(NODE, "node not installed")
+    def test_team_lines_keep_their_backtested_rule(self):
+        # Team lines go through teamlines.verdict's gate (TEAM-LINES.md), not
+        # the player-line evidence in RULE-REVIEW.md: take inside a passed
+        # market's window, acceptable outside it, never the new avoid.
+        fn = js_function((ROOT / "report.py").read_text(), "verdictOf")
+        cases = [
+            # p, price, tested, threshold, staleDays, expected
+            (0.60, 1.77, True, 0.06, 0, "take"),     # +6.2%, in the window
+            (0.60, 1.72, True, 0.06, 0, "ok"),       # +3.2%, below the threshold
+            (0.60, 2.30, True, 0.06, 0, "ok"),       # +38%, past the 30% cap
+            (0.60, 1.90, False, 0.06, 0, "ok"),      # +14%, market not passed
+            (0.60, 1.90, True, 0.06, 90, "ok"),      # stale data
+            (0.60, 1.50, True, 0.06, 0, "avoid"),    # -10%
+            (0.45, 3.00, True, 0.06, 0, "long"),
+        ]
+        got = run_node(fn + f"""
+const cases = {json.dumps(cases)};
+globalThis.SPORT = "football";
+console.log(JSON.stringify(cases.map(([p, price, tested, threshold, staleDays]) => {{
+  globalThis.DATA = {{ fixture: {{ staleDays }} }};
+  return verdictOf({{ p, price, team: true, tested, threshold, n: 10 }});
+}})));
+""")
+        self.assertEqual(got, [c[-1] for c in cases])
+
 
 # ------------------------------------------------------------ the review's sums
 
