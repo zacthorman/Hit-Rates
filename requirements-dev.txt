@@ -13,6 +13,8 @@ numpy>=1.26
 scipy>=1.11
 statsmodels>=0.14
 scikit-learn>=1.3
+# tests/test_teammodel_weekly.py: the weekly team-model refit.
+lightgbm>=4.0
 
 # Unpacks cache_backtest.tar.zst for the backtests and fits that read it
 # (supersub.py fit, acca_corr.py), where the zstd command is not installed.

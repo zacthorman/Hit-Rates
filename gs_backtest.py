@@ -35,6 +35,7 @@ from __future__ import annotations
 
 import json
 import math
+import probability
 import sys
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -160,26 +161,10 @@ def deviance(y, mu):
     return float(np.mean(2 * (t - (y - mu))))
 
 
-def nb_alpha(y, mu):
-    """Method-of-moments overdispersion: var = mu + alpha mu^2."""
-    return max(0.0, float(np.mean((y - mu) ** 2 - mu) / max(1e-9, np.mean(mu ** 2))))
+nb_alpha = probability.nb_alpha
 
 
-def p_at_least(k, mu, alpha):
-    """P(X >= k) for a negative binomial with mean mu and overdispersion alpha (Poisson at 0)."""
-    if alpha < 1e-6:
-        cdf, term = 0.0, math.exp(-mu)
-        for i in range(k):
-            cdf += term
-            term *= mu / (i + 1)
-        return max(0.0, 1 - cdf)
-    r = 1 / alpha
-    p = r / (r + mu)
-    cdf, term = 0.0, p ** r
-    for i in range(k):
-        cdf += term
-        term *= (i + r) / (i + 1) * (1 - p)
-    return max(0.0, 1 - cdf)
+p_at_least = probability.nb_at_least
 
 
 def logloss_over(y, mu, own, alpha):
