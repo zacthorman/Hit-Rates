@@ -30,7 +30,15 @@ def main() -> int:
     failed = 0
     for path in sorted(HERE.glob("test_*.py")):
         name = path.stem
-        module = importlib.import_module(name)
+        # A file that will not import (a missing dependency, say) is a failure
+        # to report, not a reason to skip every file after it.
+        try:
+            module = importlib.import_module(name)
+        except Exception:
+            failed += 1
+            print(f"== {path.name}\nFAIL could not import {name}")
+            traceback.print_exc()
+            continue
         suite = unittest.defaultTestLoader.loadTestsFromModule(module)
         bare = [f for n, f in inspect.getmembers(module, inspect.isfunction)
                 if n.startswith("test_") and f.__module__ == name]
