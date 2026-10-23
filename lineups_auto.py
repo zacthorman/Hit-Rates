@@ -15,11 +15,11 @@ from __future__ import annotations
 
 import glob
 import json
-import re
 import subprocess
 import time
 from datetime import datetime
 from pathlib import Path
+import pagedata
 
 ROOT = Path(__file__).parent
 LOG = ROOT / "lineups_auto.log"
@@ -58,7 +58,7 @@ def due():
         if name.startswith("pick-") or name in SKIP:
             continue
         text = Path(f).read_text(encoding="utf-8")
-        m = re.search(r"const ALL = (\{.*?\});\n", text, re.S)
+        m = pagedata.search(text)
         if not m:
             continue
         payload = json.loads(m.group(1))

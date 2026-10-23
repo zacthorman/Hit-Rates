@@ -22,11 +22,11 @@ not open locally, which is how these get checked.
 from __future__ import annotations
 
 import json
-import re
 import sys
 from pathlib import Path
 
 import markets
+import pagedata
 
 ROOT = Path(__file__).parent
 REPORTS = ROOT / "reports"
@@ -455,7 +455,7 @@ def main(argv: list[str] | None = None) -> None:
         slug = path.stem
         if wanted and not any(w in slug for w in wanted):
             continue
-        match = re.search(r"const ALL = (\{.*?\});\n", path.read_text(encoding="utf-8"), re.S)
+        match = pagedata.search(path.read_text(encoding="utf-8"))
         if not match:
             continue
         payload = json.loads(match.group(1))

@@ -137,6 +137,19 @@ touch "$STAGE"/.nojekyll
 STAMP="$(date -u '+%Y%m%dT%H%M%SZ')-$$"
 echo "$STAMP" > "$STAGE"/build.txt
 
+# The last check before the force-push, on exactly what is staged
+# (site_guard.py). Several steps above rewrite the reports and the index after
+# update.py has checked them, and a manual or resumed publish never went
+# through update.py at all. A report that is empty, cut off or unreadable, or
+# an index that lists nothing or links to missing pages, stops here: nothing
+# is pushed, so the live site keeps yesterday's pages, and the bad report is
+# swapped back to its last good copy on disk so the next publish cannot stage
+# it again.
+if ! "$PY" site_guard.py gate "$STAGE"; then
+  echo "Publish stopped by site_guard.py. The live site was not touched." >&2
+  exit 1
+fi
+
 cd "$STAGE"
 git init -q
 git checkout -q -b gh-pages
