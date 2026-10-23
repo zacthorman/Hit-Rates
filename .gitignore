@@ -66,6 +66,10 @@ liverpool-villarreal.txt
 mancity-aek.txt
 psg-barca.txt
 
+# Oddschecker pages saved by hand (oddschecker_import.py): Zac's own files,
+# never committed.
+drop/
+
 # Claude's backups before a patch, and the bin
 *.bak-*
 _to_delete/

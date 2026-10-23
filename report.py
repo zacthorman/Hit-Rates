@@ -5937,6 +5937,15 @@ function squadPlayers(teamIndex) {
   return byPlayer;
 }
 
+/* His records under the filters, by name, from whichever side he is on. */
+function playedOf(name) {
+  for (const t of [0, 1]) {
+    const rows = squadPlayers(t).get(name);
+    if (rows) return rows;
+  }
+  return [];
+}
+
 /* Every match on file for him, no filters: the record a bookmaker sees. */
 function allPlayed(teamIndex, name) {
   return ((DATA.players || [])[teamIndex] || []).filter(r => r.player === name);
@@ -6144,6 +6153,8 @@ function rungHtml(key, label, record, ours, book, bf, addIndex) {
     <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(ours))}</b></span>
     ${b3 ? `<span class="pp-kv pp-ppp"><small>Bet365</small><b>${fmtOdds(b3)}</b></span>` : ""}
     ${ppp ? `<span class="pp-kv pp-ppp"><small>Paddy Power</small><b>${fmtOdds(ppp)}</b></span>` : ""}
+    ${parts.length === 4 ? bestHtml(parts[1], parts[2], parseFloat(parts[3]), ours)
+      : parts[2] === "score" ? bestHtml(parts[1], "Goals", 0.5, ours) : ""}
     ${bf ? `<span class="pp-kv pp-bf" title="Betfair Exchange back price${bf.mid ? ", mid " + fmtOdds(bf.mid) : ""}"><small>Betfair</small><b>${fmtOdds(bf.back)}</b></span>` : ""}
     <span class="pp-kv" title="A rough guide to what a bookmaker pricing off his whole record would offer: the chance over every match on file, plus a ${Math.round(BOOK_MARGIN * 100)}% margin. Not a scraped price."><small>Est. bookie</small><b>${est ? "~" + fmtOdds(est) : "&ndash;"}</b></span>
     <label class="pp-kv pp-in"><small>Your price</small><input type="number" step="0.01" min="1.01" inputmode="decimal" data-spin="1" data-pprice="${escapeHtml(key)}" value="${typed || ""}" placeholder="price"></label>
@@ -6329,7 +6340,30 @@ const PP_PATTERNS = [
 ];
 const PP_YES = { "Player Shown a Card": "Card", "Player Assists": "Assists" };
 /* The bookmakers the pages carry prices for, by their key in markets.json. */
-const BOOKS = { pp: "Paddy Power", b365: "Bet365" };
+const BOOKS = { pp: "Paddy Power", b365: "Bet365", oc: "Best price" };
+/* Oddschecker bookmaker codes, for the best price (oddschecker_import.py). */
+const OC_BOOKS = { B3: "bet365", SK: "Sky Bet", PP: "Paddy Power", WH: "William Hill",
+  FB: "Betfair Sportsbook", WA: "Betway", CE: "Coral", LD: "Ladbrokes", UN: "Unibet",
+  VC: "BetVictor", BY: "BoyleSports", EE: "888sport", FR: "Betfred", SX: "Spreadex",
+  QN: "QuinnBet", MR: "Midnite" };
+
+/* Paddy Power's Super Sub: an anytime goalscorer bet on a starter who is
+   taken off moves to his replacement. Mirrors supersub.py: the extra chance
+   is (1 - his own) x the share of his starts that ended before 85 minutes x
+   how often a replacement for his position scores, measured on 6,765
+   matches in the backtest cache (supersub_fit.json). */
+const SUPER_SUB_REP = { G: 0, D: 0.024, M: 0.052, F: 0.080 };
+function superSub(p, played) {
+  const starts = (played || []).filter(g => g.started && (g.minutes || 0) > 0);
+  if (SPORT !== "football" || starts.length < 5) return { p, extra: 0 };
+  const counts = {};
+  played.forEach(g => { if (g.position) counts[g.position] = (counts[g.position] || 0) + 1; });
+  const pos = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0];
+  const rep = SUPER_SUB_REP[pos] || 0;
+  const s = starts.filter(g => g.minutes < 85).length / starts.length;
+  const q = p + (1 - p) * s * rep;
+  return { p: q, extra: q - p };
+}
 
 /* Take, acceptable or avoid, for one priced line.
    Take: more likely than not by our numbers, the price beats our chance by
@@ -6398,38 +6432,64 @@ function ppLines(name, src = "pp") {
     const pat = PP_PATTERNS.find(([rx]) => rx.test(r.m));
     if (pat) {
       const n = parseInt(r.m.match(pat[0])[1], 10);
-      out.push({ stat: pat[1], line: n - 0.5, over: true, price: r.p, label: `${n}+`, market: r.m });
+      out.push({ book: r.b || null, books: r.n || null, stat: pat[1], line: n - 0.5, over: true, price: r.p, label: `${n}+`, market: r.m });
       continue;
     }
     if (PP_YES[r.m]) {
       const st = PP_YES[r.m];
-      out.push({ stat: st, line: 0.5, over: true, price: r.p,
+      out.push({ book: r.b || null, books: r.n || null, stat: st, line: 0.5, over: true, price: r.p,
                  label: st === "Card" ? "to be booked" : "1+", market: r.m });
       continue;
     }
     const stat = PP_STAT[r.m];
     if (!stat) continue;
     if (stat === "Anytime touchdown" || stat === "Goals") {
-      out.push({ stat, line: 0.5, over: true, price: r.p,
+      out.push({ book: r.b || null, books: r.n || null, stat, line: 0.5, over: true, price: r.p,
                  label: stat === "Goals" ? "to score" : "Anytime TD", market: r.m });
       continue;
     }
     if (r.o === "OVER" || r.o === "UNDER") {
       if (r.l == null) continue;
-      out.push({ stat, line: r.l, over: r.o === "OVER", price: r.p,
+      out.push({ book: r.b || null, books: r.n || null, stat, line: r.l, over: r.o === "OVER", price: r.p,
                  label: `${r.o === "OVER" ? "Over" : "Under"} ${r.l}`, market: r.m });
       continue;
     }
     const n = parseFloat(String(r.s).replace(/[^0-9.].*$/, ""));
     if (!(n > 0)) continue;
-    out.push({ stat, line: n - 0.5, over: true, price: r.p, label: `${n}+`, market: r.m });
+    out.push({ book: r.b || null, books: r.n || null, stat, line: n - 0.5, over: true, price: r.p, label: `${n}+`, market: r.m });
   }
   return out.map(o => Object.assign(o, { src }));
 }
 
 function ppPrice(name, stat, line, over, src = "pp") {
-  const hit = ppLines(name, src).find(x => x.stat === stat && x.line === line && x.over === (over !== false));
+  const hit = ppLine(name, stat, line, over, src);
   return hit ? hit.price : null;
+}
+
+function ppLine(name, stat, line, over, src = "pp") {
+  return ppLines(name, src).find(x => x.stat === stat && x.line === line && x.over === (over !== false)) || null;
+}
+
+/* The best bookmaker price Oddschecker showed, beside the fair price.
+   `ours` is our chance at the line. Shown, not used for the verdict. */
+function bestHtml(name, stat, line, ours) {
+  const b = ppLine(name, stat, line, true, "oc");
+  if (!b) return "";
+  const m = fixtureMarket();
+  const at = m && m.oc && m.oc.at ? Math.round((Date.now() / 1000 - m.oc.at) / 3600) : null;
+  const book = b.book ? (OC_BOOKS[b.book] || b.book) : "bookmaker not known (copied text)";
+  // Paddy Power's to-score carries Super Sub, which is worth more than the
+  // player alone; anyone else's is the player alone.
+  let p = ours;
+  let ss = "";
+  if (b.book === "PP" && stat === "Goals" && SPORT === "football") {
+    const q = superSub(ours, playedOf(name));
+    if (q.extra > 0) { p = q.p; ss = `, Super Sub makes ours ${Math.round(p * 100)}%`; }
+  }
+  const e = p * b.price - 1;
+  const title = `Best of ${b.books || "?"} bookmakers on Oddschecker: ${book}${ss}. Edge ${e >= 0 ? "+" : ""}${Math.round(e * 100)}%.`
+    + (at !== null ? ` Page saved ${at}h ago.` : "");
+  return `<span class="pp-kv pp-ppp" title="${escapeHtml(title)}"><small>Best${b.book ? " · " + escapeHtml(b.book) : ""}</small><b>${fmtOdds(b.price)}</b></span>`;
 }
 
 /* Our chance at a Paddy Power line: the same pricePlayer() as everywhere,
@@ -6471,6 +6531,15 @@ function ppValued(t, name, played, src = "pp") {
       if (sc === null) continue;
       overPrice = Object.assign({}, overPrice, { p: sc, fair: fairOdds(sc) });
     }
+    // Paddy Power's to-score carries Super Sub: worth more than his own chance.
+    let supersub = 0;
+    if (x.stat === "Goals" && SPORT === "football" && src === "pp") {
+      const q = superSub(overPrice.p, played);
+      if (q.extra > 0) {
+        supersub = q.extra;
+        overPrice = Object.assign({}, overPrice, { p: q.p, fair: fairOdds(q.p) });
+      }
+    }
     const price = x.over ? overPrice : Object.assign({}, overPrice,
       { p: 1 - overPrice.p, fair: fairOdds(1 - overPrice.p) });
     const vals = apps.map(q => q.value);
@@ -6479,7 +6548,7 @@ function ppValued(t, name, played, src = "pp") {
     const k5 = last5.filter(v => x.over ? v > x.line : v <= x.line).length;
     const basis = opponentBasis(x.stat, t);
     out.push(Object.assign({}, x, { t, name, p: price.p, edge: price.p * x.price - 1,
-      k, n: vals.length, k5, n5: last5.length, priced: price,
+      k, n: vals.length, k5, n5: last5.length, priced: price, supersub,
       unadjusted: price.source !== "fmodel" && !basis,
       oddsAdj: price.source !== "fmodel" && basis === "odds" }));
   }
@@ -6565,6 +6634,11 @@ function teamNewsHtml() {
 /* Under a value row: whether the chance is the model's, whether it rests on
    a predicted XI, and a warning when the edge is too big to take on trust. */
 function modelNote(v) {
+  const ss = v.supersub ? ` &middot; Super Sub +${(v.supersub * 100).toFixed(1)} pts` : "";
+  return modelNoteBase(v) + ss;
+}
+
+function modelNoteBase(v) {
   if (!v.priced || (v.priced.source !== "fmodel" && v.priced.source !== "fmodel-tail")) {
     if (v.unadjusted) return " &middot; <b>no opponent adjustment</b>";
     return v.oddsAdj ? " &middot; opponent from the match odds" : "";
