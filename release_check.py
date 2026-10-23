@@ -4,8 +4,10 @@ Release readiness check: build the pages offline from main and from the
 branch stack, then compare them. Read-only for the repo and the site.
 
     python release_check.py prepare WORK            # merge the stack, unpack both trees
-    python release_check.py build WORK main|stack   # build one side offline, timed
-    python release_check.py check WORK main|stack   # node, a headless browser, links, staging gate
+    python release_check.py prepare WORK release    # redo only main-with-the-stack, keep the other builds
+    python release_check.py build WORK main|stack|release   # build one side offline, timed
+    python release_check.py check WORK main|stack|release   # node, a headless browser, links, staging gate
+    python release_check.py tests WORK main|stack|release [--no-cache]   # every test file, one at a time
     python release_check.py compare WORK            # what a visitor would see change
 
 WORK is a scratch folder outside the repo. It needs the cache extracted into
@@ -122,7 +124,8 @@ def git(*args, cwd=HERE, check=True) -> str:
 
 # ================================================================= prepare
 
-def prepare(work: Path) -> dict:
+def prepare(work: Path, only: str | None = None) -> dict:
+    """Merge, then unpack every side (or only one: the others' builds are kept)."""
     work.mkdir(parents=True, exist_ok=True)
     merge = work / "merge"
     for b in ["main", "oct21-work", *STACK]:
@@ -140,6 +143,8 @@ def prepare(work: Path) -> dict:
             break
         log.append({"branch": b, "clean": True, "head": git("rev-parse", "--short", "HEAD", cwd=merge).strip()})
     for side, ref in (("main", "origin/main"), ("stack", "release-merge-scratch")):
+        if only and side != only:
+            continue
         dest = work / side
         if dest.exists():
             shutil.rmtree(dest)
@@ -163,12 +168,13 @@ def prepare(work: Path) -> dict:
     release = {"clean": r.returncode == 0, "conflicts": conflicts,
                "resolved_for_check": resolve_release(rel, conflicts)}
     dest = work / "release"
-    if dest.exists():
-        shutil.rmtree(dest)
-    shutil.copytree(rel, dest, ignore=shutil.ignore_patterns(".git"))
-    dest.joinpath("market_prices.json").write_bytes(
-        subprocess.run(["git", "show", f"{PRICES}:market_prices.json"], cwd=HERE, capture_output=True,
-                       check=True).stdout)
+    if not only or only == "release":
+        if dest.exists():
+            shutil.rmtree(dest)
+        shutil.copytree(rel, dest, ignore=shutil.ignore_patterns(".git"))
+        dest.joinpath("market_prices.json").write_bytes(
+            subprocess.run(["git", "show", f"{PRICES}:market_prices.json"], cwd=HERE, capture_output=True,
+                           check=True).stdout)
     git("merge", "--abort", cwd=rel, check=False)
     out = {"stack": log, "release_into_main": release,
            "main": git("rev-parse", "--short", "origin/main").strip(),
@@ -198,6 +204,16 @@ def resolve_release(rel: Path, conflicts: list[str]) -> dict:
         stack_text = mid[mid.index('<div class="warn">\n') + len('<div class="warn">\n'):mid.index("</div>")]
         s = s[:a] + '<details class="warn"><summary>Why multiples are worse than their legs</summary>\n' \
             + stack_text + "</details>\n" + s[b:]
+        # Not a textual conflict, a semantic one: main still defines its own
+        # tonight_chance(l) inside build(), which shadows the stack's
+        # module-level tonight_chance(l, sport) (with the darts fix). Git
+        # merges both without complaint; the inner one has to go.
+        inner = ("    def tonight_chance(l):\n        g = l.get(\"gs\")\n        if g:\n"
+                 "            return g[\"chance\"]\n        c = weekend.chance(l) if (l.get(\"pStrength\") or "
+                 "l.get(\"pShrunk\") or l.get(\"pExchange\")) else None\n        return c if c is not None else 0\n\n")
+        if inner in s:
+            s = s.replace(inner, "")
+            done["tonight.py (semantic)"] = "main's inner tonight_chance removed: it shadowed the stack's"
         t.write_text(s)
         done["tonight.py"] = "main's team/player split, ranked as the stack ranks; stack's text on multiples"
     if "USAGE.md" in conflicts:
@@ -363,8 +379,10 @@ def browse(site: Path) -> dict:
     from functools import partial
     from playwright.sync_api import sync_playwright
 
-    handler = partial(http.server.SimpleHTTPRequestHandler, directory=str(site))
-    handler.log_message = lambda *a: None
+    class Quiet(http.server.SimpleHTTPRequestHandler):
+        def log_message(self, *a):
+            pass
+    handler = partial(Quiet, directory=str(site))
     httpd = socketserver.TCPServer(("127.0.0.1", 0), handler)
     port = httpd.server_address[1]
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
@@ -377,10 +395,11 @@ def browse(site: Path) -> dict:
                 rel = str(page_path.relative_to(site))
                 info = {"console": [], "exceptions": [], "missing": [], "tabs": {}}
                 pg = browser.new_page()
-                pg.on("console", lambda m, i=info: i["console"].append(m.text[:200]) if m.type == "error" else None)
+                pg.on("console", lambda m, i=info: i["console"].append(m.text[:200])
+                      if m.type == "error" and "favicon" not in (m.location or {}).get("url", "") else None)
                 pg.on("pageerror", lambda e, i=info: i["exceptions"].append(str(e)[:300]))
                 pg.on("response", lambda r, i=info: i["missing"].append(r.url.split(str(port))[-1])
-                      if r.status >= 400 else None)
+                      if r.status >= 400 and not r.url.endswith("/favicon.ico") else None)
                 t0 = time.perf_counter()
                 try:
                     pg.goto(f"http://127.0.0.1:{port}/{rel}", wait_until="networkidle", timeout=60000)
@@ -390,12 +409,15 @@ def browse(site: Path) -> dict:
                 info["text_len"] = pg.evaluate("document.body ? document.body.innerText.length : 0")
                 for tab in pg.query_selector_all("[data-tab]"):
                     name = tab.get_attribute("data-tab")
+                    if not tab.is_visible():
+                        info["tabs"][name] = "hidden"
+                        continue
                     try:
                         tab.click(timeout=5000)
                         pg.wait_for_timeout(150)
-                        panel = pg.evaluate(f"(() => {{ const el = document.getElementById({json.dumps(name)});"
-                                            " return el ? el.innerText.trim().length : null; }})()")
-                        info["tabs"][name] = panel
+                        info["tabs"][name] = pg.evaluate(
+                            "n => { const el = document.getElementById(n); return el ? el.innerText.trim().length : null; }",
+                            name)
                     except Exception as e:
                         info["exceptions"].append(f"tab {name}: {e}"[:300])
                 if rel.startswith("reports/"):
@@ -536,23 +558,54 @@ def compare(work: Path) -> dict:
     return out
 
 
+def run_tests(work: Path, side: str, with_cache: bool = True) -> dict:
+    """Every tests/test_*.py of one side, one file per process (all at once
+    holds every built report in memory), with or without the cache linked."""
+    tree = work / side
+    link = tree / "cache"
+    if with_cache and not link.exists():
+        link.symlink_to((work / "cache").resolve())
+    moved = None
+    if not with_cache and link.exists():
+        moved = tree / "cache.off"
+        link.rename(moved)
+    out = {}
+    try:
+        for f in sorted((tree / "tests").glob("test_*.py")):
+            r = subprocess.run([sys.executable, "-m", "pytest", str(f.relative_to(tree)), "-q", "-p", "no:cacheprovider"],
+                               cwd=tree, capture_output=True, text=True, timeout=900)
+            lines = r.stdout.strip().splitlines()
+            out[f.name] = {"exit": r.returncode, "summary": lines[-1] if lines else "",
+                           "failed": [x for x in lines if x.startswith("FAILED")]}
+    finally:
+        if moved:
+            moved.rename(link)
+    (work / f"tests-{side}-{'cache' if with_cache else 'nocache'}.json").write_text(json.dumps(out, indent=1))
+    return out
+
+
 def main(argv=None):
     a = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    a.add_argument("cmd", choices=("prepare", "build", "check", "compare"))
+    a.add_argument("cmd", choices=("prepare", "build", "check", "tests", "compare"))
+    a.add_argument("--no-cache", action="store_true", help="tests: without the cache linked")
     a.add_argument("work", type=Path)
     a.add_argument("side", nargs="?", choices=SIDES)
     args = a.parse_args(argv)
     work = args.work.resolve()
-    if args.cmd in ("build", "check") and not args.side:
+    if args.cmd in ("build", "check", "tests") and not args.side:
         a.error("build and check need a side: main, stack or release")
     if args.cmd == "prepare":
-        print(json.dumps(prepare(work), indent=1))
+        print(json.dumps(prepare(work, args.side), indent=1))
     elif args.cmd == "build":
         t = build(work, args.side)
         print(json.dumps({"total": t["total"], "errors": t["errors"], "cache_written": t["cache_written"]}, indent=1))
     elif args.cmd == "check":
         c = check(work, args.side)
         print(json.dumps({"links": c["links"], "gate": c["gate"], "guard": c["guard"]}, indent=1))
+    elif args.cmd == "tests":
+        res = run_tests(work, args.side, not args.no_cache)
+        bad = {k: v for k, v in res.items() if v["exit"] not in (0, 5)}
+        print(json.dumps({"files": len(res), "failing": bad}, indent=1))
     else:
         compare(work)
         print(f"written {work / 'compare.json'}")
