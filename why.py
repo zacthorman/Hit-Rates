@@ -33,13 +33,6 @@ def _num(x) -> str:
     return f"{x:.0f}" if abs(x - round(x)) < 0.05 else f"{x:.1f}"
 
 
-def _bet(leg) -> str:
-    stat = (leg.get("stat") or "").lower()
-    if leg.get("alt"):
-        return f"{leg.get('threshold')}+ {stat}"
-    return f"{'over' if leg.get('over', True) else 'under'} {leg.get('line')} {stat}"
-
-
 def _landed(v, line, over) -> bool:
     return v > line if over else v < line
 

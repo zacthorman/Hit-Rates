@@ -20,10 +20,10 @@ import argparse
 import collections
 import glob
 import json
-import re
 import time
 
 import sofascore_api as api
+import pagedata
 
 TEAM = {"Goals": [0.5, 1.5, 2.5], "Match goals": [1.5, 2.5, 3.5],
         "Shots on target": [2.5, 3.5, 4.5, 5.5], "Total shots": [8.5, 10.5, 12.5, 14.5],
@@ -38,7 +38,7 @@ def fixtures(hours: float, only: set[int] | None):
     for f in glob.glob("reports/*.html"):
         if "/pick-" in f:
             continue
-        m = re.search(r"const ALL = (\{.*?\});\n", open(f, encoding="utf-8").read(), re.S)
+        m = pagedata.search(open(f, encoding="utf-8").read())
         if not m:
             continue
         for fx in json.loads(m.group(1))["fixtures"]:
@@ -112,7 +112,7 @@ def update_reports(hours: float) -> None:
         if "/pick-" in f:
             continue
         path = Path(f)
-        m = re.search(r"const ALL = (\{.*?\});\n", path.read_text(encoding="utf-8"), re.S)
+        m = pagedata.search(path.read_text(encoding="utf-8"))
         if not m:
             continue
         payload = json.loads(m.group(1))
