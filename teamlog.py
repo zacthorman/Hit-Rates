@@ -4,6 +4,7 @@
     python teamlog.py snapshot   # log every team line on upcoming games (publish.sh)
     python teamlog.py settle     # results for anything finished (publish.sh)
     python teamlog.py report     # how the team lines have done so far
+    python teamlog.py scoreboard # the take tier against Paddy Power's prices, with 95% intervals
 
 The player record (pplog.py) has been settling Paddy Power's player lines since
 October; the team lines the Value tab added on 20 Oct 2026 had no record at
@@ -314,11 +315,91 @@ def report(args=None) -> None:
               f"{said}, {x['pl']:+.1f}u ({x['pl'] / x['n']:+.0%})")
 
 
+TAKES_TO_JUDGE = 50     # settled takes in a market before the scoreboard gives a verdict
+
+
+def scoreboard_rows(rows: list[dict], snap: str = "last") -> dict:
+    """{(market, verdict): [rows]} of settled lines the team model priced, at one snapshot.
+
+    Each row is {match, p, won, price, clv}: the team model's chance, the
+    result, Paddy Power's price at that snapshot, and how far the price moved
+    from first to last sighting (positive: it shortened, the market came our way)."""
+    import teamlines
+    out = collections.defaultdict(list)
+    for r in rows:
+        if r.get("result") not in ("win", "lose") or r.get("model_p") is None:
+            continue
+        s = r.get(snap) or r["first"]
+        p = r["model_p"]          # already the chance of this side: model_chance() takes over
+        first, last = r["first"]["price"], (r.get("last") or r["first"])["price"]
+        key = r.get("tl_market") or teamlines.market_key(r["stat"], r["scope"])
+        out[(key, s.get("verdict") or "unpriced")].append(
+            {"match": r["event_id"], "p": p, "won": int(r["result"] == "win"), "price": s["price"],
+             "clv": first / last - 1 if last else 0.0})
+    return out
+
+
+def judge_takes(s: dict, threshold: float | None) -> str:
+    """A plain verdict on one market's settled takes at Paddy Power's prices."""
+    import teamline_check as tc
+    if s.get("n", 0) < TAKES_TO_JUDGE:
+        return f"too few settled takes to judge ({s.get('n', 0)} of {TAKES_TO_JUDGE})"
+    why = tc.tighten(s, threshold or 0.05)
+    if why:
+        return "losing: fail this market by hand in teamlines_gate.json (" + "; ".join(why) + ")"
+    if s["ret_ci"][0] > 0:
+        return "holding: the takes beat Paddy Power's prices, interval wholly above zero"
+    return "no clear answer yet: the interval of the return spans zero"
+
+
+def scoreboard(args=None, rows: list[dict] | None = None) -> dict:
+    """The take tier against Paddy Power's real prices, market by market.
+
+    Run on the machine that holds pplog/ (the Mac that publishes). Uses the
+    team model's chance logged with each line and the page's verdict at the
+    last price seen before kick-off (and at the first, for comparison). Every
+    interval is 95% and resamples whole matches. TEAMLINE-CHECK.md says how
+    to read it."""
+    import teamline_check as tc
+    import teamlines
+    if rows is None:
+        rows = [r for p in _files() for r in _read(p)]
+    settled = [r for r in rows if r.get("result") in ("win", "lose")]
+    priced = [r for r in settled if r.get("model_p") is not None]
+    print(f"team log: {len(settled)} settled lines, {len(priced)} priced by the team model")
+    out = {}
+    for snap in ("last", "first"):
+        groups = scoreboard_rows(priced, snap)
+        print(f"\n  at the {snap} price seen before kick-off:")
+        print(f"  {'market':28} {'verdict':9} {'lines':>5} {'said':>6} {'got (95%)':>22} "
+              f"{'got - said (95%)':>26} {'return at PP (95%)':>28} {'price move':>10}")
+        for (key, v), rs in sorted(groups.items()):
+            s = tc.summarise(rs, lambda x: x["match"])
+            s["clv"] = sum(x["clv"] for x in rs) / len(rs)
+            out[(snap, key, v)] = s
+            print(f"  {teamlines.market_name(key):28} {v:9} {s['n']:>5} {tc.fmt_pct(s['said']):>6} "
+                  f"{tc.fmt_pct(s['got']) + ' (' + tc.fmt_ci(s['got_ci']) + ')':>22} "
+                  f"{tc.fmt_pct(s['gap'], sign=True) + ' (' + tc.fmt_ci(s['gap_ci'], sign=True) + ')':>26} "
+                  f"{tc.fmt_pct(s['ret'], sign=True) + ' (' + tc.fmt_ci(s['ret_ci'], sign=True) + ')':>28} "
+                  f"{tc.fmt_pct(s['clv'], sign=True):>10}")
+    print("\n  the take tier, market by market (last price):")
+    keys = sorted({k for (snap, k, v) in out if snap == "last"} | set(teamlines.page_gate()["markets"]))
+    for key in keys:
+        m = teamlines.market_gate(key)
+        s = out.get(("last", key, "take"), {"n": 0})
+        if not m:
+            extra = f" ({s['n']} lines called take, which should be none)" if s["n"] else ""
+            print(f"  {teamlines.market_name(key):28} failed the backtest: never a take{extra}")
+            continue
+        print(f"  {teamlines.market_name(key):28} take from {tc.fmt_pct(m['threshold'])}: {judge_takes(s, m['threshold'])}")
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("cmd", choices=["snapshot", "settle", "report"])
+    ap.add_argument("cmd", choices=["snapshot", "settle", "report", "scoreboard"])
     a = ap.parse_args()
-    {"snapshot": snapshot, "settle": settle, "report": report}[a.cmd]()
+    {"snapshot": snapshot, "settle": settle, "report": report, "scoreboard": scoreboard}[a.cmd]()
 
 
 if __name__ == "__main__":
