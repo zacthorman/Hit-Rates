@@ -687,6 +687,8 @@ Replayed over 1,723 matches: favourite won 61%, log loss 0.657 against 0.693 for
 
 Where the Betfair Exchange prices a match, the winner chance is a blend leaning 75% on the market (log-odds scale), and every other darts market is recomputed from it. Model, exchange and the blend are shown side by side, and a gap over 12 points is flagged as a warning. `darts.sh` fetches prices first when `.betfair.env` exists; by hand it is `python darts_market.py` then `python rerender.py darts`. Each priced match is logged to `darts_market_log.json`, and once 100 have finished the weight is refitted from results (`darts_market.fit_weight`).
 
+A second darts model, `darts_legs.py`, prices the four stat lines from shrunk per-leg rates and the legs the match is expected to last. It is not used live: it beats the record price on the cache, but it has not yet beaten it on the settled darts bets. The evidence, and what would change the decision, are in [DARTS-MODEL.md](DARTS-MODEL.md).
+
 ## The picks correct themselves (`learner.py`)
 
 Every settled pick in `best_bets.json` is used to fit a correction from what the site said to what landed, per sport, team or player, and market family, pulled towards "no correction" as if 100 phantom legs said so, with a ten-day half-life. It is applied only while it beats no correction on the newest fifth of settled picks, checked every run, so it cannot make the picks worse on the evidence. It learns from `chance_base` (the chance before correction, recorded by besttrack from 16 October) so it never fits its own output. On 16 October it stayed off: the latest 233 picks said 70% and landed 71%. `learned.json` holds the current fit; the picks card says which state it is in.
