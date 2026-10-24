@@ -253,6 +253,20 @@ def _match_player(pp_key: str, squads: list[dict]):
 
 # ------------------------------------------------------------------ snapshot
 
+def _fresh(entry: dict, t: int, name: str, rows: list[dict], mins: int, kickoff) -> float | None:
+    """Share of his last ten appearances since his last long break, as the page works it out
+    (freshness.py, report.py freshnessOf). None for a national side."""
+    import freshness
+    if (entry.get("fixture") or {}).get("national"):
+        return None
+    pb = (entry.get("playerBreaks") or [{}, {}])[t] or {}
+    brk = pb[name] if name in pb else freshness.break_date([r.get("date") for r in rows], kickoff)
+    gated = rows if not any((r.get("minutes") or 0) > 0 for r in rows) else \
+        [r for r in rows if (r.get("minutes") or 0) >= mins]
+    share = freshness.window([r.get("date") for r in gated[-10:]], brk)["share"]
+    return None if share is None else round(share, 3)
+
+
 def _fmodel() -> dict:
     """reports/fmodel.json (fmodel_live.py): event id -> {normalised name: player}."""
     try:
@@ -329,6 +343,7 @@ def snapshot(args=None) -> int:
             if len(recent) < 3:
                 continue
             adj = _adjustment(entry, t, stat)
+            fresh = _fresh(entry, t, name, squads[t][name], mins, meta["kickoff"])
             if sport == "football" and stat == "Goals":
                 p_over = _score_chance(squads[t][name], adj, mins)
                 if p_over is None:
@@ -395,6 +410,7 @@ def snapshot(args=None) -> int:
             else:
                 row.update({"logged_at": round(now), "first": snap, "last": snap,
                             "k5": k5, "n5": min(5, len(vals)), "k10": k10, "n10": len(vals),
+                            "fresh": fresh,
                             "adj": round(adj, 3), "injury": _injury(entry, t, name),
                             "result": None, "value": None})
                 new_rows.append(row)
@@ -490,9 +506,13 @@ def _card_value(r: dict):
 # ------------------------------------------------------------------ scoring
 
 def is_value(r: dict, snap: str = "first") -> bool:
+    import freshness
     s = r.get(snap) or {}
     return (s.get("chance", 0) >= VALUE_MIN_P and s.get("edge", -1) >= VALUE_EDGE
             and (r.get("n10") or 0) >= VALUE_MIN_N
+            # A record mostly from before his last long break is never value
+            # (PLAYER-STALE.md); rows logged before 24 Oct 2026 carry no share.
+            and not freshness.is_stale(r.get("fresh"))
             and ((r.get("sport"), r.get("stat")) not in UNCALIBRATED
                  or (s.get("source") == "fmodel" and r.get("stat") != "Card")))
 

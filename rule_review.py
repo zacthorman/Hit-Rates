@@ -296,11 +296,15 @@ def runs_high(stat, line, sport="football", over=True) -> bool:
 
 
 def pp_verdict(p: float, price: float, n: int = 5, heuristic: bool = False, stat: str | None = None,
-               line: float | None = None, sport: str = "football", over: bool = True) -> str | None:
+               line: float | None = None, sport: str = "football", over: bool = True,
+               fresh: float | None = None) -> str | None:
     """report.py verdictOf for a player line, in Python, for the tests and
     for scoring pplog: nothing is called take; a price that beats our chance
     by 5% or more is avoid, like one 5% worse; the card estimate and the
-    lines where our chance runs high are long shots, never acceptable."""
+    lines where our chance runs high are long shots, never acceptable; and a
+    record mostly from before the player's last long break (fresh, the share
+    of his window since it, under freshness.STALE_SHARE) is "stale", the
+    page's "Old record", never acceptable either."""
     if not (price > 1) or not (p > 0):
         return None
     e = p * price - 1
@@ -312,6 +316,9 @@ def pp_verdict(p: float, price: float, n: int = 5, heuristic: bool = False, stat
         return "avoid"
     if heuristic or runs_high(stat, line, sport, over):
         return "long"
+    import freshness
+    if freshness.is_stale(fresh):
+        return "stale"
     return "ok"
 
 

@@ -1162,6 +1162,7 @@ input[type=number]::-webkit-inner-spin-button {
 .vd-ok { background: rgba(232, 185, 35, 0.22); color: var(--text-primary); }
 .vd-avoid { background: rgba(220, 60, 60, 0.16); color: var(--miss); }
 .vd-long { background: var(--tint); color: var(--muted); }
+.vd-stale { background: var(--tint); color: var(--muted); border: 1px dashed var(--border); }
 .pp-hero { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
 .pp-hero .swatch { margin-right: 6px; }
 .pp-big { font-size: 22px; font-weight: 700; }
@@ -6222,11 +6223,13 @@ function rungHtml(key, label, record, ours, book, bf, addIndex) {
   const b3 = parts.length === 4 ? ppPrice(parts[1], parts[2], parseFloat(parts[3]), true, "b365") : null;
   const ref = typed || b3 || ppp || (bf && bf.back) || est;
   const real = typed || b3 || ppp || (bf && bf.back);
+  const fr = parts.length >= 3 ? freshnessByName(parts[1]) : null;
   return `<div class="pp-rung" data-pkey="${escapeHtml(key)}" data-pp="${ours}" data-pdef="${b3 || ppp || (bf && bf.back) || est || ""}">
     ${real ? verdictHtml({ p: ours, price: real, n: 5, over: true,
                            stat: parts.length === 4 ? parts[2] : null,
-                           line: parts.length === 4 ? parseFloat(parts[3]) : null }) : ""}<span class="pp-line">${label}</span>
-    <span class="pp-rec">${record}</span>
+                           line: parts.length === 4 ? parseFloat(parts[3]) : null,
+                           fresh: fr && fr.share }) : ""}<span class="pp-line">${label}</span>
+    <span class="pp-rec">${record}${staleNoteHtml(fr)}</span>
     <span class="pp-kv"><small>Ours</small><b>${Math.round(ours * 100)}%</b></span>
     <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(ours))}</b></span>
     ${b3 ? `<span class="pp-kv pp-ppp"><small>Bet365</small><b>${fmtOdds(b3)}</b></span>` : ""}
@@ -6443,6 +6446,68 @@ function superSub(p, played) {
   return { p: q, extra: q - p };
 }
 
+/* How much of a player's record is from before his last long break.
+   Mirrors freshness.py (PLAYER-STALE.md). The fixture's staleDays is days
+   since the newest match in either team's form, so it lifts after each
+   team's first game while his last ten can still be mostly last season's.
+   A break is a gap of BREAK_DAYS or more between two of his games, or
+   between his last game and this kick-off; games on or after the date his
+   current spell began are fresh. Under STALE_SHARE of his window fresh and
+   the line is never acceptable. National sides are left out: caps come in
+   windows months apart. */
+const BREAK_DAYS = 45, STALE_SHARE = 0.5;
+function dayOf(d) {
+  if (d === null || d === undefined || d === "") return null;
+  if (typeof d === "number") return Math.floor(d / 86400);
+  const t = Date.parse(String(d).slice(0, 10) + "T00:00:00Z");
+  return isNaN(t) ? null : Math.floor(t / 86400000);
+}
+function isoOfDay(n) { return new Date(n * 86400000).toISOString().slice(0, 10); }
+function breakDateOf(dates, kickoff) {
+  const days = dates.map(dayOf).filter(d => d !== null).sort((a, b) => a - b);
+  const ko = dayOf(kickoff);
+  if (!days.length) return null;
+  if (ko !== null && ko - days[days.length - 1] >= BREAK_DAYS) return isoOfDay(ko);
+  for (let i = days.length - 1; i > 0; i--) {
+    if (days[i] - days[i - 1] >= BREAK_DAYS) return isoOfDay(days[i]);
+  }
+  return null;
+}
+function windowFreshness(dates, brk) {
+  const days = dates.map(dayOf).filter(d => d !== null);
+  if (!days.length) return { fresh: 0, n: 0, share: null, brk };
+  const b = dayOf(brk);
+  const fresh = b === null ? days.length : days.filter(d => d >= b).length;
+  return { fresh, n: days.length, share: fresh / days.length, brk };
+}
+const NATIONAL_COMP = /Nations League|World Cup|European Championship|Euro 20|Qualif|International Friendl|Copa Am[eé]rica|Africa Cup|Asian Cup|Gold Cup/i;
+function nationalFixture() {
+  const f = (DATA && DATA.fixture) || {};
+  if (f.national !== undefined) return !!f.national;
+  return NATIONAL_COMP.test(f.competition || "");
+}
+/* {fresh, n, share, brk} for the rows a line is priced on, or null for a national side. */
+function freshnessOf(t, name, rows) {
+  if (nationalFixture()) return null;
+  const pb = DATA.playerBreaks && DATA.playerBreaks[t];
+  const brk = pb && Object.prototype.hasOwnProperty.call(pb, name) ? pb[name]
+    : breakDateOf(allPlayed(t, name).map(r => r.date), DATA.fixture && DATA.fixture.kickoff);
+  return windowFreshness((rows || []).map(r => r.date), brk);
+}
+/* The same for a player found by name on either side, over his last ten under the filters. */
+function freshnessByName(name) {
+  for (const t of [0, 1]) {
+    const rows = squadPlayers(t).get(name);
+    if (rows) return freshnessOf(t, name, gatedApps(rows).slice(-10));
+  }
+  return null;
+}
+function staleNoteHtml(f) {
+  if (!f || f.share === null || f.share >= STALE_SHARE) return "";
+  const since = f.brk ? new Date(f.brk + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }) : "";
+  return ` &middot; <b>old record: ${f.fresh} of ${f.n} games since his break${since ? " (" + since + ")" : ""}</b>`;
+}
+
 /* Take, acceptable or avoid, for one priced line.
    Take: team lines only, through the backtested gate below. Player lines
    no longer (RULE-REVIEW.md, 23 Oct 2026): take was ours 50%+, the price
@@ -6483,6 +6548,10 @@ function verdictOf(v) {
   // September and 7.3 under from September (95% -8.6 to -5.9), so a price
   // fair by our numbers lost about 13%. A long shot, not acceptable.
   if (RUNS_HIGH(v)) return "long";
+  // Mostly before his last long break (freshnessOf): last season's games, or
+  // games before a long injury, at the minutes and role he had then. Every
+  // sport. Never acceptable; marked "Old record" (PLAYER-STALE.md).
+  if (typeof v.fresh === "number" && v.fresh < STALE_SHARE) return "stale";
   return "ok";
 }
 
@@ -6495,12 +6564,13 @@ function RUNS_HIGH(v) {
 function verdictHtml(v) {
   const k = verdictOf(v);
   if (!k) return "";
-  const text = { take: "Take", ok: "Acceptable", long: "Long shot", avoid: "Avoid" }[k];
+  const text = { take: "Take", ok: "Acceptable", long: "Long shot", avoid: "Avoid", stale: "Old record" }[k];
   const why = {
     take: "More likely than not, and the price beats our chance by 5% or more, on a record of five games or more",
     ok: "More likely than not and close to a fair price by our numbers",
     long: "Under 50% by our numbers, or a football fouls, fouled or tackles line at 2 or more, where our number has run high: a big edge here is noise, not value",
     avoid: "The price is more than 5% worse than our chance, or more than 5% better: on Paddy Power's settled lines an edge that size has been our number being wrong",
+    stale: "Most of the games behind this line are from before his last long break (the summer, or an injury), at the minutes and role he had then: not acceptable until more of his record is from since",
   }[k];
   return `<span class="vd vd-${k}" title="${why}">${text}</span>`;
 }
@@ -6582,6 +6652,7 @@ function ppValued(t, name, played, src = "pp") {
   const lines = ppLines(name, src);
   if (!lines.length) return [];
   const recent = gatedApps(played).slice(-10);
+  const fr = freshnessOf(t, name, recent);
   const adj = {};
   const out = [];
   for (const x of lines) {
@@ -6591,7 +6662,7 @@ function ppValued(t, name, played, src = "pp") {
       const r = cardCase(t, name, recent), f = cardCase(t, name, played);
       if (!r || !f) continue;
       const p = cardModelP(name) ?? 1 - Math.exp(-(r.lam + f.lam) / 2);
-      out.push(Object.assign({}, x, { t, name, p, edge: p * x.price - 1, k: 0, n: r.n,
+      out.push(Object.assign({}, x, { t, name, p, edge: p * x.price - 1, k: 0, n: r.n, fresh: fr && fr.share, freshInfo: fr,
         k5: null, n5: null, priced: { p, fair: fairOdds(p), need: fairOdds(p) }, heuristic: true }));
       continue;
     }
@@ -6632,7 +6703,7 @@ function ppValued(t, name, played, src = "pp") {
     const k5 = last5.filter(v => x.over ? v > x.line : v <= x.line).length;
     const basis = opponentBasis(x.stat, t);
     out.push(Object.assign({}, x, { t, name, p: price.p, edge: price.p * x.price - 1,
-      k, n: vals.length, k5, n5: last5.length, priced: price, supersub,
+      k, n: vals.length, k5, n5: last5.length, priced: price, supersub, fresh: fr && fr.share, freshInfo: fr,
       unadjusted: price.source !== "fmodel" && !basis,
       oddsAdj: price.source !== "fmodel" && basis === "odds" }));
   }
@@ -6756,7 +6827,7 @@ function ppRowHtml(v, withName) {
   const inSlip = SLIP.some(s => s.key === rowKey(row));
   return `<div class="pp-rung">
     ${verdictHtml(v)}<span class="pp-line">${withName ? `<b>${escapeHtml(v.name)}</b>${inj ? ` <span class="lu-badge pp-out">${escapeHtml(inj)}</span>` : ""}<br>` : ""}${escapeHtml(v.stat)} ${escapeHtml(v.label)}</span>
-    <span class="pp-rec">${v.k5 === null ? "fouls-based estimate" : `${v.k5}/${v.n5} last 5 &middot; ${v.k}/${v.n} last ${v.n}`}${modelNote(v)}</span>
+    <span class="pp-rec">${v.k5 === null ? "fouls-based estimate" : `${v.k5}/${v.n5} last 5 &middot; ${v.k}/${v.n} last ${v.n}`}${modelNote(v)}${staleNoteHtml(v.freshInfo)}</span>
     <span class="pp-kv"><small>Ours</small><b>${Math.round(v.p * 100)}%</b></span>
     <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(v.p))}</b></span>
     <span class="pp-kv pp-ppp"><small>${BOOKS[v.src || "pp"]}</small><b>${fmtOdds(v.price)}</b></span>
@@ -6772,9 +6843,10 @@ function ppCardHtml(t, name, played, src = "pp") {
   const book = BOOKS[src];
   const when = m && m[src] && m[src].at ? new Date(m[src].at * 1000).toLocaleString("en-GB",
     { weekday: "short", hour: "2-digit", minute: "2-digit" }) : "";
-  const n = { take: 0, ok: 0, long: 0, avoid: 0 };
+  const n = { take: 0, ok: 0, long: 0, avoid: 0, stale: 0 };
   vals.forEach(v => { const k = verdictOf(v); if (k) n[k]++; });
-  const sum = `${n.take} to take &middot; ${n.ok} acceptable &middot; ${n.long} long shots &middot; ${n.avoid} to avoid`;
+  const sum = `${n.take} to take &middot; ${n.ok} acceptable &middot; ${n.long} long shots &middot; ${n.avoid} to avoid`
+    + (n.stale ? ` &middot; ${n.stale} on an old record` : "");
   return `<div class="pp-section">${book} lines${when ? " &middot; prices from " + when : ""} &middot; ${sum}</div>
     <div class="pp-stat pp-ppcard">${vals.map(v => ppRowHtml(v)).join("")}
     <p class="note">Every ${book} line for him, best value first, each marked take, acceptable, long shot or avoid. Ours is worked out at ${book}'s own line. Prices move: check before betting.</p></div>`;
@@ -6998,7 +7070,7 @@ function teamRowHtml(v) {
 function teamValueHtml() {
   const vals = teamValued();
   if (!vals.length) return "";
-  const g = { take: [], ok: [], long: [], avoid: [] };
+  const g = { take: [], ok: [], long: [], avoid: [], stale: [] };
   vals.forEach(v => { const k = verdictOf(v); if (k) g[k].push(v); });
   g.take.sort((a, b) => b.edge - a.edge);
   g.ok.sort((a, b) => b.edge - a.edge);
@@ -7049,7 +7121,7 @@ function valueView() {
       if (!best.has(k) || best.get(k).price < v.price) best.set(k, v);
     }));
   }));
-  const groups = { take: [], ok: [], long: [], avoid: [] };
+  const groups = { take: [], ok: [], long: [], avoid: [], stale: [] };
   best.forEach(v => { const k = verdictOf(v); if (k) groups[k].push(v); });
   groups.take.sort((a, b) => b.edge - a.edge);
   groups.ok.sort((a, b) => b.edge - a.edge);
@@ -7077,7 +7149,7 @@ function valueView() {
     + (block("Take", groups.take, "More likely than not, and the price beats our chance by 5% or more, on a record of five games or more. Biggest edge first, one line per player across Take and Acceptable.")
        || `<div class="pp-section">Take</div><p class="note">Nothing to take on this game at the current prices.</p>`)
     + block("Acceptable", groups.ok, "More likely than not and close to a fair price, or value we cannot fully vouch for: a thin record or the card estimate. Fine as part of a slip, not on its own.")
-    + `<p class="note">Left off: ${groups.long.length} long shot${groups.long.length === 1 ? "" : "s"} (under 50% by our numbers), ${groups.avoid.length} line${groups.avoid.length === 1 ? "" : "s"} priced worse than our chance${capped ? ` and ${capped} more line${capped === 1 ? "" : "s"} on players already listed` : ""}. Every line is still on each player's profile.</p>`;
+    + `<p class="note">Left off: ${groups.long.length} long shot${groups.long.length === 1 ? "" : "s"} (under 50% by our numbers), ${groups.avoid.length} line${groups.avoid.length === 1 ? "" : "s"} priced worse than our chance${groups.stale.length ? `, ${groups.stale.length} on a record mostly from before the player's last long break (marked "Old record" on his profile)` : ""}${capped ? ` and ${capped} more line${capped === 1 ? "" : "s"} on players already listed` : ""}. Every line is still on each player's profile.</p>`;
 }
 
 function squadHome() {

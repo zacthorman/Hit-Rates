@@ -465,6 +465,18 @@ def _fixture_referee(event: dict) -> dict | None:
         return None
 
 
+def player_breaks_for(entry: dict, player_records: list, event: dict) -> list | None:
+    """Per side, {player: the date his current spell began, or None} (freshness.py).
+
+    None for a national side, whose caps come in windows months apart, so a
+    gap between games there is the calendar, not a break."""
+    if (entry.get("fixture") or {}).get("national"):
+        return None
+    import freshness
+    ko = event.get("startTimestamp")
+    return [freshness.player_breaks(side, ko) for side in player_records]
+
+
 def _sample_age(records: list, event: dict) -> int | None:
     """Days from the most recent match in either team's form to kick-off."""
     kickoff = event.get("startTimestamp")
@@ -572,6 +584,10 @@ def build_fixture(
             # sport, because a club returning from a winter break has the same
             # problem in a milder form and deserves the same warning.
             "staleDays": _sample_age(records, event),
+            # National sides: caps come in windows months apart, so a gap of
+            # weeks between a player's games is the calendar, not a break.
+            # The page's player staleness (freshness.py) is off for them.
+            "national": bool(home.get("national") or away.get("national")),
             # Which sport, straight from the feed. The index groups by this,
             # and until every report carries it that grouping falls back to
             # sniffing the stat names, which works only because football and
@@ -850,6 +866,14 @@ def build_fixture(
                 )
                 if extra:
                     player_records[team_index].extend(extra)
+
+        # Each player's most recent long break (freshness.py): the date his
+        # current spell began, or None. The fixture's staleDays lifts after
+        # each team's first game; a player's last ten can still be mostly last
+        # season's, and the page reads this to say so (PLAYER-STALE.md).
+        breaks = player_breaks_for(entry, player_records, event)
+        if breaks is not None:
+            entry["playerBreaks"] = breaks
 
     print_summary(entry)
     return entry

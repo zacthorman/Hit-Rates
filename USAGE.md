@@ -909,6 +909,8 @@ Everything scheduled runs on the Mac. Nothing here is a cloud job.
 | `linelog.py` | Every line the model prices, settled. |
 | `pplog.py` | Every Paddy Power player line, our chance and the result. |
 | `teamlog.py` | The same for Paddy Power team lines (21 October). |
+| `freshness.py` | How much of a player's record is from before his last long break; a line on a mostly-stale record is "Old record", never acceptable (PLAYER-STALE.md, 24 October). |
+| `player_stale.py` | The evidence for that: the committed records and the football cache across season starts. |
 | `review.py` | Why each of a report's bets landed or missed. |
 | `backtest.py` | Every bet the model would have made, settled from the cache. |
 
