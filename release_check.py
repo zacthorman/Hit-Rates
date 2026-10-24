@@ -80,6 +80,7 @@ STEPS = {
         ("teamlog snapshot", ["teamlog.py", "snapshot"]),
         ("sharp stamp", ["sharp.py", "stamp"]),
         ("pplog page", ["pplog.py", "page"]),
+        ("ruletrack report", ["ruletrack.py", "report"]),
         ("papertrade page", ["papertrade.py", "--page"]),
         ("make_index", ["make_index.py"]),
         ("exchange_eval page", ["exchange_eval.py", "page"]),
@@ -162,15 +163,19 @@ def prepare(work: Path, only: str | None = None, release_ref: str | None = None)
     # listed, then resolved here for this check only (resolve_release), and
     # the result unpacked as WORK/release. Nothing is committed.
     rel = work / "release-tree"
-    if not rel.exists():
-        git("worktree", "add", "-q", "--detach", str(rel), "origin/main")
-    git("merge", "--abort", cwd=rel, check=False)
-    git("reset", "-q", "--hard", "origin/main", cwd=rel)
-    r = subprocess.run(["git", "merge", "--no-ff", "--no-commit", "release-merge-scratch"], cwd=rel,
-                       capture_output=True, text=True)
-    conflicts = git("diff", "--name-only", "--diff-filter=U", cwd=rel).split()
-    release = {"clean": r.returncode == 0, "conflicts": conflicts,
-               "resolved_for_check": resolve_release(rel, conflicts)}
+    if release_ref:
+        # A merged branch is the release; the scratch merge is not needed.
+        release = {"clean": None, "conflicts": [], "resolved_for_check": {}}
+    else:
+        if not rel.exists():
+            git("worktree", "add", "-q", "--detach", str(rel), "origin/main")
+        git("merge", "--abort", cwd=rel, check=False)
+        git("reset", "-q", "--hard", "origin/main", cwd=rel)
+        r = subprocess.run(["git", "merge", "--no-ff", "--no-commit", "release-merge-scratch"], cwd=rel,
+                           capture_output=True, text=True)
+        conflicts = git("diff", "--name-only", "--diff-filter=U", cwd=rel).split()
+        release = {"clean": r.returncode == 0, "conflicts": conflicts,
+                   "resolved_for_check": resolve_release(rel, conflicts)}
     dest = work / "release"
     if not only or only == "release":
         if dest.exists():
@@ -185,7 +190,8 @@ def prepare(work: Path, only: str | None = None, release_ref: str | None = None)
         dest.joinpath("market_prices.json").write_bytes(
             subprocess.run(["git", "show", f"{PRICES}:market_prices.json"], cwd=HERE, capture_output=True,
                            check=True).stdout)
-    git("merge", "--abort", cwd=rel, check=False)
+    if not release_ref:
+        git("merge", "--abort", cwd=rel, check=False)
     out = {"stack": log, "release_into_main": release,
            "main": git("rev-parse", "--short", "origin/main").strip(),
            "oct21_work": git("rev-parse", "--short", "origin/oct21-work").strip()}
