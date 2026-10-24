@@ -7,6 +7,7 @@ Champions League report if there is one and is skipped otherwise.
 """
 import sys
 import unittest
+from unittest import mock
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -78,6 +79,62 @@ class Score(unittest.TestCase):
         sc = context.score(e, [], [])
         self.assertGreater(sc["ph"], sc["pa"])
         self.assertGreater(sc["home"], sc["away"])
+
+
+class ScoreModel(unittest.TestCase):
+    """context.score() reads the fitted model first, the old route after.
+
+    A tiny league is fitted and put in place of the cache-wide model, so
+    these never depend on what is in cache/."""
+
+    def setUp(self):
+        import scoremodels
+        ms, ts = [], 1_700_000_000
+        for _ in range(6):
+            for h, a, hg, ag in ((1, 2, 3, 0), (2, 1, 0, 2), (1, 3, 2, 1), (3, 1, 0, 1),
+                                 (2, 3, 1, 1), (3, 2, 1, 1)):
+                ms.append({"home": h, "away": a, "hg": hg, "ag": ag, "ts": ts})
+                ts += 86400
+        self.saved = dict(context._SCORE_MODEL)
+        context._SCORE_MODEL["m"] = scoremodels.TeamGoals("poisson", 1460, 2.0).fit(ms, ts)
+
+    def tearDown(self):
+        context._SCORE_MODEL.clear()
+        context._SCORE_MODEL.update(self.saved)
+
+    def test_model_route_when_both_sides_are_known(self):
+        sc = context.score(entry([], []), [], [])     # Napoli id 1 at home to Bodo id 2
+        self.assertEqual(sc["source"], "team attack and defence ratings (backtested)")
+        self.assertAlmostEqual(sc["ph"] + sc["pd"] + sc["pa"], 1.0, places=6)
+        self.assertGreater(sc["ph"], sc["pa"])
+        self.assertGreater(sc["home"], sc["away"])
+        self.assertGreater(sc["lh"], sc["la"])
+
+    def test_unknown_side_falls_back_to_the_projection(self):
+        e = entry([], [])
+        e["teams"][1]["id"] = 999
+        e["projection"] = {"ALL": {"Goals": [0.5, 2.5]}}
+        sc = context.score(e, [], [])
+        self.assertEqual(sc["source"], "goals projection")
+        self.assertGreater(sc["away"], sc["home"])
+
+    def test_no_model_falls_back(self):
+        # With no ratings the old route runs. Its first step is main's style
+        # model (context.open_mu), which reads team profiles from cache/, so
+        # it is switched off here to keep this test independent of the cache.
+        context._SCORE_MODEL["m"] = None
+        e = entry([], [])
+        e["projection"] = {"ALL": {"Goals": [2.4, 0.6]}}
+        with mock.patch.object(context, "open_mu", return_value=None):
+            self.assertEqual(context.score(e, [], [])["source"], "goals projection")
+
+    def test_no_model_uses_the_style_model_where_it_has_one(self):
+        context._SCORE_MODEL["m"] = None
+        e = entry([], [])
+        with mock.patch.object(context, "open_mu", return_value=(1.8, 0.9)):
+            sc = context.score(e, [], [])
+        self.assertEqual(sc["source"], "style model (both sides' profiles; backtested)")
+        self.assertEqual((sc["home"], sc["away"]), (1, 0))
 
 
 class Case(unittest.TestCase):

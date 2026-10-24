@@ -104,6 +104,21 @@ def build(data: dict) -> dict:
                  "l": l.get("line"), "p": l["price"]})
         if by:
             events.setdefault(fid, {})["b365"] = {"at": e.get("fetchedAt"), "players": by}
+    # Best bookmaker price per line, from Oddschecker pages Zac saved by hand
+    # (oddschecker_import.py). Same shape, plus the bookmaker ("b", None when
+    # copied text could not say) and how many bookmakers priced it ("n").
+    try:
+        oc = json.loads((HERE / "reports" / "oddschecker.json").read_text())
+    except (OSError, ValueError):
+        oc = {}
+    for fid, e in (oc.get("events") or {}).items():
+        by = {}
+        for l in e.get("lines", []):
+            by.setdefault(l["key"], []).append(
+                {"m": l["market"], "s": l.get("selection") or "", "o": l.get("side"),
+                 "l": l.get("line"), "p": l["price"], "b": l.get("book"), "n": l.get("books")})
+        if by:
+            events.setdefault(fid, {})["oc"] = {"at": e.get("fetchedAt"), "players": by}
     return {"fetched": data.get("fetched"), "events": events}
 
 
@@ -119,7 +134,9 @@ def main() -> int:
     p = sum(len(e.get("players", {})) for e in payload["events"].values())
     q = sum(1 for e in payload["events"].values() if e.get("pp"))
     b = sum(1 for e in payload["events"].values() if e.get("b365"))
-    print(f"  markets.json: {n} events, {p} Betfair player prices, Paddy Power on {q} game(s), Bet365 on {b}")
+    o = sum(1 for e in payload["events"].values() if e.get("oc"))
+    print(f"  markets.json: {n} events, {p} Betfair player prices, Paddy Power on {q} game(s), Bet365 on {b}, "
+          f"Oddschecker best prices on {o}")
     return 0
 
 

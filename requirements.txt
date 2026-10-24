@@ -4,6 +4,10 @@ curl_cffi>=0.7.0
 
 pandas>=2.0.0
 
+# The scoreline model in scoremodels.py (The case's predicted score). Without
+# it context.score() quietly falls back to the old, weaker route.
+scipy>=1.10
+
 # Only needed if you want to work in the notebook.
 ipykernel>=6.0.0
 
