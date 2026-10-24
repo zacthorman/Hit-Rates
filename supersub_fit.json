@@ -1,0 +1,56 @@
+{
+ "matches": 6765,
+ "sub_before": 85,
+ "positions": {
+  "D": {
+   "starts": 51197,
+   "scored": 0.0395,
+   "taken_off": 0.1917,
+   "rep_scores": 0.0239,
+   "extra_wins": 0.0044
+  },
+  "F": {
+   "starts": 25110,
+   "scored": 0.2398,
+   "taken_off": 0.5682,
+   "rep_scores": 0.0802,
+   "extra_wins": 0.0364
+  },
+  "G": {
+   "starts": 13517,
+   "scored": 0.0003,
+   "taken_off": 0.0121,
+   "rep_scores": 0.0,
+   "extra_wins": 0.0
+  },
+  "M": {
+   "starts": 58892,
+   "scored": 0.1024,
+   "taken_off": 0.4538,
+   "rep_scores": 0.0522,
+   "extra_wins": 0.0216
+  }
+ },
+ "check": {
+  "under 2%": {
+   "n": 21677,
+   "said": 0.0061,
+   "paid": 0.0073
+  },
+  "2-4%": {
+   "n": 6943,
+   "said": 0.0291,
+   "paid": 0.0298
+  },
+  "4-6%": {
+   "n": 2847,
+   "said": 0.0476,
+   "paid": 0.0488
+  },
+  "6%+": {
+   "n": 904,
+   "said": 0.0687,
+   "paid": 0.0819
+  }
+ }
+}

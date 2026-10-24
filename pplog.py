@@ -19,7 +19,8 @@ What is recorded, per line (player, stat, line, over or under):
   * the last-5 and last-10 records behind it, and the player's injury status.
   * the result, settled from SofaScore exactly as besttrack and linelog
     settle player legs. A player who did not play voids the line, as Paddy
-    Power voids the bet.
+    Power voids the bet. Anytime goalscorer lines follow Paddy Power's Super
+    Sub (supersub.py): a starter taken off whose replacement scores is a win.
 
 Our chance here is model.price_player on the player's last ten appearances,
 the Python mirror of the page's pricePlayer, times the same opponent
@@ -84,8 +85,11 @@ PP_PATTERNS = [
     (re.compile(r"^Player To Have (\d+) Or More Shots$"), "Shots"),
     (re.compile(r"^Player To Commit (\d+) Or More Fouls$"), "Fouls"),
     (re.compile(r"^Player To Be Fouled (\d+) Or More Times$"), "Fouled"),
+    # Added 23 Oct 2026 so they can be checked against Betfair (sharp.py).
+    (re.compile(r"^Player To Have (\d+) Or More Shots On Target$"), "Shots on target"),
+    (re.compile(r"^Player Shots on Target (\d+) or More$"), "Shots on target"),
 ]
-PP_YES = {"Player Shown a Card": "Card", "Player Assists": "Assists"}
+PP_YES = {"Player Shown a Card": "Card", "Shown a Card": "Card", "Player Assists": "Assists"}
 
 
 # ------------------------------------------------------------------ storage
@@ -249,6 +253,20 @@ def _match_player(pp_key: str, squads: list[dict]):
 
 # ------------------------------------------------------------------ snapshot
 
+def _fresh(entry: dict, t: int, name: str, rows: list[dict], mins: int, kickoff) -> float | None:
+    """Share of his last ten appearances since his last long break, as the page works it out
+    (freshness.py, report.py freshnessOf). None for a national side."""
+    import freshness
+    if (entry.get("fixture") or {}).get("national"):
+        return None
+    pb = (entry.get("playerBreaks") or [{}, {}])[t] or {}
+    brk = pb[name] if name in pb else freshness.break_date([r.get("date") for r in rows], kickoff)
+    gated = rows if not any((r.get("minutes") or 0) > 0 for r in rows) else \
+        [r for r in rows if (r.get("minutes") or 0) >= mins]
+    share = freshness.window([r.get("date") for r in gated[-10:]], brk)["share"]
+    return None if share is None else round(share, 3)
+
+
 def _fmodel() -> dict:
     """reports/fmodel.json (fmodel_live.py): event id -> {normalised name: player}."""
     try:
@@ -279,6 +297,8 @@ def snapshot(args=None) -> int:
     import markets
     import model
     import playerlines
+    import supersub
+    ss_fit = supersub.load_fit()
     try:
         pp = json.loads(PP.read_text())
     except (OSError, ValueError):
@@ -323,6 +343,7 @@ def snapshot(args=None) -> int:
             if len(recent) < 3:
                 continue
             adj = _adjustment(entry, t, stat)
+            fresh = _fresh(entry, t, name, squads[t][name], mins, meta["kickoff"])
             if sport == "football" and stat == "Goals":
                 p_over = _score_chance(squads[t][name], adj, mins)
                 if p_over is None:
@@ -337,6 +358,12 @@ def snapshot(args=None) -> int:
             m_over = _fmodel_p(fm, fid, name, stat, line) if sport == "football" else None
             if m_over is not None:
                 p_over = m_over
+            # Paddy Power's Super Sub: the bet moves to his replacement if
+            # he is taken off, so to-score is worth more there than his own
+            # chance. supersub.py has the measured figures.
+            ss_extra = 0.0
+            if stat == "Goals" and supersub.applies(l.get("market"), sport):
+                p_over, ss_extra = supersub.uplift(p_over, squads[t][name], ss_fit)
             p = p_over if over else 1 - p_over
             vals = [a["value"] for a in recent]
             hit = (lambda v: v > line) if over else (lambda v: v <= line)
@@ -363,6 +390,8 @@ def snapshot(args=None) -> int:
                 snap["source"] = "fmodel"
                 snap["site_chance"] = round(site_over if over else 1 - site_over, 4)
                 snap["confirmed_xi"] = fm[fid]["confirmed"]
+            if ss_extra:
+                snap["supersub"] = round(ss_extra, 4)
             # "Over 2.5" and "3+" are one bet: keep the better price.
             if key in touched:
                 prev = next((x for x in new_rows if _key(x) == key), None) \
@@ -381,6 +410,7 @@ def snapshot(args=None) -> int:
             else:
                 row.update({"logged_at": round(now), "first": snap, "last": snap,
                             "k5": k5, "n5": min(5, len(vals)), "k10": k10, "n10": len(vals),
+                            "fresh": fresh,
                             "adj": round(adj, 3), "injury": _injury(entry, t, name),
                             "result": None, "value": None})
                 new_rows.append(row)
@@ -410,9 +440,17 @@ def _read_merge(path: Path, updated: list[dict]) -> list[dict]:
 def settle(args=None) -> int:
     import besttrack
     import sofascore_api as api
+    import supersub
     now = time.time()
     done = 0
     status_of = {}
+    incidents = {}
+
+    def incidents_for(eid):
+        if eid not in incidents:
+            data = api.get_json(f"event/{eid}/incidents", max_age_hours=6, verbose=False)
+            incidents[eid] = (data or {}).get("incidents")
+        return incidents[eid]
     for path in _files():
         rows = _read(path)
         changed = False
@@ -439,6 +477,7 @@ def settle(args=None) -> int:
                 r["value"] = v
                 won = v > r["line"] if r["over"] else v < r["line"]
                 r["result"] = "win" if won else "lose"
+                supersub.settle_row(r, incidents_for)
             done += 1
             changed = True
         if changed:
@@ -467,9 +506,13 @@ def _card_value(r: dict):
 # ------------------------------------------------------------------ scoring
 
 def is_value(r: dict, snap: str = "first") -> bool:
+    import freshness
     s = r.get(snap) or {}
     return (s.get("chance", 0) >= VALUE_MIN_P and s.get("edge", -1) >= VALUE_EDGE
             and (r.get("n10") or 0) >= VALUE_MIN_N
+            # A record mostly from before his last long break is never value
+            # (PLAYER-STALE.md); rows logged before 24 Oct 2026 carry no share.
+            and not freshness.is_stale(r.get("fresh"))
             and ((r.get("sport"), r.get("stat")) not in UNCALIBRATED
                  or (s.get("source") == "fmodel" and r.get("stat") != "Card")))
 
