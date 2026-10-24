@@ -150055,8 +150055,8 @@
      1487,
      1434
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    },
    {
     "event_id": 16363894,
@@ -150089,11 +150089,11 @@
      1757,
      1680
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: parlay",
@@ -150129,8 +150129,8 @@
     "value_at_pick": null,
     "fair_record": null,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 44.0,
+    "result": "win"
    },
    {
     "event_id": 16363891,
@@ -150160,8 +150160,8 @@
     "value_at_pick": null,
     "fair_record": null,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    },
    {
     "event_id": 16363891,
@@ -150191,8 +150191,8 @@
     "value_at_pick": null,
     "fair_record": null,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 29.0,
+    "result": "lose"
    },
    {
     "event_id": 16363891,
@@ -150222,11 +150222,11 @@
     "value_at_pick": null,
     "fair_record": null,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 27.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: parlay",
@@ -151485,11 +151485,11 @@
      1600,
      1803
     ],
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -151528,11 +151528,11 @@
      1600,
      1803
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -151571,11 +151571,11 @@
      1803,
      1600
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -151612,10 +151612,10 @@
     "fair_record": 1.5443733057373286,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -151651,11 +151651,11 @@
     "value_at_pick": null,
     "fair_record": 1.6319692776086923,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 76.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -151692,10 +151692,10 @@
     "fair_record": 1.6178496100086548,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -151731,11 +151731,11 @@
     "value_at_pick": null,
     "fair_record": 1.5982743002726425,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -151771,11 +151771,11 @@
     "value_at_pick": null,
     "fair_record": 1.648913796607057,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 61.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -151814,11 +151814,11 @@
      1562,
      1600
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -151855,10 +151855,10 @@
     "fair_record": 1.1578947368421053,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Fixture single",
@@ -151897,11 +151897,11 @@
      1600,
      1562
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -151937,11 +151937,11 @@
     "value_at_pick": null,
     "fair_record": 1.560281866941418,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -151977,11 +151977,11 @@
     "value_at_pick": null,
     "fair_record": 1.5690867546635847,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -152018,10 +152018,10 @@
     "fair_record": 1.6067290215544958,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -152057,11 +152057,11 @@
     "value_at_pick": null,
     "fair_record": 1.5888001061123367,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -152097,11 +152097,11 @@
     "value_at_pick": null,
     "fair_record": 1.6791733321532551,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 27.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -152140,11 +152140,11 @@
      1927,
      2024
     ],
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -152180,11 +152180,11 @@
     "value_at_pick": null,
     "fair_record": 1.1666666666666667,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -152220,11 +152220,11 @@
     "value_at_pick": -0.12654160841873596,
     "fair_record": 1.1481481481481481,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -152260,11 +152260,11 @@
     "value_at_pick": -0.1190290874997521,
     "fair_record": 1.5911907974361403,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -152301,10 +152301,10 @@
     "fair_record": 1.6106669495073023,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -152340,11 +152340,11 @@
     "value_at_pick": null,
     "fair_record": 1.648913796607057,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 14.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -152380,11 +152380,11 @@
     "value_at_pick": null,
     "fair_record": 1.6067290215544958,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 30.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -152420,11 +152420,11 @@
     "value_at_pick": null,
     "fair_record": 1.5303377472693214,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -152463,11 +152463,11 @@
      1783,
      2050
     ],
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -152506,11 +152506,11 @@
      1783,
      2050
     ],
-    "value": null,
-    "result": null
+    "value": 10.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -152549,11 +152549,11 @@
      2050,
      1783
     ],
-    "value": null,
-    "result": null
+    "value": 12.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -152589,11 +152589,11 @@
     "value_at_pick": null,
     "fair_record": 1.597367549311647,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -152629,11 +152629,11 @@
     "value_at_pick": null,
     "fair_record": 1.5982743002726425,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -152669,11 +152669,11 @@
     "value_at_pick": null,
     "fair_record": 1.519809645020489,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -152709,11 +152709,11 @@
     "value_at_pick": null,
     "fair_record": 1.669485693615506,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -152749,11 +152749,11 @@
     "value_at_pick": null,
     "fair_record": 1.68230479645882,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -152792,11 +152792,11 @@
      1757,
      1680
     ],
-    "value": null,
-    "result": null
+    "value": 12.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -152835,11 +152835,11 @@
      1757,
      1680
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -152875,11 +152875,11 @@
     "value_at_pick": null,
     "fair_record": 1.2307692307692308,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -152915,11 +152915,11 @@
     "value_at_pick": null,
     "fair_record": 1.6622983656126389,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -152956,10 +152956,10 @@
     "fair_record": 1.661662229178732,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -152995,11 +152995,11 @@
     "value_at_pick": null,
     "fair_record": 1.661662229178732,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -153035,11 +153035,11 @@
     "value_at_pick": null,
     "fair_record": 1.692908486643383,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -153075,11 +153075,11 @@
     "value_at_pick": null,
     "fair_record": 1.6510595401034427,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -153158,11 +153158,11 @@
     "value_at_pick": null,
     "fair_record": 1.0625,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -153201,11 +153201,11 @@
      1671,
      1600
     ],
-    "value": null,
-    "result": null
+    "value": 11.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -153244,11 +153244,11 @@
      1671,
      1600
     ],
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -153285,10 +153285,10 @@
     "fair_record": 1.575780349196354,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -153324,11 +153324,11 @@
     "value_at_pick": null,
     "fair_record": 1.5013005720665697,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -153364,11 +153364,11 @@
     "value_at_pick": null,
     "fair_record": 1.582849014291712,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 47.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -153405,10 +153405,10 @@
     "fair_record": 1.5303377472693214,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -153444,11 +153444,11 @@
     "value_at_pick": null,
     "fair_record": 1.6334643622929543,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -153487,11 +153487,11 @@
      1572,
      1584
     ],
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -153530,11 +153530,11 @@
      1572,
      1584
     ],
-    "value": null,
-    "result": null
+    "value": 11.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -153571,10 +153571,10 @@
     "fair_record": 1.0769230769230769,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -153611,10 +153611,10 @@
     "fair_record": 1.5690867546635847,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -153651,10 +153651,10 @@
     "fair_record": 1.5303377472693214,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -153690,11 +153690,11 @@
     "value_at_pick": null,
     "fair_record": 1.68230479645882,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -153730,11 +153730,11 @@
     "value_at_pick": null,
     "fair_record": 1.4300260126651638,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 19.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -153770,11 +153770,11 @@
     "value_at_pick": null,
     "fair_record": 1.6934163233865756,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -153813,11 +153813,11 @@
      1527,
      1463
     ],
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -153853,11 +153853,11 @@
     "value_at_pick": null,
     "fair_record": 1.1500000000000001,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -153893,11 +153893,11 @@
     "value_at_pick": null,
     "fair_record": 1.1818181818181819,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -153933,11 +153933,11 @@
     "value_at_pick": null,
     "fair_record": 1.6178496100086548,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -153973,11 +153973,11 @@
     "value_at_pick": null,
     "fair_record": 1.5982743002726425,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -154014,10 +154014,10 @@
     "fair_record": 1.6067290215544958,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -154053,11 +154053,11 @@
     "value_at_pick": null,
     "fair_record": 1.5785607392265233,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -154093,11 +154093,11 @@
     "value_at_pick": null,
     "fair_record": 1.6419870765259417,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -154136,11 +154136,11 @@
      1693,
      1624
     ],
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -154179,11 +154179,11 @@
      1624,
      1693
     ],
-    "value": null,
-    "result": null
+    "value": 10.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -154222,11 +154222,11 @@
      1624,
      1693
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -154262,11 +154262,11 @@
     "value_at_pick": null,
     "fair_record": 1.6038502416118159,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -154302,11 +154302,11 @@
     "value_at_pick": null,
     "fair_record": 1.560281866941418,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -154342,11 +154342,11 @@
     "value_at_pick": null,
     "fair_record": 1.4181174119674838,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -154383,10 +154383,10 @@
     "fair_record": 1.6254347455183062,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -154422,11 +154422,11 @@
     "value_at_pick": null,
     "fair_record": 1.677043343011161,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -154462,11 +154462,11 @@
     "value_at_pick": null,
     "fair_record": 1.1,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -154505,11 +154505,11 @@
      1561,
      1490
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -154548,11 +154548,11 @@
      1561,
      1490
     ],
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -154588,11 +154588,11 @@
     "value_at_pick": null,
     "fair_record": 1.4930917297460553,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 27.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -154628,11 +154628,11 @@
     "value_at_pick": null,
     "fair_record": 1.5443733057373286,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -154669,10 +154669,10 @@
     "fair_record": 1.5690867546635847,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -154708,11 +154708,11 @@
     "value_at_pick": null,
     "fair_record": 1.4181174119674838,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -154748,11 +154748,11 @@
     "value_at_pick": null,
     "fair_record": 1.4181174119674838,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -154791,11 +154791,11 @@
      1487,
      1330
     ],
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -154834,11 +154834,11 @@
      1487,
      1330
     ],
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -154877,11 +154877,11 @@
      1330,
      1487
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -154917,11 +154917,11 @@
     "value_at_pick": null,
     "fair_record": 1.5911907974361403,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -154957,11 +154957,11 @@
     "value_at_pick": null,
     "fair_record": 1.6460390280394983,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -154997,11 +154997,11 @@
     "value_at_pick": null,
     "fair_record": 1.5303377472693214,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 21.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -155037,11 +155037,11 @@
     "value_at_pick": null,
     "fair_record": 1.653637734687656,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -155078,10 +155078,10 @@
     "fair_record": 1.5419150911238728,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Fixture single",
@@ -155120,11 +155120,11 @@
      1446,
      1440
     ],
-    "value": null,
-    "result": null
+    "value": 23.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -155163,11 +155163,11 @@
      1446,
      1440
     ],
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -155206,11 +155206,11 @@
      1446,
      1440
     ],
-    "value": null,
-    "result": null
+    "value": 9.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -155247,10 +155247,10 @@
     "fair_record": 1.4930917297460553,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -155286,11 +155286,11 @@
     "value_at_pick": null,
     "fair_record": 1.5690867546635847,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -155327,10 +155327,10 @@
     "fair_record": 1.407579335466276,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -155366,11 +155366,11 @@
     "value_at_pick": null,
     "fair_record": 1.6254347455183062,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 104.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -155406,11 +155406,11 @@
     "value_at_pick": null,
     "fair_record": 1.6067290215544958,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -155449,11 +155449,11 @@
      1577,
      1346
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -155492,11 +155492,11 @@
      1346,
      1577
     ],
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -155535,11 +155535,11 @@
      1577,
      1346
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -155575,11 +155575,11 @@
     "value_at_pick": null,
     "fair_record": 1.582849014291712,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -155615,11 +155615,11 @@
     "value_at_pick": null,
     "fair_record": 1.6178496100086548,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -155655,11 +155655,11 @@
     "value_at_pick": null,
     "fair_record": 1.519809645020489,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -155695,11 +155695,11 @@
     "value_at_pick": null,
     "fair_record": 1.6460390280394983,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -155735,11 +155735,11 @@
     "value_at_pick": null,
     "fair_record": 1.6334643622929543,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -155775,11 +155775,11 @@
     "value_at_pick": null,
     "fair_record": 1.1111111111111112,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -155815,11 +155815,11 @@
     "value_at_pick": null,
     "fair_record": 1.1818181818181819,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -155858,11 +155858,11 @@
      1528,
      1449
     ],
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -155898,11 +155898,11 @@
     "value_at_pick": null,
     "fair_record": 1.5520663063746496,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 29.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -155938,11 +155938,11 @@
     "value_at_pick": null,
     "fair_record": 1.560281866941418,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -155979,10 +155979,10 @@
     "fair_record": 1.5982743002726425,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -156019,10 +156019,10 @@
     "fair_record": 1.519809645020489,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -156058,11 +156058,11 @@
     "value_at_pick": null,
     "fair_record": 1.407579335466276,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -156101,11 +156101,11 @@
      1410,
      1503
     ],
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -156141,11 +156141,11 @@
     "value_at_pick": null,
     "fair_record": 1.2142857142857144,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -156184,11 +156184,11 @@
      1410,
      1503
     ],
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -156225,10 +156225,10 @@
     "fair_record": 1.575780349196354,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -156265,10 +156265,10 @@
     "fair_record": 1.5520663063746496,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -156304,11 +156304,11 @@
     "value_at_pick": null,
     "fair_record": 1.5520663063746496,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -156344,11 +156344,11 @@
     "value_at_pick": null,
     "fair_record": 1.6106669495073023,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 29.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -156385,10 +156385,10 @@
     "fair_record": 1.3981539432257246,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Fixture single",
@@ -156427,11 +156427,11 @@
      1521,
      1456
     ],
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -156467,11 +156467,11 @@
     "value_at_pick": null,
     "fair_record": 1.1739130434782608,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -156510,11 +156510,11 @@
      1521,
      1456
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -156550,11 +156550,11 @@
     "value_at_pick": null,
     "fair_record": 1.5911907974361403,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 57.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -156590,11 +156590,11 @@
     "value_at_pick": null,
     "fair_record": 1.6366810746130698,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 28.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -156630,11 +156630,11 @@
     "value_at_pick": null,
     "fair_record": 1.560281866941418,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -156670,11 +156670,11 @@
     "value_at_pick": null,
     "fair_record": 1.51017258865781,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 29.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -156710,11 +156710,11 @@
     "value_at_pick": null,
     "fair_record": 1.6178496100086548,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -156753,11 +156753,11 @@
      1487,
      1434
     ],
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -156796,11 +156796,11 @@
      1487,
      1434
     ],
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -156839,11 +156839,11 @@
      1487,
      1434
     ],
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -156879,11 +156879,11 @@
     "value_at_pick": null,
     "fair_record": 1.4930917297460553,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 32.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -156920,10 +156920,10 @@
     "fair_record": 1.597367549311647,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -156960,10 +156960,10 @@
     "fair_record": 1.6132346705549467,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -156999,11 +156999,11 @@
     "value_at_pick": null,
     "fair_record": 1.5520663063746496,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 24.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -157039,11 +157039,11 @@
     "value_at_pick": null,
     "fair_record": 1.6106669495073023,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -157082,11 +157082,11 @@
      1463,
      1558
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -157125,11 +157125,11 @@
      1463,
      1558
     ],
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -157168,11 +157168,11 @@
      1463,
      1558
     ],
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -157208,11 +157208,11 @@
     "value_at_pick": null,
     "fair_record": 1.4300260126651638,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -157248,11 +157248,11 @@
     "value_at_pick": null,
     "fair_record": 1.6038502416118159,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 42.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -157288,11 +157288,11 @@
     "value_at_pick": null,
     "fair_record": 1.6038502416118159,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 38.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -157329,10 +157329,10 @@
     "fair_record": 1.6254347455183062,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -157368,11 +157368,11 @@
     "value_at_pick": null,
     "fair_record": 1.6254347455183062,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -157408,11 +157408,11 @@
     "value_at_pick": null,
     "fair_record": 1.2,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -157448,11 +157448,11 @@
     "value_at_pick": null,
     "fair_record": 1.1904761904761905,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -157491,11 +157491,11 @@
      1715,
      1607
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -157531,11 +157531,11 @@
     "value_at_pick": null,
     "fair_record": 1.5443733057373286,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -157571,11 +157571,11 @@
     "value_at_pick": null,
     "fair_record": 1.5443733057373286,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -157612,10 +157612,10 @@
     "fair_record": 1.597367549311647,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -157651,11 +157651,11 @@
     "value_at_pick": null,
     "fair_record": 1.6334643622929543,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -157691,11 +157691,11 @@
     "value_at_pick": null,
     "fair_record": 1.6701569509265002,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -157734,11 +157734,11 @@
      1724,
      1589
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -157777,11 +157777,11 @@
      1724,
      1589
     ],
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -157817,11 +157817,11 @@
     "value_at_pick": null,
     "fair_record": 1.1923076923076923,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -157858,10 +157858,10 @@
     "fair_record": 1.6319692776086923,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -157897,11 +157897,11 @@
     "value_at_pick": null,
     "fair_record": 1.6319692776086923,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -157937,11 +157937,11 @@
     "value_at_pick": null,
     "fair_record": 1.6755005554346891,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -157977,11 +157977,11 @@
     "value_at_pick": null,
     "fair_record": 1.661662229178732,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -158018,10 +158018,10 @@
     "fair_record": 1.5999224202764204,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Fixture single",
@@ -158060,11 +158060,11 @@
      1625,
      1595
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -158103,11 +158103,11 @@
      1625,
      1595
     ],
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -158144,10 +158144,10 @@
     "fair_record": 1.1904761904761905,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -158184,10 +158184,10 @@
     "fair_record": 1.582849014291712,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -158224,10 +158224,10 @@
     "fair_record": 1.5903318960084376,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -158263,11 +158263,11 @@
     "value_at_pick": null,
     "fair_record": 1.6334643622929543,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 25.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -158303,11 +158303,11 @@
     "value_at_pick": null,
     "fair_record": 1.6471000098134692,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 54.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -158343,11 +158343,11 @@
     "value_at_pick": null,
     "fair_record": 1.699021238743956,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -158386,11 +158386,11 @@
      1645,
      1583
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -158429,11 +158429,11 @@
      1645,
      1583
     ],
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -158469,11 +158469,11 @@
     "value_at_pick": null,
     "fair_record": 1.1333333333333333,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -158509,11 +158509,11 @@
     "value_at_pick": null,
     "fair_record": 1.5520663063746496,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 22.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -158549,11 +158549,11 @@
     "value_at_pick": null,
     "fair_record": 1.5690867546635847,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -158589,11 +158589,11 @@
     "value_at_pick": null,
     "fair_record": 1.6254347455183062,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -158629,11 +158629,11 @@
     "value_at_pick": null,
     "fair_record": 1.6689953829279827,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 22.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -158669,11 +158669,11 @@
     "value_at_pick": null,
     "fair_record": 1.5888001061123367,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -158712,11 +158712,11 @@
      1585,
      1537
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -158755,11 +158755,11 @@
      1585,
      1537
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -158798,11 +158798,11 @@
      1585,
      1537
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -158838,11 +158838,11 @@
     "value_at_pick": null,
     "fair_record": 1.653637734687656,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 42.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -158878,11 +158878,11 @@
     "value_at_pick": null,
     "fair_record": 1.6419870765259417,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -158919,10 +158919,10 @@
     "fair_record": 1.6419870765259417,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -158958,11 +158958,11 @@
     "value_at_pick": null,
     "fair_record": 1.6996461852165008,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 49.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -158999,10 +158999,10 @@
     "fair_record": 1.5547437027245392,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Pick: parlay",
@@ -159257,8 +159257,8 @@
      1585,
      1537
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    },
    {
     "event_id": 16391580,
@@ -159291,11 +159291,11 @@
      1624,
      1693
     ],
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: banker",
@@ -159445,8 +159445,8 @@
      1757,
      1680
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "lose"
    }
   ],
   "result": null
@@ -162305,11 +162305,11 @@
      1583,
      1645
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: single",
@@ -162422,11 +162422,11 @@
      1463,
      1527
     ],
-    "value": null,
-    "result": null
+    "value": 11.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: acca",
@@ -162499,8 +162499,8 @@
      1757,
      1680
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "lose"
    },
    {
     "event_id": 16434073,
@@ -162968,8 +162968,8 @@
     "value_at_pick": null,
     "fair_record": 1.0714285714285714,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 16434099,
@@ -163002,11 +163002,11 @@
      1645,
      1583
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: banker",
@@ -163045,11 +163045,11 @@
      1585,
      1537
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: acca",
@@ -163088,8 +163088,8 @@
      1715,
      1607
     ],
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "win"
    },
    {
     "event_id": 16391573,
@@ -163122,8 +163122,8 @@
      1487,
      1434
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    },
    {
     "event_id": 16363894,
@@ -163156,11 +163156,11 @@
      1757,
      1680
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: builder",
@@ -165018,11 +165018,11 @@
      1490,
      1561
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -165061,11 +165061,11 @@
      1446,
      1440
     ],
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -165101,11 +165101,11 @@
     "value_at_pick": null,
     "fair_record": 1.1875,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -165144,11 +165144,11 @@
      1487,
      1434
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -165187,11 +165187,11 @@
      1463,
      1558
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -166217,11 +166217,11 @@
      1645,
      1583
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: evens double",
@@ -166294,8 +166294,8 @@
      1521,
      1456
     ],
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win"
    }
   ],
   "result": null
@@ -166337,8 +166337,8 @@
      1715,
      1607
     ],
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "win"
    },
    {
     "event_id": 16391573,
@@ -166371,8 +166371,8 @@
      1487,
      1434
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    },
    {
     "event_id": 16434069,
@@ -166904,11 +166904,11 @@
      1463,
      1527
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -167805,8 +167805,8 @@
      1783,
      2050
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    },
    {
     "event_id": 15238224,
@@ -167873,8 +167873,8 @@
      1719,
      1611
     ],
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "win"
    }
   ],
   "result": null
@@ -170102,11 +170102,11 @@
     "value_at_pick": null,
     "fair_record": 1.1153846153846154,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -170142,11 +170142,11 @@
     "value_at_pick": null,
     "fair_record": 1.5917403516742976,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -170225,11 +170225,11 @@
      1927,
      2024
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -170265,11 +170265,11 @@
     "value_at_pick": null,
     "fair_record": 1.3683137871205586,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 10.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -170474,11 +170474,11 @@
      1757,
      1680
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -174876,10 +174876,10 @@
     "fair_record": 1.5178153862640684,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -174915,11 +174915,11 @@
     "value_at_pick": null,
     "fair_record": 1.6689953829279827,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 84.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -174955,11 +174955,11 @@
     "value_at_pick": null,
     "fair_record": 1.05,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -174995,11 +174995,11 @@
     "value_at_pick": null,
     "fair_record": 1.5454425486633103,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -175036,10 +175036,10 @@
     "fair_record": 1.5690867546635847,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -175075,11 +175075,11 @@
     "value_at_pick": null,
     "fair_record": 1.4716784791666384,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -175118,11 +175118,11 @@
      1527,
      1463
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -175158,11 +175158,11 @@
     "value_at_pick": null,
     "fair_record": 1.5120351549369948,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 37.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -175199,10 +175199,10 @@
     "fair_record": 1.4654167006437109,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -175238,11 +175238,11 @@
     "value_at_pick": null,
     "fair_record": 1.5178153862640684,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -175278,11 +175278,11 @@
     "value_at_pick": null,
     "fair_record": 1.0526315789473684,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -175318,11 +175318,11 @@
     "value_at_pick": null,
     "fair_record": 1.4783441675877937,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -175438,11 +175438,11 @@
     "value_at_pick": null,
     "fair_record": 1.6755005554346891,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 43.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -175478,11 +175478,11 @@
     "value_at_pick": null,
     "fair_record": 1.6755005554346891,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 46.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -175518,11 +175518,11 @@
     "value_at_pick": null,
     "fair_record": 1.5690867546635847,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -175559,10 +175559,10 @@
     "fair_record": 1.5852951849505161,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -175599,10 +175599,10 @@
     "fair_record": 1.381912707879108,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -175638,11 +175638,11 @@
     "value_at_pick": null,
     "fair_record": 1.3748322038393854,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -175678,11 +175678,11 @@
     "value_at_pick": null,
     "fair_record": 1.4716784791666384,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -175718,11 +175718,11 @@
     "value_at_pick": null,
     "fair_record": 1.4783441675877937,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -175758,11 +175758,11 @@
     "value_at_pick": null,
     "fair_record": 1.5566929080628737,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -175798,11 +175798,11 @@
     "value_at_pick": null,
     "fair_record": 1.5566929080628737,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 18.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -175839,10 +175839,10 @@
     "fair_record": 1.4783441675877937,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Fixture single",
@@ -175881,11 +175881,11 @@
      1521,
      1456
     ],
-    "value": null,
-    "result": null
+    "value": 12.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -175922,10 +175922,10 @@
     "fair_record": 1.5120351549369948,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -175961,11 +175961,11 @@
     "value_at_pick": null,
     "fair_record": 1.562734195094311,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -176001,11 +176001,11 @@
     "value_at_pick": null,
     "fair_record": 1.5371464653685591,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -176041,11 +176041,11 @@
     "value_at_pick": null,
     "fair_record": 1.7218264028970067,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 31.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -177462,11 +177462,11 @@
     "value_at_pick": null,
     "fair_record": 1.0952380952380953,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -177502,11 +177502,11 @@
     "value_at_pick": null,
     "fair_record": 1.5371464653685591,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -177542,11 +177542,11 @@
     "value_at_pick": null,
     "fair_record": 1.4854626340386536,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -177585,11 +177585,11 @@
      1728,
      1593
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -177625,11 +177625,11 @@
     "value_at_pick": null,
     "fair_record": 1.5120351549369948,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 12.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -177666,10 +177666,10 @@
     "fair_record": 1.5566929080628737,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -177705,11 +177705,11 @@
     "value_at_pick": null,
     "fair_record": 1.5690867546635847,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 19.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -177745,11 +177745,11 @@
     "value_at_pick": null,
     "fair_record": 1.5690867546635847,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 40.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -177785,11 +177785,11 @@
     "value_at_pick": null,
     "fair_record": 1.52390592731089,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -177825,11 +177825,11 @@
     "value_at_pick": null,
     "fair_record": 1.161290322580645,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -177865,11 +177865,11 @@
     "value_at_pick": null,
     "fair_record": 1.5454425486633103,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 48.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -177905,11 +177905,11 @@
     "value_at_pick": null,
     "fair_record": 1.4654167006437109,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 31.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -177945,11 +177945,11 @@
     "value_at_pick": null,
     "fair_record": 1.5967937788144189,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 34.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -177985,11 +177985,11 @@
     "value_at_pick": null,
     "fair_record": 1.6020503551889351,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -178025,11 +178025,11 @@
     "value_at_pick": null,
     "fair_record": 1.3683137871205586,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 13.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -178145,8 +178145,8 @@
      1487,
      1434
     ],
-    "value": null,
-    "result": null
+    "value": 16.0,
+    "result": "win"
    }
   ],
   "result": null
@@ -178188,8 +178188,8 @@
      1487,
      1434
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    },
    {
     "event_id": 15238224,
@@ -178256,8 +178256,8 @@
      1783,
      2050
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
   "result": null
@@ -178887,8 +178887,8 @@
      1589,
      1541
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    },
    {
     "event_id": 16363895,
@@ -179007,8 +179007,8 @@
      1783,
      2050
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    },
    {
     "event_id": 16363894,
@@ -179041,8 +179041,8 @@
      1757,
      1680
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "lose"
    },
    {
     "event_id": 15238224,
@@ -182515,8 +182515,8 @@
      1586,
      1789
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
   "result": null
@@ -182629,8 +182629,8 @@
      1586,
      1789
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    },
    {
     "event_id": 16363899,
@@ -190518,11 +190518,11 @@
      1446,
      1440
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -190561,11 +190561,11 @@
      1456,
      1521
     ],
-    "value": null,
-    "result": null
+    "value": 10.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -190604,11 +190604,11 @@
      1559,
      1463
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: parlay",
@@ -190913,11 +190913,11 @@
      1586,
      1789
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -194125,5 +194125,4192 @@
    }
   ],
   "result": "win"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.971438,
+  "legs": [
+   {
+    "event_id": 16391581,
+    "fixture": "Wolverhampton v Watford",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Watford",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.2367920058347202,
+    "venue": "away",
+    "chance": 0.8085,
+    "chance_base": 0.8085,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2153397262299708,
+    "elo": [
+     1346,
+     1577
+    ],
+    "value": 3.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16363899,
+    "fixture": "Manchester United v Bournemouth",
+    "competition": "Premier League",
+    "kickoff": 1792936800,
+    "sport": "football",
+    "team": "Manchester United",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.4251229795833595,
+    "venue": "home",
+    "chance": 0.7017,
+    "chance_base": 0.7017,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4558275962770257,
+    "elo": [
+     1822,
+     1868
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3892837375748017,
+  "legs": [
+   {
+    "event_id": 16391579,
+    "fixture": "Stoke City v Bristol City",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Stoke City",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3892837375748017,
+    "venue": "home",
+    "chance": 0.7198,
+    "chance_base": 0.7198,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3976444637498944,
+    "elo": [
+     1446,
+     1440
+    ],
+    "value": 5.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 4.852851003,
+  "legs": [
+   {
+    "event_id": 16421080,
+    "fixture": "FC Barcelona v Real Madrid",
+    "competition": "LaLiga",
+    "kickoff": 1792958400,
+    "sport": "football",
+    "team": "FC Barcelona",
+    "player": "Lamine Yamal",
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 15,
+    "total": 27,
+    "fair": 1.42305083643616,
+    "venue": null,
+    "chance": 0.7027,
+    "chance_base": 0.5349,
+    "exchange_p": 0.9001,
+    "exchange_back": 1.01,
+    "chance_model": 0.5349,
+    "chance_anchored": 0.5349,
+    "exchange_kind": "back",
+    "value_at_pick": null,
+    "fair_record": 1.7999999999999998,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16363899,
+    "fixture": "Manchester United v Bournemouth",
+    "competition": "Premier League",
+    "kickoff": 1792936800,
+    "sport": "football",
+    "team": "Manchester United",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.4251229795833595,
+    "venue": "home",
+    "chance": 0.7017,
+    "chance_base": 0.7017,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4558275962770257,
+    "elo": [
+     1822,
+     1868
+    ],
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16285056,
+    "fixture": "SSC Napoli v AS Roma",
+    "competition": "Serie A",
+    "kickoff": 1792857600,
+    "sport": "football",
+    "team": "AS Roma",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 4.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 19,
+    "fair": 1.4416726113988056,
+    "venue": "away",
+    "chance": 0.6936,
+    "chance_base": 0.6936,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.413473134116872,
+    "elo": [
+     1789,
+     1702
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: single",
+  "sport": "american-football",
+  "snapshot_at": 1792848378,
+  "fair": 2.587795692224055,
+  "legs": [
+   {
+    "event_id": 16183773,
+    "fixture": "Seattle Seahawks v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1792974000,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Jaxon Smith-Njigba",
+    "stat": "Anytime touchdown",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 11,
+    "total": 20,
+    "fair": 2.587795692224055,
+    "venue": null,
+    "chance": 0.6988,
+    "chance_base": 0.5278,
+    "exchange_p": 0.9001,
+    "exchange_back": 1.01,
+    "chance_model": 0.5278,
+    "chance_anchored": 0.5278,
+    "exchange_kind": "back",
+    "value_at_pick": null,
+    "fair_record": 1.8181818181818181,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: builder",
+  "sport": "american-football",
+  "snapshot_at": 1792848378,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 16183773,
+    "fixture": "Seattle Seahawks v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1792974000,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": null,
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.6395578932335706,
+    "venue": "home",
+    "chance": 0.7143,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183773,
+    "fixture": "Seattle Seahawks v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1792974000,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": null,
+    "stat": "Field goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 10,
+    "fair": 1.4571234175043186,
+    "venue": "home",
+    "chance": 0.6429,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183773,
+    "fixture": "Seattle Seahawks v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1792974000,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": null,
+    "stat": "Net yards passing",
+    "period": "ALL",
+    "line": 230.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 10,
+    "fair": 1.5963767105103568,
+    "venue": "home",
+    "chance": 0.6429,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3236910773755712,
+  "legs": [
+   {
+    "event_id": 16363891,
+    "fixture": "Arsenal v Everton",
+    "competition": "Premier League",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Everton",
+    "player": null,
+    "stat": "Match goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.3236910773755712,
+    "venue": "away",
+    "chance": 0.6311953498533482,
+    "chance_base": 0.6311953498533482,
+    "exchange_p": 0.7908,
+    "exchange_back": 1.26,
+    "chance_model": 0.6311953498533482,
+    "chance_anchored": 0.6555212504333005,
+    "exchange_kind": "exchange",
+    "value_at_pick": -0.057937292685861064,
+    "fair_record": 1.5302480956377318,
+    "elo": [
+     1783,
+     2050
+    ],
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.4736842105263157,
+  "legs": [
+   {
+    "event_id": 16363891,
+    "fixture": "Arsenal v Everton",
+    "competition": "Premier League",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Everton",
+    "player": "Harrison Armstrong",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 11,
+    "total": 12,
+    "fair": 1.4736842105263157,
+    "venue": null,
+    "chance": 0.6785714285714286,
+    "chance_base": 0.6785714285714286,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.5547437027245392,
+    "elo": null,
+    "value": 5.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3548387096774193,
+  "legs": [
+   {
+    "event_id": 16363900,
+    "fixture": "Sunderland v Leeds United",
+    "competition": "Premier League",
+    "kickoff": 1792945800,
+    "sport": "football",
+    "team": "Sunderland",
+    "player": "Daniel Ballard",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 29.5,
+    "over": true,
+    "alt": true,
+    "threshold": 30,
+    "hits": 23,
+    "total": 26,
+    "fair": 1.3548387096774193,
+    "venue": null,
+    "chance": 0.7380952380952381,
+    "chance_base": 0.7380952380952381,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.575780349196354,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.4827586206896552,
+  "legs": [
+   {
+    "event_id": 16363894,
+    "fixture": "Coventry City v Fulham",
+    "competition": "Premier League",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Fulham",
+    "player": "Alex Iwobi",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 21,
+    "total": 27,
+    "fair": 1.4827586206896552,
+    "venue": null,
+    "chance": 0.6744186046511628,
+    "chance_base": 0.6744186046511628,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.702318718691565,
+    "elo": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.5,
+  "legs": [
+   {
+    "event_id": 16363894,
+    "fixture": "Coventry City v Fulham",
+    "competition": "Premier League",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Fulham",
+    "player": "Antonee Robinson",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2,
+    "hits": 18,
+    "total": 23,
+    "fair": 1.5,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.699021238743956,
+    "elo": null,
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3761903346548392,
+  "legs": [
+   {
+    "event_id": 16391577,
+    "fixture": "Queens Park Rangers v Swansea City",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Queens Park Rangers",
+    "player": null,
+    "stat": "Offsides",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.3761903346548392,
+    "venue": "home",
+    "chance": 0.7266436733482865,
+    "chance_base": 0.7266436733482865,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3376765816986222,
+    "elo": [
+     1463,
+     1527
+    ],
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.4642857142857142,
+  "legs": [
+   {
+    "event_id": 16391577,
+    "fixture": "Queens Park Rangers v Swansea City",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Queens Park Rangers",
+    "player": "Harvey Vale",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 20,
+    "total": 25,
+    "fair": 1.4642857142857142,
+    "venue": null,
+    "chance": 0.6829268292682927,
+    "chance_base": 0.6829268292682927,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6791733321532551,
+    "elo": null,
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.4705882352941175,
+  "legs": [
+   {
+    "event_id": 16391580,
+    "fixture": "West Ham United v Southampton",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "West Ham United",
+    "player": "Mads Hermansen",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25,
+    "hits": 9,
+    "total": 9,
+    "fair": 1.4705882352941175,
+    "venue": null,
+    "chance": 0.68,
+    "chance_base": 0.68,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4300260126651638,
+    "elo": null,
+    "value": 30.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.4705882352941175,
+  "legs": [
+   {
+    "event_id": 16391580,
+    "fixture": "West Ham United v Southampton",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "West Ham United",
+    "player": "Jarrod Bowen",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": true,
+    "threshold": 3,
+    "hits": 9,
+    "total": 9,
+    "fair": 1.4705882352941175,
+    "venue": null,
+    "chance": 0.68,
+    "chance_base": 0.68,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4300260126651638,
+    "elo": null,
+    "value": 4.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3822803614675985,
+  "legs": [
+   {
+    "event_id": 16391572,
+    "fixture": "Cardiff City v Birmingham City",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Cardiff City",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.3822803614675985,
+    "venue": null,
+    "chance": 0.7234422392706769,
+    "chance_base": 0.7234422392706769,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3966648113531193,
+    "elo": [
+     1490,
+     1561
+    ],
+    "value": 1.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3856712592329994,
+  "legs": [
+   {
+    "event_id": 16391576,
+    "fixture": "Preston North End v West Bromwich Albion",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "West Bromwich Albion",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 5.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 18,
+    "fair": 1.3856712592329994,
+    "venue": "away",
+    "chance": 0.7216718924757974,
+    "chance_base": 0.7216718924757974,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.401393879409692,
+    "elo": [
+     1487,
+     1330
+    ],
+    "value": 9.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.4482758620689655,
+  "legs": [
+   {
+    "event_id": 16391576,
+    "fixture": "Preston North End v West Bromwich Albion",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Preston North End",
+    "player": "Daniel Iversen",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25,
+    "hits": 21,
+    "total": 26,
+    "fair": 1.4482758620689655,
+    "venue": null,
+    "chance": 0.6904761904761905,
+    "chance_base": 0.6904761904761905,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6701569509265002,
+    "elo": null,
+    "value": 34.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.4545454545454546,
+  "legs": [
+   {
+    "event_id": 16391579,
+    "fixture": "Stoke City v Bristol City",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Bristol City",
+    "player": "Jason Knight",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 34.5,
+    "over": true,
+    "alt": true,
+    "threshold": 35,
+    "hits": 25,
+    "total": 32,
+    "fair": 1.4545454545454546,
+    "venue": null,
+    "chance": 0.6875,
+    "chance_base": 0.6875,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.696915307175539,
+    "elo": null,
+    "value": 30.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.4545454545454546,
+  "legs": [
+   {
+    "event_id": 16391579,
+    "fixture": "Stoke City v Bristol City",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Stoke City",
+    "player": "Viktor Johansson",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25,
+    "hits": 14,
+    "total": 16,
+    "fair": 1.4545454545454546,
+    "venue": null,
+    "chance": 0.6875,
+    "chance_base": 0.6875,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.5999224202764204,
+    "elo": null,
+    "value": 36.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3698917070324843,
+  "legs": [
+   {
+    "event_id": 16391581,
+    "fixture": "Wolverhampton v Watford",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Watford",
+    "player": null,
+    "stat": "Fouls",
+    "period": "1ST",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3698917070324843,
+    "venue": "away",
+    "chance": 0.7299847096426629,
+    "chance_base": 0.7299847096426629,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.314011615729477,
+    "elo": [
+     1346,
+     1577
+    ],
+    "value": 5.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.5294117647058822,
+  "legs": [
+   {
+    "event_id": 16391581,
+    "fixture": "Wolverhampton v Watford",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Watford",
+    "player": "Federico Ravaglia",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.5294117647058822,
+    "venue": null,
+    "chance": 0.6538461538461539,
+    "chance_base": 0.6538461538461539,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.5852951849505161,
+    "elo": null,
+    "value": 32.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.5454545454545454,
+  "legs": [
+   {
+    "event_id": 16391581,
+    "fixture": "Wolverhampton v Watford",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Watford",
+    "player": "Marc Bola",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.5454545454545454,
+    "venue": null,
+    "chance": 0.6470588235294118,
+    "chance_base": 0.6470588235294118,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.7074969266062165,
+    "elo": null,
+    "value": 0.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.4,
+  "legs": [
+   {
+    "event_id": 16391570,
+    "fixture": "Blackburn Rovers v Wrexham",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Blackburn Rovers",
+    "player": "Todd Cantwell",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 22,
+    "total": 26,
+    "fair": 1.4,
+    "venue": null,
+    "chance": 0.7142857142857143,
+    "chance_base": 0.7142857142857143,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6254347455183062,
+    "elo": null,
+    "value": 0.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.4193548387096773,
+  "legs": [
+   {
+    "event_id": 16391570,
+    "fixture": "Blackburn Rovers v Wrexham",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Blackburn Rovers",
+    "player": "Ryan Alebiosu",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 19.5,
+    "over": true,
+    "alt": true,
+    "threshold": 20,
+    "hits": 23,
+    "total": 28,
+    "fair": 1.4193548387096773,
+    "venue": null,
+    "chance": 0.7045454545454546,
+    "chance_base": 0.7045454545454546,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.653637734687656,
+    "elo": null,
+    "value": 25.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.6666666666666667,
+  "legs": [
+   {
+    "event_id": 16391574,
+    "fixture": "Lincoln City v Burnley",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Lincoln City",
+    "player": "Deji Elerewe",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25,
+    "hits": 7,
+    "total": 9,
+    "fair": 1.6666666666666667,
+    "venue": null,
+    "chance": 0.6,
+    "chance_base": 0.6,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.7218264028970067,
+    "elo": null,
+    "value": 48.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.4142263831542152,
+  "legs": [
+   {
+    "event_id": 16434077,
+    "fixture": "SC Paderborn 07 v Hamburger SV",
+    "competition": "Bundesliga",
+    "kickoff": 1792848600,
+    "sport": "football",
+    "team": "Hamburger SV",
+    "player": null,
+    "stat": "Offsides",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.4142263831542152,
+    "venue": "away",
+    "chance": 0.7071003708541014,
+    "chance_base": 0.7071003708541014,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4591493485181306,
+    "elo": [
+     1629,
+     1599
+    ],
+    "value": 0.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.5925925925925926,
+  "legs": [
+   {
+    "event_id": 16434077,
+    "fixture": "SC Paderborn 07 v Hamburger SV",
+    "competition": "Bundesliga",
+    "kickoff": 1792848600,
+    "sport": "football",
+    "team": "Hamburger SV",
+    "player": "F\u00e1bio Vieira",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25,
+    "hits": 19,
+    "total": 27,
+    "fair": 1.5925925925925926,
+    "venue": null,
+    "chance": 0.627906976744186,
+    "chance_base": 0.627906976744186,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.778259133672344,
+    "elo": null,
+    "value": 5.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.304137924054023,
+  "legs": [
+   {
+    "event_id": 16434078,
+    "fixture": "1. FC K\u00f6ln v FC Schalke 04",
+    "competition": "Bundesliga",
+    "kickoff": 1792848600,
+    "sport": "football",
+    "team": "1. FC K\u00f6ln",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 6.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 19,
+    "fair": 1.304137924054023,
+    "venue": "home",
+    "chance": 0.7667900622745603,
+    "chance_base": 0.7667900622745603,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2807656132614562,
+    "elo": [
+     1590,
+     1541
+    ],
+    "value": 6.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.5,
+  "legs": [
+   {
+    "event_id": 16434078,
+    "fixture": "1. FC K\u00f6ln v FC Schalke 04",
+    "competition": "Bundesliga",
+    "kickoff": 1792848600,
+    "sport": "football",
+    "team": "1. FC K\u00f6ln",
+    "player": "Marius B\u00fclter",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.5,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6593235972925007,
+    "elo": null,
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1792848378,
+  "fair": 1.6395578932335706,
+  "legs": [
+   {
+    "event_id": 16183773,
+    "fixture": "Seattle Seahawks v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1792974000,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": null,
+    "stat": "Passing touchdowns",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.6395578932335706,
+    "venue": "home",
+    "chance": null,
+    "chance_base": 0.6099205182854379,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1792848378,
+  "fair": 1.430971064555302,
+  "legs": [
+   {
+    "event_id": 16183773,
+    "fixture": "Seattle Seahawks v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1792974000,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Jaxon Smith-Njigba",
+    "stat": "Anytime touchdown",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 11,
+    "total": 20,
+    "fair": 1.430971064555302,
+    "venue": null,
+    "chance": 0.5277777777777778,
+    "chance_base": 0.5277777777777778,
+    "exchange_p": 0.9001,
+    "exchange_back": 1.01,
+    "chance_model": 0.5277777777777778,
+    "chance_anchored": 0.5277777777777778,
+    "exchange_kind": "back",
+    "value_at_pick": null,
+    "fair_record": 1.8181818181818181,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1792848378,
+  "fair": 1.4583333333333333,
+  "legs": [
+   {
+    "event_id": 16183773,
+    "fixture": "Seattle Seahawks v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1792974000,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Cooper Kupp",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.4583333333333333,
+    "venue": null,
+    "chance": 0.6857142857142857,
+    "chance_base": 0.6857142857142857,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1875,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "american-football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3076923076923077,
+  "legs": [
+   {
+    "event_id": 16183773,
+    "fixture": "Seattle Seahawks v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1792974000,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Derick Hall",
+    "stat": "Defensive combine tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 18,
+    "total": 18,
+    "fair": 1.3076923076923077,
+    "venue": null,
+    "chance": 0.7647058823529411,
+    "chance_base": 0.7647058823529411,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1475446460676209,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "american-football",
+  "snapshot_at": 1792848378,
+  "fair": 1.32,
+  "legs": [
+   {
+    "event_id": 16183773,
+    "fixture": "Seattle Seahawks v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1792974000,
+    "sport": "american-football",
+    "team": "Kansas City Chiefs",
+    "player": "Harrison Butker",
+    "stat": "Kicking fg made",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 17,
+    "total": 17,
+    "fair": 1.32,
+    "venue": null,
+    "chance": 0.7575757575757576,
+    "chance_base": 0.7575757575757576,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1517522352831713,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "american-football",
+  "snapshot_at": 1792848378,
+  "fair": 1.346153846153846,
+  "legs": [
+   {
+    "event_id": 16183773,
+    "fixture": "Seattle Seahawks v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1792974000,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Leonard Williams",
+    "stat": "Defensive combine tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 18,
+    "total": 19,
+    "fair": 1.346153846153846,
+    "venue": null,
+    "chance": 0.7428571428571429,
+    "chance_base": 0.7428571428571429,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2572449215585304,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "american-football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3599999999999999,
+  "legs": [
+   {
+    "event_id": 16183773,
+    "fixture": "Seattle Seahawks v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1792974000,
+    "sport": "american-football",
+    "team": "Kansas City Chiefs",
+    "player": "Xavier Worthy",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2,
+    "hits": 17,
+    "total": 18,
+    "fair": 1.3599999999999999,
+    "venue": null,
+    "chance": 0.7352941176470589,
+    "chance_base": 0.7352941176470589,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.264580877057781,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "american-football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3636363636363638,
+  "legs": [
+   {
+    "event_id": 16183773,
+    "fixture": "Seattle Seahawks v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1792974000,
+    "sport": "american-football",
+    "team": "Kansas City Chiefs",
+    "player": "Chris Roland-Wallace",
+    "stat": "Defensive combine tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 14,
+    "total": 14,
+    "fair": 1.3636363636363638,
+    "venue": null,
+    "chance": 0.7333333333333333,
+    "chance_base": 0.7333333333333333,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1669014617735463,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1792848378,
+  "fair": 1.5,
+  "legs": [
+   {
+    "event_id": 16183745,
+    "fixture": "Arizona Cardinals v Denver Broncos",
+    "competition": "NFL",
+    "kickoff": 1792958700,
+    "sport": "american-football",
+    "team": "Arizona Cardinals",
+    "player": "Trey McBride",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 49.5,
+    "over": true,
+    "alt": true,
+    "threshold": 50.0,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.5,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.25,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "american-football",
+  "snapshot_at": 1792848378,
+  "fair": 1.391304347826087,
+  "legs": [
+   {
+    "event_id": 16183743,
+    "fixture": "Minnesota Vikings v Indianapolis Colts",
+    "competition": "NFL",
+    "kickoff": 1792947600,
+    "sport": "american-football",
+    "team": "Indianapolis Colts",
+    "player": "Daniel Jones",
+    "stat": "Passing attempts",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25,
+    "hits": 15,
+    "total": 16,
+    "fair": 1.391304347826087,
+    "venue": null,
+    "chance": 0.71875,
+    "chance_base": 0.71875,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2813376562363232,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "american-football",
+  "snapshot_at": 1792848378,
+  "fair": 1.434782608695652,
+  "legs": [
+   {
+    "event_id": 16183742,
+    "fixture": "Houston Texans v New York Giants",
+    "competition": "NFL",
+    "kickoff": 1792947600,
+    "sport": "american-football",
+    "team": "New York Giants",
+    "player": "Brian Burns",
+    "stat": "Defensive combine tackles",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2,
+    "hits": 15,
+    "total": 17,
+    "fair": 1.434782608695652,
+    "venue": null,
+    "chance": 0.696969696969697,
+    "chance_base": 0.696969696969697,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3643202677348145,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "american-football",
+  "snapshot_at": 1792848378,
+  "fair": 1.4285714285714286,
+  "legs": [
+   {
+    "event_id": 16183767,
+    "fixture": "Detroit Lions v Green Bay Packers",
+    "competition": "NFL",
+    "kickoff": 1792959900,
+    "sport": "american-football",
+    "team": "Detroit Lions",
+    "player": "Jared Goff",
+    "stat": "Rushing attempts",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 13,
+    "total": 14,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": 0.7,
+    "chance_base": 0.7,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3017079941557717,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3823529411764706,
+  "legs": [
+   {
+    "event_id": 16285058,
+    "fixture": "Udinese v AC Milan",
+    "competition": "Serie A",
+    "kickoff": 1792957500,
+    "sport": "football",
+    "team": "Udinese",
+    "player": "J\u00fcrgen Ekkelenkamp",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 26,
+    "total": 31,
+    "fair": 1.3823529411764706,
+    "venue": null,
+    "chance": 0.723404255319149,
+    "chance_base": 0.723404255319149,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1923076923076923,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3927234834683555,
+  "legs": [
+   {
+    "event_id": 16285046,
+    "fixture": "Atalanta v Frosinone",
+    "competition": "Serie A",
+    "kickoff": 1792936800,
+    "sport": "football",
+    "team": "Atalanta",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "1ST",
+    "line": 0.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 17,
+    "fair": 1.3927234834683555,
+    "venue": "home",
+    "chance": 0.7180176193408182,
+    "chance_base": 0.7180176193408182,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.379931231063634,
+    "elo": [
+     1652,
+     1644
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.4,
+  "legs": [
+   {
+    "event_id": 16285054,
+    "fixture": "Lecce v Juventus",
+    "competition": "Serie A",
+    "kickoff": 1792947600,
+    "sport": "football",
+    "team": "Lecce",
+    "player": "Tiago Gabriel",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 27,
+    "total": 33,
+    "fair": 1.4,
+    "venue": null,
+    "chance": 0.7142857142857143,
+    "chance_base": 0.7142857142857143,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6554502322035562,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3157894736842106,
+  "legs": [
+   {
+    "event_id": 15171725,
+    "fixture": "Philadelphia Union v New England Revolution",
+    "competition": "MLS",
+    "kickoff": 1792884600,
+    "sport": "football",
+    "team": "Philadelphia Union",
+    "player": "Bruno Damiani",
+    "stat": "Fouls",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 30,
+    "total": 34,
+    "fair": 1.3157894736842106,
+    "venue": null,
+    "chance": 0.76,
+    "chance_base": 0.76,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.5742617421121072,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.421758095211531,
+  "legs": [
+   {
+    "event_id": 15171724,
+    "fixture": "Orlando City SC v New York City FC",
+    "competition": "MLS",
+    "kickoff": 1792884600,
+    "sport": "football",
+    "team": "Orlando City SC",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 18,
+    "fair": 1.421758095211531,
+    "venue": "home",
+    "chance": 0.7033545322287887,
+    "chance_base": 0.7033545322287887,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3654683527414995,
+    "elo": [
+     1521,
+     1490
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.4659050415377517,
+  "legs": [
+   {
+    "event_id": 15171730,
+    "fixture": "Real Salt Lake v St.Louis City",
+    "competition": "MLS",
+    "kickoff": 1792891800,
+    "sport": "football",
+    "team": "Real Salt Lake",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4659050415377517,
+    "venue": "home",
+    "chance": 0.6821724270427423,
+    "chance_base": 0.6821724270427423,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4088094230985675,
+    "elo": [
+     1477,
+     1594
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3310024650787273,
+  "legs": [
+   {
+    "event_id": 15171729,
+    "fixture": "Los Angeles FC v LA Galaxy",
+    "competition": "MLS",
+    "kickoff": 1792976400,
+    "sport": "football",
+    "team": "LA Galaxy",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 14.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 18,
+    "fair": 1.3310024650787273,
+    "venue": "away",
+    "chance": 0.7513134094314777,
+    "chance_base": 0.7513134094314777,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3939135062943326,
+    "elo": [
+     1492,
+     1575
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3714285714285714,
+  "legs": [
+   {
+    "event_id": 15171729,
+    "fixture": "Los Angeles FC v LA Galaxy",
+    "competition": "MLS",
+    "kickoff": 1792976400,
+    "sport": "football",
+    "team": "Los Angeles FC",
+    "player": "Denis Bouanga",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 27,
+    "total": 32,
+    "fair": 1.3714285714285714,
+    "venue": null,
+    "chance": 0.7291666666666666,
+    "chance_base": 0.7291666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1851851851851851,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.398485071532166,
+  "legs": [
+   {
+    "event_id": 15171729,
+    "fixture": "Los Angeles FC v LA Galaxy",
+    "competition": "MLS",
+    "kickoff": 1792976400,
+    "sport": "football",
+    "team": "Los Angeles FC",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 14,
+    "fair": 1.398485071532166,
+    "venue": "home",
+    "chance": 0.7150594742526714,
+    "chance_base": 0.7150594742526714,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4246343217135153,
+    "elo": [
+     1575,
+     1492
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 15171729,
+    "fixture": "Los Angeles FC v LA Galaxy",
+    "competition": "MLS",
+    "kickoff": 1792976400,
+    "sport": "football",
+    "team": "Los Angeles FC",
+    "player": "Mathieu Choini\u00e8re",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 22,
+    "total": 24,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "chance": 0.75,
+    "chance_base": 0.75,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.5303377472693214,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3448275862068966,
+  "legs": [
+   {
+    "event_id": 15171729,
+    "fixture": "Los Angeles FC v LA Galaxy",
+    "competition": "MLS",
+    "kickoff": 1792976400,
+    "sport": "football",
+    "team": "LA Galaxy",
+    "player": "Joseph Paintsil",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 21,
+    "total": 23,
+    "fair": 1.3448275862068966,
+    "venue": null,
+    "chance": 0.7435897435897436,
+    "chance_base": 0.7435897435897436,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.5371464653685591,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3478260869565217,
+  "legs": [
+   {
+    "event_id": 15171729,
+    "fixture": "Los Angeles FC v LA Galaxy",
+    "competition": "MLS",
+    "kickoff": 1792976400,
+    "sport": "football",
+    "team": "Los Angeles FC",
+    "player": "Yevhen Cheberko",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 15,
+    "total": 15,
+    "fair": 1.3478260869565217,
+    "venue": null,
+    "chance": 0.7419354838709677,
+    "chance_base": 0.7419354838709677,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3748322038393854,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3714285714285714,
+  "legs": [
+   {
+    "event_id": 15171729,
+    "fixture": "Los Angeles FC v LA Galaxy",
+    "competition": "MLS",
+    "kickoff": 1792976400,
+    "sport": "football",
+    "team": "Los Angeles FC",
+    "player": "Denis Bouanga",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2,
+    "hits": 27,
+    "total": 32,
+    "fair": 1.3714285714285714,
+    "venue": null,
+    "chance": 0.7291666666666666,
+    "chance_base": 0.7291666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6254347455183062,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3793103448275863,
+  "legs": [
+   {
+    "event_id": 15171729,
+    "fixture": "Los Angeles FC v LA Galaxy",
+    "competition": "MLS",
+    "kickoff": 1792976400,
+    "sport": "football",
+    "team": "LA Galaxy",
+    "player": "Harbor Miller",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 21,
+    "total": 24,
+    "fair": 1.3793103448275863,
+    "venue": null,
+    "chance": 0.725,
+    "chance_base": 0.725,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.5903318960084376,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3135396588950288,
+  "legs": [
+   {
+    "event_id": 15171732,
+    "fixture": "San Diego FC v Seattle Sounders FC",
+    "competition": "MLS",
+    "kickoff": 1792895400,
+    "sport": "football",
+    "team": "Seattle Sounders FC",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.3135396588950288,
+    "venue": "away",
+    "chance": 0.5296073641667791,
+    "chance_base": 0.5296073641667791,
+    "exchange_p": 0.7981,
+    "exchange_back": null,
+    "chance_model": 0.5296073641667791,
+    "chance_anchored": 0.5637970219488271,
+    "exchange_kind": "derived",
+    "value_at_pick": null,
+    "fair_record": 1.635476057281522,
+    "elo": [
+     1542,
+     1487
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.34375,
+  "legs": [
+   {
+    "event_id": 15171732,
+    "fixture": "San Diego FC v Seattle Sounders FC",
+    "competition": "MLS",
+    "kickoff": 1792895400,
+    "sport": "football",
+    "team": "Seattle Sounders FC",
+    "player": "Paul Rothrock",
+    "stat": "Fouled",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 24,
+    "total": 27,
+    "fair": 1.34375,
+    "venue": null,
+    "chance": 0.7441860465116279,
+    "chance_base": 0.7441860465116279,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.5690867546635847,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3944228872574134,
+  "legs": [
+   {
+    "event_id": 15171726,
+    "fixture": "Sporting Kansas City v Austin FC",
+    "competition": "MLS",
+    "kickoff": 1792888200,
+    "sport": "football",
+    "team": "Sporting Kansas City",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 5.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 19,
+    "fair": 1.3944228872574134,
+    "venue": "home",
+    "chance": 0.7171425606523324,
+    "chance_base": 0.7171425606523324,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3184892294730894,
+    "elo": [
+     1333,
+     1460
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3004759489899735,
+  "legs": [
+   {
+    "event_id": 16310985,
+    "fixture": "Auxerre v Le Mans",
+    "competition": "Ligue 1",
+    "kickoff": 1792944900,
+    "sport": "football",
+    "team": "Auxerre",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.3004759489899735,
+    "venue": "home",
+    "chance": 0.7689492456793677,
+    "chance_base": 0.7689492456793677,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2844383218020496,
+    "elo": [
+     1571,
+     1577
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.3474846667875255,
+  "legs": [
+   {
+    "event_id": 16421079,
+    "fixture": "Celta Vigo v Real Betis",
+    "competition": "LaLiga",
+    "kickoff": 1792941300,
+    "sport": "football",
+    "team": "Celta Vigo",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.3474846667875255,
+    "venue": "home",
+    "chance": 0.7246883408004513,
+    "chance_base": 0.7246883408004513,
+    "exchange_p": 0.7441,
+    "exchange_back": 1.33,
+    "chance_model": 0.7246883408004513,
+    "chance_anchored": 0.7331177627468896,
+    "exchange_kind": "exchange",
+    "value_at_pick": -0.025220818926679683,
+    "fair_record": 1.3977771189289774,
+    "elo": [
+     1661,
+     1779
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792848378,
+  "fair": 1.4516129032258065,
+  "legs": [
+   {
+    "event_id": 16421079,
+    "fixture": "Celta Vigo v Real Betis",
+    "competition": "LaLiga",
+    "kickoff": 1792941300,
+    "sport": "football",
+    "team": "Celta Vigo",
+    "player": "Sergio Carreira",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 39.5,
+    "over": true,
+    "alt": true,
+    "threshold": 40,
+    "hits": 23,
+    "total": 29,
+    "fair": 1.4516129032258065,
+    "venue": null,
+    "chance": 0.6888888888888889,
+    "chance_base": 0.6888888888888889,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6850067222008709,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1792849296,
+  "fair": 1.9096,
+  "legs": [
+   {
+    "event_id": 15171762,
+    "fixture": "FC Dallas v San Jose Earthquakes",
+    "competition": "MLS",
+    "kickoff": 1792888200,
+    "sport": "football",
+    "team": "San Jose Earthquakes",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.234785397513935,
+    "venue": "away",
+    "chance": 0.8099,
+    "chance_base": 0.8099,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1660571143117473,
+    "elo": [
+     1513,
+     1581
+    ],
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16391579,
+    "fixture": "Stoke City v Bristol City",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Stoke City",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3848490587881546,
+    "venue": "home",
+    "chance": 0.7221,
+    "chance_base": 0.7221,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3976444637498944,
+    "elo": [
+     1446,
+     1440
+    ],
+    "value": 5.0,
+    "result": "win"
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "football",
+  "snapshot_at": 1792849296,
+  "fair": 1.234785397513935,
+  "legs": [
+   {
+    "event_id": 15171762,
+    "fixture": "FC Dallas v San Jose Earthquakes",
+    "competition": "MLS",
+    "kickoff": 1792888200,
+    "sport": "football",
+    "team": "San Jose Earthquakes",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.234785397513935,
+    "venue": "away",
+    "chance": 0.8099,
+    "chance_base": 0.8099,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1660571143117473,
+    "elo": [
+     1513,
+     1581
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1792849296,
+  "fair": 4.2359856,
+  "legs": [
+   {
+    "event_id": 16363899,
+    "fixture": "Manchester United v Bournemouth",
+    "competition": "Premier League",
+    "kickoff": 1792936800,
+    "sport": "football",
+    "team": "Manchester United",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.4234664014288154,
+    "venue": "home",
+    "chance": 0.7025,
+    "chance_base": 0.7025,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4558275962770257,
+    "elo": [
+     1822,
+     1868
+    ],
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16285056,
+    "fixture": "SSC Napoli v AS Roma",
+    "competition": "Serie A",
+    "kickoff": 1792857600,
+    "sport": "football",
+    "team": "AS Roma",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 4.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 19,
+    "fair": 1.4416726113988056,
+    "venue": "away",
+    "chance": 0.6936,
+    "chance_base": 0.6936,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.413473134116872,
+    "elo": [
+     1789,
+     1702
+    ],
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16391574,
+    "fixture": "Lincoln City v Burnley",
+    "competition": "Championship",
+    "kickoff": 1792850400,
+    "sport": "football",
+    "team": "Burnley",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 8,
+    "total": 10,
+    "fair": 1.4451547866054648,
+    "venue": null,
+    "chance": 0.692,
+    "chance_base": 0.692,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.443431020215578,
+    "elo": [
+     1463,
+     1559
+    ],
+    "value": 1.0,
+    "result": "lose"
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1792849296,
+  "fair": 3.2,
+  "legs": [
+   {
+    "event_id": 16183744,
+    "fixture": "Tennessee Titans v Cleveland Browns",
+    "competition": "NFL",
+    "kickoff": 1792947600,
+    "sport": "american-football",
+    "team": "Tennessee Titans",
+    "player": "Elic Ayomanor",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183744,
+    "fixture": "Tennessee Titans v Cleveland Browns",
+    "competition": "NFL",
+    "kickoff": 1792947600,
+    "sport": "american-football",
+    "team": "Tennessee Titans",
+    "player": "Cam Ward",
+    "stat": "Passing and rushing yards",
+    "period": "ALL",
+    "line": 159.5,
+    "over": true,
+    "alt": true,
+    "threshold": 160.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183744,
+    "fixture": "Tennessee Titans v Cleveland Browns",
+    "competition": "NFL",
+    "kickoff": 1792947600,
+    "sport": "american-football",
+    "team": "Tennessee Titans",
+    "player": "Gunnar Helm",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10.0,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.3846153846153846,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183744,
+    "fixture": "Tennessee Titans v Cleveland Browns",
+    "competition": "NFL",
+    "kickoff": 1792947600,
+    "sport": "american-football",
+    "team": "Tennessee Titans",
+    "player": "Tyjae Spears",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 19.5,
+    "over": true,
+    "alt": true,
+    "threshold": 20.0,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3571428571428572,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792849296,
+  "fair": 1.5,
+  "legs": [
+   {
+    "event_id": 16421083,
+    "fixture": "Real Racing Club v Espanyol",
+    "competition": "LaLiga",
+    "kickoff": 1792851300,
+    "sport": "football",
+    "team": "Espanyol",
+    "player": "Omar El Hilali",
+    "stat": "Fouls",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 24,
+    "total": 32,
+    "fair": 1.5,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.7299749129094635,
+    "elo": null,
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792849296,
+  "fair": 1.5,
+  "legs": [
+   {
+    "event_id": 16421083,
+    "fixture": "Real Racing Club v Espanyol",
+    "competition": "LaLiga",
+    "kickoff": 1792851300,
+    "sport": "football",
+    "team": "Real Racing Club",
+    "player": "Julen Agirrezabala",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15,
+    "hits": 8,
+    "total": 8,
+    "fair": 1.5,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.443658718410914,
+    "elo": null,
+    "value": 25.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1792855351,
+  "fair": 1.971438,
+  "legs": [
+   {
+    "event_id": 15171725,
+    "fixture": "Philadelphia Union v New England Revolution",
+    "competition": "MLS",
+    "kickoff": 1792884600,
+    "sport": "football",
+    "team": "Philadelphia Union",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.2193897393722821,
+    "venue": "home",
+    "chance": 0.8201,
+    "chance_base": 0.8201,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.31064479585599,
+    "elo": [
+     1601,
+     1498
+    ],
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16363899,
+    "fixture": "Manchester United v Bournemouth",
+    "competition": "Premier League",
+    "kickoff": 1792936800,
+    "sport": "football",
+    "team": "Manchester United",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.4256877467171485,
+    "venue": "home",
+    "chance": 0.7014,
+    "chance_base": 0.7014,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4558275962770257,
+    "elo": [
+     1822,
+     1868
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1792855351,
+  "fair": 4.636481849999999,
+  "legs": [
+   {
+    "event_id": 16421080,
+    "fixture": "FC Barcelona v Real Madrid",
+    "competition": "LaLiga",
+    "kickoff": 1792958400,
+    "sport": "football",
+    "team": "Real Madrid",
+    "player": "Kylian Mbapp\u00e9",
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 16,
+    "total": 28,
+    "fair": 1.4115080584982005,
+    "venue": null,
+    "chance": 0.7085,
+    "chance_base": 0.5455,
+    "exchange_p": 0.9001,
+    "exchange_back": 1.01,
+    "chance_model": 0.5455,
+    "chance_anchored": 0.5455,
+    "exchange_kind": "back",
+    "value_at_pick": null,
+    "fair_record": 1.75,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16363899,
+    "fixture": "Manchester United v Bournemouth",
+    "competition": "Premier League",
+    "kickoff": 1792936800,
+    "sport": "football",
+    "team": "Manchester United",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.4256877467171485,
+    "venue": "home",
+    "chance": 0.7014,
+    "chance_base": 0.7014,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4558275962770257,
+    "elo": [
+     1822,
+     1868
+    ],
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16285056,
+    "fixture": "SSC Napoli v AS Roma",
+    "competition": "Serie A",
+    "kickoff": 1792857600,
+    "sport": "football",
+    "team": "AS Roma",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 4.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 19,
+    "fair": 1.4402282177052355,
+    "venue": "away",
+    "chance": 0.6943,
+    "chance_base": 0.6943,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.413473134116872,
+    "elo": [
+     1789,
+     1702
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1792855351,
+  "fair": 3.2,
+  "legs": [
+   {
+    "event_id": 16183745,
+    "fixture": "Arizona Cardinals v Denver Broncos",
+    "competition": "NFL",
+    "kickoff": 1792958700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "Bo Nix",
+    "stat": "Passing attempts",
+    "period": "ALL",
+    "line": 29.5,
+    "over": true,
+    "alt": true,
+    "threshold": 30.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183745,
+    "fixture": "Arizona Cardinals v Denver Broncos",
+    "competition": "NFL",
+    "kickoff": 1792958700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "RJ Harvey",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 19.5,
+    "over": true,
+    "alt": true,
+    "threshold": 20.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183745,
+    "fixture": "Arizona Cardinals v Denver Broncos",
+    "competition": "NFL",
+    "kickoff": 1792958700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "Evan Engram",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183745,
+    "fixture": "Arizona Cardinals v Denver Broncos",
+    "competition": "NFL",
+    "kickoff": 1792958700,
+    "sport": "american-football",
+    "team": "Denver Broncos",
+    "player": "Troy Franklin",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 13,
+    "total": 17,
+    "fair": 1.3076923076923077,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792855351,
+  "fair": 1.3532349977683447,
+  "legs": [
+   {
+    "event_id": 16421082,
+    "fixture": "Atl\u00e9tico Madrid v Deportivo de A Coru\u00f1a",
+    "competition": "LaLiga",
+    "kickoff": 1792868400,
+    "sport": "football",
+    "team": "Atl\u00e9tico Madrid",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "1ST",
+    "line": 2.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 16,
+    "fair": 1.3532349977683447,
+    "venue": "home",
+    "chance": 0.7389699510056467,
+    "chance_base": 0.7389699510056467,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3032233093093217,
+    "elo": [
+     1846,
+     1624
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1792856540,
+  "fair": 3.7941749999999996,
+  "legs": [
+   {
+    "event_id": 16363899,
+    "fixture": "Manchester United v Bournemouth",
+    "competition": "Premier League",
+    "kickoff": 1792936800,
+    "sport": "football",
+    "team": "Manchester United",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.4262532935148733,
+    "venue": "home",
+    "chance": 0.7011,
+    "chance_base": 0.7011,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4558275962770257,
+    "elo": [
+     1822,
+     1868
+    ],
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16285056,
+    "fixture": "SSC Napoli v AS Roma",
+    "competition": "Serie A",
+    "kickoff": 1792857600,
+    "sport": "football",
+    "team": "AS Roma",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 4.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 19,
+    "fair": 1.4409647153830933,
+    "venue": "away",
+    "chance": 0.694,
+    "chance_base": 0.694,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.413473134116872,
+    "elo": [
+     1789,
+     1702
+    ],
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16421082,
+    "fixture": "Atl\u00e9tico Madrid v Deportivo de A Coru\u00f1a",
+    "competition": "LaLiga",
+    "kickoff": 1792868400,
+    "sport": "football",
+    "team": "Atl\u00e9tico Madrid",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 5.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 16,
+    "fair": 1.4562919874507112,
+    "venue": "home",
+    "chance": 0.6867,
+    "chance_base": 0.6867,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4577819604426432,
+    "elo": [
+     1846,
+     1624
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792856540,
+  "fair": 1.3876237707207126,
+  "legs": [
+   {
+    "event_id": 16363893,
+    "fixture": "Chelsea v Tottenham Hotspur",
+    "competition": "Premier League",
+    "kickoff": 1792859400,
+    "sport": "football",
+    "team": "Tottenham Hotspur",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 18,
+    "fair": 1.3876237707207126,
+    "venue": "away",
+    "chance": 0.6248103136160533,
+    "chance_base": 0.6248103136160533,
+    "exchange_p": 0.7364,
+    "exchange_back": 1.33,
+    "chance_model": 0.6248103136160533,
+    "chance_anchored": 0.6433341620746359,
+    "exchange_kind": "exchange",
+    "value_at_pick": -0.053417772370830535,
+    "fair_record": 1.500559922532379,
+    "elo": [
+     1751,
+     1849
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792856540,
+  "fair": 1.4333333333333333,
+  "legs": [
+   {
+    "event_id": 16363893,
+    "fixture": "Chelsea v Tottenham Hotspur",
+    "competition": "Premier League",
+    "kickoff": 1792859400,
+    "sport": "football",
+    "team": "Chelsea",
+    "player": "Cole Palmer",
+    "stat": "Fouled",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 22,
+    "total": 27,
+    "fair": 1.4333333333333333,
+    "venue": null,
+    "chance": 0.6976744186046512,
+    "chance_base": 0.6976744186046512,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.661662229178732,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792856540,
+  "fair": 1.45,
+  "legs": [
+   {
+    "event_id": 16363893,
+    "fixture": "Chelsea v Tottenham Hotspur",
+    "competition": "Premier League",
+    "kickoff": 1792859400,
+    "sport": "football",
+    "team": "Tottenham Hotspur",
+    "player": "Anton\u00edn Kinsk\u00fd",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 19.5,
+    "over": true,
+    "alt": true,
+    "threshold": 20,
+    "hits": 12,
+    "total": 13,
+    "fair": 1.45,
+    "venue": null,
+    "chance": 0.6896551724137931,
+    "chance_base": 0.6896551724137931,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.5419150911238728,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1792857781,
+  "fair": 3.6125145,
+  "legs": [
+   {
+    "event_id": 16363899,
+    "fixture": "Manchester United v Bournemouth",
+    "competition": "Premier League",
+    "kickoff": 1792936800,
+    "sport": "football",
+    "team": "Manchester United",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.4279880597448402,
+    "venue": "home",
+    "chance": 0.7003,
+    "chance_base": 0.7003,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4558275962770257,
+    "elo": [
+     1822,
+     1868
+    ],
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16421082,
+    "fixture": "Atl\u00e9tico Madrid v Deportivo de A Coru\u00f1a",
+    "competition": "LaLiga",
+    "kickoff": 1792868400,
+    "sport": "football",
+    "team": "Atl\u00e9tico Madrid",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 5.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 16,
+    "fair": 1.4562919874507112,
+    "venue": "home",
+    "chance": 0.6867,
+    "chance_base": 0.6867,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4577819604426432,
+    "elo": [
+     1846,
+     1624
+    ],
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16363896,
+    "fixture": "Hull City v Brentford",
+    "competition": "Premier League",
+    "kickoff": 1792936800,
+    "sport": "football",
+    "team": "Brentford",
+    "player": "Michael Kayode",
+    "stat": "Fouled",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 27,
+    "total": 35,
+    "fair": 1.457142857142857,
+    "venue": null,
+    "chance": 0.6863,
+    "chance_base": 0.6863,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2962962962962963,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "american-football",
+  "snapshot_at": 1792857781,
+  "fair": 3.0,
+  "legs": [
+   {
+    "event_id": 16183767,
+    "fixture": "Detroit Lions v Green Bay Packers",
+    "competition": "NFL",
+    "kickoff": 1792959900,
+    "sport": "american-football",
+    "team": "Detroit Lions",
+    "player": "Jahmyr Gibbs",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 44.5,
+    "over": true,
+    "alt": true,
+    "threshold": 45.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183767,
+    "fixture": "Detroit Lions v Green Bay Packers",
+    "competition": "NFL",
+    "kickoff": 1792959900,
+    "sport": "american-football",
+    "team": "Detroit Lions",
+    "player": "Jameson Williams",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 39.5,
+    "over": true,
+    "alt": true,
+    "threshold": 40.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183767,
+    "fixture": "Detroit Lions v Green Bay Packers",
+    "competition": "NFL",
+    "kickoff": 1792959900,
+    "sport": "american-football",
+    "team": "Detroit Lions",
+    "player": "Jared Goff",
+    "stat": "Passing yards",
+    "period": "ALL",
+    "line": 249.5,
+    "over": true,
+    "alt": true,
+    "threshold": 250.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16183767,
+    "fixture": "Detroit Lions v Green Bay Packers",
+    "competition": "NFL",
+    "kickoff": 1792959900,
+    "sport": "american-football",
+    "team": "Detroit Lions",
+    "player": "Sam LaPorta",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 39.5,
+    "over": true,
+    "alt": true,
+    "threshold": 40.0,
+    "hits": 9,
+    "total": 12,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792857781,
+  "fair": 1.4,
+  "legs": [
+   {
+    "event_id": 16421089,
+    "fixture": "Valencia v Villarreal",
+    "competition": "LaLiga",
+    "kickoff": 1792859400,
+    "sport": "football",
+    "team": "Valencia",
+    "player": "Guido Rodr\u00edguez",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 39.5,
+    "over": true,
+    "alt": true,
+    "threshold": 40,
+    "hits": 17,
+    "total": 19,
+    "fair": 1.4,
+    "venue": null,
+    "chance": 0.7142857142857143,
+    "chance_base": 0.7142857142857143,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.5690867546635847,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792857781,
+  "fair": 1.4482758620689655,
+  "legs": [
+   {
+    "event_id": 16421089,
+    "fixture": "Valencia v Villarreal",
+    "competition": "LaLiga",
+    "kickoff": 1792859400,
+    "sport": "football",
+    "team": "Valencia",
+    "player": "Javier Guerra",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 19.5,
+    "over": true,
+    "alt": true,
+    "threshold": 20,
+    "hits": 21,
+    "total": 26,
+    "fair": 1.4482758620689655,
+    "venue": null,
+    "chance": 0.6904761904761905,
+    "chance_base": 0.6904761904761905,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6701569509265002,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1792866262,
+  "fair": 1.375,
+  "legs": [
+   {
+    "event_id": 16363898,
+    "fixture": "Liverpool FC v Brighton & Hove Albion",
+    "competition": "Premier League",
+    "kickoff": 1792936800,
+    "sport": "football",
+    "team": "Brighton & Hove Albion",
+    "player": "Georginio Rutter",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10,
+    "hits": 16,
+    "total": 17,
+    "fair": 1.375,
+    "venue": null,
+    "chance": 0.7272727272727273,
+    "chance_base": 0.7272727272727273,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.5013005720665697,
+    "elo": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792866262,
+  "fair": 1.306727567781333,
+  "legs": [
+   {
+    "event_id": 16363896,
+    "fixture": "Hull City v Brentford",
+    "competition": "Premier League",
+    "kickoff": 1792936800,
+    "sport": "football",
+    "team": "Brentford",
+    "player": null,
+    "stat": "Throw-ins",
+    "period": "1ST",
+    "line": 8.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 19,
+    "fair": 1.306727567781333,
+    "venue": "away",
+    "chance": 0.7652704547267494,
+    "chance_base": 0.7652704547267494,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2691835330590844,
+    "elo": [
+     1858,
+     1612
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792866262,
+  "fair": 1.3572068669297994,
+  "legs": [
+   {
+    "event_id": 16310987,
+    "fixture": "RC Lens v Paris FC",
+    "competition": "Ligue 1",
+    "kickoff": 1792867500,
+    "sport": "football",
+    "team": "RC Lens",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.3572068669297994,
+    "venue": "home",
+    "chance": 0.7368073536660968,
+    "chance_base": 0.7368073536660968,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3643213689926095,
+    "elo": [
+     1730,
+     1690
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1792866262,
+  "fair": 1.3030247593965318,
+  "legs": [
+   {
+    "event_id": 15238217,
+    "fixture": "Mirassol v S\u00e3o Paulo",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1792870200,
+    "sport": "football",
+    "team": "Mirassol",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 19,
+    "fair": 1.3030247593965318,
+    "venue": "home",
+    "chance": 0.7872871241268228,
+    "chance_base": 0.7872871241268228,
+    "exchange_p": 0.7583,
+    "exchange_back": null,
+    "chance_model": 0.7872871241268228,
+    "chance_anchored": 0.7903825023711144,
+    "exchange_kind": "derived",
+    "value_at_pick": null,
+    "fair_record": 1.3195457801514392,
+    "elo": [
+     1646,
+     1629
+    ],
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
  }
 ]
