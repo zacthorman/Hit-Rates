@@ -7,6 +7,7 @@ Champions League report if there is one and is skipped otherwise.
 """
 import sys
 import unittest
+from unittest import mock
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -118,10 +119,22 @@ class ScoreModel(unittest.TestCase):
         self.assertGreater(sc["away"], sc["home"])
 
     def test_no_model_falls_back(self):
+        # With no ratings the old route runs. Its first step is main's style
+        # model (context.open_mu), which reads team profiles from cache/, so
+        # it is switched off here to keep this test independent of the cache.
         context._SCORE_MODEL["m"] = None
         e = entry([], [])
         e["projection"] = {"ALL": {"Goals": [2.4, 0.6]}}
-        self.assertEqual(context.score(e, [], [])["source"], "goals projection")
+        with mock.patch.object(context, "open_mu", return_value=None):
+            self.assertEqual(context.score(e, [], [])["source"], "goals projection")
+
+    def test_no_model_uses_the_style_model_where_it_has_one(self):
+        context._SCORE_MODEL["m"] = None
+        e = entry([], [])
+        with mock.patch.object(context, "open_mu", return_value=(1.8, 0.9)):
+            sc = context.score(e, [], [])
+        self.assertEqual(sc["source"], "style model (both sides' profiles; backtested)")
+        self.assertEqual((sc["home"], sc["away"]), (1, 0))
 
 
 class Case(unittest.TestCase):
