@@ -27,6 +27,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import picker
+import site_guard
 import weekend
 import pagedata
 
@@ -242,7 +243,7 @@ def main() -> None:
 
     page = PAGE.replace("__PAYLOAD__", payload).replace("__RESEARCH__", research_card())
     out = ROOT / "index.html"
-    out.write_text(page, encoding="utf-8")
+    site_guard.atomic_write(out, page)
 
     # The picker reads the same reports this index just read, so building it
     # here is what stops the two drifting: a report rebuilt without its picker
@@ -284,7 +285,16 @@ def main() -> None:
         print("  Those links point at the newer file. Delete the old reports")
         print("  if you no longer want them: rm reports/<name>")
 
-    dead = [p for p in files if p.name not in live_reports]
+    # A report whose data would not read has no upcoming fixtures as far as
+    # this loop can tell, and --prune used to delete it: a page cut off part
+    # way through being written took its whole league off the site without a
+    # word. It is left alone and named; site_guard decides what happens to it.
+    unreadable = [p for p in files if not read_payload(p)]
+    if unreadable:
+        print(f"\n{len(unreadable)} report(s) would not read and were not pruned:")
+        for path in unreadable:
+            print(f"  {path.name}")
+    dead = [p for p in files if p.name not in live_reports and p not in unreadable]
     if dead:
         print(f"\n{len(dead)} report(s) have no upcoming fixtures left:")
         for path in dead:

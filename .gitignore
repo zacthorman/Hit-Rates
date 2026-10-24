@@ -74,5 +74,13 @@ _to_delete/
 # and update.py / publish.sh run `git add -A`.
 _stage_tmp/
 
+# site_guard.py: the last good copy of each page, and pages it refused.
+# Generated, machine-specific, and far too big for a public repo's history.
+.last_good/
+.rejected/
+*.html.tmp
+.build_status.json
+*.json.tmp
+
 # Full results of case_score_backtest.py, regenerable from the cache.
 case_score_results.json
