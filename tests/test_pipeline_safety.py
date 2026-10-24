@@ -659,7 +659,7 @@ class UpdateRun(Tmp):
         config = self.dir / "update.json"
         config.write_text(json.dumps({
             "leagues": ["Premier League"], "push": True, "nations_days": 0,
-            "champions_league_days": 0, "europa_league_days": 0,
+            "champions_league_days": 0, "europa_league_days": 0, "conference_league_days": 0,
             "nfl": True, "darts": 0, "mlb": False, "nba": False}))
         for name, value in (("ROOT", self.dir), ("CONFIG", config),
                             ("LOG", self.dir / "update.log"),
