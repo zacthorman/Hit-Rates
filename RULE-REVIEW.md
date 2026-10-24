@@ -37,7 +37,7 @@ Paddy Power".
 | Disagreement flag | `weekend.py:377`, `:530` (`EXCHANGE_DISAGREE` 0.15) | Model 15+ points from Betfair: not value, flagged instead | `exchange_log.json` | **Holds. Kept.** |
 | Bad-price guard | `weekend.py:1184` (`BAD_PRICE` -5%) | Out of the headline picks | `exchange_log.json` | **Holds. Kept.** |
 | Paddy Power "Take" | `report.py:6374` (`verdictOf`); scored by `pplog.is_value` | Ours 50%+, beats the price by 5%+, five games+ | `pp-results.html`, every committed copy; `pplog/` where kept | **Loses, outside the noise. Removed** on player lines; team lines keep their backtested gate. |
-| Paddy Power "Acceptable" | `report.py:6374` | Ours 50%+, price within 5% of fair | Only indirectly (calibration) | **Unproven. Kept.** |
+| Paddy Power "Acceptable" | `report.py:6374` | Ours 50%+, price within 5% of fair | Only indirectly (calibration) | **Unproven. Kept.** Since checked on the cache: holds for starters except four lines (`ACCEPTABLE-CHECK.md`). |
 | "Best value at Paddy Power" | `report.py:6659` (`ppBestHtml`) | Ours 50%+, beats the price | As take, for edges of 5%+ | **Capped below 5%** to match the verdict. |
 | Headline picks (best bet, banker, double, acca, builder, parlay, fixture singles, player lines) | `weekend.py` `best_*`, `parlay.py` | Most likely to land at a fair price; no bookmaker price claimed | `best_bets.json`, results only | **Not shown to lose at their own price. Kept.** |
 
