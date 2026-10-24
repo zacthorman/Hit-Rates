@@ -77,6 +77,7 @@ DEFAULTS = {
     # whenever a matchday falls in the next this-many days. 0 turns it off.
     "champions_league_days": 3,
     "europa_league_days": 3,
+    "conference_league_days": 3,
     "prune": True,
     "push": True,
     # Slower than an interactive run on purpose. Nobody is waiting for this
@@ -571,7 +572,8 @@ def main() -> None:
             #      a quiet "nothing on" the rest of the time. Same flags as the
             #      domestic leagues, so the pages are built on the same evidence.
             for name, key in (("Champions League", "champions_league_days"),
-                              ("Europa League", "europa_league_days")):
+                              ("Europa League", "europa_league_days"),
+                              ("Conference League", "conference_league_days")):
                 comp_days = settings.get(key)
                 if not comp_days:
                     continue

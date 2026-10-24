@@ -1142,3 +1142,42 @@ What it found: fmodel is calibrated and was left alone. tonight.html's chance an
 - `fmodel/site_calib.json`: a Platt map per line on the Players tab's own shots and shots on target chance where fmodel has none, injected by `report.py` at render.
 
 Delete either file to go back to the old numbers. The `test` step rewrites both and drops any line whose fix stops holding, so rerun it when the cache has grown. Tests: `python -B -m unittest tests.test_scorer_audit`.
+
+## NFL game script (22 Oct 2026)
+`nflgame.py` builds pre-game script features (expected margin, plays, pass-rate shift when ahead or behind, short week, bye); `nflgame.upcoming()` gives the same for live games.
+`usmodel/training/nfl_gs_eval.py` tests them against the live NFL model with a bootstrap by game and Holm correction.
+Result: no market significant, so the NFL model is unchanged. See NFL_GS_BACKTEST.md. Re-run after the 2026 season.
+NFL games on the tonight page now have a "How the game will go" section built from that script: points form, expected plays, how much each side's passing follows the scoreboard, and short weeks or byes. It is display only and does not change any chance.
+
+## Bookie value bets, boost check, Conference League (22 Oct 2026)
+- **Bookie value bets** (top of tonight.html, `boostcheck.value_box`): Paddy Power player bets where the player model beats the price, one per game, priced at 8.0 or shorter, chances cut by how far that market's hits have fallen short of the model in pplog. It shows a market only while its settled record is about break-even or better (−5% per bet), and calls it "Proven" only when it is still in profit without its two biggest winners. The budget box splits stakes by Kelly share (50p steps).
+- **Boost check** (third tab on each football game, `boostcheck.boost_tab`): result, most shots on target, most corners, goals line, both teams to score, against a typed price. Result chances are the site's score model; goals come from its Poisson projection, rescaled to the result; the shots-on-target and corners winners come from `boost_table.json` (5,017 matches, given result × pre-game favourite from last-5 xG). Ties lose. Rebuild the table with `boost_table.py` (reads the backtest's teams.parquet).
+- **Conference League**: tournament 17015, cross-league form like the Champions League and Europa League. Built by update.py whenever a matchday is within `conference_league_days` (3).
+- When building tonight.html anywhere other than the Mac, set `TZ=Europe/London`, or kick-off times come out in UTC.
+- **Tonight layout (22 Oct, later)**: two big tabs, Team lines and Player lines. Each game is a collapsed row showing its best bet; open it for the case, game state and boost check (team) or the player bets and each player's own line (player). Bookie value bets sit at the top of Player lines and drop players who aren't in the XI the player model is using (confirmed once line-ups land). `tonight.legs_of` now drops players listed out (line-up missing lists, injury report) and, once an XI is confirmed, anyone not starting.
+
+## Game state tab, style model, flank tests (22 Oct 2026, evening)
+- **Style model for the score** (`teammodel/open_goals.json.gz`, `open_meta.json`; trained by `research/open_eval.py`): goals per side from a Poisson GLM on recent xG for/against, home and Elo, times trees on every teamstyle feature plus clashes (counter-attack threat v a high line, press v build-up, both sides' openness). Out of sample it beat the GLM on the result (1X2 log loss −0.54%, Holm p<0.001). Where it lifted an underdog by 1–4 points, underdogs won 35% (it said 31%, the GLM 29%); where it cut one, they won 10–20%. Totals and both-to-score: no worse, not significantly better. `context.score` uses it for **same-league games only**; European ties keep Elo + xG, because each side's profile is built from its own league (it made Beşiktaş 67% v Palace).
+- **Game state tab** on every football report page: `gamestate_live.py` → `reports/gamestate.json` (run by publish.sh). Result and goals with fair prices, open or tight, how the game will go, the game state's leans, and lines to target (lines the game state rates above their record, with the exchange price and edge where Betfair has it).
+- **Flank and involvement features** (`research/flank.py`, `flank_eval.py`): each team's attacking volume by side, what it concedes down each side, the player's side against the opponent's weaker side, and each player's share of team touches, shots, key passes and fouls won. None passed against the player model (45 lines × variants, best tackles +0.1%, Holm 0.29): its direct-opponent and team-style features already carry most of it. Sides come from formation slots, which is crude; re-test once the average-position backfill (tactics_fetch.py) has a season of data.
+- **Style model v the market (22 Oct, late):** on the 85 domestic games in exchange_log.json (team goals, match goals, both-to-score; 386 lines) Betfair's price near kick-off beat the style model clearly (log loss 0.609 v 0.660). Where the style model was 10+ points higher than the market, the line landed 24% (market said 47%); 10+ lower, it landed 76% (market said 54%). Do not bet goals markets off the model where the exchange disagrees. The result (1X2) improvement is untested against the market: no match-odds history yet. To test it, download free closing odds into research/odds/ (football-data.co.uk, see research/README) and re-run.
+- **Result v closing odds (22 Oct, late; research/vs_market.py, odds from football-data.co.uk in research/odds/):** 2,579 league games matched. Log loss per match, out of sample (456 games): closing average odds 0.981, style model 1.008, GLM 1.013. Adding the style model to the market did not help (−0.001, CI −0.006 to +0.004). Backing outcomes where the style model saw a 5%+ edge at the best closing price: −11% (validation), −3% (out of sample). Conclusion: the market's result prices are better than ours; the style model is a read of the game, not a source of value on results or goals.
+- **Paper bankroll and price movement (22 Oct, late; `papertrade.py`):** £1,000 replayed over 7,423 settled priced lines. Backing everything the model rated 5%+ value busts (old record-based chances, NBA props and shots worst); the player model's Paddy Power value bets lose 16%; anytime scorers at 8.0 or shorter +5% (26 bets). Price movement (pplog first v last price): lines the player model rated 5%+ value at the first price shortened 3.6% on average before kick-off (control +0.7%) and broke even (−1.6%, 78 bets) where all other lines lost 42%. Lines with model value after the confirmed line-up: +18.6% over 29 bets (too few to trust yet). The value box now shows when a price has moved since first logged.
+- **Paper trade page** (`papertrade.py --page` → `papertrade.html`, run and published by publish.sh): every player bet the site put forward (best_bets.json) matched to the Paddy Power price logged for the same line, £1,000 at 1% a bet, by type, latest 40. First run (22 Oct): 79 settled, 72% won (site said 59%), flat return −5.0%. `python3 papertrade.py` (no flag) still prints the strategy comparison.
+
+## Paddy Power v Betfair (sharp.py, 23 Oct 2026)
+
+The value-bot check on the site. After every pplog / teamlog snapshot, `python sharp.py stamp`
+(publish.sh) looks up each unstarted Paddy Power line in Betfair Exchange's prices
+(market_prices.json) and writes `sharp_first` / `sharp_last` into the row: Betfair's fair chance
+(mid of back and lay on player markets, margin-free two-way on corners/cards), the back and lay,
+and the edge = PP price x Betfair chance - 1. Covered: to score, shots on target 1+/2+, shown a
+card, anytime TD, match corners 8.5/9.5/10.5/12.5, match cards 2.5/3.5. pplog now also logs
+Paddy Power's player shots-on-target lines so they can be checked.
+
+* Tonight page: "Paddy Power v Betfair" box at the top of both tabs, lines 2%+ longer than
+  Betfair, tagged by the other signals that agree (beats Betfair's lay, our model, confirmed
+  starter, Betfair moving our way), with a budget split.
+* papertrade.html: the settled record of those bets by number of signals agreeing, plus the
+  site's picks split by price and by claimed edge (where it goes wrong).
+* `python sharp.py report` prints what is live and the record.

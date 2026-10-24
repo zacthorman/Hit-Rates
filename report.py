@@ -451,6 +451,21 @@ select { max-width: 100%; min-width: 0; text-overflow: ellipsis; }
 .pcell { display: flex; align-items: center; gap: 14px; }
 
 .note { color: var(--muted); font-size: 13.5px; margin: 0 0 14px; }
+/* Game state tab (gamestate_live.py) */
+.gs-tab { font-size: 14.5px; line-height: 1.55; max-width: 760px; }
+.gs-tab h3 { font-size: 12.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 22px 0 8px; }
+.gs-tab .sub, .gs-tab .comp { color: var(--muted); font-size: 12.5px; }
+.gs-tab .none { color: var(--muted); }
+.gs-tab .call { margin: 6px 0; }
+.gs-tab .why, .gs-tab .facts { padding-left: 20px; } .gs-tab .why li, .gs-tab .facts li { margin: 6px 0; }
+.gs-tab .gsbox { border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; }
+.gs-tab .argue { border-left: 3px solid var(--text-primary); padding: 6px 12px; margin: 8px 0; }
+.gs-tab .sides { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 620px) { .gs-tab .sides { grid-template-columns: 1fr; } }
+.gs-tab table.gs-t { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 4px 0 8px; }
+.gs-tab .gs-t th, .gs-tab .gs-t td { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--border); }
+.gs-tab .gs-t th { color: var(--muted); font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; }
+.gs-tab .n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .caution {
   border: 1px solid var(--border); border-left: 3px solid var(--miss);
   background: var(--surface-1); border-radius: 10px;
@@ -5821,6 +5836,42 @@ function loadUSModel() {
     .catch(() => {});
 }
 
+/* reports/gamestate.json, written by gamestate_live.py before every publish:
+   per football fixture, the result and goals from the score model, how the
+   game should go, the game state's leans and the lines it backs. 22 Oct 2026. */
+let GSTATE = null;
+
+function loadGameState() {
+  if (SPORT !== "football") return;
+  if (typeof fetch !== "function" || location.protocol === "file:") return;
+  fetch("gamestate.json", { cache: "no-store" })
+    .then(r => (r.ok ? r.json() : null))
+    .then(j => {
+      if (!j || !j.events) return;
+      GSTATE = j;
+      if (tab === "gamestate") gameStateView();
+    })
+    .catch(() => {});
+}
+
+function gameStateView() {
+  const el = document.getElementById("gamestate");
+  if (!el) return;
+  if (SPORT !== "football") {
+    el.innerHTML = `<p class="note">The game state tab is football only for now; basketball and NFL
+      carry theirs on the Tonight page.</p>`;
+    return;
+  }
+  const ev = GSTATE && DATA && DATA.fixture ? GSTATE.events[String(DATA.fixture.id)] : null;
+  if (!ev) {
+    el.innerHTML = GSTATE
+      ? `<p class="note">No game state for this fixture: it is more than four days away or already played.</p>`
+      : `<p class="note">Loading the game state&hellip; (it needs the published site, not a local file)</p>`;
+    return;
+  }
+  el.innerHTML = ev.html;
+}
+
 function loadFModel() {
   if (typeof fetch !== "function" || location.protocol === "file:") return;
   fetch("fmodel.json", { cache: "no-store" })
@@ -7656,6 +7707,7 @@ function applyFixture() {
   applyTeamColours();
   fillCustom();
   resultView();
+  if (tab === "gamestate") gameStateView();
   SUGGESTED = {};
   for (const [key, bucket] of Object.entries(DATA.lines)) {
     SUGGESTED[key] = Object.assign({}, bucket);
@@ -7780,6 +7832,7 @@ function switchTab(target) {
   if (panel === "best") bestBetsView();
   if (target === "slip") slipView();
   if (target === "lineups") lineupView();
+  if (target === "gamestate") gameStateView();
 }
 
 /* Is a Best tab the one on screen? Everything that used to test
@@ -9885,6 +9938,7 @@ new MutationObserver(() => enhanceNumbers()).observe(
 enhanceNumbers();
 loadMarkets();
 loadFModel();
+loadGameState();
 loadUSModel();
 """
 
@@ -10105,6 +10159,7 @@ def build_html(payload: dict) -> str:
   <button type="button" data-tab="team" aria-selected="true">Team stats</button>
   <button type="button" data-tab="players" aria-selected="false">Players</button>
   <button type="button" data-tab="lineups" aria-selected="false">Line-ups</button>
+  <button type="button" data-tab="gamestate" aria-selected="false">Game state</button>
   <button type="button" data-tab="best-player" aria-selected="false">Best players</button>
   <button type="button" data-tab="best-team" aria-selected="false">Best teams</button>
   <button type="button" data-tab="standout" aria-selected="false">Standout lines</button>
@@ -10233,6 +10288,10 @@ def build_html(payload: dict) -> str:
   </div>
 
   <div id="bestbets"></div>
+</div>
+
+<div class="panel" data-panel="gamestate" hidden>
+  <div id="gamestate"></div>
 </div>
 
 <div class="panel" data-panel="value" hidden>

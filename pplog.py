@@ -85,8 +85,11 @@ PP_PATTERNS = [
     (re.compile(r"^Player To Have (\d+) Or More Shots$"), "Shots"),
     (re.compile(r"^Player To Commit (\d+) Or More Fouls$"), "Fouls"),
     (re.compile(r"^Player To Be Fouled (\d+) Or More Times$"), "Fouled"),
+    # Added 23 Oct 2026 so they can be checked against Betfair (sharp.py).
+    (re.compile(r"^Player To Have (\d+) Or More Shots On Target$"), "Shots on target"),
+    (re.compile(r"^Player Shots on Target (\d+) or More$"), "Shots on target"),
 ]
-PP_YES = {"Player Shown a Card": "Card", "Player Assists": "Assists"}
+PP_YES = {"Player Shown a Card": "Card", "Shown a Card": "Card", "Player Assists": "Assists"}
 
 
 # ------------------------------------------------------------------ storage

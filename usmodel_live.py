@@ -247,6 +247,18 @@ def run_sport(sport: str, days: float, now: float) -> dict:
                 ev.update(tv)
         except Exception as exc:  # noqa: BLE001
             print(f"  usmodel: nba team model not scored ({type(exc).__name__}: {exc})")
+    # NFL game script (nflgame.py): expected margin, plays, pass-rate shift
+    # when ahead or behind, rest. Display only: the 22 Oct 2026 backtest
+    # (NFL_GS_BACKTEST.md) found no significant gain in any market. Never fatal.
+    if sport == "nfl":
+        try:
+            import nflgame
+            for (mid, team), st in nflgame.upcoming(T, P, games).items():
+                ev = events.setdefault(str(mid), {"players": {}, "confirmed": False})
+                ev.setdefault("state", {})[names.get(team, str(team))] = {
+                    k: (None if v != v else round(float(v), 3)) for k, v in st.items()}
+        except Exception as exc:  # noqa: BLE001
+            print(f"  usmodel: nfl game script not built ({type(exc).__name__}: {exc})")
     return {"events": events, "blend": blend, "trained": meta.get("trained")}
 
 
