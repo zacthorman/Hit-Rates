@@ -1,0 +1,27 @@
+{
+ "generated": "2026-10-22 21:12 UTC",
+ "source": "scorer_audit.py test",
+ "note": "Platt map (logit p' = a + b logit p) on the Players tab's own chance where fmodel has none: pricePlayer for 'Shots|k' and 'Shots on target|k', scoreCase for 'score|1'. Only lines where a map chosen on earlier months beat the page on every later month.",
+ "maps": {
+  "Shots|1": [
+   0.1306,
+   1.5067
+  ],
+  "Shots|2": [
+   -0.1049,
+   1.7037
+  ],
+  "Shots|3": [
+   -0.2779,
+   1.7126
+  ],
+  "Shots on target|1": [
+   -0.3176,
+   1.2276
+  ],
+  "Shots on target|2": [
+   -0.5068,
+   1.6587
+  ]
+ }
+}

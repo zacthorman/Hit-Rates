@@ -1,0 +1,12 @@
+{
+ "generated": "2026-10-22 21:12 UTC",
+ "source": "scorer_audit.py test",
+ "note": "Weight on fmodel in tonight.html's player chance (the rest on the shrunk record). Only legs where a weight chosen on earlier months beat the half and half on every later month.",
+ "weights": {
+  "Goals|1": 1.0,
+  "Shots|2": 0.9,
+  "Shots|3": 1.0,
+  "Shots on target|1": 1.0,
+  "Shots on target|2": 1.0
+ }
+}
