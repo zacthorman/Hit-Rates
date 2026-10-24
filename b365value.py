@@ -44,6 +44,14 @@ TYPES = {"Player Shots": "Shots", "Player Shots On Target": "Shots on target", "
          "Player Fouls Won": "Fouled", "Player Tackles": "Tackles", "Player Assists": "Assists"}
 MAX_PRICE = 8.0
 CHECK = 0.15
+# Whether the report calls anything value: the BOTH tag ("two independent
+# reasons, the strongest kind") and value-first wording. False prints the
+# same lines and figures as plain numbers. Off since 24 Oct 2026
+# (RELEASE-CHECK.md): no Bet365 bet picked this way has settled, and the same
+# player model's value bets at Paddy Power have lost (-19% over 97 to 22 Oct
+# by papertrade; the boostcheck box's record -32% over 108). Same rule as
+# weekend.VALUE_SHOW: on only with a settled record above zero.
+VALUE_SHOW = False
 
 
 def _shrink() -> dict:
@@ -117,17 +125,23 @@ def main() -> int:
     if not rs:
         print("No Bet365 lines with an edge (or no Bet365 games held). Run bet365_prices.py first.")
         return 0
+    if not VALUE_SHOW:
+        print("Value claims are off (b365value.VALUE_SHOW, RELEASE-CHECK.md): these are the model's figures "
+              "against Bet365's prices, not bets. No Bet365 bet picked this way has a settled record yet.\n")
     print(f"{'Edge':>6} {'B365':>5} {'Mkt':>9} {'vsMkt':>6} {'PP':>5} {'Model':>6}  Bet")
     for r in rs:
-        flag = "  BOTH" if r["both"] else ("  CHECK" if r["edge"] > CHECK else "")
+        flag = ("  BOTH" if r["both"] and VALUE_SHOW else "") or ("  CHECK" if r["edge"] > CHECK else "")
         pp = f"{r['pp']:.2f}" if r["pp"] else "  -  "
         mk = f"{r['mkt']:.2f}({r['mkt_n']})" if r["mkt"] else "    -    "
         vs = f"{r['vs_mkt']:+.0%}" if r["vs_mkt"] is not None else "  -  "
         ko = time.strftime("%a %H:%M", time.localtime(r["kickoff"]))
         print(f"{r['edge']:+6.0%} {r['price']:5.2f} {mk:>9} {vs:>6} {pp:>5} {r['model']:6.0%}  {r['player']} {r['n']}+ "
               f"{r['stat'].lower()}  ({r['fixture']}, {ko}, {r['xi']} XI){flag}")
-    print("\nBOTH: the model is ahead (by 15% or less) and Bet365 is at least the market's median price. "
-          "Edge over 15% is marked CHECK: most likely the model is missing something.")
+    if VALUE_SHOW:
+        print("\nBOTH: the model is ahead (by 15% or less) and Bet365 is at least the market's median price. "
+              "Edge over 15% is marked CHECK: most likely the model is missing something.")
+    else:
+        print("\nEdge over 15% is marked CHECK: most likely the model is missing something.")
     return 0
 
 

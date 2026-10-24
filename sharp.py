@@ -39,6 +39,20 @@ ROOT = Path(__file__).resolve().parent
 MAX_SPREAD = 1.25      # lay / back on a one-runner market
 MIN_EDGE = 0.02        # shown on the page from here
 MAX_PRICE = 10.0
+# Whether the tonight boxes claim value: list the lines, their edges and a
+# budget split by edge. False claims nothing; stamp() still writes the
+# Betfair check into pplog and teamlog, live() and record() still run, and
+# the record is still printed. Off since 24 Oct 2026 (RELEASE-CHECK.md):
+# nothing that beat Betfair has settled yet (logging started 23 Oct), so
+# there is no record for the claim to stand on. Same rule as
+# weekend.VALUE_SHOW and boostcheck.VALUE_SHOW: on only when a settled record
+# shows these bets making money with an interval above zero.
+VALUE_SHOW = False
+
+
+def value_claimed() -> bool:
+    """Whether the boxes list and stake bets (see VALUE_SHOW)."""
+    return VALUE_SHOW
 
 PLAYER_MARKETS = {  # Betfair type -> (pplog stat, line)
     "TO_SCORE": ("Goals", 0.5),
@@ -294,6 +308,12 @@ def box(now: float, until: float, team: bool) -> str:
     so_far = (f"{g['n']} settled, {g['w']} won (Betfair said {g['exp']:.0f}), {g['profit']:+.1f} pts at level stakes"
               if g else "nothing settled yet: the record starts now")
     what = "corners and cards lines" if team else "player lines (to score, shots on target, cards)"
+    if not value_claimed():
+        would = (f" {len(bets)} {what} beat Betfair's price tonight and are logged for the record."
+                 if bets else "")
+        return (f"<div class='vbox'><p class='none'>Value claims are switched off until these bets have a "
+                f"settled record that shows them making money.{would}</p>"
+                f"<p class='sub'>Record so far: {so_far}.</p></div>")
     if not bets:
         return (f"<div class='vbox'><p class='none'>No Paddy Power {what} longer than Betfair's price right now.</p>"
                 f"<p class='sub'>Record so far: {so_far}.</p></div>")

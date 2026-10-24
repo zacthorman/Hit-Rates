@@ -220,6 +220,22 @@ def shortlist(bets: list[dict]) -> list[dict]:
     return out
 
 
+# Whether the tonight box lists bets to place: the model-agrees short list
+# and its edges, with "small, equal stakes". False lists none; every rule is
+# still scored on every game, logged, and its record shown, and `ruletrack.py
+# report` and `tonight` are unchanged. Off since 24 Oct 2026 (RELEASE-CHECK.md):
+# no rule has a live result yet, and the history the rules were chosen on is
+# in sample (NBA unders +3.3%, 90% range -9% to +16%; with the model agreeing
+# +8.4%, -6% to +23%). On only when a rule's live record has a range above
+# zero. Same rule as weekend.VALUE_SHOW.
+VALUE_SHOW = False
+
+
+def value_claimed() -> bool:
+    """Whether the box lists bets to place (see VALUE_SHOW)."""
+    return VALUE_SHOW
+
+
 def box(now: float, until: float) -> str:
     """The tonight-page box: tonight's bets per rule, with each rule's live record."""
     import html
@@ -229,9 +245,14 @@ def box(now: float, until: float) -> str:
         allq = qualifying(pplog.all_rows())
     except Exception as exc:  # never cost the page
         return f"<p class='sub'>Rules on trial unavailable ({esc(str(exc))})</p>"
-    out = ["<div class='vbox'><p class='call meh'><b>On trial, not proven.</b> Fixed rules scored on every "
-           "game since 23 Oct. Small, equal stakes until the live record says otherwise "
-           "(RULES_TRACK.md).</p>"]
+    if value_claimed():
+        out = ["<div class='vbox'><p class='call meh'><b>On trial, not proven.</b> Fixed rules scored on every "
+               "game since 23 Oct. Small, equal stakes until the live record says otherwise "
+               "(RULES_TRACK.md).</p>"]
+    else:
+        out = ["<div class='vbox'><p class='call meh'><b>On trial, not proven.</b> Fixed rules scored on every "
+               "game since 23 Oct (RULES_TRACK.md). No bets are listed until a rule's live record shows it "
+               "making money.</p>"]
     for rule, label in RULES.items():
         if rule.startswith("control"):
             continue
@@ -242,6 +263,9 @@ def box(now: float, until: float) -> str:
         out.append(f"<p><b>{esc(label)}</b> <span class='sub'>({rec})</span></p>")
         if not bets:
             out.append("<p class='sub'>Nothing qualifies tonight.</p>")
+            continue
+        if not value_claimed():
+            out.append(f"<p class='sub'>{len(bets)} qualify tonight, logged for the test.</p>")
             continue
         if rule == "nba_under_main":
             out.append(f"<p class='sub'>{len(bets)} qualify tonight. Logged for the test; the model-agrees "
