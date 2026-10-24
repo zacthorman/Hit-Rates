@@ -4,6 +4,67 @@ Written 23 October 2026 on branch `release-check`; the update below is from 24 O
 published, `publish.sh` and `update.py` were never run, and nothing reached the network during the builds.
 `release_check.py` reproduces every number here (see "Reproducing").
 
+## Update, 24 October (later): main at 4b6877f merged again
+
+`main` moved on with "Gameweek update 24 Oct 2026" (4b6877f), adding `pinnacle_prices.py`, `b365value.py` and
+`ruletrack.py`. It was merged into `main-sync` again.
+
+**Conflicts**, each resolved keeping both sides' behaviour:
+- `publish.sh`: the Oddschecker import, then main's Pinnacle fetch.
+- `markets_sidecar.py`: main's fuller Bet365 data (team lines, home and away names), then the Oddschecker data.
+- `pplog.py`: main's US-model chance for basketball and NFL lines, then the Super Sub uplift for football
+  to-score lines; both are recorded in each snapshot.
+- `make_index.py`: main's bookmaker price on each leg, with the value figure still gated by `valueClaimed`.
+
+**Record files.** `best_bets.json` merged without a conflict and equals a proper union of both sides: 4,350
+records, none duplicated, and all 3,453 settled results kept. The other record files changed on main only.
+
+**New value claims, measured.** None has a settled record with an interval above zero:
+
+| Claim | Where | Settled evidence | Now |
+|---|---|---|---|
+| Paddy Power v Betfair (`sharp.py`) | tonight.html, both panes; budget split by edge | none: nothing that beat Betfair has settled (logging started 23 Oct; papertrade.html and tonight.html both say so) | off: `sharp.VALUE_SHOW = False` |
+| Rules on trial (`ruletrack.py`) | tonight.html; a model-agrees "short list to bet from" with small equal stakes | no live results; the history the rules were chosen on is in sample: NBA unders +3.3% over 686 bets (90% range -9% to +16%), with the model agreeing +8.4% over 347 (-6% to +23%), NFL receiving 4 bets | off: `ruletrack.VALUE_SHOW = False` |
+| Bet365 v the player model (`b365value.py`) | command line only, "BOTH" tagged as the strongest kind | none for Bet365; the same model's Paddy Power value bets lost (-19% over 97 by papertrade; -32% over 108 in the boostcheck box's record) | off: `b365value.VALUE_SHOW = False` |
+| Pinnacle prices (`pinnacle_prices.py`) | writes `reports/pinnacle.json`; nothing on the pages reads it yet | n/a | nothing to switch off |
+
+What "off" means for each:
+- **`sharp.py`:** no lines, edges or stakes. `stamp()`, `live()` and `record()` still run, the Betfair check is
+  still written into pplog and teamlog, and the record and the number of lines that beat Betfair are printed.
+- **`ruletrack.py`:** every rule's record and how many bets qualify tonight are still shown, and
+  `ruletrack.py report` and `tonight` are unchanged, so the trial carries on.
+- **`b365value.py`:** prints the same figures with a notice, without the BOTH tag.
+
+`tests/test_value_claims_off.py` (10 tests) holds all three.
+
+**For Zac to decide (not changed):**
+- **Book prices in the picks.** Main's `weekend.py` now builds the banker, double and accumulator at a
+  Paddy Power or Bet365 price when it is between our fair price and 30% over it (`BOOK_MAX_OVER = 1.3`). The
+  player-line verdict marks a price 5% or more over our fair price as avoid, because on Paddy Power's record
+  those lost 34% (RULE-REVIEW.md). So a pick leg priced 5% to 30% over fair can appear on the index at the
+  book's price while its report says avoid. Setting `BOOK_MAX_OVER` to 1.05 would make the two agree. Offline
+  there are no book prices, so the picks here are unchanged.
+- **Pinnacle's terms.** `pinnacle_prices.py` says in its own docstring that it reads an undocumented feed
+  against Pinnacle's terms, and main's `publish.sh` now runs it on every publish. It was not run here.
+  `touch .pinnacle_off` switches it off.
+
+**Re-run** (`release_check.py`, with main's new `ruletrack.py report` step added to its main and release
+lists):
+
+| | main (4b6877f) | main-sync |
+|---|---|---|
+| Build steps failed | none | none |
+| Pages; JS errors; broken links; empty tabs; failed requests | 29; 0; 0; none; none | 29; 0; 0; none; none |
+| site_guard gate and checks | passed | passed |
+| Verdicts over 8,934 profiles (take, acceptable, long, avoid) | 2, 1, 0, 5 | 0, 1, 0, 7 |
+| "Value on Betfair" list | 5 football, 1 NFL | none |
+| tonight.html | "-n% value" in 4 places | "no value" in 4 places; 3 "claims are switched off" notes |
+| Build time | 320 s | 251 s |
+| Test files on the built tree (cache linked) | | 34 of 34 pass |
+
+**Repo tests:** pytest gives 473 passed and 6 skipped (built reports, an opt-in variable, or scikit-learn not
+installed), `tests/run_all.py` passes all, and `git status` is clean.
+
 ## Update, 24 October: main-sync
 
 Branch `main-sync` does what section 8 asked. One correction to what was assumed: `release-check` did **not**
