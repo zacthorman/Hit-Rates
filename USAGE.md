@@ -907,6 +907,7 @@ Everything scheduled runs on the Mac. Nothing here is a cloud job.
 | `linelog.py` | Every line the model prices, settled. |
 | `pplog.py` | Every Paddy Power player line, our chance and the result. |
 | `teamlog.py` | The same for Paddy Power team lines (21 October). |
+| `nba_check.py` | NBA player lines: calibration by stat and line from the committed record, and on the Mac the early-season shrink test on `cache/` and a scoreboard of Paddy Power's settled basketball lines (NBA-CHECK.md, 24 October). |
 | `review.py` | Why each of a report's bets landed or missed. |
 | `backtest.py` | Every bet the model would have made, settled from the cache. |
 
