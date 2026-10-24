@@ -26,14 +26,14 @@ from __future__ import annotations
 import argparse
 import gzip
 import json
-import math
 import sys
-import time
 from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
+
+import probability  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).parent))
 import teamstyle as TS  # noqa: E402
@@ -66,8 +66,7 @@ def lin_X(Z, s):
                             np.log(np.clip(Z.x_ball.fillna(1), .5, 2))])
 
 
-def alpha_of(y, mu):
-    return max(0.0, float(np.mean((y - mu) ** 2 - mu) / max(1e-9, np.mean(mu ** 2))))
+alpha_of = probability.nb_alpha
 
 
 def tail_ll(y, mu, own, a):
