@@ -36,13 +36,17 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import probability
 import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 STORE = HERE / "best_bets.json"
-OUT = HERE / "learned.json"
+# Where save() writes. The live pipeline leaves HITRATES_LEARNED_JSON unset
+# and writes the committed learned.json; the test suite (tests/conftest.py)
+# points it at a temporary file so a test run never rewrites a tracked file.
+OUT = Path(os.environ.get("HITRATES_LEARNED_JSON") or HERE / "learned.json")
 
 HALF_LIFE_DAYS = 10.0
 PRIOR_LEGS = 100.0

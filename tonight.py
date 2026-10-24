@@ -766,10 +766,16 @@ runs 5&ndash;8% a market and compounds with every leg you add.
 </div>
 {body}
 <div class="warn">
-A multiple is worse than its legs. The margin compounds, the legs in one round
-are correlated, and the shop sells accumulators because they are the most
-profitable thing on the counter. The same-game prices above already carry that
-discount; the cross-game ones do not, and are therefore optimistic.
+A multiple is worse than its legs at a bookmaker's price. The margin compounds
+with every leg, and the shop sells accumulators because they are the most
+profitable thing on the counter. Legs in the same game can move together, so
+the same-game builders above are priced from how often their legs landed
+together, not by multiplying. Legs in different games do not move together:
+in the site's own published legs the correlation between them is effectively
+nil, and replayed over past matches, multiplied prices landed about as often
+as they said (1.01 times). So multiplying is right for the cross-game prices,
+and they are not optimistic on that account. Any error in them comes from the
+legs themselves.
 </div>
 </body></html>
 """
