@@ -102,8 +102,10 @@ def build(data: dict) -> dict:
             by.setdefault(l["key"], []).append(
                 {"m": l["market"], "s": l.get("selection") or "", "o": l.get("side"),
                  "l": l.get("line"), "p": l["price"]})
-        if by:
-            events.setdefault(fid, {})["b365"] = {"at": e.get("fetchedAt"), "players": by}
+        team = e.get("team") or []
+        if by or team:
+            events.setdefault(fid, {})["b365"] = {"at": e.get("fetchedAt"), "players": by, "team": team,
+                                                  "home": e.get("ppHome") or "", "away": e.get("ppAway") or ""}
     return {"fetched": data.get("fetched"), "events": events}
 
 

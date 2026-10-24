@@ -31,6 +31,7 @@ import argparse
 import html
 
 import boostcheck
+import ruletrack
 import sharp
 import time
 from pathlib import Path
@@ -763,6 +764,7 @@ def build(hours: float | None) -> str:
                  + "".join(team_rows)
                  + f"<details class='game'><summary><b>Team multi across the games</b></summary>{multi(team_legs_all)}</details>")
     player_pane = (f"<h2 class='first'>Paddy Power v Betfair</h2>{sharp.box(now, until, False)}"
+                   f"<h2>Rules on trial</h2>{ruletrack.box(now, until)}"
                    f"<h2>Bookie value bets (our model)</h2>{boostcheck.value_box(now, until)}"
                    "<p class='sub'>Tap a game for its player bets. Once a line-up is confirmed only its "
                    "starters are offered.</p>"

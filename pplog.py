@@ -278,6 +278,37 @@ def _fmodel_p(fm: dict, fid: str, name: str, stat: str, line: float):
     return ((pl.get("lines") or {}).get(stat) or {}).get(str(int(round(k))))
 
 
+def _usmodel() -> dict:
+    """reports/usmodel.json (usmodel_live.py): the backtested NBA and NFL
+    player models, as the page shows them: the model's chance blended with
+    the site's own with the weights in its "blend" (report.py does the same).
+    Added 23 Oct 2026: before this pplog logged only the old last-10 chance
+    for NBA and NFL, so its record said nothing about these models."""
+    try:
+        return json.loads((ROOT / "reports" / "usmodel.json").read_text())
+    except (OSError, ValueError):
+        return {}
+
+
+def _usmodel_p(um: dict, sport: str, fid: str, name: str, stat: str, line: float, site_over: float):
+    """(blended chance of over, the model's own) at `line`, or None."""
+    ev = (um.get("events") or {}).get(fid) or {}
+    pl = next((v for k, v in (ev.get("players") or {}).items() if _norm(k) == _norm(name)), None)
+    k = line + 0.5
+    if not pl or abs(k - round(k)) > 1e-9:
+        return None
+    m = ((pl.get("lines") or {}).get(stat) or {}).get(str(int(round(k))))
+    if m is None:
+        return None
+    bl = ((um.get("blend") or {}).get(sport) or {}).get(stat)
+    if not bl:
+        return m, m
+    lg = lambda q: math.log(min(1 - 1e-4, max(1e-4, q)) / (1 - min(1 - 1e-4, max(1e-4, q))))
+    sg = lambda z: 1 / (1 + math.exp(-z))
+    sf = sg(bl["site_cal"][0] + bl["site_cal"][1] * lg(site_over))
+    return sg(bl["blend"][0] + bl["blend"][1] * lg(m) + bl["blend"][2] * lg(sf)), m
+
+
 def snapshot(args=None) -> int:
     import markets
     import model
@@ -295,6 +326,7 @@ def snapshot(args=None) -> int:
             existing[_key(r)] = (path, r)
     new_rows, touched = [], set()
     fm = _fmodel()
+    um = _usmodel()
     for fid, ev in (pp.get("events") or {}).items():
         if fid not in fixtures:
             continue
@@ -340,6 +372,10 @@ def snapshot(args=None) -> int:
             m_over = _fmodel_p(fm, fid, name, stat, line) if sport == "football" else None
             if m_over is not None:
                 p_over = m_over
+            us = _usmodel_p(um, sport, fid, name, stat, line, site_over) \
+                if sport in ("basketball", "american-football") else None
+            if us is not None:
+                p_over = us[0]
             p = p_over if over else 1 - p_over
             vals = [a["value"] for a in recent]
             hit = (lambda v: v > line) if over else (lambda v: v <= line)
@@ -366,6 +402,10 @@ def snapshot(args=None) -> int:
                 snap["source"] = "fmodel"
                 snap["site_chance"] = round(site_over if over else 1 - site_over, 4)
                 snap["confirmed_xi"] = fm[fid]["confirmed"]
+            if us is not None:
+                snap["source"] = "usmodel"
+                snap["site_chance"] = round(site_over if over else 1 - site_over, 4)
+                snap["model_chance"] = round(us[1] if over else 1 - us[1], 4)
             # "Over 2.5" and "3+" are one bet: keep the better price.
             if key in touched:
                 prev = next((x for x in new_rows if _key(x) == key), None) \
