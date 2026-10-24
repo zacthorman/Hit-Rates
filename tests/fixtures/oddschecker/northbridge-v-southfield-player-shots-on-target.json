@@ -1,0 +1,13 @@
+[{"marketName": "Player Shots On Target", "marketTypeName": "Player Shots On Target",
+  "subeventName": "Northbridge v Southfield",
+  "bets": [{"betId": 11, "betName": "Tomas Ferreira Over", "line": "0.5"},
+           {"betId": 12, "betName": "Tomas Ferreira Under", "line": "0.5"},
+           {"betId": 13, "betName": "Tomas Ferreira Over", "line": "1.5"},
+           {"betId": 14, "betName": "Kofi Mensah Over", "line": "0.5"}],
+  "odds": [{"betId": 11, "bookmakerCode": "B3", "oddsDecimal": 1.62, "status": "ACTIVE"},
+           {"betId": 11, "bookmakerCode": "SK", "oddsDecimal": 1.67, "status": "ACTIVE"},
+           {"betId": 12, "bookmakerCode": "B3", "oddsDecimal": 2.1, "status": "ACTIVE"},
+           {"betId": 13, "bookmakerCode": "B3", "oddsDecimal": 3.75, "status": "ACTIVE"},
+           {"betId": 13, "bookmakerCode": "PP", "oddsDecimal": 4.0, "status": "SUSPENDED"},
+           {"betId": 14, "bookmakerCode": "WH", "oddsDecimal": 2.5, "status": "ACTIVE"},
+           {"betId": 14, "bookmakerCode": "BF", "oddsDecimal": 3.1, "status": "ACTIVE"}]}]
