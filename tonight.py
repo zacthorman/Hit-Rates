@@ -124,8 +124,10 @@ def leg_row(leg, entry=None) -> str:
         if q.get("back"):
             bits.append(f"back {q['back']:.2f}")
         if leg.get("value") is not None:
+            # As on the index: a value figure is shown only above the bar
+            # weekend.VALUE_SHOW sets, which is off (RULE-REVIEW.md).
             v = leg["value"]
-            bits.append(f"<b>{'+' if v >= 0 else '&minus;'}{abs(v) * 100:.1f}% value</b>")
+            bits.append(f"<b>+{v * 100:.1f}% value</b>" if weekend.value_claimed(v) else "no value")
         elif leg.get("disagree") is not None:
             bits.append(f"model {abs(leg['disagree']) * 100:.0f} pts off the market")
         strength_note += f"<br><span class='sub'>{' &middot; '.join(bits)}</span>"
