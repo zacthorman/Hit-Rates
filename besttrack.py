@@ -360,9 +360,11 @@ def settle(args=None) -> int:
     # Split against one-side parlays on tickets from 24 Oct 2026 on
     # (parlay_watch.py, LEG-WATCH.md). Reads the record only; never lets a
     # fault in it cost the settle.
+    # Written beside the store being settled, so anything that points STORE
+    # elsewhere (the tests do) takes the watch with it.
     try:
         import parlay_watch
-        print(parlay_watch.text(parlay_watch.update(items)))
+        print(parlay_watch.text(parlay_watch.update(items, path=Path(STORE).with_name(parlay_watch.OUT_NAME))))
     except Exception as exc:
         print(f"  parlay watch skipped: {type(exc).__name__}: {exc}")
     return done

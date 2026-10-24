@@ -96,5 +96,30 @@ class Decision(unittest.TestCase):
         self.assertIn("waiting", W.text(s))
 
 
+class SettleHook(unittest.TestCase):
+
+    def test_settle_writes_the_watch_beside_its_store(self):
+        """besttrack.settle with STORE in a temporary folder writes the
+        watch there and leaves the tracked parlay_watch.json alone, with or
+        without tests/conftest.py (test_tracked_files runs without it)."""
+        import contextlib
+        import io
+        import besttrack
+        real = W.HERE / W.OUT_NAME
+        before = real.read_bytes() if real.exists() else None
+        saved = besttrack.STORE, besttrack.LEAD_LOG
+        with tempfile.TemporaryDirectory() as d:
+            try:
+                besttrack.STORE = Path(d) / "best_bets.json"
+                besttrack.LEAD_LOG = Path(d) / "lead_log.json"
+                besttrack.save([])
+                with contextlib.redirect_stdout(io.StringIO()):
+                    besttrack.settle()          # nothing due, so nothing is fetched
+                self.assertTrue((Path(d) / W.OUT_NAME).exists())
+            finally:
+                besttrack.STORE, besttrack.LEAD_LOG = saved
+        self.assertEqual(real.read_bytes() if real.exists() else None, before)
+
+
 if __name__ == "__main__":
     unittest.main()

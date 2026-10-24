@@ -35,13 +35,18 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import random
 from datetime import datetime, timezone
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 STORE = HERE / "best_bets.json"
-OUT = HERE / "parlay_watch.json"
+OUT_NAME = "parlay_watch.json"
+# Where update() writes by default. besttrack.settle passes the file beside
+# the store it settles, so a test that redirects besttrack.STORE redirects
+# this too; HITRATES_PARLAY_WATCH_JSON moves the default for anything else.
+OUT = Path(os.environ.get("HITRATES_PARLAY_WATCH_JSON") or HERE / OUT_NAME)
 START = int(datetime(2026, 10, 24, tzinfo=timezone.utc).timestamp())
 DECIDE_AT = 300
 SEED = 20261024
@@ -161,8 +166,10 @@ def summary(items: list[dict], start: int = START) -> dict:
             "all": block(rows), "left out": left, "decision": decide(split)}
 
 
-def update(items: list[dict] | None = None, path: Path = OUT) -> dict:
-    """Rewrite the watch from the settled record. Called by besttrack.settle."""
+def update(items: list[dict] | None = None, path: Path | None = None) -> dict:
+    """Rewrite the watch from the settled record. Called by besttrack.settle,
+    which passes the file beside its own store."""
+    path = Path(path) if path is not None else OUT
     items = items if items is not None else json.loads(STORE.read_text())
     s = summary(items)
     s["updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")

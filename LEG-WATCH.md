@@ -7,7 +7,7 @@ Two jobs, written 23 October 2026 on the `leg-watch` branch.
 
 ## 1. The split-parlay watch
 
-`parlay_watch.py`; `besttrack.py settle` calls it after every settle and writes `parlay_watch.json`. `python parlay_watch.py` prints the same summary.
+`parlay_watch.py`; `besttrack.py settle` calls it after every settle and writes `parlay_watch.json` beside the best_bets.json it settles (so a test that redirects the store redirects the watch too). `python parlay_watch.py` prints the same summary.
 
 These rules were fixed before any of the tickets settled:
 
@@ -69,7 +69,7 @@ Two cautions:
 - `parlay_watch.py`: the watch (part 1), reading best_bets.json and writing parlay_watch.json.
 - `besttrack.py`: `settle` calls the watch after saving. It is wrapped, so a fault in the watch never costs the settle.
 - `leg_calib.py`: the replay (part 2). `--dump ACCA_DIR CACHE` builds the cache legs with acca_corr.py from the acca-correlation branch.
-- `tests/test_parlay_watch.py` (8 tests) and `tests/test_leg_calib.py` (9 tests), synthetic data only.
+- `tests/test_parlay_watch.py` (9 tests) and `tests/test_leg_calib.py` (9 tests), synthetic data only.
 
 Neither writes learned.json. The test suite keeps learned.json untouched through `tests/conftest.py` and `tests/test_tracked_files.py`.
 
