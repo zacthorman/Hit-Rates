@@ -71,6 +71,12 @@ fi
 # drop/oddschecker/ (oddschecker_import.py, IMPORTS.md). No requests; does
 # nothing when the folder is empty.
 "$PY" oddschecker_import.py || echo "  oddschecker imports not read (continuing)"
+# Pinnacle's prices as margin-free chances (pinnacle_prices.py): result,
+# goals, team goals, corners and bookings for every game in the site's
+# leagues, two requests a league, each league at most every 90 minutes, capped
+# at 150 a day, locked out for a day on any refusal. The sharp reference for
+# the soft books' lines. `touch .pinnacle_off` switches it off.
+"$PY" pinnacle_prices.py || echo "  pinnacle prices not fetched (continuing)"
 # The backtested player model (fmodel_live.py): a chance for every starter in
 # the predicted or confirmed XI of each football fixture in the next week, at
 # 15 lines. Read by the pages and by pplog below. Reads the cache only, no
@@ -98,6 +104,8 @@ fi
 # the soft-v-sharp check the value bots run, written into the same rows.
 "$PY" sharp.py stamp || echo "  betfair check not stamped (continuing)"
 "$PY" pplog.py page >/dev/null || echo "  pp-results.html not rebuilt (continuing)"
+# Fixed rules on trial (ruletrack.py): the record per rule, history v live.
+"$PY" ruletrack.py report >/dev/null || echo "  RULES_TRACK.md not rebuilt (continuing)"
 "$PY" papertrade.py --page >/dev/null || echo "  papertrade.html not rebuilt (continuing)"
 # Score the model against Betfair (exchange_eval.py): settle what finished,
 # refit the blend weights from the results, so the picks below use them.

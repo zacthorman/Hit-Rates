@@ -102,8 +102,10 @@ def build(data: dict) -> dict:
             by.setdefault(l["key"], []).append(
                 {"m": l["market"], "s": l.get("selection") or "", "o": l.get("side"),
                  "l": l.get("line"), "p": l["price"]})
-        if by:
-            events.setdefault(fid, {})["b365"] = {"at": e.get("fetchedAt"), "players": by}
+        team = e.get("team") or []
+        if by or team:
+            events.setdefault(fid, {})["b365"] = {"at": e.get("fetchedAt"), "players": by, "team": team,
+                                                  "home": e.get("ppHome") or "", "away": e.get("ppAway") or ""}
     # Best bookmaker price per line, from Oddschecker pages Zac saved by hand
     # (oddschecker_import.py). Same shape, plus the bookmaker ("b", None when
     # copied text could not say) and how many bookmakers priced it ("n").

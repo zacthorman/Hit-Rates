@@ -860,6 +860,8 @@ def _leg_public(leg):
     for k in ("avg", "last"):
         if leg.get(k) is not None:
             out[k] = leg[k]
+    if leg.get("book"):
+        out["book"] = leg["book"]
     if leg.get("fairRecord") is not None:
         out["fairRecord"] = leg.get("fairRecord")
     if leg.get("pStrength"):
@@ -1116,7 +1118,14 @@ def best_acca(legs, wanted=ACCA_LEGS, target=ACCA_TARGET):
     whole round there is no reason to accept that correlation when there are
     ninety other fixtures to choose from.
     """
-    pool = [l for l in legs if 1.05 < l["fair"] < 100 and l["total"] >= MIN_SAMPLE]
+    ok = [l for l in legs if 1.05 < l["fair"] < 100 and l["total"] >= MIN_SAMPLE]
+    priced = [l for l in ok if _book_ok(l)]
+    out = _acca_from(priced, wanted, target, True) if len(priced) >= wanted else None
+    return out or _acca_from(ok, wanted, target, False)
+
+
+def _acca_from(pool, wanted, target, priced):
+    price = _price if priced else (lambda l: l["fair"])
     if len(pool) < 2:
         return None
 
@@ -1137,20 +1146,23 @@ def best_acca(legs, wanted=ACCA_LEGS, target=ACCA_TARGET):
     # price alone reaches any target in two legs by taking the two worst bets
     # on the board; sorting on evidence alone returns three near-certainties
     # multiplying to nothing anyone would place.
-    take(sorted([l for l in pool if l["fair"] >= per_leg],
+    take(sorted([l for l in pool if price(l) >= per_leg],
                 key=lambda l: (-sort_value(l), -l["total"])))
-    take(sorted(pool, key=lambda l: -l["fair"]))
+    take(sorted(pool, key=lambda l: -price(l)))
 
     if len(chosen) < 2:
         return None
 
-    combined = 1.0
+    combined = fair = 1.0
     for leg in chosen:
-        combined *= leg["fair"]
+        combined *= price(leg)
+        fair *= leg["fair"]
 
     return {
         "legs": [_single_public(l) for l in chosen],
         "combined": combined,
+        "combinedFair": fair,
+        "priced": priced,
         "target": target,
         "short": combined < target,
     }
@@ -1177,6 +1189,28 @@ HEADLINE_SAMPLE = 15
 
 def _shrunk(leg, a=2.0):
     return probability.shrink(leg["hits"], leg["total"], a)
+
+
+# ------------------------------------------------------------ book prices
+#
+# 23 Oct 2026: the banker, double and acca were built and quoted at our own
+# fair price, so a "1.40 banker" could be a bet no book offered or one priced
+# at 1.20. They now work off what Paddy Power or Bet365 actually pays
+# (attach_books), on the same rule as the best bet: offered at our fair price
+# or longer, and no more than 30% over it (a bigger gap is far more often our
+# number being wrong than the book's). Only when nothing priced qualifies do
+# they fall back to fair prices, marked priced=False so the page says so.
+BOOK_MAX_OVER = 1.3
+
+
+def _book_ok(leg) -> bool:
+    b = leg.get("book")
+    return bool(b) and leg["fair"] <= b["price"] <= leg["fair"] * BOOK_MAX_OVER
+
+
+def _price(leg) -> float:
+    """What the bet pays: the book's price where it qualifies, else our fair."""
+    return leg["book"]["price"] if _book_ok(leg) else leg["fair"]
 
 
 # A leg the exchange prices clearly shorter than its fair chance is a bet
@@ -1209,7 +1243,16 @@ def _dedupe(legs):
 
 
 def best_double(legs, target=DOUBLE_TARGET):
-    pool = _dedupe([l for l in legs if _headline_ok(l, HEADLINE_SAMPLE) and 1.25 <= l["fair"] <= 1.8])
+    ok = [l for l in legs if _headline_ok(l, HEADLINE_SAMPLE)]
+    priced = [l for l in ok if _book_ok(l) and 1.25 <= l["book"]["price"] <= 1.8]
+    # Book prices when two qualifying legs can make the double, else fair.
+    out = _double_from(priced, target, True) if len(priced) >= 2 else None
+    return out or _double_from([l for l in ok if 1.25 <= l["fair"] <= 1.8], target, False)
+
+
+def _double_from(pool, target, priced):
+    price = _price if priced else (lambda l: l["fair"])
+    pool = _dedupe(pool)
     pool.sort(key=lambda l: -_prob(l))
     # The best few in each 0.05 price band rather than the 80 most likely
     # overall. Once a leg's price is one over its chance, the 80 most likely
@@ -1217,7 +1260,7 @@ def best_double(legs, target=DOUBLE_TARGET):
     # the double went missing the first time this ran.
     banded: dict[int, list] = {}
     for l in pool:
-        band = banded.setdefault(int(l["fair"] / 0.05), [])
+        band = banded.setdefault(int(price(l) / 0.05), [])
         if len(band) < 15:
             band.append(l)
     pool = [l for band in banded.values() for l in band]
@@ -1230,7 +1273,7 @@ def best_double(legs, target=DOUBLE_TARGET):
             continue
         if a["fixture"]["id"] == b["fixture"]["id"] and a["teamIndex"] == b["teamIndex"]:
             continue
-        combined = a["fair"] * b["fair"]
+        combined = price(a) * price(b)
         if not (target * 0.95 <= combined <= DOUBLE_MAX):
             continue
         joint = _prob(a) * _prob(b)
@@ -1240,14 +1283,19 @@ def best_double(legs, target=DOUBLE_TARGET):
         return None
     joint, combined, a, b = best
     return {"legs": [_single_public(a), _single_public(b)],
-            "combined": combined, "joint": joint,
+            "combined": combined, "joint": joint, "priced": priced,
+            "combinedFair": a["fair"] * b["fair"],
             "sameGame": a["fixture"]["id"] == b["fixture"]["id"]}
 
 
 def best_banker(legs):
     """The single most likely to land that still pays something."""
     lo, hi = BANKER_RANGE
-    pool = _dedupe([l for l in legs if _headline_ok(l, HEADLINE_SAMPLE) and lo <= l["fair"] <= hi])
+    ok = [l for l in legs if _headline_ok(l, HEADLINE_SAMPLE)]
+    pool = _dedupe([l for l in ok if _book_ok(l) and lo <= l["book"]["price"] <= hi])
+    priced = bool(pool)
+    if not pool:
+        pool = _dedupe([l for l in ok if lo <= l["fair"] <= hi])
     if not pool:
         return None
     z = selection_z(group_count(legs))
@@ -1256,6 +1304,8 @@ def best_banker(legs):
     w = max(pool, key=rank_key)
     out = _single_public(w)
     out["adjusted"] = w["adjusted"]
+    out["priced"] = priced
+    out["price"] = _price(w) if priced else w["fair"]
     return out
 
 

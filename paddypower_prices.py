@@ -396,8 +396,20 @@ def candidates(st: dict) -> list[tuple]:
         if now() - last < fresh:
             continue
         out.append((ko, fid, bf_id, ev.get("betfair", "")))
-    out.sort()
+    # Games Bet365 is priced on go first (23 Oct 2026): the picks are priced
+    # off both books, and soonest-first spent Friday's cap on Brazil and the
+    # NBA while nine of the ten Premier League and Clasico games had no Paddy
+    # Power price. Soonest first within each group.
+    b365 = _bet365_ids()
+    out.sort(key=lambda c: (c[1] not in b365, c[0]))
     return out
+
+
+def _bet365_ids() -> set:
+    try:
+        return set((json.loads((ROOT / "reports" / "bet365.json").read_text()).get("events") or {}))
+    except (OSError, ValueError):
+        return set()
 
 
 def load_out() -> dict:

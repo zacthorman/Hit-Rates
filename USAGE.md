@@ -1181,3 +1181,47 @@ Paddy Power's player shots-on-target lines so they can be checked.
 * papertrade.html: the settled record of those bets by number of signals agreeing, plus the
   site's picks split by price and by claimed edge (where it goes wrong).
 * `python sharp.py report` prints what is live and the record.
+
+## Rules on trial, and the NBA / NFL model in pplog (23 Oct 2026)
+- **pplog now logs the NBA and NFL player models.** Until 23 Oct it logged the old last-10 chance
+  (`model.price_player`) for both, so its NBA and NFL record, and the -33% "model value" in
+  papertrade, was the old formula, not `usmodel/`. From now each NBA / NFL row carries
+  `source: usmodel`, `chance` (the page's blend), `model_chance` (the model alone) and
+  `site_chance` (the old one). Rows logged before then are not rewritten.
+- **`research/uscheck.py nba|nfl`** rebuilds what the live model would have said before tip-off for
+  every logged game and writes `research/uscheck_<sport>.csv`. On 13 NBA games: log loss 0.533
+  against 0.594 for the old chance, well calibrated, but Paddy Power's own price is better still
+  (0.522), and blending the model with the price did not help on later games. See
+  `research/RULES_RESEARCH.md`.
+- **`ruletrack.py`** scores fixed rules, frozen 23 Oct 13:00 BST, on every game after. `report`
+  writes `RULES_TRACK.md` (run by publish.sh after the pplog page); `tonight` prints the bets.
+  History is the games the rules were chosen on and proves nothing; judge on Live after about 40
+  games. The tonight page shows a Rules on trial box above the bookie value bets: one bet per
+  player, ordered by model edge (the edge only orders the list).
+- Backups: `pplog.py.bak-usmodel`, `publish.sh.bak-ruletrack`, `tonight.py.bak-ruletrack`.
+
+## Bet365 further ahead, and Bet365 value (23 Oct 2026)
+- `bet365_prices.py --window 60` fetches games up to 60 hours out (default 30), e.g. on a Friday
+  for Sunday. Prices that early move a lot; the normal runs refresh them nearer kick-off.
+- `python b365value.py` lists Bet365 football player lines where the player model (shrunk by its
+  settled Paddy Power record per market) beats the price, with Paddy Power's price for the same
+  line beside it. Edges over 15% are marked CHECK. Predicted XI until line-ups: re-run after.
+- Each Bet365 line now also keeps the other bookmakers' prices from the same Oddschecker reply
+  (`mkt_n`, `mkt_median`, `mkt_best`). b365value.py shows Bet365 against that median and tags
+  BOTH where the model is ahead (15% or less) and Bet365 is at least the market median.
+  `bet365_prices.py --force` refetches held games before their usual refresh.
+- Backups: `bet365_prices.py.bak-window`, `bet365_prices.py.bak-market`.
+
+## Picks priced at the books, Bet365 team lines (23 Oct 2026)
+
+* **Every pick is priced at a book.** The best bet already was; the banker, evens double and acca now are too (`weekend._book_ok`, `_price`). A leg counts when Paddy Power or Bet365 offers it at our fair price or longer, and no more than 30% over it. Bands and targets (banker 1.30 to 1.75, double near evens, acca 3.0) are read off the book price. Only when nothing priced qualifies does a pick fall back to fair prices, and the card says "fair, not priced". Each leg on the front page shows its book (PP or B365) and price, with fair beside it. Publish prints the banker, double and acca under the pick of the week.
+* **Paddy Power fetches Bet365's games first** (`paddypower_prices.candidates`). Soonest-first spent the 23 Oct afternoon run on Brazil, the NBA and Friday night while nine of ten Premier League and Clasico games had no Paddy Power price. Caps unchanged.
+* **Bet365 team lines** (`bet365_prices.TEAM_MARKETS`): home, away and match corners, cards and goals from the same Oddschecker pages, in Paddy Power's team-line shape (`team`, `ppHome`), so `attach_books` and `markets.json` read them alike. Bet365 prices only its main line on corners and cards (e.g. home corners 6.5, total 9.5, home cards 1.5, total 3.5) and a full ladder on team goals. Team shots and shots on target are requested too, but on the 23 Oct sample Oddschecker had other books and no Bet365 price for them; they are kept whenever Bet365 appears. 22 markets a game in batches of 10, so three requests per game; the daily cap is 150.
+* `python bet365_prices.py --markets` lists every market name on the saved pages (no requests); `--markets "Total Corners" ...` fetches one upcoming game's bets for those names (one request).
+
+## Pinnacle (`pinnacle_prices.py`, 23 Oct 2026)
+
+Pinnacle's prices as margin-free chances, from the guest API its own site uses (`guest.api.arcadia.pinnacle.com/0.1`, logged out, the site's public key in `cache/pinnacle_key.json`, which is git-ignored). Two requests a league plus one for the league list: `/leagues/{id}/matchups` and `/leagues/{id}/markets/straight`. Corners and bookings come back in the same calls as their own matchups (units `Corners` / `Bookings`) hanging off the game by `parentId`, so no per-game calls. 11 leagues, 78 games, 28 requests on the first run. Each league at most every 90 minutes, 150 a day, a day's lockout on any refusal, `touch .pinnacle_off` to stop. Run by publish.sh after Bet365. Writes `reports/pinnacle.json` keyed by the site's fixture id: result, goals (match and team), corners and bookings, each with price and fair chance `p`.
+
+* `--probe` (Premier League only, prints what came back), `--leagues`, `--status`.
+* Not yet read by sharp.py or the picks; first comparison (23 Oct): 409 Paddy Power and Bet365 team lines matched to Pinnacle. Corners compare like for like. Cards are not settled yet: Pinnacle's "Bookings" may count a red differently from the soft books' card markets, so treat card edges against Pinnacle as unconfirmed until checked against settled games.
