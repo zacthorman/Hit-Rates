@@ -41,6 +41,7 @@ import argparse
 import html
 import json
 import math
+import probability
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -211,13 +212,10 @@ def _ll(p, won):
     return -math.log(p if won else 1 - p)
 
 
-def _lg(p):
-    p = min(max(p, 1e-4), 1 - 1e-4)
-    return math.log(p / (1 - p))
+_lg = probability.logit
 
 
-def _sig(z):
-    return 1 / (1 + math.exp(-z))
+_sig = probability.sigmoid
 
 
 def settled(log=None) -> list[dict]:
@@ -370,12 +368,6 @@ def summary() -> dict:
             "families": fams, "calibration": calibration(rows),
             "roi": {f"{int(b * 100)}%+": roi(rows, b) for b in VALUE_BANDS},
             "clv": clv(log)}
-
-
-def _fmt(x, pct=False):
-    if x is None:
-        return "-"
-    return f"{x * 100:+.1f}%" if pct else f"{x:.4f}"
 
 
 def report() -> None:
