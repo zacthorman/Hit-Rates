@@ -15,6 +15,34 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+### Running the tests
+
+The suite needs a few more packages than the pipeline (pytest, numpy, scipy,
+statsmodels, scikit-learn, lightgbm, and zstandard for unpacking
+`cache_backtest.tar.zst`).
+They are in `requirements-dev.txt`, which includes `requirements.txt`:
+
+```bash
+pip install -r requirements-dev.txt
+.venv/bin/python -B -m pytest tests
+.venv/bin/python -B tests/run_all.py     # the same without pytest
+```
+
+Without them, `tests/test_teamlines.py`, `tests/test_us_audit.py` and
+`tests/test_teammodel_weekly.py` skip most of their tests instead of failing,
+so a short skip list is the sign that everything is installed. With everything
+in place, only the tests that need built reports in `reports/` or
+`GAMESTATE_LIVE=1` skip (four on 23 October).
+
+A test run never changes a tracked file. Under pytest, `tests/conftest.py`
+points `learner.py`'s output at a temporary file through
+`HITRATES_LEARNED_JSON`, and fails the run if the real `learned.json` changed.
+The live pipeline never sets that variable, so it keeps writing `learned.json`
+as before. `tests/test_tracked_files.py` runs every other test file again
+without that redirect, and fails if `learned.json` or any other tracked file
+differs afterwards. It doubles the run time. Set `HITRATES_SKIP_TRACKED=1` to
+leave it out of a quick run.
+
 ## Use
 
 ```bash
@@ -687,6 +715,8 @@ Replayed over 1,723 matches: favourite won 61%, log loss 0.657 against 0.693 for
 
 Where the Betfair Exchange prices a match, the winner chance is a blend leaning 75% on the market (log-odds scale), and every other darts market is recomputed from it. Model, exchange and the blend are shown side by side, and a gap over 12 points is flagged as a warning. `darts.sh` fetches prices first when `.betfair.env` exists; by hand it is `python darts_market.py` then `python rerender.py darts`. Each priced match is logged to `darts_market_log.json`, and once 100 have finished the weight is refitted from results (`darts_market.fit_weight`).
 
+A second darts model, `darts_legs.py`, prices the four stat lines from shrunk per-leg rates and the legs the match is expected to last. It is not used live: it beats the record price on the cache, but it has not yet beaten it on the settled darts bets. The evidence, and what would change the decision, are in [DARTS-MODEL.md](DARTS-MODEL.md).
+
 ## The picks correct themselves (`learner.py`)
 
 Every settled pick in `best_bets.json` is used to fit a correction from what the site said to what landed, per sport, team or player, and market family, pulled towards "no correction" as if 100 phantom legs said so, with a ten-day half-life. It is applied only while it beats no correction on the newest fifth of settled picks, checked every run, so it cannot make the picks worse on the evidence. It learns from `chance_base` (the chance before correction, recorded by besttrack from 16 October) so it never fits its own output. On 16 October it stayed off: the latest 233 picks said 70% and landed 71%. `learned.json` holds the current fit; the picks card says which state it is in.
@@ -765,22 +795,138 @@ One-time setup: Settings, Pages, Source "Deploy from a branch", Branch `gh-pages
 
 Commit source changes to `main` as normal. Only generated output goes to `gh-pages`.
 
+## What runs when
+
+Everything scheduled runs on the Mac. Nothing here is a cloud job.
+
+| When | What | Started by |
+|---|---|---|
+| Every day, 07:00 | `update.py`: settle (`bettrack.py`, `besttrack.py`, `linelog.py`), build every league in `update.json` with `run.py`, then the Nations League, Champions League, Europa League, NFL, darts, MLB and NBA steps, `rerender.py`, `make_index.py --prune`, commit, `publish.sh`, then `tactics_fetch.py` | launchd, `com.zacthorman.football.plist` |
+| Every publish | `publish.sh`: `market_prices.py` (with `.betfair.env`), `paddypower_prices.py`, `bet365_prices.py`, `team_news.py`, `fmodel_live.py`, `usmodel_live.py`, `markets_sidecar.py`, `pplog.py settle` and `snapshot`, `teamlog.py settle` and `snapshot`, `pplog.py page`, `exchange_eval.py settle` and `fit` (with `.betfair.env`), `make_index.py`, `exchange_eval.py log` and `page`, `tonight.py --hours 8`, `besttrack.py snapshot`, `linelog.py snapshot`, `bets_page.py`, then the push to `gh-pages` | `update.py`, `lineups_auto.py`, `catchup.sh`, or by hand |
+| Every 15 minutes | `lineups_auto.py`: confirmed line-ups about an hour before kick-off, then a republish | launchd, `com.zacthorman.lineups.plist` |
+| Weekly, Mondays 05:34 | `teammodel_train.py --weekly`: small, checked update of the team model, logged to `teammodel/CHANGELOG.md` | scheduled task `football-models-weekly-mac` |
+| Weekly, by hand | `gs_backtest.py build` then `gs_backtest.py test`, so `gs_fit.json` keeps up with the cache | you |
+| By hand, when needed | `darts.sh`, `nfl_fit.sh`, `catchup.sh`, `backfill.py`, `cards_backfill.py`, `strength.py --slopes` or `--tune`, `nba_team_train.py`, a full `teammodel_train.py`, `match_result.py`, the probes | you |
+
 ## The files
+
+**Build and publish**
 
 | File | What it does |
 |---|---|
-| `run.py` | Command line entry point. Start here. |
+| `run.py` | Command line entry point for one report or a whole round. Start here. |
+| `update.py` | The daily job: settle, build, re-render, index, commit, publish, then tactical data. |
+| `publish.sh` | Prices, models and logs for the site, then force-pushes it to `gh-pages`. |
+| `catchup.sh` | Rebuilds only the leagues last night's job missed, then indexes and publishes. |
+| `darts.sh` | The darts page: every PDC match in the next few days. |
+| `nfl_fit.sh` | Fits the NFL and builds next week's slate once the football job is done. Does not publish. |
+| `rerender.py` | Rebuilds every report's HTML from the data inside it, no requests. |
+| `make_index.py` | The front page: every upcoming fixture, soonest first, and the four picks. |
+| `tonight.py` | `tonight.html`: the small page of what is on soon. |
+| `lineups_auto.py` | Confirmed line-ups an hour before kick-off, then a republish. |
+| `lineup_data.py` | Predicted and confirmed line-ups attached to each fixture at build time. |
+| `team_news.py` | Who is out, per fixture, for every sport. |
+| `nfl_injuries.py` | NFL injury report and quarterback changes. |
+| `enrich_derived.py` | Writes the derived gridiron markets into a report already on disk. |
+| `replay_build.py` | Replays the whole page build from `cache/` with a frozen clock, timed, and diffs two runs (22 October). |
+
+**Data**
+
+| File | What it does |
+|---|---|
 | `sofascore_api.py` | Fetching and caching. Every response saved to `cache/` before parsing. |
-| `hitrates.py` | Parses match statistics, builds each team's form, works out the lines. |
-| `report.py` | Generates the HTML. |
-| `publish.sh` | Pushes the built site to gh-pages without growing the repo. |
-| `track.py` | Logs picks before kickoff, settles them, reports honestly. |
+| `hitrates.py` | Parses match statistics, builds each team's and player's form, works out the lines. |
+| `markets.py` | Which markets exist per sport, and what they are called. |
+| `tactics_fetch.py` | Average positions, shot maps, momentum and incidents, fetched gently (21 October). |
+| `backfill.py` | Whole NBA and NFL seasons of box scores into the cache, for the backtests (21 October). |
+| `cards_backfill.py` | Per-player card history, spread over a day. |
+| `clubcolour.py` | Kit colours turned into readable chart colours. |
+| `nfl_teams.py` | NFL team names to SofaScore ids. |
+
+**Models**
+
+| File | What it does |
+|---|---|
+| `model.py` | The count model in Python (Poisson, negative binomial, binomial; calibration). |
+| `probability.py` | The shared probability helpers: logit, sigmoid, Platt calibration, Wilson, shrink, Poisson and negative binomial tails (22 October). |
+| `strength.py` | One Elo rating per club from the cache, and the strength-aware picks. |
+| `fmodel_live.py` | The backtested football player model, live: `reports/fmodel.json`. |
+| `usmodel_live.py` | The backtested NBA and NFL player models, plus NBA team prices: `reports/usmodel.json` (21 October). |
+| `usfeatures.py` | NBA and NFL player features, shared by training and the live scorer (21 October). |
+| `usgame.py` | NBA game state: pace, ratings, expected total and margin, blowout risk, rest (21 October). |
+| `nba_team_train.py` | Trains and exports the NBA team-stats models (21 October). |
+| `teamstyle.py` | Team style, tactics and shape features from `cache/` (21 October). |
+| `teammodel_train.py` | Trains, tests and exports the football team-stats model; `--weekly` for the Monday update (21 October). |
+| `cards_model.py` | The cards model, its walk-forward backtest and `cards_fit.json` (22 October). |
+| `teamlines.py` | Which team-line markets have earned a take, and the chance the page prices them at (22 October). |
+| `teamline_backtest.py` | Walk-forward backtest of the team lines and the take threshold per market, `teamlines_gate.json` (22 October). |
+| `gs_backtest.py` | Walk-forward backtest of the game state and the fit the pages use, `gs_fit.json` (21 October). |
 | `gamestate.py` | The Line-ups tab's player lines as JSON. Reads only. |
-| `make_index.py` | Builds the front page listing every report. |
-| `check.py` | Probes endpoints when something breaks. |
-| `explore.ipynb` | Your notebook. Keep it for experimenting. |
+| `context.py` | The case for each fixture on `tonight.html` (21 October). |
+| `darts_model.py` | Darts match markets from a leg-level Elo. |
+| `learner.py` | The picks' own correction, refitted from their results. |
+| `playerlines.py` | Each player's own line, not one line per stat for the squad. |
+| `fmodel/fmodel_trees.py` | Scores exported LightGBM trees without LightGBM. |
+
+**Pages and picks**
+
+| File | What it does |
+|---|---|
+| `report.py` | Generates each report's HTML and the JavaScript inside it. |
+| `pagedata.py` | Finds the dataset inside a built report (22 October). |
+| `value_cap.py` | How many singles one player may take, and the backtest that chose it (22 October). |
+| `weekend.py` | The four picks across every built report. |
+| `parlay.py` | Same-game parlays with alt lines. |
+| `picker.py` | A clean bet picker built from the reports. |
+| `player_bets.py` | Player props for one report, ranked. |
+| `match_result.py` | Match-result accas from the goals projection and the exchange. |
+| `why.py`, `explain.py` | The reasons behind a pick, and the working behind a projection. |
+| `bets_page.py` | `best-bets-summary.html`. |
+| `challenge.py` | The rolling 1.8 to 2.2 challenge. |
+
+**Prices**
+
+| File | What it does |
+|---|---|
+| `market_prices.py` | Betfair Exchange prices for every fixture in the reports. |
+| `betfair_api.py` | The Betfair API client. |
+| `markets_sidecar.py` | `reports/markets.json`, the prices the pages read in the browser. |
+| `paddypower_prices.py` | Paddy Power's prices, read gently. |
+| `bet365_prices.py` | Bet365 player prices via Oddschecker (21 October). |
+| `oddschecker_client.py` | The Oddschecker client, with FlareSolverr as a fallback (21 October). |
+| `bet365_odds.py` | Prints only Bet365's prices for given market ids (21 October). |
+| `darts_market.py` | Betfair darts prices against the model. |
+| `exchange_eval.py` | Scores the model against Betfair and tunes the blend. |
+| `market_check.py` | The model against real bookmaker prices. |
+
+**Records**
+
+| File | What it does |
+|---|---|
+| `track.py` | Logs picks before kick-off, settles them, reports honestly. |
+| `bettrack.py` | Every best bet, settled from the box score, with lessons. |
+| `besttrack.py` | Every best bet the site publishes, settled. |
+| `linelog.py` | Every line the model prices, settled. |
+| `pplog.py` | Every Paddy Power player line, our chance and the result. |
+| `teamlog.py` | The same for Paddy Power team lines (21 October). |
+| `review.py` | Why each of a report's bets landed or missed. |
+| `backtest.py` | Every bet the model would have made, settled from the cache. |
+
+**Checks and probes**
+
+| File | What it does |
+|---|---|
+| `verify.py` | `model.py` against the JavaScript in `report.py`. |
+| `check.py`, `check_sport.py`, `check_nfl.py` | What SofaScore returns, endpoint by endpoint. |
+| `canary.py` | One request: is SofaScore answering? |
+| `betfair_probe.py`, `oddschecker_probe.py` | Does the Betfair connection work; where Oddschecker keeps its ids. |
+| `tests/` | The test suite, below. |
 | `TEST.md` | The 21 questions. |
 | `PLAN.md` | What this was meant to be, and what's left. |
+| `CARDS-MODEL.md`, `TEAM-LINES.md`, `US-MODELS-AUDIT.md`, `PROOF-2026-10-22.md` | The 22 October write-ups: the cards model, the team lines, the NBA and NFL models audit, and the proof of the 21 October work (scripts in `proof/`). |
+| `CODE-HEALTH.md` | The 22 October health pass: what changed, timings, and the output comparison. |
+
+**Tests.** `python -B -m pytest -q tests` (or `python -B -m unittest tests.test_<name>`). Fifteen files: `test_besttrack_team_value`, `test_bettrack_team`, `test_cards_model`, `test_context`, `test_exchange`, `test_gamestate`, `test_leads`, `test_league_names`, `test_league_ratings`, `test_pagedata`, `test_probability`, `test_strength`, `test_teamlines`, `test_us_audit`, `test_value_cap`. Some read built reports or the cache and skip without them; `GAMESTATE_LIVE=1` adds every football fixture in `reports/` to the game-state parity test. None of them writes to a committed file.
 
 ## How the lines are chosen
 
@@ -942,9 +1088,9 @@ Also new on the page: current streaks of eight or more (e.g. under 3.5 goals in 
 
 **Player bets** use fmodel's backtested chance (`reports/fmodel.json`) where it covers the player. Adding the same tactical group to fmodel was tested on every line and changed nothing measurable (all within 0.1%), so fmodel is unchanged until the new data below is in.
 
-**Weekly, in small steps.** The scheduled task `football-models-weekly-mac` (Mondays 05:34) runs `teammodel_train.py --weekly`: each kept model continues from last week's with 40 trees at a low learning rate on recency-weighted data (half-life 120 days), is scored against last week's on the latest 21 days it did not train on, is adopted only if no worse, and has any change of more than 3% on average halved. Every week is written to `teammodel/CHANGELOG.md`. A full refit (`teammodel_train.py` without `--weekly`) needs lightgbm, statsmodels and scipy and is for when the data changes shape, e.g. once the tactical backfill lands.
+**Weekly, in small steps.** The scheduled task `football-models-weekly-mac` (Mondays 05:34) runs `teammodel_train.py --weekly`: each kept model continues from last week's with 40 trees at a low learning rate on recency-weighted data (half-life 120 days), has any change of more than 3% on average halved, is then scored against last week's on the latest 21 days it did not train on (so the model scored is the model adopted), and is adopted only if no worse there, with no slack. Every week is written to `teammodel/CHANGELOG.md`; a stat that fails is logged as FAILED, the other stats still run, and the job exits non-zero. `TEAM-MODEL-CHECK.md` has the week-by-week audit of this rule (`teammodel_audit.py`). A full refit (`teammodel_train.py` without `--weekly`) needs lightgbm, statsmodels and scipy and is for when the data changes shape, e.g. once the tactical backfill lands.
 
-**New tactical data** (`tactics_fetch.py`, run by `update.py` after publishing, never fatal): SofaScore average positions, shot maps (with fast-break, set-piece, open-play situations), attack momentum and incidents for every finished match, teams with upcoming fixtures first, budget 1,500 requests a day (`tactics_budget` in update.json); and, only if you create `.understat_on`, Understat's league pages (PPDA and deep completions); off by default since its robots rules disallow automated access. `tactics_fetch.py --status` shows progress. Once enough is held, line height, team length and width, full-back height, pivot dropping, counter-attack threat and chasing behaviour go into teamstyle.py and both models are re-tested.
+**New tactical data** (`tactics_fetch.py`, run by `update.py` after publishing, never fatal): SofaScore average positions, shot maps (with fast-break, set-piece, open-play situations), attack momentum and incidents for every finished match, teams with upcoming fixtures first, budget 1,500 requests a day (`tactics_budget` in update.json); and, only if you create `.understat_on`, Understat's league pages (PPDA and deep completions); off by default since its robots rules disallow automated access. `tactics_fetch.py --status` shows progress. Every response is checked against the shape its endpoint is known to have (and Understat's teamsData likewise); an unknown shape stops the run with `SHAPE ERROR` and exit code 2 instead of being cached or skipped, and `tactics_fetch.py --check` runs every parser over the files already held. Once enough is held, line height, team length and width, full-back height, pivot dropping, counter-attack threat and chasing behaviour go into teamstyle.py and both models are re-tested.
 
 ## NBA game state and team model (21 October, late)
 
@@ -965,3 +1111,117 @@ Team yellow cards on `tonight.html` are priced by a cards model: own and provoke
     python -B value_cap.py            # the cap's backtest, from pplog/ when it is on this machine
 
 Full results and the honest verdict: `CARDS-MODEL.md`.
+
+## Code health (22 October)
+
+A pass that changes no output, written up in `CODE-HEALTH.md`.
+
+- **`probability.py`.** The probability helpers that had been copied between modules (logit, sigmoid, Platt calibration, Wilson, the pseudo-count shrink, Poisson and negative binomial tails, method-of-moments overdispersion) live here once. Every old name (`model.wilson_low`, `context._nb_at_least`, `weekend._lp` and the rest) still works, as an alias or a one-line wrapper. `tests/test_probability.py` checks each against its old body with `==`, not almost-equal. Look-alikes that are not bit-equal (`darts_model.poisson_tail`, `gamestate.pois_at_least`, `besttrack._tail`, `market_prices._pois`, `usmodel_live.calibrate`) were left where they are, with the reason in `probability.py`.
+- **`pagedata.py`.** Twelve modules found a report's dataset with the same lazy regular expression, which crawled through a multi-megabyte page for half a second each time. One `str.find` version now, pinned to the old regex by `tests/test_pagedata.py`.
+- **`replay_build.py`.** Replays the daily build from `cache/` alone: a fixed weekend presented as upcoming, every SofaScore request answered from the cache, every other request refused, the clock frozen (`pip install libfaketime`). Two runs can then be compared file by file. It never publishes and writes only inside the folder it is given.
+
+```bash
+git archive oct21-work | tar -x -C /tmp/before
+git archive code-health | tar -x -C /tmp/after
+python replay_build.py run /tmp/before
+python replay_build.py run /tmp/after
+python replay_build.py compare /tmp/before /tmp/after
+python replay_build.py run /tmp/after --profile   # a cProfile per step
+```
+
+## Scorer audit (`scorer_audit.py`, 22 October)
+
+A walk-forward audit of the player legs the pages lean on most: to score, shots and shots on target. Every starter since 1 July 2026 (when fmodel's training ended) is replayed with only what was known before kick-off, and each chance the pages can show is scored against the result: the record, the shrunk record, the Players tab's own chance, the game-state model, fmodel, and tonight.html's blend. Full tables and the verdict: [SCORER-AUDIT.md](SCORER-AUDIT.md).
+
+    python -B scorer_audit.py build   # about 20 minutes, reads cache/ only
+    python -B scorer_audit.py test    # a minute: tables, and refits the two files below
+
+What it found: fmodel is calibrated and was left alone. tonight.html's chance and the Players tab's fallback both ran high on the low lines (to score on tonight.html said 24% where 11% landed), because both pull towards 50%. Two fixes, each kept only where a version chosen on earlier months beat the page on every later month:
+
+- `fmodel/tonight_blend.json`: the weight `context.py` gives fmodel against the shrunk record, per line (1.0 for to score, shots 3+ and shots on target; 0.9 for shots 2+; shots 1+ stays half and half). To score now gets fmodel on tonight.html.
+- `fmodel/site_calib.json`: a Platt map per line on the Players tab's own shots and shots on target chance where fmodel has none, injected by `report.py` at render.
+
+Delete either file to go back to the old numbers. The `test` step rewrites both and drops any line whose fix stops holding, so rerun it when the cache has grown. Tests: `python -B -m unittest tests.test_scorer_audit`.
+
+## NFL game script (22 Oct 2026)
+`nflgame.py` builds pre-game script features (expected margin, plays, pass-rate shift when ahead or behind, short week, bye); `nflgame.upcoming()` gives the same for live games.
+`usmodel/training/nfl_gs_eval.py` tests them against the live NFL model with a bootstrap by game and Holm correction.
+Result: no market significant, so the NFL model is unchanged. See NFL_GS_BACKTEST.md. Re-run after the 2026 season.
+NFL games on the tonight page now have a "How the game will go" section built from that script: points form, expected plays, how much each side's passing follows the scoreboard, and short weeks or byes. It is display only and does not change any chance.
+
+## Bookie value bets, boost check, Conference League (22 Oct 2026)
+- **Bookie value bets** (top of tonight.html, `boostcheck.value_box`): Paddy Power player bets where the player model beats the price, one per game, priced at 8.0 or shorter, chances cut by how far that market's hits have fallen short of the model in pplog. It shows a market only while its settled record is about break-even or better (−5% per bet), and calls it "Proven" only when it is still in profit without its two biggest winners. The budget box splits stakes by Kelly share (50p steps).
+- **Boost check** (third tab on each football game, `boostcheck.boost_tab`): result, most shots on target, most corners, goals line, both teams to score, against a typed price. Result chances are the site's score model; goals come from its Poisson projection, rescaled to the result; the shots-on-target and corners winners come from `boost_table.json` (5,017 matches, given result × pre-game favourite from last-5 xG). Ties lose. Rebuild the table with `boost_table.py` (reads the backtest's teams.parquet).
+- **Conference League**: tournament 17015, cross-league form like the Champions League and Europa League. Built by update.py whenever a matchday is within `conference_league_days` (3).
+- When building tonight.html anywhere other than the Mac, set `TZ=Europe/London`, or kick-off times come out in UTC.
+- **Tonight layout (22 Oct, later)**: two big tabs, Team lines and Player lines. Each game is a collapsed row showing its best bet; open it for the case, game state and boost check (team) or the player bets and each player's own line (player). Bookie value bets sit at the top of Player lines and drop players who aren't in the XI the player model is using (confirmed once line-ups land). `tonight.legs_of` now drops players listed out (line-up missing lists, injury report) and, once an XI is confirmed, anyone not starting.
+
+## Game state tab, style model, flank tests (22 Oct 2026, evening)
+- **Style model for the score** (`teammodel/open_goals.json.gz`, `open_meta.json`; trained by `research/open_eval.py`): goals per side from a Poisson GLM on recent xG for/against, home and Elo, times trees on every teamstyle feature plus clashes (counter-attack threat v a high line, press v build-up, both sides' openness). Out of sample it beat the GLM on the result (1X2 log loss −0.54%, Holm p<0.001). Where it lifted an underdog by 1–4 points, underdogs won 35% (it said 31%, the GLM 29%); where it cut one, they won 10–20%. Totals and both-to-score: no worse, not significantly better. `context.score` uses it for **same-league games only**; European ties keep Elo + xG, because each side's profile is built from its own league (it made Beşiktaş 67% v Palace).
+- **Game state tab** on every football report page: `gamestate_live.py` → `reports/gamestate.json` (run by publish.sh). Result and goals with fair prices, open or tight, how the game will go, the game state's leans, and lines to target (lines the game state rates above their record, with the exchange price and edge where Betfair has it).
+- **Flank and involvement features** (`research/flank.py`, `flank_eval.py`): each team's attacking volume by side, what it concedes down each side, the player's side against the opponent's weaker side, and each player's share of team touches, shots, key passes and fouls won. None passed against the player model (45 lines × variants, best tackles +0.1%, Holm 0.29): its direct-opponent and team-style features already carry most of it. Sides come from formation slots, which is crude; re-test once the average-position backfill (tactics_fetch.py) has a season of data.
+- **Style model v the market (22 Oct, late):** on the 85 domestic games in exchange_log.json (team goals, match goals, both-to-score; 386 lines) Betfair's price near kick-off beat the style model clearly (log loss 0.609 v 0.660). Where the style model was 10+ points higher than the market, the line landed 24% (market said 47%); 10+ lower, it landed 76% (market said 54%). Do not bet goals markets off the model where the exchange disagrees. The result (1X2) improvement is untested against the market: no match-odds history yet. To test it, download free closing odds into research/odds/ (football-data.co.uk, see research/README) and re-run.
+- **Result v closing odds (22 Oct, late; research/vs_market.py, odds from football-data.co.uk in research/odds/):** 2,579 league games matched. Log loss per match, out of sample (456 games): closing average odds 0.981, style model 1.008, GLM 1.013. Adding the style model to the market did not help (−0.001, CI −0.006 to +0.004). Backing outcomes where the style model saw a 5%+ edge at the best closing price: −11% (validation), −3% (out of sample). Conclusion: the market's result prices are better than ours; the style model is a read of the game, not a source of value on results or goals.
+- **Paper bankroll and price movement (22 Oct, late; `papertrade.py`):** £1,000 replayed over 7,423 settled priced lines. Backing everything the model rated 5%+ value busts (old record-based chances, NBA props and shots worst); the player model's Paddy Power value bets lose 16%; anytime scorers at 8.0 or shorter +5% (26 bets). Price movement (pplog first v last price): lines the player model rated 5%+ value at the first price shortened 3.6% on average before kick-off (control +0.7%) and broke even (−1.6%, 78 bets) where all other lines lost 42%. Lines with model value after the confirmed line-up: +18.6% over 29 bets (too few to trust yet). The value box now shows when a price has moved since first logged.
+- **Paper trade page** (`papertrade.py --page` → `papertrade.html`, run and published by publish.sh): every player bet the site put forward (best_bets.json) matched to the Paddy Power price logged for the same line, £1,000 at 1% a bet, by type, latest 40. First run (22 Oct): 79 settled, 72% won (site said 59%), flat return −5.0%. `python3 papertrade.py` (no flag) still prints the strategy comparison.
+
+## Paddy Power v Betfair (sharp.py, 23 Oct 2026)
+
+The value-bot check on the site. After every pplog / teamlog snapshot, `python sharp.py stamp`
+(publish.sh) looks up each unstarted Paddy Power line in Betfair Exchange's prices
+(market_prices.json) and writes `sharp_first` / `sharp_last` into the row: Betfair's fair chance
+(mid of back and lay on player markets, margin-free two-way on corners/cards), the back and lay,
+and the edge = PP price x Betfair chance - 1. Covered: to score, shots on target 1+/2+, shown a
+card, anytime TD, match corners 8.5/9.5/10.5/12.5, match cards 2.5/3.5. pplog now also logs
+Paddy Power's player shots-on-target lines so they can be checked.
+
+* Tonight page: "Paddy Power v Betfair" box at the top of both tabs, lines 2%+ longer than
+  Betfair, tagged by the other signals that agree (beats Betfair's lay, our model, confirmed
+  starter, Betfair moving our way), with a budget split.
+* papertrade.html: the settled record of those bets by number of signals agreeing, plus the
+  site's picks split by price and by claimed edge (where it goes wrong).
+* `python sharp.py report` prints what is live and the record.
+
+## Rules on trial, and the NBA / NFL model in pplog (23 Oct 2026)
+- **pplog now logs the NBA and NFL player models.** Until 23 Oct it logged the old last-10 chance
+  (`model.price_player`) for both, so its NBA and NFL record, and the -33% "model value" in
+  papertrade, was the old formula, not `usmodel/`. From now each NBA / NFL row carries
+  `source: usmodel`, `chance` (the page's blend), `model_chance` (the model alone) and
+  `site_chance` (the old one). Rows logged before then are not rewritten.
+- **`research/uscheck.py nba|nfl`** rebuilds what the live model would have said before tip-off for
+  every logged game and writes `research/uscheck_<sport>.csv`. On 13 NBA games: log loss 0.533
+  against 0.594 for the old chance, well calibrated, but Paddy Power's own price is better still
+  (0.522), and blending the model with the price did not help on later games. See
+  `research/RULES_RESEARCH.md`.
+- **`ruletrack.py`** scores fixed rules, frozen 23 Oct 13:00 BST, on every game after. `report`
+  writes `RULES_TRACK.md` (run by publish.sh after the pplog page); `tonight` prints the bets.
+  History is the games the rules were chosen on and proves nothing; judge on Live after about 40
+  games. The tonight page shows a Rules on trial box above the bookie value bets: one bet per
+  player, ordered by model edge (the edge only orders the list).
+- Backups: `pplog.py.bak-usmodel`, `publish.sh.bak-ruletrack`, `tonight.py.bak-ruletrack`.
+
+## Bet365 further ahead, and Bet365 value (23 Oct 2026)
+- `bet365_prices.py --window 60` fetches games up to 60 hours out (default 30), e.g. on a Friday
+  for Sunday. Prices that early move a lot; the normal runs refresh them nearer kick-off.
+- `python b365value.py` lists Bet365 football player lines where the player model (shrunk by its
+  settled Paddy Power record per market) beats the price, with Paddy Power's price for the same
+  line beside it. Edges over 15% are marked CHECK. Predicted XI until line-ups: re-run after.
+- Each Bet365 line now also keeps the other bookmakers' prices from the same Oddschecker reply
+  (`mkt_n`, `mkt_median`, `mkt_best`). b365value.py shows Bet365 against that median and tags
+  BOTH where the model is ahead (15% or less) and Bet365 is at least the market median.
+  `bet365_prices.py --force` refetches held games before their usual refresh.
+- Backups: `bet365_prices.py.bak-window`, `bet365_prices.py.bak-market`.
+
+## Picks priced at the books, Bet365 team lines (23 Oct 2026)
+
+* **Every pick is priced at a book.** The best bet already was; the banker, evens double and acca now are too (`weekend._book_ok`, `_price`). A leg counts when Paddy Power or Bet365 offers it at our fair price or longer, and no more than 30% over it. Bands and targets (banker 1.30 to 1.75, double near evens, acca 3.0) are read off the book price. Only when nothing priced qualifies does a pick fall back to fair prices, and the card says "fair, not priced". Each leg on the front page shows its book (PP or B365) and price, with fair beside it. Publish prints the banker, double and acca under the pick of the week.
+* **Paddy Power fetches Bet365's games first** (`paddypower_prices.candidates`). Soonest-first spent the 23 Oct afternoon run on Brazil, the NBA and Friday night while nine of ten Premier League and Clasico games had no Paddy Power price. Caps unchanged.
+* **Bet365 team lines** (`bet365_prices.TEAM_MARKETS`): home, away and match corners, cards and goals from the same Oddschecker pages, in Paddy Power's team-line shape (`team`, `ppHome`), so `attach_books` and `markets.json` read them alike. Bet365 prices only its main line on corners and cards (e.g. home corners 6.5, total 9.5, home cards 1.5, total 3.5) and a full ladder on team goals. Team shots and shots on target are requested too, but on the 23 Oct sample Oddschecker had other books and no Bet365 price for them; they are kept whenever Bet365 appears. 22 markets a game in batches of 10, so three requests per game; the daily cap is 150.
+* `python bet365_prices.py --markets` lists every market name on the saved pages (no requests); `--markets "Total Corners" ...` fetches one upcoming game's bets for those names (one request).
+
+## Pinnacle (`pinnacle_prices.py`, 23 Oct 2026)
+
+Pinnacle's prices as margin-free chances, from the guest API its own site uses (`guest.api.arcadia.pinnacle.com/0.1`, logged out, the site's public key in `cache/pinnacle_key.json`, which is git-ignored). Two requests a league plus one for the league list: `/leagues/{id}/matchups` and `/leagues/{id}/markets/straight`. Corners and bookings come back in the same calls as their own matchups (units `Corners` / `Bookings`) hanging off the game by `parentId`, so no per-game calls. 11 leagues, 78 games, 28 requests on the first run. Each league at most every 90 minutes, 150 a day, a day's lockout on any refusal, `touch .pinnacle_off` to stop. Run by publish.sh after Bet365. Writes `reports/pinnacle.json` keyed by the site's fixture id: result, goals (match and team), corners and bookings, each with price and fair chance `p`.
+
+* `--probe` (Premier League only, prints what came back), `--leagues`, `--status`.
+* Not yet read by sharp.py or the picks; first comparison (23 Oct): 409 Paddy Power and Bet365 team lines matched to Pinnacle. Corners compare like for like. Cards are not settled yet: Pinnacle's "Bookings" may count a red differently from the soft books' card markets, so treat card edges against Pinnacle as unconfirmed until checked against settled games.

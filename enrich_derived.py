@@ -17,11 +17,11 @@ index. Running it twice is harmless.
 from __future__ import annotations
 
 import json
-import re
 import sys
 from pathlib import Path
 
 import hitrates
+import pagedata
 
 CACHE = Path(__file__).parent / "cache"
 
@@ -45,7 +45,7 @@ def _lineup_stats(match_id):
 
 def enrich(path: Path) -> tuple[int, int]:
     text = path.read_text(encoding="utf-8")
-    match = re.search(r"const ALL = (\{.*?\});\n", text, re.S)
+    match = pagedata.search(text)
     if not match:
         raise SystemExit(f"{path.name}: no payload found")
     payload = json.loads(match.group(1))

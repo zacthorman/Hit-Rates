@@ -59,7 +59,7 @@ JITTER = 15           # plus up to this much, randomised
 MAX_PER_RUN = 15      # games per run
 MAX_PER_DAY = 60      # games per day, across all runs
 RESERVE_CLOSE = 15    # of those, kept for games inside 3 hours of kick-off
-WINDOW_HOURS = 30     # only games kicking off within this
+WINDOW_HOURS = 48     # only games kicking off within this (was 30; 22 Oct: model-liked lines shorten before kick-off, so catch prices earlier)
 FRESH_HOURS = 4       # do not refetch a game inside this
 FRESH_CLOSE = 1       # ...or this, in the last 3 hours before kick-off
 LOCKOUT_HOURS = 24    # after any refusal
@@ -396,8 +396,20 @@ def candidates(st: dict) -> list[tuple]:
         if now() - last < fresh:
             continue
         out.append((ko, fid, bf_id, ev.get("betfair", "")))
-    out.sort()
+    # Games Bet365 is priced on go first (23 Oct 2026): the picks are priced
+    # off both books, and soonest-first spent Friday's cap on Brazil and the
+    # NBA while nine of the ten Premier League and Clasico games had no Paddy
+    # Power price. Soonest first within each group.
+    b365 = _bet365_ids()
+    out.sort(key=lambda c: (c[1] not in b365, c[0]))
     return out
+
+
+def _bet365_ids() -> set:
+    try:
+        return set((json.loads((ROOT / "reports" / "bet365.json").read_text()).get("events") or {}))
+    except (OSError, ValueError):
+        return set()
 
 
 def load_out() -> dict:

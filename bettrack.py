@@ -33,13 +33,14 @@ from __future__ import annotations
 import argparse
 import json
 import math
-import re
+import probability
 from datetime import datetime, timezone
 from pathlib import Path
 
 import hitrates
 import markets
 import sofascore_api as api
+import pagedata
 
 HERE = Path(__file__).parent
 BETS = HERE / "bets.json"
@@ -72,8 +73,7 @@ def prior() -> float:
 
 
 def adjusted(k: int, n: int, a: float | None = None) -> float:
-    a = prior() if a is None else a
-    return (k + a) / (n + 2 * a)
+    return probability.shrink(k, n, prior() if a is None else a)
 
 
 # ------------------------------------------------------------ report lookup
@@ -89,7 +89,7 @@ def _report_fixture(event_id: int):
             continue
         if str(event_id) not in text:
             continue
-        m = re.search(r"const ALL = (\{.*?\});\n", text, re.S)
+        m = pagedata.search(text)
         if not m:
             continue
         for f in json.loads(m.group(1)).get("fixtures", []):
@@ -398,7 +398,7 @@ def _write_lessons(cal: dict, legs: list[dict]) -> None:
 
 
 def report(args) -> None:
-    cal = fit_and_write()
+    fit_and_write()
     print(LESSONS.read_text())
     open_ = [b for b in load() if b["result"] is None]
     if open_:

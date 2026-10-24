@@ -66,6 +66,10 @@ liverpool-villarreal.txt
 mancity-aek.txt
 psg-barca.txt
 
+# Oddschecker pages saved by hand (oddschecker_import.py): Zac's own files,
+# never committed.
+drop/
+
 # Claude's backups before a patch, and the bin
 *.bak-*
 _to_delete/
@@ -73,3 +77,14 @@ _to_delete/
 # Scratch staging for uploads and previews. Never commit: the repo is public
 # and update.py / publish.sh run `git add -A`.
 _stage_tmp/
+
+# site_guard.py: the last good copy of each page, and pages it refused.
+# Generated, machine-specific, and far too big for a public repo's history.
+.last_good/
+.rejected/
+*.html.tmp
+.build_status.json
+*.json.tmp
+
+# Full results of case_score_backtest.py, regenerable from the cache.
+case_score_results.json

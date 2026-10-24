@@ -25,5 +25,6 @@
   "nfl": true,
   "darts": 3,
   "mlb": true,
-  "nba": true
+  "nba": true,
+  "conference_league_days": 3
 }
