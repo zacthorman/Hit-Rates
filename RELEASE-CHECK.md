@@ -1,8 +1,80 @@
 # Release check: oct21-work and its branches, against main
 
-Written 23 October 2026 on branch `release-check`. Read-only: nothing was pushed except this branch, nothing was
+Written 23 October 2026 on branch `release-check`; the update below is from 24 October, on `main-sync`. Read-only: nothing was pushed except this branch, nothing was
 published, `publish.sh` and `update.py` were never run, and nothing reached the network during the builds.
 `release_check.py` reproduces every number here (see "Reproducing").
+
+## Update, 24 October: main-sync
+
+Branch `main-sync` does what section 8 asked. One correction to what was assumed: `release-check` did **not**
+contain the stack (it was branched from `oct21-work`; the stack was only ever merged in a scratch worktree). So
+`main-sync` was made from `origin/release-check`, the 14 branches were merged into it in the same order (all
+clean again), and then `origin/main` was merged on top. Every change below is a commit on `main-sync`.
+
+1. **Conflicts resolved.**
+   - `tonight.py`: main's split into team and player legs kept; both pools are ranked by the module-level
+     `tonight_chance(l, sport)` with one leg per player; main's folding warning keeps the stack's text on
+     multiples.
+   - `USAGE.md`: both sides' sections kept.
+   - `best_bets.json`: the union of both sides, keyed by category, snapshot time and legs. A settled field or
+     leg wins over an open one, and the merge would stop if the two sides had settled anything differently
+     (they had not). The result has 3,760 records: 3,219 shared, 15 only on the stack (all still open) and 526
+     only on main. All 3,153 settled results are kept and none changed.
+2. **Main's inner `tonight_chance` is gone.** `tests/test_tonight_definitions.py` fails if a second definition
+   appears, if a function nested inside another shadows a module-level one, or if the remaining one loses the
+   darts fix.
+3. **The two tests from section 6 are fixed.**
+   - `test_pipeline_safety`: its fake `update.json` now turns the Conference League off too.
+   - `test_context`: the fallback test stubs the style model, so it no longer depends on `cache/`. A new test
+     checks the fallback does use the style model when it has an answer.
+4. **"Bookie value bets" is off.**
+   - **Evidence:** the only settled record in the repo is the box's own, printed on tonight.html of 23 October:
+     108 model-ahead bets at 8.0 or shorter, 28 won, -34.5 points (-32%, roughly -51% to -8%). By market:
+
+     | Market | Bets | Return | Rough 95% |
+     |---|---:|---:|---:|
+     | Goals | 44 | -23% | -60% to +35% |
+     | Shots | 53 | -36% | -59% to -7% |
+     | Fouled | 11 | -49% | -79% to -10% |
+
+     The intervals are Wilson intervals on the hit rate at each market's average winning price, because only
+     the totals are on record.
+   - **Why that isn't enough:** its gate is each market's own in-sample record, not a test.
+   - **The change:** `boostcheck.VALUE_SHOW = False`. The box lists no bets, stakes or banner. The bets are
+     still worked out, and the record and the number of bets that would have been listed are still printed
+     (`tests/test_boostcheck_value.py`).
+   - **Similar, not changed:** main's `sharp.py` "soft v sharp" box (Paddy Power longer than Betfair) is a
+     similar claim with no settled record yet, since logging started on 23 October. It needs the same review
+     once it has one.
+5. **Score model: the team ratings keep the lead.** `score_model_compare.py` compares both walk-forward:
+   - **Matches:** every domestic league match in the cache from 1 July 2026, which is out of sample for the
+     style model, where both models give a prediction (1,125).
+   - **Ratings:** refitted before each week.
+   - **Style model:** fed team-style features as of each kick-off.
+
+   | Matches | Log loss, exact score: ratings minus style (95%) | Log loss, 1X2: ratings minus style (95%) |
+   |---|---:|---:|
+   | All league matches (1,125) | -0.0045 (-0.0281 to +0.0188) | -0.0001 (-0.0153 to +0.0147) |
+   | The site's own eight leagues (838) | -0.0064 (-0.0321 to +0.0220) | -0.0057 (-0.0230 to +0.0114) |
+
+   Negative favours the ratings. It is a tie: the ratings are marginally ahead on both measures and cover more
+   matches (1,159 against 1,125). So `context.score()` keeps the ratings first and the style model as the
+   fallback for sides they do not know. That is what the merged code already did; no change to `context.py`.
+   Month by month, the ratings were ahead in July, behind in August, and the rest split, all within noise.
+6. **The re-run.**
+   - **Build:** `release_check.py` built `main-sync` the same way, as its release side
+     (`prepare --release-ref main-sync`). Every step finished; no JavaScript errors, broken links, empty tabs or
+     failed requests on any of 29 pages; and `site_guard`'s gate and checks passed.
+   - **Visible changes against main:** the "Value on Betfair" list is gone (5 football legs and 1 NFL leg
+     here); player-line verdicts are Take 2 → 0 and Avoid 5 → 7 over 8,934 profiles; tonight.html says "no
+     value" in 4 places; and the Bookie value bets box says the claims are off. The build took 264 s against
+     main's 294 s.
+   - **Tests:** every test file passes on the built tree with the cache linked (33 files). In the repo, pytest
+     gives 463 passed and 6 skipped (built reports, an opt-in variable, or scikit-learn not installed), and
+     `tests/run_all.py` passes all. `git status` is clean, and `learned.json` was not rewritten.
+
+Still open from section 7: install `scipy`, `lightgbm` and `statsmodels` on the Mac, and add the last two to
+`requirements.txt`.
 
 ## The short version
 
