@@ -5866,10 +5866,35 @@ function modelP(name, stat, line, fx) {
   return typeof v === "number" ? v : null;
 }
 
+/* The Players tab's own chance where fmodel has none, recalibrated.
+
+   scorer_audit.py replayed pricePlayer on every starter since July 2026: it
+   ran high on every shots and shots on target line but 1+ (shots on target
+   2+ said 19% and landed 7%), because the player calibration above pulls
+   every log-odds towards 50%. A Platt map per line, chosen on August and
+   holding on September and October, goes in fmodel/site_calib.json and
+   reaches the page here at render. Football only, "Stat|k" for "k+", and
+   only on the record-based branches (three or more appearances) it was
+   fitted on; a line with no map keeps pricePlayer's number. */
+const SITE_CALIB = __SITE_CALIB__;
+
+function siteCalibrated(price, stat, line, over) {
+  if (SPORT !== "football" || !price || price.source === "blend" || (price.n || 0) < 3) return price;
+  const k = line + 0.5;
+  const c = Number.isInteger(k) ? SITE_CALIB[`${stat}|${k}`] : null;
+  if (!c || !(price.p > 0 && price.p < 1)) return price;
+  const pOver = Math.min(1 - 1e-4, Math.max(1e-4, over ? price.p : 1 - price.p));
+  const cal = 1 / (1 + Math.exp(-(c[0] + c[1] * Math.log(pOver / (1 - pOver)))));
+  const q = over ? cal : 1 - cal;
+  return Object.assign({}, price, { p: q, fair: fairOdds(q), need: Math.max(price.need || 0, fairOdds(q)),
+    siteCalibrated: true, siteP: price.p });
+}
+
 /* pricePlayer's answer with the model's chance swapped in, when it has one. */
 function withModel(price, name, stat, line, over, fx) {
   let p = modelP(name, stat, line, fx);
-  if (p === null || !price) return price;
+  if (!price) return price;
+  if (p === null) return siteCalibrated(price, stat, line, over);
   // NBA and NFL: the model's chance blended with the site's own, recalibrated,
   // with the weights fitted on the validation period (usmodel.json "blend").
   const bl = SPORT !== "football" && USMODEL && USMODEL.blend[stat];
@@ -9781,6 +9806,16 @@ loadUSModel();
 """
 
 
+def site_calibration() -> dict:
+    """fmodel/site_calib.json's maps for the Players tab's fallback (scorer_audit.py), or none."""
+    try:
+        maps = json.loads((Path(__file__).parent / "fmodel" / "site_calib.json").read_text())["maps"]
+    except (OSError, ValueError, KeyError):
+        return {}
+    return {k: v for k, v in maps.items()
+            if isinstance(v, list) and len(v) == 2 and all(isinstance(x, (int, float)) for x in v)}
+
+
 def build_html(payload: dict) -> str:
     first = payload["fixtures"][0]
     fixture = first["fixture"]
@@ -9825,6 +9860,7 @@ def build_html(payload: dict) -> str:
         allow = sorted(set(markets.player_stats_for(sport)) & parlay.LADDERED)
     scan_allow = json.dumps(allow)
     min_minutes = json.dumps(model.min_minutes_for(sport))
+    site_calib = json.dumps(site_calibration() if sport == "football" else {})
     count = len(payload["fixtures"])
     scope = f"{count} fixtures" if count > 1 else "1 fixture"
 
@@ -10193,7 +10229,7 @@ def build_html(payload: dict) -> str:
 </footer>
 
 </div>
-<script>{JS.replace("__PAYLOAD__", json.dumps(payload)).replace("__BETTABLE__", bettable).replace("__ZERO_FILL__", zero_fill).replace("__PLAYER_SCAN_ALLOW__", scan_allow).replace("__MIN_MINUTES__", min_minutes).replace("__SPORT__", json.dumps(sport))}</script>
+<script>{JS.replace("__PAYLOAD__", json.dumps(payload)).replace("__BETTABLE__", bettable).replace("__ZERO_FILL__", zero_fill).replace("__PLAYER_SCAN_ALLOW__", scan_allow).replace("__MIN_MINUTES__", min_minutes).replace("__SITE_CALIB__", site_calib).replace("__SPORT__", json.dumps(sport))}</script>
 </body>
 </html>
 """
