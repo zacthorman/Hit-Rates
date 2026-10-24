@@ -5,6 +5,7 @@ branch stack, then compare them. Read-only for the repo and the site.
 
     python release_check.py prepare WORK            # merge the stack, unpack both trees
     python release_check.py prepare WORK release    # redo only main-with-the-stack, keep the other builds
+    python release_check.py prepare WORK release --release-ref main-sync   # the release from a merged branch
     python release_check.py build WORK main|stack|release   # build one side offline, timed
     python release_check.py check WORK main|stack|release   # node, a headless browser, links, staging gate
     python release_check.py tests WORK main|stack|release [--no-cache]   # every test file, one at a time
@@ -124,8 +125,11 @@ def git(*args, cwd=HERE, check=True) -> str:
 
 # ================================================================= prepare
 
-def prepare(work: Path, only: str | None = None) -> dict:
-    """Merge, then unpack every side (or only one: the others' builds are kept)."""
+def prepare(work: Path, only: str | None = None, release_ref: str | None = None) -> dict:
+    """Merge, then unpack every side (or only one: the others' builds are kept).
+
+    release_ref: take the release side from a committed branch that already
+    has main merged in (main-sync), rather than the scratch merge below."""
     work.mkdir(parents=True, exist_ok=True)
     merge = work / "merge"
     for b in ["main", "oct21-work", *STACK]:
@@ -171,7 +175,13 @@ def prepare(work: Path, only: str | None = None) -> dict:
     if not only or only == "release":
         if dest.exists():
             shutil.rmtree(dest)
-        shutil.copytree(rel, dest, ignore=shutil.ignore_patterns(".git"))
+        if release_ref:
+            dest.mkdir()
+            tar = subprocess.run(["git", "archive", release_ref], cwd=HERE, capture_output=True, check=True).stdout
+            subprocess.run(["tar", "-x", "-C", str(dest)], input=tar, check=True)
+            release["from_ref"] = f"{release_ref} {git('rev-parse', '--short', release_ref).strip()}"
+        else:
+            shutil.copytree(rel, dest, ignore=shutil.ignore_patterns(".git"))
         dest.joinpath("market_prices.json").write_bytes(
             subprocess.run(["git", "show", f"{PRICES}:market_prices.json"], cwd=HERE, capture_output=True,
                            check=True).stdout)
@@ -588,6 +598,7 @@ def main(argv=None):
     a = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     a.add_argument("cmd", choices=("prepare", "build", "check", "tests", "compare"))
     a.add_argument("--no-cache", action="store_true", help="tests: without the cache linked")
+    a.add_argument("--release-ref", help="prepare: the release side from this committed ref (e.g. main-sync)")
     a.add_argument("work", type=Path)
     a.add_argument("side", nargs="?", choices=SIDES)
     args = a.parse_args(argv)
@@ -595,7 +606,7 @@ def main(argv=None):
     if args.cmd in ("build", "check", "tests") and not args.side:
         a.error("build and check need a side: main, stack or release")
     if args.cmd == "prepare":
-        print(json.dumps(prepare(work, args.side), indent=1))
+        print(json.dumps(prepare(work, args.side, args.release_ref), indent=1))
     elif args.cmd == "build":
         t = build(work, args.side)
         print(json.dumps({"total": t["total"], "errors": t["errors"], "cache_written": t["cache_written"]}, indent=1))
