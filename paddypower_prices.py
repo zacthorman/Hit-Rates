@@ -430,7 +430,7 @@ def names_match(page: dict, betfair_name: str) -> bool:
     return max(straight, crossed) >= 0.6
 
 
-def run() -> int:
+def run(extra: int = 0, us_only: bool = False) -> int:
     LOCK.parent.mkdir(exist_ok=True)
     with open(LOCK, "w") as lockf:
         try:
@@ -444,16 +444,19 @@ def run() -> int:
             print(f"  paddypower: not fetching, {why}")
             return 0
         todo = candidates(st)
+        if us_only:  # NBA / NFL only: Betfair names those "Away @ Home"
+            todo = [c for c in todo if " @ " in (c[3] or "")]
         # The last RESERVE_CLOSE requests of the day are kept for games inside
         # three hours of kick-off, when prices move and line-ups land. On 21
         # October the cap was spent on Thursday's games and the NBA by early
         # afternoon, and the evening's Champions League prices were five hours
         # old at kick-off.
-        left = MAX_PER_DAY - count_today(st)
+        # --extra: a one-off, by-hand allowance above the daily cap (24 Oct 2026).
+        left = MAX_PER_DAY + extra - count_today(st)
         close = [c for c in todo if c[0] - now() < 3 * 3600]
         far = [c for c in todo if c[0] - now() >= 3 * 3600]
         take = close[:min(MAX_PER_RUN, left)]
-        far_room = min(MAX_PER_RUN - len(take), left - RESERVE_CLOSE)
+        far_room = min(MAX_PER_RUN - len(take), left - (0 if extra else RESERVE_CLOSE))
         take += far[:max(0, far_room)]
         if left <= 0:
             print(f"  paddypower: daily cap of {MAX_PER_DAY} reached")
@@ -532,6 +535,9 @@ def main() -> int:
     ap.add_argument("--save", action="store_true",
                     help="with --event, also keep the raw reply in cache/pp_event_<id>.json")
     ap.add_argument("--status", action="store_true")
+    ap.add_argument("--extra", type=int, default=0,
+                    help="one-off: allow this many requests above today's cap (by hand only, never in publish.sh)")
+    ap.add_argument("--us-only", action="store_true", help="fetch NBA / NFL games only")
     args = ap.parse_args()
     if args.status:
         status()
@@ -566,7 +572,7 @@ def main() -> int:
             print(f"  {l['player']:24} {l['market']:28} {l['selection'] or l['side'] or '':16} "
                   f"{l['line'] or '':>6}  {l['price']}")
         return 0
-    return run()
+    return run(args.extra, args.us_only)
 
 
 if __name__ == "__main__":
