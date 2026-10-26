@@ -211,6 +211,7 @@ def coverage(ms: dict, sides: list, t: int) -> dict:
 
 def build(cache: Path, fmodel_pkl: Path | None, out: Path = ROWS, log=print) -> int:
     import case_score_backtest as cbt
+    import freshness
     import hitrates
     import model
     import pplog
@@ -251,7 +252,8 @@ def build(cache: Path, fmodel_pkl: Path | None, out: Path = ROWS, log=print) -> 
                 person = p.get("player") or {}
                 here.append({"player": person.get("name"), "player_id": person.get("id"),
                              "position": p.get("position"), "started": not p.get("substitute", False),
-                             "minutes": vals.get("Minutes", 0), "stats": vals, "match_id": e["id"]})
+                             "minutes": vals.get("Minutes", 0), "stats": vals, "match_id": e["id"],
+                             "ts": e["ts"]})
             sides.append((side, t, team, here))
         if not any(any(r["minutes"] for r in here) for *_, here in sides):
             continue                         # a pre-match copy: nobody has minutes
@@ -267,6 +269,9 @@ def build(cache: Path, fmodel_pkl: Path | None, out: Path = ROWS, log=print) -> 
                 if not priced:
                     continue
                 played = [x for x in rows_by[(team, r["player_id"])] if x["match_id"] in last]
+                # How much of the record is from after his last long break
+                # (freshness.py; PLAYER-STALE.md reads these two fields).
+                brk = freshness.break_date([x["ts"] for x in played], e["ts"])
                 for stat, lines in MENU.items():
                     if not covered[t].get(stat, True):
                         continue             # the feed left this stat out for these players
@@ -277,6 +282,9 @@ def build(cache: Path, fmodel_pkl: Path | None, out: Path = ROWS, log=print) -> 
                     recent = apps[-RECENT:]
                     if len(recent) < MIN_APPS:
                         continue
+                    gated = [x for x in played if (x["minutes"] or 0) >= mins
+                             and (x["stats"] or {}).get(stat) is not None][-RECENT:]
+                    fr = freshness.window([x["ts"] for x in gated], brk) if len(gated) == len(recent) else None
                     adj = pplog._adjustment(entry, t, stat)
                     for line in lines:
                         if stat == "Goals":
@@ -299,7 +307,9 @@ def build(cache: Path, fmodel_pkl: Path | None, out: Path = ROWS, log=print) -> 
                             "pos": r["position"], "started": r["started"], "sport": "football",
                             "stat": stat, "line": line, "p": round(p, 5), "site": round(site, 5),
                             "source": source, "n10": len(recent), "k10": k10, "adj": round(adj, 3),
-                            "value": value, "won": value > line})
+                            "value": value, "won": value > line,
+                            "fresh": None if fr is None else round(fr["share"], 3),
+                            "rest": round((e["ts"] - played[-1]["ts"]) / 86400, 1) if played else None})
         for side, t, team, here in sides:
             team_matches[team].append(e["id"])
             for r in here:

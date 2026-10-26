@@ -3,6 +3,7 @@ Which of the page's betting flags have earned their place? A read-only review.
 
     python rule_review.py                          # print every table in RULE-REVIEW.md
     python rule_review.py acceptable [--pplog DIR]  # the Paddy Power verdict tiers from pplog/
+    python rule_review.py watch [--pplog DIR]       # player stat lines running short, once 50 have settled
 
 Every rule on the site that calls a bet value, take, acceptable or a pick is
 measured here against what has actually settled, in two ways:
@@ -292,15 +293,23 @@ RUNS_HIGH_STATS = {"Fouls", "Fouled", "Tackles"}
 
 
 def runs_high(stat, line, sport="football", over=True) -> bool:
-    return sport == "football" and over is not False and stat in RUNS_HIGH_STATS and (line or 0) >= 1.5
+    if sport != "football" or over is False:
+        return False
+    if stat == "Assists" and (line or 0) >= 0.5:     # assists 1+, ASSISTS-WATCH.md
+        return True
+    return stat in RUNS_HIGH_STATS and (line or 0) >= 1.5
 
 
 def pp_verdict(p: float, price: float, n: int = 5, heuristic: bool = False, stat: str | None = None,
-               line: float | None = None, sport: str = "football", over: bool = True) -> str | None:
+               line: float | None = None, sport: str = "football", over: bool = True,
+               fresh: float | None = None) -> str | None:
     """report.py verdictOf for a player line, in Python, for the tests and
     for scoring pplog: nothing is called take; a price that beats our chance
     by 5% or more is avoid, like one 5% worse; the card estimate and the
-    lines where our chance runs high are long shots, never acceptable."""
+    lines where our chance runs high are long shots, never acceptable; and a
+    record mostly from before the player's last long break (fresh, the share
+    of his window since it, under freshness.STALE_SHARE) is "stale", the
+    page's "Old record", never acceptable either."""
     if not (price > 1) or not (p > 0):
         return None
     e = p * price - 1
@@ -312,6 +321,9 @@ def pp_verdict(p: float, price: float, n: int = 5, heuristic: bool = False, stat
         return "avoid"
     if heuristic or runs_high(stat, line, sport, over):
         return "long"
+    import freshness
+    if freshness.is_stale(fresh):
+        return "stale"
     return "ok"
 
 
@@ -451,6 +463,72 @@ def acceptable_scoreboard(rows: list[dict]) -> str:
         out.append(table([title.capitalize()] + head,
                          [[k] + cells(acceptable_block(g)) for k, g in sorted(groups.items(), key=lambda kv: -len(kv[1]))]))
     return "\n".join(out)
+
+
+# ------------------------------------------- Paddy Power: thin-market watch
+
+# Fixed in advance (ASSISTS-WATCH.md), before the lines it judges settle:
+# every settled Paddy Power player line, grouped by sport, stat, line and
+# side, at the chance first seen; a group is judged once it holds WATCH_MIN
+# settled lines, on landed minus said with a 95% interval resampling whole
+# fixtures. Running short: the interval is wholly below zero. Running long:
+# wholly above. Anything else is in line. It reports; it changes no verdict.
+WATCH_MIN = 50
+
+
+def watch_rows(rows: list[dict]) -> list[dict]:
+    out = []
+    for r in rows:
+        f = r.get("first") or {}
+        if not r.get("player") or r.get("result") not in ("win", "lose") or f.get("chance") is None:
+            continue
+        line = r.get("line")
+        over = r.get("over", True)
+        rung = f"{line + 0.5:g}+" if isinstance(line, (int, float)) and over else f"under {line}"
+        out.append({"event_id": r.get("event_id"), "kickoff": r.get("kickoff") or 0,
+                    "group": f"{r.get('sport') or 'football'} · {r.get('stat')} {rung}",
+                    "p": float(f["chance"]), "won": r["result"] == "win"})
+    return out
+
+
+def watch_groups(rows: list[dict], min_n: int = WATCH_MIN) -> list[dict]:
+    """One entry per group: n, said, landed, the gap and its interval, and
+    the call. Groups under min_n are listed as waiting."""
+    groups = defaultdict(list)
+    for r in watch_rows(rows):
+        groups[r["group"]].append(r)
+    out = []
+    for g, rs in groups.items():
+        n = len(rs)
+        said = sum(r["p"] for r in rs) / n
+        landed = sum(r["won"] for r in rs) / n
+        x = {"group": g, "n": n, "fixtures": len({r["event_id"] for r in rs}), "said": said,
+             "landed": landed, "gap": landed - said, "lo": None, "hi": None}
+        if n < min_n:
+            x["call"] = f"waiting ({n} of {min_n})"
+        else:
+            x["lo"], x["hi"] = A.cluster_boot(rs, lambda q: (sum(r["won"] for r in q) - sum(r["p"] for r in q))
+                                              / len(q) if q else None, n=1000)
+            x["call"] = ("running short" if x["hi"] is not None and x["hi"] < 0 else
+                         "running long" if x["lo"] is not None and x["lo"] > 0 else "in line")
+        out.append(x)
+    order = {"running short": 0, "running long": 1, "in line": 2}
+    return sorted(out, key=lambda x: (order.get(x["call"], 3), -x["n"]))
+
+
+def watch_text(rows: list[dict], min_n: int = WATCH_MIN) -> str:
+    gs = watch_groups(rows, min_n)
+    if not gs:
+        return "No settled Paddy Power player lines in pplog/."
+    judged = [x for x in gs if not x["call"].startswith("waiting")]
+    short = [x for x in judged if x["call"] == "running short"]
+    head = (f"Thin-market watch: {len(judged)} of {len(gs)} player stat lines have {min_n}+ settled lines; "
+            f"{len(short)} running short (landed minus said, 95% interval wholly below zero). At 95%, about one "
+            f"judged line in 40 is flagged short by chance alone.\n")
+    body = table(["Line", "Settled", "Fixtures", "Said", "Landed", "Landed minus said", "95%", "Call"],
+                 [[x["group"], x["n"], x["fixtures"], pct(x["said"], False), pct(x["landed"], False),
+                   pct(x["gap"]), iv(x["lo"], x["hi"]) if x["lo"] is not None else "-", x["call"]] for x in gs])
+    return head + "\n" + body
 
 
 def _text(s: str) -> str:
@@ -641,12 +719,16 @@ MEASURE_HEAD = ["Bets", "Site said", "Betfair said", "Seen at close", "Worth at 
 def main(argv=None) -> None:
     import argparse
     a = argparse.ArgumentParser(description="The page's betting rules against what settled.")
-    a.add_argument("cmd", nargs="?", choices=("all", "acceptable"), default="all")
+    a.add_argument("cmd", nargs="?", choices=("all", "acceptable", "watch"), default="all")
     a.add_argument("--pplog", default=str(PPLOG), help="folder of pplog *.jsonl files (default pplog/)")
     args = a.parse_args(argv)
     if args.cmd == "acceptable":
         rows = pp_rows(Path(args.pplog))
         print(acceptable_scoreboard(rows) if rows else f"No pplog files in {args.pplog}.")
+        return
+    if args.cmd == "watch":
+        rows = pp_rows(Path(args.pplog))
+        print(watch_text(rows) if rows else f"No pplog files in {args.pplog}.")
         return
     log = json.loads(LOG.read_text())
     res = A.resolve(log, A.load_sources(log))
@@ -676,6 +758,7 @@ def main(argv=None) -> None:
     print("## 3. Paddy Power: take (ours 50%+, beats the price by 5%+, five games+)\n")
     log_rows = pp_rows(Path(args.pplog))
     if log_rows:
+        print(watch_text(log_rows) + "\n")
         print(acceptable_scoreboard(log_rows) + "\n")
         print(table(["Period", "Verdicts", "Verdict", "Bets", "Won", "Said", "ROI", "95%"],
                     [[x["period"], x["when"], x["verdict"], x["n"], x["won"], pct(x["said"], False),
