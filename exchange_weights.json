@@ -1,21 +1,21 @@
 {
- "updated": "2026-10-23 22:20 UTC",
+ "updated": "2026-10-25 02:27 UTC",
  "weights": {
-  "team|Goals|derived": 0.806,
+  "team|Goals|derived": 0.773,
   "team|Goals|exchange": 0.818,
-  "team|Both teams to score|exchange": 0.298,
-  "team|Match goals|exchange": 0.699,
-  "team|Match corners|exchange": 0.301,
-  "player|Shots on target|back": 0.107,
-  "team|Match cards|exchange": 0.599
+  "team|Both teams to score|exchange": 0.402,
+  "team|Match goals|exchange": 0.747,
+  "team|Match corners|exchange": 0.747,
+  "player|Shots on target|back": 0.096,
+  "team|Match cards|exchange": 0.64
  },
  "backMargin": {
-  "SHOTS_ON_TARGET_P1": 0.292
+  "SHOTS_ON_TARGET_P1": 0.302
  },
  "fit": {
   "team|Goals|derived": {
-   "n": 344,
-   "raw": 0.85,
+   "n": 502,
+   "raw": 0.8,
    "default": 0.5
   },
   "team|Goals|exchange": {
@@ -24,35 +24,35 @@
    "default": 0.5
   },
   "team|Both teams to score|exchange": {
-   "n": 34,
-   "raw": 0.0,
+   "n": 48,
+   "raw": 0.3,
    "default": 0.5
   },
   "team|Match goals|exchange": {
-   "n": 33,
+   "n": 49,
    "raw": 1.0,
    "default": 0.5
   },
   "team|Match corners|exchange": {
-   "n": 33,
-   "raw": 0.0,
+   "n": 49,
+   "raw": 1.0,
    "default": 0.5
   },
   "player|Shots on target|back": {
-   "n": 114,
+   "n": 133,
    "raw": 0.0,
    "default": 0.35
   },
   "team|Match cards|exchange": {
-   "n": 33,
-   "raw": 0.75,
+   "n": 44,
+   "raw": 0.8,
    "default": 0.5
   },
   "SHOTS_ON_TARGET_P1": {
-   "n": 107,
+   "n": 124,
    "raw": 0.4,
    "default": 0.06
   }
  },
- "settled": 718
+ "settled": 957
 }

@@ -1301,15 +1301,15 @@
   "competition": "Bundesliga",
   "kickoff": 1792848600,
   "selection": "1. FSV Mainz 05 over 3.5 shots on target",
-  "chance": 0.7676439806838192,
-  "fair": 1.4564641366499713,
+  "chance": 0.765955187555259,
+  "fair": 1.4636643895511672,
   "team": "1. FSV Mainz 05",
   "player": null,
   "stat": "Shots on target",
   "period": "ALL",
   "line": 3.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792848358.596808
  },
  "16434070": {
   "event_id": 16434070,
@@ -1317,15 +1317,15 @@
   "competition": "Bundesliga",
   "kickoff": 1792848600,
   "selection": "RB Leipzig over 0.5 offsides",
-  "chance": 0.7456997629900238,
-  "fair": 1.54843003403906,
+  "chance": 0.7429953572988541,
+  "fair": 1.5615079220857044,
   "team": "RB Leipzig",
   "player": null,
   "stat": "Offsides",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792848358.596808
  },
  "16434077": {
   "event_id": 16434077,
@@ -1333,31 +1333,31 @@
   "competition": "Bundesliga",
   "kickoff": 1792848600,
   "selection": "Hamburger SV over 0.5 offsides",
-  "chance": 0.7541180297761256,
-  "fair": 1.416475693874976,
+  "chance": 0.7546794543214581,
+  "fair": 1.4142263831542152,
   "team": "Hamburger SV",
   "player": null,
   "stat": "Offsides",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792848358.596808
  },
  "16434099": {
   "event_id": 16434099,
   "fixture": "FC Augsburg v 1. FC Union Berlin",
   "competition": "Bundesliga",
   "kickoff": 1792848600,
-  "selection": "Mert K\u00f6m\u00fcr 1+ shots",
-  "chance": 0.789367449444697,
-  "fair": 1.434782608695652,
+  "selection": "FC Augsburg over 3.5 corner kicks",
+  "chance": 0.7915239877760263,
+  "fair": 1.3248894282187016,
   "team": "FC Augsburg",
-  "player": "Mert K\u00f6m\u00fcr",
-  "stat": "Shots",
+  "player": null,
+  "stat": "Corner kicks",
   "period": "ALL",
-  "line": 0.5,
+  "line": 3.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792848358.596808
  },
  "16434078": {
   "event_id": 16434078,
@@ -1365,15 +1365,15 @@
   "competition": "Bundesliga",
   "kickoff": 1792848600,
   "selection": "1. FC K\u00f6ln over 0.5 yellow cards",
-  "chance": 0.7963858270617173,
-  "fair": 1.358524912115267,
+  "chance": 0.7966150742617132,
+  "fair": 1.358723905927175,
   "team": "1. FC K\u00f6ln",
   "player": null,
   "stat": "Yellow cards",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792848358.596808
  },
  "16391577": {
   "event_id": 16391577,
@@ -1381,7 +1381,7 @@
   "competition": "Championship",
   "kickoff": 1792850400,
   "selection": "Jonathan Varane 1+ tackles",
-  "chance": 0.7502096774193547,
+  "chance": 0.7342596774193548,
   "fair": 1.4761904761904763,
   "team": "Queens Park Rangers",
   "player": "Jonathan Varane",
@@ -1389,23 +1389,23 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792849359.6978922
  },
  "16391580": {
   "event_id": 16391580,
   "fixture": "West Ham United v Southampton",
   "competition": "Championship",
   "kickoff": 1792850400,
-  "selection": "Cameron Bragg 1+ tackles",
-  "chance": 0.7316230769230769,
-  "fair": 1.5294117647058822,
+  "selection": "Caspar Jander 1+ fouls",
+  "chance": 0.76475,
+  "fair": 1.3333333333333333,
   "team": "Southampton",
-  "player": "Cameron Bragg",
-  "stat": "Tackles",
+  "player": "Caspar Jander",
+  "stat": "Fouls",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792849359.6978922
  },
  "16391572": {
   "event_id": 16391572,
@@ -1413,7 +1413,7 @@
   "competition": "Championship",
   "kickoff": 1792850400,
   "selection": "Jhon Sol\u00eds 1+ tackles",
-  "chance": 0.7882210526315789,
+  "chance": 0.777921052631579,
   "fair": 1.3571428571428572,
   "team": "Birmingham City",
   "player": "Jhon Sol\u00eds",
@@ -1421,7 +1421,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792849359.6978922
  },
  "16391576": {
   "event_id": 16391576,
@@ -1429,31 +1429,31 @@
   "competition": "Championship",
   "kickoff": 1792850400,
   "selection": "West Bromwich Albion over 2.5 shots on target",
-  "chance": 0.7604472299151581,
-  "fair": 1.4627356923712047,
+  "chance": 0.7617017778365698,
+  "fair": 1.4571393527392629,
   "team": "West Bromwich Albion",
   "player": null,
   "stat": "Shots on target",
   "period": "ALL",
   "line": 2.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792849359.6978922
  },
  "16391579": {
   "event_id": 16391579,
   "fixture": "Stoke City v Bristol City",
   "competition": "Championship",
   "kickoff": 1792850400,
-  "selection": "Million Manhoef 1+ shots",
-  "chance": 0.7195126290258218,
-  "fair": 1.619047619047619,
+  "selection": "Lamine Ciss\u00e9 1+ shots",
+  "chance": 0.7150315789473685,
+  "fair": 1.6521739130434783,
   "team": "Stoke City",
-  "player": "Million Manhoef",
+  "player": "Lamine Ciss\u00e9",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792849359.6978922
  },
  "16391581": {
   "event_id": 16391581,
@@ -1461,15 +1461,15 @@
   "competition": "Championship",
   "kickoff": 1792850400,
   "selection": "Watford over 0.5 offsides",
-  "chance": 0.7681615563850523,
-  "fair": 1.5307510081148403,
+  "chance": 0.7700028218487316,
+  "fair": 1.522170475409839,
   "team": "Watford",
   "player": null,
   "stat": "Offsides",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792849359.6978922
  },
  "16391570": {
   "event_id": 16391570,
@@ -1485,7 +1485,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792849359.6978922
  },
  "16391574": {
   "event_id": 16391574,
@@ -1493,15 +1493,15 @@
   "competition": "Championship",
   "kickoff": 1792850400,
   "selection": "Lincoln City over 2.5 shots on target",
-  "chance": 0.7131061616149028,
-  "fair": 1.713991312830354,
+  "chance": 0.7060110595921759,
+  "fair": 1.756718008784349,
   "team": "Lincoln City",
   "player": null,
   "stat": "Shots on target",
   "period": "ALL",
   "line": 2.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792849359.6978922
  },
  "16363891": {
   "event_id": 16363891,
@@ -1509,31 +1509,31 @@
   "competition": "Premier League",
   "kickoff": 1792850400,
   "selection": "Arsenal over 3.5 corner kicks",
-  "chance": 0.8076064133526092,
-  "fair": 1.3221248764370905,
+  "chance": 0.8139284510952771,
+  "fair": 1.3003862585741293,
   "team": "Arsenal",
   "player": null,
   "stat": "Corner kicks",
   "period": "ALL",
   "line": 3.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792849359.6978922
  },
  "16363894": {
   "event_id": 16363894,
   "fixture": "Coventry City v Fulham",
   "competition": "Premier League",
   "kickoff": 1792850400,
-  "selection": "Kevin 1+ shots",
-  "chance": 0.7115901737136914,
-  "fair": 1.588235294117647,
+  "selection": "Alex Iwobi 1+ shots",
+  "chance": 0.7242593023255814,
+  "fair": 1.4827586206896552,
   "team": "Fulham",
-  "player": "Kevin",
+  "player": "Alex Iwobi",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792849359.6978922
  },
  "16421083": {
   "event_id": 16421083,
@@ -1549,23 +1549,23 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792849359.6978922
  },
  "16285056": {
   "event_id": 16285056,
   "fixture": "SSC Napoli v AS Roma",
   "competition": "Serie A",
   "kickoff": 1792857600,
-  "selection": "SSC Napoli over 0.5 yellow cards",
-  "chance": 0.7675028568064044,
-  "fair": 1.440242449047969,
+  "selection": "Kevin De Bruyne 1+ shots",
+  "chance": 0.7258962962962963,
+  "fair": 1.6875,
   "team": "SSC Napoli",
-  "player": null,
-  "stat": "Yellow cards",
+  "player": "Kevin De Bruyne",
+  "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792856517.849163
  },
  "16434069": {
   "event_id": 16434069,
@@ -1573,15 +1573,15 @@
   "competition": "Bundesliga",
   "kickoff": 1792859400,
   "selection": "Borussia Dortmund over 11.5 total shots",
-  "chance": 0.7801332654889092,
-  "fair": 1.4714378637597236,
+  "chance": 0.785569129311748,
+  "fair": 1.4482697881149256,
   "team": "Borussia Dortmund",
   "player": null,
   "stat": "Total shots",
   "period": "ALL",
   "line": 11.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792857755.377248
  },
  "16421089": {
   "event_id": 16421089,
@@ -1589,7 +1589,7 @@
   "competition": "LaLiga",
   "kickoff": 1792859400,
   "selection": "Ayoze P\u00e9rez 1+ shots",
-  "chance": 0.7692071428571429,
+  "chance": 0.7696071428571429,
   "fair": 1.4583333333333333,
   "team": "Villarreal",
   "player": "Ayoze P\u00e9rez",
@@ -1597,7 +1597,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792857755.377248
  },
  "16363893": {
   "event_id": 16363893,
@@ -1605,15 +1605,15 @@
   "competition": "Premier League",
   "kickoff": 1792859400,
   "selection": "Tottenham Hotspur over 0.5 offsides",
-  "chance": 0.7752080296502525,
-  "fair": 1.3934046610837574,
+  "chance": 0.7732809371086282,
+  "fair": 1.4009282614994922,
   "team": "Tottenham Hotspur",
   "player": null,
   "stat": "Offsides",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792857755.377248
  },
  "15171718": {
   "event_id": 15171718,
@@ -1621,7 +1621,7 @@
   "competition": "MLS",
   "kickoff": 1792863000,
   "selection": "Hany Mukhtar 2+ shots",
-  "chance": 0.7762346153846154,
+  "chance": 0.7650346153846154,
   "fair": 1.368421052631579,
   "team": "Nashville SC",
   "player": "Hany Mukhtar",
@@ -1629,7 +1629,7 @@
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792861032.570699
  },
  "16310987": {
   "event_id": 16310987,
@@ -1637,15 +1637,15 @@
   "competition": "Ligue 1",
   "kickoff": 1792867500,
   "selection": "RC Lens over 3.5 shots on target",
-  "chance": 0.7572590978069453,
-  "fair": 1.3652460222363234,
+  "chance": 0.7594285950224204,
+  "fair": 1.357206211022375,
   "team": "RC Lens",
   "player": null,
   "stat": "Shots on target",
   "period": "ALL",
   "line": 3.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792866244.078871
  },
  "16285053": {
   "event_id": 16285053,
@@ -1661,7 +1661,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792866244.078871
  },
  "16421082": {
   "event_id": 16421082,
@@ -1669,7 +1669,7 @@
   "competition": "LaLiga",
   "kickoff": 1792868400,
   "selection": "Alex Baena 1+ shots",
-  "chance": 0.7580833333333333,
+  "chance": 0.7685333333333333,
   "fair": 1.5,
   "team": "Atl\u00e9tico Madrid",
   "player": "Alex Baena",
@@ -1677,7 +1677,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792866244.078871
  },
  "15238211": {
   "event_id": 15238211,
@@ -1685,15 +1685,15 @@
   "competition": "Campeonato Brasileiro S\u00e9rie A",
   "kickoff": 1792870200,
   "selection": "Vit\u00f3ria over 11.5 total shots",
-  "chance": 0.7494874911698846,
-  "fair": 1.5835780129347807,
+  "chance": 0.7493383747215201,
+  "fair": 1.584326250706714,
   "team": "Vit\u00f3ria",
   "player": null,
   "stat": "Total shots",
   "period": "ALL",
   "line": 11.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792866244.078871
  },
  "15238217": {
   "event_id": 15238217,
@@ -1709,7 +1709,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792866244.078871
  },
  "15238220": {
   "event_id": 15238220,
@@ -1725,7 +1725,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792866244.078871
  },
  "15171717": {
   "event_id": 15171717,
@@ -1733,15 +1733,15 @@
   "competition": "MLS",
   "kickoff": 1792870200,
   "selection": "Columbus Crew over 11.5 total shots",
-  "chance": 0.7118579309205331,
-  "fair": 1.7249707746712382,
+  "chance": 0.707947669905959,
+  "fair": 1.7485591380965833,
   "team": "Columbus Crew",
   "player": null,
   "stat": "Total shots",
   "period": "ALL",
   "line": 11.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792866244.078871
  },
  "15238213": {
   "event_id": 15238213,
@@ -1757,7 +1757,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792871528.227613
  },
  "15238200": {
   "event_id": 15238200,
@@ -1765,15 +1765,15 @@
   "competition": "Campeonato Brasileiro S\u00e9rie A",
   "kickoff": 1792877400,
   "selection": "Corinthians under 14.5 total shots",
-  "chance": 0.7703729672166022,
-  "fair": 1.3048038077879012,
+  "chance": 0.7713380528182757,
+  "fair": 1.3015259216058168,
   "team": "Corinthians",
   "player": null,
   "stat": "Total shots",
   "period": "ALL",
   "line": 14.5,
   "over": false,
-  "written": 1792756173.8557637
+  "written": 1792871528.227613
  },
  "15171719": {
   "event_id": 15171719,
@@ -1781,7 +1781,7 @@
   "competition": "MLS",
   "kickoff": 1792877400,
   "selection": "Cade Cowell 1+ shots",
-  "chance": 0.7453736225288834,
+  "chance": 0.779124358974359,
   "fair": 1.3928571428571428,
   "team": "New York Red Bulls",
   "player": "Cade Cowell",
@@ -1789,55 +1789,55 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792871528.227613
  },
  "15238224": {
   "event_id": 15238224,
   "fixture": "Chapecoense v Fluminense",
   "competition": "Campeonato Brasileiro S\u00e9rie A",
   "kickoff": 1792881000,
-  "selection": "Chapecoense over 11.5 total shots",
-  "chance": 0.6884723309448347,
-  "fair": 1.665254791282765,
+  "selection": "Marcinho 1+ shots",
+  "chance": 0.7009815789473683,
+  "fair": 1.6521739130434783,
   "team": "Chapecoense",
-  "player": null,
-  "stat": "Total shots",
+  "player": "Marcinho",
+  "stat": "Shots",
   "period": "ALL",
-  "line": 11.5,
+  "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792879650.108238
  },
  "15171725": {
   "event_id": 15171725,
   "fixture": "Philadelphia Union v New England Revolution",
   "competition": "MLS",
   "kickoff": 1792884600,
-  "selection": "New England Revolution under 13.5 total shots",
-  "chance": 0.7634829819071227,
-  "fair": 1.3669284038492358,
-  "team": "New England Revolution",
-  "player": null,
-  "stat": "Total shots",
+  "selection": "Milan Iloski 1+ shots on target",
+  "chance": 0.7398872549019608,
+  "fair": 1.457142857142857,
+  "team": "Philadelphia Union",
+  "player": "Milan Iloski",
+  "stat": "Shots on target",
   "period": "ALL",
-  "line": 13.5,
-  "over": false,
-  "written": 1792756173.8557637
+  "line": 0.5,
+  "over": true,
+  "written": 1792884459.6390998
  },
  "15171720": {
   "event_id": 15171720,
   "fixture": "Atlanta United v Chicago Fire",
   "competition": "MLS",
   "kickoff": 1792884600,
-  "selection": "Atlanta United over 0.5 yellow cards (second half)",
-  "chance": 0.7337696692859516,
-  "fair": 1.3628254776095112,
+  "selection": "Atlanta United over 3.5 shots on target",
+  "chance": 0.6462139462733626,
+  "fair": 1.753968851255749,
   "team": "Atlanta United",
   "player": null,
-  "stat": "Yellow cards",
-  "period": "2ND",
-  "line": 0.5,
+  "stat": "Shots on target",
+  "period": "ALL",
+  "line": 3.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792884459.6390998
  },
  "15171724": {
   "event_id": 15171724,
@@ -1845,7 +1845,7 @@
   "competition": "MLS",
   "kickoff": 1792884600,
   "selection": "Justin Ellis 1+ shots",
-  "chance": 0.6785583765567107,
+  "chance": 0.6900287878787879,
   "fair": 1.7368421052631577,
   "team": "Orlando City SC",
   "player": "Justin Ellis",
@@ -1853,23 +1853,23 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792884459.6390998
  },
  "15171727": {
   "event_id": 15171727,
   "fixture": "DC United v FC Cincinnati",
   "competition": "MLS",
   "kickoff": 1792884600,
-  "selection": "Bryan Ramirez 1+ shots",
-  "chance": 0.7104677925721573,
-  "fair": 1.590909090909091,
-  "team": "FC Cincinnati",
-  "player": "Bryan Ramirez",
+  "selection": "Jackson Hopkins 1+ shots",
+  "chance": 0.7011833333333333,
+  "fair": 1.5,
+  "team": "DC United",
+  "player": "Jackson Hopkins",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792884459.6390998
  },
  "15238206": {
   "event_id": 15238206,
@@ -1885,7 +1885,7 @@
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792884459.6390998
  },
  "15171762": {
   "event_id": 15171762,
@@ -1901,23 +1901,23 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792886871.689193
  },
  "15171723": {
   "event_id": 15171723,
   "fixture": "Houston Dynamo v Minnesota United",
   "competition": "MLS",
   "kickoff": 1792888200,
-  "selection": "Anthony Markanich 1+ shots",
-  "chance": 0.8007560937504083,
-  "fair": 1.361111111111111,
-  "team": "Minnesota United",
-  "player": "Anthony Markanich",
+  "selection": "Agust\u00edn Bouzat 1+ shots",
+  "chance": 0.6833016129032259,
+  "fair": 1.631578947368421,
+  "team": "Houston Dynamo",
+  "player": "Agust\u00edn Bouzat",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792886871.689193
  },
  "15171726": {
   "event_id": 15171726,
@@ -1933,23 +1933,23 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792886871.689193
  },
  "15171721": {
   "event_id": 15171721,
   "fixture": "Colorado Rapids v Vancouver Whitecaps",
   "competition": "MLS",
   "kickoff": 1792891800,
-  "selection": "Cheick Tidiane Sabaly 1+ shots",
-  "chance": 0.6919752498960603,
-  "fair": 1.55,
-  "team": "Vancouver Whitecaps",
-  "player": "Cheick Tidiane Sabaly",
+  "selection": "Darren Yapi 1+ shots",
+  "chance": 0.66835,
+  "fair": 1.6666666666666667,
+  "team": "Colorado Rapids",
+  "player": "Darren Yapi",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792890484.1639428
  },
  "15171730": {
   "event_id": 15171730,
@@ -1957,7 +1957,7 @@
   "competition": "MLS",
   "kickoff": 1792891800,
   "selection": "Morgan Guilavogui 1+ shots",
-  "chance": 0.7435781487943803,
+  "chance": 0.7281348484848484,
   "fair": 1.434782608695652,
   "team": "Real Salt Lake",
   "player": "Morgan Guilavogui",
@@ -1965,23 +1965,23 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792890484.1639428
  },
  "15171722": {
   "event_id": 15171722,
   "fixture": "Portland Timbers v Charlotte FC",
   "competition": "MLS",
   "kickoff": 1792895400,
-  "selection": "Antony Alves 1+ shots",
-  "chance": 0.7908064942135267,
-  "fair": 1.4285714285714286,
+  "selection": "Kristoffer Velde 2+ shots",
+  "chance": 0.7981969387755102,
+  "fair": 1.361111111111111,
   "team": "Portland Timbers",
-  "player": "Antony Alves",
+  "player": "Kristoffer Velde",
   "stat": "Shots",
   "period": "ALL",
-  "line": 0.5,
+  "line": 1.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792895259.038068
  },
  "15171732": {
   "event_id": 15171732,
@@ -1997,7 +1997,7 @@
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1792756173.8557637
+  "written": 1792895259.038068
  },
  "16285052": {
   "event_id": 16285052,
@@ -2702,5 +2702,165 @@
   "line": 0.5,
   "over": true,
   "written": 1792756173.8557637
+ },
+ "17359392": {
+  "event_id": 17359392,
+  "fixture": "Jonny Clayton v Josh Rock",
+  "competition": "European Darts Championship",
+  "kickoff": 1792872900,
+  "selection": "Josh Rock over 0.5 checkouts over 100",
+  "chance": 0,
+  "fair": 1.4482758620689655,
+  "team": "Josh Rock",
+  "player": null,
+  "stat": "Checkouts over 100",
+  "period": "ALL",
+  "line": 0.5,
+  "over": true,
+  "written": 1792871528.227613
+ },
+ "16824740": {
+  "event_id": 16824740,
+  "fixture": "Charlotte Hornets v Miami Heat",
+  "competition": "NBA",
+  "kickoff": 1792879200,
+  "selection": "Bam Adebayo 1+ steals",
+  "chance": 0.7352941176470589,
+  "fair": 1.3599999999999999,
+  "team": "Miami Heat",
+  "player": "Bam Adebayo",
+  "stat": "Steals",
+  "period": "ALL",
+  "line": 0.5,
+  "over": true,
+  "written": 1792871528.227613
+ },
+ "16824739": {
+  "event_id": 16824739,
+  "fixture": "Philadelphia 76ers v Milwaukee Bucks",
+  "competition": "NBA",
+  "kickoff": 1792884600,
+  "selection": "Philadelphia 76ers under 13.5 3 pointers",
+  "chance": 0.7410571428571429,
+  "fair": 1.5484220079429227,
+  "team": "Philadelphia 76ers",
+  "player": null,
+  "stat": "3 pointers",
+  "period": "ALL",
+  "line": 13.5,
+  "over": false,
+  "written": 1792884459.6390998
+ },
+ "16824742": {
+  "event_id": 16824742,
+  "fixture": "Cleveland Cavaliers v Brooklyn Nets",
+  "competition": "NBA",
+  "kickoff": 1792884600,
+  "selection": "James Harden 1+ steals",
+  "chance": 0.7142857142857143,
+  "fair": 1.4,
+  "team": "Cleveland Cavaliers",
+  "player": "James Harden",
+  "stat": "Steals",
+  "period": "ALL",
+  "line": 0.5,
+  "over": true,
+  "written": 1792884459.6390998
+ },
+ "17193146": {
+  "event_id": 17193146,
+  "fixture": "Milwaukee Brewers v Tampa Bay Rays",
+  "competition": "MLB Postseason",
+  "kickoff": 1792886400,
+  "selection": "William Contreras 1+ hits",
+  "chance": 0.6764705882352942,
+  "fair": 1.4782608695652173,
+  "team": "Milwaukee Brewers",
+  "player": "William Contreras",
+  "stat": "Hits",
+  "period": "ALL",
+  "line": 0.5,
+  "over": true,
+  "written": 1792884459.6390998
+ },
+ "16824743": {
+  "event_id": 16824743,
+  "fixture": "Chicago Bulls v Washington Wizards",
+  "competition": "NBA",
+  "kickoff": 1792886400,
+  "selection": "Leonard Miller 1+ three pointers made",
+  "chance": 0.6944444444444444,
+  "fair": 1.44,
+  "team": "Chicago Bulls",
+  "player": "Leonard Miller",
+  "stat": "Three pointers made",
+  "period": "ALL",
+  "line": 0.5,
+  "over": true,
+  "written": 1792884459.6390998
+ },
+ "16824744": {
+  "event_id": 16824744,
+  "fixture": "Dallas Mavericks v San Antonio Spurs",
+  "competition": "NBA",
+  "kickoff": 1792886400,
+  "selection": "Naji Marshall 6+ rebounds and assists",
+  "chance": 0.7096774193548387,
+  "fair": 1.409090909090909,
+  "team": "Dallas Mavericks",
+  "player": "Naji Marshall",
+  "stat": "Rebounds and assists",
+  "period": "ALL",
+  "line": 5.5,
+  "over": true,
+  "written": 1792884459.6390998
+ },
+ "16824741": {
+  "event_id": 16824741,
+  "fixture": "Atlanta Hawks v Houston Rockets",
+  "competition": "NBA",
+  "kickoff": 1792888200,
+  "selection": "Houston Rockets over 7.5 steals",
+  "chance": 0.7229928571428572,
+  "fair": 1.6686554280738721,
+  "team": "Houston Rockets",
+  "player": null,
+  "stat": "Steals",
+  "period": "ALL",
+  "line": 7.5,
+  "over": true,
+  "written": 1792886871.689193
+ },
+ "16824745": {
+  "event_id": 16824745,
+  "fixture": "Denver Nuggets v New Orleans Pelicans",
+  "competition": "NBA",
+  "kickoff": 1792890000,
+  "selection": "New Orleans Pelicans under 26.5 assists",
+  "chance": 0.7793071428571429,
+  "fair": 1.5959803320569135,
+  "team": "New Orleans Pelicans",
+  "player": null,
+  "stat": "Assists",
+  "period": "ALL",
+  "line": 26.5,
+  "over": false,
+  "written": 1792886871.689193
+ },
+ "16824746": {
+  "event_id": 16824746,
+  "fixture": "Phoenix Suns v Golden State Warriors",
+  "competition": "NBA",
+  "kickoff": 1792893600,
+  "selection": "Phoenix Suns over 3.5 blocks",
+  "chance": 0.7278571428571429,
+  "fair": 1.5600098366688349,
+  "team": "Phoenix Suns",
+  "player": null,
+  "stat": "Blocks",
+  "period": "ALL",
+  "line": 3.5,
+  "over": true,
+  "written": 1792890484.1639428
  }
 }
