@@ -908,10 +908,11 @@ Everything scheduled runs on the Mac. Nothing here is a cloud job.
 | `besttrack.py` | Every best bet the site publishes, settled. |
 | `linelog.py` | Every line the model prices, settled. |
 | `pplog.py` | Every Paddy Power player line, our chance and the result. |
-| `teamlog.py` | The same for Paddy Power team lines (21 October). |
+| `teamlog.py` | The same for Paddy Power team lines (21 October). `python teamlog.py scoreboard` judges the team-line take tier against Paddy Power's real prices, with 95% intervals (TEAMLINE-CHECK.md). |
 | `nba_check.py` | NBA player lines: calibration by stat and line from the committed record, and on the Mac the early-season shrink test on `cache/` and a scoreboard of Paddy Power's settled basketball lines (NBA-CHECK.md, 24 October). |
 | `freshness.py` | How much of a player's record is from before his last long break; a line on a mostly-stale record is "Old record", never acceptable (PLAYER-STALE.md, 24 October). |
 | `player_stale.py` | The evidence for that: the committed records and the football cache across season starts. |
+| `teamline_check.py` | Whether the team-line take tier holds: the published record and the cache walk forward, with 95% intervals (TEAMLINE-CHECK.md, 23 October). |
 | `review.py` | Why each of a report's bets landed or missed. |
 | `backtest.py` | Every bet the model would have made, settled from the cache. |
 
