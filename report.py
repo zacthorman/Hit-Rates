@@ -5843,7 +5843,7 @@ function loadUSModel() {
 let GSTATE = null;
 
 function loadGameState() {
-  if (SPORT !== "football") return;
+  if (SPORT !== "football" && SPORT !== "basketball" && SPORT !== "american-football") return;
   if (typeof fetch !== "function" || location.protocol === "file:") return;
   fetch("gamestate.json", { cache: "no-store" })
     .then(r => (r.ok ? r.json() : null))
@@ -5858,9 +5858,8 @@ function loadGameState() {
 function gameStateView() {
   const el = document.getElementById("gamestate");
   if (!el) return;
-  if (SPORT !== "football") {
-    el.innerHTML = `<p class="note">The game state tab is football only for now; basketball and NFL
-      carry theirs on the Tonight page.</p>`;
+  if (SPORT !== "football" && SPORT !== "basketball" && SPORT !== "american-football") {
+    el.innerHTML = `<p class="note">No game state for this sport yet.</p>`;
     return;
   }
   const ev = GSTATE && DATA && DATA.fixture ? GSTATE.events[String(DATA.fixture.id)] : null;

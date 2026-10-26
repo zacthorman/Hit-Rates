@@ -222,7 +222,14 @@ def run_sport(sport: str, days: float, now: float) -> dict:
             continue
         # his own weighted average times the trees' adjustment (a Poisson offset)
         base = np.clip(sub[m["base"]].astype(float).fillna(0).values, 0.05, None)
-        mu = base * Model(MODELS / f"{sport}_{tgt}.json.gz").predict(sub.reindex(columns=m["features"]).astype(float).values)
+        X = sub.reindex(columns=m["features"]).astype(float).values
+        mu = base * Model(MODELS / f"{sport}_{tgt}.json.gz").predict(X)
+        # weekly corrections (usmodel_weekly.py), applied in order; a bad file is skipped
+        for f in (meta.get("deltas") or {}).get(tgt, []):
+            try:
+                mu = mu * Model(MODELS / "delta" / f).predict(X)
+            except Exception:  # noqa: BLE001
+                pass
         yards = m["spread"]["type"] == "ratio"
         for r, mu_i in zip(sub.itertuples(index=False), mu):
             if yards:

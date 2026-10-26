@@ -102,7 +102,18 @@ def rows(show_all: bool = False) -> list[dict]:
             p = ((hit[1].get("lines") or {}).get(stat) or {}).get(str(n))
             if p is None:
                 continue
-            ps = p * shrink.get(stat, 1.0)
+            # The per-market shrink comes from settled model-ahead bets, which
+            # are nearly all longer prices; applied to a 1.3 line it made
+            # "1+ fouled" read 15% (24 Oct). So it applies from 2.0 up only, and
+            # learn.py's correction is used wherever one has been adopted.
+            ps = p * shrink.get(stat, 1.0) if l["price"] >= 2.0 else p
+            try:
+                import learn
+                lp, src = learn.adjust("football", stat, True, p, l["price"])
+                if src != "model":
+                    ps = lp
+            except Exception:  # noqa: BLE001
+                pass
             edge = ps * l["price"] - 1
             if edge <= 0 and not show_all:
                 continue

@@ -137,6 +137,29 @@ def block(entry, meta) -> str:
     return "".join(parts)
 
 
+US_NOTE = {
+    "basketball": "Pace, ratings, blowout rate and rest are from each side's last 10 (usgame.py). In the "
+                  "backtest the game-state version of the team model did not beat the simple one, so this "
+                  "explains the game; it does not move the chances.",
+    "american-football": "Game script from nflgame.py. The 22 Oct 2026 backtest (NFL_GS_BACKTEST.md) found it "
+                         "improved no NFL market and made passing yards worse on unseen games, so use it to "
+                         "read the game, not as a reason to back an over.",
+}
+
+
+def us_block(entry, meta, sport) -> str:
+    """NBA and NFL (24 Oct 2026): the same How the game will go the tonight
+    page shows, so the report's Game state tab is no longer football only."""
+    import tonight
+    fn = tonight.nba_story_block if sport == "basketball" else tonight.nfl_story_block
+    try:
+        body = fn(entry, meta)
+    except Exception as exc:  # noqa: BLE001
+        body = f"<p class='sub'>Unavailable ({html.escape(str(exc))})</p>"
+    return (f"<div class='gs-tab'><h3>How the game will go</h3>{body}"
+            f"<p class='sub'>{html.escape(US_NOTE[sport])}</p></div>")
+
+
 def main() -> int:
     import context
     import make_index
@@ -146,7 +169,8 @@ def main() -> int:
         if path.name.startswith("pick-"):
             continue
         for e, m in make_index.read_entries(path):
-            if ((e.get("fixture") or {}).get("sport") or "football") != "football":
+            if ((e.get("fixture") or {}).get("sport") or "football") not in ("football", "basketball",
+                                                                           "american-football"):
                 continue
             if m["id"] in seen or not (now - 3 * 3600 < m["kickoff"] < now + DAYS * 86400):
                 continue
@@ -157,10 +181,14 @@ def main() -> int:
     except Exception:  # noqa: BLE001
         pass
     out = {"generated": now, "events": {}}
+    n = {"football": 0, "basketball": 0, "american-football": 0}
     for e, m in entries:
-        out["events"][str(m["id"])] = {"html": block(e, m)}
+        sport = (e.get("fixture") or {}).get("sport") or "football"
+        n[sport] += 1
+        out["events"][str(m["id"])] = {"html": block(e, m) if sport == "football" else us_block(e, m, sport)}
     OUT.write_text(json.dumps(out), encoding="utf-8")
-    print(f"  gamestate.json: {len(out['events'])} football game(s) in {time.time() - t0:.0f}s")
+    print(f"  gamestate.json: {n['football']} football, {n['basketball']} NBA, {n['american-football']} NFL "
+          f"game(s) in {time.time() - t0:.0f}s")
     return 0
 
 

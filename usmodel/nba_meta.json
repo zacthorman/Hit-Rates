@@ -2649,5 +2649,32 @@
     "ll_coin": 0.69
    }
   }
- }
+ },
+ "deltas": {
+  "points": [
+   "nba_points_20261026.json.gz"
+  ],
+  "rebounds": [
+   "nba_rebounds_20261026.json.gz"
+  ],
+  "assists": [
+   "nba_assists_20261026.json.gz"
+  ],
+  "threes": [
+   "nba_threes_20261026.json.gz"
+  ],
+  "pra": [
+   "nba_pra_20261026.json.gz"
+  ],
+  "pr": [
+   "nba_pr_20261026.json.gz"
+  ],
+  "pa": [
+   "nba_pa_20261026.json.gz"
+  ],
+  "ra": [
+   "nba_ra_20261026.json.gz"
+  ]
+ },
+ "weekly": "2026-10-26T12:13:57+00:00"
 }

@@ -88,3 +88,4 @@ _stage_tmp/
 
 # Full results of case_score_backtest.py, regenerable from the cache.
 case_score_results.json
+research/selbt/*.pkl
