@@ -402,6 +402,20 @@ def snapshot(args=None) -> int:
                 snap["source"] = "fmodel"
                 snap["site_chance"] = round(site_over if over else 1 - site_over, 4)
                 snap["confirmed_xi"] = fm[fid]["confirmed"]
+            # learn.py (26 Oct): the corrected chance as it stood at this
+            # snapshot, so the learned_value rule is scored on what it said
+            # then, never on a later, better-informed fit.
+            if (us is not None or m_over is not None) and sport in ("basketball", "american-football", "football"):
+                try:
+                    import learn
+                    pm_side = (us[1] if us is not None else m_over)
+                    pm_side = pm_side if over else 1 - pm_side
+                    lc, lsrc = learn.adjust(sport, stat, over, pm_side, l["price"])
+                    if lsrc != "model":
+                        snap["learned_chance"] = round(lc, 4)
+                        snap["learned_src"] = lsrc
+                except Exception:  # noqa: BLE001
+                    pass
             if us is not None:
                 snap["source"] = "usmodel"
                 snap["site_chance"] = round(site_over if over else 1 - site_over, 4)

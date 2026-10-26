@@ -6489,5 +6489,11 @@
     "ll_coin": 0.5964
    }
   }
+ },
+ "weekly": "2026-10-26T12:20:20+00:00",
+ "deltas": {
+  "tackles": [
+   "nfl_tackles_20261026.json.gz"
+  ]
  }
 }

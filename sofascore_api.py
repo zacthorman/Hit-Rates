@@ -280,6 +280,43 @@ class _FlareSession:
         text = html.unescape(m.group(1)) if m else body
         return _FlareResponse(int(sol.get("status") or 0), text)
 
+
+def _restart_flaresolverr(wait: float = 60) -> bool:
+    """docker restart flaresolverr (opening Docker Desktop first if needed),
+    then wait until it answers. True if it came back. Never raises."""
+    import shutil
+    import subprocess
+    import time as _t
+    import urllib.request
+    docker = shutil.which("docker") or next(
+        (p for p in ("/usr/local/bin/docker", "/opt/homebrew/bin/docker",
+                     "/Applications/Docker.app/Contents/Resources/bin/docker") if os.path.exists(p)), None)
+    if not docker:
+        return False
+    try:
+        if subprocess.run([docker, "info"], capture_output=True, timeout=20).returncode != 0:
+            subprocess.run(["open", "-a", "Docker"], capture_output=True, timeout=20)
+            for _ in range(24):
+                _t.sleep(5)
+                if subprocess.run([docker, "info"], capture_output=True, timeout=20).returncode == 0:
+                    break
+        print("  FlareSolverr not answering: restarting the container")
+        subprocess.run([docker, "restart", "flaresolverr"], capture_output=True, timeout=60)
+        base = FLARESOLVERR.rsplit("/v1", 1)[0]
+        end = _t.time() + wait
+        while _t.time() < end:
+            _t.sleep(5)
+            try:
+                with urllib.request.urlopen(base, timeout=5) as r:
+                    if r.status == 200:
+                        return True
+            except Exception:  # noqa: BLE001
+                continue
+    except Exception:  # noqa: BLE001
+        return False
+    return False
+
+
 def _get_session():
     """One session for the whole run, so cookies persist between requests.
 
@@ -296,6 +333,16 @@ def _get_session():
         try:
             _session = _FlareSession(FLARESOLVERR)
         except Exception as exc:
+            # 26 Oct 2026: it kept falling over overnight and stalling the
+            # morning run. Restart it once (starting Docker Desktop if it is
+            # not running), wait for it, and only then give up.
+            if _restart_flaresolverr():
+                try:
+                    _session = _FlareSession(FLARESOLVERR)
+                except Exception:  # noqa: BLE001
+                    _session = None
+            if _session is not None:
+                return _session
             raise SystemExit(
                 f"\nFlareSolverr is not answering at {FLARESOLVERR} "
                 f"({type(exc).__name__}).\nStart Docker Desktop and the "

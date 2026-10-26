@@ -73,3 +73,4 @@ _to_delete/
 # Scratch staging for uploads and previews. Never commit: the repo is public
 # and update.py / publish.sh run `git add -A`.
 _stage_tmp/
+research/selbt/*.pkl

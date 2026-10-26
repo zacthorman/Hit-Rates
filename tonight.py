@@ -33,6 +33,7 @@ import html
 import boostcheck
 import ruletrack
 import b365value
+import selections
 import sharp
 import time
 from pathlib import Path
@@ -772,7 +773,8 @@ def build(hours: float | None) -> str:
                    "starters are offered.</p>"
                    + "".join(player_rows)
                    + f"<details class='game'><summary><b>Player multi across the games</b></summary>{multi(player_legs_all)}</details>")
-    body = (research_block(now)
+    body = ("<h2 class='first'>Best selections</h2>" + selections.box(now, until)
+            + research_block(now)
             + "<div class='main'>"
             "<input type='radio' name='main' id='mt' checked><label for='mt'>Team lines</label>"
             "<input type='radio' name='main' id='mp'><label for='mp'>Player lines</label>"
