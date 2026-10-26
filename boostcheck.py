@@ -32,6 +32,21 @@ MAX_PRICE = 8.0        # longer prices: a handful of winners decide the record
 MIN_SETTLED = 20
 BREAK_EVEN_TOL = -0.05  # ROI per bet at or above this counts as "about break-even"
 MAX_BETS = 6
+# Whether the box claims value at all: lists bets, stakes them by Kelly and
+# calls them proven or about break-even. False claims nothing; the bets and
+# the record are still worked out, and the record is still printed.
+# Off since 24 Oct 2026 (RELEASE-CHECK.md): the only settled record in the
+# repo, the box's own on tonight.html of 23 Oct, is 108 model-ahead bets at
+# 8.0 or shorter, 28 won, -34.5 points (-32%, roughly -51% to -8%): goals
+# -23% on 44, shots -36% on 53, fouled -49% on 11. The gate that would show a
+# market is its own in-sample record, not a test. Same rule as
+# weekend.VALUE_SHOW: back on only when an out-of-sample record says so.
+VALUE_SHOW = False
+
+
+def value_claimed() -> bool:
+    """Whether the box lists and stakes bets (see VALUE_SHOW)."""
+    return VALUE_SHOW
 
 
 # ------------------------------------------------------------------ value box
@@ -124,6 +139,13 @@ def value_box(now: float, until: float) -> str:
             recs.append(f"{esc(stat)}: {g['n']} bets, {g['w']} won, {g['profit']:+.1f} pts "
                         f"({g['roi'] * 100:+.0f}%)")
     record = "; ".join(recs) or "nothing settled yet"
+    if not value_claimed():
+        would = (f" {len(bets)} bet{'s' if len(bets) != 1 else ''} would have been listed tonight."
+                 if bets else "")
+        return ("<div class='vbox'><p class='none'>Value claims are switched off until a record these "
+                "bets were not picked on shows them making money; the record below is the one they were "
+                f"picked on.{would}</p><p class='sub'>Record of model-ahead bets at {MAX_PRICE:.0f}.0 or shorter: "
+                f"{record}.</p></div>")
     if not bets:
         return ("<div class='vbox'><p class='none'>Nothing tonight where our model beats the Paddy Power "
                 "price by enough, once its record is allowed for.</p>"

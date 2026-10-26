@@ -42,6 +42,7 @@ import json
 from pathlib import Path
 import itertools
 import math
+import probability
 import collections
 import os
 import re
@@ -453,9 +454,7 @@ def _exchange_weight(leg, q) -> float:
             else EXCHANGE_W_TIGHT if q["tight"] else EXCHANGE_W_LOOSE)
 
 
-def _lp(p):
-    p = min(max(p, 1e-4), 1 - 1e-4)
-    return math.log(p / (1 - p))
+_lp = probability.logit
 
 
 # Market anchoring. Across a whole round the exchange is right on average,
@@ -1189,7 +1188,7 @@ HEADLINE_SAMPLE = 15
 
 
 def _shrunk(leg, a=2.0):
-    return (leg["hits"] + a) / (leg["total"] + 2 * a)
+    return probability.shrink(leg["hits"], leg["total"], a)
 
 
 # ------------------------------------------------------------ book prices
@@ -1319,12 +1318,26 @@ def best_banker(legs):
 VALUE_MIN = 0.03
 VALUE_PRICE = (1.25, 6.0)
 VALUE_COUNT = 5
+# The bar above which a value figure is claimed at all: printed as "value
+# +n%" beside a pick, and needed to make the list above. None claims none.
+# Off since 23 Oct 2026 (RULE-REVIEW.md): the 40 bets the page called value
+# from 16 to 21 October were worth -5.1% at Betfair's last price before
+# kick-off (95% -8.9% to -2.3%), against +3.9% claimed. Raising the bar did
+# not help: every bar chosen on 16-18 October lost at the close on 19-21
+# October. The figure is still worked out, for the bad-price guard below and
+# the evaluation; it is not shown as an edge until the closing price says so.
+VALUE_SHOW = None
+
+
+def value_claimed(v) -> bool:
+    """Whether a value figure is shown as value (see VALUE_SHOW)."""
+    return VALUE_SHOW is not None and v is not None and v > VALUE_SHOW
 
 
 def best_value(legs):
     quoted = [l for l in legs if l.get("exchange")]
     pool = [l for l in quoted
-            if l.get("value") is not None and l["value"] >= VALUE_MIN
+            if value_claimed(l.get("value")) and l["value"] >= VALUE_MIN
             and l.get("disagree") is None and l["total"] >= MIN_SAMPLE
             and l.get("stat") not in PICK_COUNT_STATS
             and VALUE_PRICE[0] <= (l["exchange"].get("back") or 0) <= VALUE_PRICE[1]]
@@ -1345,7 +1358,7 @@ def best_value(legs):
             break
     return {"legs": [_single_public(l) for l in chosen], "quoted": len(quoted),
             "positive": sum(1 for l in quoted if (l.get("value") or 0) > 0),
-            "commission": COMMISSION, "min": VALUE_MIN}
+            "commission": COMMISSION, "min": VALUE_MIN, "show": VALUE_SHOW}
 
 
 def best_builder(entries):
@@ -1436,12 +1449,13 @@ def picks(entries, days=7, now=None):
     for entry, meta in upcoming:
         by_sport.setdefault(sport_of(entry), []).append((entry, meta))
 
-    out = {"days": days, "floor": ODDS_FLOOR, "sports": [],
+    out = {"days": days, "floor": ODDS_FLOOR, "sports": [], "valueShow": VALUE_SHOW,
            "playerShrink": player_shrink(),
            "playerShrinkLegs": _PLAYER_SHRINK.get("legs")}
     try:
         import learner
         m = learner.model()
+        learner.save(m)     # the card below reports this fit; record it beside the page
         chk = m.get("check") or {}
         out["learned"] = {"legs": m.get("legs"), "active": bool(m.get("active")), "updated": m.get("updated"),
                           "said": chk.get("said"), "landed": chk.get("landed"), "test": chk.get("test")}

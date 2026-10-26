@@ -1,0 +1,20 @@
+{
+ "start": "2026-10-24",
+ "decide_at": 300,
+ "split": {
+  "tickets": 0
+ },
+ "one side": {
+  "tickets": 0
+ },
+ "all": {
+  "tickets": 0
+ },
+ "left out": {
+  "void leg": 0,
+  "open": 0,
+  "before start": 0
+ },
+ "decision": "waiting: 0 of 300 settled split tickets",
+ "updated": "2026-10-23 20:57 UTC"
+}

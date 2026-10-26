@@ -27,13 +27,15 @@ import json
 import random
 import time
 import webbrowser
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 import clubcolour
 import hitrates
 import report
+import site_guard
 import sofascore_api as api
+import pagedata
 
 OUT_DIR = Path(__file__).parent / "reports"
 
@@ -463,6 +465,18 @@ def _fixture_referee(event: dict) -> dict | None:
         return None
 
 
+def player_breaks_for(entry: dict, player_records: list, event: dict) -> list | None:
+    """Per side, {player: the date his current spell began, or None} (freshness.py).
+
+    None for a national side, whose caps come in windows months apart, so a
+    gap between games there is the calendar, not a break."""
+    if (entry.get("fixture") or {}).get("national"):
+        return None
+    import freshness
+    ko = event.get("startTimestamp")
+    return [freshness.player_breaks(side, ko) for side in player_records]
+
+
 def _sample_age(records: list, event: dict) -> int | None:
     """Days from the most recent match in either team's form to kick-off."""
     kickoff = event.get("startTimestamp")
@@ -570,6 +584,10 @@ def build_fixture(
             # sport, because a club returning from a winter break has the same
             # problem in a milder form and deserves the same warning.
             "staleDays": _sample_age(records, event),
+            # National sides: caps come in windows months apart, so a gap of
+            # weeks between a player's games is the calendar, not a break.
+            # The page's player staleness (freshness.py) is off for them.
+            "national": bool(home.get("national") or away.get("national")),
             # Which sport, straight from the feed. The index groups by this,
             # and until every report carries it that grouping falls back to
             # sniffing the stat names, which works only because football and
@@ -849,6 +867,14 @@ def build_fixture(
                 if extra:
                     player_records[team_index].extend(extra)
 
+        # Each player's most recent long break (freshness.py): the date his
+        # current spell began, or None. The fixture's staleDays lifts after
+        # each team's first game; a player's last ten can still be mostly last
+        # season's, and the page reads this to say so (PLAYER-STALE.md).
+        breaks = player_breaks_for(entry, player_records, event)
+        if breaks is not None:
+            entry["playerBreaks"] = breaks
+
     print_summary(entry)
     return entry
 
@@ -1081,10 +1107,9 @@ def build(
     # that has not long since finished.
     if len(comps) == 1 and all(f["fixture"].get("crossLeague") for f in fixtures) \
             and path.exists():
-        import re
         try:
-            old = json.loads(re.search(r"const ALL = (\{.*?\});\n",
-                                       path.read_text(encoding="utf-8"), re.S).group(1))
+            old = json.loads(pagedata.search(
+                                       path.read_text(encoding="utf-8")).group(1))
         except Exception:
             old = {}
         have = {f["fixture"]["id"] for f in fixtures}
@@ -1344,7 +1369,96 @@ def parse_picks(text: str, limit: int) -> list[int]:
     return picks
 
 
+def known_upcoming(tournament_id: int | None, within_days: float | None = None,
+                   reports_dir: Path | None = None, now: float | None = None) -> int:
+    """Fixtures in this competition that the reports on disk say are still to come.
+
+    Yesterday's page is evidence. If it lists Premier League games for
+    Saturday and today's fetch says there are none, today's fetch is wrong,
+    whatever it printed: the competition was renamed or renumbered upstream,
+    or every team's fixture list came back empty. Counted only within the
+    same horizon the build used, so a Champions League matchday three weeks
+    out does not contradict "nothing in the next three days".
+    """
+    reports_dir = reports_dir or OUT_DIR
+    if tournament_id is None or not reports_dir.exists():
+        return 0
+    now = time.time() if now is None else now
+    until = now + within_days * 86400 if within_days is not None else float("inf")
+    found = set()
+    for path in reports_dir.glob("*.html"):
+        data, _ = site_guard.report_payload(path)
+        for entry in (data or {}).get("fixtures", []):
+            fx = entry.get("fixture") or {} if isinstance(entry, dict) else {}
+            kickoff = fx.get("kickoff") or 0
+            if fx.get("tournamentId") == tournament_id and now < kickoff <= until:
+                found.add(fx.get("id"))
+    return len(found)
+
+
+def bad_fetch_reason(message: str, league: str | None, mark: int,
+                     within_days: float | None = None) -> str | None:
+    """Why a "No fixtures found" is really a failed fetch, or None if it is not.
+
+    run.py says "No fixtures found" for a quiet week, and update.py and the
+    --leagues loop both let that through without publishing a failure. It is
+    also exactly what comes back when every request for the fixture list was
+    refused or answered with the wrong shape, which is how a league used to
+    vanish from the site with a clean exit code.
+    """
+    if "No fixtures found" not in message:
+        return None
+    failed = api.failures_since(mark)
+    if failed:
+        return (f"the fetch failed, not a quiet week: {len(failed)} request(s) "
+                f"came back unusable, first {failed[0]}")
+    dropped = api.last_transport_error()
+    if dropped:
+        return f"the fetch failed, not a quiet week: could not reach SofaScore ({dropped})"
+    if league:
+        tid = api.tournament_id_for(league)
+        if tid is None and league.isdigit():
+            tid = int(league)
+        expected = known_upcoming(tid, within_days)
+        if expected:
+            return (f"the reports on disk list {expected} upcoming {league} "
+                    "fixture(s) and today's fetch found none: the competition "
+                    "may have been renamed or renumbered at SofaScore")
+    return None
+
+
+def fetch_failure(message: str, league: str | None, mark: int,
+                  within_days: float | None = None) -> str | None:
+    """bad_fetch_reason, plus the messages that are a failed fetch outright."""
+    bad = bad_fetch_reason(message, league, mark, within_days)
+    if not bad and message.strip().startswith(("Couldn't reach SofaScore",
+                                               "Couldn't read the team list")):
+        bad = "the fetch returned nothing to build from"
+    return bad
+
+
+def write_build_status(path: str | None, **status) -> None:
+    """What each league came to, for update.py: built, quiet, fetch failed.
+
+    The exit code can only say "something failed". update.py needs to know
+    which league, so that the one whose fetch failed keeps yesterday's page
+    and the rest are published, rather than the whole site waiting on it.
+    """
+    if path:
+        site_guard.atomic_write(Path(path), json.dumps(status, indent=1) + "\n")
+
+
 def main() -> None:
+    try:
+        _main()
+    except api.Blocked as exc:
+        # Being refused is a failed fetch, never a quiet week. Its own exit
+        # code, so update.py stops the publish even in the optional steps.
+        print(f"\nBlocked: {exc}")
+        raise SystemExit(site_guard.BAD_FETCH)
+
+
+def _main() -> None:
     parser = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -1450,6 +1564,11 @@ def main() -> None:
         help="with --league or --teams, only build fixtures kicking off in the "
              "next DAYS days; none in range exits as 'No fixtures found'",
     )
+    parser.add_argument(
+        "--status-file", dest="status_file", default=None, metavar="PATH",
+        help="with --leagues, write what each league came to (built, nothing "
+             "on, fetch failed) as JSON, for update.py",
+    )
     parser.add_argument("--no-open", action="store_true", help="don't launch a browser")
     parser.add_argument("--demo", action="store_true", help="synthetic data, no network")
     args = parser.parse_args()
@@ -1468,8 +1587,10 @@ def main() -> None:
     if args.leagues:
         wanted = [x.strip() for x in args.leagues.split(",") if x.strip()]
         built, failed, empty = [], [], []
-        for name in wanted:
+        bad_fetch: dict[str, str] = {}
+        for n, name in enumerate(wanted):
             print(f"\n{'=' * 60}\n{name}\n{'=' * 60}")
+            mark = api.failure_mark()
             try:
                 sub = argparse.Namespace(**vars(args))
                 sub.leagues = None
@@ -1477,15 +1598,29 @@ def main() -> None:
                 sub.no_open = True
                 main_for(sub)
                 built.append(name)
+            except api.Blocked as exc:
+                # The circuit breaker tripped. Every league left comes from the
+                # same site, so asking again for each of them is exactly the
+                # hammering the breaker exists to stop: they are all marked
+                # as failed fetches and keep yesterday's pages.
+                print(f"  {name}: blocked ({exc})")
+                bad_fetch[name] = f"SofaScore is refusing ({exc})"
+                for rest in wanted[n + 1:]:
+                    bad_fetch[rest] = "not attempted, SofaScore was refusing"
+                break
             except SystemExit as exc:
                 print(f"  {name} failed: {exc}")
+                bad = fetch_failure(str(exc), name, mark, args.within_days)
+                if bad:
+                    print(f"  {name}: {bad}")
+                    bad_fetch[name] = bad
+                    continue
                 # A competition with nothing on this week is not a fault. The
                 # Champions League plays eight matchdays a season, so for most
                 # of the year "no fixtures" is the correct answer and must not
                 # stop the other seven leagues being published. Anything else
-                # -- a name that does not resolve, a team list that would not
-                # read, a fixture that produced no data at all -- is a real
-                # failure and the run is not clean.
+                # -- a name that does not resolve, a fixture that produced no
+                # data at all -- is a real failure and the run is not clean.
                 if "No fixtures found" in str(exc):
                     empty.append(name)
                 else:
@@ -1494,7 +1629,11 @@ def main() -> None:
         print(f"\n\nBuilt {len(built)} report(s): {', '.join(built) or 'none'}")
         if empty:
             print(f"Nothing on this week: {', '.join(empty)}")
+        for name, why in bad_fetch.items():
+            print(f"Fetch failed, yesterday's page kept: {name} ({why})")
         print("Now run: python make_index.py")
+        write_build_status(getattr(args, "status_file", None), built=built,
+                           empty=empty, failed=failed, bad_fetch=bad_fetch)
 
         # A competition that failed used to be a line in the middle of a
         # fourteen hour log and an exit code of zero, so update.py published a
@@ -1506,12 +1645,26 @@ def main() -> None:
                 f"{len(built)} of {len(wanted)} report(s) built; the others are "
                 "missing from this run, and any older report for them is stale."
             )
+        # A failed fetch is its own exit code, so update.py can keep
+        # yesterday's page for those leagues and publish the rest.
+        if bad_fetch:
+            raise SystemExit(site_guard.BAD_FETCH)
         return
 
-    main_for(args)
+    mark = api.failure_mark()
+    try:
+        main_for(args, parser)
+    except SystemExit as exc:
+        text = str(exc).strip()
+        bad = fetch_failure(text, args.league, mark, args.within_days)
+        if bad:
+            print(text)
+            print(f"\nBad fetch: {bad}")
+            raise SystemExit(site_guard.BAD_FETCH)
+        raise
 
 
-def main_for(args) -> None:
+def main_for(args, parser=None) -> None:
     league_filter = None
 
     if getattr(args, "nations", None) is not None:
@@ -1652,7 +1805,8 @@ def main_for(args) -> None:
         return
 
     if args.team is None:
-        parser.print_help()
+        if parser is not None:
+            parser.print_help()
         print("\nStart with:  python run.py --search espanyol\n")
         return
 

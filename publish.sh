@@ -67,6 +67,10 @@ fi
 # FlareSolverr only when the saved cookies have expired. `touch .bet365_off`
 # switches it off.
 "$PY" bet365_prices.py || echo "  bet365 prices not fetched (continuing)"
+# Best bookmaker prices from Oddschecker pages saved by hand into
+# drop/oddschecker/ (oddschecker_import.py, IMPORTS.md). No requests; does
+# nothing when the folder is empty.
+"$PY" oddschecker_import.py || echo "  oddschecker imports not read (continuing)"
 # Pinnacle's prices as margin-free chances (pinnacle_prices.py): result,
 # goals, team goals, corners and bookings for every game in the site's
 # leagues, two requests a league, each league at most every 90 minutes, capped
@@ -157,6 +161,19 @@ touch "$STAGE"/.nojekyll
 # site kept answering 200 and this script reported "verified".
 STAMP="$(date -u '+%Y%m%dT%H%M%SZ')-$$"
 echo "$STAMP" > "$STAGE"/build.txt
+
+# The last check before the force-push, on exactly what is staged
+# (site_guard.py). Several steps above rewrite the reports and the index after
+# update.py has checked them, and a manual or resumed publish never went
+# through update.py at all. A report that is empty, cut off or unreadable, or
+# an index that lists nothing or links to missing pages, stops here: nothing
+# is pushed, so the live site keeps yesterday's pages, and the bad report is
+# swapped back to its last good copy on disk so the next publish cannot stage
+# it again.
+if ! "$PY" site_guard.py gate "$STAGE"; then
+  echo "Publish stopped by site_guard.py. The live site was not touched." >&2
+  exit 1
+fi
 
 cd "$STAGE"
 git init -q

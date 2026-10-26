@@ -31,6 +31,7 @@ import urllib.request
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
+import pagedata
 
 ROOT = Path(__file__).parent
 CACHE = ROOT / "cache" / "espn_nfl_injuries.json"
@@ -233,7 +234,7 @@ def main() -> None:
     args = ap.parse_args()
     path = ROOT / "reports" / "nfl.html"
     text = path.read_text(encoding="utf-8")
-    payload = json.loads(re.search(r"const ALL = (\{.*?\});\n", text, re.S).group(1))
+    payload = json.loads(pagedata.search(text).group(1))
     report = fetch(max_age=0 if not args.dry_run else MAX_AGE)
     for entry in payload["fixtures"]:
         attach(entry, report)

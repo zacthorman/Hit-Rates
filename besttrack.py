@@ -4,6 +4,7 @@ Track every best bet the SITE publishes, settle it, and explain what hits.
     python besttrack.py snapshot   # record the site's current best bets (pre-kick-off only)
     python besttrack.py settle     # settle finished fixtures from SofaScore
     python besttrack.py report     # print the summary
+    python besttrack.py leads      # give every logged lead a leg to settle (settle does this too)
 
 bettrack.py records the bets a person placed or Claude suggested. This one
 records what the site itself put forward, automatically, every time it
@@ -94,6 +95,7 @@ def snapshot(args=None) -> int:
     import make_index
     import parlay
     import tonight
+    import value_cap
     import weekend
 
     now = time.time()
@@ -142,9 +144,11 @@ def snapshot(args=None) -> int:
 
     for entry, meta in upcoming:
         sport = weekend.sport_of(entry)
-        own = sorted([l for l in tonight.legs_of(entry, meta)
-                      if isinstance(l.get("fair"), (int, float)) and l["fair"] >= tonight.MIN_PRICE],
-                     key=lambda l: (-weekend.sort_value(l), -(l.get("total") or 0)))[:TOP_SINGLES]
+        # One leg per player, as tonight.html shows them (value_cap.py).
+        own = value_cap.cap_per_player(
+            sorted([l for l in tonight.legs_of(entry, meta)
+                    if isinstance(l.get("fair"), (int, float)) and l["fair"] >= tonight.MIN_PRICE],
+                   key=lambda l: (-weekend.sort_value(l), -(l.get("total") or 0))))[:TOP_SINGLES]
         for l in own:
             add("Fixture single", [l], sport, l.get("fair"), meta)
         # The player lines tonight.html shows, exactly as shown, so they are
@@ -158,7 +162,7 @@ def snapshot(args=None) -> int:
 
     items = load()
     have = {_key(i) for i in items}
-    added = 0
+    added = track_leads(items)
     for item in new:
         k = _key(item)
         if k in have:
@@ -168,6 +172,70 @@ def snapshot(args=None) -> int:
         added += 1
     save(items)
     print(f"best bets: {added} new recorded, {len(items)} in the record")
+    return added
+
+
+# --------------------------------------------------------------- the leads
+#
+# tonight.py logs each fixture's lead to lead_log.json and its results card
+# settles it against this record. But the lead is chosen on the game-state
+# chance, and the fixture singles above on weekend.sort_value, so a lead
+# could fall outside the top three and never be recorded: 15 of the first
+# 53 leads (21-22 Oct 2026) had nothing to settle them. So every logged lead
+# whose exact leg is not already here is added as a "Lead". lead_log.json
+# only takes a lead before kick-off, so the pre-kick-off rule still holds;
+# snapshot_at is when the lead was written, not when it was copied here.
+
+LEAD_LOG = HERE / "lead_log.json"
+LEAD_KEY = ("event_id", "team", "player", "stat", "period", "line", "over")
+# Older lead_log rows carry no sport; these are the competitions they came from.
+SPORT_BY_COMPETITION = {"NBA": "basketball", "NFL": "american-football",
+                        "MLB": "baseball", "MLB Postseason": "baseball"}
+
+
+def _lead_sport(row: dict, known: dict) -> str:
+    if row.get("sport"):
+        return row["sport"]
+    if row["event_id"] in known:
+        return known[row["event_id"]]
+    comp = row.get("competition") or ""
+    if "darts" in comp.lower():
+        return "darts"
+    return SPORT_BY_COMPETITION.get(comp, "football")
+
+
+def track_leads(items: list[dict]) -> int:
+    """Add a "Lead" item for every logged lead with no leg in the record. Returns how many."""
+    try:
+        log = json.loads(LEAD_LOG.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return 0
+    have = {tuple(l.get(k) for k in LEAD_KEY) for i in items for l in i["legs"]}
+    known = {l["event_id"]: l["sport"] for i in items for l in i["legs"] if l.get("sport")}
+    added = 0
+    for row in sorted(log.values(), key=lambda r: r["kickoff"]):
+        k = tuple(row.get(f) for f in LEAD_KEY)
+        if k in have or not row.get("written") or row["written"] >= row["kickoff"]:
+            continue
+        home, _, away = row["fixture"].partition(" v ")
+        leg = _leg({f: row.get(f) for f in LEAD_KEY if f != "event_id"} | {"fair": row.get("fair")},
+                   {"id": row["event_id"], "home": home, "away": away,
+                    "competition": row.get("competition"), "kickoff": row["kickoff"]},
+                   _lead_sport(row, known))
+        leg["chance"] = row.get("chance") or None
+        items.append({"category": "Lead", "sport": leg["sport"], "snapshot_at": int(row["written"]),
+                      "fair": row.get("fair"), "legs": [leg], "result": None})
+        have.add(k)
+        added += 1
+    return added
+
+
+def leads(args=None) -> int:
+    items = load()
+    added = track_leads(items)
+    if added:
+        save(items)
+    print(f"best bets: {added} lead(s) given a leg to settle")
     return added
 
 
@@ -247,6 +315,8 @@ def settle(args=None) -> int:
     import hitrates
     import sofascore_api as api
     items = load()
+    if track_leads(items):
+        save(items)
     now = time.time()
     done = 0
     events: dict = {}
@@ -287,6 +357,16 @@ def settle(args=None) -> int:
     save(items)
     print(f"best bets: settled {done} leg(s), "
           f"{sum(1 for i in items if i['result'] is None)} bet(s) still open")
+    # Split against one-side parlays on tickets from 24 Oct 2026 on
+    # (parlay_watch.py, LEG-WATCH.md). Reads the record only; never lets a
+    # fault in it cost the settle.
+    # Written beside the store being settled, so anything that points STORE
+    # elsewhere (the tests do) takes the watch with it.
+    try:
+        import parlay_watch
+        print(parlay_watch.text(parlay_watch.update(items, path=Path(STORE).with_name(parlay_watch.OUT_NAME))))
+    except Exception as exc:
+        print(f"  parlay watch skipped: {type(exc).__name__}: {exc}")
     return done
 
 
@@ -417,9 +497,9 @@ def report(args=None) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("cmd", choices=["snapshot", "settle", "report"])
+    ap.add_argument("cmd", choices=["snapshot", "settle", "report", "leads"])
     a = ap.parse_args()
-    {"snapshot": snapshot, "settle": settle, "report": report}[a.cmd](a)
+    {"snapshot": snapshot, "settle": settle, "report": report, "leads": leads}[a.cmd](a)
 
 
 if __name__ == "__main__":

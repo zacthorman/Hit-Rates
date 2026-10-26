@@ -79,15 +79,98 @@ def shape(formation: str) -> dict:
             "back3": float(sizes[0] == 3), "central_mid": central}
 
 
+class ShapeError(ValueError):
+    """A cached file is not the shape this parser knows. Raised, never skipped:
+    a silently empty parse trains the weekly model on nothing and looks fine."""
+
+
+def _read(path) -> object:
+    try:
+        with open(path, encoding="utf-8") as fh:
+            return json.load(fh)
+    except ValueError as exc:
+        raise ShapeError(f"{path}: not JSON ({exc})") from exc
+
+
+def _error_body(d) -> bool:
+    """SofaScore's {"error": {...}} body, cached before sofascore_api learned to
+    drop it: the match has no such data, which is not a shape fault."""
+    return isinstance(d, dict) and set(d) == {"error"}
+
+
+def _check_event(e, path):
+    if not isinstance(e, dict):
+        raise ShapeError(f"{path}: event is {type(e).__name__}, not an object")
+    for k in ("id", "startTimestamp", "homeTeam", "awayTeam", "status"):
+        if k not in e:
+            raise ShapeError(f"{path}: event {e.get('id')} has no {k!r}")
+    for k in ("homeTeam", "awayTeam"):
+        if not isinstance(e[k], dict) or "id" not in e[k]:
+            raise ShapeError(f"{path}: event {e['id']} {k} has no id")
+
+
+def parse_statistics(d, path="statistics") -> dict | None:
+    """{stat name: (home, away)} for the whole match, None for an error body."""
+    if _error_body(d):
+        return None
+    if not isinstance(d, dict) or not isinstance(d.get("statistics"), list):
+        raise ShapeError(f"{path}: expected {{'statistics': [...]}}, got {_describe(d)}")
+    per = next((p for p in d["statistics"] if isinstance(p, dict) and p.get("period") == "ALL"), None)
+    if per is None:
+        if not d["statistics"]:
+            return None  # an empty list: the match has no statistics
+        raise ShapeError(f"{path}: no 'ALL' period among {[p.get('period') for p in d['statistics'] if isinstance(p, dict)]}")
+    if not isinstance(per.get("groups"), list):
+        raise ShapeError(f"{path}: period ALL has no 'groups' list")
+    items = {}
+    for g in per["groups"]:
+        its = g.get("statisticsItems") if isinstance(g, dict) else None
+        if not isinstance(its, list):
+            raise ShapeError(f"{path}: a group has no 'statisticsItems' list")
+        for it in its:
+            if not isinstance(it, dict) or "name" not in it or not ({"homeValue", "awayValue"} & set(it)):
+                raise ShapeError(f"{path}: statistics item {_describe(it)} has no name or values")
+            items.setdefault(it["name"], (_num(it.get("homeValue")), _num(it.get("awayValue"))))
+    return items
+
+
+def parse_lineups(d, path="lineups") -> list[str] | None:
+    """[home formation, away formation] ('' when not given), None for an error body."""
+    if _error_body(d):
+        return None
+    if not isinstance(d, dict) or not isinstance(d.get("home"), dict) or not isinstance(d.get("away"), dict):
+        raise ShapeError(f"{path}: expected {{'home': {{...}}, 'away': {{...}}}}, got {_describe(d)}")
+    out = []
+    for side in ("home", "away"):
+        f = d[side].get("formation")
+        if f is not None and not isinstance(f, str):
+            raise ShapeError(f"{path}: {side} formation is {type(f).__name__}")
+        out.append(f or "")
+    return out
+
+
+def _describe(d) -> str:
+    return f"keys {sorted(d)[:8]}" if isinstance(d, dict) else type(d).__name__
+
+
 def load(cache: Path = CACHE) -> list[dict]:
-    """Every finished football match with statistics and line-ups, oldest first."""
+    """Every finished football match with statistics and line-ups, oldest first.
+
+    A match without its statistics or line-up file is skipped (not fetched
+    yet); a file in a shape not met before raises ShapeError naming it."""
     ev = {}
-    for f in glob.glob(str(cache / "team_*_events_last_*.json")):
-        try:
-            for e in json.load(open(f)).get("events", []):
-                ev[e["id"]] = e
-        except Exception:
-            pass
+    files = glob.glob(str(cache / "team_*_events_last_*.json"))
+    for f in files:
+        d = _read(f)
+        if _error_body(d):
+            continue
+        if not isinstance(d, dict) or not isinstance(d.get("events"), list):
+            raise ShapeError(f"{f}: expected {{'events': [...]}}, got {_describe(d)}")
+        for e in d["events"]:
+            _check_event(e, f)
+            ev[e["id"]] = e
+    if files and not ev:
+        raise ShapeError(f"{cache}: {len(files)} team event files and not one event in them")
     out = []
     for mid, e in ev.items():
         t = e.get("tournament") or {}
@@ -98,21 +181,12 @@ def load(cache: Path = CACHE) -> list[dict]:
         lf, sf = cache / f"event_{mid}_lineups.json", cache / f"event_{mid}_statistics.json"
         if not (lf.exists() and sf.exists()):
             continue
-        try:
-            lu, st = json.load(open(lf)), json.load(open(sf))
-        except Exception:
+        form, items = parse_lineups(_read(lf), lf), parse_statistics(_read(sf), sf)
+        if form is None or items is None:
             continue
-        per = next((p for p in st.get("statistics", []) if p.get("period") == "ALL"), None)
-        if not per:
-            continue
-        items = {}
-        for g in per.get("groups", []):
-            for it in g.get("statisticsItems", []):
-                items.setdefault(it["name"], (_num(it.get("homeValue")), _num(it.get("awayValue"))))
         hs, as_ = (e.get("homeScore") or {}).get("current"), (e.get("awayScore") or {}).get("current")
         out.append({"match": mid, "ts": e["startTimestamp"], "home": e["homeTeam"]["id"], "away": e["awayTeam"]["id"],
-                    "hg": hs, "ag": as_, "items": items,
-                    "form": [(lu.get("home") or {}).get("formation") or "", (lu.get("away") or {}).get("formation") or ""]})
+                    "hg": hs, "ag": as_, "items": items, "form": form})
     out.sort(key=lambda m: (m["ts"], m["match"]))
     return out
 

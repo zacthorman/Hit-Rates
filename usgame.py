@@ -16,6 +16,7 @@ A game's pace is the mean of both sides' possessions.
 from __future__ import annotations
 
 import math
+import probability
 from collections import defaultdict, deque
 
 import numpy as np
@@ -162,22 +163,7 @@ TEAM_STATS = {"pts_for": "Points", "f_Rebounds": "Rebounds", "f_Assists": "Assis
 TEAM_OPP = {"pts_for": "pts_against", **{k: "a_" + k[2:] for k in TEAM_STATS if k.startswith("f_")}}
 
 
-def _nb_ge(k: int, mu: float, a: float) -> float:
-    if k <= 0:
-        return 1.0
-    if a < 1e-6:
-        cdf, term = 0.0, math.exp(-mu)
-        for i in range(k):
-            cdf += term
-            term *= mu / (i + 1)
-        return max(0.0, 1 - cdf)
-    r = 1 / a
-    p = r / (r + mu)
-    cdf, term = 0.0, p ** r
-    for i in range(k):
-        cdf += term
-        term *= (i + r) / (i + 1) * (1 - p)
-    return max(0.0, 1 - cdf)
+_nb_ge = probability.nb_at_least
 
 
 def nba_teams(T: pd.DataFrame, P: pd.DataFrame, games: list[dict], names: dict, models_dir) -> dict:

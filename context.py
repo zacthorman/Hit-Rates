@@ -21,8 +21,11 @@ Everything here is read from what is already on disk, never fetched:
               position when a cached standings table has the team in it
   next        the next three fixtures after this one (cache/team_*_events_next_0)
   absences    the injury list, each name with how often he started lately
-  score       the most likely scoreline, from the report's goals projection
-              where there is one, otherwise from recent xG (untested, labelled)
+  score       the likeliest result and score, with home, draw and away
+              chances, from an independent Poisson model of every club's
+              attack and defence (scoremodels.py, chosen and walk-forward
+              tested in CASE-SCORE.md); the older goals-projection and xG
+              route only when the model has never seen one of the sides
   facts       the handful of those that are actually unusual, in plain sentences
   opp_allows  per leg: what the opposition concedes in that stat, at the
               matching venue, in this competition when there are enough games
@@ -34,6 +37,7 @@ from __future__ import annotations
 
 import json
 import math
+import probability
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -71,8 +75,15 @@ SHORT_COMP = {
 # ------------------------------------------------------------------ helpers
 
 def _short(comp: str | None) -> str:
+    # Matched through competition_key, so a stage ("UEFA Champions League,
+    # Knockout stage") or a respelling ("La Liga") still finds its short name.
+    from sofascore_api import competition_key
     comp = comp or ""
-    return SHORT_COMP.get(comp, comp if len(comp) <= 12 else comp[:11] + ".")
+    key = competition_key(comp)
+    for name, short in SHORT_COMP.items():
+        if competition_key(name) == key:
+            return short
+    return comp if len(comp) <= 12 else comp[:11] + "."
 
 
 def _finished(r: dict) -> bool:
@@ -310,8 +321,60 @@ def _split_to(total: float, edge: float) -> tuple[float, float]:
     return total * share, total * (1 - share)
 
 
-def _poisson(k: int, lam: float) -> float:
-    return math.exp(-lam) * lam ** k / math.factorial(k)
+_poisson = probability.poisson_pmf
+
+
+# The scoreline model. Walk-forward over 3,595 cached matches (CASE-SCORE.md),
+# the route below this (the report's goals projection, or recent xG with the
+# Elo re-split) scored 0.2153 ranked probability score and 1.0364 log loss on
+# the home, draw and away chances; this model scored 0.2101 and 1.0134, and
+# was better in all four test windows. Dixon-Coles and a bivariate Poisson
+# did no better: the low-score correction moved the fourth decimal and the
+# shared component fitted to nothing. The half-life and ridge are the best
+# pooled validation setting from those windows' training data. Fitted once
+# per process on every competitive result in the cache, so it needs no
+# match statistics and covers cup ties and European nights.
+SCORE_KIND = "poisson"
+SCORE_HALF_LIFE = 1460.0
+SCORE_RIDGE = 2.0
+_SCORE_MODEL: dict = {}
+
+
+def score_matches(cache: Path = CACHE) -> list[dict]:
+    """Every competitive result in the cache, as the scoreline model reads them."""
+    import strength
+    return [{"home": e["home"], "away": e["away"], "hg": e["hg"], "ag": e["ag"], "ts": e["ts"]}
+            for e in strength.load_events(cache)
+            if e["kind"] != "friendly" and e["home"] is not None and e["away"] is not None]
+
+
+def _score_model():
+    if "m" not in _SCORE_MODEL:
+        try:
+            import scoremodels
+            _SCORE_MODEL["m"] = scoremodels.TeamGoals(SCORE_KIND, SCORE_HALF_LIFE, SCORE_RIDGE).fit(
+                score_matches(), time.time())
+        except Exception:
+            _SCORE_MODEL["m"] = None
+    return _SCORE_MODEL["m"]
+
+
+def _model_score(entry: dict) -> dict | None:
+    teams = entry.get("teams") or []
+    home = next((t for t in teams if t.get("side") == "home"), None)
+    away = next((t for t in teams if t.get("side") == "away"), None)
+    if not home or not away:
+        return None
+    m = _score_model()
+    if m is None or not (m.knows(home.get("id")) and m.knows(away.get("id"))):
+        return None
+    import scoremodels
+    grid = m.grid(home["id"], away["id"])
+    lh, la = m.expected_goals(home["id"], away["id"])
+    ph, pd, pa = scoremodels.outcome_probs(grid)
+    bi, bj, pb = scoremodels.pick_score(grid)
+    return {"home": bi, "away": bj, "lh": lh, "la": la, "p": pb, "ph": ph, "pd": pd, "pa": pa,
+            "source": "team attack and defence ratings (backtested)"}
 
 
 # ------------------------------------------------------------ open model
@@ -390,6 +453,14 @@ def open_mu(entry: dict) -> tuple | None:
 
 def score(entry: dict, hrecs: list[dict], arecs: list[dict]) -> dict | None:
     """The single most likely scoreline, and where the goal means came from."""
+    modelled = _model_score(entry)
+    if modelled:
+        return modelled
+    return legacy_score(entry, hrecs, arecs)
+
+
+def legacy_score(entry: dict, hrecs: list[dict], arecs: list[dict]) -> dict | None:
+    """The route before CASE-SCORE.md, kept for sides the model has not seen."""
     proj = ((entry.get("projection") or {}).get("ALL") or {}).get("Goals")
     source = "goals projection"
     fx = entry.get("fixture") or {}
@@ -721,22 +792,7 @@ def gs_fit() -> dict:
     return _FIT
 
 
-def _nb_at_least(k: int, mu: float, alpha: float) -> float:
-    if k <= 0:
-        return 1.0
-    if alpha < 1e-6:
-        cdf, term = 0.0, math.exp(-mu)
-        for i in range(k):
-            cdf += term
-            term *= mu / (i + 1)
-        return max(0.0, 1 - cdf)
-    r = 1 / alpha
-    p = r / (r + mu)
-    cdf, term = 0.0, p ** r
-    for i in range(k):
-        cdf += term
-        term *= (i + r) / (i + 1) * (1 - p)
-    return max(0.0, 1 - cdf)
+_nb_at_least = probability.nb_at_least
 
 
 def _model(scope: str, stat: str, own: float, allow: float, f: float, home: bool | None = None):
@@ -1410,11 +1466,37 @@ def _team_model():
         _TM.update(models=models, state=teamstyle.State.from_cache(CACHE, keep_rows=False))
     except Exception as exc:
         _TM["error"] = str(exc)
+        # Said once per run: team legs fall back to the simple model, and a
+        # ShapeError from teamstyle.load is a parser to fix, not a quiet day.
+        print(f"  team model off, team legs use the simple model: {type(exc).__name__}: {exc}")
     return _TM
 
 
-def team_model_mu(stat: str, team_id, opp_id, home: bool, f_own: str, f_opp: str):
+# Yellow cards have their own model (cards_model.py, cards_fit.json): own and
+# provoked cards over 10 and 38 games, the competition's card rate, fouls
+# and Elo, with SofaScore's missing 0-0 rows counted as 0-0s. Walk-forward
+# it beat the team model on every window (CARDS-MODEL.md), so it replaces
+# it for that stat; anything it cannot reach falls back to the team model.
+_CM: dict = {}
+
+
+def _cards_model():
+    if not _CM:
+        try:
+            import cards_model
+            _CM["live"] = cards_model.Live(CACHE)
+        except Exception as exc:
+            _CM["error"] = str(exc)
+    return _CM.get("live")
+
+
+def team_model_mu(stat: str, team_id, opp_id, home: bool, f_own: str, f_opp: str, tid=None):
     """Expected count and spread for one side's stat tonight, or None."""
+    if stat == "Yellow cards":
+        cm = _cards_model()
+        r = cm.side_mu(team_id, opp_id, home, tid) if cm else None
+        if r:
+            return r
     tm = _team_model()
     m = (tm.get("models") or {}).get(stat)
     if not m or "state" not in tm:
@@ -1436,6 +1518,28 @@ def team_model_mu(stat: str, team_id, opp_id, home: bool, f_own: str, f_opp: str
 
 
 _gs_adjust_simple = gs_adjust
+
+# fmodel's names for the player stats it prices (fmodel.json lines). To score is
+# here and not in PLAYER_FIT: the game-state fit has no goals model.
+FM_STAT = {**PLAYER_FIT, "goals": "Goals"}
+
+# How much of a player leg's chance is fmodel's and how much the shrunk record's.
+# scorer_audit.py found the half and half too high on every low line, because
+# the record is pulled towards 50% (it said 24% for to score where 11% landed),
+# and writes a weight to fmodel/tonight_blend.json only for a line where a
+# weight chosen on earlier months beat the half and half on every later month.
+# Any other line keeps the half and half.
+_BLEND: dict = {}
+
+
+def blend_weight(stat: str, k: int) -> float:
+    if "weights" not in _BLEND:
+        try:
+            _BLEND["weights"] = json.loads((ROOT / "fmodel" / "tonight_blend.json").read_text())["weights"]
+        except (OSError, ValueError, KeyError):
+            _BLEND["weights"] = {}
+    w = _BLEND["weights"].get(f"{stat}|{k}")
+    return float(w) if isinstance(w, (int, float)) and 0 <= w <= 1 else 0.5
 
 
 def gs_adjust(leg: dict, entry: dict, gs: dict | None) -> dict | None:  # noqa: F811
@@ -1465,23 +1569,29 @@ def gs_adjust(leg: dict, entry: dict, gs: dict | None) -> dict | None:  # noqa: 
         return _gs_adjust_simple(leg, entry, gs)
     teams = entry.get("teams") or [{}, {}]
     if leg.get("player"):
-        stat = PLAYER_FIT.get((leg.get("stat") or "").lower())
+        stat = FM_STAT.get((leg.get("stat") or "").lower())
         ev = (entry.get("fixture") or {}).get("id")
         p = fm_chance(ev, leg["player"], stat, k) if stat else None
         if p is None or not over:
             return _gs_adjust_simple(leg, entry, gs)
         simple = _gs_adjust_simple(leg, entry, gs) or {}
         # the leg's own chance already carries fmodel where the site blends it
-        chance = base if leg.get("chance_model") is not None else (base + p) / 2
+        if leg.get("chance_model") is not None:
+            chance = base
+        else:
+            w = blend_weight(stat, k)
+            chance = w * p + (1 - w) * base
+        # oppf None: no game-state fit reaches this stat (to score), so there is no factor to show
         return {"chance": chance, "base": base, "model": p, "plain": simple.get("plain", p),
-                "factor": simple.get("factor", 1.0), "oppf": simple.get("oppf", 1.0), "kind": "player model"}
+                "factor": simple.get("factor", 1.0), "oppf": simple.get("oppf"), "kind": "player model"}
     stat = TEAM_LEG_STAT.get(leg.get("stat") or "")
     if not stat:
         return None
     side = teams[t].get("side")
     sh_me, sh_op = shape(entry, side) or {}, shape(entry, "away" if side == "home" else "home") or {}
     r = team_model_mu(stat, teams[t].get("id"), teams[1 - t].get("id"), side == "home",
-                      sh_me.get("formation"), sh_op.get("formation"))
+                      sh_me.get("formation"), sh_op.get("formation"),
+                      tid=(entry.get("fixture") or {}).get("tournamentId"))
     if not r:
         return _gs_adjust_simple(leg, entry, gs)
     p = _nb_at_least(k, r["mu"], r["alpha"])

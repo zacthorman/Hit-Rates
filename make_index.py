@@ -22,14 +22,14 @@ Run it after building reports, then commit and push.
 from __future__ import annotations
 
 import argparse
-import html
 import json
-import re
 from datetime import datetime, timezone
 from pathlib import Path
 
 import picker
+import site_guard
 import weekend
+import pagedata
 
 ROOT = Path(__file__).parent
 REPORTS = ROOT / "reports"
@@ -54,7 +54,7 @@ def read_payload(path: Path) -> dict:
     except OSError:
         text = ""
     if text:
-        payload = re.search(r"const ALL = (\{.*?\});\n", text, re.S)
+        payload = pagedata.search(text)
         if payload:
             try:
                 data = json.loads(payload.group(1))
@@ -243,7 +243,7 @@ def main() -> None:
 
     page = PAGE.replace("__PAYLOAD__", payload).replace("__RESEARCH__", research_card())
     out = ROOT / "index.html"
-    out.write_text(page, encoding="utf-8")
+    site_guard.atomic_write(out, page)
 
     # The picker reads the same reports this index just read, so building it
     # here is what stops the two drifting: a report rebuilt without its picker
@@ -296,7 +296,16 @@ def main() -> None:
         print("  Those links point at the newer file. Delete the old reports")
         print("  if you no longer want them: rm reports/<name>")
 
-    dead = [p for p in files if p.name not in live_reports]
+    # A report whose data would not read has no upcoming fixtures as far as
+    # this loop can tell, and --prune used to delete it: a page cut off part
+    # way through being written took its whole league off the site without a
+    # word. It is left alone and named; site_guard decides what happens to it.
+    unreadable = [p for p in files if not read_payload(p)]
+    if unreadable:
+        print(f"\n{len(unreadable)} report(s) would not read and were not pruned:")
+        for path in unreadable:
+            print(f"  {path.name}")
+    dead = [p for p in files if p.name not in live_reports and p not in unreadable]
     if dead:
         print(f"\n{len(dead)} report(s) have no upcoming fixtures left:")
         for path in dead:
@@ -817,6 +826,12 @@ function strengthDetail(l) {
 function chanceText(l) {
   return l.chance != null ? `${Math.round(l.chance * 100)}%` : "&mdash;";
 }
+/* Whether a value figure is shown as value: above the bar weekend.VALUE_SHOW
+   sets, and never while that is off (RULE-REVIEW.md). */
+function valueClaimed(v) {
+  const bar = DATA.picks && DATA.picks.valueShow;
+  return v != null && bar != null && v > bar;
+}
 /* The exchange, where Betfair prices the same bet: its chance with the margin
    off, the back price you could take, and what the pick is worth at it. */
 function exchangeLine(l) {
@@ -828,7 +843,7 @@ function exchangeLine(l) {
     return `<div class="pk-str">Exchange ${pct(x.p)}, model ${pct(l.chanceModel)}: <b>${Math.round(Math.abs(l.disagree) * 100)} points apart</b>,
       a warning rather than an edge; the chance used leans on the exchange.</div>`;
   }
-  const val = v == null ? "" : v > 0.005
+  const val = v == null ? "" : valueClaimed(v)
     ? ` &middot; <b class="pk-pos">value +${Math.round(v * 100)}%</b> at ${fmtOdds(x.back)}`
     : ` &middot; no value at ${fmtOdds(x.back)}`;
   return `<div class="pk-str">Exchange ${pct(x.p)}, model ${pct(l.chanceModel)}${val}${x.tight ? "" : " &middot; thin market"}</div>`;
@@ -851,7 +866,7 @@ function legRow(l, extra) {
   const s = l.strength;
   const str = s && s.team != null ? ` &middot; ${s.team} v ${s.opp}` : "";
   const ex = l.exchange && l.exchange.back
-    ? ` &middot; exchange ${fmtOdds(l.exchange.back)}${l.value > 0.005 ? ` <b class="pk-pos">+${Math.round(l.value * 100)}%</b>` : ""}` : "";
+    ? ` &middot; exchange ${fmtOdds(l.exchange.back)}${valueClaimed(l.value) ? ` <b class="pk-pos">+${Math.round(l.value * 100)}%</b>` : ""}` : "";
   const bk = bookOk(l) ? ` &middot; fair ${fmtOdds(l.fair)}` : (l.book ? ` &middot; ${bookShort(l.book.name)} only ${fmtOdds(l.book.price)}` : " &middot; not priced at a book");
   const shown = bookOk(l) ? `<small>${bookShort(l.book.name)}</small> ${fmtOdds(l.book.price)}` : fmtOdds(l.fair);
   return `<li class="pk-leg"><span class="t">${legText(l)}</span><span class="p">${shown}</span>

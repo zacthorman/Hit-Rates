@@ -40,6 +40,7 @@ from pathlib import Path
 
 import make_index
 import parlay
+import value_cap
 import weekend
 
 ROOT = Path(__file__).resolve().parent
@@ -168,8 +169,10 @@ def leg_row(leg, entry=None) -> str:
         if q.get("back"):
             bits.append(f"back {q['back']:.2f}")
         if leg.get("value") is not None:
+            # As on the index: a value figure is shown only above the bar
+            # weekend.VALUE_SHOW sets, which is off (RULE-REVIEW.md).
             v = leg["value"]
-            bits.append(f"<b>{'+' if v >= 0 else '&minus;'}{abs(v) * 100:.1f}% value</b>")
+            bits.append(f"<b>+{v * 100:.1f}% value</b>" if weekend.value_claimed(v) else "no value")
         elif leg.get("disagree") is not None:
             bits.append(f"model {abs(leg['disagree']) * 100:.0f} pts off the market")
         strength_note += f"<br><span class='sub'>{' &middot; '.join(bits)}</span>"
@@ -181,15 +184,18 @@ def leg_row(leg, entry=None) -> str:
                 strength_note += f"<br><span class='allow'>{html.escape(a['text'])}</span>"
             g = leg.get("gs")
             if g:
-                bits = [f"opponent &times;{g['oppf']:.2f}"]
+                bits = [f"opponent &times;{g['oppf']:.2f}"] if g.get("oppf") is not None else []
                 if abs(g["factor"] - 1) >= 0.02:
                     bits.append(f"game state &times;{g['factor']:.2f}")
                 kind = g.get("kind") or "model"
                 before = (f"; {g['plain'] * 100:.0f}% before the game state"
                           if abs(g["plain"] - g["model"]) >= 0.005 else "")
-                strength_note += (f"<br><span class='gs'>Backtested {html.escape(kind)} <b>{g['model'] * 100:.0f}%</b> "
-                                  f"({', '.join(bits)}{before}). "
-                                  f"With the record: <b>{g['chance'] * 100:.0f}%</b></span>")
+                # where the record carries no weight (context.blend_weight) there is nothing to add
+                with_rec = (f"With the record: <b>{g['chance'] * 100:.0f}%</b>"
+                            if abs(g["chance"] - g["model"]) >= 0.005 else "The record adds nothing on this line")
+                detail = f" ({', '.join(bits)}{before})" if bits or before else ""
+                strength_note += (f"<br><span class='gs'>Backtested {html.escape(kind)} <b>{g['model'] * 100:.0f}%</b>"
+                                  f"{detail}. {with_rec}</span>")
             mn = context.minutes_note(entry, leg) if leg.get("player") else None
             if mn:
                 strength_note += f"<br><span class='sub'>Minutes: {html.escape(mn)}</span>"
@@ -326,8 +332,9 @@ def case_block(entry, meta, lead, gs=None) -> str:
         argument += " " + gs["script"]
         g = (lead or {}).get("gs")
         if g:
-            argument += (f" The backtested {g.get('kind') or 'model'} makes this bet {g['model'] * 100:.0f}%; "
-                         f"with the record, {g['chance'] * 100:.0f}%.")
+            argument += (f" The backtested {g.get('kind') or 'model'} makes this bet {g['model'] * 100:.0f}%"
+                         + (f"; with the record, {g['chance'] * 100:.0f}%." if abs(g["chance"] - g["model"]) >= 0.005
+                            else "."))
     parts.append(f"<p class='argue'>{esc(argument)}</p>")
     parts.append(gs_block(gs))
     if b.get("facts"):
@@ -549,9 +556,10 @@ def research_block(now: float) -> str:
 #
 # Each fixture's lead is written to lead_log.json before kick-off (append and
 # update until kick-off, never after), and settled against best_bets.json,
-# which besttrack.py settles from the result. The card shows the last day's
-# leads ticked or crossed, and how many the page expected to land, so the
-# page is marked on its own calls.
+# which besttrack.py settles from the result. besttrack.track_leads adds any
+# lead the snapshot missed, so every lead logged here has a leg to settle.
+# The card shows the last day's leads ticked or crossed, and how many the
+# page expected to land, so the page is marked on its own calls.
 
 LEAD_LOG = ROOT / "lead_log.json"
 KEY = ("event_id", "team", "player", "stat", "period", "line", "over")
@@ -559,6 +567,29 @@ KEY = ("event_id", "team", "player", "stat", "period", "line", "over")
 
 def _leg_key(l) -> tuple:
     return tuple(l.get(k) for k in KEY)
+
+
+def tonight_chance(l, sport: str | None = None) -> float:
+    """The chance a fixture's lead is picked on and logged with.
+
+    The game state's chance where it reaches the leg. Legs it cannot reach
+    keep their own chance, so nothing is promoted just for being unreachable,
+    and a leg with no calibrated chance at all ranks last on 0.
+
+    Darts is the exception. No darts leg has a game state, strength, shrunk
+    or exchange chance, so every darts leg scored 0: the 13 darts leads of
+    22 Oct 2026 were logged at 0% and picked on sample size alone. Darts gets
+    weekend.chance, the shrunk record its weekend picks already use. On the
+    best darts leg per match the site has settled (52 legs) it said 65% and
+    71% landed, so it errs cautious; see PROOF-2026-10-22.md.
+    """
+    g = l.get("gs")
+    if g:
+        return g["chance"]
+    if sport == "darts":
+        return weekend.chance(l)
+    c = weekend.chance(l) if (l.get("pStrength") or l.get("pShrunk") or l.get("pExchange")) else None
+    return c if c is not None else 0
 
 
 def write_leads(rows, now) -> None:
@@ -572,7 +603,7 @@ def write_leads(rows, now) -> None:
             continue
         log[str(meta["id"])] = {
             "event_id": meta["id"], "fixture": f"{meta['home']} v {meta['away']}",
-            "competition": meta.get("competition"), "kickoff": meta["kickoff"],
+            "competition": meta.get("competition"), "sport": meta.get("sport"), "kickoff": meta["kickoff"],
             "selection": fmt_leg(leg), "chance": chance, "fair": leg.get("fair"),
             **{k: leg.get(k) for k in KEY if k != "event_id"}, "written": now}
     LEAD_LOG.write_text(json.dumps(log, indent=1), encoding="utf-8")
@@ -657,16 +688,14 @@ def build(hours: float | None) -> str:
     team_rows, player_rows = [], []
     lead_log = []
 
-    def tonight_chance(l):
-        g = l.get("gs")
-        if g:
-            return g["chance"]
-        c = weekend.chance(l) if (l.get("pStrength") or l.get("pShrunk") or l.get("pExchange")) else None
-        return c if c is not None else 0
-
-    def rank(pool):
-        return sorted(pool, key=lambda l: (-tonight_chance(l) * (l.get("fair") or 1) ** 0.5,
-                                           -(l.get("total") or 0)))
+    # Ranked on the module's tonight_chance (game state first, the darts fix),
+    # one leg per player (value_cap.py): two legs on one player land
+    # together, so a second is the same bet twice, not a second bet. Team
+    # legs are never capped.
+    def rank(pool, sport_key):
+        return value_cap.cap_per_player(sorted(
+            pool, key=lambda l: (-tonight_chance(l, sport_key) * (l.get("fair") or 1) ** 0.5,
+                                 -(l.get("total") or 0))))
 
     def singles_table(rows):
         body = "".join(leg_row(l, ent) for l, ent in rows) or "<tr><td colspan='4'>nothing qualified</td></tr>"
@@ -691,10 +720,14 @@ def build(hours: float | None) -> str:
                 l["gs"] = context.gs_adjust(l, entry, gs)
         except Exception:
             gs = None
-        own = rank(pool)[:SINGLES_PER_FIXTURE]
-        lead_log.append((meta, own[0] if own else None, tonight_chance(own[0]) if own else None))
-        team_pool = rank([l for l in pool if not l.get("player")])
-        player_pool = rank([l for l in pool if l.get("player")])
+        # The game state re-ranks the pool: a leg it lifts can climb into the
+        # six, and one it cuts can fall out (tonight_chance, above).
+        sport_key = weekend.sport_of(entry)
+        own = rank(pool, sport_key)[:SINGLES_PER_FIXTURE]
+        lead_log.append(({**meta, "sport": sport_key},
+                         own[0] if own else None, tonight_chance(own[0], sport_key) if own else None))
+        team_pool = rank([l for l in pool if not l.get("player")], sport_key)
+        player_pool = rank([l for l in pool if l.get("player")], sport_key)
         team_legs_all.extend(l for l in legs if not l.get("player"))
         player_legs_all.extend(l for l in legs if l.get("player"))
 
@@ -892,10 +925,16 @@ runs 5&ndash;8% a market and compounds with every leg you add.
 </details>
 {body}
 <details class="warn"><summary>Why multiples are worse than their legs</summary>
-A multiple is worse than its legs. The margin compounds, the legs in one round
-are correlated, and the shop sells accumulators because they are the most
-profitable thing on the counter. The same-game prices above already carry that
-discount; the cross-game ones do not, and are therefore optimistic.
+A multiple is worse than its legs at a bookmaker's price. The margin compounds
+with every leg, and the shop sells accumulators because they are the most
+profitable thing on the counter. Legs in the same game can move together, so
+the same-game builders above are priced from how often their legs landed
+together, not by multiplying. Legs in different games do not move together:
+in the site's own published legs the correlation between them is effectively
+nil, and replayed over past matches, multiplied prices landed about as often
+as they said (1.01 times). So multiplying is right for the cross-game prices,
+and they are not optimistic on that account. Any error in them comes from the
+legs themselves.
 </details>
 </body></html>
 """
@@ -911,7 +950,8 @@ def main(argv=None) -> None:
 
     page = build(None if args.all else args.hours)
     out = ROOT / "tonight.html"
-    out.write_text(page, encoding="utf-8")
+    import site_guard
+    site_guard.atomic_write(out, page)
     print(f"Wrote {out} ({len(page)/1024:.0f} KB)")
 
 

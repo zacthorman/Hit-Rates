@@ -1162,6 +1162,7 @@ input[type=number]::-webkit-inner-spin-button {
 .vd-ok { background: rgba(232, 185, 35, 0.22); color: var(--text-primary); }
 .vd-avoid { background: rgba(220, 60, 60, 0.16); color: var(--miss); }
 .vd-long { background: var(--tint); color: var(--muted); }
+.vd-stale { background: var(--tint); color: var(--muted); border: 1px dashed var(--border); }
 .pp-hero { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
 .pp-hero .swatch { margin-right: 6px; }
 .pp-big { font-size: 22px; font-weight: 700; }
@@ -5897,6 +5898,14 @@ function modelEvent(fx) {
   return USMODEL ? USMODEL.events[String(fx.fixture.id)] || null : null;
 }
 
+/* To be booked from the cards model (cards_model.py via fmodel.json): the
+   side's expected cards from the backtested cards model, split across the
+   XI by fouls per 90 over expected minutes. Null where it has no chance. */
+function cardModelP(name, fx) {
+  if (SPORT !== "football") return null;
+  return modelP(name, "Card", 0.5, fx);
+}
+
 /* The model's chance of OVER `line` for this player, or null. */
 function modelP(name, stat, line, fx) {
   const ev = modelEvent(fx);
@@ -5908,10 +5917,35 @@ function modelP(name, stat, line, fx) {
   return typeof v === "number" ? v : null;
 }
 
+/* The Players tab's own chance where fmodel has none, recalibrated.
+
+   scorer_audit.py replayed pricePlayer on every starter since July 2026: it
+   ran high on every shots and shots on target line but 1+ (shots on target
+   2+ said 19% and landed 7%), because the player calibration above pulls
+   every log-odds towards 50%. A Platt map per line, chosen on August and
+   holding on September and October, goes in fmodel/site_calib.json and
+   reaches the page here at render. Football only, "Stat|k" for "k+", and
+   only on the record-based branches (three or more appearances) it was
+   fitted on; a line with no map keeps pricePlayer's number. */
+const SITE_CALIB = __SITE_CALIB__;
+
+function siteCalibrated(price, stat, line, over) {
+  if (SPORT !== "football" || !price || price.source === "blend" || (price.n || 0) < 3) return price;
+  const k = line + 0.5;
+  const c = Number.isInteger(k) ? SITE_CALIB[`${stat}|${k}`] : null;
+  if (!c || !(price.p > 0 && price.p < 1)) return price;
+  const pOver = Math.min(1 - 1e-4, Math.max(1e-4, over ? price.p : 1 - price.p));
+  const cal = 1 / (1 + Math.exp(-(c[0] + c[1] * Math.log(pOver / (1 - pOver)))));
+  const q = over ? cal : 1 - cal;
+  return Object.assign({}, price, { p: q, fair: fairOdds(q), need: Math.max(price.need || 0, fairOdds(q)),
+    siteCalibrated: true, siteP: price.p });
+}
+
 /* pricePlayer's answer with the model's chance swapped in, when it has one. */
 function withModel(price, name, stat, line, over, fx) {
   let p = modelP(name, stat, line, fx);
-  if (p === null || !price) return price;
+  if (!price) return price;
+  if (p === null) return siteCalibrated(price, stat, line, over);
   // NBA and NFL: the model's chance blended with the site's own, recalibrated,
   // with the weights fitted on the validation period (usmodel.json "blend").
   const bl = SPORT !== "football" && USMODEL && USMODEL.blend[stat];
@@ -5977,6 +6011,15 @@ function squadPlayers(teamIndex) {
   }
   byPlayer.forEach(rows => rows.sort((a, b) => (a.date < b.date ? -1 : 1)));
   return byPlayer;
+}
+
+/* His records under the filters, by name, from whichever side he is on. */
+function playedOf(name) {
+  for (const t of [0, 1]) {
+    const rows = squadPlayers(t).get(name);
+    if (rows) return rows;
+  }
+  return [];
 }
 
 /* Every match on file for him, no filters: the record a bookmaker sees. */
@@ -6179,13 +6222,19 @@ function rungHtml(key, label, record, ours, book, bf, addIndex) {
   const b3 = parts.length === 4 ? ppPrice(parts[1], parts[2], parseFloat(parts[3]), true, "b365") : null;
   const ref = typed || b3 || ppp || (bf && bf.back) || est;
   const real = typed || b3 || ppp || (bf && bf.back);
+  const fr = parts.length >= 3 ? freshnessByName(parts[1]) : null;
   return `<div class="pp-rung" data-pkey="${escapeHtml(key)}" data-pp="${ours}" data-pdef="${b3 || ppp || (bf && bf.back) || est || ""}">
-    ${real ? verdictHtml({ p: ours, price: real, n: 5 }) : ""}<span class="pp-line">${label}</span>
-    <span class="pp-rec">${record}</span>
+    ${real ? verdictHtml({ p: ours, price: real, n: 5, over: true,
+                           stat: parts.length === 4 ? parts[2] : null,
+                           line: parts.length === 4 ? parseFloat(parts[3]) : null,
+                           fresh: fr && fr.share }) : ""}<span class="pp-line">${label}</span>
+    <span class="pp-rec">${record}${staleNoteHtml(fr)}</span>
     <span class="pp-kv"><small>Ours</small><b>${Math.round(ours * 100)}%</b></span>
     <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(ours))}</b></span>
     ${b3 ? `<span class="pp-kv pp-ppp"><small>Bet365</small><b>${fmtOdds(b3)}</b></span>` : ""}
     ${ppp ? `<span class="pp-kv pp-ppp"><small>Paddy Power</small><b>${fmtOdds(ppp)}</b></span>` : ""}
+    ${parts.length === 4 ? bestHtml(parts[1], parts[2], parseFloat(parts[3]), ours)
+      : parts[2] === "score" ? bestHtml(parts[1], "Goals", 0.5, ours) : ""}
     ${bf ? `<span class="pp-kv pp-bf" title="Betfair Exchange back price${bf.mid ? ", mid " + fmtOdds(bf.mid) : ""}"><small>Betfair</small><b>${fmtOdds(bf.back)}</b></span>` : ""}
     <span class="pp-kv" title="A rough guide to what a bookmaker pricing off his whole record would offer: the chance over every match on file, plus a ${Math.round(BOOK_MARGIN * 100)}% margin. Not a scraped price."><small>Est. bookie</small><b>${est ? "~" + fmtOdds(est) : "&ndash;"}</b></span>
     <label class="pp-kv pp-in"><small>Your price</small><input type="number" step="0.01" min="1.01" inputmode="decimal" data-spin="1" data-pprice="${escapeHtml(key)}" value="${typed || ""}" placeholder="price"></label>
@@ -6371,56 +6420,163 @@ const PP_PATTERNS = [
 ];
 const PP_YES = { "Player Shown a Card": "Card", "Player Assists": "Assists" };
 /* The bookmakers the pages carry prices for, by their key in markets.json. */
-const BOOKS = { pp: "Paddy Power", b365: "Bet365" };
+const BOOKS = { pp: "Paddy Power", b365: "Bet365", oc: "Best price" };
+/* Oddschecker bookmaker codes, for the best price (oddschecker_import.py). */
+const OC_BOOKS = { B3: "bet365", SK: "Sky Bet", PP: "Paddy Power", WH: "William Hill",
+  FB: "Betfair Sportsbook", WA: "Betway", CE: "Coral", LD: "Ladbrokes", UN: "Unibet",
+  VC: "BetVictor", BY: "BoyleSports", EE: "888sport", FR: "Betfred", SX: "Spreadex",
+  QN: "QuinnBet", MR: "Midnite" };
+
+/* Paddy Power's Super Sub: an anytime goalscorer bet on a starter who is
+   taken off moves to his replacement. Mirrors supersub.py: the extra chance
+   is (1 - his own) x the share of his starts that ended before 85 minutes x
+   how often a replacement for his position scores, measured on 6,765
+   matches in the backtest cache (supersub_fit.json). */
+const SUPER_SUB_REP = { G: 0, D: 0.024, M: 0.052, F: 0.080 };
+function superSub(p, played) {
+  const starts = (played || []).filter(g => g.started && (g.minutes || 0) > 0);
+  if (SPORT !== "football" || starts.length < 5) return { p, extra: 0 };
+  const counts = {};
+  played.forEach(g => { if (g.position) counts[g.position] = (counts[g.position] || 0) + 1; });
+  const pos = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0];
+  const rep = SUPER_SUB_REP[pos] || 0;
+  const s = starts.filter(g => g.minutes < 85).length / starts.length;
+  const q = p + (1 - p) * s * rep;
+  return { p: q, extra: q - p };
+}
+
+/* How much of a player's record is from before his last long break.
+   Mirrors freshness.py (PLAYER-STALE.md). The fixture's staleDays is days
+   since the newest match in either team's form, so it lifts after each
+   team's first game while his last ten can still be mostly last season's.
+   A break is a gap of BREAK_DAYS or more between two of his games, or
+   between his last game and this kick-off; games on or after the date his
+   current spell began are fresh. Under STALE_SHARE of his window fresh and
+   the line is never acceptable. National sides are left out: caps come in
+   windows months apart. */
+const BREAK_DAYS = 45, STALE_SHARE = 0.5;
+function dayOf(d) {
+  if (d === null || d === undefined || d === "") return null;
+  if (typeof d === "number") return Math.floor(d / 86400);
+  const t = Date.parse(String(d).slice(0, 10) + "T00:00:00Z");
+  return isNaN(t) ? null : Math.floor(t / 86400000);
+}
+function isoOfDay(n) { return new Date(n * 86400000).toISOString().slice(0, 10); }
+function breakDateOf(dates, kickoff) {
+  const days = dates.map(dayOf).filter(d => d !== null).sort((a, b) => a - b);
+  const ko = dayOf(kickoff);
+  if (!days.length) return null;
+  if (ko !== null && ko - days[days.length - 1] >= BREAK_DAYS) return isoOfDay(ko);
+  for (let i = days.length - 1; i > 0; i--) {
+    if (days[i] - days[i - 1] >= BREAK_DAYS) return isoOfDay(days[i]);
+  }
+  return null;
+}
+function windowFreshness(dates, brk) {
+  const days = dates.map(dayOf).filter(d => d !== null);
+  if (!days.length) return { fresh: 0, n: 0, share: null, brk };
+  const b = dayOf(brk);
+  const fresh = b === null ? days.length : days.filter(d => d >= b).length;
+  return { fresh, n: days.length, share: fresh / days.length, brk };
+}
+const NATIONAL_COMP = /Nations League|World Cup|European Championship|Euro 20|Qualif|International Friendl|Copa Am[eé]rica|Africa Cup|Asian Cup|Gold Cup/i;
+function nationalFixture() {
+  const f = (DATA && DATA.fixture) || {};
+  if (f.national !== undefined) return !!f.national;
+  return NATIONAL_COMP.test(f.competition || "");
+}
+/* {fresh, n, share, brk} for the rows a line is priced on, or null for a national side. */
+function freshnessOf(t, name, rows) {
+  if (nationalFixture()) return null;
+  const pb = DATA.playerBreaks && DATA.playerBreaks[t];
+  const brk = pb && Object.prototype.hasOwnProperty.call(pb, name) ? pb[name]
+    : breakDateOf(allPlayed(t, name).map(r => r.date), DATA.fixture && DATA.fixture.kickoff);
+  return windowFreshness((rows || []).map(r => r.date), brk);
+}
+/* The same for a player found by name on either side, over his last ten under the filters. */
+function freshnessByName(name) {
+  for (const t of [0, 1]) {
+    const rows = squadPlayers(t).get(name);
+    if (rows) return freshnessOf(t, name, gatedApps(rows).slice(-10));
+  }
+  return null;
+}
+function staleNoteHtml(f) {
+  if (!f || f.share === null || f.share >= STALE_SHARE) return "";
+  const since = f.brk ? new Date(f.brk + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }) : "";
+  return ` &middot; <b>old record: ${f.fresh} of ${f.n} games since his break${since ? " (" + since + ")" : ""}</b>`;
+}
 
 /* Take, acceptable or avoid, for one priced line.
-   Take: more likely than not by our numbers, the price beats our chance by
-   5% or more, and the record behind it is five games or more.
-   Acceptable: more likely than not and about fair (within 5% either way),
-   or value we cannot fully vouch for: a thin record or the card estimate.
+   Take: team lines only, through the backtested gate below. Player lines
+   no longer (RULE-REVIEW.md, 23 Oct 2026): take was ours 50%+, the price
+   beating our chance by 5% or more, on five games or more. On
+   Paddy Power's settled lines those won 57 of 177 against 63% said, ROI
+   -34%, and the 154 settled after the first 23 made -37% (95% about -51%
+   to -20%). Even if every football loss among them had really been a win,
+   they would have landed 50% (95% 43% to 58%). An edge that size has been
+   our number being wrong, so it is marked avoid, like a price 5% worse.
+   Acceptable: more likely than not and about fair (within 5% either way).
+   Replayed over the cache (ACCEPTABLE-CHECK.md) it holds for starters,
+   except on the lines RUNS_HIGH names (fouls, fouled and tackles at 2+,
+   and assists, ASSISTS-WATCH.md), which are long shots instead.
    Long shot: under 50% by our numbers. However big the edge looks, it rests
-   on one or two games in ten, so it is never called take or acceptable.
-   Avoid: the price is more than 5% worse than our chance. */
+   on one or two games in ten, so it is never called acceptable.
+   Avoid: the price is more than 5% worse than our chance, or more than 5%
+   better than it. */
 function verdictOf(v) {
   if (!(v.price > 1) || !(v.p > 0)) return null;
   const e = v.p * v.price - 1;
   if (e < -0.05) return "avoid";
-  // The card estimate is never "take": it is uncalibrated, and on 20 Oct
-  // 2026 it showed edges of +80% to +150% on players at 9.0 to 12.0, which
-  // is the estimate being wrong, not value. Under 50%, like any bet under
-  // 50%, it is a long shot; acceptable only above that and 5% clear.
-  if (v.heuristic) return v.p >= 0.5 && e >= 0.05 ? "ok" : "long";
   if (v.p < 0.5) return "long";
-  // Nothing adjusted it for the opponent (no projection, no match odds, no
-  // model): it can be acceptable, never take.
-  // Two guards before anything is called take, found on NBA opening night
-  // (21 Oct 2026), when the model called 116 of 561 Paddy Power lines take:
-  //   * stale data: no competitive game in two months means every record is
-  //     last season's (for the NBA, mostly playoffs, heavier minutes for the
-  //     starters), so the whole board leans one way and that is not value;
-  //   * on basketball, an edge over 30% on a player line is our number being
-  //     off, as on the football team lines.
-  // Both can still be acceptable. Lift the second once pplog has settled a
-  // few weeks of NBA lines and says how far off the model runs.
-  // staleDays is set on every fixture; stale means past the 60-day line the
-  // page's own warning uses (fixed 21 Oct 2026: it blocked every take).
+  // Team lines keep their own rule (teamlines.verdict, TEAM-LINES.md): take
+  // only when the team model priced the line in a market that passed
+  // teamline_backtest.py, from that market's threshold to the 30% cap, and
+  // never on stale data (no competitive game in two months, the 60-day line
+  // the page's own warning uses). The Paddy Power evidence in RULE-REVIEW.md
+  // is on player lines, so it does not override that backtest.
   const stale = DATA && DATA.fixture && (DATA.fixture.staleDays || 0) > 60;
-  // NBA and NFL: the backtested model is about as sharp as Paddy Power on
-  // real lines (checked 21 Oct 2026), so a gap that wide is more likely ours.
-  const tooBig = (SPORT === "basketball" || SPORT === "american-football") && e > 0.3;
-  if (e >= 0.05 && (v.n || 0) >= 5 && !v.unadjusted && !stale && !tooBig) return "take";
+  if (v.team) return v.tested && e >= v.threshold && e <= 0.3 && (v.n || 0) >= 5 && !stale ? "take" : "ok";
+  if (e >= 0.05) return "avoid";
+  // The card estimate is never acceptable: it is uncalibrated, and on 20 Oct
+  // 2026 it showed edges of +80% to +150% on players at 9.0 to 12.0, which
+  // is the estimate being wrong, not value.
+  if (v.heuristic) return "long";
+  // Football fouls, fouled and tackles at 2 or more: our number runs high
+  // there (ACCEPTABLE-CHECK.md). Replayed over the cache, starters we made
+  // 50%+ on those lines landed 7.6 points under what we said before
+  // September and 7.3 under from September (95% -8.6 to -5.9), so a price
+  // fair by our numbers lost about 13%. A long shot, not acceptable.
+  if (RUNS_HIGH(v)) return "long";
+  // Mostly before his last long break (freshnessOf): last season's games, or
+  // games before a long injury, at the minutes and role he had then. Every
+  // sport. Never acceptable; marked "Old record" (PLAYER-STALE.md).
+  if (typeof v.fresh === "number" && v.fresh < STALE_SHARE) return "stale";
   return "ok";
+}
+
+/* The player lines where our chance has run high: see verdictOf. */
+const RUNS_HIGH_STATS = new Set(["Fouls", "Fouled", "Tackles"]);
+function RUNS_HIGH(v) {
+  if (SPORT !== "football" || v.team || v.over === false) return false;
+  // Football assists 1+ (ASSISTS-WATCH.md): starters we made 50%+ landed
+  // 22.3% before September and 20.3% from September against 53% said (95%
+  // -42.8 to -23.0 points on the later months), and at every chance 7.6%
+  // landed against 17.6% said. A long shot, never acceptable.
+  if (v.stat === "Assists" && v.line >= 0.5) return true;
+  return RUNS_HIGH_STATS.has(v.stat) && v.line >= 1.5;
 }
 
 function verdictHtml(v) {
   const k = verdictOf(v);
   if (!k) return "";
-  const text = { take: "Take", ok: "Acceptable", long: "Long shot", avoid: "Avoid" }[k];
+  const text = { take: "Take", ok: "Acceptable", long: "Long shot", avoid: "Avoid", stale: "Old record" }[k];
   const why = {
     take: "More likely than not, and the price beats our chance by 5% or more, on a record of five games or more",
-    ok: "More likely than not and close to a fair price, or value resting on a thin record or an estimate",
-    long: "Under 50% by our numbers: a big edge here is noise, not value",
-    avoid: "The price is more than 5% worse than our chance",
+    ok: "More likely than not and close to a fair price by our numbers",
+    long: "Under 50% by our numbers, or a football assists line, or a fouls, fouled or tackles line at 2 or more, where our number has run high: a big edge here is noise, not value",
+    avoid: "The price is more than 5% worse than our chance, or more than 5% better: on Paddy Power's settled lines an edge that size has been our number being wrong",
+    stale: "Most of the games behind this line are from before his last long break (the summer, or an injury), at the minutes and role he had then: not acceptable until more of his record is from since",
   }[k];
   return `<span class="vd vd-${k}" title="${why}">${text}</span>`;
 }
@@ -6436,38 +6592,64 @@ function ppLines(name, src = "pp") {
     const pat = PP_PATTERNS.find(([rx]) => rx.test(r.m));
     if (pat) {
       const n = parseInt(r.m.match(pat[0])[1], 10);
-      out.push({ stat: pat[1], line: n - 0.5, over: true, price: r.p, label: `${n}+`, market: r.m });
+      out.push({ book: r.b || null, books: r.n || null, stat: pat[1], line: n - 0.5, over: true, price: r.p, label: `${n}+`, market: r.m });
       continue;
     }
     if (PP_YES[r.m]) {
       const st = PP_YES[r.m];
-      out.push({ stat: st, line: 0.5, over: true, price: r.p,
+      out.push({ book: r.b || null, books: r.n || null, stat: st, line: 0.5, over: true, price: r.p,
                  label: st === "Card" ? "to be booked" : "1+", market: r.m });
       continue;
     }
     const stat = PP_STAT[r.m];
     if (!stat) continue;
     if (stat === "Anytime touchdown" || stat === "Goals") {
-      out.push({ stat, line: 0.5, over: true, price: r.p,
+      out.push({ book: r.b || null, books: r.n || null, stat, line: 0.5, over: true, price: r.p,
                  label: stat === "Goals" ? "to score" : "Anytime TD", market: r.m });
       continue;
     }
     if (r.o === "OVER" || r.o === "UNDER") {
       if (r.l == null) continue;
-      out.push({ stat, line: r.l, over: r.o === "OVER", price: r.p,
+      out.push({ book: r.b || null, books: r.n || null, stat, line: r.l, over: r.o === "OVER", price: r.p,
                  label: `${r.o === "OVER" ? "Over" : "Under"} ${r.l}`, market: r.m });
       continue;
     }
     const n = parseFloat(String(r.s).replace(/[^0-9.].*$/, ""));
     if (!(n > 0)) continue;
-    out.push({ stat, line: n - 0.5, over: true, price: r.p, label: `${n}+`, market: r.m });
+    out.push({ book: r.b || null, books: r.n || null, stat, line: n - 0.5, over: true, price: r.p, label: `${n}+`, market: r.m });
   }
   return out.map(o => Object.assign(o, { src }));
 }
 
 function ppPrice(name, stat, line, over, src = "pp") {
-  const hit = ppLines(name, src).find(x => x.stat === stat && x.line === line && x.over === (over !== false));
+  const hit = ppLine(name, stat, line, over, src);
   return hit ? hit.price : null;
+}
+
+function ppLine(name, stat, line, over, src = "pp") {
+  return ppLines(name, src).find(x => x.stat === stat && x.line === line && x.over === (over !== false)) || null;
+}
+
+/* The best bookmaker price Oddschecker showed, beside the fair price.
+   `ours` is our chance at the line. Shown, not used for the verdict. */
+function bestHtml(name, stat, line, ours) {
+  const b = ppLine(name, stat, line, true, "oc");
+  if (!b) return "";
+  const m = fixtureMarket();
+  const at = m && m.oc && m.oc.at ? Math.round((Date.now() / 1000 - m.oc.at) / 3600) : null;
+  const book = b.book ? (OC_BOOKS[b.book] || b.book) : "bookmaker not known (copied text)";
+  // Paddy Power's to-score carries Super Sub, which is worth more than the
+  // player alone; anyone else's is the player alone.
+  let p = ours;
+  let ss = "";
+  if (b.book === "PP" && stat === "Goals" && SPORT === "football") {
+    const q = superSub(ours, playedOf(name));
+    if (q.extra > 0) { p = q.p; ss = `, Super Sub makes ours ${Math.round(p * 100)}%`; }
+  }
+  const e = p * b.price - 1;
+  const title = `Best of ${b.books || "?"} bookmakers on Oddschecker: ${book}${ss}. Edge ${e >= 0 ? "+" : ""}${Math.round(e * 100)}%.`
+    + (at !== null ? ` Page saved ${at}h ago.` : "");
+  return `<span class="pp-kv pp-ppp" title="${escapeHtml(title)}"><small>Best${b.book ? " · " + escapeHtml(b.book) : ""}</small><b>${fmtOdds(b.price)}</b></span>`;
 }
 
 /* Our chance at a Paddy Power line: the same pricePlayer() as everywhere,
@@ -6476,6 +6658,7 @@ function ppValued(t, name, played, src = "pp") {
   const lines = ppLines(name, src);
   if (!lines.length) return [];
   const recent = gatedApps(played).slice(-10);
+  const fr = freshnessOf(t, name, recent);
   const adj = {};
   const out = [];
   for (const x of lines) {
@@ -6484,8 +6667,8 @@ function ppValued(t, name, played, src = "pp") {
       // half everything. Heuristic: shown, never counted as value.
       const r = cardCase(t, name, recent), f = cardCase(t, name, played);
       if (!r || !f) continue;
-      const p = 1 - Math.exp(-(r.lam + f.lam) / 2);
-      out.push(Object.assign({}, x, { t, name, p, edge: p * x.price - 1, k: 0, n: r.n,
+      const p = cardModelP(name) ?? 1 - Math.exp(-(r.lam + f.lam) / 2);
+      out.push(Object.assign({}, x, { t, name, p, edge: p * x.price - 1, k: 0, n: r.n, fresh: fr && fr.share, freshInfo: fr,
         k5: null, n5: null, priced: { p, fair: fairOdds(p), need: fairOdds(p) }, heuristic: true }));
       continue;
     }
@@ -6509,6 +6692,15 @@ function ppValued(t, name, played, src = "pp") {
       if (sc === null) continue;
       overPrice = Object.assign({}, overPrice, { p: sc, fair: fairOdds(sc) });
     }
+    // Paddy Power's to-score carries Super Sub: worth more than his own chance.
+    let supersub = 0;
+    if (x.stat === "Goals" && SPORT === "football" && src === "pp") {
+      const q = superSub(overPrice.p, played);
+      if (q.extra > 0) {
+        supersub = q.extra;
+        overPrice = Object.assign({}, overPrice, { p: q.p, fair: fairOdds(q.p) });
+      }
+    }
     const price = x.over ? overPrice : Object.assign({}, overPrice,
       { p: 1 - overPrice.p, fair: fairOdds(1 - overPrice.p) });
     const vals = apps.map(q => q.value);
@@ -6517,7 +6709,7 @@ function ppValued(t, name, played, src = "pp") {
     const k5 = last5.filter(v => x.over ? v > x.line : v <= x.line).length;
     const basis = opponentBasis(x.stat, t);
     out.push(Object.assign({}, x, { t, name, p: price.p, edge: price.p * x.price - 1,
-      k, n: vals.length, k5, n5: last5.length, priced: price,
+      k, n: vals.length, k5, n5: last5.length, priced: price, supersub, fresh: fr && fr.share, freshInfo: fr,
       unadjusted: price.source !== "fmodel" && !basis,
       oddsAdj: price.source !== "fmodel" && basis === "odds" }));
   }
@@ -6603,6 +6795,11 @@ function teamNewsHtml() {
 /* Under a value row: whether the chance is the model's, whether it rests on
    a predicted XI, and a warning when the edge is too big to take on trust. */
 function modelNote(v) {
+  const ss = v.supersub ? ` &middot; Super Sub +${(v.supersub * 100).toFixed(1)} pts` : "";
+  return modelNoteBase(v) + ss;
+}
+
+function modelNoteBase(v) {
   if (!v.priced || (v.priced.source !== "fmodel" && v.priced.source !== "fmodel-tail")) {
     if (v.unadjusted) return " &middot; <b>no opponent adjustment</b>";
     return v.oddsAdj ? " &middot; opponent from the match odds" : "";
@@ -6636,7 +6833,7 @@ function ppRowHtml(v, withName) {
   const inSlip = SLIP.some(s => s.key === rowKey(row));
   return `<div class="pp-rung">
     ${verdictHtml(v)}<span class="pp-line">${withName ? `<b>${escapeHtml(v.name)}</b>${inj ? ` <span class="lu-badge pp-out">${escapeHtml(inj)}</span>` : ""}<br>` : ""}${escapeHtml(v.stat)} ${escapeHtml(v.label)}</span>
-    <span class="pp-rec">${v.k5 === null ? "fouls-based estimate" : `${v.k5}/${v.n5} last 5 &middot; ${v.k}/${v.n} last ${v.n}`}${modelNote(v)}</span>
+    <span class="pp-rec">${v.k5 === null ? "fouls-based estimate" : `${v.k5}/${v.n5} last 5 &middot; ${v.k}/${v.n} last ${v.n}`}${modelNote(v)}${staleNoteHtml(v.freshInfo)}</span>
     <span class="pp-kv"><small>Ours</small><b>${Math.round(v.p * 100)}%</b></span>
     <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(v.p))}</b></span>
     <span class="pp-kv pp-ppp"><small>${BOOKS[v.src || "pp"]}</small><b>${fmtOdds(v.price)}</b></span>
@@ -6652,12 +6849,28 @@ function ppCardHtml(t, name, played, src = "pp") {
   const book = BOOKS[src];
   const when = m && m[src] && m[src].at ? new Date(m[src].at * 1000).toLocaleString("en-GB",
     { weekday: "short", hour: "2-digit", minute: "2-digit" }) : "";
-  const n = { take: 0, ok: 0, long: 0, avoid: 0 };
+  const n = { take: 0, ok: 0, long: 0, avoid: 0, stale: 0 };
   vals.forEach(v => { const k = verdictOf(v); if (k) n[k]++; });
-  const sum = `${n.take} to take &middot; ${n.ok} acceptable &middot; ${n.long} long shots &middot; ${n.avoid} to avoid`;
+  const sum = `${n.take} to take &middot; ${n.ok} acceptable &middot; ${n.long} long shots &middot; ${n.avoid} to avoid`
+    + (n.stale ? ` &middot; ${n.stale} on an old record` : "");
   return `<div class="pp-section">${book} lines${when ? " &middot; prices from " + when : ""} &middot; ${sum}</div>
     <div class="pp-stat pp-ppcard">${vals.map(v => ppRowHtml(v)).join("")}
     <p class="note">Every ${book} line for him, best value first, each marked take, acceptable, long shot or avoid. Ours is worked out at ${book}'s own line. Prices move: check before betting.</p></div>`;
+}
+
+/* No more than VALUE_PER_PLAYER lines per player in a value list, his
+   biggest edges kept (value_cap.py MAX_PER_PLAYER). Lines on one player land
+   together: eight on one man are one bet on one night, not eight. `seen`
+   carries the count across lists that are read as one, take then acceptable. */
+const VALUE_PER_PLAYER = 1;
+function capPerPlayer(list, seen = new Map()) {
+  return list.filter(v => {
+    const k = v.t + "|" + v.name;
+    const n = seen.get(k) || 0;
+    if (n >= VALUE_PER_PLAYER) return false;
+    seen.set(k, n + 1);
+    return true;
+  });
 }
 
 /* Best value across the whole game, for the Players front page. */
@@ -6670,7 +6883,8 @@ function ppBestHtml(src = "pp") {
     if (!gatedApps(played).length) return;
     if (INJ_OUT.test(injuryOf(t, name) || "")) return;
     ppValued(t, name, played, src).forEach(v => {
-      if (!(v.p >= 0.5 && v.edge > 0 && v.n >= 5)) return;
+      // Below a 5% edge only: a bigger one is marked avoid (verdictOf).
+      if (!(v.p >= 0.5 && v.edge > 0 && v.edge < 0.05 && v.n >= 5)) return;
       // Football to-score is logged but not called value until the results
       // say how far off it runs (pplog.py UNCALIBRATED), unless the
       // backtested model priced it, which is calibrated.
@@ -6685,8 +6899,8 @@ function ppBestHtml(src = "pp") {
   if (!rows.length) return "";
   rows.sort((a, b) => b.edge - a.edge);
   return `<div class="pp-section">Best value at ${BOOKS[src]}</div>
-    <div class="pp-stat pp-ppcard">${rows.slice(0, 12).map(v => ppRowHtml(v, true)).join("")}
-    <p class="note">Lines where our chance (50% or more) beats ${BOOKS[src]}'s price, biggest edge first. Players ruled out are left off; anyone questionable is marked, so check the inactives. Ours leans on the last ten games and is not proven on player bets: treat a big edge as a reason to look closer, not a certainty.</p></div>`;
+    <div class="pp-stat pp-ppcard">${capPerPlayer(rows).slice(0, 12).map(v => ppRowHtml(v, true)).join("")}
+    <p class="note">Lines where our chance (50% or more) beats ${BOOKS[src]}'s price by under 5%, biggest edge first, one per player; a bigger edge has been our number being wrong. Players ruled out are left off; anyone questionable is marked, so check the inactives. Ours leans on the last ten games and is not proven on player bets: treat a big edge as a reason to look closer, not a certainty.</p></div>`;
 }
 
 /* ------------------------------------------------- Team lines
@@ -6783,10 +6997,13 @@ function teamValued() {
     let p = probOver(l.line, exp, vals);
     if (!l.over) p = 1 - p;
     p = calibrate(p);
+    // A market that passed teamline_backtest.py (TEAM-LINES.md) is priced by
+    // the team model, the number that was tested, and only those can be take.
+    const tested = teamModelChance(l);
+    if (tested) { p = tested.p; exp = tested.mu; basis = "model"; }
     const hits = vals.filter(v => l.over ? v > l.line : v < l.line).length;
-    // Not backtested on team markets yet: an edge over 30% on a main line is
-    // far more likely our number being off than Paddy Power's, so it can be
-    // acceptable but never take.
+    // An edge over 30% on a main line is far more likely our number being
+    // off than Paddy Power's, so it can be acceptable but never take.
     const edge = p * l.price - 1;
     // The record has to agree before it is a take: at least half the last
     // games landed, and the expectation within half and double the side's
@@ -6797,11 +7014,13 @@ function teamValued() {
     out.push({
       team: true, t: l.t, name, stat: l.stat, line: l.line, over: l.over, price: l.price,
       src: "pp", p, edge, k: hits, n: vals.length, expected: exp, basis,
-      // Never "take" for now: on 21 Oct 2026, 26 of the 30 takes on the
-      // European pages were team corners, all from the cross-league odds
-      // scaling, which has never been tested against results. Acceptable at
-      // most until the team lines are logged and settled like the player ones.
-      unadjusted: true, suspect: edge > 0.3, disagree,
+      // On 21 Oct 2026, 26 of the 30 takes on the European pages were team
+      // corners from the cross-league odds scaling, never tested against
+      // results. Since the backtest (22 Oct 2026) a team line is take only
+      // when the team model prices it in a market that passed, from that
+      // market's threshold (verdictOf); everything else is acceptable at most.
+      tested: !!tested, threshold: tested ? tested.threshold : null,
+      unadjusted: !tested, suspect: edge > 0.3, disagree,
       label: `${TEAM_STAT_LABEL[l.stat] || l.stat} ${l.over ? "over" : "under"} ${l.line}`,
     });
   });
@@ -6814,11 +7033,36 @@ function teamValued() {
   return [...best.values()];
 }
 
+/* The team model's chance for a Paddy Power team line, when its market
+   passed teamline_backtest.py. report.py attaches each side's expected count
+   and spread (DATA.teamModel, from context.team_model_mu) and the passed
+   markets (ALL.teamLineGate) at build time; a match total adds the two sides
+   and takes the spread the backtest fitted on match totals. */
+function teamModelChance(l) {
+  const gate = ((ALL.teamLineGate || {}).markets || {})[`${l.stat}|${l.scope === "match" ? "match" : "side"}`];
+  const sides = (DATA.teamModel || {})[l.stat];
+  if (!gate || !sides) return null;
+  let mu, alpha;
+  if (l.scope === "match") {
+    if (!sides[0] || !sides[1] || !(gate.alpha_match >= 0)) return null;
+    mu = sides[0].mu + sides[1].mu; alpha = gate.alpha_match;
+  } else {
+    const x = sides[l.t];
+    if (!x) return null;
+    mu = x.mu; alpha = x.alpha;
+  }
+  if (!(mu > 0)) return null;
+  const k = Math.floor(l.line);
+  const under = alpha < 1e-6 ? poissonCdf(k, mu) : negBinCdf(k, mu, 1 / alpha);
+  return { p: l.over ? 1 - under : under, mu, threshold: gate.threshold };
+}
+
 function teamRowHtml(v) {
   const long = v.p < 0.5;
   const cls = long ? "pp-long" : v.edge >= 0.05 ? "pp-pos" : v.edge <= -0.05 ? "pp-neg" : "";
   const basis = { projection: "opponent-adjusted projection", odds: "opponent from the match odds",
-                  record: "own record, no opponent adjustment" }[v.basis];
+                  record: "own record, no opponent adjustment",
+                  model: "team model, backtested" }[v.basis];
   return `<div class="pp-rung">
     ${verdictHtml(v)}<span class="pp-line"><b>${escapeHtml(v.name)}</b><br>${escapeHtml(v.label)}</span>
     <span class="pp-rec">${v.k}/${v.n} last ${v.n} &middot; expect ${v.expected.toFixed(1)} &middot; ${basis}${v.suspect ? " &middot; edge too big to trust" : v.disagree ? " &middot; record disagrees" : ""}</span>
@@ -6832,7 +7076,7 @@ function teamRowHtml(v) {
 function teamValueHtml() {
   const vals = teamValued();
   if (!vals.length) return "";
-  const g = { take: [], ok: [], long: [], avoid: [] };
+  const g = { take: [], ok: [], long: [], avoid: [], stale: [] };
   vals.forEach(v => { const k = verdictOf(v); if (k) g[k].push(v); });
   g.take.sort((a, b) => b.edge - a.edge);
   g.ok.sort((a, b) => b.edge - a.edge);
@@ -6840,7 +7084,18 @@ function teamValueHtml() {
   return `<div class="pp-section">Team lines${g.take.length ? ` &middot; ${g.take.length} to take` : ""} (${rows.length})</div>
     <div class="pp-stat pp-ppcard">${rows.length ? rows.slice(0, 30).map(teamRowHtml).join("")
       : `<p class="note">Nothing worth taking or acceptable in the team markets.</p>`}
-    <p class="note">Paddy Power's corners, cards, fouls and shots-on-target lines for each side and the match, priced off the last ten games. Left off: ${g.long.length} long shot${g.long.length === 1 ? "" : "s"} and ${g.avoid.length} priced worse than our chance. Not yet tested against results, so none is called take: acceptable at most. Cards and fouls follow the referee as much as the teams: treat those as the weaker calls.</p></div>`;
+    <p class="note">Paddy Power's corners, cards, fouls and shots-on-target lines for each side and the match, priced off the last ten games. Left off: ${g.long.length} long shot${g.long.length === 1 ? "" : "s"} and ${g.avoid.length} priced worse than our chance. ${teamGateNote()} Cards and fouls follow the referee as much as the teams: treat those as the weaker calls.</p></div>`;
+}
+
+function teamGateNote() {
+  const g = ALL.teamLineGate || {};
+  const passed = Object.keys(g.markets || {}).map(k => {
+    const [stat, scope] = k.split("|");
+    return `${TEAM_STAT_LABEL[stat] || stat} (${scope === "match" ? "match total" : "one side"}) from a ${Math.round(g.markets[k].threshold * 100)}% edge`;
+  });
+  if (!passed.length) return "No team market has passed the backtest, so none is called take: acceptable at most.";
+  const short = g.shortfall > 0 ? ` A take's chance runs high (the backtest's takes landed ${Math.round(g.shortfall * 100)} points below it), so read its edge as smaller than shown.` : "";
+  return `Only markets that passed the backtest can be take, priced by the team model: ${passed.join(", ")}. Every other team line is acceptable at most.${short}`;
 }
 
 /* ------------------------------------------------- Value tab
@@ -6872,10 +7127,15 @@ function valueView() {
       if (!best.has(k) || best.get(k).price < v.price) best.set(k, v);
     }));
   }));
-  const groups = { take: [], ok: [], long: [], avoid: [] };
+  const groups = { take: [], ok: [], long: [], avoid: [], stale: [] };
   best.forEach(v => { const k = verdictOf(v); if (k) groups[k].push(v); });
   groups.take.sort((a, b) => b.edge - a.edge);
   groups.ok.sort((a, b) => b.edge - a.edge);
+  const capSeen = new Map();
+  const beforeCap = groups.take.length + groups.ok.length;
+  groups.take = capPerPlayer(groups.take, capSeen);
+  groups.ok = capPerPlayer(groups.ok, capSeen);
+  const capped = beforeCap - groups.take.length - groups.ok.length;
   const when = srcs.map(s => m[s].at
     ? `${BOOKS[s]} ${new Date(m[s].at * 1000).toLocaleString("en-GB", { weekday: "short", hour: "2-digit", minute: "2-digit" })}`
     : BOOKS[s]).join(" &middot; ");
@@ -6892,10 +7152,10 @@ function valueView() {
   el.innerHTML = `<p class="note">Prices from ${when}. Each line is our chance against the better of the two prices.${oppNote} Prices move: check before betting.</p>`
     + teamNewsHtml()
     + teamValueHtml()
-    + (block("Take", groups.take, "More likely than not, and the price beats our chance by 5% or more, on a record of five games or more. Biggest edge first.")
+    + (block("Take", groups.take, "More likely than not, and the price beats our chance by 5% or more, on a record of five games or more. Biggest edge first, one line per player across Take and Acceptable.")
        || `<div class="pp-section">Take</div><p class="note">Nothing to take on this game at the current prices.</p>`)
     + block("Acceptable", groups.ok, "More likely than not and close to a fair price, or value we cannot fully vouch for: a thin record or the card estimate. Fine as part of a slip, not on its own.")
-    + `<p class="note">Left off: ${groups.long.length} long shot${groups.long.length === 1 ? "" : "s"} (under 50% by our numbers) and ${groups.avoid.length} line${groups.avoid.length === 1 ? "" : "s"} priced worse than our chance. Every line is still on each player's profile.</p>`;
+    + `<p class="note">Left off: ${groups.long.length} long shot${groups.long.length === 1 ? "" : "s"} (under 50% by our numbers), ${groups.avoid.length} line${groups.avoid.length === 1 ? "" : "s"} priced worse than our chance${groups.stale.length ? `, ${groups.stale.length} on a record mostly from before the player's last long break (marked "Old record" on his profile)` : ""}${capped ? ` and ${capped} more line${capped === 1 ? "" : "s"} on players already listed` : ""}. Every line is still on each player's profile.</p>`;
 }
 
 function squadHome() {
@@ -7011,6 +7271,8 @@ function profileView(t, name) {
     return a;
   };
   const card = halfAndHalf(cardCase(t, name, recent), cardCase(t, name, played));
+  const cardModel = card ? cardModelP(name) : null;
+  if (card && cardModel !== null) card.p = cardModel;
   if (card) {
     const cardFull = cardCase(t, name, fullRec.length ? fullRec : played, true);
     const bf = (playerMarket(name) || {}).card || null;
@@ -7022,7 +7284,9 @@ function profileView(t, name) {
         <span>${card.fouls90.toFixed(2)} fouls/90 &middot; ${Math.round(card.expMin)} min expected</span></div>
       <p class="pp-why">${card.fouls90.toFixed(2)} fouls per 90 over his last ${card.n}, and ${escapeHtml(DATA.teams[t].name)} get a card for every ${(1 / card.perFoul).toFixed(1)} fouls.
         Projected to foul ${card.matchAdj >= 1 ? "more" : "less"} than usual here (x${card.matchAdj.toFixed(2)}).${opp}
-        The chance is half this form and half his full record under the filters. Heuristic, not backtested: card history per player is not in the data yet, so this works from fouls.</p>
+        ${cardModel !== null
+          ? `The chance is from the cards model: ${escapeHtml(DATA.teams[t].name)}'s expected cards tonight (backtested, it beat the team model on every test window), split across the XI by fouls per 90 and expected minutes. The split between players is not backtested: card history per player is not in the data yet.`
+          : "The chance is half this form and half his full record under the filters. Heuristic, not backtested: card history per player is not in the data yet, so this works from fouls."}</p>
       ${profileChart(recent, "Fouls", 0.5, t)}
       ${rungHtml(`${DATA.fixture.id}|${name}|card`, "Card", `fouls, last ${card.n}`, card.p,
                  cardFull ? cardFull.p : null, bf, null)}
@@ -9757,6 +10021,16 @@ loadUSModel();
 """
 
 
+def site_calibration() -> dict:
+    """fmodel/site_calib.json's maps for the Players tab's fallback (scorer_audit.py), or none."""
+    try:
+        maps = json.loads((Path(__file__).parent / "fmodel" / "site_calib.json").read_text())["maps"]
+    except (OSError, ValueError, KeyError):
+        return {}
+    return {k: v for k, v in maps.items()
+            if isinstance(v, list) and len(v) == 2 and all(isinstance(x, (int, float)) for x in v)}
+
+
 def build_html(payload: dict) -> str:
     first = payload["fixtures"][0]
     fixture = first["fixture"]
@@ -9801,6 +10075,7 @@ def build_html(payload: dict) -> str:
         allow = sorted(set(markets.player_stats_for(sport)) & parlay.LADDERED)
     scan_allow = json.dumps(allow)
     min_minutes = json.dumps(model.min_minutes_for(sport))
+    site_calib = json.dumps(site_calibration() if sport == "football" else {})
     count = len(payload["fixtures"])
     scope = f"{count} fixtures" if count > 1 else "1 fixture"
 
@@ -10174,7 +10449,7 @@ def build_html(payload: dict) -> str:
 </footer>
 
 </div>
-<script>{JS.replace("__PAYLOAD__", json.dumps(payload)).replace("__BETTABLE__", bettable).replace("__ZERO_FILL__", zero_fill).replace("__PLAYER_SCAN_ALLOW__", scan_allow).replace("__MIN_MINUTES__", min_minutes).replace("__SPORT__", json.dumps(sport))}</script>
+<script>{JS.replace("__PAYLOAD__", json.dumps(payload)).replace("__BETTABLE__", bettable).replace("__ZERO_FILL__", zero_fill).replace("__PLAYER_SCAN_ALLOW__", scan_allow).replace("__MIN_MINUTES__", min_minutes).replace("__SITE_CALIB__", site_calib).replace("__SPORT__", json.dumps(sport))}</script>
 </body>
 </html>
 """
@@ -10236,7 +10511,37 @@ def _attach_darts(payload: dict) -> None:
             pass
 
 
+def _attach_team_lines(payload: dict) -> None:
+    """The team model's numbers for the team lines in markets that passed
+    teamline_backtest.py (TEAM-LINES.md): each side's expected count and
+    spread on every football fixture, and the passed markets with their
+    thresholds. teamValued() calls a team line take only from these. Nothing
+    passed, nothing attached; a failure here never costs the report."""
+    try:
+        import teamlines
+        gate = teamlines.page_gate()
+    except Exception as exc:
+        print(f"  team lines gate skipped: {type(exc).__name__}: {exc}")
+        return
+    payload["teamLineGate"] = gate
+    if not gate["markets"]:
+        return
+    stats = sorted({k.split("|")[0] for k in gate["markets"]})
+    for f in payload.get("fixtures") or []:
+        if ((f.get("fixture") or {}).get("sport") or "football") != "football":
+            continue
+        try:
+            models = teamlines.side_models(f, stats)
+        except Exception as exc:
+            print(f"  team model skipped: {type(exc).__name__}: {exc}")
+            return
+        if models:
+            f["teamModel"] = models
+
+
 def write_report(payload: dict, path: Path) -> Path:
+    import site_guard
     _attach_darts(payload)
-    path.write_text(build_html(payload), encoding="utf-8")
+    _attach_team_lines(payload)
+    site_guard.atomic_write(path, build_html(payload))
     return path
