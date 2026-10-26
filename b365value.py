@@ -109,7 +109,11 @@ def rows(show_all: bool = False) -> list[dict]:
             med, nb = l.get("mkt_median"), l.get("mkt_n", 0)
             vs = (l["price"] / med - 1) if med else None
             out.append({"mkt": med, "mkt_n": nb, "vs_mkt": vs,
-                        "both": bool(vs is not None and nb >= 4 and vs >= 0 and 0 < edge <= CHECK),
+                        # Bet365 far above every other book is more often a stale or
+                        # mismatched Oddschecker price than value (24 Oct: half the
+                        # lines sat 30 to 100% above the median), so BOTH stops at +30%.
+                        "both": bool(vs is not None and nb >= 8 and 0 <= vs <= 0.30 and 0 < edge <= CHECK),
+                        "odd": bool(vs is not None and vs > 0.40),
                         "fixture": e.get("name"), "kickoff": e["kickoff"], "player": hit[0], "stat": stat,
                         "n": n, "price": l["price"], "model": ps, "raw": p, "edge": edge,
                         "pp": pp.get((fid, hit[0] and pplog._norm(hit[0]), stat, n - 0.5)),
@@ -117,6 +121,33 @@ def rows(show_all: bool = False) -> list[dict]:
                         "fetched": e.get("fetchedAt")})
     out.sort(key=lambda r: (not r["both"], r["edge"] > CHECK, -r["edge"]))
     return out
+
+
+def box(now: float, until: float) -> str:
+    """Tonight page: BOTH lines (model ahead by 15% or less, Bet365 0 to 30%
+    above the market) for games in the window, confirmed starters first."""
+    import html
+    esc = html.escape
+    try:
+        rs = [r for r in rows() if r["both"] and now < r["kickoff"] < until]
+    except Exception as exc:  # never cost the page
+        return f"<p class='sub'>Bet365 value unavailable ({esc(str(exc))})</p>"
+    if not rs:
+        return "<p class='sub'>No Bet365 line where the model and the market both say value in this window.</p>"
+    rs.sort(key=lambda r: (r["xi"] != "confirmed", -r["edge"]))
+    out = ["<div class='vbox'><p class='call meh'><b>Not proven.</b> The model is ahead and Bet365 beats the "
+           "other bookies' median. Only bet a confirmed starter, and check the price in the app.</p>",
+           "<table><thead><tr><th>Bet</th><th class='n'>B365</th><th class='n'>Others</th>"
+           "<th class='n'>Model</th></tr></thead><tbody>"]
+    for r in rs[:15]:
+        ko = time.strftime("%H:%M", time.localtime(r["kickoff"]))
+        tag = "<span class='tag ok'>starting</span>" if r["xi"] == "confirmed" else "<span class='tag'>predicted XI</span>"
+        out.append(f"<tr><td>{esc(r['player'])} {r['n']}+ {esc(r['stat'].lower())} {tag}"
+                   f"<div class='sub'>{ko} &middot; {esc(r['fixture'] or '')}</div></td>"
+                   f"<td class='n'>{r['price']:.2f}</td><td class='n'>{r['mkt']:.2f}</td>"
+                   f"<td class='n'>{r['model'] * 100:.0f}%</td></tr>")
+    out.append("</tbody></table></div>")
+    return "".join(out)
 
 
 def main() -> int:
@@ -131,6 +162,8 @@ def main() -> int:
     print(f"{'Edge':>6} {'B365':>5} {'Mkt':>9} {'vsMkt':>6} {'PP':>5} {'Model':>6}  Bet")
     for r in rs:
         flag = ("  BOTH" if r["both"] and VALUE_SHOW else "") or ("  CHECK" if r["edge"] > CHECK else "")
+        if r.get("odd"):
+            flag += "  CHECK PRICE (40%+ over the market: confirm in the Bet365 app)"
         pp = f"{r['pp']:.2f}" if r["pp"] else "  -  "
         mk = f"{r['mkt']:.2f}({r['mkt_n']})" if r["mkt"] else "    -    "
         vs = f"{r['vs_mkt']:+.0%}" if r["vs_mkt"] is not None else "  -  "
@@ -138,7 +171,7 @@ def main() -> int:
         print(f"{r['edge']:+6.0%} {r['price']:5.2f} {mk:>9} {vs:>6} {pp:>5} {r['model']:6.0%}  {r['player']} {r['n']}+ "
               f"{r['stat'].lower()}  ({r['fixture']}, {ko}, {r['xi']} XI){flag}")
     if VALUE_SHOW:
-        print("\nBOTH: the model is ahead (by 15% or less) and Bet365 is at least the market's median price. "
+        print("\nBOTH: the model is ahead (by 15% or less) and Bet365 is 0 to 30% above the median of 8+ other books. "
               "Edge over 15% is marked CHECK: most likely the model is missing something.")
     else:
         print("\nEdge over 15% is marked CHECK: most likely the model is missing something.")
