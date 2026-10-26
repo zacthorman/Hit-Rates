@@ -910,6 +910,8 @@ Everything scheduled runs on the Mac. Nothing here is a cloud job.
 | `pplog.py` | Every Paddy Power player line, our chance and the result. |
 | `teamlog.py` | The same for Paddy Power team lines (21 October). |
 | `nba_check.py` | NBA player lines: calibration by stat and line from the committed record, and on the Mac the early-season shrink test on `cache/` and a scoreboard of Paddy Power's settled basketball lines (NBA-CHECK.md, 24 October). |
+| `freshness.py` | How much of a player's record is from before his last long break; a line on a mostly-stale record is "Old record", never acceptable (PLAYER-STALE.md, 24 October). |
+| `player_stale.py` | The evidence for that: the committed records and the football cache across season starts. |
 | `review.py` | Why each of a report's bets landed or missed. |
 | `backtest.py` | Every bet the model would have made, settled from the cache. |
 
