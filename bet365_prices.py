@@ -61,6 +61,31 @@ MARKETS = {
     "to be shown a card": "Player Shown a Card",
 }
 
+# Team markets (23 Oct 2026): Oddschecker name -> (the site's stat, scope).
+# Every one is an "Over"/"Under" bet with a line, home and away in
+# Oddschecker's order (ppHome below lines them up with the fixture, as for
+# Paddy Power). Cards are booked as "Yellow cards", as Paddy Power's are.
+# Team shots and shots on target are asked for too, though on the 23 Oct
+# sample (Arsenal v Everton) Oddschecker listed other books there and no
+# Bet365 price; they are kept whenever one appears.
+TEAM_MARKETS = {
+    "total home corners": ("Corner kicks", "home"),
+    "total away corners": ("Corner kicks", "away"),
+    "total corners": ("Corner kicks", "match"),
+    "total home team cards": ("Yellow cards", "home"),
+    "total away team cards": ("Yellow cards", "away"),
+    "total cards": ("Yellow cards", "match"),
+    "total home goals": ("Goals", "home"),
+    "total away goals": ("Goals", "away"),
+    "total goals over/under": ("Goals", "match"),
+    "total home shots": ("Total shots", "home"),
+    "total away shots": ("Total shots", "away"),
+    "match total shots": ("Total shots", "match"),
+    "total home shots on target": ("Shots on target", "home"),
+    "total away shots on target": ("Shots on target", "away"),
+    "match shots on target": ("Shots on target", "match"),
+}
+
 NAME_RE = re.compile(r'"(?:marketTypeName|marketName|displayName|name)"\s*:\s*"([^"]{3,80})"')
 ID_RE = re.compile(r'"(?:ocMarketId|marketId)"\s*:\s*"?(\d+)')
 
@@ -81,9 +106,60 @@ def page_markets(html: str) -> dict[str, str]:
         n = NAME_RE.search(html, m.end(), m.end() + 800)
         if n and m.group(1) not in out:
             name = n.group(1).split("#")[-1].strip()
-            if name.lower() in MARKETS:
+            if name.lower() in MARKETS or name.lower() in TEAM_MARKETS:
                 out[m.group(1)] = name
     return out
+
+
+def page_all_markets(html: str) -> dict[str, str]:
+    """Every market id -> name on a saved page, player or not (for --markets)."""
+    out: dict[str, str] = {}
+    for m in ID_RE.finditer(html):
+        n = NAME_RE.search(html, m.end(), m.end() + 800)
+        if n and m.group(1) not in out:
+            out[m.group(1)] = n.group(1).split("#")[-1].strip()
+    return out
+
+
+def discover(sample: list[str] | None) -> int:
+    """List the market names on the saved pages; with --sample, fetch one of
+    them for one game (a single request) and print its bets, so team markets
+    can be mapped the way the player ones are."""
+    import collections
+    names = collections.Counter()
+    first: dict[str, tuple[str, str]] = {}
+    # Sample from a game still to kick off: Oddschecker returns nothing for a
+    # market whose game has been played, and the saved pages sort
+    # alphabetically, which put Wednesday's Champions League first.
+    live = {e.get("page") for e in (load_out().get("events") or {}).values()
+            if e.get("kickoff", 0) > time.time()}
+    pages = sorted(saved_games(), key=lambda p: p.name not in live)
+    for page in pages:
+        for mid, name in page_all_markets(page.read_text(errors="ignore")).items():
+            names[name] += 1
+            first.setdefault(name.lower(), (mid, page.stem))
+    for name, n in sorted(names.items(), key=lambda kv: (-kv[1], kv[0])):
+        print(f"  {n:3}  {name}")
+    if not sample:
+        return 0
+    from oddschecker_client import OddscheckerClient
+    ids = [first[s.lower()][0] for s in sample if s.lower() in first]
+    if not ids:
+        print("  none of those names are on a saved page")
+        return 1
+    print(f"\n  sampling {', '.join(sorted({first[s.lower()][1] for s in sample if s.lower() in first}))}")
+    with OddscheckerClient() as c:
+        got = c.get_many(ids)
+        if not got:
+            print("  Oddschecker returned nothing for those markets")
+        for m in got:
+            print(f"\n== {m.get('marketTypeName')} | {m.get('subeventName')}")
+            bets = {b.get("betId"): b for b in m.get("bets", []) if isinstance(b, dict)}
+            b3 = {o.get("betId"): o.get("oddsDecimal") for o in m.get("odds", []) if o.get("bookmakerCode") == BOOK}
+            for bid, b in list(bets.items())[:40]:
+                print(f"  {b.get('betName')!r:40} line={b.get('line')!r:8} b365={b3.get(bid)}")
+            print("  bet keys:", sorted({k for b in bets.values() for k in b}))
+    return 0
 
 
 def saved_games() -> list[Path]:
@@ -151,6 +227,16 @@ def lines_for(market: dict) -> list[dict]:
     if not template:
         return []
     bets = {b.get("betId"): b for b in market.get("bets", []) if isinstance(b, dict)}
+    # Every other bookmaker's price for the same selection (23 Oct 2026): the
+    # market around Bet365, so b365value.py can say whether Bet365 is long or
+    # short against everyone else, not only against our model.
+    others: dict = {}
+    for o in market.get("odds", []):
+        if o.get("bookmakerCode") != BOOK and o.get("status") == "ACTIVE" and o.get("oddsDecimal"):
+            try:
+                others.setdefault(o.get("betId"), []).append(float(o["oddsDecimal"]))
+            except (TypeError, ValueError):
+                pass
     out = []
     for o in market.get("odds", []):
         if o.get("bookmakerCode") != BOOK or o.get("status") != "ACTIVE" or not o.get("oddsDecimal"):
@@ -170,9 +256,63 @@ def lines_for(market: dict) -> list[dict]:
             label = template.format(n=n)
         else:
             label = template
-        out.append({"market": label, "type": market.get("marketTypeName"), "player": player,
-                    "key": norm(player), "selection": "", "side": None, "line": None,
-                    "price": round(float(o["oddsDecimal"]), 3)})
+        row = {"market": label, "type": market.get("marketTypeName"), "player": player,
+               "key": norm(player), "selection": "", "side": None, "line": None,
+               "price": round(float(o["oddsDecimal"]), 3)}
+        oth = sorted(others.get(o.get("betId")) or [])
+        if oth:
+            row["mkt_n"] = len(oth)
+            row["mkt_median"] = round(oth[len(oth) // 2] if len(oth) % 2 else
+                                      (oth[len(oth) // 2 - 1] + oth[len(oth) // 2]) / 2, 3)
+            row["mkt_best"] = round(oth[-1], 3)
+        out.append(row)
+    return out
+
+
+def _market_around(market: dict) -> dict:
+    """betId -> every other bookmaker's active price for it."""
+    others: dict = {}
+    for o in market.get("odds", []):
+        if o.get("bookmakerCode") != BOOK and o.get("status") == "ACTIVE" and o.get("oddsDecimal"):
+            try:
+                others.setdefault(o.get("betId"), []).append(float(o["oddsDecimal"]))
+            except (TypeError, ValueError):
+                pass
+    return others
+
+
+def team_lines_for(market: dict) -> list[dict]:
+    """Bet365's team lines in one market, in paddypower_prices.team_lines'
+    shape: {stat, scope, line, over, price, market}, half lines only (whole
+    lines are Asian, with a push)."""
+    got = TEAM_MARKETS.get((market.get("marketTypeName") or "").lower())
+    if not got:
+        return []
+    stat, scope = got
+    bets = {b.get("betId"): b for b in market.get("bets", []) if isinstance(b, dict)}
+    others = _market_around(market)
+    out = []
+    for o in market.get("odds", []):
+        if o.get("bookmakerCode") != BOOK or o.get("status") != "ACTIVE" or not o.get("oddsDecimal"):
+            continue
+        b = bets.get(o.get("betId")) or {}
+        side = (b.get("betName") or "").strip().lower()
+        if side not in ("over", "under"):
+            continue
+        try:
+            line = float(b.get("line"))
+        except (TypeError, ValueError):
+            continue
+        if line % 1 != 0.5:
+            continue
+        row = {"stat": stat, "scope": scope, "line": line, "over": side == "over",
+               "price": round(float(o["oddsDecimal"]), 3), "market": market.get("marketTypeName")}
+        oth = sorted(others.get(o.get("betId")) or [])
+        if oth:
+            row["mkt_n"] = len(oth)
+            row["mkt_median"] = round(oth[len(oth) // 2] if len(oth) % 2 else
+                                      (oth[len(oth) // 2 - 1] + oth[len(oth) // 2]) / 2, 3)
+        out.append(row)
     return out
 
 
@@ -258,7 +398,7 @@ def drop_ambiguous(lines: list[dict]) -> list[dict]:
     return out
 
 
-def run() -> int:
+def run(window: float = WINDOW_HOURS, force: bool = False) -> int:
     if OFF.exists():
         print("  bet365: switched off (.bet365_off)")
         return 0
@@ -285,11 +425,11 @@ def run() -> int:
             prior = next((e for e in held.values() if e.get("page") == page.name), None)
             if prior:
                 left = prior["kickoff"] - now
-                if left < 0 or left > WINDOW_HOURS * 3600:
+                if left < 0 or left > window * 3600:
                     skipped += 1
                     continue
                 fresh = FRESH_CLOSE if left < 3 * 3600 else FRESH_HOURS
-                if now - prior.get("fetchedAt", 0) < fresh * 3600:
+                if not force and now - prior.get("fetchedAt", 0) < fresh * 3600:
                     skipped += 1
                     continue
             try:
@@ -317,8 +457,11 @@ def run() -> int:
                 print(f"  bet365: {first.get('subeventName')} not matched to a fixture")
                 continue
             lines = drop_ambiguous([l for m in markets for l in lines_for(m)])
+            team = [t for m in markets for t in team_lines_for(m)]
+            sides = split_teams(first.get("subeventName", "")) or ("", "")
             held[fid] = {"ocEvent": first.get("subeventId"), "name": first.get("subeventName"),
-                         "page": page.name, "kickoff": kickoff, "fetchedAt": time.time(), "lines": lines}
+                         "page": page.name, "kickoff": kickoff, "fetchedAt": time.time(), "lines": lines,
+                         "team": team, "ppHome": sides[0], "ppAway": sides[1]}
             fetched += 1
 
     data["updated"] = time.time()
@@ -352,7 +495,7 @@ def status() -> None:
     for fid, e in sorted((data.get("events") or {}).items(), key=lambda kv: kv[1].get("kickoff", 0)):
         ko = datetime.fromtimestamp(e["kickoff"]).strftime("%a %H:%M")
         age = (time.time() - e.get("fetchedAt", 0)) / 3600
-        print(f"  {e.get('name')}  ko {ko}  {len(e.get('lines', []))} lines  fetched {age:.1f}h ago  fixture {fid}")
+        print(f"  {e.get('name')}  ko {ko}  {len(e.get('lines', []))} lines  {len(e.get('team', []))} team  fetched {age:.1f}h ago  fixture {fid}")
     print(f"  saved pages: {len(saved_games())}")
     try:
         print(f"  requests today: {(PROBE.parent / 'count.json').read_text()}")
@@ -364,13 +507,21 @@ def main() -> int:
     p = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     p.add_argument("--add", nargs="+", metavar="URL")
     p.add_argument("--status", action="store_true")
+    p.add_argument("--window", type=float, default=WINDOW_HOURS,
+                   help=f"fetch games kicking off within this many hours (default {WINDOW_HOURS}); "
+                        "e.g. 60 on a Friday for Sunday's games")
+    p.add_argument("--force", action="store_true", help="refetch held games even if fetched recently")
+    p.add_argument("--markets", nargs="*", metavar="NAME",
+                   help="list every market name on the saved pages; give names to fetch one game's bets for them")
     a = p.parse_args()
+    if a.markets is not None:
+        return discover(a.markets)
     if a.status:
         status()
         return 0
     if a.add:
         return add(a.add)
-    return run()
+    return run(a.window, a.force)
 
 
 if __name__ == "__main__":

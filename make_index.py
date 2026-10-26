@@ -22,14 +22,14 @@ Run it after building reports, then commit and push.
 from __future__ import annotations
 
 import argparse
-import html
 import json
-import re
 from datetime import datetime, timezone
 from pathlib import Path
 
 import picker
+import site_guard
 import weekend
+import pagedata
 
 ROOT = Path(__file__).parent
 REPORTS = ROOT / "reports"
@@ -54,7 +54,7 @@ def read_payload(path: Path) -> dict:
     except OSError:
         text = ""
     if text:
-        payload = re.search(r"const ALL = (\{.*?\});\n", text, re.S)
+        payload = pagedata.search(text)
         if payload:
             try:
                 data = json.loads(payload.group(1))
@@ -243,7 +243,7 @@ def main() -> None:
 
     page = PAGE.replace("__PAYLOAD__", payload).replace("__RESEARCH__", research_card())
     out = ROOT / "index.html"
-    out.write_text(page, encoding="utf-8")
+    site_guard.atomic_write(out, page)
 
     # The picker reads the same reports this index just read, so building it
     # here is what stops the two drifting: a report rebuilt without its picker
@@ -274,6 +274,17 @@ def main() -> None:
                   else f"fair {one['fair']:.2f}, not yet priced at Paddy Power or Bet365")
         print(f"  {block['label']} pick of the week: {who} {market} "
               f"at {priced} ({one['hits']}/{one['total']})")
+        for slot, name in (("banker", "banker"), ("double", "double"), ("acca", "acca")):
+            got = block.get(slot)
+            if not got:
+                continue
+            if slot == "banker":
+                b = got.get("book") or {}
+                where = f"{b.get('name')} {got['price']:.2f}" if got.get("priced") else f"fair {got['fair']:.2f}, not priced"
+                print(f"    {name}: {got.get('player') or got['team']} {got['stat'].lower()} at {where}")
+            else:
+                where = "book prices" if got.get("priced") else "fair, not priced"
+                print(f"    {name}: {len(got['legs'])} legs at {got['combined']:.2f} ({where})")
     for competition in competitions:
         count = sum(1 for f in fixtures if f["competition"] == competition)
         print(f"  {competition}: {count}")
@@ -285,7 +296,16 @@ def main() -> None:
         print("  Those links point at the newer file. Delete the old reports")
         print("  if you no longer want them: rm reports/<name>")
 
-    dead = [p for p in files if p.name not in live_reports]
+    # A report whose data would not read has no upcoming fixtures as far as
+    # this loop can tell, and --prune used to delete it: a page cut off part
+    # way through being written took its whole league off the site without a
+    # word. It is left alone and named; site_guard decides what happens to it.
+    unreadable = [p for p in files if not read_payload(p)]
+    if unreadable:
+        print(f"\n{len(unreadable)} report(s) would not read and were not pruned:")
+        for path in unreadable:
+            print(f"  {path.name}")
+    dead = [p for p in files if p.name not in live_reports and p not in unreadable]
     if dead:
         print(f"\n{len(dead)} report(s) have no upcoming fixtures left:")
         for path in dead:
@@ -458,6 +478,7 @@ PAGE = """<!DOCTYPE html>
 .pk-leg:first-child { border-top: 0; padding-top: 2px; }
 .pk-leg .t { font-size: 0.86rem; font-weight: 600; line-height: 1.3; }
 .pk-leg .p { font-size: 0.9rem; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+.pk-leg .p small { font-size: 0.62rem; font-weight: 600; color: var(--muted); letter-spacing: 0.04em; }
 .pk-leg .m { grid-column: 1 / -1; color: var(--muted); font-size: 0.74rem; line-height: 1.35; }
 .pk-learn { color: var(--muted); font-size: 0.72rem; margin: 2px 0 10px; }
 .pk-pos { color: var(--hit, #2e9d5b); font-weight: 650; }
@@ -805,6 +826,12 @@ function strengthDetail(l) {
 function chanceText(l) {
   return l.chance != null ? `${Math.round(l.chance * 100)}%` : "&mdash;";
 }
+/* Whether a value figure is shown as value: above the bar weekend.VALUE_SHOW
+   sets, and never while that is off (RULE-REVIEW.md). */
+function valueClaimed(v) {
+  const bar = DATA.picks && DATA.picks.valueShow;
+  return v != null && bar != null && v > bar;
+}
 /* The exchange, where Betfair prices the same bet: its chance with the margin
    off, the back price you could take, and what the pick is worth at it. */
 function exchangeLine(l) {
@@ -816,7 +843,7 @@ function exchangeLine(l) {
     return `<div class="pk-str">Exchange ${pct(x.p)}, model ${pct(l.chanceModel)}: <b>${Math.round(Math.abs(l.disagree) * 100)} points apart</b>,
       a warning rather than an edge; the chance used leans on the exchange.</div>`;
   }
-  const val = v == null ? "" : v > 0.005
+  const val = v == null ? "" : valueClaimed(v)
     ? ` &middot; <b class="pk-pos">value +${Math.round(v * 100)}%</b> at ${fmtOdds(x.back)}`
     : ` &middot; no value at ${fmtOdds(x.back)}`;
   return `<div class="pk-str">Exchange ${pct(x.p)}, model ${pct(l.chanceModel)}${val}${x.tight ? "" : " &middot; thin market"}</div>`;
@@ -830,14 +857,20 @@ function pkChips(items) {
 function pkHead(label, price, priceLabel) {
   return `<div class="pk-top"><h2>${label}</h2>${price == null ? "" : `<div class="pk-price"><small>${priceLabel || "fair"}</small>${fmtOdds(price)}</div>`}</div>`;
 }
+/* Book prices (23 Oct 2026): a leg Paddy Power or Bet365 offers at our fair
+   price or longer shows that price and the book; otherwise our fair price. */
+function bookOk(l) { return l.book && l.book.price >= l.fair && l.book.price <= l.fair * 1.3; }
+const bookShort = n => n === "Paddy Power" ? "PP" : n === "Bet365" ? "B365" : n;
 function legRow(l, extra) {
   const where = l.fixture ? `${escapeHtml(l.fixture.home)} v ${escapeHtml(l.fixture.away)}` : "";
   const s = l.strength;
   const str = s && s.team != null ? ` &middot; ${s.team} v ${s.opp}` : "";
   const ex = l.exchange && l.exchange.back
-    ? ` &middot; exchange ${fmtOdds(l.exchange.back)}${l.value > 0.005 ? ` <b class="pk-pos">+${Math.round(l.value * 100)}%</b>` : ""}` : "";
-  return `<li class="pk-leg"><span class="t">${legText(l)}</span><span class="p">${fmtOdds(l.fair)}</span>
-    <span class="m">${where}${where ? " &middot; " : ""}${l.hits}/${l.total}${l.chance != null ? " &middot; " + chanceText(l) : ""}${str}${ex}${extra || ""}</span></li>`;
+    ? ` &middot; exchange ${fmtOdds(l.exchange.back)}${valueClaimed(l.value) ? ` <b class="pk-pos">+${Math.round(l.value * 100)}%</b>` : ""}` : "";
+  const bk = bookOk(l) ? ` &middot; fair ${fmtOdds(l.fair)}` : (l.book ? ` &middot; ${bookShort(l.book.name)} only ${fmtOdds(l.book.price)}` : " &middot; not priced at a book");
+  const shown = bookOk(l) ? `<small>${bookShort(l.book.name)}</small> ${fmtOdds(l.book.price)}` : fmtOdds(l.fair);
+  return `<li class="pk-leg"><span class="t">${legText(l)}</span><span class="p">${shown}</span>
+    <span class="m">${where}${where ? " &middot; " : ""}${l.hits}/${l.total}${l.chance != null ? " &middot; " + chanceText(l) : ""}${str}${ex}${bk}${extra || ""}</span></li>`;
 }
 
 /* Why a pick should land: the evidence for and against, then, behind a
@@ -901,7 +934,7 @@ function renderPicks() {
   if (p && p.single) {
     const s = p.single;
     cards.push(`<div class="pick">
-      ${pkHead(`Best bet &middot; ${fmtOdds(floor)}+`, s.fair)}
+      ${s.confirmed && s.book ? pkHead(`Best bet &middot; ${fmtOdds(floor)}+`, s.book.price, s.book.name) : pkHead(`Best bet &middot; ${fmtOdds(floor)}+`, s.fair, "fair, not priced")}
       <div class="sel">${legText(s)}</div>
       <div class="where">${escapeHtml(s.fixture.home)} v ${escapeHtml(s.fixture.away)}${s.venue ? ` &middot; record ${s.venue}` : ""}</div>
       ${pkChips([["Chance", chanceText(s)], ["Record", `${s.hits}/${s.total}`], thirdChip(s)])}
@@ -939,22 +972,23 @@ function renderPicks() {
   if (p && p.banker) {
     const s = p.banker;
     cards.push(`<div class="pick">
-      ${pkHead("Banker", s.fair)}
+      ${s.priced ? pkHead("Banker", s.price, s.book.name) : pkHead("Banker", s.fair, "fair, not priced")}
       <div class="sel">${legText(s)}</div>
       <div class="where">${escapeHtml(s.fixture.home)} v ${escapeHtml(s.fixture.away)}</div>
       ${pkChips([["Chance", chanceText(s)], ["Record", `${s.hits}/${s.total}`], thirdChip(s)])}
       ${strengthLine(s)}${exchangeLine(s)}
       ${whyList(s)}
       ${whyFold("how the chance was built", s,
-        `The single most likely to land, on the calibrated chance, among those priced
-         between 1.30 and 1.75.`)}
+        `The single most likely to land, on the calibrated chance, among those ${s.priced
+           ? `a book offers between 1.30 and 1.75, at our fair price (${fmtOdds(s.fair)}) or longer`
+           : "priced between 1.30 and 1.75 on our own numbers: no book offered a qualifying one yet"}.`)}
     </div>`);
   }
 
   if (p && p.double) {
     const d = p.double;
     cards.push(`<div class="pick">
-      ${pkHead("Evens double", d.combined)}
+      ${pkHead("Evens double", d.combined, d.priced ? "books" : "fair, not priced")}
       <ul class="pk-legs">${d.legs.map(l => legRow(l)).join("")}</ul>
       ${legsWhy(d.legs)}
       ${note("why these two?",
@@ -967,14 +1001,14 @@ function renderPicks() {
   if (p && p.acca) {
     const a = p.acca;
     cards.push(`<div class="pick">
-      ${pkHead(`Acca &middot; ${a.legs.length} legs`, a.combined)}
+      ${pkHead(`Acca &middot; ${a.legs.length} legs`, a.combined, a.priced ? "books" : "fair, not priced")}
       <ul class="pk-legs">${a.legs.map(l => legRow(l)).join("")}</ul>
       ${legsWhy(a.legs)}
       ${note("read this first",
         `One leg per match, so nothing rides twice on the same game.
-         ${a.short ? `Short of the ${fmtOdds(a.target)} target: reaching it would have meant worse legs. ` : ""}These are
-         fair prices, not offers: a book has to beat every one for the multiple to be worth taking, and the
-         margin compounds with each leg.`)}
+         ${a.short ? `Short of the ${fmtOdds(a.target)} target: reaching it would have meant worse legs. ` : ""}${a.priced
+         ? `Every leg is offered by Paddy Power or Bet365 at our fair price or longer (fair multiple ${fmtOdds(a.combinedFair)}). Prices are from the last fetch: check them before placing. Two books in one acca means two slips.`
+         : `No book priced enough legs yet, so these are fair prices, not offers: a book has to beat every one for the multiple to be worth taking, and the margin compounds with each leg.`}`)}
     </div>`);
   }
 

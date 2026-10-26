@@ -67,6 +67,16 @@ fi
 # FlareSolverr only when the saved cookies have expired. `touch .bet365_off`
 # switches it off.
 "$PY" bet365_prices.py || echo "  bet365 prices not fetched (continuing)"
+# Best bookmaker prices from Oddschecker pages saved by hand into
+# drop/oddschecker/ (oddschecker_import.py, IMPORTS.md). No requests; does
+# nothing when the folder is empty.
+"$PY" oddschecker_import.py || echo "  oddschecker imports not read (continuing)"
+# Pinnacle's prices as margin-free chances (pinnacle_prices.py): result,
+# goals, team goals, corners and bookings for every game in the site's
+# leagues, two requests a league, each league at most every 90 minutes, capped
+# at 150 a day, locked out for a day on any refusal. The sharp reference for
+# the soft books' lines. `touch .pinnacle_off` switches it off.
+"$PY" pinnacle_prices.py || echo "  pinnacle prices not fetched (continuing)"
 # The backtested player model (fmodel_live.py): a chance for every starter in
 # the predicted or confirmed XI of each football fixture in the next week, at
 # 15 lines. Read by the pages and by pplog below. Reads the cache only, no
@@ -81,13 +91,22 @@ fi
 # The same prices for the pages themselves, read in the browser: match odds,
 # Betfair's player markets and Paddy Power's (markets_sidecar.py).
 "$PY" markets_sidecar.py || echo "  reports/markets.json not written (continuing)"
+# The Game state tab on every football report (gamestate_live.py): result and
+# goals from the score model, how the game goes, and the lines it backs.
+"$PY" gamestate_live.py || echo "  reports/gamestate.json not written (continuing)"
 # The Paddy Power record (pplog.py): settle what finished, log every line on
 # games not yet started with our chance at it, then the results page.
 "$PY" pplog.py settle || echo "  pp log not settled (continuing)"
 "$PY" pplog.py snapshot || echo "  pp log not updated (continuing)"
 "$PY" teamlog.py settle || echo "  team log not settled (continuing)"
 "$PY" teamlog.py snapshot || echo "  team log not updated (continuing)"
+# Each of those Paddy Power lines checked against Betfair's price (sharp.py):
+# the soft-v-sharp check the value bots run, written into the same rows.
+"$PY" sharp.py stamp || echo "  betfair check not stamped (continuing)"
 "$PY" pplog.py page >/dev/null || echo "  pp-results.html not rebuilt (continuing)"
+# Fixed rules on trial (ruletrack.py): the record per rule, history v live.
+"$PY" ruletrack.py report >/dev/null || echo "  RULES_TRACK.md not rebuilt (continuing)"
+"$PY" papertrade.py --page >/dev/null || echo "  papertrade.html not rebuilt (continuing)"
 # Score the model against Betfair (exchange_eval.py): settle what finished,
 # refit the blend weights from the results, so the picks below use them.
 if [ -f .betfair.env ]; then
@@ -126,6 +145,7 @@ if [ -f tonight.html ]; then cp tonight.html "$STAGE"/; fi
 if [ -f best-bets-summary.html ]; then cp best-bets-summary.html "$STAGE"/; fi
 if [ -f market-check.html ]; then cp market-check.html "$STAGE"/; fi
 if [ -f pp-results.html ]; then cp pp-results.html "$STAGE"/; fi
+if [ -f papertrade.html ]; then cp papertrade.html "$STAGE"/; fi
 cp -R reports "$STAGE"/
 # Stops GitHub running the site through Jekyll, which it has no need to do
 # and which is the piece that failed during the outage.
@@ -136,6 +156,19 @@ touch "$STAGE"/.nojekyll
 # site kept answering 200 and this script reported "verified".
 STAMP="$(date -u '+%Y%m%dT%H%M%SZ')-$$"
 echo "$STAMP" > "$STAGE"/build.txt
+
+# The last check before the force-push, on exactly what is staged
+# (site_guard.py). Several steps above rewrite the reports and the index after
+# update.py has checked them, and a manual or resumed publish never went
+# through update.py at all. A report that is empty, cut off or unreadable, or
+# an index that lists nothing or links to missing pages, stops here: nothing
+# is pushed, so the live site keeps yesterday's pages, and the bad report is
+# swapped back to its last good copy on disk so the next publish cannot stage
+# it again.
+if ! "$PY" site_guard.py gate "$STAGE"; then
+  echo "Publish stopped by site_guard.py. The live site was not touched." >&2
+  exit 1
+fi
 
 cd "$STAGE"
 git init -q

@@ -19,7 +19,8 @@ What is recorded, per line (player, stat, line, over or under):
   * the last-5 and last-10 records behind it, and the player's injury status.
   * the result, settled from SofaScore exactly as besttrack and linelog
     settle player legs. A player who did not play voids the line, as Paddy
-    Power voids the bet.
+    Power voids the bet. Anytime goalscorer lines follow Paddy Power's Super
+    Sub (supersub.py): a starter taken off whose replacement scores is a win.
 
 Our chance here is model.price_player on the player's last ten appearances,
 the Python mirror of the page's pricePlayer, times the same opponent
@@ -84,8 +85,11 @@ PP_PATTERNS = [
     (re.compile(r"^Player To Have (\d+) Or More Shots$"), "Shots"),
     (re.compile(r"^Player To Commit (\d+) Or More Fouls$"), "Fouls"),
     (re.compile(r"^Player To Be Fouled (\d+) Or More Times$"), "Fouled"),
+    # Added 23 Oct 2026 so they can be checked against Betfair (sharp.py).
+    (re.compile(r"^Player To Have (\d+) Or More Shots On Target$"), "Shots on target"),
+    (re.compile(r"^Player Shots on Target (\d+) or More$"), "Shots on target"),
 ]
-PP_YES = {"Player Shown a Card": "Card", "Player Assists": "Assists"}
+PP_YES = {"Player Shown a Card": "Card", "Shown a Card": "Card", "Player Assists": "Assists"}
 
 
 # ------------------------------------------------------------------ storage
@@ -275,10 +279,43 @@ def _fmodel_p(fm: dict, fid: str, name: str, stat: str, line: float):
     return ((pl.get("lines") or {}).get(stat) or {}).get(str(int(round(k))))
 
 
+def _usmodel() -> dict:
+    """reports/usmodel.json (usmodel_live.py): the backtested NBA and NFL
+    player models, as the page shows them: the model's chance blended with
+    the site's own with the weights in its "blend" (report.py does the same).
+    Added 23 Oct 2026: before this pplog logged only the old last-10 chance
+    for NBA and NFL, so its record said nothing about these models."""
+    try:
+        return json.loads((ROOT / "reports" / "usmodel.json").read_text())
+    except (OSError, ValueError):
+        return {}
+
+
+def _usmodel_p(um: dict, sport: str, fid: str, name: str, stat: str, line: float, site_over: float):
+    """(blended chance of over, the model's own) at `line`, or None."""
+    ev = (um.get("events") or {}).get(fid) or {}
+    pl = next((v for k, v in (ev.get("players") or {}).items() if _norm(k) == _norm(name)), None)
+    k = line + 0.5
+    if not pl or abs(k - round(k)) > 1e-9:
+        return None
+    m = ((pl.get("lines") or {}).get(stat) or {}).get(str(int(round(k))))
+    if m is None:
+        return None
+    bl = ((um.get("blend") or {}).get(sport) or {}).get(stat)
+    if not bl:
+        return m, m
+    lg = lambda q: math.log(min(1 - 1e-4, max(1e-4, q)) / (1 - min(1 - 1e-4, max(1e-4, q))))
+    sg = lambda z: 1 / (1 + math.exp(-z))
+    sf = sg(bl["site_cal"][0] + bl["site_cal"][1] * lg(site_over))
+    return sg(bl["blend"][0] + bl["blend"][1] * lg(m) + bl["blend"][2] * lg(sf)), m
+
+
 def snapshot(args=None) -> int:
     import markets
     import model
     import playerlines
+    import supersub
+    ss_fit = supersub.load_fit()
     try:
         pp = json.loads(PP.read_text())
     except (OSError, ValueError):
@@ -292,6 +329,7 @@ def snapshot(args=None) -> int:
             existing[_key(r)] = (path, r)
     new_rows, touched = [], set()
     fm = _fmodel()
+    um = _usmodel()
     for fid, ev in (pp.get("events") or {}).items():
         if fid not in fixtures:
             continue
@@ -337,6 +375,16 @@ def snapshot(args=None) -> int:
             m_over = _fmodel_p(fm, fid, name, stat, line) if sport == "football" else None
             if m_over is not None:
                 p_over = m_over
+            us = _usmodel_p(um, sport, fid, name, stat, line, site_over) \
+                if sport in ("basketball", "american-football") else None
+            if us is not None:
+                p_over = us[0]
+            # Paddy Power's Super Sub: the bet moves to his replacement if
+            # he is taken off, so to-score is worth more there than his own
+            # chance. supersub.py has the measured figures.
+            ss_extra = 0.0
+            if stat == "Goals" and supersub.applies(l.get("market"), sport):
+                p_over, ss_extra = supersub.uplift(p_over, squads[t][name], ss_fit)
             p = p_over if over else 1 - p_over
             vals = [a["value"] for a in recent]
             hit = (lambda v: v > line) if over else (lambda v: v <= line)
@@ -363,6 +411,12 @@ def snapshot(args=None) -> int:
                 snap["source"] = "fmodel"
                 snap["site_chance"] = round(site_over if over else 1 - site_over, 4)
                 snap["confirmed_xi"] = fm[fid]["confirmed"]
+            if us is not None:
+                snap["source"] = "usmodel"
+                snap["site_chance"] = round(site_over if over else 1 - site_over, 4)
+                snap["model_chance"] = round(us[1] if over else 1 - us[1], 4)
+            if ss_extra:
+                snap["supersub"] = round(ss_extra, 4)
             # "Over 2.5" and "3+" are one bet: keep the better price.
             if key in touched:
                 prev = next((x for x in new_rows if _key(x) == key), None) \
@@ -410,9 +464,17 @@ def _read_merge(path: Path, updated: list[dict]) -> list[dict]:
 def settle(args=None) -> int:
     import besttrack
     import sofascore_api as api
+    import supersub
     now = time.time()
     done = 0
     status_of = {}
+    incidents = {}
+
+    def incidents_for(eid):
+        if eid not in incidents:
+            data = api.get_json(f"event/{eid}/incidents", max_age_hours=6, verbose=False)
+            incidents[eid] = (data or {}).get("incidents")
+        return incidents[eid]
     for path in _files():
         rows = _read(path)
         changed = False
@@ -439,6 +501,7 @@ def settle(args=None) -> int:
                 r["value"] = v
                 won = v > r["line"] if r["over"] else v < r["line"]
                 r["result"] = "win" if won else "lose"
+                supersub.settle_row(r, incidents_for)
             done += 1
             changed = True
         if changed:
