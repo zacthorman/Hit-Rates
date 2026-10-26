@@ -6454,7 +6454,8 @@ function superSub(p, played) {
    our number being wrong, so it is marked avoid, like a price 5% worse.
    Acceptable: more likely than not and about fair (within 5% either way).
    Replayed over the cache (ACCEPTABLE-CHECK.md) it holds for starters,
-   except on the lines RUNS_HIGH names, which are long shots instead.
+   except on the lines RUNS_HIGH names (fouls, fouled and tackles at 2+,
+   and assists, ASSISTS-WATCH.md), which are long shots instead.
    Long shot: under 50% by our numbers. However big the edge looks, it rests
    on one or two games in ten, so it is never called acceptable.
    Avoid: the price is more than 5% worse than our chance, or more than 5%
@@ -6489,7 +6490,13 @@ function verdictOf(v) {
 /* The player lines where our chance has run high: see verdictOf. */
 const RUNS_HIGH_STATS = new Set(["Fouls", "Fouled", "Tackles"]);
 function RUNS_HIGH(v) {
-  return SPORT === "football" && !v.team && v.over !== false && RUNS_HIGH_STATS.has(v.stat) && v.line >= 1.5;
+  if (SPORT !== "football" || v.team || v.over === false) return false;
+  // Football assists 1+ (ASSISTS-WATCH.md): starters we made 50%+ landed
+  // 22.3% before September and 20.3% from September against 53% said (95%
+  // -42.8 to -23.0 points on the later months), and at every chance 7.6%
+  // landed against 17.6% said. A long shot, never acceptable.
+  if (v.stat === "Assists" && v.line >= 0.5) return true;
+  return RUNS_HIGH_STATS.has(v.stat) && v.line >= 1.5;
 }
 
 function verdictHtml(v) {
@@ -6499,7 +6506,7 @@ function verdictHtml(v) {
   const why = {
     take: "More likely than not, and the price beats our chance by 5% or more, on a record of five games or more",
     ok: "More likely than not and close to a fair price by our numbers",
-    long: "Under 50% by our numbers, or a football fouls, fouled or tackles line at 2 or more, where our number has run high: a big edge here is noise, not value",
+    long: "Under 50% by our numbers, or a football assists line, or a fouls, fouled or tackles line at 2 or more, where our number has run high: a big edge here is noise, not value",
     avoid: "The price is more than 5% worse than our chance, or more than 5% better: on Paddy Power's settled lines an edge that size has been our number being wrong",
   }[k];
   return `<span class="vd vd-${k}" title="${why}">${text}</span>`;
