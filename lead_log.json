@@ -2451,6 +2451,7 @@
   "event_id": 16310990,
   "fixture": "Paris Saint-Germain v Olympique Lyonnais",
   "competition": "Ligue 1",
+  "sport": "football",
   "kickoff": 1793043000,
   "selection": "Jo\u00e3o Neves 1+ tackles",
   "chance": 0.7637852941176471,
@@ -2461,7 +2462,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793026471.152527
+  "written": 1793026872.26265
  },
  "16285058": {
   "event_id": 16285058,
@@ -2579,6 +2580,7 @@
   "event_id": 16421085,
   "fixture": "Sevilla v Osasuna",
   "competition": "LaLiga",
+  "sport": "football",
   "kickoff": 1793044800,
   "selection": "Lucas Torr\u00f3 1+ tackles",
   "chance": 0.6971336793744021,
@@ -2589,12 +2591,13 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793026471.152527
+  "written": 1793026872.26265
  },
  "15238215": {
   "event_id": 15238215,
   "fixture": "Coritiba v Gr\u00eamio",
   "competition": "Campeonato Brasileiro S\u00e9rie A",
+  "sport": "football",
   "kickoff": 1793053800,
   "selection": "Tet\u00ea 1+ shots",
   "chance": 0.7678662483165011,
@@ -2605,15 +2608,16 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793026471.152527
+  "written": 1793026872.26265
  },
  "15238225": {
   "event_id": 15238225,
   "fixture": "Flamengo v Atl\u00e9tico Mineiro",
   "competition": "Campeonato Brasileiro S\u00e9rie A",
+  "sport": "football",
   "kickoff": 1793055600,
   "selection": "Pedro Guilherme 2+ shots",
-  "chance": 0.6755723404255318,
+  "chance": 0.7394344680851064,
   "fair": 1.6785714285714286,
   "team": "Flamengo",
   "player": "Pedro Guilherme",
@@ -2621,7 +2625,7 @@
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1793024273.407795
+  "written": 1793026872.26265
  },
  "16183771": {
   "event_id": 16183771,
@@ -3054,5 +3058,39 @@
   "line": 0.5,
   "over": true,
   "written": 1793024273.407795
+ },
+ "16824753": {
+  "event_id": 16824753,
+  "fixture": "Charlotte Hornets v Washington Wizards",
+  "competition": "NBA",
+  "sport": "basketball",
+  "kickoff": 1793055600,
+  "selection": "Washington Wizards over 6.5 steals",
+  "chance": 0.7404928571428572,
+  "fair": 1.53145467980654,
+  "team": "Washington Wizards",
+  "player": null,
+  "stat": "Steals",
+  "period": "ALL",
+  "line": 6.5,
+  "over": true,
+  "written": 1793026872.26265
+ },
+ "16824757": {
+  "event_id": 16824757,
+  "fixture": "Cleveland Cavaliers v Minnesota Timberwolves",
+  "competition": "NBA",
+  "sport": "basketball",
+  "kickoff": 1793055600,
+  "selection": "Donovan Mitchell 2+ three pointers made",
+  "chance": 0.7222222222222222,
+  "fair": 1.3846153846153846,
+  "team": "Cleveland Cavaliers",
+  "player": "Donovan Mitchell",
+  "stat": "Three pointers made",
+  "period": "ALL",
+  "line": 1.5,
+  "over": true,
+  "written": 1793026872.26265
  }
 }
