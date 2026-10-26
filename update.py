@@ -504,6 +504,28 @@ def main() -> None:
                 run([python, "besttrack.py", "settle"], args.dry, allow_fail=True)
             if Path("linelog.py").exists():
                 run([python, "linelog.py", "settle"], args.dry, allow_fail=True)
+            # Mondays: the NBA/NFL player models' small weekly step
+            # (usmodel_weekly.py; adopted only if better on the latest 21 days).
+            if datetime.now().weekday() == 0 and Path("usmodel_weekly.py").exists():
+                meta = ROOT / "usmodel" / "nba_meta.json"
+                done = ""
+                try:
+                    done = json.loads(meta.read_text()).get("weekly", "")[:10]
+                except Exception:  # noqa: BLE001
+                    pass
+                if done != datetime.now(timezone.utc).strftime("%Y-%m-%d"):
+                    say("weekly NBA/NFL model update")
+                    run([python, "usmodel_weekly.py", "all"], args.dry, allow_fail=True)
+                # the football team models' step, in case the Monday 05:34
+                # scheduled task did not run (it needs the Mac awake)
+                try:
+                    done = json.loads((ROOT / "teammodel" / "meta.json").read_text()).get("weekly", "")[:10]
+                except Exception:  # noqa: BLE001
+                    done = ""
+                if done != datetime.now(timezone.utc).strftime("%Y-%m-%d") and Path("teammodel_train.py").exists():
+                    say("weekly football team model update")
+                    run([python, "teammodel_train.py", "--cache", "cache", "--out", "teammodel", "--weekly"],
+                        args.dry, allow_fail=True)
 
         # 1. Fetch and build. Each league is its own report, so one failing
         #    competition does not take the others down with it.

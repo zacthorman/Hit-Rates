@@ -1229,3 +1229,21 @@ Pinnacle's prices as margin-free chances, from the guest API its own site uses (
 
 * `--probe` (Premier League only, prints what came back), `--leagues`, `--status`.
 * Not yet read by sharp.py or the picks; first comparison (23 Oct): 409 Paddy Power and Bet365 team lines matched to Pinnacle. Corners compare like for like. Cards are not settled yet: Pinnacle's "Bookings" may count a red differently from the soft books' card markets, so treat card edges against Pinnacle as unconfirmed until checked against settled games.
+
+## Game state tab on NBA and NFL reports (25 Oct 2026)
+- gamestate_live.py now writes NBA and NFL games into reports/gamestate.json too (the same How the
+  game will go as the tonight page, plus the backtest note), and report.py's Game state tab loads it
+  for basketball and american-football as well as football. Display only, as before.
+- Backups: report.py.bak-usgamestate, gamestate_live.py.bak-us.
+
+## Learning from results (added 26 Oct 2026)
+
+Everything below only changes once it has beaten the current version on the newest games it was not fitted on. Full write-up in `LEARNING.md`.
+
+**`learn.py` (every publish, after `pplog.py settle`).** Refits a correction for each sport × side (over/under), and each stat inside it, from every settled Paddy line in `pplog`: the corrected chance is a recency-weighted blend of the model's chance and Paddy's margin-free price, pulled toward "no change". It is fitted on the older 70% of games and adopted only if it beats the raw model on the newest 30% in at least 80% of resamples. Results go to `learn/learned.json` and `LEARNING.md`. `pplog.py` logs the corrected chance as `learned_chance` on every new snapshot; `b365value.py` uses it for football when one is adopted. `python learn.py report` prints the table.
+
+**`learned_value` rule (`ruletrack.py`).** Any Paddy line where the corrected chance is 3 to 15% above Paddy's price, at 3.0 or shorter. Tracked live from 26 Oct 12:00 alongside the other rules in `RULES_TRACK.md`.
+
+**`usmodel_weekly.py` (Mondays, from `update.py`).** The NBA/NFL equivalent of the football weekly step: 40 small Poisson trees on top of the current model, recency-weighted, scored on the latest 21 days, adopted only if no worse, halved if they move numbers by more than 3%. Adopted steps are saved in `usmodel/delta/` and listed in `usmodel/{nba,nfl}_meta.json` under `deltas`; `usmodel_live.py` applies them in order. Log in `usmodel/CHANGELOG.md`. Run by hand with `python usmodel_weekly.py nba points rebounds` (a sport, then optional targets). **Needs lightgbm in the venv:** `.venv/bin/pip install lightgbm` (the football weekly needs it too). To undo a week, remove its file name from `deltas` in the meta.
+
+**Other fixes the same day.** `b365value.py` only shrinks the model chance on prices of 2.0 and longer (it was wrongly shrinking short-priced lines). `sofascore_api.py` restarts the FlareSolverr container (opening Docker Desktop first if needed) when it stops answering mid-run, instead of stopping the run; `update.py` already did this at the start of a run.

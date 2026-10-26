@@ -97,6 +97,9 @@ fi
 # The Paddy Power record (pplog.py): settle what finished, log every line on
 # games not yet started with our chance at it, then the results page.
 "$PY" pplog.py settle || echo "  pp log not settled (continuing)"
+# The models learn from every settled line (learn.py): fitted on older games,
+# used only where it beats the model on the newest unseen ones. LEARNING.md.
+"$PY" learn.py fit || echo "  learn: not refitted (continuing)"
 "$PY" pplog.py snapshot || echo "  pp log not updated (continuing)"
 "$PY" teamlog.py settle || echo "  team log not settled (continuing)"
 "$PY" teamlog.py snapshot || echo "  team log not updated (continuing)"
@@ -106,6 +109,8 @@ fi
 "$PY" pplog.py page >/dev/null || echo "  pp-results.html not rebuilt (continuing)"
 # Fixed rules on trial (ruletrack.py): the record per rule, history v live.
 "$PY" ruletrack.py report >/dev/null || echo "  RULES_TRACK.md not rebuilt (continuing)"
+# Best selections (selections.py): log tonight's short list before kick-off, settle earlier ones.
+"$PY" selections.py log || echo "  selections not logged (continuing)"
 "$PY" papertrade.py --page >/dev/null || echo "  papertrade.html not rebuilt (continuing)"
 # Score the model against Betfair (exchange_eval.py): settle what finished,
 # refit the blend weights from the results, so the picks below use them.

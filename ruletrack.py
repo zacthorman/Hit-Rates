@@ -59,11 +59,17 @@ NBA, NFL = "basketball", "american-football"
 RECEIVING = {"Receiving yards", "Receiving receptions"}
 SHOW = 8  # bets listed per rule on the page, most model edge first
 
+# Rules added later start their own live record from when they were added.
+RULE_START = {
+    "learned_value": datetime.datetime(2026, 10, 26, 12, 0, tzinfo=datetime.timezone.utc).timestamp(),
+}
+
 RULES = {
     "nba_under_main": "NBA under, main line, 1.60 to 2.20",
     "nba_under_model": "NBA under, main line, 1.60 to 2.20, model agrees",
     "nfl_receiving_model": "NFL receiving over, 2.20 or shorter, model agrees",
     "beats_betfair": "Paddy pays 2%+ over Betfair's fair price, 10.0 or shorter",
+    "learned_value": "Learned value: the corrected chance (learn.py) 3 to 15% over Paddy's price, 3.0 or shorter",
     "control_nba_over_main": "Control: NBA over, main line, 1.60 to 2.20 (should lose)",
 }
 
@@ -114,6 +120,11 @@ def qualifying(rows: list[dict]) -> dict[str, list[dict]]:
     for r in rows:
         sides[(r["event_id"], pplog._norm(r["player"]), r["stat"], r["line"])].add(bool(r["over"]))
     picks = defaultdict(dict)
+    prices = defaultdict(dict)
+    for r in rows:
+        f = r.get("first") or {}
+        if f.get("price"):
+            prices[(r["event_id"], r["player"], r["stat"], r["line"])][bool(r["over"])] = f["price"]
 
     def add(rule, r):
         k = (r["event_id"], pplog._norm(r["player"]), r["stat"])
@@ -139,6 +150,30 @@ def qualifying(rows: list[dict]) -> dict[str, list[dict]]:
                 add("control_nba_over_main", r)
         if r["sport"] == NFL and r["over"] and r["stat"] in RECEIVING and price <= 2.2 and agrees:
             add("nfl_receiving_model", r)
+        # learned_value (26 Oct): the chance after learn.py's correction, only
+        # where a correction has been adopted for that sport, side or stat.
+        try:
+            import learn
+            pm = learn.model_side(r, hist)
+            if pm is not None:
+                pr = prices.get((r["event_id"], r["player"], r["stat"], r["line"])) or {}
+                fair = None
+                if len(pr) == 2:
+                    a_, b_ = 1 / pr[bool(r["over"])], 1 / pr[not bool(r["over"])]
+                    fair = a_ / (a_ + b_)
+                f0 = r.get("first") or {}
+                if f0.get("learned_chance") is not None:
+                    pl, src = f0["learned_chance"], f0.get("learned_src", "logged")
+                elif r.get("result") is None:
+                    pl, src = learn.adjust(r["sport"], r["stat"], bool(r["over"]), pm, price, fair)
+                else:
+                    # settled before chances were logged: today's fit, in sample (History only)
+                    pl, src = learn.adjust(r["sport"], r["stat"], bool(r["over"]), pm, price, fair)
+                if src != "model" and price <= 3.0 and 0.03 <= pl * price - 1 <= 0.15:
+                    r["_learned_edge"] = pl * price - 1
+                    add("learned_value", r)
+        except Exception:  # noqa: BLE001
+            pass
         sh = r.get("sharp_first") or {}
         if sh.get("edge") is not None and sh["edge"] >= 0.02 and price <= 10:
             add("beats_betfair", r)
@@ -182,8 +217,9 @@ def report(args=None) -> str:
              "|---|---|---|---|---|---|---|---|---|---|---|"]
     for rule, label in RULES.items():
         bets = q.get(rule, [])
-        for name, part in (("History", [b for b in bets if b["kickoff"] < FROZEN]),
-                           ("Live", [b for b in bets if b["kickoff"] >= FROZEN])):
+        start = RULE_START.get(rule, FROZEN)
+        for name, part in (("History", [b for b in bets if b["kickoff"] < start]),
+                           ("Live", [b for b in bets if b["kickoff"] >= start])):
             s = _score(part)
             if not s["n"]:
                 lines.append(f"| {label} | {name} | 0 | | | | | | | | |")
@@ -236,6 +272,16 @@ def value_claimed() -> bool:
     return VALUE_SHOW
 
 
+def shortlist_by(bets: list[dict], key: str) -> list[dict]:
+    seen, out = set(), []
+    for b in sorted(bets, key=lambda b: -(b.get(key) or 0)):
+        k = (b["event_id"], pplog._norm(b["player"]))
+        if k not in seen:
+            seen.add(k)
+            out.append(b)
+    return out
+
+
 def box(now: float, until: float) -> str:
     """The tonight-page box: tonight's bets per rule, with each rule's live record."""
     import html
@@ -256,7 +302,7 @@ def box(now: float, until: float) -> str:
     for rule, label in RULES.items():
         if rule.startswith("control"):
             continue
-        live = _score([b for b in allq.get(rule, []) if b["kickoff"] >= FROZEN])
+        live = _score([b for b in allq.get(rule, []) if b["kickoff"] >= RULE_START.get(rule, FROZEN)])
         rec = (f"live {live['n']} bets, {live['games']} games, {live['roi']:+.0%}, beat close {live['beat_close']:.0%}"
                if live["n"] else "no live results yet")
         bets = q.get(rule, [])
@@ -271,11 +317,11 @@ def box(now: float, until: float) -> str:
             out.append(f"<p class='sub'>{len(bets)} qualify tonight. Logged for the test; the model-agrees "
                        "list below is the short list to bet from.</p>")
             continue
-        bets = shortlist(bets)
+        bets = shortlist(bets) if rule != "learned_value" else shortlist_by(bets, "_learned_edge")
         out.append("<table><thead><tr><th>Bet</th><th class='n'>Price</th><th class='n'>Model</th></tr></thead><tbody>")
         for b in bets[:SHOW]:
             ko = time.strftime("%H:%M", time.localtime(b["kickoff"]))
-            me = b.get("_model_edge")
+            me = b.get("_learned_edge") if rule == "learned_value" else b.get("_model_edge")
             out.append(f"<tr><td>{esc(b['player'])} {esc(b['label'])} {esc(b['stat'].lower())}"
                        f"<div class='sub'>{ko} &middot; {esc(b['fixture'])}</div></td>"
                        f"<td class='n'>{b['last']['price']:.2f}</td>"
@@ -294,7 +340,8 @@ if __name__ == "__main__":
     elif cmd == "tonight":
         for rule, bets in tonight().items():
             print(f"\n{RULES[rule]}: {len(bets)}")
-            for b in shortlist(bets)[:25]:
-                print(f"  {(b.get('_model_edge') or 0):+5.0%}", end="")
+            sl = shortlist_by(bets, "_learned_edge") if rule == "learned_value" else shortlist(bets)
+            for b in sl[:25]:
+                print(f"  {(b.get('_learned_edge') if rule == 'learned_value' else b.get('_model_edge')) or 0:+5.0%}", end="")
                 print(f"  {time.strftime('%a %H:%M', time.localtime(b['kickoff']))}  {b['fixture'][:38]:38} "
                       f"{b['player']:24} {b['label']:12} {b['stat']:26} {b['last']['price']:.2f}")
