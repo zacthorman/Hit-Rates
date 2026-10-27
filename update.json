@@ -26,5 +26,6 @@
   "darts": 3,
   "mlb": true,
   "nba": true,
-  "conference_league_days": 3
+  "conference_league_days": 3,
+  "efl_cup_days": 3
 }

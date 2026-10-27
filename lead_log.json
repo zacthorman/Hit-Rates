@@ -2454,7 +2454,7 @@
   "sport": "football",
   "kickoff": 1793043000,
   "selection": "Jo\u00e3o Neves 1+ tackles",
-  "chance": 0.7637852941176471,
+  "chance": 0.7536352941176471,
   "fair": 1.4782608695652173,
   "team": "Paris Saint-Germain",
   "player": "Jo\u00e3o Neves",
@@ -2462,7 +2462,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793026872.26265
+  "written": 1793041030.246552
  },
  "16285058": {
   "event_id": 16285058,
@@ -2583,7 +2583,7 @@
   "sport": "football",
   "kickoff": 1793044800,
   "selection": "Lucas Torr\u00f3 1+ tackles",
-  "chance": 0.6971336793744021,
+  "chance": 0.7205,
   "fair": 1.5384615384615383,
   "team": "Osasuna",
   "player": "Lucas Torr\u00f3",
@@ -2591,7 +2591,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793026872.26265
+  "written": 1793041030.246552
  },
  "15238215": {
   "event_id": 15238215,
@@ -2599,16 +2599,16 @@
   "competition": "Campeonato Brasileiro S\u00e9rie A",
   "sport": "football",
   "kickoff": 1793053800,
-  "selection": "Tet\u00ea 1+ shots",
-  "chance": 0.7678662483165011,
-  "fair": 1.4761904761904763,
-  "team": "Gr\u00eamio",
-  "player": "Tet\u00ea",
+  "selection": "Josu\u00e9 1+ shots",
+  "chance": 0.7039512820512821,
+  "fair": 1.7727272727272727,
+  "team": "Coritiba",
+  "player": "Josu\u00e9",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793026872.26265
+  "written": 1793051439.982901
  },
  "15238225": {
   "event_id": 15238225,
@@ -2625,12 +2625,13 @@
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1793026872.26265
+  "written": 1793054114.719587
  },
  "16183771": {
   "event_id": 16183771,
   "fixture": "Philadelphia Eagles v Dallas Cowboys",
   "competition": "NFL",
+  "sport": "american-football",
   "kickoff": 1793060100,
   "selection": "Will Shipley 1+ receiving receptions",
   "chance": 0.6896551724137931,
@@ -2641,7 +2642,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793024273.407795
+  "written": 1793054114.719587
  },
  "16183751": {
   "event_id": 16183751,
@@ -3047,6 +3048,7 @@
   "event_id": 17193131,
   "fixture": "Tampa Bay Rays v Milwaukee Brewers",
   "competition": "MLB Postseason",
+  "sport": "baseball",
   "kickoff": 1793059200,
   "selection": "William Contreras 1+ hits",
   "chance": 0.6764705882352942,
@@ -3057,7 +3059,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793024273.407795
+  "written": 1793054114.719587
  },
  "16824753": {
   "event_id": 16824753,
@@ -3074,7 +3076,7 @@
   "period": "ALL",
   "line": 6.5,
   "over": true,
-  "written": 1793026872.26265
+  "written": 1793054114.719587
  },
  "16824757": {
   "event_id": 16824757,
@@ -3091,6 +3093,125 @@
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1793026872.26265
+  "written": 1793054114.719587
+ },
+ "16824754": {
+  "event_id": 16824754,
+  "fixture": "Boston Celtics v Chicago Bulls",
+  "competition": "NBA",
+  "sport": "basketball",
+  "kickoff": 1793057400,
+  "selection": "Chicago Bulls over 12.5 turnovers",
+  "chance": 0.6905,
+  "fair": 1.7956650501408857,
+  "team": "Chicago Bulls",
+  "player": null,
+  "stat": "Turnovers",
+  "period": "ALL",
+  "line": 12.5,
+  "over": true,
+  "written": 1793054114.719587
+ },
+ "16824760": {
+  "event_id": 16824760,
+  "fixture": "Miami Heat v Dallas Mavericks",
+  "competition": "NBA",
+  "sport": "basketball",
+  "kickoff": 1793057400,
+  "selection": "Dallas Mavericks over 3.5 blocks",
+  "chance": 0.7319166666666667,
+  "fair": 1.7145122659527745,
+  "team": "Dallas Mavericks",
+  "player": null,
+  "stat": "Blocks",
+  "period": "ALL",
+  "line": 3.5,
+  "over": true,
+  "written": 1793054114.719587
+ },
+ "16824758": {
+  "event_id": 16824758,
+  "fixture": "Milwaukee Bucks v Indiana Pacers",
+  "competition": "NBA",
+  "sport": "basketball",
+  "kickoff": 1793059200,
+  "selection": "Indiana Pacers over 3.5 blocks",
+  "chance": 0.6231285714285715,
+  "fair": 2.0173241947672134,
+  "team": "Indiana Pacers",
+  "player": null,
+  "stat": "Blocks",
+  "period": "ALL",
+  "line": 3.5,
+  "over": true,
+  "written": 1793054114.719587
+ },
+ "16824756": {
+  "event_id": 16824756,
+  "fixture": "Oklahoma City Thunder v Phoenix Suns",
+  "competition": "NBA",
+  "sport": "basketball",
+  "kickoff": 1793059200,
+  "selection": "Oklahoma City Thunder over 8.5 steals",
+  "chance": 0.72895,
+  "fair": 1.4589892427371582,
+  "team": "Oklahoma City Thunder",
+  "player": null,
+  "stat": "Steals",
+  "period": "ALL",
+  "line": 8.5,
+  "over": true,
+  "written": 1793054114.719587
+ },
+ "16824759": {
+  "event_id": 16824759,
+  "fixture": "Houston Rockets v Atlanta Hawks",
+  "competition": "NBA",
+  "sport": "basketball",
+  "kickoff": 1793061000,
+  "selection": "Jabari Smith Jr. 1+ steals and blocks",
+  "chance": 0.7428571428571429,
+  "fair": 1.346153846153846,
+  "team": "Houston Rockets",
+  "player": "Jabari Smith Jr.",
+  "stat": "Steals and blocks",
+  "period": "ALL",
+  "line": 0.5,
+  "over": true,
+  "written": 1793054114.719587
+ },
+ "16824761": {
+  "event_id": 16824761,
+  "fixture": "Utah Jazz v Memphis Grizzlies",
+  "competition": "NBA",
+  "sport": "basketball",
+  "kickoff": 1793062800,
+  "selection": "Kyle Filipowski 1+ turnovers",
+  "chance": 0.6896551724137931,
+  "fair": 1.45,
+  "team": "Utah Jazz",
+  "player": "Kyle Filipowski",
+  "stat": "Turnovers",
+  "period": "ALL",
+  "line": 0.5,
+  "over": true,
+  "written": 1793054114.719587
+ },
+ "16824762": {
+  "event_id": 16824762,
+  "fixture": "Denver Nuggets v Golden State Warriors",
+  "competition": "NBA",
+  "sport": "basketball",
+  "kickoff": 1793066400,
+  "selection": "Golden State Warriors over 7.5 steals",
+  "chance": 0.64735,
+  "fair": 1.9615751245407063,
+  "team": "Golden State Warriors",
+  "player": null,
+  "stat": "Steals",
+  "period": "ALL",
+  "line": 7.5,
+  "over": true,
+  "written": 1793054114.719587
  }
 }

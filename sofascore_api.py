@@ -90,6 +90,10 @@ TOURNAMENTS = {
     "uefa_europa_league": 679,
     # 17015, read off the cache's event feed on 22 Oct 2026.
     "conference_league": 17015,
+    # The EFL Cup (Carabao Cup): 21, read off the cache's event feed 26 Oct 2026.
+    "efl_cup": 21,
+    "carabao_cup": 21,
+    "league_cup": 21,
     "uefa_conference_league": 17015,
     "nfl": 9464,
     "national_football_league": 9464,

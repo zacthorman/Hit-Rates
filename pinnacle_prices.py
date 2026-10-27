@@ -60,6 +60,7 @@ LEAGUES = [
     "Italy - Serie A", "Germany - Bundesliga", "France - Ligue 1",
     "USA - Major League Soccer", "Brazil - Serie A",
     "UEFA - Champions League", "UEFA - Europa League", "UEFA - Conference League",
+    "England - League Cup", "England - EFL Cup",
 ]
 KNOWN_IDS = {"England - Premier League": 1980, "Spain - La Liga": 2196}
 

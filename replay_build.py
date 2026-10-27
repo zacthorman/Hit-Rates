@@ -62,6 +62,7 @@ GROUPS = (
     ("football", FOOTBALL, 4, FOOTBALL_FLAGS, None),
     ("champions league", (7,), 3, FOOTBALL_FLAGS, None),
     ("europa league", (679,), 3, FOOTBALL_FLAGS, None),
+    ("efl cup", (21,), 3, FOOTBALL_FLAGS, None),
     ("nfl", (9464,), 7, dict(games=20, players=True, adjust=True, h2h=True), None),
     ("mlb", (11205,), 3, dict(games=20, players=True, adjust=True, h2h=True), None),
     ("nba", (132,), 2, dict(games=20, players=True, adjust=True, h2h=True), None),

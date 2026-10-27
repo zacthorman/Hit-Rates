@@ -1755,5 +1755,35 @@
     "result": "win",
     "profit": 13.2,
     "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-27-1",
+    "kind": "single",
+    "logged_at": "2026-10-27T08:15:55+00:00",
+    "price": 2.59,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16824764,
+        "fixture": "San Antonio Spurs v Sacramento Kings",
+        "kickoff": 1793145600,
+        "player": "Dylan Harper",
+        "player_id": 1503356,
+        "team": "San Antonio Spurs",
+        "stat": "Points and assists",
+        "line": 17.0,
+        "model_k": 9,
+        "model_n": 10,
+        "model_p": 0.711,
+        "source": "nba.html",
+        "value": null,
+        "result": null
+      }
+    ],
+    "result": null,
+    "profit": null,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
   }
 ]

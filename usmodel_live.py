@@ -242,6 +242,17 @@ def run_sport(sport: str, days: float, now: float) -> dict:
             pl = ev["players"].setdefault(r.name, {"lines": {}, "mu": {}})
             pl["lines"][m["page_stat"]] = lines
             pl["mu"][m["page_stat"]] = round(float(mu_i), 2)
+            # context the best-selections filter uses (selections.py, 26 Oct 2026)
+            if "ctx" not in pl:
+                ctx = {}
+                for c in ("miss_key", "start_rate"):
+                    v = getattr(r, c, None)
+                    try:
+                        if v is not None and v == v:
+                            ctx[c] = round(float(v), 3)
+                    except (TypeError, ValueError):
+                        pass
+                pl["ctx"] = ctx
     blend = {m["page_stat"]: {"site_cal": m["site_cal"], "blend": m["blend"]} for m in meta["targets"].values()}
     # Team stats and the game state (usgame.py, nba_team_train.py): pace,
     # ratings, expected total and margin, blowout risk, rest, and each side's

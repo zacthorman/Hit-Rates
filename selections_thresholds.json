@@ -1,0 +1,98 @@
+{
+ "nba|Points|0": {
+  "miss_key": 0.0,
+  "start_rate": 0.3
+ },
+ "nba|Points|1": {
+  "miss_key": 49.92999999999999,
+  "start_rate": 0.7
+ },
+ "nba|Rebounds|0": {
+  "miss_key": 0.0,
+  "start_rate": 0.7
+ },
+ "nba|Rebounds|1": {
+  "miss_key": 64.78333333333333,
+  "start_rate": 0.3
+ },
+ "nba|Assists|1": {
+  "miss_key": 32.52416666666667,
+  "start_rate": 0.9
+ },
+ "nba|Assists|0": {
+  "miss_key": 0.0,
+  "start_rate": 0.8
+ },
+ "nba|Three pointers made|0": {
+  "miss_key": 0.0,
+  "start_rate": 0.5
+ },
+ "nba|Three pointers made|1": {
+  "miss_key": 23.21,
+  "start_rate": 1.0
+ },
+ "nba|Steals|0": {
+  "miss_key": 0.0,
+  "start_rate": 1.0
+ },
+ "nba|Steals|1": {
+  "miss_key": 19.631666666666668,
+  "start_rate": 1.0
+ },
+ "nba|Points rebounds and assists|0": {
+  "miss_key": 0.0,
+  "start_rate": 0.6
+ },
+ "nba|Points rebounds and assists|1": {
+  "miss_key": 56.92999999999999,
+  "start_rate": 0.5
+ },
+ "nba|Points and rebounds|0": {
+  "miss_key": 0.0,
+  "start_rate": 0.3
+ },
+ "nba|Points and rebounds|1": {
+  "miss_key": 57.33500000000001,
+  "start_rate": 0.5
+ },
+ "nba|Points and assists|1": {
+  "miss_key": 54.70166666666666,
+  "start_rate": 0.6
+ },
+ "nba|Points and assists|0": {
+  "miss_key": 0.0,
+  "start_rate": 0.5
+ },
+ "nba|Rebounds and assists|0": {
+  "miss_key": 0.0,
+  "start_rate": 0.6
+ },
+ "nba|Rebounds and assists|1": {
+  "miss_key": 62.39366402116403,
+  "start_rate": 0.4
+ },
+ "nfl|Rushing yards|0": {
+  "miss_key": 2.6,
+  "start_rate": 0.0
+ },
+ "nfl|Rushing yards|1": {
+  "miss_key": 4.5,
+  "start_rate": 0.0
+ },
+ "nfl|Receiving yards|0": {
+  "miss_key": 2.3,
+  "start_rate": 0.0
+ },
+ "nfl|Receiving yards|1": {
+  "miss_key": 6.377777777777778,
+  "start_rate": 0.0
+ },
+ "nfl|Receiving receptions|0": {
+  "miss_key": 2.6,
+  "start_rate": 0.0
+ },
+ "nfl|Receiving receptions|1": {
+  "miss_key": 5.477777777777778,
+  "start_rate": 0.0
+ }
+}

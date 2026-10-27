@@ -1251,3 +1251,13 @@ Everything below only changes once it has beaten the current version on the newe
 ## Best selections (added 26 Oct 2026)
 
 `selections.py` builds the short list at the top of the Tonight page: NBA and NFL player lines at Paddy Power priced 1.60 to 2.30, where the model's chance beats the price by 3%+ and the player has cleared that line in 7+ of his last 10 and 3+ of his last 5. One per player, two per game, eight a day per sport. Every publish logs the list before kick-off (`selections/log.jsonl`) and settles earlier ones; `python selections.py` prints tonight's list, `python selections.py report` the live record. How it was tested: `research/SELECTIONS_RESEARCH.md`.
+
+Each selection also carries team news (`selections.annotate`): if he is questionable, and any key team-mate (usual Paddy points line 10+ in the NBA, 30+ yards in the NFL) ruled out in the last 48 hours on ESPN's report, with a red warning when that works against an under. `python selections.py` re-reads ESPN if the copy is over 20 minutes old, so run it just before betting.
+
+Signals research (`research/signals.py`, write-up `research/SIGNALS.md`): every extra piece of data is tested on Paddy's real prices and on the long back-test, and only kept if it helps in both. So far that added one rule to the selections: no under when the player's side is missing regulars (the model's `miss_key`, now passed through `reports/usmodel.json` as `ctx`), no over when fewer than usual are missing. Re-run it as the real-price record grows: `python research/signals.py > research/SIGNALS.md`.
+
+Football was tested for the same missing-regulars effect on 26 Oct (`research/FOOTBALL_MISSING_RESEARCH.md`) and left out: no gain in the player model (it is scored from the confirmed XI, which already carries it) and gains too small to matter in the team model. Bet football player lines on confirmed line-ups only, as b365value already flags.
+
+## Real slips (added 27 Oct 2026)
+
+`slips.py` keeps every bet Zac actually placed (book, stake, price, return, each leg with the price taken and how it settled) in `slips/slips.jsonl`. `python slips.py report` gives profit by book and bet shape, and each leg's hit rate against the price it needed, split by the player's last-10 record at that line (from pplog) and price band. Slips are entered from screenshots: `python slips.py add file.json` (format in the file's docstring).

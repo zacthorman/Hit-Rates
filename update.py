@@ -78,6 +78,8 @@ DEFAULTS = {
     "champions_league_days": 3,
     "europa_league_days": 3,
     "conference_league_days": 3,
+    # The EFL Cup, same rule: built when a round is within this many days.
+    "efl_cup_days": 3,
     "prune": True,
     "push": True,
     # Slower than an interactive run on purpose. Nobody is waiting for this
@@ -595,7 +597,8 @@ def main() -> None:
             #      domestic leagues, so the pages are built on the same evidence.
             for name, key in (("Champions League", "champions_league_days"),
                               ("Europa League", "europa_league_days"),
-                              ("Conference League", "conference_league_days")):
+                              ("Conference League", "conference_league_days"),
+                              ("EFL Cup", "efl_cup_days")):
                 comp_days = settings.get(key)
                 if not comp_days:
                     continue

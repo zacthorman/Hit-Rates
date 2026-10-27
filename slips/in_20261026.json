@@ -1,0 +1,20 @@
+[
+ {"id":"20261026-2244-double-mobley-curry","book":"Sky Bet","placed":"2026-10-26 22:44","stake":5.0,"price":2.10,"returns":10.48,"result":"win","legs":[
+  {"player":"Evan Mobley","stat":"Assists","line":1.5,"over":true,"price":1.14,"result":"win","sport":"basketball","fixture":"Cleveland Cavaliers v Minnesota Timberwolves"},
+  {"player":"Stephen Curry","stat":"Points and assists","line":29.5,"over":false,"price":1.83,"result":"win","sport":"basketball","fixture":"Denver Nuggets v Golden State Warriors"}]},
+ {"id":"20261026-2346-4fold-goodwin-durant-bailey-jokic","book":"Sky Bet","placed":"2026-10-26 23:46","stake":10.0,"price":3.02,"returns":30.18,"result":"win","legs":[
+  {"player":"Jordan Goodwin","stat":"Three pointers made","line":0.5,"over":true,"price":1.25,"result":"win","sport":"basketball","fixture":"Oklahoma City Thunder v Phoenix Suns"},
+  {"player":"Kevin Durant","stat":"Rebounds","line":3.5,"over":true,"price":1.30,"result":"win","sport":"basketball","fixture":"Houston Rockets v Atlanta Hawks"},
+  {"player":"Ace Bailey","stat":"Points","line":9.5,"over":true,"price":1.44,"result":"win","sport":"basketball","fixture":"Utah Jazz v Memphis Grizzlies"},
+  {"player":"Nikola Jokic","stat":"Assists","line":7.5,"over":true,"price":1.29,"result":"win","sport":"basketball","fixture":"Denver Nuggets v Golden State Warriors"}]},
+ {"id":"20261026-2246-double-jjohnson-jerome","book":"Sky Bet","placed":"2026-10-26 22:46","stake":5.0,"price":2.14,"returns":0.0,"result":"lose","legs":[
+  {"player":"Jalen Johnson","stat":"Points","line":14.5,"over":true,"price":1.17,"result":"win","sport":"basketball","fixture":"Houston Rockets v Atlanta Hawks"},
+  {"player":"Ty Jerome","stat":"Assists","line":6.5,"over":false,"price":1.83,"result":"lose","sport":"basketball","fixture":"Utah Jazz v Memphis Grizzlies"}]},
+ {"id":"20261026-1515-single-collier","book":"Sky Bet","placed":"2026-10-26 15:15","stake":5.0,"price":2.00,"returns":10.0,"result":"win","legs":[
+  {"player":"Isaiah Collier","stat":"Points","line":6.5,"over":true,"price":2.00,"result":"win","sport":"basketball","fixture":"Utah Jazz v Memphis Grizzlies"}]},
+ {"id":"20261026-1514-single-jsmith","book":"Sky Bet","placed":"2026-10-26 15:14","stake":6.0,"price":1.83,"returns":11.0,"result":"win","legs":[
+  {"player":"Jalen Smith","stat":"Rebounds","line":7.5,"over":false,"price":1.83,"result":"win","sport":"basketball","fixture":"Boston Celtics v Chicago Bulls"}]},
+ {"id":"20261026-double-buzelis-durant","book":"Sky Bet","placed":"2026-10-26","stake":6.90,"price":2.10,"returns":0.0,"result":"lose","legs":[
+  {"player":"Matas Buzelis","stat":"Rebounds","line":3.5,"over":true,"price":1.57,"result":"lose","sport":"basketball","fixture":"Boston Celtics v Chicago Bulls"},
+  {"player":"Kevin Durant","stat":"Rebounds","line":3.5,"over":true,"price":1.33,"result":"win","sport":"basketball","fixture":"Houston Rockets v Atlanta Hawks"}]}
+]

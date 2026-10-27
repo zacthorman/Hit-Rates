@@ -81,8 +81,28 @@ def _leg(leg: dict, meta: dict, sport: str) -> dict:
         "fair_record": leg.get("fairRecord"),
         "elo": ([(leg.get("strength") or {}).get("team"), (leg.get("strength") or {}).get("opp")]
                 if leg.get("strength") else None),
+        # The bookmaker price the pick was built at (weekend.attach_books, 23
+        # Oct 2026): which book, its price, and whether it was inside the
+        # BOOK_MAX_OVER window so the pick actually used it. With these the
+        # record can score the picks at prices you could get, not only at
+        # our fair price. Added 26 Oct 2026; older records have none.
+        "book_name": (leg.get("book") or {}).get("name"),
+        "book_price": (leg.get("book") or {}).get("price"),
+        "book_used": _book_used(leg),
         "value": None, "result": None,
     }
+
+
+def _book_used(leg: dict):
+    """Whether the pick took the book's price (weekend._book_ok), or None if
+    no book priced the leg."""
+    if not leg.get("book"):
+        return None
+    try:
+        import weekend
+        return bool(weekend._book_ok(leg))
+    except Exception:
+        return None
 
 
 def _key(item: dict) -> str:
@@ -130,11 +150,15 @@ def snapshot(args=None) -> int:
         if s.get("single"):
             add("Pick: single", [s["single"]], sport, s["single"].get("fair"))
         if s.get("double"):
-            add("Pick: evens double", s["double"]["legs"], sport, s["double"].get("combined"))
+            add("Pick: evens double", s["double"]["legs"], sport, s["double"].get("combined"),
+                extra={"priced": s["double"].get("priced"),
+                       "fair_ours": s["double"].get("combinedFair")})
         if s.get("banker"):
             add("Pick: banker", [s["banker"]], sport, s["banker"].get("fair"))
         if s.get("acca"):
-            add("Pick: acca", s["acca"]["legs"], sport, s["acca"].get("combined"))
+            add("Pick: acca", s["acca"]["legs"], sport, s["acca"].get("combined"),
+                extra={"priced": s["acca"].get("priced"),
+                       "fair_ours": s["acca"].get("combinedFair")})
         if s.get("builder"):
             b = s["builder"]
             add("Pick: builder", b["legs"], sport, b.get("fair"), b.get("fixture"))

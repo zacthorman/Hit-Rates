@@ -1,0 +1,10 @@
+[
+ {"id":"20261026-1515-4fold-smith-holmgren-cooper-collier","book":"Sky Bet","placed":"2026-10-26 15:15","stake":5.0,"price":12.09,"returns":31.67,"result":"win","legs":[
+  {"player":"Jalen Smith","stat":"Rebounds","line":7.5,"over":false,"price":1.83,"result":"win","sport":"basketball","fixture":"Boston Celtics v Chicago Bulls"},
+  {"player":"Chet Holmgren","stat":"Points and assists","line":17.5,"over":false,"price":1.91,"result":"void","sport":"basketball","fixture":"Oklahoma City Thunder v Phoenix Suns"},
+  {"player":"Darius Cooper","stat":"Receiving receptions","line":3.5,"over":false,"price":1.73,"result":"win","sport":"american-football","fixture":"Philadelphia Eagles v Dallas Cowboys"},
+  {"player":"Isaiah Collier","stat":"Points","line":6.5,"over":true,"price":2.00,"result":"win","sport":"basketball","fixture":"Utah Jazz v Memphis Grizzlies"}]},
+ {"id":"20261026-1512-double-cooper-bailey","book":"Sky Bet","placed":"2026-10-26 15:12","stake":10.0,"price":2.07,"returns":20.73,"result":"win","legs":[
+  {"player":"Darius Cooper","stat":"Receiving receptions","line":3.5,"over":false,"price":1.73,"result":"win","sport":"american-football","fixture":"Philadelphia Eagles v Dallas Cowboys"},
+  {"player":"Ace Bailey","stat":"Three pointers made","line":0.5,"over":true,"price":1.20,"result":"win","sport":"basketball","fixture":"Utah Jazz v Memphis Grizzlies"}]}
+]

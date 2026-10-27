@@ -325,6 +325,9 @@ CROSS_LEAGUE_COMPETITIONS = {
     7,      # UEFA Champions League
     679,    # UEFA Europa League
     17015,  # UEFA Conference League
+    # EFL Cup. Four or five ties a season, often against a lower division,
+    # so form comes from every competition, as for Europe (26 Oct 2026).
+    21,     # EFL Cup
     # Nations League. A national side plays a handful of these a year, so
     # its form is always World Cup, qualifiers and friendlies. Without this
     # the page's wrong-competition guard threw away both teams' entire
