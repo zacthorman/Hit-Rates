@@ -3213,5 +3213,22 @@
   "line": 7.5,
   "over": true,
   "written": 1793054114.719587
+ },
+ "16285065": {
+  "event_id": 16285065,
+  "fixture": "Sassuolo v Lazio",
+  "competition": "Serie A",
+  "sport": "football",
+  "kickoff": 1793122200,
+  "selection": "Mattia Zaccagni 1+ shots",
+  "chance": 0.7652085365853658,
+  "fair": 1.413793103448276,
+  "team": "Lazio",
+  "player": "Mattia Zaccagni",
+  "stat": "Shots",
+  "period": "ALL",
+  "line": 0.5,
+  "over": true,
+  "written": 1793100088.6568608
  }
 }
