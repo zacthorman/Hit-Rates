@@ -1,0 +1,162 @@
+{
+ "_fixture": "Built by hand in the documented stats.nba.com shape for tests/test_nba_stats.py; not a real answer.",
+ "meta": {
+  "version": 1,
+  "request": "http://nba.cloud/games/0022500001/boxscore?Format=json",
+  "time": "2025-10-22T02:00:00.000Z"
+ },
+ "boxScoreTraditional": {
+  "gameId": "0022500001",
+  "awayTeamId": 1610612739,
+  "homeTeamId": 1610612752,
+  "homeTeam": {
+   "teamId": 1610612752,
+   "teamCity": "New York",
+   "teamName": "Knicks",
+   "teamTricode": "NYK",
+   "players": [
+    {
+     "personId": 1626157,
+     "firstName": "Karl-Anthony",
+     "familyName": "Towns",
+     "nameI": "K. Towns",
+     "playerSlug": "x",
+     "position": "C",
+     "comment": "",
+     "jerseyNum": "1",
+     "statistics": {
+      "minutes": "35:12",
+      "fieldGoalsMade": 0,
+      "fieldGoalsAttempted": 0,
+      "reboundsOffensive": 0,
+      "reboundsDefensive": 12,
+      "reboundsTotal": 12,
+      "assists": 3,
+      "steals": 0,
+      "blocks": 0,
+      "turnovers": 0,
+      "foulsPersonal": 0,
+      "points": 24,
+      "plusMinusPoints": 0
+     }
+    },
+    {
+     "personId": 1628973,
+     "firstName": "Jalen",
+     "familyName": "Brunson",
+     "nameI": "J. Brunson",
+     "playerSlug": "x",
+     "position": "G",
+     "comment": "",
+     "jerseyNum": "1",
+     "statistics": {
+      "minutes": "36:00",
+      "fieldGoalsMade": 0,
+      "fieldGoalsAttempted": 0,
+      "reboundsOffensive": 0,
+      "reboundsDefensive": 3,
+      "reboundsTotal": 3,
+      "assists": 7,
+      "steals": 0,
+      "blocks": 0,
+      "turnovers": 0,
+      "foulsPersonal": 0,
+      "points": 31,
+      "plusMinusPoints": 0
+     }
+    },
+    {
+     "personId": 1629011,
+     "firstName": "Mitchell",
+     "familyName": "Robinson",
+     "nameI": "M. Robinson",
+     "playerSlug": "x",
+     "position": "",
+     "comment": "",
+     "jerseyNum": "1",
+     "statistics": {
+      "minutes": "18:30",
+      "fieldGoalsMade": 0,
+      "fieldGoalsAttempted": 0,
+      "reboundsOffensive": 0,
+      "reboundsDefensive": 9,
+      "reboundsTotal": 9,
+      "assists": 0,
+      "steals": 0,
+      "blocks": 0,
+      "turnovers": 0,
+      "foulsPersonal": 0,
+      "points": 4,
+      "plusMinusPoints": 0
+     }
+    },
+    {
+     "personId": 1628384,
+     "firstName": "OG",
+     "familyName": "Anunoby",
+     "nameI": "O. Anunoby",
+     "playerSlug": "x",
+     "position": "",
+     "comment": "DNP - Injury/Illness",
+     "jerseyNum": "1",
+     "statistics": {
+      "minutes": "",
+      "fieldGoalsMade": 0,
+      "fieldGoalsAttempted": 0,
+      "reboundsOffensive": 0,
+      "reboundsDefensive": 0,
+      "reboundsTotal": 0,
+      "assists": 0,
+      "steals": 0,
+      "blocks": 0,
+      "turnovers": 0,
+      "foulsPersonal": 0,
+      "points": 0,
+      "plusMinusPoints": 0
+     }
+    }
+   ],
+   "statistics": {
+    "minutes": "240:00",
+    "points": 111
+   }
+  },
+  "awayTeam": {
+   "teamId": 1610612739,
+   "teamCity": "Cleveland",
+   "teamName": "Cavaliers",
+   "teamTricode": "CLE",
+   "players": [
+    {
+     "personId": 1630596,
+     "firstName": "Evan",
+     "familyName": "Mobley",
+     "nameI": "E. Mobley",
+     "playerSlug": "x",
+     "position": "F",
+     "comment": "",
+     "jerseyNum": "1",
+     "statistics": {
+      "minutes": "34:00",
+      "fieldGoalsMade": 0,
+      "fieldGoalsAttempted": 0,
+      "reboundsOffensive": 0,
+      "reboundsDefensive": 10,
+      "reboundsTotal": 10,
+      "assists": 2,
+      "steals": 0,
+      "blocks": 0,
+      "turnovers": 0,
+      "foulsPersonal": 0,
+      "points": 18,
+      "plusMinusPoints": 0
+     }
+    }
+   ],
+   "statistics": {
+    "minutes": "240:00",
+    "points": 104
+   }
+  }
+ }
+}
