@@ -910,6 +910,7 @@ Everything scheduled runs on the Mac. Nothing here is a cloud job.
 | `pplog.py` | Every Paddy Power player line, our chance and the result. |
 | `teamlog.py` | The same for Paddy Power team lines (21 October). `python teamlog.py scoreboard` judges the team-line take tier against Paddy Power's real prices, with 95% intervals (TEAMLINE-CHECK.md). |
 | `nba_check.py` | NBA player lines: calibration by stat and line from the committed record, and on the Mac the early-season shrink test on `cache/` and a scoreboard of Paddy Power's settled basketball lines (NBA-CHECK.md, 24 October). |
+| `nba_stats.py` | NBA.com minutes, starters and five-man line-ups into `cache/nba_stats/`, by hand on the Mac, then the with/without team-mate split and the small-ball test (NBA-STATS.md, 28 October). Not run live yet. |
 | `freshness.py` | How much of a player's record is from before his last long break; a line on a mostly-stale record is "Old record", never acceptable (PLAYER-STALE.md, 24 October). |
 | `player_stale.py` | The evidence for that: the committed records and the football cache across season starts. |
 | `teamline_check.py` | Whether the team-line take tier holds: the published record and the cache walk forward, with 95% intervals (TEAMLINE-CHECK.md, 23 October). |
@@ -1265,3 +1266,19 @@ Football was tested for the same missing-regulars effect on 26 Oct (`research/FO
 ## Automatic price refresh and selection alerts (added 27 Oct 2026)
 
 `lineups_auto.py` (launchd, every 15 minutes) now also refreshes prices: between 11:00 and 23:00, every 2 hours, if Paddy Power has games to fetch and is not locked out, it runs `publish.sh` (next 15 games' Paddy lines, pplog, best selections logged and settled, tonight.html, site pushed). Any best selection not announced before triggers a Mac notification ("3 new best selections: ..."), including after the morning build. Settings at the top of the prices section: `PRICE_EVERY`, `PRICE_HOURS`. Log lines go to `lineups_auto.log`.
+
+## NBA.com stats: injury boosts and small ball (`nba_stats.py`, added 28 Oct 2026)
+
+SofaScore gives no starters and nothing on who shared the floor, so `nba_stats.py` reads stats.nba.com for that: the season's team and player game logs, each player's listed position (`playerindex`), each game's box score (`boxscoretraditionalv3`, for starters) and each game day's five-man line-ups (`leaguedashlineups`). Everything lands in `cache/nba_stats/`; finished games and finished days are never asked for twice.
+
+It is a by-hand tool and is not called by `update.py` or `publish.sh`. **It has not been run live yet**: stats.nba.com does not answer from the cloud machine it was written on, so the parsers are tested on hand-built fixtures only. The first run must be on the Mac:
+
+```bash
+.venv/bin/python -B nba_stats.py fetch --season 2025-26 --max 40   # a small first run: check it answers
+.venv/bin/python -B nba_stats.py status --season 2025-26
+.venv/bin/python -B nba_stats.py fetch --season 2025-26           # then 300 requests a run until up to date
+.venv/bin/python -B nba_stats.py withwithout "Mitchell Robinson" --teammate "Karl-Anthony Towns"
+.venv/bin/python -B nba_stats.py smallball --season 2025-26 --who backup-bigs
+```
+
+It waits 1.5 to 3 seconds between requests and stops the whole run on the first refusal, timeout or odd answer (exit code 2), with no retries; what was fetched before the stop is kept. A full regular season is about 1,400 requests, so five runs at the default cap. Details, definitions and limits: [NBA-STATS.md](NBA-STATS.md).

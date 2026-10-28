@@ -4,6 +4,12 @@ curl_cffi>=0.7.0
 
 pandas>=2.0.0
 
+# Plain HTTP for the feeds that need no browser fingerprint: pinnacle_prices.py,
+# oddschecker_client.py and nba_stats.py (stats.nba.com). The Mac's venv has
+# it already, since publish.sh runs pinnacle_prices.py; listed so a fresh venv
+# has it too.
+requests>=2.28
+
 # The scoreline model in scoremodels.py (The case's predicted score). Without
 # it context.score() quietly falls back to the old, weaker route.
 scipy>=1.10
