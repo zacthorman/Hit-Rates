@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Every 15 minutes: pull confirmed line-ups for big games kicking off in the
+  Every 5 minutes (was 15 until 27 Oct 2026): pull confirmed line-ups for big games kicking off in the
   next 20 to 80 minutes, then publish. Does nothing on most runs.
 
   Install:
@@ -25,7 +25,7 @@
     <string>/Users/zacthorman/Vaults/Cowork Base/03 Code Projects/Football stats</string>
 
     <key>StartInterval</key>
-    <integer>900</integer>
+    <integer>300</integer>
 
     <key>StandardOutPath</key>
     <string>/Users/zacthorman/Vaults/Cowork Base/03 Code Projects/Football stats/lineups_launchd.out.log</string>

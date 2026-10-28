@@ -2,59 +2,79 @@
  "start": "2026-10-24",
  "decide_at": 300,
  "split": {
-  "tickets": 0
+  "tickets": 2,
+  "nights": 1,
+  "landed": 0,
+  "rate": 0.0,
+  "rate_95": [
+   0.0,
+   0.6576280471103807
+  ],
+  "said": 0.3289473684210526,
+  "multiplied": 0.2491119439465537,
+  "landed_over_said": 0.0,
+  "landed_over_said_95": [
+   null,
+   null
+  ],
+  "log_loss_said": 0.39890770756200533,
+  "multiplied_minus_said": -0.11240900938454002,
+  "multiplied_minus_said_95": [
+   null,
+   null
+  ]
  },
  "one side": {
-  "tickets": 32,
-  "nights": 3,
-  "landed": 6,
-  "rate": 0.1875,
+  "tickets": 33,
+  "nights": 4,
+  "landed": 7,
+  "rate": 0.21212121212121213,
   "rate_95": [
-   0.08889423936162782,
-   0.3530949575492244
+   0.1067588656643618,
+   0.3775197758712936
   ],
-  "said": 0.3209514480134159,
-  "multiplied": 0.23721289590035274,
-  "landed_over_said": 0.5842005112005677,
+  "said": 0.32031655564937295,
+  "multiplied": 0.23730038390337235,
+  "landed_over_said": 0.662223692094784,
   "landed_over_said_95": [
-   0.3064394987547931,
-   1.8227848101265822
+   0.3478416943372521,
+   2.0556745182012848
   ],
-  "log_loss_said": 0.5232638820566535,
-  "multiplied_minus_said": -0.03536174139990346,
+  "log_loss_said": 0.5438914251557226,
+  "multiplied_minus_said": -0.027540871314179306,
   "multiplied_minus_said_95": [
-   -0.08777775282856429,
-   0.1262132283463677
+   -0.07871271611449733,
+   0.14229885219347202
   ]
  },
  "all": {
-  "tickets": 32,
-  "nights": 3,
-  "landed": 6,
-  "rate": 0.1875,
+  "tickets": 35,
+  "nights": 4,
+  "landed": 7,
+  "rate": 0.2,
   "rate_95": [
-   0.08889423936162782,
-   0.3530949575492244
+   0.10042319445900802,
+   0.35891936609462516
   ],
-  "said": 0.3209514480134159,
-  "multiplied": 0.23721289590035274,
-  "landed_over_said": 0.5842005112005677,
+  "said": 0.3208097449506118,
+  "multiplied": 0.23797533019155415,
+  "landed_over_said": 0.6234224587871846,
   "landed_over_said_95": [
-   0.3064394987547931,
-   1.8227848101265822
+   0.34083800019597055,
+   1.5362587383138213
   ],
-  "log_loss_said": 0.5232638820566535,
-  "multiplied_minus_said": -0.03536174139990346,
+  "log_loss_said": 0.5356066412932246,
+  "multiplied_minus_said": -0.032390479203914205,
   "multiplied_minus_said_95": [
-   -0.08777775282856429,
-   0.1262132283463677
+   -0.07871271611449733,
+   0.08573234614718418
   ]
  },
  "left out": {
   "void leg": 8,
-  "open": 4,
+  "open": 9,
   "before start": 176
  },
- "decision": "waiting: 0 of 300 settled split tickets",
- "updated": "2026-10-27 12:16 UTC"
+ "decision": "waiting: 2 of 300 settled split tickets",
+ "updated": "2026-10-28 12:11 UTC"
 }

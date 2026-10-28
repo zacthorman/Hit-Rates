@@ -71,11 +71,80 @@ def due():
     return out
 
 
+# ------------------------------------------------------------ prices refresh
+# 27 Oct 2026: Paddy Power's lines used to arrive only with the morning build,
+# so the evening's NBA list meant running the price fetch by hand. Now, between
+# PRICE_HOURS, every PRICE_EVERY hours, if Paddy has games to fetch (not
+# locked out, cap not spent), this runs publish.sh: it fetches the next batch
+# of games, logs every line, logs and settles the best selections, rebuilds
+# tonight.html and pushes the site. Then a Mac notification lists the
+# selections that are new since the last one.
+PRICE_EVERY = 2.0 * 3600
+PRICE_HOURS = (11, 23)          # local hours, start inclusive, end exclusive
+PRICE_MARK = ROOT / "cache" / ".prices_refresh"
+NOTIFIED = ROOT / "selections" / "notified.json"
+
+
+def prices_due() -> bool:
+    if not (PRICE_HOURS[0] <= datetime.now().hour < PRICE_HOURS[1]):
+        return False
+    if PRICE_MARK.exists() and time.time() - PRICE_MARK.stat().st_mtime < PRICE_EVERY:
+        return False
+    try:
+        import paddypower_prices as pp
+        st = pp.load_state()
+        if pp.blocked(st):
+            return False
+        left = pp.MAX_PER_DAY - pp.count_today(st)
+        todo = pp.candidates(st)
+        far = [c for c in todo if c[0] - time.time() >= 3 * 3600]
+        close = [c for c in todo if c[0] - time.time() < 3 * 3600]
+        return bool(close and left > 0) or bool(far and left > pp.RESERVE_CLOSE)
+    except Exception as exc:  # noqa: BLE001
+        say(f"prices check failed ({type(exc).__name__}: {exc})")
+        return False
+
+
+def notify_selections() -> None:
+    """A Mac notification for best selections not announced before."""
+    try:
+        import selections
+        picks = selections.tonight()
+        seen = set(json.loads(NOTIFIED.read_text())) if NOTIFIED.exists() else set()
+        new = [p for p in picks if selections._key(p) not in seen]
+        if not new:
+            return
+        lines = [f"{p['player']} {p['label'].lower()} {p['stat'].lower()} @ {p['_price']:.2f}" for p in new[:4]]
+        more = f" (+{len(new) - 4} more)" if len(new) > 4 else ""
+        body = "; ".join(lines) + more
+        title = f"{len(new)} new best selection{'s' if len(new) != 1 else ''}"
+        subprocess.run(["osascript", "-e", f'display notification {json.dumps(body)} with title {json.dumps(title)} sound name "Glass"'],
+                       capture_output=True, timeout=20)
+        NOTIFIED.parent.mkdir(exist_ok=True)
+        NOTIFIED.write_text(json.dumps(sorted(seen | {selections._key(p) for p in picks})))
+        say(f"notified: {title}: {body}")
+    except Exception as exc:  # noqa: BLE001
+        say(f"selection notification failed ({type(exc).__name__}: {exc})")
+
+
+def refresh_prices() -> None:
+    PRICE_MARK.parent.mkdir(exist_ok=True)
+    PRICE_MARK.touch()
+    say("prices refresh: fetching Paddy Power and publishing")
+    r = subprocess.run(["./publish.sh"], cwd=ROOT, capture_output=True, text=True)
+    say("prices refresh published" if r.returncode == 0 else f"prices refresh publish failed: {r.stderr[-300:]}")
+    notify_selections()
+
+
 def main() -> None:
     if (ROOT / ".update.lock").exists():
         return                      # the nightly build is running; next tick
     todo = due()
     if not todo:
+        if prices_due():
+            refresh_prices()
+        else:
+            notify_selections()     # e.g. after the morning build published
         return
     import update                   # for the FlareSolverr health check
     update.say = say
@@ -112,10 +181,15 @@ def main() -> None:
             changed += len(got)
             say(f"{path.name}: confirmed XI for {', '.join(got)}")
         else:
-            say(f"{path.name}: not confirmed yet, will retry in 15 minutes")
+            say(f"{path.name}: not confirmed yet, will retry in 5 minutes")
     if changed:
         r = subprocess.run(["./publish.sh"], cwd=ROOT, capture_output=True, text=True)
         say("published" if r.returncode == 0 else f"publish failed: {r.stderr[-300:]}")
+        PRICE_MARK.parent.mkdir(exist_ok=True)
+        PRICE_MARK.touch()          # that publish fetched prices too
+        notify_selections()
+    elif prices_due():
+        refresh_prices()
 
 
 if __name__ == "__main__":

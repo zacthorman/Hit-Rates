@@ -1261,3 +1261,7 @@ Football was tested for the same missing-regulars effect on 26 Oct (`research/FO
 ## Real slips (added 27 Oct 2026)
 
 `slips.py` keeps every bet Zac actually placed (book, stake, price, return, each leg with the price taken and how it settled) in `slips/slips.jsonl`. `python slips.py report` gives profit by book and bet shape, and each leg's hit rate against the price it needed, split by the player's last-10 record at that line (from pplog) and price band. Slips are entered from screenshots: `python slips.py add file.json` (format in the file's docstring).
+
+## Automatic price refresh and selection alerts (added 27 Oct 2026)
+
+`lineups_auto.py` (launchd, every 15 minutes) now also refreshes prices: between 11:00 and 23:00, every 2 hours, if Paddy Power has games to fetch and is not locked out, it runs `publish.sh` (next 15 games' Paddy lines, pplog, best selections logged and settled, tonight.html, site pushed). Any best selection not announced before triggers a Mac notification ("3 new best selections: ..."), including after the morning build. Settings at the top of the prices section: `PRICE_EVERY`, `PRICE_HOURS`. Log lines go to `lineups_auto.log`.

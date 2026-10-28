@@ -216785,11 +216785,11 @@
     "value_at_pick": null,
     "fair_record": 1.1904761904761905,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: acca",
@@ -217430,11 +217430,11 @@
      1575,
      1700
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -217473,11 +217473,11 @@
      1575,
      1700
     ],
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -217513,11 +217513,11 @@
     "value_at_pick": null,
     "fair_record": 1.1904761904761905,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -217554,10 +217554,10 @@
     "fair_record": 1.5454425486633103,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -217593,11 +217593,11 @@
     "value_at_pick": null,
     "fair_record": 1.5303377472693214,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 20.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -217633,11 +217633,11 @@
     "value_at_pick": null,
     "fair_record": 1.5443733057373286,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 27.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -217673,11 +217673,11 @@
     "value_at_pick": null,
     "fair_record": 1.6254347455183062,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -217713,11 +217713,11 @@
     "value_at_pick": null,
     "fair_record": 1.6622983656126389,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -218515,8 +218515,8 @@
      1581,
      1794
     ],
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "lose"
    },
    {
     "event_id": 15238225,
@@ -218550,7 +218550,7 @@
     "result": "win"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: builder",
@@ -218589,8 +218589,8 @@
      1794,
      1581
     ],
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    },
    {
     "event_id": 16285068,
@@ -218623,8 +218623,8 @@
      1794,
      1581
     ],
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    },
    {
     "event_id": 16285068,
@@ -218657,11 +218657,11 @@
      1794,
      1581
     ],
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: single",
@@ -219438,11 +219438,11 @@
     "value_at_pick": null,
     "fair_record": 1.1904761904761905,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -219481,11 +219481,11 @@
      1532,
      1788
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -219524,11 +219524,11 @@
      1788,
      1532
     ],
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -219567,11 +219567,11 @@
      1532,
      1788
     ],
-    "value": null,
-    "result": null
+    "value": 19.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -219607,11 +219607,11 @@
     "value_at_pick": null,
     "fair_record": 1.5917403516742976,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -219647,11 +219647,11 @@
     "value_at_pick": null,
     "fair_record": 1.6075250969676695,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -219687,11 +219687,11 @@
     "value_at_pick": null,
     "fair_record": 1.582849014291712,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -219727,11 +219727,11 @@
     "value_at_pick": null,
     "fair_record": 1.6106669495073023,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -219767,11 +219767,11 @@
     "value_at_pick": null,
     "fair_record": 1.6426646586086515,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -219810,11 +219810,11 @@
      1581,
      1794
     ],
-    "value": null,
-    "result": null
+    "value": 11.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -219853,11 +219853,11 @@
      1794,
      1581
     ],
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -219896,11 +219896,11 @@
      1794,
      1581
     ],
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -219937,10 +219937,10 @@
     "fair_record": 1.5967937788144189,
     "elo": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -219976,11 +219976,11 @@
     "value_at_pick": null,
     "fair_record": 1.575780349196354,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -220016,11 +220016,11 @@
     "value_at_pick": null,
     "fair_record": 1.5443733057373286,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 37.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -220056,11 +220056,11 @@
     "value_at_pick": null,
     "fair_record": 1.582849014291712,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -220096,11 +220096,11 @@
     "value_at_pick": null,
     "fair_record": 1.5903318960084376,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 19.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -220534,8 +220534,8 @@
     "value_at_pick": null,
     "fair_record": null,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 19.0,
+    "result": "win"
    },
    {
     "event_id": 16824764,
@@ -220565,8 +220565,8 @@
     "value_at_pick": null,
     "fair_record": null,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 29.0,
+    "result": "win"
    },
    {
     "event_id": 16824764,
@@ -220596,8 +220596,8 @@
     "value_at_pick": null,
     "fair_record": null,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 29.0,
+    "result": "win"
    },
    {
     "event_id": 16824764,
@@ -220627,11 +220627,11 @@
     "value_at_pick": null,
     "fair_record": null,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 15.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: evens double",
@@ -220701,11 +220701,11 @@
     "value_at_pick": null,
     "fair_record": 1.2631578947368423,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: banker",
@@ -220744,11 +220744,11 @@
      1572,
      1698
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: acca",
@@ -220787,8 +220787,8 @@
      1572,
      1698
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    },
    {
     "event_id": 16421085,
@@ -220855,11 +220855,11 @@
      1529,
      1785
     ],
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: single",
@@ -221539,11 +221539,11 @@
     "value_at_pick": null,
     "fair_record": null,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 11.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -221579,11 +221579,11 @@
     "value_at_pick": null,
     "fair_record": null,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 14.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -221619,11 +221619,11 @@
     "value_at_pick": null,
     "fair_record": 1.125,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -221659,11 +221659,11 @@
     "value_at_pick": null,
     "fair_record": 1.0285714285714287,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 17.2,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -221699,11 +221699,11 @@
     "value_at_pick": null,
     "fair_record": 1.135135135135135,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 27.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -221739,11 +221739,11 @@
     "value_at_pick": null,
     "fair_record": 1.135135135135135,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 36.43333333333333,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -221779,11 +221779,11 @@
     "value_at_pick": null,
     "fair_record": 1.135135135135135,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 27.266666666666666,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -221819,11 +221819,11 @@
     "value_at_pick": null,
     "fair_record": 1.1428571428571428,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 25.15,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -223779,11 +223779,11 @@
     "value_at_pick": null,
     "fair_record": null,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 32.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -223819,11 +223819,11 @@
     "value_at_pick": null,
     "fair_record": 1.0666666666666667,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -223859,11 +223859,11 @@
     "value_at_pick": null,
     "fair_record": 1.0666666666666667,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -223899,11 +223899,11 @@
     "value_at_pick": null,
     "fair_record": 1.0303030303030303,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 24.033333333333335,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -223939,11 +223939,11 @@
     "value_at_pick": null,
     "fair_record": 1.081081081081081,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -223979,11 +223979,11 @@
     "value_at_pick": null,
     "fair_record": 1.0857142857142856,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 33.1,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -224019,11 +224019,11 @@
     "value_at_pick": null,
     "fair_record": 1.096774193548387,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 42.333333333333336,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -224059,11 +224059,11 @@
     "value_at_pick": null,
     "fair_record": 1.1428571428571428,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 11.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -224099,11 +224099,11 @@
     "value_at_pick": null,
     "fair_record": 1.0588235294117647,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 10.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -224139,11 +224139,11 @@
     "value_at_pick": null,
     "fair_record": 1.1111111111111112,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -224179,11 +224179,11 @@
     "value_at_pick": null,
     "fair_record": 1.1111111111111112,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -224219,11 +224219,11 @@
     "value_at_pick": null,
     "fair_record": 1.0769230769230769,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 26.15,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -224259,11 +224259,11 @@
     "value_at_pick": null,
     "fair_record": 1.0769230769230769,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -224299,11 +224299,11 @@
     "value_at_pick": null,
     "fair_record": 1.032258064516129,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -224339,11 +224339,11 @@
     "value_at_pick": null,
     "fair_record": 1.0857142857142856,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 24.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -224379,11 +224379,11 @@
     "value_at_pick": null,
     "fair_record": 1.135135135135135,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -225379,11 +225379,11 @@
     "value_at_pick": null,
     "fair_record": 1.1176470588235294,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -225419,11 +225419,11 @@
     "value_at_pick": null,
     "fair_record": 1.125,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -225459,11 +225459,11 @@
     "value_at_pick": null,
     "fair_record": 1.1764705882352942,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -225499,11 +225499,11 @@
     "value_at_pick": null,
     "fair_record": 1.0285714285714287,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 21.95,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -225539,11 +225539,11 @@
     "value_at_pick": null,
     "fair_record": 1.0769230769230769,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 24.833333333333332,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -225579,11 +225579,11 @@
     "value_at_pick": null,
     "fair_record": 1.0769230769230769,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 27.233333333333334,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -225619,11 +225619,11 @@
     "value_at_pick": null,
     "fair_record": 1.081081081081081,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -225659,11 +225659,11 @@
     "value_at_pick": null,
     "fair_record": 1.1428571428571428,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 17.083333333333332,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -228895,11 +228895,11 @@
      1698,
      1572
     ],
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -229015,11 +229015,11 @@
     "value_at_pick": null,
     "fair_record": 1.1176470588235294,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 11.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -229608,11 +229608,11 @@
     "value_at_pick": null,
     "fair_record": 1.2307692307692308,
     "elo": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: parlay",
@@ -231098,8 +231098,8 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    },
    {
     "event_id": 16285068,
@@ -231135,11 +231135,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null,
+  "result": "win",
   "priced": false,
   "fair_ours": 1.900297596780765
  },
@@ -231183,8 +231183,8 @@
     "book_name": "Paddy Power",
     "book_price": 1.667,
     "book_used": true,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    },
    {
     "event_id": 16285068,
@@ -231220,8 +231220,8 @@
     "book_name": "Paddy Power",
     "book_price": 1.727,
     "book_used": true,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "lose"
    },
    {
     "event_id": 16285063,
@@ -231257,11 +231257,11 @@
     "book_name": "Paddy Power",
     "book_price": 1.727,
     "book_used": true,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose"
    }
   ],
-  "result": null,
+  "result": "lose",
   "priced": true,
   "fair_ours": 3.7597309045116596
  },
@@ -231769,11 +231769,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -231815,11 +231815,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -231861,11 +231861,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -231904,11 +231904,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -231947,11 +231947,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -231990,11 +231990,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 15.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -232033,11 +232033,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -232076,11 +232076,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 13.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -233172,11 +233172,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -233218,11 +233218,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -233264,11 +233264,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 26.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -233308,10 +233308,10 @@
     "book_price": null,
     "book_used": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -233350,11 +233350,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -233393,11 +233393,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -233437,10 +233437,10 @@
     "book_price": null,
     "book_used": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -233479,11 +233479,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -234615,8 +234615,8 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "lose"
    },
    {
     "event_id": 16285068,
@@ -234649,11 +234649,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null,
+  "result": "lose",
   "priced": false,
   "fair_ours": 1.9001316797068761
  },
@@ -234931,11 +234931,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: evens double",
@@ -236201,11 +236201,11 @@
     "book_name": "Paddy Power",
     "book_price": 2.5,
     "book_used": true,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: evens double",
@@ -236860,11 +236860,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Pick: evens double",
@@ -236903,8 +236903,8 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 17193132,
@@ -236937,11 +236937,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null,
+  "result": "lose",
   "priced": false,
   "fair_ours": 2.320075757575758
  },
@@ -236982,11 +236982,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Pick: parlay",
@@ -237025,8 +237025,8 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    },
    {
     "event_id": 17193132,
@@ -237059,8 +237059,8 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 17193132,
@@ -237093,8 +237093,8 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    },
    {
     "event_id": 17193132,
@@ -237127,11 +237127,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -237170,11 +237170,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -237213,11 +237213,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -237256,11 +237256,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -237299,11 +237299,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -237342,11 +237342,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -237385,11 +237385,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -237428,11 +237428,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -237471,11 +237471,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -237514,11 +237514,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -239277,11 +239277,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 24.45,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -239320,11 +239320,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 15.416666666666666,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -240051,11 +240051,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 31.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -246778,11 +246778,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -246867,11 +246867,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -246913,11 +246913,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 11.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -247655,6 +247655,4769 @@
     "exchange_kind": null,
     "value_at_pick": null,
     "fair_record": 1.5690867546635847,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Lead",
+  "sport": "football",
+  "snapshot_at": 1793106095,
+  "fair": 1.7058823529411766,
+  "legs": [
+   {
+    "event_id": 17118365,
+    "fixture": "Bradford City v Peterborough United",
+    "competition": "EFL Cup",
+    "kickoff": 1793130300,
+    "sport": "football",
+    "team": "Bradford City",
+    "player": "Jake Beesley",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": null,
+    "total": null,
+    "fair": 1.7058823529411766,
+    "venue": null,
+    "chance": 0.6873534482758621,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 4.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Lead",
+  "sport": "football",
+  "snapshot_at": 1793106095,
+  "fair": 1.5185185185185184,
+  "legs": [
+   {
+    "event_id": 16285063,
+    "fixture": "AS Roma v Cagliari",
+    "competition": "Serie A",
+    "kickoff": 1793130300,
+    "sport": "football",
+    "team": "Cagliari",
+    "player": "Z\u00e9 Pedro",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": null,
+    "total": null,
+    "fair": 1.5185185185185184,
+    "venue": null,
+    "chance": 0.7261182926829268,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Lead",
+  "sport": "football",
+  "snapshot_at": 1793106095,
+  "fair": 1.5443675623272206,
+  "legs": [
+   {
+    "event_id": 16285068,
+    "fixture": "Torino v Como",
+    "competition": "Serie A",
+    "kickoff": 1793130300,
+    "sport": "football",
+    "team": "Como",
+    "player": null,
+    "stat": "Offsides",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": null,
+    "total": null,
+    "fair": 1.5443675623272206,
+    "venue": null,
+    "chance": 0.7360455713469688,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Lead",
+  "sport": "football",
+  "snapshot_at": 1793106095,
+  "fair": 1.6521739130434783,
+  "legs": [
+   {
+    "event_id": 17118366,
+    "fixture": "Fleetwood Town v Arsenal",
+    "competition": "EFL Cup",
+    "kickoff": 1793131200,
+    "sport": "football",
+    "team": "Arsenal",
+    "player": "Viktor Gy\u00f6keres",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": null,
+    "total": null,
+    "fair": 1.6521739130434783,
+    "venue": null,
+    "chance": 0.7129140788304146,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1793106142,
+  "fair": 1.900132482391494,
+  "legs": [
+   {
+    "event_id": 15171744,
+    "fixture": "Toronto FC v DC United",
+    "competition": "MLS",
+    "kickoff": 1793230200,
+    "sport": "football",
+    "team": "Toronto FC",
+    "player": null,
+    "stat": "Total shots",
+    "period": "2ND",
+    "line": 5.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3070617102191258,
+    "venue": "home",
+    "chance": 0.7651,
+    "chance_base": 0.7651,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3331466798431297,
+    "elo": [
+     1450,
+     1368
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 17124624,
+    "fixture": "Manchester City v Brighton & Hove Albion",
+    "competition": "EFL Cup",
+    "kickoff": 1793215800,
+    "sport": "football",
+    "team": "Brighton & Hove Albion",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 20,
+    "fair": 1.4537435130533671,
+    "venue": "away",
+    "chance": 0.6879,
+    "chance_base": 0.6879,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.8330738892471414,
+    "elo": [
+     1904,
+     2018
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null,
+  "priced": false,
+  "fair_ours": 1.900132482391494
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "basketball",
+  "snapshot_at": 1793106142,
+  "fair": 3.0,
+  "legs": [
+   {
+    "event_id": 16824769,
+    "fixture": "Toronto Raptors v Orlando Magic",
+    "competition": "NBA",
+    "kickoff": 1793230200,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "Jakob Poeltl",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": true,
+    "threshold": 5.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824769,
+    "fixture": "Toronto Raptors v Orlando Magic",
+    "competition": "NBA",
+    "kickoff": 1793230200,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "RJ Barrett",
+    "stat": "Points and assists",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824769,
+    "fixture": "Toronto Raptors v Orlando Magic",
+    "competition": "NBA",
+    "kickoff": 1793230200,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "Scottie Barnes",
+    "stat": "Points",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824769,
+    "fixture": "Toronto Raptors v Orlando Magic",
+    "competition": "NBA",
+    "kickoff": 1793230200,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "Jamal Shead",
+    "stat": "Points",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": true,
+    "threshold": 4.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: single",
+  "sport": "baseball",
+  "snapshot_at": 1793106142,
+  "fair": 2.0,
+  "legs": [
+   {
+    "event_id": 17193132,
+    "fixture": "Tampa Bay Rays v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1793145600,
+    "sport": "baseball",
+    "team": "Tampa Bay Rays",
+    "player": "Junior Caminero",
+    "stat": "Singles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 10,
+    "total": 20,
+    "fair": 2.0,
+    "venue": null,
+    "chance": 0.5,
+    "chance_base": 0.5,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 2.0,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1793106142,
+  "fair": 1.5,
+  "legs": [
+   {
+    "event_id": 16824777,
+    "fixture": "New Orleans Pelicans v Denver Nuggets",
+    "competition": "NBA",
+    "kickoff": 1793232000,
+    "sport": "basketball",
+    "team": "New Orleans Pelicans",
+    "player": "Saddiq Bey",
+    "stat": "Steals and blocks",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.5,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2142857142857144,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793106142,
+  "fair": 1.3049553224151873,
+  "legs": [
+   {
+    "event_id": 15171728,
+    "fixture": "Inter Miami CF v FC Cincinnati",
+    "competition": "MLS",
+    "kickoff": 1793230200,
+    "sport": "football",
+    "team": "Inter Miami CF",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 17,
+    "total": 19,
+    "fair": 1.3049553224151873,
+    "venue": "home",
+    "chance": 0.7987338064795653,
+    "chance_base": 0.7987338064795653,
+    "exchange_p": 0.762,
+    "exchange_back": null,
+    "chance_model": 0.7987338064795653,
+    "chance_anchored": 0.7939753540318156,
+    "exchange_kind": "derived",
+    "value_at_pick": null,
+    "fair_record": 1.2054311608774917,
+    "elo": [
+     1608,
+     1518
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793106142,
+  "fair": 1.3459094680434287,
+  "legs": [
+   {
+    "event_id": 15171744,
+    "fixture": "Toronto FC v DC United",
+    "competition": "MLS",
+    "kickoff": 1793230200,
+    "sport": "football",
+    "team": "DC United",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.3459094680434287,
+    "venue": "away",
+    "chance": 0.6591999926299738,
+    "chance_base": 0.6591999926299738,
+    "exchange_p": 0.7534,
+    "exchange_back": null,
+    "chance_model": 0.6591999926299738,
+    "chance_anchored": 0.6656398719578475,
+    "exchange_kind": "derived",
+    "value_at_pick": null,
+    "fair_record": 1.5402585390038261,
+    "elo": [
+     1368,
+     1450
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793106142,
+  "fair": 1.3664745124682187,
+  "legs": [
+   {
+    "event_id": 15171745,
+    "fixture": "Vancouver Whitecaps v San Diego FC",
+    "competition": "MLS",
+    "kickoff": 1793241000,
+    "sport": "football",
+    "team": "Vancouver Whitecaps",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.3664745124682187,
+    "venue": "home",
+    "chance": 0.7318102100519477,
+    "chance_base": 0.7318102100519477,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2900878960322537,
+    "elo": [
+     1559,
+     1485
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793106142,
+  "fair": 1.337030633614706,
+  "legs": [
+   {
+    "event_id": 15171741,
+    "fixture": "San Jose Earthquakes v Colorado Rapids",
+    "competition": "MLS",
+    "kickoff": 1793241000,
+    "sport": "football",
+    "team": "Colorado Rapids",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 19,
+    "fair": 1.337030633614706,
+    "venue": "away",
+    "chance": 0.5615840349268549,
+    "chance_base": 0.5615840349268549,
+    "exchange_p": 0.7678,
+    "exchange_back": null,
+    "chance_model": 0.5615840349268549,
+    "chance_anchored": 0.5880760021107002,
+    "exchange_kind": "derived",
+    "value_at_pick": null,
+    "fair_record": 1.6398174985231848,
+    "elo": [
+     1473,
+     1500
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793106142,
+  "fair": 1.4328325390108483,
+  "legs": [
+   {
+    "event_id": 15238228,
+    "fixture": "Bahia v S\u00e3o Paulo",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1793233800,
+    "sport": "football",
+    "team": "Bahia",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4328325390108483,
+    "venue": "home",
+    "chance": 0.6979182652358992,
+    "chance_base": 0.6979182652358992,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4067027690626932,
+    "elo": [
+     1681,
+     1632
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793106142,
+  "fair": 1.3214285714285714,
+  "legs": [
+   {
+    "event_id": 15238228,
+    "fixture": "Bahia v S\u00e3o Paulo",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1793233800,
+    "sport": "football",
+    "team": "S\u00e3o Paulo",
+    "player": "Jonathan Calleri",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 20,
+    "total": 21,
+    "fair": 1.3214285714285714,
+    "venue": null,
+    "chance": 0.7567567567567568,
+    "chance_base": 0.7567567567567568,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4716784791666384,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: single",
+  "sport": "football",
+  "snapshot_at": 1793114292,
+  "fair": 1.823529411764706,
+  "legs": [
+   {
+    "event_id": 15238205,
+    "fixture": "Fluminense v Internacional",
+    "competition": "Campeonato Brasileiro S\u00e9rie A",
+    "kickoff": 1793226600,
+    "sport": "football",
+    "team": "Internacional",
+    "player": "F\u00e9lix Torres",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 9,
+    "total": 15,
+    "fair": 1.823529411764706,
+    "venue": null,
+    "chance": 0.5484,
+    "chance_base": 0.5484,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6666666666666667,
+    "elo": null,
+    "book_name": "Paddy Power",
+    "book_price": 2.1,
+    "book_used": true,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1793114292,
+  "fair": 2.3825999999999996,
+  "legs": [
+   {
+    "event_id": 17118366,
+    "fixture": "Fleetwood Town v Arsenal",
+    "competition": "EFL Cup",
+    "kickoff": 1793131200,
+    "sport": "football",
+    "team": "Fleetwood Town",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 18,
+    "fair": 1.3505550080486275,
+    "venue": "home",
+    "chance": 0.7404,
+    "chance_base": 0.7404,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.8177555981797449,
+    "elo": [
+     1426,
+     2060
+    ],
+    "book_name": "Paddy Power",
+    "book_price": 1.444,
+    "book_used": true,
+    "value": 3.0,
+    "result": "win"
+   },
+   {
+    "event_id": 15171744,
+    "fixture": "Toronto FC v DC United",
+    "competition": "MLS",
+    "kickoff": 1793230200,
+    "sport": "football",
+    "team": "Toronto FC",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3848468567998269,
+    "venue": "home",
+    "chance": 0.7221,
+    "chance_base": 0.7221,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.410037280215837,
+    "elo": [
+     1450,
+     1368
+    ],
+    "book_name": "Paddy Power",
+    "book_price": 1.65,
+    "book_used": true,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null,
+  "priced": true,
+  "fair_ours": 1.8703118578314066
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "football",
+  "snapshot_at": 1793114292,
+  "fair": 1.3505550080486275,
+  "legs": [
+   {
+    "event_id": 17118366,
+    "fixture": "Fleetwood Town v Arsenal",
+    "competition": "EFL Cup",
+    "kickoff": 1793131200,
+    "sport": "football",
+    "team": "Fleetwood Town",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 18,
+    "fair": 1.3505550080486275,
+    "venue": "home",
+    "chance": 0.7404,
+    "chance_base": 0.7404,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.8177555981797449,
+    "elo": [
+     1426,
+     2060
+    ],
+    "book_name": "Paddy Power",
+    "book_price": 1.444,
+    "book_used": true,
+    "value": 3.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1793114292,
+  "fair": 3.9717941999999993,
+  "legs": [
+   {
+    "event_id": 17118366,
+    "fixture": "Fleetwood Town v Arsenal",
+    "competition": "EFL Cup",
+    "kickoff": 1793131200,
+    "sport": "football",
+    "team": "Fleetwood Town",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 12,
+    "total": 18,
+    "fair": 1.3505550080486275,
+    "venue": "home",
+    "chance": 0.7404,
+    "chance_base": 0.7404,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.8177555981797449,
+    "elo": [
+     1426,
+     2060
+    ],
+    "book_name": "Paddy Power",
+    "book_price": 1.444,
+    "book_used": true,
+    "value": 3.0,
+    "result": "win"
+   },
+   {
+    "event_id": 15171744,
+    "fixture": "Toronto FC v DC United",
+    "competition": "MLS",
+    "kickoff": 1793230200,
+    "sport": "football",
+    "team": "Toronto FC",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3848468567998269,
+    "venue": "home",
+    "chance": 0.7221,
+    "chance_base": 0.7221,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.410037280215837,
+    "elo": [
+     1450,
+     1368
+    ],
+    "book_name": "Paddy Power",
+    "book_price": 1.65,
+    "book_used": true,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16285065,
+    "fixture": "Sassuolo v Lazio",
+    "competition": "Serie A",
+    "kickoff": 1793122200,
+    "sport": "football",
+    "team": "Sassuolo",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 17,
+    "fair": 1.436252781509676,
+    "venue": "home",
+    "chance": 0.6963,
+    "chance_base": 0.6963,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3860693263401862,
+    "elo": [
+     1573,
+     1699
+    ],
+    "book_name": "Paddy Power",
+    "book_price": 1.667,
+    "book_used": true,
+    "value": 1.0,
+    "result": "lose"
+   }
+  ],
+  "result": null,
+  "priced": true,
+  "fair_ours": 2.686240608100887
+ },
+ {
+  "category": "Pick: single",
+  "sport": "basketball",
+  "snapshot_at": 1793114292,
+  "fair": 1.7651500475558095,
+  "legs": [
+   {
+    "event_id": 16824766,
+    "fixture": "Los Angeles Lakers v Portland Trail Blazers",
+    "competition": "NBA",
+    "kickoff": 1793156400,
+    "sport": "basketball",
+    "team": "Portland Trail Blazers",
+    "player": "Scoot Henderson",
+    "stat": "Points",
+    "period": "ALL",
+    "line": 10.5,
+    "over": true,
+    "alt": true,
+    "threshold": 11.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.7651500475558095,
+    "venue": null,
+    "chance": 0.6111,
+    "chance_base": 0.6111,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4285714285714286,
+    "elo": null,
+    "book_name": "Paddy Power",
+    "book_price": 2.1,
+    "book_used": true,
+    "value": 2.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "basketball",
+  "snapshot_at": 1793114292,
+  "fair": 1.9599999999999997,
+  "legs": [
+   {
+    "event_id": 16824764,
+    "fixture": "San Antonio Spurs v Sacramento Kings",
+    "competition": "NBA",
+    "kickoff": 1793145600,
+    "sport": "basketball",
+    "team": "San Antonio Spurs",
+    "player": "Devin Vassell",
+    "stat": "Assists",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 17,
+    "total": 20,
+    "fair": 1.283532280836863,
+    "venue": null,
+    "chance": 0.6944,
+    "chance_base": 0.6944,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1764705882352942,
+    "elo": null,
+    "book_name": "Paddy Power",
+    "book_price": 1.4,
+    "book_used": true,
+    "value": 8.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16824763,
+    "fixture": "New York Knicks v Detroit Pistons",
+    "competition": "NBA",
+    "kickoff": 1793145600,
+    "sport": "basketball",
+    "team": "Detroit Pistons",
+    "player": "Duncan Robinson",
+    "stat": "Points",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10.0,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.3065788558510776,
+    "venue": null,
+    "chance": 0.6571,
+    "chance_base": 0.6571,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2666666666666666,
+    "elo": null,
+    "book_name": "Paddy Power",
+    "book_price": 1.4,
+    "book_used": true,
+    "value": 12.0,
+    "result": "win"
+   }
+  ],
+  "result": "win",
+  "priced": true,
+  "fair_ours": 1.6770361389437525
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "basketball",
+  "snapshot_at": 1793114292,
+  "fair": 1.283532280836863,
+  "legs": [
+   {
+    "event_id": 16824764,
+    "fixture": "San Antonio Spurs v Sacramento Kings",
+    "competition": "NBA",
+    "kickoff": 1793145600,
+    "sport": "basketball",
+    "team": "San Antonio Spurs",
+    "player": "Devin Vassell",
+    "stat": "Assists",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 17,
+    "total": 20,
+    "fair": 1.283532280836863,
+    "venue": null,
+    "chance": 0.6944,
+    "chance_base": 0.6944,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1764705882352942,
+    "elo": null,
+    "book_name": "Paddy Power",
+    "book_price": 1.4,
+    "book_used": true,
+    "value": 8.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "basketball",
+  "snapshot_at": 1793114292,
+  "fair": 5.7888516,
+  "legs": [
+   {
+    "event_id": 16824764,
+    "fixture": "San Antonio Spurs v Sacramento Kings",
+    "competition": "NBA",
+    "kickoff": 1793145600,
+    "sport": "basketball",
+    "team": "San Antonio Spurs",
+    "player": "Julian Champagnie",
+    "stat": "Three pointers made",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.4351320321469576,
+    "venue": null,
+    "chance": 0.6667,
+    "chance_base": 0.6667,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.25,
+    "elo": null,
+    "book_name": "Paddy Power",
+    "book_price": 1.444,
+    "book_used": true,
+    "value": 8.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16824763,
+    "fixture": "New York Knicks v Detroit Pistons",
+    "competition": "NBA",
+    "kickoff": 1793145600,
+    "sport": "basketball",
+    "team": "New York Knicks",
+    "player": "OG Anunoby",
+    "stat": "Points",
+    "period": "ALL",
+    "line": 16.5,
+    "over": true,
+    "alt": true,
+    "threshold": 17.0,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.6866552640276626,
+    "venue": null,
+    "chance": 0.6471,
+    "chance_base": 0.6471,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2857142857142856,
+    "elo": null,
+    "book_name": "Paddy Power",
+    "book_price": 1.909,
+    "book_used": true,
+    "value": 13.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 16824766,
+    "fixture": "Los Angeles Lakers v Portland Trail Blazers",
+    "competition": "NBA",
+    "kickoff": 1793156400,
+    "sport": "basketball",
+    "team": "Portland Trail Blazers",
+    "player": "Scoot Henderson",
+    "stat": "Points",
+    "period": "ALL",
+    "line": 10.5,
+    "over": true,
+    "alt": true,
+    "threshold": 11.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.7651500475558095,
+    "venue": null,
+    "chance": 0.6111,
+    "chance_base": 0.6111,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4285714285714286,
+    "elo": null,
+    "book_name": "Paddy Power",
+    "book_price": 2.1,
+    "book_used": true,
+    "value": 2.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose",
+  "priced": true,
+  "fair_ours": 4.272674540052648
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "basketball",
+  "snapshot_at": 1793114292,
+  "fair": 3.0,
+  "legs": [
+   {
+    "event_id": 16824769,
+    "fixture": "Toronto Raptors v Orlando Magic",
+    "competition": "NBA",
+    "kickoff": 1793230200,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "Jakob Poeltl",
+    "stat": "Rebounds and assists",
+    "period": "ALL",
+    "line": 5.5,
+    "over": true,
+    "alt": true,
+    "threshold": 6.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824769,
+    "fixture": "Toronto Raptors v Orlando Magic",
+    "competition": "NBA",
+    "kickoff": 1793230200,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "RJ Barrett",
+    "stat": "Rebounds and assists",
+    "period": "ALL",
+    "line": 7.5,
+    "over": true,
+    "alt": true,
+    "threshold": 8.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824769,
+    "fixture": "Toronto Raptors v Orlando Magic",
+    "competition": "NBA",
+    "kickoff": 1793230200,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "Scottie Barnes",
+    "stat": "Rebounds and assists",
+    "period": "ALL",
+    "line": 10.5,
+    "over": true,
+    "alt": true,
+    "threshold": 11.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824769,
+    "fixture": "Toronto Raptors v Orlando Magic",
+    "competition": "NBA",
+    "kickoff": 1793230200,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "Ja'Kobe Walter",
+    "stat": "Three pointers made",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "baseball",
+  "snapshot_at": 1793114292,
+  "fair": 3.0400000000000005,
+  "legs": [
+   {
+    "event_id": 17193132,
+    "fixture": "Tampa Bay Rays v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1793145600,
+    "sport": "baseball",
+    "team": "Tampa Bay Rays",
+    "player": "Junior Caminero",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 1.0,
+    "result": "win"
+   },
+   {
+    "event_id": 17193132,
+    "fixture": "Tampa Bay Rays v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1793145600,
+    "sport": "baseball",
+    "team": "Tampa Bay Rays",
+    "player": "Victor Mesa Jr.",
+    "stat": "Hits runs and RBIs",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3571428571428572,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 0.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 17193132,
+    "fixture": "Tampa Bay Rays v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1793145600,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "William Contreras",
+    "stat": "Hits runs and RBIs",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 0.0,
+    "result": "lose"
+   },
+   {
+    "event_id": 17193132,
+    "fixture": "Tampa Bay Rays v Milwaukee Brewers",
+    "competition": "MLB Postseason",
+    "kickoff": 1793145600,
+    "sport": "baseball",
+    "team": "Milwaukee Brewers",
+    "player": "Christian Yelich",
+    "stat": "Hits",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 12,
+    "total": 17,
+    "fair": 1.4166666666666665,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 0.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793114292,
+  "fair": 1.3365351107119035,
+  "legs": [
+   {
+    "event_id": 16285063,
+    "fixture": "AS Roma v Cagliari",
+    "competition": "Serie A",
+    "kickoff": 1793130300,
+    "sport": "football",
+    "team": "Cagliari",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 5.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 19,
+    "fair": 1.3365351107119035,
+    "venue": "away",
+    "chance": 0.7482033146644023,
+    "chance_base": 0.7482033146644023,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2950019421687475,
+    "elo": [
+     1530,
+     1786
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 8.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793114292,
+  "fair": 1.3122660411760614,
+  "legs": [
+   {
+    "event_id": 17118366,
+    "fixture": "Fleetwood Town v Arsenal",
+    "competition": "EFL Cup",
+    "kickoff": 1793131200,
+    "sport": "football",
+    "team": "Arsenal",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 20,
+    "fair": 1.3122660411760614,
+    "venue": "away",
+    "chance": 0.762040598950342,
+    "chance_base": 0.762040598950342,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.9311730911013774,
+    "elo": [
+     2060,
+     1426
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 7.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "basketball",
+  "snapshot_at": 1793114542,
+  "fair": 3.0,
+  "legs": [
+   {
+    "event_id": 16824770,
+    "fixture": "Cleveland Cavaliers v Washington Wizards",
+    "competition": "NBA",
+    "kickoff": 1793228400,
+    "sport": "basketball",
+    "team": "Cleveland Cavaliers",
+    "player": "Jarrett Allen",
+    "stat": "Turnovers",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824770,
+    "fixture": "Cleveland Cavaliers v Washington Wizards",
+    "competition": "NBA",
+    "kickoff": 1793228400,
+    "sport": "basketball",
+    "team": "Cleveland Cavaliers",
+    "player": "Evan Mobley",
+    "stat": "Steals and blocks",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824770,
+    "fixture": "Cleveland Cavaliers v Washington Wizards",
+    "competition": "NBA",
+    "kickoff": 1793228400,
+    "sport": "basketball",
+    "team": "Cleveland Cavaliers",
+    "player": "Donovan Mitchell",
+    "stat": "Steals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824770,
+    "fixture": "Cleveland Cavaliers v Washington Wizards",
+    "competition": "NBA",
+    "kickoff": 1793228400,
+    "sport": "basketball",
+    "team": "Cleveland Cavaliers",
+    "player": "Sam Merrill",
+    "stat": "Points and assists",
+    "period": "ALL",
+    "line": 6.5,
+    "over": true,
+    "alt": true,
+    "threshold": 7.0,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.3846153846153846,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Lead",
+  "sport": "football",
+  "snapshot_at": 1793120646,
+  "fair": 1.7142857142857142,
+  "legs": [
+   {
+    "event_id": 16285065,
+    "fixture": "Sassuolo v Lazio",
+    "competition": "Serie A",
+    "kickoff": 1793122200,
+    "sport": "football",
+    "team": "Sassuolo",
+    "player": "Armand Laurient\u00e9",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": null,
+    "total": null,
+    "fair": 1.7142857142857142,
+    "venue": null,
+    "chance": 0.7228933333333333,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 4.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "basketball",
+  "snapshot_at": 1793120693,
+  "fair": 3.0,
+  "legs": [
+   {
+    "event_id": 16824767,
+    "fixture": "Atlanta Hawks v Miami Heat",
+    "competition": "NBA",
+    "kickoff": 1793228400,
+    "sport": "basketball",
+    "team": "Atlanta Hawks",
+    "player": "Nickeil Alexander-Walker",
+    "stat": "Assists",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": true,
+    "threshold": 3.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824767,
+    "fixture": "Atlanta Hawks v Miami Heat",
+    "competition": "NBA",
+    "kickoff": 1793228400,
+    "sport": "basketball",
+    "team": "Atlanta Hawks",
+    "player": "CJ McCollum",
+    "stat": "Three pointers made",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824767,
+    "fixture": "Atlanta Hawks v Miami Heat",
+    "competition": "NBA",
+    "kickoff": 1793228400,
+    "sport": "basketball",
+    "team": "Atlanta Hawks",
+    "player": "Onyeka Okongwu",
+    "stat": "Points and assists",
+    "period": "ALL",
+    "line": 10.5,
+    "over": true,
+    "alt": true,
+    "threshold": 11.0,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.3846153846153846,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824767,
+    "fixture": "Atlanta Hawks v Miami Heat",
+    "competition": "NBA",
+    "kickoff": 1793228400,
+    "sport": "basketball",
+    "team": "Atlanta Hawks",
+    "player": "Dyson Daniels",
+    "stat": "Assists",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": true,
+    "threshold": 4.0,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.3846153846153846,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "basketball",
+  "snapshot_at": 1793120693,
+  "fair": 1.3599999999999999,
+  "legs": [
+   {
+    "event_id": 16824776,
+    "fixture": "Dallas Mavericks v Oklahoma City Thunder",
+    "competition": "NBA",
+    "kickoff": 1793237400,
+    "sport": "basketball",
+    "team": "Oklahoma City Thunder",
+    "player": "Chet Holmgren",
+    "stat": "Minutes",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25,
+    "hits": 17,
+    "total": 18,
+    "fair": 1.3599999999999999,
+    "venue": null,
+    "chance": 0.7352941176470589,
+    "chance_base": 0.7352941176470589,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.0857142857142856,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793120693,
+  "fair": 1.434782608695652,
+  "legs": [
+   {
+    "event_id": 16285065,
+    "fixture": "Sassuolo v Lazio",
+    "competition": "Serie A",
+    "kickoff": 1793122200,
+    "sport": "football",
+    "team": "Lazio",
+    "player": "Tijjani Noslin",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 15,
+    "total": 17,
+    "fair": 1.434782608695652,
+    "venue": null,
+    "chance": 0.696969696969697,
+    "chance_base": 0.696969696969697,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.5888001061123367,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 4.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793120693,
+  "fair": 1.44,
+  "legs": [
+   {
+    "event_id": 16285065,
+    "fixture": "Sassuolo v Lazio",
+    "competition": "Serie A",
+    "kickoff": 1793122200,
+    "sport": "football",
+    "team": "Sassuolo",
+    "player": "Josh Doig",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25,
+    "hits": 17,
+    "total": 20,
+    "fair": 1.44,
+    "venue": null,
+    "chance": 0.6944444444444444,
+    "chance_base": 0.6944444444444444,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6254347455183062,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 41.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Lead",
+  "sport": "football",
+  "snapshot_at": 1793127548,
+  "fair": 1.4642857142857142,
+  "legs": [
+   {
+    "event_id": 17118365,
+    "fixture": "Bradford City v Peterborough United",
+    "competition": "EFL Cup",
+    "kickoff": 1793130300,
+    "sport": "football",
+    "team": "Bradford City",
+    "player": "Bobby Pointon",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": null,
+    "total": null,
+    "fair": 1.4642857142857142,
+    "venue": null,
+    "chance": 0.7453134146341464,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "football",
+  "snapshot_at": 1793127604,
+  "fair": 2.4749999999999996,
+  "legs": [
+   {
+    "event_id": 15171744,
+    "fixture": "Toronto FC v DC United",
+    "competition": "MLS",
+    "kickoff": 1793230200,
+    "sport": "football",
+    "team": "Toronto FC",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3853851756103066,
+    "venue": "home",
+    "chance": 0.7218,
+    "chance_base": 0.7218,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.410037280215837,
+    "elo": [
+     1450,
+     1368
+    ],
+    "book_name": "Paddy Power",
+    "book_price": 1.65,
+    "book_used": true,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16285062,
+    "fixture": "AC Milan v Bologna",
+    "competition": "Serie A",
+    "kickoff": 1793208600,
+    "sport": "football",
+    "team": "Bologna",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 3.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 18,
+    "fair": 1.4552943648661016,
+    "venue": "away",
+    "chance": 0.6871,
+    "chance_base": 0.6871,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6119841002058433,
+    "elo": [
+     1600,
+     1725
+    ],
+    "book_name": "Paddy Power",
+    "book_price": 1.5,
+    "book_used": true,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null,
+  "priced": true,
+  "fair_ours": 2.016143239234714
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "football",
+  "snapshot_at": 1793127604,
+  "fair": 1.3853851756103066,
+  "legs": [
+   {
+    "event_id": 15171744,
+    "fixture": "Toronto FC v DC United",
+    "competition": "MLS",
+    "kickoff": 1793230200,
+    "sport": "football",
+    "team": "Toronto FC",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3853851756103066,
+    "venue": "home",
+    "chance": 0.7218,
+    "chance_base": 0.7218,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.410037280215837,
+    "elo": [
+     1450,
+     1368
+    ],
+    "book_name": "Paddy Power",
+    "book_price": 1.65,
+    "book_used": true,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "football",
+  "snapshot_at": 1793127604,
+  "fair": 4.125825,
+  "legs": [
+   {
+    "event_id": 15171744,
+    "fixture": "Toronto FC v DC United",
+    "competition": "MLS",
+    "kickoff": 1793230200,
+    "sport": "football",
+    "team": "Toronto FC",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3853851756103066,
+    "venue": "home",
+    "chance": 0.7218,
+    "chance_base": 0.7218,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.410037280215837,
+    "elo": [
+     1450,
+     1368
+    ],
+    "book_name": "Paddy Power",
+    "book_price": 1.65,
+    "book_used": true,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 17118367,
+    "fixture": "Fulham v Crystal Palace",
+    "competition": "EFL Cup",
+    "kickoff": 1793216700,
+    "sport": "football",
+    "team": "Crystal Palace",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.442295433171325,
+    "venue": "away",
+    "chance": 0.6933,
+    "chance_base": 0.6933,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.7074969266062165,
+    "elo": [
+     1758,
+     1776
+    ],
+    "book_name": "Paddy Power",
+    "book_price": 1.667,
+    "book_used": true,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16285062,
+    "fixture": "AC Milan v Bologna",
+    "competition": "Serie A",
+    "kickoff": 1793208600,
+    "sport": "football",
+    "team": "Bologna",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "ALL",
+    "line": 3.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 11,
+    "total": 18,
+    "fair": 1.4552943648661016,
+    "venue": "away",
+    "chance": 0.6871,
+    "chance_base": 0.6871,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6119841002058433,
+    "elo": [
+     1600,
+     1725
+    ],
+    "book_name": "Paddy Power",
+    "book_price": 1.5,
+    "book_used": true,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null,
+  "priced": true,
+  "fair_ours": 2.9078741865674695
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "basketball",
+  "snapshot_at": 1793127604,
+  "fair": 3.166666666666667,
+  "legs": [
+   {
+    "event_id": 16824769,
+    "fixture": "Toronto Raptors v Orlando Magic",
+    "competition": "NBA",
+    "kickoff": 1793230200,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "RJ Barrett",
+    "stat": "Turnovers",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824769,
+    "fixture": "Toronto Raptors v Orlando Magic",
+    "competition": "NBA",
+    "kickoff": 1793230200,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "Scottie Barnes",
+    "stat": "Points rebounds and assists",
+    "period": "ALL",
+    "line": 28.5,
+    "over": true,
+    "alt": true,
+    "threshold": 29.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824769,
+    "fixture": "Toronto Raptors v Orlando Magic",
+    "competition": "NBA",
+    "kickoff": 1793230200,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "Ja'Kobe Walter",
+    "stat": "Points rebounds and assists",
+    "period": "ALL",
+    "line": 12.5,
+    "over": true,
+    "alt": true,
+    "threshold": 13.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824769,
+    "fixture": "Toronto Raptors v Orlando Magic",
+    "competition": "NBA",
+    "kickoff": 1793230200,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "Jamal Shead",
+    "stat": "Points and assists",
+    "period": "ALL",
+    "line": 7.5,
+    "over": true,
+    "alt": true,
+    "threshold": 8.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793127604,
+  "fair": 1.40625,
+  "legs": [
+   {
+    "event_id": 17118365,
+    "fixture": "Bradford City v Peterborough United",
+    "competition": "EFL Cup",
+    "kickoff": 1793130300,
+    "sport": "football",
+    "team": "Bradford City",
+    "player": "Ibou Touray",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 29.5,
+    "over": true,
+    "alt": true,
+    "threshold": 30,
+    "hits": 24,
+    "total": 29,
+    "fair": 1.40625,
+    "venue": null,
+    "chance": 0.7111111111111111,
+    "chance_base": 0.7111111111111111,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6460390280394983,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 29.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793127604,
+  "fair": 1.4074074074074074,
+  "legs": [
+   {
+    "event_id": 17118365,
+    "fixture": "Bradford City v Peterborough United",
+    "competition": "EFL Cup",
+    "kickoff": 1793130300,
+    "sport": "football",
+    "team": "Peterborough United",
+    "player": "Brandon Khela",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 19,
+    "total": 22,
+    "fair": 1.4074074074074074,
+    "venue": null,
+    "chance": 0.7105263157894737,
+    "chance_base": 0.7105263157894737,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6067290215544958,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793127604,
+  "fair": 1.3643420458317232,
+  "legs": [
+   {
+    "event_id": 16285059,
+    "fixture": "Frosinone v Lecce",
+    "competition": "Serie A",
+    "kickoff": 1793295000,
+    "sport": "football",
+    "team": "Lecce",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.3643420458317232,
+    "venue": "away",
+    "chance": 0.7329540294203754,
+    "chance_base": 0.7329540294203754,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3254048815656267,
+    "elo": [
+     1496,
+     1652
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793127604,
+  "fair": 1.3833437029009823,
+  "legs": [
+   {
+    "event_id": 16285059,
+    "fixture": "Frosinone v Lecce",
+    "competition": "Serie A",
+    "kickoff": 1793295000,
+    "sport": "football",
+    "team": "Lecce",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "1ST",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 19,
+    "fair": 1.3833437029009823,
+    "venue": "away",
+    "chance": 0.7228861474577287,
+    "chance_base": 0.7228861474577287,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3897900731739297,
+    "elo": [
+     1496,
+     1652
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793127604,
+  "fair": 1.3928571428571428,
+  "legs": [
+   {
+    "event_id": 16285059,
+    "fixture": "Frosinone v Lecce",
+    "competition": "Serie A",
+    "kickoff": 1793295000,
+    "sport": "football",
+    "team": "Lecce",
+    "player": "Jamil Siebert",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 20,
+    "total": 23,
+    "fair": 1.3928571428571428,
+    "venue": null,
+    "chance": 0.717948717948718,
+    "chance_base": 0.717948717948718,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1500000000000001,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793127604,
+  "fair": 1.3333333333333333,
+  "legs": [
+   {
+    "event_id": 16285059,
+    "fixture": "Frosinone v Lecce",
+    "competition": "Serie A",
+    "kickoff": 1793295000,
+    "sport": "football",
+    "team": "Lecce",
+    "player": "Antonino Gallo",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 19.5,
+    "over": true,
+    "alt": true,
+    "threshold": 20,
+    "hits": 28,
+    "total": 32,
+    "fair": 1.3333333333333333,
+    "venue": null,
+    "chance": 0.75,
+    "chance_base": 0.75,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.5852951849505161,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793127604,
+  "fair": 1.3928571428571428,
+  "legs": [
+   {
+    "event_id": 16285059,
+    "fixture": "Frosinone v Lecce",
+    "competition": "Serie A",
+    "kickoff": 1793295000,
+    "sport": "football",
+    "team": "Lecce",
+    "player": "Jamil Siebert",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 20,
+    "total": 23,
+    "fair": 1.3928571428571428,
+    "venue": null,
+    "chance": 0.717948717948718,
+    "chance_base": 0.717948717948718,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.5982743002726425,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793127604,
+  "fair": 1.4054054054054053,
+  "legs": [
+   {
+    "event_id": 16285059,
+    "fixture": "Frosinone v Lecce",
+    "competition": "Serie A",
+    "kickoff": 1793295000,
+    "sport": "football",
+    "team": "Lecce",
+    "player": "Wladimiro Falcone",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25,
+    "hits": 29,
+    "total": 36,
+    "fair": 1.4054054054054053,
+    "venue": null,
+    "chance": 0.7115384615384616,
+    "chance_base": 0.7115384615384616,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6689953829279827,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793127604,
+  "fair": 1.4166666666666665,
+  "legs": [
+   {
+    "event_id": 16285059,
+    "fixture": "Frosinone v Lecce",
+    "competition": "Serie A",
+    "kickoff": 1793295000,
+    "sport": "football",
+    "team": "Lecce",
+    "player": "Danilo Veiga",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 19.5,
+    "over": true,
+    "alt": true,
+    "threshold": 20,
+    "hits": 28,
+    "total": 35,
+    "fair": 1.4166666666666665,
+    "venue": null,
+    "chance": 0.7058823529411765,
+    "chance_base": 0.7058823529411765,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6755005554346891,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793127604,
+  "fair": 1.5,
+  "legs": [
+   {
+    "event_id": 16285059,
+    "fixture": "Frosinone v Lecce",
+    "competition": "Serie A",
+    "kickoff": 1793295000,
+    "sport": "football",
+    "team": "Lecce",
+    "player": "Omri Gandelman",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10,
+    "hits": 12,
+    "total": 14,
+    "fair": 1.5,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6254347455183062,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Lead",
+  "sport": "football",
+  "snapshot_at": 1793128724,
+  "fair": 1.4074074074074074,
+  "legs": [
+   {
+    "event_id": 16285063,
+    "fixture": "AS Roma v Cagliari",
+    "competition": "Serie A",
+    "kickoff": 1793130300,
+    "sport": "football",
+    "team": "Cagliari",
+    "player": "Yerry Mina",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": null,
+    "total": null,
+    "fair": 1.4074074074074074,
+    "venue": null,
+    "chance": 0.7466631578947369,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "basketball",
+  "snapshot_at": 1793128755,
+  "fair": 3.0,
+  "legs": [
+   {
+    "event_id": 16824770,
+    "fixture": "Cleveland Cavaliers v Washington Wizards",
+    "competition": "NBA",
+    "kickoff": 1793228400,
+    "sport": "basketball",
+    "team": "Cleveland Cavaliers",
+    "player": "Jarrett Allen",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": true,
+    "threshold": 5.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824770,
+    "fixture": "Cleveland Cavaliers v Washington Wizards",
+    "competition": "NBA",
+    "kickoff": 1793228400,
+    "sport": "basketball",
+    "team": "Cleveland Cavaliers",
+    "player": "James Harden",
+    "stat": "Steals and blocks",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824770,
+    "fixture": "Cleveland Cavaliers v Washington Wizards",
+    "competition": "NBA",
+    "kickoff": 1793228400,
+    "sport": "basketball",
+    "team": "Cleveland Cavaliers",
+    "player": "Donovan Mitchell",
+    "stat": "Steals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824770,
+    "fixture": "Cleveland Cavaliers v Washington Wizards",
+    "competition": "NBA",
+    "kickoff": 1793228400,
+    "sport": "basketball",
+    "team": "Cleveland Cavaliers",
+    "player": "Sam Merrill",
+    "stat": "Points and assists",
+    "period": "ALL",
+    "line": 6.5,
+    "over": true,
+    "alt": true,
+    "threshold": 7.0,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.3846153846153846,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793128755,
+  "fair": 1.309672431366753,
+  "legs": [
+   {
+    "event_id": 16285063,
+    "fixture": "AS Roma v Cagliari",
+    "competition": "Serie A",
+    "kickoff": 1793130300,
+    "sport": "football",
+    "team": "AS Roma",
+    "player": null,
+    "stat": "Total shots",
+    "period": "1ST",
+    "line": 5.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.309672431366753,
+    "venue": "home",
+    "chance": 0.7635497060562053,
+    "chance_base": 0.7635497060562053,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3595234752126546,
+    "elo": [
+     1786,
+     1530
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 11.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793128755,
+  "fair": 1.4074074074074074,
+  "legs": [
+   {
+    "event_id": 16285063,
+    "fixture": "AS Roma v Cagliari",
+    "competition": "Serie A",
+    "kickoff": 1793130300,
+    "sport": "football",
+    "team": "Cagliari",
+    "player": "Yerry Mina",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 19,
+    "total": 22,
+    "fair": 1.4074074074074074,
+    "venue": null,
+    "chance": 0.7105263157894737,
+    "chance_base": 0.7105263157894737,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6067290215544958,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 1.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793128755,
+  "fair": 1.4642857142857142,
+  "legs": [
+   {
+    "event_id": 16285063,
+    "fixture": "AS Roma v Cagliari",
+    "competition": "Serie A",
+    "kickoff": 1793130300,
+    "sport": "football",
+    "team": "Cagliari",
+    "player": "Z\u00e9 Pedro",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25,
+    "hits": 20,
+    "total": 25,
+    "fair": 1.4642857142857142,
+    "venue": null,
+    "chance": 0.6829268292682927,
+    "chance_base": 0.6829268292682927,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6791733321532551,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 34.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793128755,
+  "fair": 1.3888888888888888,
+  "legs": [
+   {
+    "event_id": 16285068,
+    "fixture": "Torino v Como",
+    "competition": "Serie A",
+    "kickoff": 1793130300,
+    "sport": "football",
+    "team": "Como",
+    "player": "Jacobo Ram\u00f3n",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 28,
+    "total": 34,
+    "fair": 1.3888888888888888,
+    "venue": null,
+    "chance": 0.72,
+    "chance_base": 0.72,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.648913796607057,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 0.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793128755,
+  "fair": 1.3888888888888888,
+  "legs": [
+   {
+    "event_id": 16285068,
+    "fixture": "Torino v Como",
+    "competition": "Serie A",
+    "kickoff": 1793130300,
+    "sport": "football",
+    "team": "Como",
+    "player": "Lucas Da Cunha",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 49.5,
+    "over": true,
+    "alt": true,
+    "threshold": 50,
+    "hits": 28,
+    "total": 34,
+    "fair": 1.3888888888888888,
+    "venue": null,
+    "chance": 0.72,
+    "chance_base": 0.72,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.648913796607057,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 77.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793128755,
+  "fair": 1.391304347826087,
+  "legs": [
+   {
+    "event_id": 17118366,
+    "fixture": "Fleetwood Town v Arsenal",
+    "competition": "EFL Cup",
+    "kickoff": 1793131200,
+    "sport": "football",
+    "team": "Arsenal",
+    "player": "Myles Lewis-Skelly",
+    "stat": "Fouled",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 15,
+    "total": 16,
+    "fair": 1.391304347826087,
+    "venue": null,
+    "chance": 0.71875,
+    "chance_base": 0.71875,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.51017258865781,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793128755,
+  "fair": 1.393939393939394,
+  "legs": [
+   {
+    "event_id": 17118366,
+    "fixture": "Fleetwood Town v Arsenal",
+    "competition": "EFL Cup",
+    "kickoff": 1793131200,
+    "sport": "football",
+    "team": "Fleetwood Town",
+    "player": "Harrison Neal",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 25,
+    "total": 30,
+    "fair": 1.393939393939394,
+    "venue": null,
+    "chance": 0.717391304347826,
+    "chance_base": 0.717391304347826,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6388274713197801,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 2.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793128755,
+  "fair": 1.4117647058823528,
+  "legs": [
+   {
+    "event_id": 17118366,
+    "fixture": "Fleetwood Town v Arsenal",
+    "competition": "EFL Cup",
+    "kickoff": 1793131200,
+    "sport": "football",
+    "team": "Fleetwood Town",
+    "player": "Shaun Rooney",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 29.5,
+    "over": true,
+    "alt": true,
+    "threshold": 30,
+    "hits": 26,
+    "total": 32,
+    "fair": 1.4117647058823528,
+    "venue": null,
+    "chance": 0.7083333333333334,
+    "chance_base": 0.7083333333333334,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6622983656126389,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 12.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: single",
+  "sport": "basketball",
+  "snapshot_at": 1793136516,
+  "fair": 1.6866552640276626,
+  "legs": [
+   {
+    "event_id": 16824763,
+    "fixture": "New York Knicks v Detroit Pistons",
+    "competition": "NBA",
+    "kickoff": 1793145600,
+    "sport": "basketball",
+    "team": "New York Knicks",
+    "player": "OG Anunoby",
+    "stat": "Points",
+    "period": "ALL",
+    "line": 16.5,
+    "over": true,
+    "alt": true,
+    "threshold": 17.0,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.6866552640276626,
+    "venue": null,
+    "chance": 0.6471,
+    "chance_base": 0.6471,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2857142857142856,
+    "elo": null,
+    "book_name": "Paddy Power",
+    "book_price": 2,
+    "book_used": true,
+    "value": 13.0,
+    "result": "lose"
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Pick: evens double",
+  "sport": "basketball",
+  "snapshot_at": 1793136516,
+  "fair": 2.1671,
+  "legs": [
+   {
+    "event_id": 16824764,
+    "fixture": "San Antonio Spurs v Sacramento Kings",
+    "competition": "NBA",
+    "kickoff": 1793145600,
+    "sport": "basketball",
+    "team": "San Antonio Spurs",
+    "player": "De'Aaron Fox",
+    "stat": "Assists",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": true,
+    "threshold": 5.0,
+    "hits": 16,
+    "total": 18,
+    "fair": 1.2804097311139564,
+    "venue": null,
+    "chance": 0.7059,
+    "chance_base": 0.7059,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.125,
+    "elo": null,
+    "book_name": "Paddy Power",
+    "book_price": 1.3,
+    "book_used": true,
+    "value": 6.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16824782,
+    "fixture": "Boston Celtics v Brooklyn Nets",
+    "competition": "NBA",
+    "kickoff": 1793143800,
+    "sport": "basketball",
+    "team": "Boston Celtics",
+    "player": "Sam Hauser",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": true,
+    "threshold": 3.0,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.5733165512901195,
+    "venue": null,
+    "chance": 0.6857,
+    "chance_base": 0.6857,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1875,
+    "elo": null,
+    "book_name": "Paddy Power",
+    "book_price": 1.667,
+    "book_used": true,
+    "value": 4.0,
+    "result": "win"
+   }
+  ],
+  "result": "win",
+  "priced": true,
+  "fair_ours": 2.014489822394519
+ },
+ {
+  "category": "Pick: banker",
+  "sport": "basketball",
+  "snapshot_at": 1793136516,
+  "fair": 1.2804097311139564,
+  "legs": [
+   {
+    "event_id": 16824764,
+    "fixture": "San Antonio Spurs v Sacramento Kings",
+    "competition": "NBA",
+    "kickoff": 1793145600,
+    "sport": "basketball",
+    "team": "San Antonio Spurs",
+    "player": "De'Aaron Fox",
+    "stat": "Assists",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": true,
+    "threshold": 5.0,
+    "hits": 16,
+    "total": 18,
+    "fair": 1.2804097311139564,
+    "venue": null,
+    "chance": 0.7059,
+    "chance_base": 0.7059,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.125,
+    "elo": null,
+    "book_name": "Paddy Power",
+    "book_price": 1.3,
+    "book_used": true,
+    "value": 6.0,
+    "result": "win"
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Pick: acca",
+  "sport": "basketball",
+  "snapshot_at": 1793136516,
+  "fair": 3.610722,
+  "legs": [
+   {
+    "event_id": 16824782,
+    "fixture": "Boston Celtics v Brooklyn Nets",
+    "competition": "NBA",
+    "kickoff": 1793143800,
+    "sport": "basketball",
+    "team": "Boston Celtics",
+    "player": "Sam Hauser",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": true,
+    "threshold": 3.0,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.5733165512901195,
+    "venue": null,
+    "chance": 0.6857,
+    "chance_base": 0.6857,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1875,
+    "elo": null,
+    "book_name": "Paddy Power",
+    "book_price": 1.667,
+    "book_used": true,
+    "value": 4.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16824764,
+    "fixture": "San Antonio Spurs v Sacramento Kings",
+    "competition": "NBA",
+    "kickoff": 1793145600,
+    "sport": "basketball",
+    "team": "San Antonio Spurs",
+    "player": "Julian Champagnie",
+    "stat": "Three pointers made",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.4351320321469576,
+    "venue": null,
+    "chance": 0.6667,
+    "chance_base": 0.6667,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.25,
+    "elo": null,
+    "book_name": "Paddy Power",
+    "book_price": 1.5,
+    "book_used": true,
+    "value": 8.0,
+    "result": "win"
+   },
+   {
+    "event_id": 16824763,
+    "fixture": "New York Knicks v Detroit Pistons",
+    "competition": "NBA",
+    "kickoff": 1793145600,
+    "sport": "basketball",
+    "team": "Detroit Pistons",
+    "player": "Duncan Robinson",
+    "stat": "Points",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10.0,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.3065788558510776,
+    "venue": null,
+    "chance": 0.6571,
+    "chance_base": 0.6571,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2666666666666666,
+    "elo": null,
+    "book_name": "Paddy Power",
+    "book_price": 1.444,
+    "book_used": true,
+    "value": 12.0,
+    "result": "win"
+   }
+  ],
+  "result": "win",
+  "priced": true,
+  "fair_ours": 2.9501465836340524
+ },
+ {
+  "category": "Pick: parlay",
+  "sport": "basketball",
+  "snapshot_at": 1793136516,
+  "fair": 3.0,
+  "legs": [
+   {
+    "event_id": 16824769,
+    "fixture": "Toronto Raptors v Orlando Magic",
+    "competition": "NBA",
+    "kickoff": 1793230200,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "Jakob Poeltl",
+    "stat": "Points rebounds and assists",
+    "period": "ALL",
+    "line": 15.5,
+    "over": true,
+    "alt": true,
+    "threshold": 16.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824769,
+    "fixture": "Toronto Raptors v Orlando Magic",
+    "competition": "NBA",
+    "kickoff": 1793230200,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "RJ Barrett",
+    "stat": "Points rebounds and assists",
+    "period": "ALL",
+    "line": 28.5,
+    "over": true,
+    "alt": true,
+    "threshold": 29.0,
+    "hits": 13,
+    "total": 19,
+    "fair": 1.4615384615384615,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824769,
+    "fixture": "Toronto Raptors v Orlando Magic",
+    "competition": "NBA",
+    "kickoff": 1793230200,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "Scottie Barnes",
+    "stat": "Points rebounds and assists",
+    "period": "ALL",
+    "line": 28.5,
+    "over": true,
+    "alt": true,
+    "threshold": 29.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   },
+   {
+    "event_id": 16824769,
+    "fixture": "Toronto Raptors v Orlando Magic",
+    "competition": "NBA",
+    "kickoff": 1793230200,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "Jamal Shead",
+    "stat": "Points and assists",
+    "period": "ALL",
+    "line": 7.5,
+    "over": true,
+    "alt": true,
+    "threshold": 8.0,
+    "hits": 14,
+    "total": 20,
+    "fair": 1.4285714285714286,
+    "venue": null,
+    "chance": null,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793136516,
+  "fair": 1.3000855067695163,
+  "legs": [
+   {
+    "event_id": 16285057,
+    "fixture": "Fiorentina v Atalanta",
+    "competition": "Serie A",
+    "kickoff": 1793303100,
+    "sport": "football",
+    "team": "Fiorentina",
+    "player": null,
+    "stat": "Corner kicks",
+    "period": "2ND",
+    "line": 1.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 18,
+    "total": 19,
+    "fair": 1.3000855067695163,
+    "venue": "home",
+    "chance": 0.7691801768368483,
+    "chance_base": 0.7691801768368483,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3201231248504721,
+    "elo": [
+     1590,
+     1649
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793136516,
+  "fair": 1.3240970839757062,
+  "legs": [
+   {
+    "event_id": 16285057,
+    "fixture": "Fiorentina v Atalanta",
+    "competition": "Serie A",
+    "kickoff": 1793303100,
+    "sport": "football",
+    "team": "Fiorentina",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.3240970839757062,
+    "venue": "home",
+    "chance": 0.7552316307482687,
+    "chance_base": 0.7552316307482687,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3915236660875296,
+    "elo": [
+     1590,
+     1649
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793136516,
+  "fair": 1.3336135976860464,
+  "legs": [
+   {
+    "event_id": 16285057,
+    "fixture": "Fiorentina v Atalanta",
+    "competition": "Serie A",
+    "kickoff": 1793303100,
+    "sport": "football",
+    "team": "Atalanta",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.3336135976860464,
+    "venue": "away",
+    "chance": 0.7126997991365471,
+    "chance_base": 0.7126997991365471,
+    "exchange_p": 0.7509,
+    "exchange_back": null,
+    "chance_model": 0.7126997991365471,
+    "chance_anchored": 0.7379597887971909,
+    "exchange_kind": "derived",
+    "value_at_pick": null,
+    "fair_record": 1.3297763708496617,
+    "elo": [
+     1649,
+     1590
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793136516,
+  "fair": 1.3529411764705883,
+  "legs": [
+   {
+    "event_id": 16285057,
+    "fixture": "Fiorentina v Atalanta",
+    "competition": "Serie A",
+    "kickoff": 1793303100,
+    "sport": "football",
+    "team": "Atalanta",
+    "player": "\u00c9derson",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 26,
+    "total": 30,
+    "fair": 1.3529411764705883,
+    "venue": null,
+    "chance": 0.7391304347826086,
+    "chance_base": 0.7391304347826086,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.597367549311647,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793136516,
+  "fair": 1.4,
+  "legs": [
+   {
+    "event_id": 16285057,
+    "fixture": "Fiorentina v Atalanta",
+    "competition": "Serie A",
+    "kickoff": 1793303100,
+    "sport": "football",
+    "team": "Fiorentina",
+    "player": "Nicol\u00f2 Fagioli",
+    "stat": "Fouled",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 27,
+    "total": 33,
+    "fair": 1.4,
+    "venue": null,
+    "chance": 0.7142857142857143,
+    "chance_base": 0.7142857142857143,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6554502322035562,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793136516,
+  "fair": 1.40625,
+  "legs": [
+   {
+    "event_id": 16285057,
+    "fixture": "Fiorentina v Atalanta",
+    "competition": "Serie A",
+    "kickoff": 1793303100,
+    "sport": "football",
+    "team": "Fiorentina",
+    "player": "Cher Ndour",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 24,
+    "total": 29,
+    "fair": 1.40625,
+    "venue": null,
+    "chance": 0.7111111111111111,
+    "chance_base": 0.7111111111111111,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6460390280394983,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793136516,
+  "fair": 1.4166666666666665,
+  "legs": [
+   {
+    "event_id": 16285057,
+    "fixture": "Fiorentina v Atalanta",
+    "competition": "Serie A",
+    "kickoff": 1793303100,
+    "sport": "football",
+    "team": "Fiorentina",
+    "player": "Fabiano Parisi",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 16,
+    "total": 18,
+    "fair": 1.4166666666666665,
+    "venue": null,
+    "chance": 0.7058823529411765,
+    "chance_base": 0.7058823529411765,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.5785607392265233,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793136516,
+  "fair": 1.45,
+  "legs": [
+   {
+    "event_id": 16285057,
+    "fixture": "Fiorentina v Atalanta",
+    "competition": "Serie A",
+    "kickoff": 1793303100,
+    "sport": "football",
+    "team": "Fiorentina",
+    "player": "Marco Brescianini",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15,
+    "hits": 12,
+    "total": 13,
+    "fair": 1.45,
+    "venue": null,
+    "chance": 0.6896551724137931,
+    "chance_base": 0.6896551724137931,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.5419150911238728,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793136516,
+  "fair": 1.4677064822918955,
+  "legs": [
+   {
+    "event_id": 17118368,
+    "fixture": "Sunderland v Brentford",
+    "competition": "EFL Cup",
+    "kickoff": 1793216700,
+    "sport": "football",
+    "team": "Sunderland",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 10,
+    "total": 18,
+    "fair": 1.4677064822918955,
+    "venue": "home",
+    "chance": 0.5159357994145741,
+    "chance_base": 0.5159357994145741,
+    "exchange_p": 0.6927,
+    "exchange_back": null,
+    "chance_model": 0.5159357994145741,
+    "chance_anchored": 0.5438686566140488,
+    "exchange_kind": "derived",
+    "value_at_pick": null,
+    "fair_record": 1.925896027754115,
+    "elo": [
+     1732,
+     1860
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793136516,
+  "fair": 1.3636363636363638,
+  "legs": [
+   {
+    "event_id": 17118369,
+    "fixture": "Everton v Newcastle United",
+    "competition": "EFL Cup",
+    "kickoff": 1793303100,
+    "sport": "football",
+    "team": "Everton",
+    "player": "Kiernan Dewsbury-Hall",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 25,
+    "total": 29,
+    "fair": 1.3636363636363638,
+    "venue": null,
+    "chance": 0.7333333333333333,
+    "chance_base": 0.7333333333333333,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1600000000000001,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793136516,
+  "fair": 1.3974093205027343,
+  "legs": [
+   {
+    "event_id": 17118369,
+    "fixture": "Everton v Newcastle United",
+    "competition": "EFL Cup",
+    "kickoff": 1793303100,
+    "sport": "football",
+    "team": "Newcastle United",
+    "player": null,
+    "stat": "Goals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.3974093205027343,
+    "venue": "away",
+    "chance": 0.6591880087574982,
+    "chance_base": 0.6591880087574982,
+    "exchange_p": 0.7192,
+    "exchange_back": null,
+    "chance_model": 0.6591880087574982,
+    "chance_anchored": 0.6741781450466251,
+    "exchange_kind": "derived",
+    "value_at_pick": null,
+    "fair_record": 1.6358467944293176,
+    "elo": [
+     1814,
+     1787
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1793136516,
+  "fair": 1.4244321704576688,
+  "legs": [
+   {
+    "event_id": 17118369,
+    "fixture": "Everton v Newcastle United",
+    "competition": "EFL Cup",
+    "kickoff": 1793303100,
+    "sport": "football",
+    "team": "Newcastle United",
+    "player": null,
+    "stat": "Yellow cards",
+    "period": "2ND",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 16,
+    "total": 19,
+    "fair": 1.4244321704576688,
+    "venue": "away",
+    "chance": 0.7020341303290706,
+    "chance_base": 0.7020341303290706,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6358467944293176,
+    "elo": [
+     1814,
+     1787
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793136516,
+  "fair": 1.361111111111111,
+  "legs": [
+   {
+    "event_id": 17118369,
+    "fixture": "Everton v Newcastle United",
+    "competition": "EFL Cup",
+    "kickoff": 1793303100,
+    "sport": "football",
+    "team": "Newcastle United",
+    "player": "Lewis Hall",
+    "stat": "Fouled",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 28,
+    "total": 33,
+    "fair": 1.361111111111111,
+    "venue": null,
+    "chance": 0.7346938775510204,
+    "chance_base": 0.7346938775510204,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6191976374465777,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793136516,
+  "fair": 1.3636363636363638,
+  "legs": [
+   {
+    "event_id": 17118369,
+    "fixture": "Everton v Newcastle United",
+    "competition": "EFL Cup",
+    "kickoff": 1793303100,
+    "sport": "football",
+    "team": "Everton",
+    "player": "Kiernan Dewsbury-Hall",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 25,
+    "total": 29,
+    "fair": 1.3636363636363638,
+    "venue": null,
+    "chance": 0.7333333333333333,
+    "chance_base": 0.7333333333333333,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6038502416118159,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793136516,
+  "fair": 1.3888888888888888,
+  "legs": [
+   {
+    "event_id": 17118369,
+    "fixture": "Everton v Newcastle United",
+    "competition": "EFL Cup",
+    "kickoff": 1793303100,
+    "sport": "football",
+    "team": "Everton",
+    "player": "Vitaliy Mykolenko",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 28,
+    "total": 34,
+    "fair": 1.3888888888888888,
+    "venue": null,
+    "chance": 0.72,
+    "chance_base": 0.72,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.648913796607057,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793136516,
+  "fair": 1.391304347826087,
+  "legs": [
+   {
+    "event_id": 17118369,
+    "fixture": "Everton v Newcastle United",
+    "competition": "EFL Cup",
+    "kickoff": 1793303100,
+    "sport": "football",
+    "team": "Newcastle United",
+    "player": "Jacob Murphy",
+    "stat": "Passes",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10,
+    "hits": 15,
+    "total": 16,
+    "fair": 1.391304347826087,
+    "venue": null,
+    "chance": 0.71875,
+    "chance_base": 0.71875,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.51017258865781,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1793136516,
+  "fair": 1.409090909090909,
+  "legs": [
+   {
+    "event_id": 17118369,
+    "fixture": "Everton v Newcastle United",
+    "competition": "EFL Cup",
+    "kickoff": 1793303100,
+    "sport": "football",
+    "team": "Everton",
+    "player": "Harrison Armstrong",
+    "stat": "Tackles",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 14,
+    "total": 15,
+    "fair": 1.409090909090909,
+    "venue": null,
+    "chance": 0.7096774193548387,
+    "chance_base": 0.7096774193548387,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.519809645020489,
     "elo": null,
     "book_name": null,
     "book_price": null,

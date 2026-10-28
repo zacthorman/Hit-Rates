@@ -709,6 +709,15 @@ def main() -> None:
         #    numbers. After the publish on purpose, so the site is never held
         #    up by the backfill, and never fatal.
         if not args.dry:
+            # 27 Oct 2026: release the lock first. The backfill runs for hours
+            # and held it, so lineups_auto (line-ups, the afternoon Paddy price
+            # refresh and its publish) skipped every tick until it finished:
+            # the NFL line-ups on 26 Oct and the NBA prices on 27 Oct.
+            try:
+                if LOCK.exists() and LOCK.read_text(encoding="utf-8").strip() == str(os.getpid()):
+                    LOCK.unlink()
+            except OSError:
+                pass
             say("fetching tactical data (after publishing, never fatal)")
             run([python, "tactics_fetch.py", "--budget", str(settings.get("tactics_budget", 1500))],
                 args.dry, allow_fail=True)
@@ -726,8 +735,12 @@ def main() -> None:
             write_status(True, message)
 
     finally:
-        if not args.dry and LOCK.exists():
-            LOCK.unlink()
+        # only our own lock (it is released before the tactics backfill now)
+        try:
+            if not args.dry and LOCK.exists() and LOCK.read_text(encoding="utf-8").strip() == str(os.getpid()):
+                LOCK.unlink()
+        except OSError:
+            pass
 
 
 if __name__ == "__main__":

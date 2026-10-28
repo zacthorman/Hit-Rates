@@ -1778,6 +1778,36 @@
         "model_n": 10,
         "model_p": 0.711,
         "source": "nba.html",
+        "value": 19.0,
+        "result": "win"
+      }
+    ],
+    "result": "win",
+    "profit": 15.9,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-28-1",
+    "kind": "single",
+    "logged_at": "2026-10-28T07:48:42+00:00",
+    "price": 2.32,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16824770,
+        "fixture": "Cleveland Cavaliers v Washington Wizards",
+        "kickoff": 1793228400,
+        "player": "Jarrett Allen",
+        "player_id": 885222,
+        "team": "Cleveland Cavaliers",
+        "stat": "Rebounds",
+        "line": 7.0,
+        "model_k": 9,
+        "model_n": 10,
+        "model_p": 0.711,
+        "source": "nba.html",
         "value": null,
         "result": null
       }
