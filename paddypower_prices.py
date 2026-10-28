@@ -16,8 +16,12 @@ footprint smaller than one person browsing the site, and to stop at the first
 sign Paddy Power minds:
 
   - Off switch: an empty file `.paddypower_off` in this folder stops it dead.
-  - Lockout: any refusal (403, 429, 5xx, a timeout, a non-JSON reply) writes a
+  - Lockout: any refusal (403, 429, 503, a timeout, a non-JSON reply) writes a
     lockout and nothing is requested for LOCKOUT_HOURS. No retries, ever.
+    A plain server error (500, 502, 504) is Paddy Power's server falling
+    over, not a no, so it locks out for SERVER_ERROR_HOURS instead; a second
+    one inside LOCKOUT_HOURS of the first is treated as a refusal (28 Oct
+    2026: one 500 on 26 Oct, 24 games into a normal day, cost a full day).
   - Caps: at most MAX_PER_RUN games a run and MAX_PER_DAY a day.
   - Spacing: MIN_GAP to MIN_GAP + JITTER seconds between requests, randomised,
     and never sooner than MIN_GAP after the last request of any earlier run.
@@ -63,6 +67,8 @@ WINDOW_HOURS = 48     # only games kicking off within this (was 30; 22 Oct: mode
 FRESH_HOURS = 4       # do not refetch a game inside this
 FRESH_CLOSE = 1       # ...or this, in the last 3 hours before kick-off
 LOCKOUT_HOURS = 24    # after any refusal
+SERVER_ERROR_HOURS = 2  # after a lone 500 / 502 / 504
+SERVER_ERRORS = (500, 502, 504)
 KEEP_AFTER_KO = 6     # hours a game's prices are kept after kick-off
 
 BASE = "https://apisms.paddypower.com/smspp/event-page/v5"
@@ -85,6 +91,10 @@ HEADERS = {
 
 class Refused(Exception):
     """Paddy Power said no, or something like it. Stop and lock out."""
+
+
+class ServerError(Refused):
+    """A 500, 502 or 504: their server failed. A short lockout, unless it repeats."""
 
 
 class BadId(Exception):
@@ -114,11 +124,19 @@ def today() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
 
-def lockout(st: dict, why: str) -> None:
-    st["lockoutUntil"] = now() + LOCKOUT_HOURS * 3600
+def lockout(st: dict, why: str, server_error: bool = False) -> None:
+    hours = LOCKOUT_HOURS
+    if server_error:
+        last = st.get("lastServerError", 0)
+        st["lastServerError"] = now()
+        if now() - last >= LOCKOUT_HOURS * 3600:
+            hours = SERVER_ERROR_HOURS
+        else:
+            why += ", the second server error in a day"
+    st["lockoutUntil"] = now() + hours * 3600
     st["lockoutWhy"] = why
     save_state(st)
-    print(f"  paddypower: locked out for {LOCKOUT_HOURS}h ({why})")
+    print(f"  paddypower: locked out for {hours}h ({why})")
 
 
 def blocked(st: dict) -> str | None:
@@ -162,6 +180,8 @@ def fetch_event(event_id) -> dict:
     except urllib.error.HTTPError as exc:
         if exc.code in (400, 404):
             raise BadId(f"HTTP {exc.code}")
+        if exc.code in SERVER_ERRORS:
+            raise ServerError(f"HTTP {exc.code}")
         raise Refused(f"HTTP {exc.code}")
     except Exception as exc:
         raise Refused(f"{type(exc).__name__}")
@@ -484,7 +504,7 @@ def run(extra: int = 0, us_only: bool = False) -> int:
                 break
             except Refused as exc:
                 bump(st)
-                lockout(st, str(exc))
+                lockout(st, str(exc), isinstance(exc, ServerError))
                 break
             bump(st)
             if not names_match(page, bf_name):
@@ -554,7 +574,7 @@ def main() -> int:
         except (Refused, BadId) as exc:
             bump(st)
             if isinstance(exc, Refused):
-                lockout(st, str(exc))
+                lockout(st, str(exc), isinstance(exc, ServerError))
             print("failed:", exc)
             return 1
         bump(st)
