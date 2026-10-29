@@ -102,7 +102,7 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 
-.wrap { max-width: 1180px; margin: 0 auto; }
+.wrap { max-width: min(1680px, calc(100vw - 48px)); margin: 0 auto; }
 
 /* ------------------------------------------------------------- header */
 
@@ -1305,6 +1305,110 @@ input[type=number]::-webkit-inner-spin-button {
 
 .pp-edge.pp-long { color: var(--muted); font-weight: 500; }
 
+/* ---- 29 Oct 2026 redesign: full width, compact header, four tabs, data notes ---- */
+@media (max-width: 700px) { .wrap { max-width: 100%; } }
+header { margin-bottom: 10px; }
+h1 { font-size: 26px; margin: 0 0 2px; }
+.kickoff, .referee { display: inline; font-size: 13px; }
+.referee:not([hidden])::before { content: "\\00a0\\00b7\\00a0"; }
+.header-actions button { font-size: 12.5px; padding: 6px 10px; }
+#fixture-group { margin-top: 10px; }
+header { position: relative; }
+@media (max-width: 560px) {
+  .header-actions { position: absolute; top: -50px; right: 0; margin: 0; z-index: 40; }
+  .header-actions button { padding: 5px 9px; font-size: 12px; }
+  h1 { font-size: 23px; }
+}
+.tabs { display: none !important; }
+.nav2 { margin: 14px 0 16px; position: sticky; top: 0; z-index: 30; background: var(--bg, var(--page-bg, inherit));
+  padding: 6px 0 8px; }
+.n2-tops { display: flex; gap: 6px; border-bottom: 1px solid var(--border); }
+.n2-top { all: unset; cursor: pointer; padding: 10px 16px 11px; font-size: 15.5px; font-weight: 640; color: var(--muted);
+  border-bottom: 2.5px solid transparent; margin-bottom: -1px; }
+.n2-top:hover { color: var(--text-primary); }
+.n2-top[aria-selected="true"] { color: var(--text-primary); border-bottom-color: var(--text-primary); }
+.n2-top:focus-visible, .n2-sub:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 2px; }
+.n2-count { display: inline-block; margin-left: 6px; min-width: 18px; padding: 1px 6px; border-radius: 999px; font-size: 11.5px;
+  background: var(--text-primary); color: var(--surface-1, #fff); text-align: center; }
+.n2-subs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.n2-sub { all: unset; cursor: pointer; padding: 6px 13px; border-radius: 999px; font-size: 13.5px; font-weight: 560;
+  color: var(--text-secondary); border: 1px solid var(--border); }
+.n2-sub[aria-selected="true"] { background: var(--text-primary); color: var(--surface-1, #fff); border-color: var(--text-primary); }
+@media (max-width: 560px) {
+  .n2-tops { gap: 0; } .n2-top { flex: 1; text-align: center; padding: 10px 4px 11px; font-size: 14.5px; }
+  .n2-subs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .n2-sub { white-space: nowrap; }
+}
+#infochip:empty { display: none; }
+#infochip { margin: 8px 0 0; }
+.infochip > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12.5px; color: var(--text-secondary); border: 1px solid var(--border); border-radius: 999px; padding: 4px 11px 4px 5px; }
+.infochip > summary::-webkit-details-marker { display: none; }
+.infochip .ic-i { display: inline-grid; place-items: center; width: 17px; height: 17px; border-radius: 50%;
+  background: var(--text-secondary); color: var(--surface-1, #fff); font: 700 11px/1 Georgia, serif; font-style: italic; }
+.infochip[open] > summary { color: var(--text-primary); }
+.infochip .ic-body { margin-top: 8px; max-width: 900px; }
+.infochip .ic-body .warn { font-size: 13px; }
+
+/* ---- Game state, drawn (29 Oct 2026) ---- */
+.gs-tab.gs2 { max-width: none; }
+.gs2 .gs-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); align-items: start; }
+.gs2 .gs-card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; }
+.gs2 .gs-card h3 { margin: 0 0 10px; }
+.gs2 .gs-score { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; margin: 4px 0 12px; }
+.gs2 .gs-score b { font-size: 30px; font-weight: 720; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.gs2 .gs-score .t { font-weight: 640; font-size: 15px; } .gs2 .gs-score .t2 { text-align: right; }
+.gs2 .gs-score .t1::before, .gs2 .gs-score .t2::after { content: ""; display: inline-block; width: 9px; height: 9px;
+  border-radius: 2px; background: var(--team-1); margin: 0 6px 1px 0; }
+.gs2 .gs-score .t2::after { background: var(--team-2); margin: 0 0 1px 6px; }
+.gs2 .gs-bar3, .gs2 .gs-bar2 { display: flex; height: 10px; border-radius: 6px; overflow: hidden; background: var(--border); }
+.gs2 .gs-bar2 { height: 22px; }
+.gs2 .gs-bar3 i, .gs2 .gs-bar2 i { display: block; height: 100%; }
+.gs2 i.h { background: var(--team-1); } .gs2 i.a { background: var(--team-2); } .gs2 i.d { background: var(--muted); opacity: .45; }
+.gs2 .gs-bar2 em { font-style: normal; font-size: 12px; font-weight: 700; color: #fff; padding: 0 8px; line-height: 22px; }
+.gs2 .gs-bar2 i.a { text-align: right; }
+.gs2 .gs-bar3-l { display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; color: var(--text-secondary); margin: 5px 0 0; }
+.gs2 .gs-bar3-l b { color: var(--text-primary); } .gs2 .gs-bar3-l small { color: var(--muted); }
+.gs2 .gs-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
+.gs2 .gs-chip { font-size: 12.5px; padding: 3px 10px; border-radius: 999px; background: var(--tint); color: var(--text-secondary); }
+.gs2 .gs-chip b { color: var(--text-primary); }
+.gs2 .gs-chip.hot { background: rgba(232, 120, 35, .16); color: #c25a0c; } .gs2 .gs-chip.cold { background: rgba(60, 120, 220, .14); color: #2f62b5; }
+.gs2 .gs-chip.soft { background: transparent; border: 1px solid var(--border); }
+.gs2 .gs-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+@media (max-width: 480px) { .gs2 .gs-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.gs2 .gs-tile { border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; display: flex; flex-direction: column; gap: 3px; }
+.gs2 .gs-tile .k { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+.gs2 .gs-tile b { font-size: 19px; font-variant-numeric: tabular-nums; }
+.gs2 .gs-tile .f { font-size: 11.5px; color: var(--muted); }
+.gs2 .meter { height: 4px; border-radius: 3px; background: var(--border); overflow: hidden; }
+.gs2 .meter i { display: block; height: 100%; background: var(--hit, #2e8b57); }
+.gs2 .gs-script { font-size: 15.5px; font-weight: 600; line-height: 1.45; margin: 0 0 12px; }
+.gs2 .gs2-poss { margin: 0 0 12px; } .gs2 .gs2-poss-l { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+.gs2 .gs-sides { display: grid; gap: 8px; margin: 4px 0 6px; }
+.gs2 .gs-side > b { font-size: 13.5px; } .gs2 .gs-side .gs-chips { margin-top: 4px; }
+.gs2 details.gs-why > summary, .gs2 details.gs-about > summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-top: 8px; }
+.gs2 .gs-why ol { padding-left: 18px; margin: 8px 0 0; } .gs2 .gs-why li { margin: 8px 0; font-size: 13.5px; }
+.gs2 .gs-why li b, .gs2 .gs-reason b { display: block; } .gs2 .gs-why li span, .gs2 .gs-reason span { color: var(--text-secondary); font-size: 12.5px; }
+.gs2 .gs-lab { font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 10px 0 6px; font-weight: 620; }
+.gs2 .gs-lab.up { color: #2e8b57; } .gs2 .gs-lab.down { color: #c0392b; }
+.gs2 .gs-leanrow { display: flex; flex-wrap: wrap; gap: 6px; }
+.gs2 .gs-lean { display: inline-flex; flex-direction: column; font-size: 13px; padding: 6px 10px; border-radius: 10px; border: 1px solid var(--border); }
+.gs2 .gs-lean.up { background: rgba(46, 139, 87, .08); border-color: rgba(46, 139, 87, .35); }
+.gs2 .gs-lean.down { background: rgba(192, 57, 43, .07); border-color: rgba(192, 57, 43, .3); }
+.gs2 .gs-lean b { font-size: 14px; } .gs2 .gs-lean.up b { color: #2e8b57; } .gs2 .gs-lean.down b { color: #c0392b; }
+.gs2 .gs-lean small { color: var(--muted); font-size: 11.5px; }
+.gs2 .gs-target { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-top: 1px solid var(--border); }
+.gs2 .gs-target small, .gs2 .gs-tnum small { display: block; color: var(--muted); font-size: 11.5px; }
+.gs2 .gs-tnum { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.gs2 .gs-tnum .from { color: var(--muted); } .gs2 .gs-tnum b { font-size: 16px; }
+.gs2 .gs-pp { display: inline-block; margin-top: 3px; font-size: 12px; padding: 1px 8px; border-radius: 999px; background: var(--tint); }
+.gs2 .gs-pp.pos { background: rgba(11, 138, 74, .12); color: #0b8a4a; }
+.gs2 .gs-out { font-size: 13px; color: var(--text-secondary); margin: 10px 0 0; } .gs2 .gs-out b { color: var(--text-primary); }
+.gs2 .gs-reason { padding: 9px 0 9px 12px; border-left: 3px solid var(--border); margin: 8px 0; font-size: 14px; }
+.gs2 .gs-about { margin-top: 12px; } .gs2 .gs-about p { font-size: 12.5px; color: var(--muted); max-width: 900px; }
+.pp-price { display: inline-block; margin-left: 8px; font-size: 12px; font-weight: 650; padding: 2px 8px; border-radius: 999px;
+  background: rgba(11, 138, 74, 0.12); color: #0b8a4a; vertical-align: 2px; white-space: nowrap; }
+
 """
 
 JS = """
@@ -1886,8 +1990,14 @@ function render() {
       </div>
     </div>`).join("");
 
-  document.getElementById("mismatch").innerHTML =
-    staleWarning() + mismatchWarning() + ratingsWarning();
+  // 29 Oct 2026: the data notes sit in one small chip under the title, not
+  // in full boxes above the stats.
+  document.getElementById("mismatch").innerHTML = "";
+  const notesHtml = staleWarning() + mismatchWarning() + ratingsWarning();
+  const nNotes = (notesHtml.match(/class="warn/g) || []).length;
+  document.getElementById("infochip").innerHTML = notesHtml
+    ? `<details class="infochip"><summary><span class="ic-i">i</span>${nNotes} note${nNotes === 1 ? "" : "s"} on this data</summary><div class="ic-body">${notesHtml}</div></details>`
+    : "";
   updateAll();
   updateFilterSummary();
 }
@@ -4304,6 +4414,7 @@ function bestBetsView() {
     return isFinite(pr.need) && pr.need <= needCap;
   });
   const cutByNeed = beforeCap - found.length;
+  found = paddyKeep(found);
 
   /* One row per bet, not one per fixture it appears in.
      A club sitting in two upcoming fixtures in the same file carries its
@@ -4472,7 +4583,7 @@ function bestBetsView() {
           <div class="pick-head">
             <div class="pick-line">${escapeHtml(r.player)} ${r.alt
                 ? `${r.threshold}+` : `over ${r.line}`}
-              ${escapeHtml(r.stat.toLowerCase())}
+              ${escapeHtml(r.stat.toLowerCase())}${ppTag(r)}
               <span class="tag-player">player &middot; ${escapeHtml(r.team)}</span>
               <span class="pos">${periodName(r.period)}</span></div>
             <div class="pick-fixture">${escapeHtml(r.fixture)}</div>
@@ -4541,7 +4652,7 @@ function bestBetsView() {
 
       return `<div class="pick" data-best="${i}">
         <div class="pick-head">
-          <div class="pick-line">${escapeHtml(r.team)} ${dir} ${r.line}
+          <div class="pick-line">${escapeHtml(r.team)} ${dir} ${r.line}${ppTag(r)}
             ${escapeHtml(r.stat.toLowerCase())}
             <span class="pos">${periodName(r.period)}</span></div>
           <div class="pick-fixture">${escapeHtml(r.fixture)}</div>
@@ -4690,7 +4801,7 @@ function standoutView() {
   const limit = parseInt(document.getElementById("stop").value, 10) || 20;
 
   const { found, combos, skipped } = scanLines(minSample);
-  const shown = found.slice(0, limit);
+  const shown = paddyKeep(found).slice(0, limit);
   window.__shown = shown;
 
   const periodName = p => (ALL.periods && ALL.periods[p]) || p;
@@ -4714,7 +4825,7 @@ function standoutView() {
     const minPrice = price.need;
     return `
     <tr data-row="${i}" data-plow="${1 / minPrice}" data-fair="${fair}" data-min="${minPrice}">
-      <td class="player-name">${r.stat}
+      <td class="player-name">${r.stat}${ppTag(r)}
         <span class="pos">${periodName(r.period)}</span>
         <span class="sub-line">${r.team} &middot; ${r.split} &middot; ${r.fixture}</span></td>
       <td class="dir">${r.over ? "Over" : "Under"} ${r.line}</td>
@@ -6583,8 +6694,8 @@ function verdictHtml(v) {
 
 
 /* One player's Paddy Power lines as {stat, line, over, price, label}. */
-function ppLines(name, src = "pp") {
-  const m = fixtureMarket();
+function ppLines(name, src = "pp", fx) {
+  const m = fixtureMarket(fx);
   const rows = m && m[src] && m[src].players ? m[src].players[normName(name)] : null;
   if (!rows) return [];
   const out = [];
@@ -6929,15 +7040,16 @@ const TEAM_ODDS_POWER = { "Corner kicks": 0.7, "Total shots": 0.7, "Shots on tar
 const TEAM_STAT_LABEL = { "Corner kicks": "corners", "Yellow cards": "cards", "Fouls": "fouls",
                           "Shots on target": "shots on target", "Total shots": "shots" };
 
-function ppTeamOrder() {
+function ppTeamOrder(fx) {
   // Paddy Power's home and away against the page's teams, by name.
-  const m = fixtureMarket();
+  fx = fx || DATA;
+  const m = fixtureMarket(fx);
   const pp = m && m.pp;
   if (!pp || !pp.home) return [0, 1];
   const words = s => new Set(normName(s).split(" ").filter(w => w.length >= 3
     && !["the", "club", "real", "sporting", "city", "united"].includes(w)));
   const overlap = (a, b) => { const A = words(a); let n = 0; words(b).forEach(w => { if (A.has(w)) n++; }); return n; };
-  const t0 = DATA.teams[0].name, t1 = DATA.teams[1].name;
+  const t0 = fx.teams[0].name, t1 = fx.teams[1].name;
   const straight = overlap(pp.home, t0) + overlap(pp.away, t1);
   const crossed = overlap(pp.home, t1) + overlap(pp.away, t0);
   return crossed > straight ? [1, 0] : [0, 1];
@@ -7886,6 +7998,130 @@ function applyFixture() {
   if (tab === "lineups") lineupView();
 }
 
+/* ----------------------------------------------- Paddy Power only (29 Oct 2026)
+   Zac: a bet nobody can place is noise. Where Paddy Power has priced the
+   game, the bet lists keep only what it sells, at the exact line and side,
+   full time, with its price. Where it has not priced the game yet, only
+   markets it sells in that sport (bettable.py SELLS) are kept. */
+const PP_SELLS = {
+  football: { player: ["Shots", "Shots on target", "Fouls", "Fouled", "Goals", "Card", "Assists"],
+              team: ["Corner kicks", "Yellow cards", "Shots on target", "Fouls", "Total shots", "Goals"] },
+  basketball: { player: ["Points", "Rebounds", "Assists", "Three pointers made", "Steals", "Blocks",
+                         "Points rebounds and assists", "Points and rebounds", "Points and assists", "Rebounds and assists"],
+                team: ["Points"] },
+  "american-football": { player: ["Receiving yards", "Rushing yards", "Passing yards", "Receiving receptions",
+                                  "Rushing and receiving yards", "Passing and rushing yards", "Passing touchdowns",
+                                  "Anytime touchdown"], team: [] },
+};
+const PP_MATCH_STAT = { "Match corners": "Corner kicks", "Match cards": "Yellow cards", "Match goals": "Goals" };
+
+function paddyOffer(r) {
+  const sells = PP_SELLS[SPORT];
+  if (!sells) return { known: false, ok: true, price: null };     // darts and the rest: unchanged
+  if ((r.period || "ALL") !== "ALL") return { known: true, ok: false, price: null };
+  const fx = (ALL.fixtures || [])[r.fixtureIndex] || DATA;
+  const m = fixtureMarket(fx);
+  const priced = !!(m && m.pp && ((m.pp.players && Object.keys(m.pp.players).length) || (m.pp.team || []).length));
+  const over = r.over !== false;
+  if (r.player) {
+    if (!sells.player.includes(r.stat)) return { known: true, ok: false, price: null };
+    if (!priced) return { known: false, ok: true, price: null };
+    const line = r.alt && r.threshold != null ? r.threshold - 0.5 : r.line;
+    const hit = ppLines(r.player, "pp", fx).find(x => x.stat === r.stat && x.line === line && x.over === over);
+    return { known: true, ok: !!hit, price: hit ? hit.price : null };
+  }
+  const matchStat = PP_MATCH_STAT[r.stat];
+  const stat = matchStat || r.stat;
+  if (!sells.team.includes(stat)) return { known: true, ok: false, price: null };
+  if (!priced) return { known: false, ok: true, price: null };
+  let scope = "match";
+  if (!matchStat && r.teamIndex != null) scope = ppTeamOrder(fx)[0] === r.teamIndex ? "home" : "away";
+  const hit = ((m.pp.team || []).concat(m.pp.goals || [])).find(x =>
+    x.stat === stat && x.scope === scope && x.line === r.line && x.over === over);
+  return { known: true, ok: !!hit, price: hit ? hit.price : null };
+}
+
+function paddyKeep(rows) {
+  return rows.filter(r => { const o = paddyOffer(r); r.ppPrice = o.price; return o.ok; });
+}
+
+function ppTag(r) {
+  return r && r.ppPrice ? `<span class="pp-price">Paddy ${fmtOdds(r.ppPrice)}</span>` : "";
+}
+
+/* --------------------------------------------------- navigation (29 Oct 2026)
+   Four tabs instead of nine (Zac: fewer tabs, each doing more): Stats, Bets,
+   Match, My slip, each with its own views underneath. The original nine
+   buttons are still in the page, hidden, and still decide what each sport
+   shows, so every view, deep link and sport rule works as before. */
+const NAV = [
+  { id: "stats", label: "Stats", subs: [["team", "Team"], ["players", "Players"]] },
+  { id: "bets", label: "Bets", subs: [["best-player", "Players"], ["best-team", "Teams"],
+                                      ["standout", "All lines"], ["value", "Bookie lines"]] },
+  { id: "match", label: "Match", subs: [["lineups", "Line-ups"], ["gamestate", "Game state"]] },
+  { id: "slip", label: "My slip", subs: [["slip", "My slip"]] },
+];
+const NAV_LAST = {};
+
+function navVisible(t) {
+  const legacy = document.querySelector(".tabs");
+  const b = legacy && legacy.querySelector(`[data-tab="${t}"]`);
+  if (!b || b.hidden) return false;
+  if (legacy.hidden && t !== "team") return false;
+  return true;
+}
+
+function navGroupOf(t) {
+  return NAV.find(g => g.subs.some(s => s[0] === t)) || NAV[0];
+}
+
+function navRender() {
+  const el = document.getElementById("nav2");
+  if (!el || typeof tab === "undefined") return;
+  const cur = navGroupOf(tab);
+  NAV_LAST[cur.id] = tab;
+  const groups = NAV.filter(g => g.subs.some(s => navVisible(s[0])));
+  if (groups.length <= 1) { el.hidden = true; return; }
+  el.hidden = false;
+  const n = ((document.getElementById("slip-count") || {}).textContent || "").replace(/[^0-9]/g, "");
+  const label = (t, fallback) => {
+    if (SPORT !== "darts") return fallback;
+    const b = document.querySelector(`.tabs [data-tab="${t}"]`);
+    return b ? b.textContent : fallback;
+  };
+  const tops = groups.map(g => `<button type="button" class="n2-top" role="tab" data-ngroup="${g.id}"
+      aria-selected="${g === cur}">${g.label}${g.id === "slip" && n ? `<span class="n2-count">${n}</span>` : ""}</button>`).join("");
+  const subs = cur.subs.filter(s => navVisible(s[0]));
+  el.innerHTML = `<div class="n2-tops" role="tablist">${tops}</div>` + (subs.length > 1
+    ? `<div class="n2-subs" role="tablist">${subs.map(([t, l]) => `<button type="button" class="n2-sub" role="tab"
+        data-nsub="${t}" aria-selected="${t === tab}">${label(t, l)}</button>`).join("")}</div>`
+    : "");
+}
+
+document.addEventListener("click", e => {
+  const g = e.target.closest("[data-ngroup]");
+  if (g) {
+    const grp = NAV.find(x => x.id === g.dataset.ngroup);
+    const last = NAV_LAST[grp.id];
+    const want = last && navVisible(last) ? last : (grp.subs.find(s => navVisible(s[0])) || [])[0];
+    if (want && want !== tab) switchTab(want);
+    return;
+  }
+  const s = e.target.closest("[data-nsub]");
+  if (s && s.dataset.nsub !== tab) switchTab(s.dataset.nsub);
+});
+
+// The legacy buttons are shown or hidden per sport and per fixture, and the
+// slip count changes; redraw the nav whenever any of that does.
+document.addEventListener("DOMContentLoaded", () => {
+  const legacy = document.querySelector(".tabs");
+  if (legacy && typeof MutationObserver === "function") {
+    new MutationObserver(() => navRender()).observe(legacy, { attributes: true, subtree: true, childList: true, characterData: true });
+  }
+  navRender();
+});
+setTimeout(navRender, 0);
+
 function switchTab(target) {
   tab = target;
   if (target === "best-player") bestKind = "player";
@@ -7911,6 +8147,7 @@ function switchTab(target) {
   if (target === "slip") slipView();
   if (target === "lineups") lineupView();
   if (target === "gamestate") gameStateView();
+  navRender();
 }
 
 /* Is a Best tab the one on screen? Everything that used to test
@@ -10115,6 +10352,7 @@ def build_html(payload: dict) -> str:
     <select id="fixture"></select>
     <div class="seg"><button type="button" id="show-past" aria-pressed="false">All upcoming</button></div>
   </div>
+  <div id="infochip"></div>
 </header>
 
 <div class="filter-bar">
@@ -10233,6 +10471,7 @@ def build_html(payload: dict) -> str:
 </div>
 
 <div id="odds-strip" hidden></div>
+<nav class="nav2" id="nav2" hidden></nav>
 <div class="tabs" role="tablist">
   <button type="button" data-tab="team" aria-selected="true">Team stats</button>
   <button type="button" data-tab="players" aria-selected="false">Players</button>

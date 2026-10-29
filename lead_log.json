@@ -4130,7 +4130,7 @@
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1793286954.691416
+  "written": 1793302478.7460191
  },
  "16285057": {
   "event_id": 16285057,
@@ -4138,16 +4138,16 @@
   "competition": "Serie A",
   "sport": "football",
   "kickoff": 1793303100,
-  "selection": "Lazar Samard\u017ei\u0107 1+ shots",
-  "chance": 0.7612340415150636,
-  "fair": 1.5555555555555554,
+  "selection": "Nikola Krstovi\u0107 1+ shots on target",
+  "chance": 0.7462,
+  "fair": 1.590909090909091,
   "team": "Atalanta",
-  "player": "Lazar Samard\u017ei\u0107",
-  "stat": "Shots",
+  "player": "Nikola Krstovi\u0107",
+  "stat": "Shots on target",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793286954.691416
+  "written": 1793302478.7460191
  },
  "15238216": {
   "event_id": 15238216,
@@ -4164,7 +4164,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793286954.691416
+  "written": 1793302478.7460191
  },
  "15238212": {
   "event_id": 15238212,
@@ -4181,6 +4181,91 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793286954.691416
+  "written": 1793302478.7460191
+ },
+ "16824778": {
+  "event_id": 16824778,
+  "fixture": "Atlanta Hawks v Cleveland Cavaliers",
+  "competition": "NBA",
+  "sport": "basketball",
+  "kickoff": 1793318400,
+  "selection": "Donovan Mitchell 2+ three pointers made",
+  "chance": 0.7222222222222222,
+  "fair": 1.3846153846153846,
+  "team": "Cleveland Cavaliers",
+  "player": "Donovan Mitchell",
+  "stat": "Three pointers made",
+  "period": "ALL",
+  "line": 1.5,
+  "over": true,
+  "written": 1793302478.7460191
+ },
+ "16824780": {
+  "event_id": 16824780,
+  "fixture": "New Orleans Pelicans v Sacramento Kings",
+  "competition": "NBA",
+  "sport": "basketball",
+  "kickoff": 1793318400,
+  "selection": "Zion Williamson 2+ assists",
+  "chance": 0.696969696969697,
+  "fair": 1.434782608695652,
+  "team": "New Orleans Pelicans",
+  "player": "Zion Williamson",
+  "stat": "Assists",
+  "period": "ALL",
+  "line": 1.5,
+  "over": true,
+  "written": 1793302478.7460191
+ },
+ "16183752": {
+  "event_id": 16183752,
+  "fixture": "Green Bay Packers v Carolina Panthers",
+  "competition": "NFL",
+  "sport": "american-football",
+  "kickoff": 1793319300,
+  "selection": "Mitchell Evans 1+ receiving receptions",
+  "chance": 0.6363636363636364,
+  "fair": 1.5714285714285714,
+  "team": "Carolina Panthers",
+  "player": "Mitchell Evans",
+  "stat": "Receiving receptions",
+  "period": "ALL",
+  "line": 0.5,
+  "over": true,
+  "written": 1793302478.7460191
+ },
+ "15238226": {
+  "event_id": 15238226,
+  "fixture": "Gr\u00eamio v Athletico",
+  "competition": "Campeonato Brasileiro S\u00e9rie A",
+  "sport": "football",
+  "kickoff": 1793320200,
+  "selection": "Carlos Vin\u00edcius 1+ shots on target",
+  "chance": 0.7194,
+  "fair": 1.75,
+  "team": "Gr\u00eamio",
+  "player": "Carlos Vin\u00edcius",
+  "stat": "Shots on target",
+  "period": "ALL",
+  "line": 0.5,
+  "over": true,
+  "written": 1793302478.7460191
+ },
+ "16824779": {
+  "event_id": 16824779,
+  "fixture": "Portland Trail Blazers v Memphis Grizzlies",
+  "competition": "NBA",
+  "sport": "basketball",
+  "kickoff": 1793325600,
+  "selection": "Robert Williams III 6+ rebounds",
+  "chance": 0.7352941176470589,
+  "fair": 1.3599999999999999,
+  "team": "Portland Trail Blazers",
+  "player": "Robert Williams III",
+  "stat": "Rebounds",
+  "period": "ALL",
+  "line": 5.5,
+  "over": true,
+  "written": 1793302478.7460191
  }
 }
