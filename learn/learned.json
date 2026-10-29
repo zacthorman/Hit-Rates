@@ -1,5 +1,5 @@
 {
- "generated": 1793302417.736919,
+ "generated": 1793307754.229933,
  "overround": {
   "american-football": 1.0933307886907024,
   "basketball": 1.0779757793868043
@@ -106,27 +106,27 @@
    ]
   },
   "football|over": {
-   "rows": 17128,
-   "games": 128,
-   "test_games": 38,
-   "test_rows": 6182,
-   "ll_model": 0.4315883988164512,
-   "ll_learned": 0.4286317067799982,
-   "ll_market": 0.4932905153732151,
+   "rows": 17332,
+   "games": 129,
+   "test_games": 39,
+   "test_rows": 6386,
+   "ll_model": 0.43191411244301764,
+   "ll_learned": 0.4292413088673201,
+   "ll_market": 0.49262902559351773,
    "coef_train": [
     -0.291,
     0.782,
     0.188
    ],
-   "win_share": 0.976,
-   "bets_model": 170,
-   "roi_model": -0.1926,
+   "win_share": 0.966,
+   "bets_model": 177,
+   "roi_model": -0.2245,
    "bets_learned": 28,
    "roi_learned": -0.8036,
    "adopted": true,
    "coef": [
-    -0.2907,
-    0.8073,
+    -0.286,
+    0.8092,
     0.173
    ]
   }
@@ -519,40 +519,40 @@
    "why": "did not beat the model on the newest games"
   },
   "football|over|Shots": {
-   "rows": 4739,
-   "games": 101,
-   "test_games": 30,
-   "test_rows": 1383,
-   "ll_model": 0.47445505090428786,
-   "ll_learned": 0.47133683121531306,
-   "ll_market": 0.5626617497026581,
+   "rows": 4787,
+   "games": 102,
+   "test_games": 31,
+   "test_rows": 1431,
+   "ll_model": 0.47119931696456635,
+   "ll_learned": 0.46867828976334985,
+   "ll_market": 0.556765039210927,
    "coef_train": [
-    -0.256,
-    0.812,
-    0.131
+    -0.255,
+    0.813,
+    0.13
    ],
-   "win_share": 0.852,
-   "bets_model": 35,
-   "roi_model": -0.1344,
+   "win_share": 0.794,
+   "bets_model": 36,
+   "roi_model": -0.1584,
    "bets_learned": 14,
    "roi_learned": -1.0,
    "adopted": false,
-   "why": "no better than the side-wide correction"
+   "why": "did not beat the model on the newest games"
   },
   "football|over|Assists": {
-   "rows": 1462,
-   "games": 94,
+   "rows": 1478,
+   "games": 95,
    "test_games": 28,
-   "test_rows": 423,
-   "ll_model": 0.25504146821128093,
-   "ll_learned": 0.2550618384172506,
-   "ll_market": 0.294139330607205,
+   "test_rows": 425,
+   "ll_model": 0.2656714685905894,
+   "ll_learned": 0.2675186801186365,
+   "ll_market": 0.3023586906219614,
    "coef_train": [
-    -0.26,
-    0.816,
-    0.267
+    -0.258,
+    0.821,
+    0.269
    ],
-   "win_share": 0.502,
+   "win_share": 0.33,
    "bets_model": 1,
    "roi_model": -1.0,
    "bets_learned": 1,
@@ -561,84 +561,84 @@
    "why": "did not beat the model on the newest games"
   },
   "football|over|Goals": {
-   "rows": 1893,
-   "games": 126,
+   "rows": 1908,
+   "games": 127,
    "test_games": 38,
-   "test_rows": 568,
-   "ll_model": 0.2916682600131712,
-   "ll_learned": 0.2893615706747986,
-   "ll_market": 0.30125395032431573,
+   "test_rows": 567,
+   "ll_model": 0.2981545915339525,
+   "ll_learned": 0.29690887728675946,
+   "ll_market": 0.3058949143998116,
    "coef_train": [
-    -0.405,
-    0.681,
-    0.205
+    -0.412,
+    0.686,
+    0.203
    ],
-   "win_share": 0.82,
-   "bets_model": 39,
-   "roi_model": -0.2308,
+   "win_share": 0.644,
+   "bets_model": 41,
+   "roi_model": -0.2683,
    "bets_learned": 18,
    "roi_learned": 0.4444,
    "adopted": false,
-   "why": "no better than the side-wide correction"
+   "why": "did not beat the model on the newest games"
   },
   "football|over|Fouled": {
-   "rows": 3628,
-   "games": 78,
-   "test_games": 23,
-   "test_rows": 1056,
-   "ll_model": 0.44667849872275023,
-   "ll_learned": 0.44324766871127164,
-   "ll_market": 0.5235670857250712,
+   "rows": 3676,
+   "games": 79,
+   "test_games": 24,
+   "test_rows": 1104,
+   "ll_model": 0.4472887951290827,
+   "ll_learned": 0.44389899797177795,
+   "ll_market": 0.524581247942566,
    "coef_train": [
-    -0.282,
-    0.71,
-    0.265
+    -0.281,
+    0.711,
+    0.264
    ],
-   "win_share": 0.9,
-   "bets_model": 12,
-   "roi_model": -0.7547,
+   "win_share": 0.91,
+   "bets_model": 13,
+   "roi_model": -0.7735,
    "adopted": false,
    "why": "no better than the side-wide correction"
   },
   "football|over|Fouls": {
-   "rows": 2678,
-   "games": 85,
+   "rows": 2710,
+   "games": 86,
    "test_games": 26,
-   "test_rows": 784,
-   "ll_model": 0.5894568793865753,
-   "ll_learned": 0.5829610869226688,
-   "ll_market": 0.6709078269413711,
+   "test_rows": 792,
+   "ll_model": 0.5901089858375328,
+   "ll_learned": 0.5837439296049403,
+   "ll_market": 0.6732828915715788,
    "coef_train": [
-    -0.266,
-    0.855,
+    -0.26,
+    0.856,
     0.195
    ],
-   "win_share": 0.982,
-   "bets_model": 22,
-   "roi_model": -0.329,
+   "win_share": 0.976,
+   "bets_model": 20,
+   "roi_model": -0.4824,
    "adopted": true,
    "coef": [
-    -0.2754,
-    0.9046,
-    0.1441
+    -0.2702,
+    0.9092,
+    0.1381
    ]
   },
   "football|over|Shots on target": {
-   "rows": 2464,
-   "games": 83,
+   "rows": 2494,
+   "games": 84,
    "test_games": 25,
-   "test_rows": 721,
-   "ll_model": 0.3708660574937015,
-   "ll_learned": 0.37006022044684195,
-   "ll_market": 0.4256791317086603,
+   "test_rows": 713,
+   "ll_model": 0.37286233303484934,
+   "ll_learned": 0.37325347898602973,
+   "ll_market": 0.4232411358009232,
    "coef_train": [
-    -0.375,
-    0.76,
-    0.179
+    -0.379,
+    0.765,
+    0.17
    ],
-   "win_share": 0.584,
-   "bets_model": 18,
-   "roi_model": 0.7361,
+   "win_share": 0.418,
+   "bets_model": 20,
+   "roi_model": 0.5625,
    "bets_learned": 5,
    "roi_learned": -1.0,
    "adopted": false,

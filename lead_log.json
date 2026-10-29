@@ -4164,7 +4164,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793302478.7460191
+  "written": 1793307830.043947
  },
  "15238212": {
   "event_id": 15238212,
@@ -4181,7 +4181,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793302478.7460191
+  "written": 1793307830.043947
  },
  "16824778": {
   "event_id": 16824778,
@@ -4198,7 +4198,7 @@
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1793302478.7460191
+  "written": 1793307830.043947
  },
  "16824780": {
   "event_id": 16824780,
@@ -4215,7 +4215,7 @@
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1793302478.7460191
+  "written": 1793307830.043947
  },
  "16183752": {
   "event_id": 16183752,
@@ -4232,7 +4232,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793302478.7460191
+  "written": 1793307830.043947
  },
  "15238226": {
   "event_id": 15238226,
@@ -4249,7 +4249,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793302478.7460191
+  "written": 1793307830.043947
  },
  "16824779": {
   "event_id": 16824779,
@@ -4257,15 +4257,15 @@
   "competition": "NBA",
   "sport": "basketball",
   "kickoff": 1793325600,
-  "selection": "Robert Williams III 6+ rebounds",
-  "chance": 0.7352941176470589,
-  "fair": 1.3599999999999999,
+  "selection": "Deni Avdija 1+ three pointers made",
+  "chance": 0.7222222222222222,
+  "fair": 1.3846153846153846,
   "team": "Portland Trail Blazers",
-  "player": "Robert Williams III",
-  "stat": "Rebounds",
+  "player": "Deni Avdija",
+  "stat": "Three pointers made",
   "period": "ALL",
-  "line": 5.5,
+  "line": 0.5,
   "over": true,
-  "written": 1793302478.7460191
+  "written": 1793307830.043947
  }
 }
