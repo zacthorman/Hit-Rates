@@ -78,7 +78,7 @@ def fmt_leg(leg) -> str:
     return f"{who} {market}{when}"
 
 
-def legs_of(entry, meta) -> list:
+def legs_of(entry, meta, filter_bettable: bool = True) -> list:
     """Every priceable leg on one fixture, each one only once.
 
     The three sources overlap: an alt line and a single can describe the same
@@ -103,6 +103,11 @@ def legs_of(entry, meta) -> list:
     out = [l for l in out if not l.get("player")
            or (_nm(l["player"]) not in gone
                and (not starters.get(l.get("team")) or _nm(l["player"]) in starters[l.get("team")]))]
+    # Only what Paddy Power will take (bettable.py, 28 Oct 2026): no
+    # turnovers, tackles or first-half shots nobody can place.
+    if filter_bettable:
+        import bettable
+        out = bettable.keep(out, meta, weekend.sport_of(entry))
     # Same calibrated prices the picks use, so a leg reads the same here.
     return weekend.calibrate(out)
 
@@ -359,7 +364,7 @@ def lead_only(lead) -> str:
             f"<b>{odds(lead.get('fair'))}</b>, need <b>{odds(lead.get('need'))}</b></p>")
 
 
-def nba_story_block(entry, meta) -> str:
+def nba_story_block(entry, meta, score: bool = True) -> str:
     esc = html.escape
     try:
         import context
@@ -369,7 +374,7 @@ def nba_story_block(entry, meta) -> str:
     if not st.get("lines"):
         return "<p class='none'>No team model or game state for this game yet.</p>"
     parts = ["<div class='story'>"]
-    sc = st.get("score")
+    sc = st.get("score") if score else None
     if sc:
         parts.append(f"<p class='call'><b>Most likely:</b> {esc(meta['home'])} {sc['home']:.0f}, "
                      f"{esc(meta['away'])} {sc['away']:.0f} <span class='sub'>(total {sc['total']:.0f}; "
@@ -382,7 +387,7 @@ def nba_story_block(entry, meta) -> str:
     return "".join(parts)
 
 
-def nfl_story_block(entry, meta) -> str:
+def nfl_story_block(entry, meta, score: bool = True) -> str:
     esc = html.escape
     try:
         import context
@@ -392,7 +397,7 @@ def nfl_story_block(entry, meta) -> str:
     if not st.get("lines"):
         return "<p class='none'>No game script for this game yet.</p>"
     parts = ["<div class='story'>"]
-    sc = st.get("score")
+    sc = st.get("score") if score else None
     if sc:
         parts.append(f"<p class='call'><b>Points form:</b> {esc(meta['home'])} {sc['home']:.0f}, "
                      f"{esc(meta['away'])} {sc['away']:.0f} <span class='sub'>(each side's last 10 scored "
@@ -402,7 +407,7 @@ def nfl_story_block(entry, meta) -> str:
     return "".join(parts)
 
 
-def story_block(entry, meta, gs) -> str:
+def story_block(entry, meta, gs, score: bool = True) -> str:
     """How the game will go: shapes, styles, the likely script, and the reasoning."""
     esc = html.escape
     try:
@@ -412,7 +417,7 @@ def story_block(entry, meta, gs) -> str:
     except Exception as exc:
         return f"<p class='sub'>Match story unavailable ({esc(str(exc))})</p>"
     parts = ["<div class='story'>"]
-    sc = b.get("score")
+    sc = b.get("score") if score else None
     if sc:
         parts.append(f"<p class='call'><b>Most likely:</b> {esc(meta['home'])} {sc['home']}-{sc['away']} "
                      f"{esc(meta['away'])} <span class='sub'>(home {sc['ph'] * 100:.0f}%, draw "
@@ -642,6 +647,349 @@ def results_block(now) -> str:
             f"<tbody>{''.join(rows)}</tbody></table></section>")
 
 
+# ------------------------------------------------------------- the game card
+#
+# 28 Oct 2026 (Zac): one card per game instead of one under Team lines and a
+# second under Player lines; fewer tabs that each do more; and each sport
+# assessed its own way. A tab with nothing in it is not drawn.
+#
+#   football    Bets | Match | Build
+#   basketball  Bets | Game  | Build
+#   NFL         Bets | Script | Build
+#   anything else  Bets | Build
+#
+# Bets: the sport's own call (football the likely score and 1X2, the NBA the
+# team model's score, the NFL its points form), the best bet, the argument,
+# then the team and player bets as cards: one line of reason each, the rest
+# behind "Why". Match/Game/Script: how it should go. Build: the same-game
+# builder, the boost check (football) and each player's own line.
+
+BETS_SHOWN = 3      # cards per section before "more"
+
+
+def _strength_line(legs) -> str:
+    """The fixture's ratings, once, instead of under every team bet."""
+    esc = html.escape
+    for l in legs:
+        st = l.get("strength") or {}
+        if st.get("team") is None or l.get("player"):
+            continue
+        fx = l.get("fixture") or {}
+        team = l.get("team")
+        opp = fx.get("away") if team == fx.get("home") else fx.get("home")
+        bits = [f"Ratings {esc(str(team))} <b>{st['team']}</b>, {esc(str(opp or 'opponent'))} <b>{st['opp']}</b>"]
+        if st.get("win") is not None:
+            bits.append(f"{esc(str(team))} {st['win'] * 100:.0f}% to win")
+        return "<p class='sub rate'>" + " &middot; ".join(bits) + "</p>"
+    return ""
+
+
+def bet_card(leg, entry, sport_key=None) -> str:
+    """One bet: the selection and its numbers, one reason, the rest behind Why."""
+    esc = html.escape
+    where = {"home": " at home", "away": " away"}.get(leg.get("venue"), "")
+    hits, total = leg.get("hits"), leg.get("total")
+    head, more = None, []
+    st = leg.get("strength") or {}
+    if (st.get("similarN") or 0) >= 2:
+        more.append(f"{st['similarHits']} of {st['similarN']} against similar opponents")
+    q = leg.get("exchange")
+    if q:
+        bits = [f"Betfair {q['p'] * 100:.0f}%"]
+        if q.get("back"):
+            bits.append(f"back {q['back']:.2f}")
+        if leg.get("value") is not None:
+            v = leg["value"]
+            bits.append(f"<b>+{v * 100:.1f}% value</b>" if weekend.value_claimed(v) else "no value")
+        elif leg.get("disagree") is not None:
+            bits.append(f"model {abs(leg['disagree']) * 100:.0f} pts off the market")
+        more.append(" &middot; ".join(bits))
+    try:
+        import context
+        a = context.opp_allows(leg, entry)
+        if a:
+            head = esc(a["text"])
+        g = leg.get("gs")
+        if g:
+            bits = [f"opponent &times;{g['oppf']:.2f}"] if g.get("oppf") is not None else []
+            if abs(g["factor"] - 1) >= 0.02:
+                bits.append(f"game state &times;{g['factor']:.2f}")
+            kind = g.get("kind") or "model"
+            with_rec = (f", {g['chance'] * 100:.0f}% with the record"
+                        if abs(g["chance"] - g["model"]) >= 0.005 else "")
+            more.append(f"Backtested {esc(kind)} {g['model'] * 100:.0f}%{with_rec}"
+                        + (f" ({', '.join(bits)})" if bits else ""))
+        mn = context.minutes_note(entry, leg) if leg.get("player") else None
+        if mn:
+            more.append(f"Minutes: {esc(mn)}")
+    except Exception:
+        pass
+    try:
+        import why
+        w = why.reasons(leg)
+        fors, against = list(w["for"][:3]), list(w["against"][:2])
+        if head is None and fors:
+            head = esc(fors.pop(0))
+        more += [f"+ {esc(t)}" for t in fors[:2]] + [f"&minus; {esc(t)}" for t in against]
+    except Exception:
+        pass
+    ch = tonight_chance(leg, sport_key)
+    pct = f"{ch * 100:.0f}%" if ch else "&mdash;"
+    rec = f"{hits}/{total}{where}" if total else where.strip()
+    who = leg.get("team") if leg.get("player") else None
+    sub = " &middot; ".join(x for x in (esc(str(who)) if who else "", f"record {rec}" if total else "") if x)
+    return (
+        "<div class='bet'><div class='top'>"
+        f"<div class='sel'>{esc(fmt_leg(leg))}{'' if total else where}"
+        + (f"<div class='sub'>{sub}</div>" if sub else "") + "</div>"
+        f"<div class='nums'><b>{pct}</b><span>fair {odds(leg.get('fair'))}</span>"
+        f"<span>need {odds(leg.get('need'))}</span>"
+        + (f"<span class='pp'>Paddy <b>{leg['pp_price']:.2f}</b></span>" if leg.get("pp_price")
+           else "<span class='pp none'>Paddy price due</span>")
+        + "</div></div>"
+        + (f"<p class='reason'>{head}</p>" if head else "")
+        + (f"<details class='more'><summary>Why</summary><ul>{''.join(f'<li>{m}</li>' for m in more)}</ul></details>"
+           if more else "")
+        + "</div>")
+
+
+def bets_section(title, legs, entry, sport_key, note="") -> str:
+    if not legs:
+        return f"<h3>{title}</h3><p class='none'>Nothing cleared the bar.</p>"
+    first = "".join(bet_card(l, entry, sport_key) for l in legs[:BETS_SHOWN])
+    rest = legs[BETS_SHOWN:]
+    more = (f"<details class='rest'><summary>{len(rest)} more</summary>"
+            + "".join(bet_card(l, entry, sport_key) for l in rest) + "</details>") if rest else ""
+    return f"<h3>{title}</h3>{note}{first}{more}"
+
+
+def _pbar(ph, pd_, pa) -> str:
+    return (f"<div class='pbar'><span class='ph' style='width:{ph * 100:.1f}%'></span>"
+            f"<span class='pd' style='width:{pd_ * 100:.1f}%'></span>"
+            f"<span class='pa' style='width:{pa * 100:.1f}%'></span></div>")
+
+
+def verdict_block(sport, entry, meta, lead, gs) -> str:
+    """The sport's own call at the top of the Bets tab, then the best bet."""
+    esc = html.escape
+    home, away = esc(meta["home"]), esc(meta["away"])
+    parts = ["<div class='verdict'>"]
+    argument = ""
+    try:
+        import context
+        if sport == "football":
+            b = context.brief(entry, meta)
+            sc = b.get("score")
+            if sc:
+                parts.append(f"<p class='score'>{home} <b>{sc['home']}-{sc['away']}</b> {away}</p>"
+                             + _pbar(sc["ph"], sc["pd"], sc["pa"])
+                             + f"<p class='sub'>Home {sc['ph'] * 100:.0f}% &middot; draw {sc['pd'] * 100:.0f}% "
+                             f"&middot; away {sc['pa'] * 100:.0f}% &middot; {sc['lh'] + sc['la']:.1f} goals expected "
+                             f"&middot; {esc(sc['source'])}</p>")
+            if lead:
+                try:
+                    allows = context.opp_allows(lead, entry)
+                except Exception:
+                    allows = None
+                try:
+                    import why
+                    why_for = why.reasons(lead).get("for")
+                except Exception:
+                    why_for = None
+                argument = context.case(lead, b, allows, why_for)
+                g = lead.get("gs")
+                if g:
+                    argument += (f" The backtested {g.get('kind') or 'model'} makes this bet {g['model'] * 100:.0f}%"
+                                 + (f"; with the record, {g['chance'] * 100:.0f}%." if abs(g["chance"] - g["model"]) >= 0.005
+                                    else "."))
+        elif sport == "basketball":
+            sc = context.nba_story(entry, meta).get("score")
+            if sc:
+                parts.append(f"<p class='score'>{home} <b>{sc['home']:.0f}-{sc['away']:.0f}</b> {away}</p>"
+                             f"<p class='sub'>Total {sc['total']:.0f} &middot; margin {abs(sc['home'] - sc['away']):.0f} "
+                             f"&middot; team model</p>")
+            parts.append(_out_line(entry, meta))
+        elif sport == "american-football":
+            sc = context.nfl_story(entry, meta).get("score")
+            if sc:
+                parts.append(f"<p class='score'>{home} <b>{sc['home']:.0f}-{sc['away']:.0f}</b> {away}</p>"
+                             f"<p class='sub'>Points form: each side's last 10 scored and the other's allowed. "
+                             f"A guide, not a model.</p>")
+            parts.append(_out_line(entry, meta))
+    except Exception:
+        pass
+    if lead:
+        pp = f" &middot; Paddy <b>{lead['pp_price']:.2f}</b>" if lead.get("pp_price") else ""
+        parts.append(f"<p class='best'><span class='k'>Best bet</span> {esc(fmt_leg(lead))} &middot; fair "
+                     f"<b>{odds(lead.get('fair'))}</b> &middot; need <b>{odds(lead.get('need'))}</b>{pp}</p>")
+    else:
+        parts.append("<p class='none'>No leg cleared the bar on the evidence.</p>")
+    if argument:
+        parts.append(f"<p class='argue'>{esc(argument)}</p>")
+    parts.append("</div>")
+    return "".join(parts)
+
+
+def match_gs_block(gs, meta=None) -> str:
+    """The game state for the Match tab: the script, then who it favours, one line each.
+    Only legs Paddy Power sells are listed (bettable.py)."""
+    esc = html.escape
+    if not gs:
+        return ""
+    if meta is not None:
+        import bettable
+        sells = lambda r: bettable.check({"player": r["player"], "stat": r["stat"], "alt": True,  # noqa: E731
+                                          "threshold": r["line"], "period": "ALL"}, meta, "football")[0]
+        gs = dict(gs, leans=[r for r in gs.get("leans") or [] if sells(r)],
+                  against=[r for r in gs.get("against") or [] if sells(r)])
+    parts = [f"<h3>Game state</h3><p class='argue gsarg'>{esc(gs['script'])}</p>"]
+    if gs.get("poss"):
+        t = gs["teams"]
+        parts.append(f"<p class='sub line'>Possession {esc(t[0])} {gs['poss'][0]:.0f}% (usually {gs['usual'][0]:.0f}), "
+                     f"{esc(t[1])} {gs['poss'][1]:.0f}% (usually {gs['usual'][1]:.0f}). "
+                     f"xG {esc(t[0])} {gs['xg'][0]:.2f}-{gs['xga'][0]:.2f}, {esc(t[1])} {gs['xg'][1]:.2f}-{gs['xga'][1]:.2f}. "
+                     + esc(gs["xi"]) + ("; backtested weights." if gs.get("fitted") else "; no backtest fit, adjustments off.")
+                     + "</p>")
+    if gs.get("leans"):
+        parts.append("<p class='call'><b>Leans to</b></p><ul class='gsl'>" + "".join(
+            f"<li><span>{esc(r['player'])} {r['line']}+ {esc(r['stat'].lower())} <span class='sub'>{esc(r['team'])}</span></span>"
+            f"<span class='n'><b>{r['chance'] * 100:.0f}%</b> <span class='sub'>rec {r['k']}/{r['n']}</span></span></li>"
+            for r in gs["leans"]) + "</ul>")
+    if gs.get("against"):
+        parts.append("<p class='call'><b>Works against</b> <span class='sub'>good record, weaker tonight</span></p><ul class='gsl'>" + "".join(
+            f"<li><span>{esc(r['player'])} {r['line']}+ {esc(r['stat'].lower())} <span class='sub'>{esc(r['team'])}</span></span>"
+            f"<span class='n'><b>{r['chance'] * 100:.0f}%</b> <span class='sub'>rec {r['k']}/{r['n']}</span></span></li>"
+            for r in gs["against"]) + "</ul>")
+    return "".join(parts)
+
+
+def _out_line(entry, meta) -> str:
+    """NBA and NFL: who is out, both sides, one line (the injury report)."""
+    esc = html.escape
+    bits = []
+    for side, name in (("home", meta["home"]), ("away", meta["away"])):
+        out = [r[0] for r in (entry.get("injuries") or {}).get(side) or []
+               if isinstance(r, (list, tuple)) and len(r) > 2 and str(r[2]).lower().startswith("out")]
+        if out:
+            bits.append(f"<b>{esc(name)}</b> {esc(', '.join(out[:5]))}" + (f" +{len(out) - 5}" if len(out) > 5 else ""))
+    return f"<p class='sub out'>Out: {' &middot; '.join(bits)}</p>" if bits else ""
+
+
+def _form_chips(side) -> str:
+    esc = html.escape
+    return "<div class='chips'>" + "".join(
+        f"<span class='fm' title='{esc(f['date'])} {esc(f['comp'])}'><span class='res {f['res']}'>{f['res']}</span>"
+        f" {f['gf']}-{f['ga']} {'v' if f['venue'] == 'H' else '@'} {esc(f['opp'])}</span>"
+        for f in reversed(side["form"])) + "</div>"
+
+
+def form_block(entry, meta) -> str:
+    """Both sides' form, compact, and the facts that matter (football)."""
+    try:
+        import context
+        b = context.brief(entry, meta)
+    except Exception:
+        return ""
+    esc = html.escape
+    comp = context._short(meta.get("competition"))
+    out = []
+    if b.get("facts"):
+        out.append("<ul class='facts'>" + "".join(f"<li>{esc(f)}</li>" for f in b["facts"]) + "</ul>")
+    for side in (b.get("home"), b.get("away")):
+        if not side:
+            continue
+        c, lines = side["counts"], []
+        if c["n"]:
+            lines.append(f"Last {c['n']}: won {c['won']}, scored in {c['scored']}, conceded in {c['conceded']}, "
+                         f"BTTS {c['btts']}, 3+ goals {c['over25']} ({c['gf']}-{c['ga']})")
+        x = side.get("xg")
+        if x:
+            lines.append(f"xG {x['for_pg']:.2f} for, {x['against_pg']:.2f} against a game (last {x['n']})")
+        tb = side.get("table")
+        if tb and tb.get("played"):
+            pos = f", {tb['pos']}{context_ordinal(tb['pos'])} of {tb['of']}" if tb.get("pos") else ""
+            lines.append(f"{esc(comp)}: {tb['points']} pts from {tb['played']}{pos}")
+        if side.get("absences"):
+            lines.append("Missing: " + ", ".join(
+                f"{esc(a['name'])} ({a['starts']}/{a['of']} starts)" for a in side["absences"][:5]))
+        if side.get("next"):
+            n = side["next"][0]
+            lines.append(f"Next: {'v' if n['venue'] == 'H' else '@'} {esc(n['opp'])} ({esc(n['date'])})")
+        out.append(f"<div class='side'><h4>{esc(side['name'] or '')}</h4>{_form_chips(side)}"
+                   + "".join(f"<p class='sub line'>{l}</p>" for l in lines) + "</div>")
+    return "<h3>Form</h3>" + "".join(out) if out else ""
+
+
+def own_lines_block(entry, meta) -> str:
+    try:
+        import bettable
+        import playerlines
+        sport = weekend.sport_of(entry)
+        rows = "".join(player_row(l) for l in playerlines.suggest(entry, meta)
+                       if bettable.check(l, meta, sport)[0])
+    except Exception as exc:          # never cost the page its other sections
+        rows = f"<tr><td colspan='4'>player lines unavailable ({html.escape(str(exc))})</td></tr>"
+    if not rows:
+        return ""
+    return ("<h3>Each player's own line</h3>"
+            "<p class='sub'>The highest line each has cleared in 7 of the last 10, with the average 10% "
+            "clear of it. Back at the fair price or longer.</p>"
+            "<table><thead><tr><th>Selection</th><th class='n'>Last 10</th>"
+            f"<th class='n'>Chance</th><th class='n'>Fair</th></tr></thead><tbody>{rows}</tbody></table>")
+
+
+def game_card(n, entry, meta, sport, sport_key, lead, team_pool, player_pool, best, gs) -> str:
+    esc = html.escape
+    football, basketball, american = sport == "football", sport == "basketball", sport == "american-football"
+    kick = time.strftime("%H:%M", time.localtime(meta["kickoff"]))
+    lu = (entry.get("lineups") or {})
+    xi = ("<span class='tag ok'>XI confirmed</span>" if lu.get("confirmed")
+          else "<span class='tag'>predicted XI</span>" if (football and lu.get("predicted")) else "")
+    kind = {"football": "", "basketball": "NBA", "american-football": "NFL"}.get(sport, sport_key.title() if sport_key else "")
+    comp = meta.get("competition") or ""
+    label = comp if (not kind or kind.lower() in comp.lower()) else f"{kind} · {comp}"
+    title = (f"<span class='ko'>{kick}</span> <span class='fx'>{esc(meta['home'])} v {esc(meta['away'])}</span>"
+             f"<span class='comp'>{esc(label)}{xi}</span>")
+    lead_txt = (f"<span class='lead'>{esc(fmt_leg(lead))} &middot; fair <b>{odds(lead.get('fair'))}</b></span>"
+                if lead else "<span class='lead none'>nothing cleared the bar</span>")
+
+    starters = " <span class='sub'>(confirmed starters only)</span>" if lu.get("confirmed") else ""
+    sections = [("Team bets", team_pool[:SINGLES_PER_FIXTURE], ""),
+                ("Player bets", player_pool[:SINGLES_PER_FIXTURE], starters)]
+    if any(l for _, l, _ in sections):        # an empty section only says so when both are empty
+        sections = [x for x in sections if x[1]]
+    bets = (verdict_block(sport, entry, meta, lead, gs) + _strength_line(team_pool)
+            + "".join(bets_section(t, l, entry, sport_key, nt) for t, l, nt in sections))
+    tabs = [("Bets", bets)]
+    if football:
+        match = (match_gs_block(gs, meta) + "<h3>How it plays</h3>" + story_block(entry, meta, gs, score=False)
+                 + form_block(entry, meta))
+        tabs.append(("Match", match))
+    elif basketball:
+        tabs.append(("Game", nba_story_block(entry, meta, score=False)))
+    elif american:
+        tabs.append(("Script", nfl_story_block(entry, meta, score=False)))
+    build = ""
+    if best:
+        build += f"<h3>Same-game builder</h3>{builder_block(best)}"
+    if football:
+        build += f"<h3>Check a boost or bet builder</h3>{boostcheck.boost_tab(entry, meta, n)}"
+    build += own_lines_block(entry, meta)
+    if build:
+        tabs.append(("Build", build))
+    tabs = [t for t in tabs if t[1] and "class='none'>No team model" not in t[1][:200]] or tabs[:1]
+    if len(tabs) == 1:
+        inner = f"<div class='pane-one'>{tabs[0][1]}</div>"
+    else:
+        inner = "<div class='tabs'>"
+        for i, (label, _) in enumerate(tabs):
+            inner += (f"<input type='radio' name='g{n}' id='g{n}{i}'{' checked' if i == 0 else ''}>"
+                      f"<label for='g{n}{i}'>{label}</label>")
+        inner += "".join(f"<div class='pane p{i}'>{body}</div>" for i, (_, body) in enumerate(tabs)) + "</div>"
+    return (f"<details class='game' data-sport='{esc(sport)}'><summary>{title}{lead_txt}</summary>"
+            f"{inner}</details>")
+
+
 def build(hours: float | None) -> str:
     entries: list[tuple[dict, dict]] = []
     seen: set[tuple] = set()
@@ -685,7 +1033,7 @@ def build(hours: float | None) -> str:
     # player bets (player). Player bets follow the line-ups: once a side's XI
     # is confirmed, only its starters are offered.
     team_legs_all, player_legs_all = [], []
-    team_rows, player_rows = [], []
+    rows = []
     lead_log = []
 
     # Ranked on the module's tonight_chance (game state first, the darts fix),
@@ -703,10 +1051,10 @@ def build(hours: float | None) -> str:
                 f"<th class='n'>Fair</th><th class='n'>Need</th></tr></thead><tbody>{body}</tbody></table>")
 
     for n, (entry, meta) in enumerate(window):
-        kick = time.strftime("%H:%M", time.localtime(meta["kickoff"]))
         sport = (entry.get("fixture") or {}).get("sport") or "football"
-        football, basketball, american = sport == "football", sport == "basketball", sport == "american-football"
-        builders = weekend.builders_for(entry, meta) or []
+        import bettable
+        builders = [b for b in (weekend.builders_for(entry, meta) or [])
+                    if all(bettable.check(l, meta, weekend.sport_of(entry))[0] for l in b.get("legs") or [])]
         best = max(builders, key=lambda b: b.get("evidence", 0)) if builders else None
 
         legs = legs_of(entry, meta)
@@ -730,59 +1078,8 @@ def build(hours: float | None) -> str:
         player_pool = rank([l for l in pool if l.get("player")], sport_key)
         team_legs_all.extend(l for l in legs if not l.get("player"))
         player_legs_all.extend(l for l in legs if l.get("player"))
-
-        lu = (entry.get("lineups") or {})
-        xi = ("<span class='tag ok'>line-ups confirmed</span>" if lu.get("confirmed")
-              else "<span class='tag'>predicted line-ups</span>" if lu.get("predicted") else "")
-        title = (f"<span class='ko'>{kick}</span> {html.escape(meta['home'])} v {html.escape(meta['away'])}"
-                 f"<span class='comp'> &middot; {html.escape(meta['competition'])}</span>")
-
-        def summary(lead):
-            if not lead:
-                return "<span class='lead none'>nothing cleared the bar</span>"
-            return (f"<span class='lead'>{html.escape(fmt_leg(lead))} &middot; fair "
-                    f"<b>{odds(lead.get('fair'))}</b></span>")
-
-        # team side
-        tlead = team_pool[0] if team_pool else None
-        story = (story_block(entry, meta, gs) if football
-                 else nba_story_block(entry, meta) if basketball
-                 else nfl_story_block(entry, meta) if american else "")
-        builder_is_team = bool(best) and not any(l.get("player") for l in best.get("legs") or [])
-        bets_html = ((f"<h3>The case</h3>{case_block(entry, meta, tlead, gs)}" if football
-                      else f"<h3>The case</h3>{lead_only(tlead)}")
-                     + f"<h3>Best team bets</h3>{singles_table([(l, entry) for l in team_pool[:SINGLES_PER_FIXTURE]])}"
-                     + (f"<h3>Same-game builder</h3>{builder_block(best)}" if builder_is_team or not best else ""))
-        tabs = [("Bets", "bets", bets_html)]
-        if story:
-            tabs.append(("Game state", "state", f"<h3>How the game will go</h3>{story}"))
-        if football:
-            tabs.append(("Boost check", "boostp", f"<h3>Check a boost or bet builder</h3>{boostcheck.boost_tab(entry, meta, n)}"))
-        inner = "<div class='tabs'>"
-        for i, (label, cls, _) in enumerate(tabs):
-            inner += (f"<input type='radio' name='g{n}' id='g{n}{i}'{' checked' if i == 0 else ''}>"
-                      f"<label for='g{n}{i}'>{label}</label>")
-        inner += "".join(f"<div class='pane p{i}'>{body}</div>" for i, (_, _, body) in enumerate(tabs)) + "</div>"
-        team_rows.append(f"<details class='game'><summary>{title}<br>{summary(tlead)}</summary>{inner}</details>")
-
-        # player side
-        if not player_pool and not football:
-            pass
-        plead = player_pool[0] if player_pool else None
-        try:
-            import playerlines
-            plines = "".join(player_row(l) for l in playerlines.suggest(entry, meta))
-        except Exception as exc:          # never cost the page its other sections
-            plines = f"<tr><td colspan='4'>player lines unavailable ({html.escape(str(exc))})</td></tr>"
-        plines = plines or "<tr><td colspan='4'>nothing qualified</td></tr>"
-        pbody = (f"<h3>Best player bets</h3>{singles_table([(l, entry) for l in player_pool[:SINGLES_PER_FIXTURE]])}"
-                 + (f"<h3>Same-game builder</h3>{builder_block(best)}" if best and not builder_is_team else "")
-                 + "<h3>Each player's own line</h3>"
-                 "<p class='sub'>The highest line he has cleared in 7 of his last 10, with his average 10% "
-                 "clear of it. Back at the fair price or longer.</p>"
-                 "<table><thead><tr><th>Selection</th><th class='n'>Last 10</th>"
-                 f"<th class='n'>Chance</th><th class='n'>Fair</th></tr></thead><tbody>{plines}</tbody></table>")
-        player_rows.append(f"<details class='game'><summary>{title} {xi}<br>{summary(plead)}</summary>{pbody}</details>")
+        lead = own[0] if own else None
+        rows.append(game_card(n, entry, meta, sport, sport_key, lead, team_pool, player_pool, best, gs))
 
     try:
         write_leads(lead_log, now)
@@ -794,26 +1091,30 @@ def build(hours: float | None) -> str:
             or "<p class='none'>Nothing to build a multi from.</p>"
 
     until = max(m["kickoff"] for _, m in window) + 60
-    team_pane = (f"<h2 class='first'>Paddy Power v Betfair</h2>{sharp.box(now, until, True)}"
-                 "<p class='sub'>Tap a game for the case, how it should go, and the boost check.</p>"
-                 + "".join(team_rows)
-                 + f"<details class='game'><summary><b>Team multi across the games</b></summary>{multi(team_legs_all)}</details>")
-    player_pane = (f"<h2 class='first'>Paddy Power v Betfair</h2>{sharp.box(now, until, False)}"
-                   f"<h2>Bet365 value (model and market agree)</h2>{b365value.box(now, until)}"
-                   f"<h2>Rules on trial</h2>{ruletrack.box(now, until)}"
-                   f"<h2>Bookie value bets (our model)</h2>{boostcheck.value_box(now, until)}"
-                   "<p class='sub'>Tap a game for its player bets. Once a line-up is confirmed only its "
-                   "starters are offered.</p>"
-                   + "".join(player_rows)
-                   + f"<details class='game'><summary><b>Player multi across the games</b></summary>{multi(player_legs_all)}</details>")
-    body = ("<h2 class='first'>Best selections</h2>" + selections.box(now, until)
-            + research_block(now)
-            + "<div class='main'>"
-            "<input type='radio' name='main' id='mt' checked><label for='mt'>Team lines</label>"
-            "<input type='radio' name='main' id='mp'><label for='mp'>Player lines</label>"
-            f"<div class='mpane team'>{team_pane}</div><div class='mpane player'>{player_pane}</div></div>"
-            + (f"<details class='game'><summary><b>Last night's leads</b></summary>{results_block(now)}</details>"
-               if results_block(now) else ""))
+    # Two top tabs (28 Oct 2026): Games, every game once, and Picks, every
+    # list that ranks across the games (the short list, the value checks,
+    # the rules on trial, the multis and last night's record).
+    games_pane = ("<p class='sub'>Tap a game for its bets, how it should go, and the builder.</p>"
+                  + "".join(rows))
+    leads = results_block(now)
+    picks_pane = ("<h2 class='first'>Best selections</h2>" + selections.box(now, until)
+                  + research_block(now)
+                  + "<h2>Paddy Power v the sharp price</h2>"
+                  "<p class='sub'>Team lines are checked against Pinnacle where it prices them, else Betfair; "
+                  "player lines against Betfair.</p>"
+                  f"<h3>Team lines</h3>{sharp.box(now, until, True)}"
+                  f"<h3>Player lines</h3>{sharp.box(now, until, False)}"
+                  f"<h2>Bet365 value</h2><p class='sub'>Model and market agree.</p>{b365value.box(now, until)}"
+                  f"<h2>Rules on trial</h2>{ruletrack.box(now, until)}"
+                  f"<h2>Bookie value bets</h2><p class='sub'>Our model.</p>{boostcheck.value_box(now, until)}"
+                  "<h2>Multis</h2>"
+                  f"<details class='game'><summary><b>Team multi across the games</b></summary>{multi(team_legs_all)}</details>"
+                  f"<details class='game'><summary><b>Player multi across the games</b></summary>{multi(player_legs_all)}</details>"
+                  + (f"<details class='game'><summary><b>Last night's leads</b></summary>{leads}</details>" if leads else ""))
+    body = ("<div class='main'>"
+            f"<input type='radio' name='main' id='mt' checked><label for='mt'>Games <span class='cnt'>{len(rows)}</span></label>"
+            "<input type='radio' name='main' id='mp'><label for='mp'>Picks</label>"
+            f"<div class='mpane team'>{games_pane}</div><div class='mpane player'>{picks_pane}</div></div>")
     page = PAGE.format(built=built, span=span, body=body,
                        stamp=time.strftime("%a %d %b, %H:%M %Z", time.localtime(now)))
     return (page.replace("</style>", boostcheck.CSS + LAYOUT_CSS + "</style>", 1)
@@ -834,9 +1135,50 @@ details.game > summary { list-style:none; cursor:pointer; padding:10px 22px 10px
 details.game > summary::-webkit-details-marker { display:none; }
 details.game > summary::after { content:'+'; position:absolute; right:2px; top:10px; color:var(--muted); font-size:18px; }
 details.game[open] > summary::after { content:'\\2212'; }
-details.game > summary .ko { font-weight:700; margin-right:4px; }
-details.game > summary .comp { font-size:12px; }
+details.game > summary .ko { font-weight:700; margin-right:4px; font-variant-numeric:tabular-nums; }
+details.game > summary .fx { font-weight:600; }
+details.game > summary .comp { display:block; font-size:12px; margin-top:1px; }
+details.game > summary .comp .tag { margin-left:6px; }
+details.game > summary .lead { display:block; }
+ul.gsl { list-style:none; padding:0; margin:4px 0 10px; font-size:14px; }
+ul.gsl li { display:flex; justify-content:space-between; gap:10px; padding:4px 0; border-bottom:1px solid var(--line); }
+ul.gsl li .n { white-space:nowrap; }
+.out { margin:4px 0 0; }
+.verdict .out b { color:var(--fg); font-weight:600; }
 details.game > summary .lead { font-size:13px; color:var(--muted); }
+details.game > summary .lead b { color:var(--fg); }
+details.game[open] > summary { padding-bottom:4px; }
+.main .cnt { font-weight:500; opacity:.6; margin-left:2px; }
+.verdict { margin:12px 0 4px; }
+.verdict .score { font-size:19px; margin:0 0 6px; }
+.verdict .score b { font-variant-numeric:tabular-nums; padding:0 4px; }
+.pbar { display:flex; height:6px; border-radius:3px; overflow:hidden; margin:0 0 4px; background:var(--line); }
+.pbar .ph { background:var(--fg); } .pbar .pd { background:var(--muted); opacity:.5; } .pbar .pa { background:var(--accent); }
+.best { margin:10px 0 4px; font-size:15px; }
+.best .k, .rate b { font-weight:700; }
+.best .k { display:inline-block; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--bg);
+  background:var(--fg); border-radius:4px; padding:1px 6px; margin-right:4px; vertical-align:1px; }
+.verdict .argue { font-size:14px; color:var(--fg); }
+.rate { margin:8px 0 0; }
+.bet { padding:10px 0; border-bottom:1px solid var(--line); }
+.bet .top { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+.bet .sel { font-size:15px; font-weight:600; min-width:0; }
+.bet .sel .sub { font-weight:400; }
+.bet .nums { text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; font-size:12px; color:var(--muted); }
+.bet .nums b { display:block; font-size:17px; color:var(--fg); }
+.bet .nums span { display:block; }
+.bet .nums .pp { margin-top:2px; color:var(--fg); }
+.bet .nums .pp b { display:inline; font-size:13px; }
+.bet .nums .pp.none { color:var(--muted); font-style:italic; }
+.bet .reason { margin:4px 0 0; font-size:13px; }
+details.more > summary, details.rest > summary { cursor:pointer; color:var(--muted); font-size:13px; margin-top:4px; }
+details.more ul { margin:4px 0 0; padding-left:18px; font-size:13px; color:var(--muted); }
+details.more li { margin:2px 0; }
+details.rest > summary { padding:8px 0; font-weight:600; }
+.chips { display:flex; flex-wrap:wrap; gap:4px 10px; margin:4px 0 6px; font-size:12.5px; }
+.chips .fm { white-space:nowrap; color:var(--muted); }
+.tabs > label { margin:12px 4px 4px 0; }
+.pane-one { margin-top:4px; }
 details.game[open] { padding-bottom:10px; }
 .tag { display:inline-block; font-size:11px; padding:1px 7px; border-radius:999px; border:1px solid var(--line);
   color:var(--muted); margin-left:4px; vertical-align:1px; }

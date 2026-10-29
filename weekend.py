@@ -787,8 +787,11 @@ def builders_for(entry, meta):
         # very nearly the same bet twice, and a builder made of those looks
         # like three opinions when it is one.
         best_by_stat = {}
+        import bettable
         for leg in legs_for(entry, meta):
             if leg["teamIndex"] != team_index:
+                continue
+            if not bettable.ok(leg, meta, sport_of(entry)):   # only what Paddy Power sells
                 continue
             current = best_by_stat.get(leg["stat"])
             if current is None or leg["evidence"] > current["evidence"]:
@@ -1461,9 +1464,12 @@ def picks(entries, days=7, now=None):
                           "said": chk.get("said"), "landed": chk.get("landed"), "test": chk.get("test")}
     except Exception:
         pass
+    import bettable
     for sport, group in by_sport.items():
         legs = []
         for entry, meta in group:
+            # Only what Paddy Power sells (bettable.py, 28 Oct 2026).
+            mine = len(legs)
             legs.extend(legs_for(entry, meta))
 
             # Player legs come off the ladder, both ends of it, and no longer
@@ -1479,6 +1485,7 @@ def picks(entries, days=7, now=None):
             # always one the player himself makes interesting.
             legs.extend(parlay.single_legs_for(entry, meta))
             legs.extend(parlay.alt_legs_for(entry, meta))
+            legs[mine:] = bettable.keep(legs[mine:], meta, sport)
         calibrate(legs)
         try:
             us_model(legs)

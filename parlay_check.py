@@ -609,6 +609,10 @@ def report(walk_path: Path = OUT) -> str:
 
 
 def main(argv=None):
+    # A replay of old fixtures: there is no Paddy Power board for them, so the
+    # live bettable filter (bettable.py) stays out of it and results reproduce.
+    import bettable
+    bettable.ON = False
     ap = argparse.ArgumentParser()
     ap.add_argument("what", choices=("walk", "report"))
     ap.add_argument("--cache", default=str(HERE / "cache"))

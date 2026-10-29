@@ -1808,6 +1808,36 @@
         "model_n": 10,
         "model_p": 0.711,
         "source": "nba.html",
+        "value": 12.0,
+        "result": "win"
+      }
+    ],
+    "result": "win",
+    "profit": 13.2,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-10-29-1",
+    "kind": "single",
+    "logged_at": "2026-10-29T08:14:38+00:00",
+    "price": 2.44,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16183752,
+        "fixture": "Green Bay Packers v Carolina Panthers",
+        "kickoff": 1793319300,
+        "player": "Bryce Young",
+        "player_id": 1520263,
+        "team": "Carolina Panthers",
+        "stat": "Passing yards",
+        "line": 190.0,
+        "model_k": 8,
+        "model_n": 10,
+        "model_p": 0.658,
+        "source": "nfl.html",
         "value": null,
         "result": null
       }

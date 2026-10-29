@@ -422,7 +422,11 @@ def parlays_for(entry, meta, legs=PARLAY_LEGS):
     out = []
     pool_by_team: dict[int, list] = {}
 
+    import bettable
+    sport = weekend.sport_of(entry)
     for leg in alt_legs_for(entry, meta):
+        if not bettable.ok(leg, meta, sport):     # only what Paddy Power sells
+            continue
         pool_by_team.setdefault(leg["teamIndex"], []).append(leg)
 
     # One leg per player -- the longest-priced rung, not the safest, for the

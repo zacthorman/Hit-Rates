@@ -51,6 +51,7 @@ MAX_RELATED = 30               # corners/bookings lookups per run
 WINDOW_HOURS = 72
 LOCKOUT_HOURS = 24
 FRESH_HOURS = 1.5              # a league is not refetched inside this
+SIDE_HOURS = 6                 # a game's corners/bookings lookup is reused inside this
 
 # The site's competitions -> Pinnacle league name. Premier League (1980) and
 # La Liga (2196) confirmed from the site on 23 Oct 2026; the rest are matched
@@ -60,12 +61,20 @@ LEAGUES = [
     "Italy - Serie A", "Germany - Bundesliga", "France - Ligue 1",
     "USA - Major League Soccer", "Brazil - Serie A",
     "UEFA - Champions League", "UEFA - Europa League", "UEFA - Conference League",
-    "England - League Cup", "England - EFL Cup",
+    "England - EFL Cup",
 ]
 KNOWN_IDS = {"England - Premier League": 1980, "Spain - La Liga": 2196}
 
 
 class Refused(Exception):
+    """Pinnacle said no (or the connection failed): lock out for a day."""
+    pass
+
+
+class Capped(Exception):
+    """Our own daily request cap. Not a refusal: stop this run, no lockout.
+    (Until 28 Oct 2026 this raised Refused, so reaching the cap at 17:00 locked
+    the feed out until 17:00 the next day and that day's runs fetched nothing.)"""
     pass
 
 
@@ -106,7 +115,7 @@ def get(path: str, st: dict):
     """One paced, counted GET. Any refusal locks the feed out for a day."""
     used = st.setdefault("count", {}).get(today(), 0)
     if used >= MAX_PER_DAY:
-        raise Refused(f"daily cap of {MAX_PER_DAY} reached")
+        raise Capped(f"daily cap of {MAX_PER_DAY} reached")
     wait = st.get("last", 0) + MIN_GAP + random.uniform(0, JITTER) - time.time()
     if wait > 0:
         time.sleep(wait)
@@ -225,6 +234,10 @@ def run(probe: bool = False) -> int:
         print("  pinnacle: switched off (.pinnacle_off)")
         return 0
     st = load_state()
+    if st.get("lockedWhy", "").startswith("daily cap"):
+        # left behind by the old behaviour, where our own cap locked us out
+        st.pop("lockedUntil", None)
+        st.pop("lockedWhy", None)
     if st.get("lockedUntil", 0) > time.time():
         print(f"  pinnacle: locked out ({st.get('lockedWhy')})")
         return 0
@@ -278,6 +291,7 @@ def run(probe: bool = False) -> int:
                 if not fid:
                     continue
                 rows = [r for x in by_m.get(m["id"], []) for r in lines_of(x, "Goals")]
+                before = held.get(fid) or {}
                 held[fid] = {"name": f"{m['participants'][0]['name']} v {m['participants'][1]['name']}",
                              "kickoff": ko, "pinId": m["id"], "league": name,
                              "fetchedAt": time.time(), "lines": rows}
@@ -285,8 +299,15 @@ def run(probe: bool = False) -> int:
                     held[fid]["lines"] += [x for mm in by_m.get(cid, []) for x in lines_of(mm, stat)]
                 got += 1
                 # Fallback only: a game whose side markets were not in the
-                # league list gets one related call (capped).
-                if (not kids.get(m["id"]) and related < MAX_RELATED and not probe):
+                # league list gets one related call (capped). The answer is
+                # kept for SIDE_HOURS, empty or not, so the same game is not
+                # looked up on every run: those repeat lookups were what used
+                # the whole day's cap by late afternoon (27 Oct 2026).
+                if not kids.get(m["id"]) and time.time() - before.get("sideAt", 0) < SIDE_HOURS * 3600:
+                    held[fid]["lines"] += [x for x in before.get("lines", []) if x["stat"] in ("Corner kicks", "Yellow cards")]
+                    held[fid]["sideAt"] = before["sideAt"]
+                elif (not kids.get(m["id"]) and related < MAX_RELATED and not probe):
+                    held[fid]["sideAt"] = time.time()
                     rel = get(f"/matchups/{m['id']}/related", st)
                     related += 1
                     if probe:
@@ -300,6 +321,8 @@ def run(probe: bool = False) -> int:
                             if probe:
                                 print(f"  {stat}: {len(rm)} markets ->",
                                       [x for mm in rm for x in lines_of(mm, stat)][:4])
+    except Capped as e:
+        print(f"  pinnacle: stopped early ({e}); resumes tomorrow, no lockout")
     except Refused as e:
         lockout(st, str(e))
     save_state(st)

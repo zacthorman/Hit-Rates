@@ -88,8 +88,12 @@ def notable_wins(items: list[dict], limit: int = 3) -> list[dict]:
 def best_to_do(items: list[dict], limit: int = 5) -> list[dict]:
     """Open site picks for the next two days, headline picks first, soonest first."""
     now = time.time()
+    import bettable
+    # Only what Paddy Power sells (bettable.py): picks recorded before the
+    # filter (28 Oct 2026) can still hold turnovers or tackles.
     soon = [i for i in items if i["result"] is None
-            and all(now < l["kickoff"] < now + 48 * 3600 for l in i["legs"])]
+            and all(now < l["kickoff"] < now + 48 * 3600 for l in i["legs"])
+            and all(bettable.recorded_ok(l) for l in i["legs"])]
     rank = {"Pick: evens double": 0, "Pick: single": 1, "Pick: banker": 2,
             "Pick: builder": 3, "Pick: acca": 4, "Pick: parlay": 5}
     seen, out = set(), []

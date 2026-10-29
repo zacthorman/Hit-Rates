@@ -162,7 +162,7 @@ def snapshot(args=None) -> int:
             existing[_key(r)] = (path, r)
     new_rows, updated = [], set()
     for fid, ev in (pp.get("events") or {}).items():
-        if fid not in fixtures or not ev.get("team"):
+        if fid not in fixtures or not (ev.get("team") or ev.get("goals")):
             continue
         entry, meta = fixtures[fid]
         if meta["kickoff"] <= now or ((entry.get("fixture") or {}).get("sport") or "football") != "football":
@@ -171,7 +171,7 @@ def snapshot(args=None) -> int:
         order = _order(ev.get("ppHome") or "", teams)
         lam = _lambdas((mk.get(fid) or {}).get("match") or {})
         models = _models(entry)
-        for l in ev["team"]:
+        for l in (ev.get("team") or []) + (ev.get("goals") or []):
             if l["scope"] == "match":
                 a, b = _expected(entry, l["stat"], 0, lam), _expected(entry, l["stat"], 1, lam)
                 if not a or not b:

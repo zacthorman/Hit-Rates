@@ -175,7 +175,12 @@ def qualifying(rows: list[dict]) -> dict[str, list[dict]]:
         except Exception:  # noqa: BLE001
             pass
         sh = r.get("sharp_first") or {}
-        if sh.get("edge") is not None and sh["edge"] >= 0.02 and price <= 10:
+        # Frozen 23 Oct as a Betfair rule. Since 28 Oct team rows can be
+        # checked against Pinnacle instead (sharp.py), so take Betfair's own
+        # edge on those, or leave the row out when Betfair had no price.
+        bf_edge = sh.get("edge") if (sh.get("src") or "betfair") == "betfair" else (
+            sh["bf_p"] * sh["price"] - 1 if sh.get("bf_p") is not None and sh.get("price") else None)
+        if bf_edge is not None and bf_edge >= 0.02 and price <= 10:
             add("beats_betfair", r)
     return {k: list(v.values()) for k, v in picks.items()}
 

@@ -315,6 +315,38 @@ def basketball_team_lines(page: dict) -> list[dict]:
     return out
 
 
+GOAL_TOTALS = re.compile(r"^OVER_UNDER_(\d)5$")
+
+
+def goal_lines(page: dict) -> list[dict]:
+    """Match goals over/under (0.5 to 8.5), full time, from the same reply.
+
+    Kept apart from team_lines() under the event's "goals" key, so the report
+    pages' Value tab (which reads "team") is unchanged. Read by teamlog.py so
+    sharp.py can check them against Pinnacle, the sharpest goals price there
+    is (added 28 Oct 2026: before this the value check could only ever list
+    corners and cards, because those were the only team markets logged)."""
+    out = []
+    for m in ((page.get("attachments") or {}).get("markets") or {}).values():
+        g = GOAL_TOTALS.match(m.get("marketType", ""))
+        if not g:
+            continue
+        line = int(g.group(1)) + 0.5
+        for r in m.get("runners", []):
+            if r.get("runnerStatus") != "ACTIVE":
+                continue
+            sel = (r.get("runnerName") or "").strip()
+            if not (sel.startswith("Over") or sel.startswith("Under")):
+                continue
+            try:
+                price = r["winRunnerOdds"]["trueOdds"]["decimalOdds"]["decimalOdds"]
+            except (KeyError, TypeError):
+                continue
+            out.append({"stat": "Goals", "scope": "match", "line": line, "over": sel.startswith("Over"),
+                        "price": round(price, 3), "market": m.get("marketName", "")})
+    return out
+
+
 def event_teams(page: dict) -> tuple[str, str]:
     import market_prices as mpx
     ev = next(iter(((page.get("attachments") or {}).get("events") or {}).values()), {})
@@ -503,8 +535,12 @@ def run(extra: int = 0, us_only: bool = False) -> int:
             except Exception as exc:  # noqa: BLE001 - never lose the player lines
                 print(f"  paddypower: team markets not read ({type(exc).__name__})")
                 team, pp_home, pp_away = [], "", ""
+            try:
+                goals = goal_lines(page)
+            except Exception:  # noqa: BLE001
+                goals = []
             events[fid] = {"ppEvent": pp_id, "name": bf_name, "kickoff": ko,
-                           "fetchedAt": now(), "lines": lines, "team": team,
+                           "fetchedAt": now(), "lines": lines, "team": team, "goals": goals,
                            "ppHome": pp_home, "ppAway": pp_away}
             got += 1
         # Drop games long finished.
@@ -563,7 +599,7 @@ def main() -> int:
             dest.write_text(json.dumps(page))
             print(f"saved {dest.name}")
         lines = player_lines(page)
-        for t in team_lines(page):
+        for t in team_lines(page) + goal_lines(page):
             print(f"  team  {t['scope']:6} {t['stat']:16} {'over' if t['over'] else 'under'} {t['line']:>5}  {t['price']}")
         ev = next(iter(page["attachments"].get("events", {}).values()), {})
         print(f"ok: {ev.get('name', '?')}  {len(page['attachments'].get('markets', {}))} markets, "

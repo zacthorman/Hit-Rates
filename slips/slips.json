@@ -130,6 +130,404 @@
   ]
  },
  {
+  "status": "lost",
+  "type": "Double",
+  "price": 2.14,
+  "stake": 5.0,
+  "returns": 0.0,
+  "id": "O/14077064/0000212",
+  "placed": "2026-10-26T22:46:00",
+  "legs": [
+   {
+    "text": "Jalen Johnson | To Score 15+ Points",
+    "price": 1.17,
+    "result": "won",
+    "event": "Atlanta Hawks @ Houston Rockets",
+    "kind": "alt over",
+    "player": "Jalen Johnson",
+    "stat": "Points",
+    "line": 14.5,
+    "over": true,
+    "record": {
+     "k10": 9,
+     "n10": 10,
+     "k5": 5,
+     "n5": 5,
+     "event_id": 16824759
+    }
+   },
+   {
+    "text": "Ty Jerome Under +6.5 | Ty Jerome - Assists",
+    "price": 1.83,
+    "result": "lost",
+    "event": "Memphis Grizzlies @ Utah Jazz",
+    "kind": "main under",
+    "player": "Ty Jerome",
+    "stat": "Assists",
+    "line": 6.5,
+    "over": false,
+    "record": {
+     "k10": 5,
+     "n10": 7,
+     "k5": 4,
+     "n5": 5,
+     "event_id": 16824761
+    }
+   }
+  ]
+ },
+ {
+  "status": "won",
+  "type": "Single",
+  "price": 2.0,
+  "stake": 5.0,
+  "returns": 10.0,
+  "id": "O/14077064/0000178",
+  "placed": "2026-10-26T15:15:00",
+  "legs": [
+   {
+    "text": "Isaiah Collier Over +6.5 | Isaiah Collier - Points",
+    "price": 2.0,
+    "result": "won",
+    "event": "Memphis Grizzlies @ Utah Jazz",
+    "kind": "main over",
+    "player": "Isaiah Collier",
+    "stat": "Points",
+    "line": 6.5,
+    "over": true,
+    "record": {
+     "k10": 6,
+     "n10": 7,
+     "k5": 4,
+     "n5": 5,
+     "event_id": 16824761
+    }
+   }
+  ]
+ },
+ {
+  "status": "won",
+  "type": "Single",
+  "price": 1.83,
+  "stake": 6.0,
+  "returns": 11.0,
+  "id": "O/14077064/0000177",
+  "placed": "2026-10-26T15:14:00",
+  "legs": [
+   {
+    "text": "Jalen Smith Under +7.5 | Jalen Smith - Rebounds",
+    "price": 1.83,
+    "result": "won",
+    "event": "Chicago Bulls @ Boston Celtics",
+    "kind": "main under",
+    "player": "Jalen Smith",
+    "stat": "Rebounds",
+    "line": 7.5,
+    "over": false,
+    "record": {
+     "k10": 5,
+     "n10": 7,
+     "k5": 3,
+     "n5": 5,
+     "event_id": 16824754
+    }
+   }
+  ]
+ },
+ {
+  "status": "lost",
+  "type": "Double",
+  "price": 2.1,
+  "stake": 6.9,
+  "returns": 0.0,
+  "id": "noid-None-Double-2.1-6.9",
+  "placed": null,
+  "legs": [
+   {
+    "text": "Matas Buzelis | To Record 4+ Rebounds",
+    "price": 1.57,
+    "result": "lost",
+    "event": "Chicago Bulls @ Boston Celtics",
+    "kind": "alt over",
+    "player": "Matas Buzelis",
+    "stat": "Rebounds",
+    "line": 3.5,
+    "over": true,
+    "record": null
+   },
+   {
+    "text": "Kevin Durant | To Record 4+ Rebounds",
+    "price": 1.33,
+    "result": "won",
+    "event": "Atlanta Hawks @ Houston Rockets",
+    "kind": "alt over",
+    "player": "Kevin Durant",
+    "stat": "Rebounds",
+    "line": 3.5,
+    "over": true,
+    "record": null
+   }
+  ]
+ },
+ {
+  "status": "won",
+  "type": "Single",
+  "price": 2.0,
+  "stake": 5.0,
+  "returns": 10.0,
+  "id": "O/14077064/0000340",
+  "placed": "2026-10-28T15:35:00",
+  "legs": [
+   {
+    "text": "Draymond Green Under +7.5 | Draymond Green - Points",
+    "price": 2.0,
+    "result": "won",
+    "event": "Golden State Warriors @ Minnesota Timberwolves",
+    "kind": "main under",
+    "player": "Draymond Green",
+    "stat": "Points",
+    "line": 7.5,
+    "over": false,
+    "record": {
+     "k10": 9,
+     "n10": 10,
+     "event_id": 16824773
+    }
+   }
+  ]
+ },
+ {
+  "status": "lost",
+  "type": "4 Fold",
+  "price": 3.02,
+  "stake": 10.0,
+  "returns": 0.0,
+  "id": "O/14077064/0000300",
+  "placed": "2026-10-27T22:51:00",
+  "legs": [
+   {
+    "text": "Evan Mobley | 1+ Made Threes",
+    "price": 1.3,
+    "result": "won",
+    "event": "Washington Wizards @ Cleveland Cavaliers",
+    "kind": "alt over",
+    "player": "Evan Mobley",
+    "stat": "Three pointers made",
+    "line": 0.5,
+    "over": true,
+    "record": {
+     "k10": 10,
+     "n10": 10,
+     "event_id": 16824770
+    }
+   },
+   {
+    "text": "Trey Murphy III | To Record 4+ Rebounds",
+    "price": 1.36,
+    "result": "lost",
+    "event": "Denver Nuggets @ New Orleans Pelicans",
+    "kind": "alt over",
+    "player": "Trey Murphy III",
+    "stat": "Rebounds",
+    "line": 3.5,
+    "over": true,
+    "record": {
+     "k10": 10,
+     "n10": 10,
+     "event_id": 16824777
+    }
+   },
+   {
+    "text": "Amen Thompson | To Score 15+ Points",
+    "price": 1.36,
+    "result": "won",
+    "event": "Houston Rockets @ Milwaukee Bucks",
+    "kind": "alt over",
+    "player": "Amen Thompson",
+    "stat": "Points",
+    "line": 14.5,
+    "over": true,
+    "record": {
+     "k10": 10,
+     "n10": 10,
+     "event_id": 16824772
+    }
+   },
+   {
+    "text": "Stephon Castle | To Record 4+ Rebounds",
+    "price": 1.25,
+    "result": "won",
+    "event": "San Antonio Spurs @ Utah Jazz",
+    "kind": "alt over",
+    "player": "Stephon Castle",
+    "stat": "Rebounds",
+    "line": 3.5,
+    "over": true,
+    "record": {
+     "k10": 10,
+     "n10": 10,
+     "event_id": 16824774
+    }
+   }
+  ]
+ },
+ {
+  "status": "lost",
+  "type": "Treble",
+  "price": 2.55,
+  "stake": 8.0,
+  "returns": 0.0,
+  "id": "O/14077064/0000365",
+  "placed": "2026-10-28T21:02:00",
+  "legs": [
+   {
+    "text": "Brandon Miller | 3+ Made Threes",
+    "price": 1.4,
+    "result": "won",
+    "event": "Charlotte Hornets @ Detroit Pistons",
+    "kind": "alt over",
+    "player": "Brandon Miller",
+    "stat": "Three pointers made",
+    "line": 2.5,
+    "over": true,
+    "record": {
+     "k10": 6,
+     "n10": 10,
+     "event_id": 16824765
+    }
+   },
+   {
+    "text": "Amen Thompson | To Score 15+ Points",
+    "price": 1.36,
+    "result": "won",
+    "event": "Houston Rockets @ Milwaukee Bucks",
+    "kind": "alt over",
+    "player": "Amen Thompson",
+    "stat": "Points",
+    "line": 14.5,
+    "over": true,
+    "record": {
+     "k10": 10,
+     "n10": 10,
+     "event_id": 16824772
+    }
+   },
+   {
+    "text": "Trey Murphy III | To Record 4+ Rebounds",
+    "price": 1.33,
+    "result": "lost",
+    "event": "Denver Nuggets @ New Orleans Pelicans",
+    "kind": "alt over",
+    "player": "Trey Murphy III",
+    "stat": "Rebounds",
+    "line": 3.5,
+    "over": true,
+    "record": {
+     "k10": 10,
+     "n10": 10,
+     "event_id": 16824777
+    }
+   }
+  ]
+ },
+ {
+  "status": "lost",
+  "type": "Single",
+  "price": 1.91,
+  "stake": 2.58,
+  "returns": 0.0,
+  "id": "O/14077064/0000335",
+  "placed": "2026-10-28T15:03:00",
+  "legs": [
+   {
+    "text": "Aaron Gordon Under +1.5 | Aaron Gordon - Made Threes",
+    "price": 1.91,
+    "result": "lost",
+    "event": "Denver Nuggets @ New Orleans Pelicans",
+    "kind": "main under",
+    "player": "Aaron Gordon",
+    "stat": "Three pointers made",
+    "line": 1.5,
+    "over": false,
+    "record": {
+     "k10": 8,
+     "n10": 10,
+     "event_id": 16824777
+    }
+   }
+  ]
+ },
+ {
+  "status": "lost",
+  "type": "Double",
+  "price": 2.57,
+  "stake": 8.0,
+  "returns": 0.0,
+  "id": "O/14077064/0000371",
+  "placed": "2026-10-29T00:05:00",
+  "legs": [
+   {
+    "text": "Brandon Miller | 3+ Made Threes",
+    "price": 1.4,
+    "result": "won",
+    "event": "Charlotte Hornets @ Detroit Pistons",
+    "kind": "alt over",
+    "player": "Brandon Miller",
+    "stat": "Three pointers made",
+    "line": 2.5,
+    "over": true,
+    "record": {
+     "k10": 6,
+     "n10": 10,
+     "event_id": 16824765
+    }
+   },
+   {
+    "text": "VJ Edgecombe Over +14.5 | VJ Edgecombe - Pts + Ast",
+    "price": 1.83,
+    "result": "lost",
+    "event": "Philadelphia 76ers @ Indiana Pacers",
+    "kind": "main over",
+    "player": "VJ Edgecombe",
+    "stat": "Points and assists",
+    "line": 14.5,
+    "over": true,
+    "record": {
+     "k10": 7,
+     "n10": 10,
+     "event_id": 16824768
+    }
+   }
+  ]
+ },
+ {
+  "status": "won",
+  "type": "Single",
+  "price": 2.0,
+  "stake": 5.0,
+  "returns": 10.0,
+  "id": "O/14077064/0000364",
+  "placed": "2026-10-28T20:58:00",
+  "legs": [
+   {
+    "text": "VJ Edgecombe Over +8.5 | VJ Edgecombe - Reb + Ast",
+    "price": 2.0,
+    "result": "won",
+    "event": "Philadelphia 76ers @ Indiana Pacers",
+    "kind": "main over",
+    "player": "VJ Edgecombe",
+    "stat": "Rebounds and assists",
+    "line": 8.5,
+    "over": true,
+    "record": {
+     "k10": 7,
+     "n10": 10,
+     "event_id": 16824768
+    }
+   }
+  ]
+ },
+ {
   "status": "won",
   "type": "4 Fold",
   "price": 12.09,
@@ -256,192 +654,6 @@
      "n5": 5,
      "event_id": 16824761
     }
-   }
-  ]
- },
- {
-  "status": "lost",
-  "type": "Double",
-  "price": 2.14,
-  "stake": 5.0,
-  "returns": 0.0,
-  "id": "O/14077064/0000212",
-  "placed": "2026-10-26T22:46:00",
-  "legs": [
-   {
-    "text": "Jalen Johnson | To Score 15+ Points",
-    "price": 1.17,
-    "result": "won",
-    "event": "Atlanta Hawks @ Houston Rockets",
-    "kind": "alt over",
-    "player": "Jalen Johnson",
-    "stat": "Points",
-    "line": 14.5,
-    "over": true,
-    "record": {
-     "k10": 9,
-     "n10": 10,
-     "k5": 5,
-     "n5": 5,
-     "event_id": 16824759
-    }
-   },
-   {
-    "text": "Ty Jerome Under +6.5 | Ty Jerome - Assists",
-    "price": 1.83,
-    "result": "lost",
-    "event": "Memphis Grizzlies @ Utah Jazz",
-    "kind": "main under",
-    "player": "Ty Jerome",
-    "stat": "Assists",
-    "line": 6.5,
-    "over": false,
-    "record": {
-     "k10": 5,
-     "n10": 7,
-     "k5": 4,
-     "n5": 5,
-     "event_id": 16824761
-    }
-   }
-  ]
- },
- {
-  "status": "won",
-  "type": "Single",
-  "price": 2.0,
-  "stake": 5.0,
-  "returns": 10.0,
-  "id": "O/14077064/0000178",
-  "placed": "2026-10-26T15:15:00",
-  "legs": [
-   {
-    "text": "Isaiah Collier Over +6.5 | Isaiah Collier - Points",
-    "price": 2.0,
-    "result": "won",
-    "event": "Memphis Grizzlies @ Utah Jazz",
-    "kind": "main over",
-    "player": "Isaiah Collier",
-    "stat": "Points",
-    "line": 6.5,
-    "over": true,
-    "record": {
-     "k10": 6,
-     "n10": 7,
-     "k5": 4,
-     "n5": 5,
-     "event_id": 16824761
-    }
-   }
-  ]
- },
- {
-  "status": "won",
-  "type": "Single",
-  "price": 3.4,
-  "stake": 10.0,
-  "returns": 34.0,
-  "id": "O/14077064/0000171",
-  "placed": "2026-10-26T14:24:00",
-  "legs": [
-   {
-    "text": "Over 4.5 Goals | Over/Under 4.5 Goals",
-    "price": 3.4,
-    "result": "won",
-    "event": "FC Olancho (Res)",
-    "kind": "match total",
-    "player": null,
-    "stat": "Goals",
-    "line": 4.5,
-    "over": true,
-    "record": null
-   }
-  ]
- },
- {
-  "status": "won",
-  "type": "Single",
-  "price": 2.0,
-  "stake": 20.0,
-  "returns": 40.0,
-  "id": "O/14077064/0000170",
-  "placed": "2026-10-26T14:23:00",
-  "legs": [
-   {
-    "text": "Over 3.5 Goals | Over/Under 3.5 Goals",
-    "price": 2.0,
-    "result": "won",
-    "event": "FC Olancho (Res)",
-    "kind": "match total",
-    "player": null,
-    "stat": "Goals",
-    "line": 3.5,
-    "over": true,
-    "record": null
-   }
-  ]
- },
- {
-  "status": "won",
-  "type": "Single",
-  "price": 1.83,
-  "stake": 6.0,
-  "returns": 11.0,
-  "id": "O/14077064/0000177",
-  "placed": "2026-10-26T15:14:00",
-  "legs": [
-   {
-    "text": "Jalen Smith Under +7.5 | Jalen Smith - Rebounds",
-    "price": 1.83,
-    "result": "won",
-    "event": "Chicago Bulls @ Boston Celtics",
-    "kind": "main under",
-    "player": "Jalen Smith",
-    "stat": "Rebounds",
-    "line": 7.5,
-    "over": false,
-    "record": {
-     "k10": 5,
-     "n10": 7,
-     "k5": 3,
-     "n5": 5,
-     "event_id": 16824754
-    }
-   }
-  ]
- },
- {
-  "status": "lost",
-  "type": "Double",
-  "price": 2.1,
-  "stake": 6.9,
-  "returns": 0.0,
-  "id": "noid-None-Double-2.1-6.9",
-  "placed": null,
-  "legs": [
-   {
-    "text": "Matas Buzelis | To Record 4+ Rebounds",
-    "price": 1.57,
-    "result": "lost",
-    "event": "Chicago Bulls @ Boston Celtics",
-    "kind": "alt over",
-    "player": "Matas Buzelis",
-    "stat": "Rebounds",
-    "line": 3.5,
-    "over": true,
-    "record": null
-   },
-   {
-    "text": "Kevin Durant | To Record 4+ Rebounds",
-    "price": 1.33,
-    "result": "won",
-    "event": "Atlanta Hawks @ Houston Rockets",
-    "kind": "alt over",
-    "player": "Kevin Durant",
-    "stat": "Rebounds",
-    "line": 3.5,
-    "over": true,
-    "record": null
    }
   ]
  }

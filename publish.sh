@@ -103,7 +103,7 @@ fi
 "$PY" pplog.py snapshot || echo "  pp log not updated (continuing)"
 "$PY" teamlog.py settle || echo "  team log not settled (continuing)"
 "$PY" teamlog.py snapshot || echo "  team log not updated (continuing)"
-# Each of those Paddy Power lines checked against Betfair's price (sharp.py):
+# Each of those Paddy Power lines checked against Pinnacle's price for team lines, else Betfair's (sharp.py):
 # the soft-v-sharp check the value bots run, written into the same rows.
 "$PY" sharp.py stamp || echo "  betfair check not stamped (continuing)"
 "$PY" pplog.py page >/dev/null || echo "  pp-results.html not rebuilt (continuing)"

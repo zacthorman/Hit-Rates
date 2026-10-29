@@ -23,6 +23,17 @@ What counts as Betfair's chance (only prices someone could take):
 "Beats the lay" is the strong case: Paddy Power longer than Betfair's lay
 price, so the bet could be laid off on the exchange for a profit.
 
+Pinnacle (28 Oct 2026). pinnacle_prices.py had been fetching Pinnacle's
+result, goals, corners and bookings prices since 24 Oct, but nothing read
+them, so the check above could only ever list corners and cards: they were
+the only team markets Betfair and the team log had in common. Now, for team
+lines, Pinnacle's margin-free chance is the reference wherever it prices the
+same line (it is the sharpest book there is, and unlike Betfair it prices each
+side's corners and cards and the goals totals), and Betfair is the fallback.
+Each snapshot says which it used ("src"), and keeps the other's chance where
+both priced it, so the record can be split by source and the two compared.
+"Beats the lay" stays a Betfair-only signal.
+
 Written into the pplog / team log rows themselves (sharp_first, sharp_last),
 so settling them needs nothing new.
 """
@@ -39,6 +50,7 @@ ROOT = Path(__file__).resolve().parent
 MAX_SPREAD = 1.25      # lay / back on a one-runner market
 MIN_EDGE = 0.02        # shown on the page from here
 MAX_PRICE = 10.0
+PIN_FRESH_HOURS = 8    # a Pinnacle price older than this is not used
 # Whether the tonight boxes claim value: list the lines, their edges and a
 # budget split by edge. False claims nothing; stamp() still writes the
 # Betfair check into pplog and teamlog, live() and record() still run, and
@@ -135,15 +147,74 @@ def index(data: dict | None = None) -> dict:
     return out
 
 
-def lookup(ix: dict, row: dict):
-    """Betfair's view of one pplog / team log row, or None."""
+def pinnacle_index(path: Path | None = None, now: float | None = None) -> dict:
+    """fixture id -> {(who, stat, line, over): {"p", "how": "pinnacle", "price"}}
+    from reports/pinnacle.json. who is 'match', 'side0' (the site's home side)
+    or 'side1'. Side lines are used only when Pinnacle's home team is the
+    site's home team, so a swapped neutral-venue fixture cannot cross them."""
+    path = path or ROOT / "reports" / "pinnacle.json"
+    now = time.time() if now is None else now
+    try:
+        data = json.loads(path.read_text())
+    except (OSError, ValueError):
+        return {}
+    out = {}
+    for fid, ev in (data.get("events") or {}).items():
+        if now - (ev.get("fetchedAt") or 0) > PIN_FRESH_HOURS * 3600:
+            continue
+        got = {}
+        for l in ev.get("lines") or []:
+            if l.get("line") is None or not isinstance(l.get("over"), bool) or l.get("p") is None:
+                continue  # the 1X2 has no line; nothing in the logs takes it yet
+            who = {"match": "match", "home": "side0", "away": "side1"}.get(l.get("scope"))
+            if not who:
+                continue
+            got[(who, l["stat"], float(l["line"]), l["over"])] = {
+                "p": l["p"], "back": None, "lay": None, "how": "pinnacle", "pin_price": l.get("price")}
+        if got:
+            out[str(fid)] = {"lines": got, "name": ev.get("name") or ""}
+    return out
+
+
+def _same_home(pin_name: str, fixture: str) -> bool:
+    """Pinnacle's 'A v B' and the site's 'A v B' put the same team first."""
+    a = norm((pin_name or "").split(" v ")[0]).split()
+    b = norm((fixture or "").split(" v ")[0]).split()
+    return bool(a and b and (set(a) & set(b)))
+
+
+def team_view(ix: dict, pin: dict, row: dict):
+    """The sharp chance for a team log row: Pinnacle's where it prices the
+    line, else Betfair's. The other's chance is kept beside it."""
+    key_line = (row["stat"], float(row["line"]), bool(row["over"]))
+    bf = None
+    if row["scope"] == "match":
+        bf = (ix.get(str(row.get("event_id"))) or {}).get(("match", *key_line))
+    pv = None
+    pe = pin.get(str(row.get("event_id")))
+    if pe:
+        if row["scope"] == "match":
+            pv = pe["lines"].get(("match", *key_line))
+        elif row.get("side") in (0, 1) and _same_home(pe["name"], row.get("fixture")):
+            pv = pe["lines"].get((f"side{row['side']}", *key_line))
+    if pv:
+        v = dict(pv, src="pinnacle")
+        if bf:
+            v.update(back=bf.get("back"), lay=bf.get("lay"), bf_p=bf["p"])
+        return v
+    if bf:
+        return dict(bf, src="betfair")
+    return None
+
+
+def lookup(ix: dict, row: dict, pin: dict | None = None):
+    """The sharp view of one pplog / team log row, or None. Team rows use
+    Pinnacle first, then Betfair (team_view); player rows are Betfair's."""
     ev = ix.get(str(row.get("event_id")))
+    if row.get("scope") is not None:  # team log
+        return team_view(ix, pin or {}, row)
     if not ev:
         return None
-    if row.get("scope") is not None:  # team log
-        if row["scope"] != "match":
-            return None
-        return ev.get(("match", row["stat"], float(row["line"]), bool(row["over"])))
     if not row.get("over"):
         return None
     for who in (norm(row.get("pp_player") or ""), norm(row.get("player") or ""),
@@ -157,7 +228,10 @@ def lookup(ix: dict, row: dict):
 def snap(row: dict, v: dict, now: float) -> dict:
     price = (row.get("last") or {}).get("price")
     s = {"t": round(now), "p": v["p"], "back": v.get("back"), "lay": v.get("lay"), "how": v["how"],
+         "src": v.get("src") or "betfair",
          "price": price, "edge": round(v["p"] * price - 1, 4) if price else None}
+    if v.get("bf_p") is not None:
+        s["bf_p"] = v["bf_p"]
     s["beats_lay"] = bool(price and v.get("lay") and price > v["lay"])
     return s
 
@@ -168,11 +242,13 @@ def stamp(args=None) -> int:
     import pplog
     import teamlog
     ix = index()
-    if not ix:
-        print("sharp: no fresh Betfair prices")
+    pin = pinnacle_index()
+    if not ix and not pin:
+        print("sharp: no fresh Betfair or Pinnacle prices")
         return 0
     now = time.time()
     n = 0
+    by_src = {"pinnacle": 0, "betfair": 0}
     for mod in (pplog, teamlog):
         for path in mod._files():
             rows = mod._read(path)
@@ -180,17 +256,19 @@ def stamp(args=None) -> int:
             for r in rows:
                 if r.get("result") is not None or r.get("kickoff", 0) <= now:
                     continue
-                v = lookup(ix, r)
+                v = lookup(ix, r, pin)
                 if not v:
                     continue
                 s = snap(r, v, now)
+                by_src[s["src"]] += 1
                 r.setdefault("sharp_first", s)
                 r["sharp_last"] = s
                 changed = True
                 n += 1
             if changed:
                 mod._write(path, rows)
-    print(f"sharp: {n} Paddy Power line(s) checked against Betfair")
+    print(f"sharp: {n} Paddy Power line(s) checked "
+          f"({by_src['pinnacle']} against Pinnacle, {by_src['betfair']} against Betfair)")
     return n
 
 
@@ -277,8 +355,10 @@ def record() -> dict:
             continue
         price = r["last"]["price"]
         pr = price - 1 if r["result"] == "win" else -1.0
+        src = r["sharp_last"].get("src") or "betfair"
         for k in ("all", f"{min(sg['count'], 3)}+ signals", "beats lay" if sg["lay"] else None,
-                  "model agrees" if sg["model"] else None):
+                  "model agrees" if sg["model"] else None, f"v {src.title()}",
+                  f"{r['stat']}" if r.get("scope") is not None else "player lines"):
             if not k:
                 continue
             g = by.setdefault(k, {"n": 0, "w": 0, "profit": 0.0, "exp": 0.0})
@@ -307,12 +387,18 @@ def box(now: float, until: float, team: bool) -> str:
     g = rec.get("all")
     so_far = (f"{g['n']} settled, {g['w']} won (Betfair said {g['exp']:.0f}), {g['profit']:+.1f} pts at level stakes"
               if g else "nothing settled yet: the record starts now")
-    what = "corners and cards lines" if team else "player lines (to score, shots on target, cards)"
+    what = "team lines (goals, corners, cards)" if team else "player lines (to score, shots on target, cards)"
     if not value_claimed():
         would = (f" {len(bets)} {what} beat Betfair's price tonight and are logged for the record."
                  if bets else "")
+        mix = ""
+        if team and bets:
+            c = {}
+            for b in bets:
+                c[b["row"]["stat"].lower()] = c.get(b["row"]["stat"].lower(), 0) + 1
+            mix = " (" + ", ".join(f"{v} {k}" for k, v in sorted(c.items(), key=lambda kv: -kv[1])) + ")"
         return (f"<div class='vbox'><p class='none'>Value claims are switched off until these bets have a "
-                f"settled record that shows them making money.{would}</p>"
+                f"settled record that shows them making money.{would[:-1] + mix + '.' if would else ''}</p>"
                 f"<p class='sub'>Record so far: {so_far}.</p></div>")
     if not bets:
         return (f"<div class='vbox'><p class='none'>No Paddy Power {what} longer than Betfair's price right now.</p>"
@@ -337,10 +423,10 @@ def box(now: float, until: float, team: bool) -> str:
         "<div class='vbox sbox'>"
         f"<p class='budget'>Budget &pound;<input type='number' class='sbudget' id='{bid}' value='10' min='1' step='1' "
         "inputmode='decimal'> <span class='sub'>split by edge</span></p>"
-        "<table><thead><tr><th>Bet</th><th class='n'>PP</th><th class='n'>Betfair</th><th class='n'>Edge</th>"
+        "<table><thead><tr><th>Bet</th><th class='n'>PP</th><th class='n'>Sharp</th><th class='n'>Edge</th>"
         "<th class='n'>Stake</th></tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
-        "<p class='sub'>Paddy Power paying more than Betfair's fair price (the middle of its back and lay, "
-        "margin off), as of the last publish: check both before betting. More green tags = more independent "
+        "<p class='sub'>Paddy Power paying more than the sharp fair price (Pinnacle's with its margin off for "
+        "team lines where it has them, else the middle of Betfair's back and lay), as of the last publish: check both before betting. More green tags = more independent "
         "reasons agreeing; the best are those that beat Betfair's lay, which could be laid off for a profit. "
         f"Several bets in one game move together. Record so far: {so_far}.</p></div>")
 
@@ -366,8 +452,15 @@ def record_html() -> str:
     body = (f"<table><thead><tr><th>Bets that beat Betfair</th><th class=n>Bets</th><th class=n>Won</th>"
             f"<th class=n>Betfair said</th><th class=n>Return</th></tr></thead><tbody>{rows}</tbody></table>"
             if rows else "<p class='sub'>Nothing settled yet. Logging started 23 Oct 2026.</p>")
-    return ("<h2>Soft v sharp: Paddy Power longer than Betfair</h2>" + body +
-            "<p class='sub'>Every Paddy Power line Betfair also prices (to score, shots on target, cards, "
+    srcs = "".join(
+        f"<tr><td>{html.escape(k)}</td><td class=n>{g['n']}</td><td class=n>{g['w']}</td>"
+        f"<td class=n>{g['exp']:.1f}</td><td class=n>{g['profit'] / g['n'] * 100:+.1f}%</td></tr>"
+        for k, g in sorted(rec.items()) if k not in order)
+    if srcs:
+        body += ("<table><thead><tr><th>By source and market</th><th class=n>Bets</th><th class=n>Won</th>"
+                 f"<th class=n>Sharp said</th><th class=n>Return</th></tr></thead><tbody>{srcs}</tbody></table>")
+    return ("<h2>Soft v sharp: Paddy Power longer than Pinnacle or Betfair</h2>" + body +
+            "<p class='sub'>Every Paddy Power line Pinnacle or Betfair also prices (team lines: Pinnacle first; to score, shots on target, cards, "
             "match corners and cards), bet at level stakes when Paddy Power paid at least 2% more than Betfair's "
             "fair price. Signals counted: beats Betfair's lay, our model agrees, confirmed starter, Betfair's "
             "price moving our way. If this pays and the 3+ row pays most, that is where to stake bigger.</p>")
@@ -378,7 +471,8 @@ def report(args=None) -> None:
     for b in live(now, now + 48 * 3600)[:30]:
         r = b["row"]
         who = r.get("player") or "Match"
-        print(f"{b['edge'] * 100:+5.1f}%  {b['price']:5.2f} v BF {1 / b['p']:5.2f}  sig {b['sig']['count']}  "
+        src = "PIN" if (r.get("sharp_last") or {}).get("src") == "pinnacle" else "BF"
+        print(f"{b['edge'] * 100:+5.1f}%  {b['price']:5.2f} v {src:3} {1 / b['p']:5.2f}  sig {b['sig']['count']}  "
               f"{who} {r.get('label') or ('over' if r['over'] else 'under')} {r['line']} {r['stat']}  ({r['fixture']})")
     for k, g in sorted(record().items()):
         print(f"{k}: {g['n']} bets, {g['w']} won (Betfair said {g['exp']:.1f}), {g['profit']:+.1f} pts")

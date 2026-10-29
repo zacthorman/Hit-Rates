@@ -179,8 +179,10 @@ def snapshot(args=None) -> int:
         # judged like every other pick the site puts forward.
         try:
             import playerlines
+            import bettable
             for l in playerlines.suggest(entry, meta):
-                add("Player line", [l], sport, l.get("fair"), meta)
+                if bettable.ok(l, meta, sport):
+                    add("Player line", [l], sport, l.get("fair"), meta)
         except Exception as exc:
             print(f"  player lines not recorded for {meta.get('home')} v {meta.get('away')}: {exc}")
 
