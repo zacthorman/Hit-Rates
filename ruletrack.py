@@ -27,6 +27,23 @@ uscheck.py, research/RULES_RESEARCH.md):
   control_nba_over_main the mirror of the first rule, expected to lose. If it
                         does not, the first rule is not what it looks like.
 
+Added 28 Oct 2026 (live from 28 Oct, 12:00 UTC), chosen on 20 to 27 Oct of
+pplog, so their history is in sample like the rest:
+
+  nba_alt_perfect       NBA alternative over (Paddy offers no under on that
+                        line) where he cleared it in all of his last 10, first
+                        price 1.25 to 2.00. History: 10/10 at 1.25 to 1.50 won
+                        80% at an average 1.34, +7.5% (90% range -6% to +22%).
+  control_nba_alt_nine  the same at exactly 9 of his last 10. History -1.7%.
+                        If it keeps pace with the rule above, the perfect
+                        record is not what is doing the work.
+  nba_under_blowout     NBA under on a main line, 1.60 to 2.20, on points or
+                        a points combination, for a starter on the projected
+                        underdog where blowout.py projects a 12+ point margin.
+                        History +10.1% over 116 bets, but only 8 games (90%
+                        range -15% to +34%); the favourite's starters in the
+                        same games lost 15.8%.
+
 One bet per player, stat and game in each rule (the line priced nearest
 evens), £1 at the first price logged. Also scored at the last price before
 kick-off, and closing line value: how far the price moved after the bet was
@@ -60,9 +77,15 @@ RECEIVING = {"Receiving yards", "Receiving receptions"}
 SHOW = 8  # bets listed per rule on the page, most model edge first
 
 # Rules added later start their own live record from when they were added.
+_OCT28 = datetime.datetime(2026, 10, 28, 12, 0, tzinfo=datetime.timezone.utc).timestamp()
 RULE_START = {
     "learned_value": datetime.datetime(2026, 10, 26, 12, 0, tzinfo=datetime.timezone.utc).timestamp(),
+    "nba_alt_perfect": _OCT28,
+    "control_nba_alt_nine": _OCT28,
+    "nba_under_blowout": _OCT28,
 }
+BLOWOUT_MARGIN = 12.0
+SCORING = {"Points", "Points rebounds and assists", "Points and rebounds", "Points and assists"}
 
 RULES = {
     "nba_under_main": "NBA under, main line, 1.60 to 2.20",
@@ -70,7 +93,10 @@ RULES = {
     "nfl_receiving_model": "NFL receiving over, 2.20 or shorter, model agrees",
     "beats_betfair": "Paddy pays 2%+ over Betfair's fair price, 10.0 or shorter",
     "learned_value": "Learned value: the corrected chance (learn.py) 3 to 15% over Paddy's price, 3.0 or shorter",
+    "nba_alt_perfect": "NBA alt over, cleared in all of his last 10, 1.25 to 2.00",
+    "nba_under_blowout": "NBA under, main line, underdog starter, projected 12+ blowout, 1.60 to 2.20",
     "control_nba_over_main": "Control: NBA over, main line, 1.60 to 2.20 (should lose)",
+    "control_nba_alt_nine": "Control: NBA alt over, 9 of his last 10, 1.25 to 2.00",
 }
 
 
@@ -148,6 +174,21 @@ def qualifying(rows: list[dict]) -> dict[str, list[dict]]:
                     add("nba_under_model", r)
             else:
                 add("control_nba_over_main", r)
+        if r["sport"] == NBA and r["over"] and not main and 1.25 <= price <= 2.0 and r.get("n10") == 10:
+            if r.get("k10") == 10:
+                add("nba_alt_perfect", r)
+            elif r.get("k10") == 9:
+                add("control_nba_alt_nine", r)
+        if (r["sport"] == NBA and main and not r["over"] and 1.6 <= price <= 2.2
+                and r["stat"] in SCORING):
+            try:
+                import blowout
+                mg = blowout.underdog_starter(r, BLOWOUT_MARGIN)
+            except Exception:  # noqa: BLE001  never cost the other rules
+                mg = None
+            if mg is not None:
+                r["_blowout"] = mg
+                add("nba_under_blowout", r)
         if r["sport"] == NFL and r["over"] and r["stat"] in RECEIVING and price <= 2.2 and agrees:
             add("nfl_receiving_model", r)
         # learned_value (26 Oct): the chance after learn.py's correction, only
@@ -345,8 +386,18 @@ if __name__ == "__main__":
     elif cmd == "tonight":
         for rule, bets in tonight().items():
             print(f"\n{RULES[rule]}: {len(bets)}")
-            sl = shortlist_by(bets, "_learned_edge") if rule == "learned_value" else shortlist(bets)
+            key = {"learned_value": "_learned_edge", "nba_under_blowout": "_blowout"}.get(rule)
+            if rule in ("nba_alt_perfect", "control_nba_alt_nine"):
+                for b in bets:
+                    b["_price"] = b["last"]["price"]
+                key = "_price"
+            sl = shortlist_by(bets, key) if key else shortlist(bets)
             for b in sl[:25]:
-                print(f"  {(b.get('_learned_edge') if rule == 'learned_value' else b.get('_model_edge')) or 0:+5.0%}", end="")
+                if key == "_blowout":
+                    print(f"  by {b['_blowout']:4.1f}", end="")
+                elif key == "_price":
+                    print(f"  {'10/10' if b.get('k10') == 10 else '9/10':>6}", end="")
+                else:
+                    print(f"  {(b.get('_learned_edge') if rule == 'learned_value' else b.get('_model_edge')) or 0:+5.0%}", end="")
                 print(f"  {time.strftime('%a %H:%M', time.localtime(b['kickoff']))}  {b['fixture'][:38]:38} "
                       f"{b['player']:24} {b['label']:12} {b['stat']:26} {b['last']['price']:.2f}")
