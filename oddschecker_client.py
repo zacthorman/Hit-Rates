@@ -58,6 +58,21 @@ class CloudflareBlocked(Exception):
     pass
 
 
+class BudgetExceeded(Exception):
+    """The run's time budget is spent, or Oddschecker blocked twice in a row.
+
+    Added 30 Oct 2026. Each call already had a timeout, but the waits stacked:
+    FlareSolverr's 75 seconds, three backoff attempts of up to two minutes,
+    and whatever Retry-After asked for, per saved game. On 29 Oct that held
+    publish.sh for over an hour. Now every wait comes out of one budget
+    (ODDSCHECKER_BUDGET seconds, default 300), and two blocked calls in a row
+    end the run: callers catch this and carry on without Oddschecker."""
+    pass
+
+
+BUDGET = float(os.getenv("ODDSCHECKER_BUDGET", "300"))
+
+
 def _browser_headers(ua: str) -> dict:
     """Headers a real Chrome tab sends for a same-site XHR, matched to the UA's platform."""
     platform = '"Linux"' if "Linux" in ua else '"macOS"' if "Mac OS" in ua else '"Windows"'
@@ -91,7 +106,10 @@ class OddscheckerClient:
         batch_size: int = 10,
         max_attempts: int = 3,
         state_path: Path = STATE_PATH,
+        budget: float | None = BUDGET,
     ):
+        self.deadline = time.time() + budget if budget else None
+        self._blocked_in_a_row = 0
         self.http = requests.Session()
         self.fs_url = flaresolverr_url
         self.timeout = timeout
@@ -154,6 +172,42 @@ class OddscheckerClient:
     def __exit__(self, *exc):
         self.close()
 
+    # ---------- budget ----------
+
+    def left(self) -> float:
+        """Seconds left in this run's budget (a large number when unbudgeted)."""
+        return self.deadline - time.time() if self.deadline else 1e9
+
+    def _sleep(self, wait: float, why: str):
+        """Sleep, but never past the budget: if the wait does not fit, stop."""
+        if wait >= self.left() - 5:
+            raise BudgetExceeded(f"{why}: a {wait:.0f}s wait does not fit in the {max(self.left(), 0):.0f}s left")
+        time.sleep(max(wait, 0))
+
+    def get_html(self, url: str) -> str:
+        """A page's HTML, direct with the saved cookies, else through FlareSolverr."""
+        self._pace()
+        try:
+            r = self.http.get(url, timeout=self.timeout, headers={"Accept": "text/html,application/xhtml+xml"})
+            if r.status_code == 200 and not any(m in r.text[:3000] for m in CHALLENGE_MARKERS):
+                self._blocked_in_a_row = 0
+                return r.text
+        except requests.RequestException:
+            pass
+        sol = self._flaresolverr_get(url)
+        self._adopt(sol)
+        body = sol.get("response") or ""
+        if any(m in body[:3000] for m in CHALLENGE_MARKERS):
+            self._note_block()
+            raise CloudflareBlocked("FlareSolverr returned the challenge page")
+        self._blocked_in_a_row = 0
+        return body
+
+    def _note_block(self):
+        self._blocked_in_a_row += 1
+        if self._blocked_in_a_row >= 2:
+            raise BudgetExceeded("blocked twice in a row, stopping for this run")
+
     # ---------- flow ----------
 
     def _with_backoff(self, ids, repub):
@@ -163,9 +217,10 @@ class OddscheckerClient:
             except CloudflareBlocked as e:
                 if attempt == self.max_attempts:
                     raise
+                self._note_block()
                 wait = 30 * 2 ** (attempt - 1) + random.uniform(0, 15)
                 log.warning("Blocked (%s), backing off %.0fs before attempt %d", e, wait, attempt + 1)
-                time.sleep(wait)
+                self._sleep(wait, "backoff")
 
     def _fetch(self, url: str, force_flaresolverr: bool):
         if not force_flaresolverr:
@@ -188,6 +243,8 @@ class OddscheckerClient:
     # ---------- pacing ----------
 
     def _pace(self):
+        if self.left() <= 0:
+            raise BudgetExceeded("time budget spent")
         day = time.strftime("%Y-%m-%d")
         cap = int(os.getenv("ODDSCHECKER_DAILY_CAP", "150"))
         cfile = self.state_path.with_name("count.json")
@@ -204,7 +261,7 @@ class OddscheckerClient:
         wait = target - time.time()
         if wait > 0:
             log.debug("Pacing %.1fs", wait)
-            time.sleep(wait)
+            self._sleep(wait, "pacing")
         self._last_request = time.time()
 
     # ---------- direct ----------
@@ -212,15 +269,15 @@ class OddscheckerClient:
     def _direct(self, url: str):
         self._pace()
         try:
-            r = self.http.get(url, timeout=self.timeout)
+            r = self.http.get(url, timeout=min(self.timeout, max(self.left(), 1)))
         except requests.RequestException as e:
             raise CloudflareBlocked(f"request error: {e}") from e
 
         if r.status_code == 429:
             retry = r.headers.get("Retry-After", "")
-            wait = float(retry) if retry.isdigit() else 60
+            wait = min(float(retry) if retry.isdigit() else 60, 90)
             log.warning("HTTP 429, waiting %.0fs as asked", wait)
-            time.sleep(wait + random.uniform(0, 5))
+            self._sleep(wait + random.uniform(0, 5), "HTTP 429")
             raise CloudflareBlocked("HTTP 429")
 
         body_head = r.text[:3000]
@@ -242,7 +299,12 @@ class OddscheckerClient:
     # ---------- FlareSolverr ----------
 
     def _fs_post(self, payload: dict) -> dict:
-        r = requests.post(self.fs_url, json=payload, timeout=self.fs_timeout_ms / 1000 + 15)
+        if self.left() < 15:
+            raise BudgetExceeded("no time left for FlareSolverr")
+        if "maxTimeout" in payload:
+            payload["maxTimeout"] = int(min(payload["maxTimeout"], (self.left() - 10) * 1000))
+        r = requests.post(self.fs_url, json=payload,
+                          timeout=min(self.fs_timeout_ms / 1000 + 15, max(self.left() - 5, 5)))
         r.raise_for_status()
         data = r.json()
         if data.get("status") != "ok":

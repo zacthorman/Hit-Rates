@@ -71,6 +71,16 @@ class Refused(Exception):
     pass
 
 
+class Transient(Refused):
+    """A server error or a dropped connection: Pinnacle having a bad moment, not
+    saying no. Pauses for TRANSIENT_HOURS, not a day (30 Oct 2026: one
+    ConnectionError at 17:04 on 29 Oct cost the site a day of Pinnacle prices)."""
+    pass
+
+
+TRANSIENT_HOURS = 2
+
+
 class Capped(Exception):
     """Our own daily request cap. Not a refusal: stop this run, no lockout.
     (Until 28 Oct 2026 this raised Refused, so reaching the cap at 17:00 locked
@@ -124,7 +134,9 @@ def get(path: str, st: dict):
     try:
         r = requests.get(BASE + path, headers=HDR, timeout=20)
     except requests.RequestException as e:
-        raise Refused(f"{type(e).__name__} on {path}")
+        raise Transient(f"{type(e).__name__} on {path}")
+    if r.status_code >= 500:
+        raise Transient(f"HTTP {r.status_code} on {path}")
     if r.status_code != 200:
         raise Refused(f"HTTP {r.status_code} on {path}")
     try:
@@ -133,11 +145,11 @@ def get(path: str, st: dict):
         raise Refused(f"non-JSON reply on {path}")
 
 
-def lockout(st: dict, why: str) -> None:
-    st["lockedUntil"] = time.time() + LOCKOUT_HOURS * 3600
+def lockout(st: dict, why: str, hours: float = LOCKOUT_HOURS) -> None:
+    st["lockedUntil"] = time.time() + hours * 3600
     st["lockedWhy"] = why
     save_state(st)
-    print(f"  pinnacle: refused ({why}); locked out for {LOCKOUT_HOURS}h")
+    print(f"  pinnacle: refused ({why}); locked out for {hours:g}h")
 
 
 def decimal(american) -> float | None:
@@ -234,6 +246,9 @@ def run(probe: bool = False) -> int:
         print("  pinnacle: switched off (.pinnacle_off)")
         return 0
     st = load_state()
+    if (st.get("lockedWhy", "").startswith(("ConnectionError", "ReadTimeout", "ConnectTimeout", "HTTP 5"))
+            and st.get("lockedUntil", 0) > time.time() + TRANSIENT_HOURS * 3600):
+        st["lockedUntil"] = time.time()     # left by the old rule: a blip is not a day
     if st.get("lockedWhy", "").startswith("daily cap"):
         # left behind by the old behaviour, where our own cap locked us out
         st.pop("lockedUntil", None)
@@ -323,6 +338,8 @@ def run(probe: bool = False) -> int:
                                       [x for mm in rm for x in lines_of(mm, stat)][:4])
     except Capped as e:
         print(f"  pinnacle: stopped early ({e}); resumes tomorrow, no lockout")
+    except Transient as e:
+        lockout(st, str(e), TRANSIENT_HOURS)
     except Refused as e:
         lockout(st, str(e))
     save_state(st)

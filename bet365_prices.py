@@ -45,6 +45,7 @@ MARKET_PRICES = ROOT / "market_prices.json"
 
 BOOK = "B3"            # Oddschecker's code for Bet365
 WINDOW_HOURS = 30      # only games kicking off within this
+BUDGET_FETCH_MIN = 120 # seconds kept for fetching prices after discovery
 FRESH_HOURS = 4        # do not refetch a game within this
 FRESH_CLOSE = 0.75     # ...or this, in the last three hours before kick-off
 MATCH_MINUTES = 60     # kick-off must agree with the fixture to within this
@@ -85,6 +86,33 @@ TEAM_MARKETS = {
     "total away shots on target": ("Shots on target", "away"),
     "match shots on target": ("Shots on target", "match"),
 }
+
+# Every bookmaker's price, not only Bet365's (30 Oct 2026): the same all-odds
+# reply carries them all, so reports/oddschecker_all.json keeps Bet365, Paddy
+# Power and the best price per line for the value section (value_books.py).
+ALL_OUT = ROOT / "reports" / "oddschecker_all.json"
+PLAYER_STAT = {"player shots": "Shots", "player shots on target": "Shots on target",
+               "player fouls": "Fouls", "player fouls won": "Fouled", "player tackles": "Tackles",
+               "player assists": "Assists", "to be shown a card": "Card"}
+KEEP_BOOKS = ("B3", "PP")
+
+# Discovery (30 Oct 2026): each competition's Oddschecker page lists its
+# matches, either as links (/path/home-v-away/winner) or in the page's own data
+# ("urlMap"). New matches kicking off inside the window get their match page
+# saved once (its market ids never change), nearest first, at most
+# MAX_NEW_PAGES a run. No more `--add` by hand. Paths checked by hand on
+# 30 Oct 2026; the Conference League, NBA and NFL pages do not list matches
+# this way.
+BASE = "https://www.oddschecker.com/"
+COMPETITIONS = [
+    "football/english/premier-league", "football/english/championship", "football/english/efl-cup",
+    "football/spain/la-liga-primera", "football/italy/serie-a", "football/germany/bundesliga",
+    "football/france/ligue-1", "football/champions-league", "football/europa-league",
+    "football/world/usa/mls", "football/world/brazil/serie-a",
+]
+MAX_NEW_PAGES = 12
+DISCOVER_SHARE = 0.45      # of the time budget, at most, spent finding games
+SLUG_RE = re.compile(r'"urlMap"\s*:\s*"([a-z0-9-]+-v-[a-z0-9-]+)"')
 
 NAME_RE = re.compile(r'"(?:marketTypeName|marketName|displayName|name)"\s*:\s*"([^"]{3,80})"')
 ID_RE = re.compile(r'"(?:ocMarketId|marketId)"\s*:\s*"?(\d+)')
@@ -160,6 +188,133 @@ def discover(sample: list[str] | None) -> int:
                 print(f"  {b.get('betName')!r:40} line={b.get('line')!r:8} b365={b3.get(bid)}")
             print("  bet keys:", sorted({k for b in bets.values() for k in b}))
     return 0
+
+
+def match_slugs(html: str, path: str) -> set[str]:
+    """Match slugs ('arsenal-v-everton') on a competition page, both layouts."""
+    link = re.compile(r'href="/' + re.escape(path) + r'/([a-z0-9-]+-v-[a-z0-9-]+)/winner"')
+    return set(link.findall(html)) | set(SLUG_RE.findall(html))
+
+
+def page_file(url: str) -> Path:
+    """Where a match page is saved: the same name `--add` has always used."""
+    slug = re.sub(r"[^a-z0-9]+", "-", url.lower().split("oddschecker.com")[-1]).strip("-")
+    return PROBE / f"{slug}.html"
+
+
+def wanted(slug: str, events: dict, window: float) -> float | None:
+    """Kick-off of the site fixture this slug is, if it is inside the window."""
+    h, _, a = slug.partition("-v-")
+    now = time.time()
+    best, best_score = None, 0.0
+    for ev in events.values():
+        try:
+            start = datetime.fromisoformat(ev["start"].replace("Z", "+00:00")).timestamp()
+        except (KeyError, ValueError):
+            continue
+        if not now < start < now + window * 3600:
+            continue
+        bf = split_teams(ev.get("betfair", ""))
+        if not bf:
+            continue
+        if ev.get("swapped"):
+            bf = (bf[1], bf[0])
+        score = min(side_score(h, bf[0]), side_score(a, bf[1]))
+        if score > best_score:
+            best, best_score = start, score
+    return best if best_score >= 0.6 else None
+
+
+def discover(client, window: float, budget_end: float) -> int:
+    """Save the match page of every new game the site covers inside the window."""
+    events = load_events()
+    todo = []
+    for path in COMPETITIONS:
+        if time.time() > budget_end:
+            break
+        try:
+            html = client.get_html(BASE + path)
+        except Exception as e:  # noqa: BLE001 - BudgetExceeded is handled by the caller
+            if type(e).__name__ == "BudgetExceeded":
+                raise
+            print(f"  bet365: {path} not read ({type(e).__name__})")
+            continue
+        for slug in match_slugs(html, path):
+            url = f"{BASE}{path}/{slug}/winner"
+            if page_file(url).exists():
+                continue
+            ko = wanted(slug, events, window)
+            if ko:
+                todo.append((ko, url))
+    saved = 0
+    PROBE.mkdir(parents=True, exist_ok=True)
+    for ko, url in sorted(set(todo))[:MAX_NEW_PAGES]:
+        if time.time() > budget_end:
+            break
+        try:
+            html = client.get_html(url)
+        except Exception as e:  # noqa: BLE001
+            if type(e).__name__ == "BudgetExceeded":
+                raise
+            print(f"  bet365: {url} not read ({type(e).__name__})")
+            continue
+        if page_markets(html):
+            page_file(url).write_text(html)
+            saved += 1
+    print(f"  bet365: discovery found {len(todo)} new game(s), saved {saved}")
+    return saved
+
+
+def all_rows(market: dict) -> list[dict]:
+    """Every selection in a player or team market with Bet365's, Paddy Power's
+    and the best price: {player|stat/scope, line, over, books: {B3, PP}, best, bestBook, n}."""
+    name = (market.get("marketTypeName") or "").lower()
+    pstat, team = PLAYER_STAT.get(name), TEAM_MARKETS.get(name)
+    if not pstat and not team:
+        return []
+    bets = {b.get("betId"): b for b in market.get("bets", []) if isinstance(b, dict)}
+    prices: dict = {}
+    for o in market.get("odds", []):
+        if o.get("status") != "ACTIVE" or not o.get("oddsDecimal"):
+            continue
+        try:
+            prices.setdefault(o.get("betId"), {})[o.get("bookmakerCode")] = float(o["oddsDecimal"])
+        except (TypeError, ValueError):
+            continue
+    out = []
+    for bid, books in prices.items():
+        b = bets.get(bid) or {}
+        raw = (b.get("betName") or "").strip()
+        try:
+            line = float(b.get("line")) if b.get("line") not in (None, "") else 0.5
+        except (TypeError, ValueError):
+            continue
+        if line % 1 != 0.5:
+            continue
+        over = not raw.endswith(" Under") and raw.lower() != "under"
+        best_book = max(books, key=books.get)
+        row = {"line": line, "over": over, "books": {k: round(v, 3) for k, v in books.items() if k in KEEP_BOOKS},
+               "best": round(books[best_book], 3), "bestBook": best_book, "n": len(books)}
+        if pstat:
+            player = raw[:-5].strip() if raw.endswith(" Over") else raw[:-6].strip() if raw.endswith(" Under") else raw
+            if not player:
+                continue
+            row.update(player=player, key=norm(player), stat=pstat)
+        else:
+            if raw.lower() not in ("over", "under"):
+                continue
+            row.update(stat=team[0], scope=team[1])
+        out.append(row)
+    return out
+
+
+def retire(page: Path) -> None:
+    """Move a finished game's saved page aside so later runs spend no request on it."""
+    try:
+        (PROBE / "old").mkdir(parents=True, exist_ok=True)
+        page.rename(PROBE / "old" / page.name)
+    except OSError:
+        pass
 
 
 def saved_games() -> list[Path]:
@@ -402,11 +557,23 @@ def run(window: float = WINDOW_HOURS, force: bool = False) -> int:
     if OFF.exists():
         print("  bet365: switched off (.bet365_off)")
         return 0
+    from oddschecker_client import BudgetExceeded, OddscheckerClient
+    try:
+        with OddscheckerClient() as c:
+            discover(c, window, time.time() + c.left() * DISCOVER_SHARE)
+    except BudgetExceeded as e:
+        print(f"  bet365: discovery stopped ({e})")
+    except Exception as e:  # noqa: BLE001 - never fatal
+        print(f"  bet365: discovery failed ({type(e).__name__}: {e})")
     games = saved_games()
     if not games:
-        print("  bet365: no saved match pages (add one with: python bet365_prices.py --add URL)")
+        print("  bet365: no match pages saved yet")
         return 0
-    from oddschecker_client import OddscheckerClient
+    try:
+        allbooks = json.loads(ALL_OUT.read_text())
+    except (OSError, ValueError):
+        allbooks = {"events": {}}
+    allheld = allbooks.setdefault("events", {})
 
     data = load_out()
     held = data.setdefault("events", {})
@@ -417,7 +584,9 @@ def run(window: float = WINDOW_HOURS, force: bool = False) -> int:
     events = None  # read only if a game needs matching (about 10 seconds)
     fetched = skipped = unmatched = 0
 
-    with OddscheckerClient() as client:
+    from oddschecker_client import BUDGET
+    with OddscheckerClient(budget=max(BUDGET_FETCH_MIN, BUDGET * (1 - DISCOVER_SHARE))) as client:
+      try:
         for page in games:
             ids = list(page_markets(page.read_text(errors="ignore")))
             if not ids:
@@ -437,10 +606,14 @@ def run(window: float = WINDOW_HOURS, force: bool = False) -> int:
             except SystemExit as e:          # the client's daily cap
                 print(f"  bet365: {e}")
                 break
+            except BudgetExceeded:
+                raise
             except Exception as e:           # noqa: BLE001 - never fatal
                 print(f"  bet365: {page.stem} not fetched ({type(e).__name__}: {e})")
                 break
             if not markets:
+                if time.time() - page.stat().st_mtime > 3 * 86400:
+                    retire(page)            # nothing priced for days: the game is gone
                 continue
             first = markets[0]
             try:
@@ -448,6 +621,7 @@ def run(window: float = WINDOW_HOURS, force: bool = False) -> int:
             except (KeyError, ValueError):
                 continue
             if kickoff < now:
+                retire(page)                # played: never ask about it again
                 continue
             if events is None:
                 events = load_events()
@@ -462,11 +636,20 @@ def run(window: float = WINDOW_HOURS, force: bool = False) -> int:
             held[fid] = {"ocEvent": first.get("subeventId"), "name": first.get("subeventName"),
                          "page": page.name, "kickoff": kickoff, "fetchedAt": time.time(), "lines": lines,
                          "team": team, "ppHome": sides[0], "ppAway": sides[1]}
+            allheld[fid] = {"name": first.get("subeventName"), "kickoff": kickoff, "fetchedAt": time.time(),
+                            "home": sides[0], "away": sides[1],
+                            "rows": [r for m in markets for r in all_rows(m)]}
             fetched += 1
+      except BudgetExceeded as e:
+        print(f"  bet365: stopped early ({e}); continuing without the rest")
 
     data["updated"] = time.time()
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(json.dumps(data, separators=(",", ":")))
+    for fid in [k for k, e in allheld.items() if e.get("kickoff", 0) < now]:
+        allheld.pop(fid)
+    allbooks["updated"] = time.time()
+    ALL_OUT.write_text(json.dumps(allbooks, separators=(",", ":")))
     print(f"  bet365: {fetched} game(s) fetched, {skipped} still fresh, {unmatched} unmatched, {len(held)} held")
     return 0
 

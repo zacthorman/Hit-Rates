@@ -40,6 +40,7 @@ from pathlib import Path
 
 import make_index
 import parlay
+import value_books
 import value_cap
 import weekend
 
@@ -1104,6 +1105,8 @@ def build(hours: float | None) -> str:
                   "player lines against Betfair.</p>"
                   f"<h3>Team lines</h3>{sharp.box(now, until, True)}"
                   f"<h3>Player lines</h3>{sharp.box(now, until, False)}"
+                  "<h2>Value at Paddy Power or Bet365</h2>"
+                  f"{value_books.box(now, until)}"
                   f"<h2>Bet365 value</h2><p class='sub'>Model and market agree.</p>{b365value.box(now, until)}"
                   f"<h2>Rules on trial</h2>{ruletrack.box(now, until)}"
                   f"<h2>Bookie value bets</h2><p class='sub'>Our model.</p>{boostcheck.value_box(now, until)}"

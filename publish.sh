@@ -102,10 +102,14 @@ fi
 "$PY" learn.py fit || echo "  learn: not refitted (continuing)"
 "$PY" pplog.py snapshot || echo "  pp log not updated (continuing)"
 "$PY" teamlog.py settle || echo "  team log not settled (continuing)"
+"$PY" value_books.py settle || echo "  value books not settled (continuing)"
 "$PY" teamlog.py snapshot || echo "  team log not updated (continuing)"
 # Each of those Paddy Power lines checked against Pinnacle's price for team lines, else Betfair's (sharp.py):
 # the soft-v-sharp check the value bots run, written into the same rows.
 "$PY" sharp.py stamp || echo "  betfair check not stamped (continuing)"
+# Value at Paddy Power or Bet365 (value_books.py, 30 Oct 2026): the better of the
+# two books, against the model and the sharp price; listed, logged and settled.
+"$PY" value_books.py || echo "  value books not built (continuing)"
 "$PY" pplog.py page >/dev/null || echo "  pp-results.html not rebuilt (continuing)"
 # Fixed rules on trial (ruletrack.py): the record per rule, history v live.
 "$PY" ruletrack.py report >/dev/null || echo "  RULES_TRACK.md not rebuilt (continuing)"
