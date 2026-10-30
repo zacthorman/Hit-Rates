@@ -4155,16 +4155,16 @@
   "competition": "Campeonato Brasileiro S\u00e9rie A",
   "sport": "football",
   "kickoff": 1793313000,
-  "selection": "Bernard 1+ shots",
-  "chance": 0.6956202702702703,
-  "fair": 1.8499999999999999,
+  "selection": "Victor Hugo 1+ shots",
+  "chance": 0.7143743243243244,
+  "fair": 1.5416666666666665,
   "team": "Atl\u00e9tico Mineiro",
-  "player": "Bernard",
+  "player": "Victor Hugo",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793307830.043947
+  "written": 1793312141.8873112
  },
  "15238212": {
   "event_id": 15238212,
@@ -4172,16 +4172,16 @@
   "competition": "Campeonato Brasileiro S\u00e9rie A",
   "sport": "football",
   "kickoff": 1793314800,
-  "selection": "Tch\u00ea Tch\u00ea 1+ shots",
-  "chance": 0.6668553550144114,
-  "fair": 1.65,
-  "team": "Vasco da Gama",
-  "player": "Tch\u00ea Tch\u00ea",
-  "stat": "Shots",
+  "selection": "Samuel Lino 1+ shots on target",
+  "chance": 0.5828,
+  "fair": 1.826086956521739,
+  "team": "Flamengo",
+  "player": "Samuel Lino",
+  "stat": "Shots on target",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793307830.043947
+  "written": 1793312141.8873112
  },
  "16824778": {
   "event_id": 16824778,
@@ -4198,7 +4198,7 @@
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1793307830.043947
+  "written": 1793317905.145695
  },
  "16824780": {
   "event_id": 16824780,
@@ -4215,7 +4215,7 @@
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1793307830.043947
+  "written": 1793317905.145695
  },
  "16183752": {
   "event_id": 16183752,
@@ -4232,7 +4232,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793307830.043947
+  "written": 1793317905.145695
  },
  "15238226": {
   "event_id": 15238226,
@@ -4240,16 +4240,16 @@
   "competition": "Campeonato Brasileiro S\u00e9rie A",
   "sport": "football",
   "kickoff": 1793320200,
-  "selection": "Carlos Vin\u00edcius 1+ shots on target",
-  "chance": 0.7194,
-  "fair": 1.75,
+  "selection": "Francis Amuzu 1+ shots",
+  "chance": 0.7569894736842104,
+  "fair": 1.5833333333333335,
   "team": "Gr\u00eamio",
-  "player": "Carlos Vin\u00edcius",
-  "stat": "Shots on target",
+  "player": "Francis Amuzu",
+  "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793307830.043947
+  "written": 1793317905.145695
  },
  "16824779": {
   "event_id": 16824779,
@@ -4266,6 +4266,6 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793307830.043947
+  "written": 1793317905.145695
  }
 }

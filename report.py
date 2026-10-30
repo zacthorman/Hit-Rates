@@ -7106,6 +7106,11 @@ function teamValued() {
       l = Object.assign({}, l, { t });
     }
     if (vals.length < 5 || !(exp > 0)) return;
+    let pin = null;
+    if (PIN_GATED.includes(l.stat)) {
+      pin = pinChance(DATA, l.stat, l.scope, l.scope === "match" ? null : l.t, l.line, l.over);
+      if (!(pin && pin * l.price > 1)) return;     // not better than Pinnacle: not value
+    }
     let p = probOver(l.line, exp, vals);
     if (!l.over) p = 1 - p;
     p = calibrate(p);
@@ -7132,7 +7137,7 @@ function teamValued() {
       // when the team model prices it in a market that passed, from that
       // market's threshold (verdictOf); everything else is acceptable at most.
       tested: !!tested, threshold: tested ? tested.threshold : null,
-      unadjusted: !tested, suspect: edge > 0.3, disagree,
+      unadjusted: !tested, suspect: edge > 0.3, disagree, pin,
       label: `${TEAM_STAT_LABEL[l.stat] || l.stat} ${l.over ? "over" : "under"} ${l.line}`,
     });
   });
@@ -7181,6 +7186,7 @@ function teamRowHtml(v) {
     <span class="pp-kv"><small>Ours</small><b>${Math.round(v.p * 100)}%</b></span>
     <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(v.p))}</b></span>
     <span class="pp-kv pp-ppp"><small>${BOOKS[v.src]}</small><b>${fmtOdds(v.price)}</b></span>
+    ${v.pin ? `<span class="pp-kv"><small>Pinnacle</small><b>${fmtOdds(1 / v.pin)}</b></span>` : ""}
     <span class="pp-kv"><small>${long ? "Long shot" : "Edge"}</small><span class="pp-edge ${cls}">${v.edge >= 0 ? "+" : ""}${Math.round(v.edge * 100)}%</span></span>
   </div>`;
 }
@@ -7196,7 +7202,7 @@ function teamValueHtml() {
   return `<div class="pp-section">Team lines${g.take.length ? ` &middot; ${g.take.length} to take` : ""} (${rows.length})</div>
     <div class="pp-stat pp-ppcard">${rows.length ? rows.slice(0, 30).map(teamRowHtml).join("")
       : `<p class="note">Nothing worth taking or acceptable in the team markets.</p>`}
-    <p class="note">Paddy Power's corners, cards, fouls and shots-on-target lines for each side and the match, priced off the last ten games. Left off: ${g.long.length} long shot${g.long.length === 1 ? "" : "s"} and ${g.avoid.length} priced worse than our chance. ${teamGateNote()} Cards and fouls follow the referee as much as the teams: treat those as the weaker calls.</p></div>`;
+    <p class="note">Paddy Power's corners, cards, fouls and shots-on-target lines for each side and the match, priced off the last ten games. Corners and cards are listed only where Paddy Power pays more than Pinnacle's margin-free price. Left off: ${g.long.length} long shot${g.long.length === 1 ? "" : "s"} and ${g.avoid.length} priced worse than our chance. ${teamGateNote()} Cards and fouls follow the referee as much as the teams: treat those as the weaker calls.</p></div>`;
 }
 
 function teamGateNote() {
@@ -8033,20 +8039,52 @@ function paddyOffer(r) {
   const matchStat = PP_MATCH_STAT[r.stat];
   const stat = matchStat || r.stat;
   if (!sells.team.includes(stat)) return { known: true, ok: false, price: null };
-  if (!priced) return { known: false, ok: true, price: null };
+  if (!priced) return SPORT === "football" && PIN_GATED.includes(stat)
+    ? { known: true, ok: false, price: null }          // no price to beat Pinnacle with
+    : { known: false, ok: true, price: null };
   let scope = "match";
   if (!matchStat && r.teamIndex != null) scope = ppTeamOrder(fx)[0] === r.teamIndex ? "home" : "away";
   const hit = ((m.pp.team || []).concat(m.pp.goals || [])).find(x =>
     x.stat === stat && x.scope === scope && x.line === r.line && x.over === over);
+  if (hit && SPORT === "football" && PIN_GATED.includes(stat)) {
+    const pin = pinChance(fx, stat, scope, r.teamIndex, r.line, over);
+    const ok = !!(pin && pin * hit.price > 1);
+    return { known: true, ok, price: ok ? hit.price : null, pin };
+  }
   return { known: true, ok: !!hit, price: hit ? hit.price : null };
 }
 
+
+/* Pinnacle gate (29 Oct 2026). Corners, cards and goals team lines are value
+   only when Paddy Power's price beats Pinnacle's margin-free chance; with no
+   Pinnacle price there is nothing to prove it, so the line is not shown. */
+const PIN_GATED = ["Corner kicks", "Yellow cards", "Goals"];
+
+function pinChance(fx, stat, scope, teamIndex, line, over) {
+  fx = fx || DATA;
+  const m = fixtureMarket(fx);
+  const pin = m && m.pin;
+  if (!pin || !pin.lines) return null;
+  let s = "match";
+  if (scope !== "match") {
+    const home = (pin.name || "").split(" v ")[0] || "";
+    const words = x => new Set(normName(x).split(" ").filter(w => w.length >= 3));
+    const H = words(home);
+    const team = fx.teams[teamIndex] ? fx.teams[teamIndex].name : "";
+    let n = 0; words(team).forEach(w => { if (H.has(w)) n++; });
+    s = n > 0 ? "home" : "away";
+  }
+  const hit = pin.lines.find(x => x.stat === stat && x.scope === s && x.line === line && x.over === (over !== false));
+  return hit ? hit.p : null;
+}
+
 function paddyKeep(rows) {
-  return rows.filter(r => { const o = paddyOffer(r); r.ppPrice = o.price; return o.ok; });
+  return rows.filter(r => { const o = paddyOffer(r); r.ppPrice = o.price; r.pinP = o.pin || null; return o.ok; });
 }
 
 function ppTag(r) {
-  return r && r.ppPrice ? `<span class="pp-price">Paddy ${fmtOdds(r.ppPrice)}</span>` : "";
+  if (!r || !r.ppPrice) return "";
+  return `<span class="pp-price">Paddy ${fmtOdds(r.ppPrice)}${r.pinP ? ` &middot; Pinnacle ${fmtOdds(1 / r.pinP)}` : ""}</span>`;
 }
 
 /* --------------------------------------------------- navigation (29 Oct 2026)

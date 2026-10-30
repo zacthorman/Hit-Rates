@@ -27,13 +27,22 @@ class Bettable(unittest.TestCase):
 
     def tearDown(self):
         bettable._IX = None
+        bettable._PIN = None
         self.d.cleanup()
 
     def test_exact_selection_with_price(self):
         leg = {"player": "Marcus Thuram", "team": "Inter", "stat": "Shots", "alt": True, "threshold": 2, "period": "ALL"}
         self.assertEqual(bettable.check(leg, META, "football"), (True, 1.6))
+        # corners need Paddy to beat Pinnacle (29 Oct 2026)
+        bettable._PIN = {"9": {"name": "Venezia v Inter", "lines": {("side1", "Corner kicks", 5.5, False): {"p": 0.56}}}}
         self.assertEqual(bettable.check({"team": "Inter", "stat": "Corner kicks", "line": 5.5, "over": False}, META,
-                                        "football"), (True, 1.85))
+                                        "football"), (True, 1.85))     # 0.56 x 1.85 = 1.04: value
+        bettable._PIN = {"9": {"name": "Venezia v Inter", "lines": {("side1", "Corner kicks", 5.5, False): {"p": 0.52}}}}
+        self.assertFalse(bettable.check({"team": "Inter", "stat": "Corner kicks", "line": 5.5, "over": False}, META,
+                                        "football")[0])                # 0.52 x 1.85 = 0.96: not value
+        bettable._PIN = {}
+        self.assertFalse(bettable.check({"team": "Inter", "stat": "Corner kicks", "line": 5.5, "over": False}, META,
+                                        "football")[0])                # no Pinnacle price: not shown
 
     def test_line_paddy_does_not_offer(self):
         leg = {"player": "Marcus Thuram", "stat": "Shots", "alt": True, "threshold": 4, "period": "ALL"}

@@ -326,6 +326,10 @@ def live(now: float, until: float) -> list[dict]:
         if (r.get("result") is not None or not (now < r.get("kickoff", 0) < until) or sh.get("edge") is None
                 or not price or price > MAX_PRICE):
             continue
+        # Team lines are value only against Pinnacle (29 Oct 2026); a team line
+        # checked against Betfair alone is still logged for the record, not listed.
+        if r.get("scope") is not None and sh.get("src") != "pinnacle":
+            continue
         # the Betfair check must be of the same Paddy Power price still showing
         e = sh["p"] * price - 1
         if e < MIN_EDGE:

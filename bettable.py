@@ -51,6 +51,38 @@ MATCH_ONLY = {"Goals"}
 # The site's names for the same thing, where they differ from Paddy's.
 ALIAS = {"Yellow card": "Card", "Shown a card": "Card", "Booked": "Card", "3 pointers": "Three pointers made"}
 
+# Corners, cards and goals team lines are shown only when Paddy Power's price
+# beats Pinnacle's margin-free chance (29 Oct 2026, Zac: "it needs to be better
+# than Pinnacle, else there's just no point having it on there"). No Pinnacle
+# price, or no Paddy price to compare, means not shown.
+PIN_GATED = {"Corner kicks", "Yellow cards", "Goals"}
+_PIN = None
+
+
+def pinnacle_chance(leg: dict, meta: dict, stat: str, line: float, over: bool, scope: str | None):
+    """Pinnacle's margin-free chance for a team line, or None. scope is
+    'match' or the leg's side; the side is matched to Pinnacle's own home
+    team by name, so a reversed fixture cannot cross them."""
+    global _PIN
+    import sharp
+    if _PIN is None:
+        _PIN = sharp.pinnacle_index()
+    pe = _PIN.get(str(meta.get("id")))
+    if not pe:
+        return None
+    if scope == "match":
+        who = "match"
+    else:
+        team = leg.get("team") or ""
+        pin_home = (pe["name"].split(" v ")[0] if " v " in pe["name"] else "")
+        same = set(_norm(team).split()) & set(_norm(pin_home).split())
+        if not team:
+            return None
+        who = "side0" if same else "side1"
+    v = pe["lines"].get((who, stat, float(line), bool(over)))
+    return v["p"] if v else None
+
+
 # Off only for backtests that replay old fixtures and must stay reproducible
 # (parlay_check.py): there is no Paddy Power board for those games.
 ON = True
@@ -169,6 +201,13 @@ def check(leg: dict, meta: dict, sport: str) -> tuple[bool, float | None]:
     if sport == "football":
         if scope == "match" and stat in SIDE_ONLY or scope != "match" and stat in MATCH_ONLY:
             return False, None
+    if stat in PIN_GATED and sport == "football":
+        # value only: needs Paddy's price and Pinnacle's chance, and Paddy longer
+        p = (ev["team"].get((scope, stat, line, over)) if ev and ev["team"] and scope else None)
+        if not p:
+            return False, None
+        pin = pinnacle_chance(leg, meta, stat, line, over, scope)
+        return (True, p) if pin and pin * p > 1.0 else (False, None)
     if not ev or not ev["team"]:
         return True, None
     p = ev["team"].get((scope, stat, line, over)) if scope else None

@@ -90,7 +90,19 @@ def build(data: dict) -> dict:
         team = e.get("team") or []
         if by or team:
             events.setdefault(fid, {})["pp"] = {"at": e.get("fetchedAt"), "players": by, "team": team,
+                                                "goals": e.get("goals") or [],
                                                 "home": e.get("ppHome") or "", "away": e.get("ppAway") or ""}
+    # Pinnacle's margin-free chances for corners, cards and goals (pinnacle_prices.py),
+    # so the pages can show a team line only when Paddy Power beats it (29 Oct 2026).
+    try:
+        pin = json.loads((HERE / "reports" / "pinnacle.json").read_text())
+    except (OSError, ValueError):
+        pin = {}
+    for fid, e in (pin.get("events") or {}).items():
+        rows = [{"stat": l["stat"], "scope": l["scope"], "line": l["line"], "over": l["over"], "p": l["p"]}
+                for l in e.get("lines") or [] if l.get("line") is not None and isinstance(l.get("over"), bool)]
+        if rows:
+            events.setdefault(fid, {})["pin"] = {"at": e.get("fetchedAt"), "name": e.get("name") or "", "lines": rows}
     # Bet365, when bet365_prices.py holds any (via Oddschecker): same shape.
     try:
         b3 = json.loads((HERE / "reports" / "bet365.json").read_text())
