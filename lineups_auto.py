@@ -189,17 +189,68 @@ def refresh_prices() -> None:
     notify_selections()
 
 
+# ------------------------------------------------------------ background jobs
+# 30 Oct 2026: the odds job (7 minutes of paced requests, then a 10 minute
+# publish) ran inside this script, and launchd does not start a new run while
+# one is going, so line-ups went unchecked for 20 minutes before a 6pm kick-off.
+# Price jobs now run in a separate background process; every 5-minute tick
+# stays free for line-ups, which always come first. One background job at a
+# time (BG_LOCK); publish.sh serialises the publishes themselves.
+BG_LOCK = ROOT / "cache" / "bgjob.lock"
+
+
+def bg_running() -> bool:
+    import fcntl
+    BG_LOCK.parent.mkdir(exist_ok=True)
+    with open(BG_LOCK, "a") as f:
+        try:
+            fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            fcntl.flock(f, fcntl.LOCK_UN)
+            return False
+        except OSError:
+            return True
+
+
+def spawn(job: str, mark: Path) -> None:
+    if bg_running():
+        return
+    mark.parent.mkdir(exist_ok=True)
+    mark.touch()                    # so the next tick does not spawn it again
+    subprocess.Popen([str(ROOT / ".venv" / "bin" / "python"), str(Path(__file__).resolve()), "--job", job],
+                     cwd=ROOT, start_new_session=True,
+                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    say(f"{job} job started in the background")
+
+
+def run_job(job: str) -> None:
+    import fcntl
+    BG_LOCK.parent.mkdir(exist_ok=True)
+    with open(BG_LOCK, "a") as f:
+        try:
+            fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            return
+        (refresh_odds if job == "odds" else refresh_prices)()
+
+
+def background_prices() -> None:
+    if odds_due():
+        spawn("odds", ODDS_MARK)
+    elif prices_due():
+        spawn("prices", PRICE_MARK)
+
+
 def main() -> None:
+    import sys
+    if "--job" in sys.argv:
+        run_job(sys.argv[sys.argv.index("--job") + 1])
+        return
     if (ROOT / ".update.lock").exists():
         return                      # the nightly build is running; next tick
     todo = due()
     if not todo:
-        if odds_due():
-            refresh_odds()
-        elif prices_due():
-            refresh_prices()
-        else:
-            notify_selections()     # e.g. after the morning build published
+        background_prices()
+        notify_selections()         # e.g. after the morning build published
         return
     import update                   # for the FlareSolverr health check
     update.say = say
@@ -238,15 +289,16 @@ def main() -> None:
         else:
             say(f"{path.name}: not confirmed yet, will retry in 5 minutes")
     if changed:
-        r = subprocess.run(["./publish.sh"], cwd=ROOT, capture_output=True, text=True)
-        say("published" if r.returncode == 0 else f"publish failed: {r.stderr[-300:]}")
+        # In the background (30 Oct 2026): a 10-minute publish here held up the
+        # next 5-minute check, so a second game at the same kick-off waited for
+        # its XI. publish.sh queues behind any publish already running.
         PRICE_MARK.parent.mkdir(exist_ok=True)
-        PRICE_MARK.touch()          # that publish fetched prices too
-        notify_selections()
-    elif odds_due():
-        refresh_odds()
-    elif prices_due():
-        refresh_prices()
+        PRICE_MARK.touch()          # that publish fetches prices too
+        with open(ROOT / "cache" / "lineups_publish.log", "a") as out:
+            subprocess.Popen(["./publish.sh"], cwd=ROOT, start_new_session=True, stdout=out, stderr=out)
+        say("publishing in the background (cache/lineups_publish.log)")
+    else:
+        background_prices()
 
 
 if __name__ == "__main__":

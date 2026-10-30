@@ -18,8 +18,50 @@
 
 set -euo pipefail
 
-SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Run from a private copy (30 Oct 2026): bash reads a script as it goes, so an
+# edit to this file during a run broke that run ("line 80: every: command not
+# found"). The copy is what runs; the file here can change freely meanwhile.
+if [ -z "${PUBLISH_FROM_COPY:-}" ]; then
+  SRC0="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  TMP="$(mktemp -t publishXXXXXX)"
+  cp "${BASH_SOURCE[0]}" "$TMP"
+  PUBLISH_FROM_COPY=1 PUBLISH_SRC="$SRC0" exec bash "$TMP" "$@"
+fi
+SRC="$PUBLISH_SRC"
 cd "$SRC"
+
+# One publish at a time (30 Oct 2026): the odds job, the line-ups job and a
+# by-hand run can now overlap. A second publish waits for the first (up to
+# 25 minutes), then goes; a lock older than 45 minutes is a crashed run's.
+LOCKD="$SRC/cache/publish.lock.d"
+mkdir -p "$SRC/cache"
+QUEUED="$SRC/cache/publish.queued.d"
+waited=0
+until mkdir "$LOCKD" 2>/dev/null; do
+  if [ "$waited" -eq 0 ]; then
+    # One waiting publish is enough: it starts after the running one and
+    # picks up every change made meanwhile, so further ones step aside.
+    if ! mkdir "$QUEUED" 2>/dev/null; then
+      if [ -z "$(find "$QUEUED" -maxdepth 0 -mmin +45 2>/dev/null)" ]; then
+        echo "A publish is running and another is queued; that one will include these changes."
+        exit 0
+      fi
+    fi
+  fi
+  if [ -n "$(find "$LOCKD" -maxdepth 0 -mmin +45 2>/dev/null)" ]; then
+    rmdir "$LOCKD" 2>/dev/null || true
+    continue
+  fi
+  if [ "$waited" -ge 1500 ]; then
+    echo "Another publish has held the lock for 25 minutes; giving up."
+    exit 1
+  fi
+  [ "$waited" -eq 0 ] && echo "Another publish is running; waiting for it."
+  sleep 15
+  waited=$((waited + 15))
+done
+rmdir "$QUEUED" 2>/dev/null || true
+trap 'rmdir "$LOCKD" 2>/dev/null || true; rm -f "$0" 2>/dev/null || true' EXIT
 
 if [ ! -d reports ] || [ -z "$(ls -A reports/*.html 2>/dev/null)" ]; then
   echo "No reports to publish. Build some first:"
