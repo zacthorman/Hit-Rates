@@ -38,6 +38,11 @@ mkdir -p "$SRC/cache"
 QUEUED="$SRC/cache/publish.queued.d"
 waited=0
 until mkdir "$LOCKD" 2>/dev/null; do
+  # The holder's pid is in the lock: if that process is gone, the lock is stale.
+  if [ -f "$LOCKD/pid" ] && ! kill -0 "$(cat "$LOCKD/pid" 2>/dev/null)" 2>/dev/null; then
+    rm -rf "$LOCKD"
+    continue
+  fi
   if [ "$waited" -eq 0 ]; then
     # One waiting publish is enough: it starts after the running one and
     # picks up every change made meanwhile, so further ones step aside.
@@ -49,7 +54,7 @@ until mkdir "$LOCKD" 2>/dev/null; do
     fi
   fi
   if [ -n "$(find "$LOCKD" -maxdepth 0 -mmin +45 2>/dev/null)" ]; then
-    rmdir "$LOCKD" 2>/dev/null || true
+    rm -rf "$LOCKD"
     continue
   fi
   if [ "$waited" -ge 1500 ]; then
@@ -60,8 +65,9 @@ until mkdir "$LOCKD" 2>/dev/null; do
   sleep 15
   waited=$((waited + 15))
 done
+echo $$ > "$LOCKD/pid"
 rmdir "$QUEUED" 2>/dev/null || true
-trap 'rmdir "$LOCKD" 2>/dev/null || true; rm -f "$0" 2>/dev/null || true' EXIT
+trap 'rm -rf "$LOCKD" 2>/dev/null || true; rm -f "$0" 2>/dev/null || true' EXIT
 
 if [ ! -d reports ] || [ -z "$(ls -A reports/*.html 2>/dev/null)" ]; then
   echo "No reports to publish. Build some first:"
@@ -69,6 +75,7 @@ if [ ! -d reports ] || [ -z "$(ls -A reports/*.html 2>/dev/null)" ]; then
   exit 1
 fi
 
+if [ "${QUICK:-0}" = "1" ]; then echo "Quick publish (line-ups): no price fetching or settling."; fi
 REMOTE="$(git remote get-url origin)"
 echo "Publishing to ${REMOTE}"
 
@@ -90,6 +97,7 @@ else
   exit 1
 fi
 
+if [ "${QUICK:-0}" != "1" ]; then  # QUICK=1 (line-ups): no price fetching, the prices held are minutes old
 # Betfair Exchange prices for every fixture in the reports, before the
 # index and the picks are built, so they blend them in (market_prices.py).
 # Optional: without .betfair.env the site runs on the model alone.
@@ -128,6 +136,8 @@ fi
 # at 150 a day, locked out for a day on any refusal. The sharp reference for
 # the soft books' lines. `touch .pinnacle_off` switches it off.
 "$PY" pinnacle_prices.py || echo "  pinnacle prices not fetched (continuing)"
+fi
+
 # The backtested player model (fmodel_live.py): a chance for every starter in
 # the predicted or confirmed XI of each football fixture in the next week, at
 # 15 lines. Read by the pages and by pplog below. Reads the cache only, no
@@ -147,13 +157,19 @@ fi
 "$PY" gamestate_live.py || echo "  reports/gamestate.json not written (continuing)"
 # The Paddy Power record (pplog.py): settle what finished, log every line on
 # games not yet started with our chance at it, then the results page.
+if [ "${QUICK:-0}" != "1" ]; then  # QUICK=1: nothing settles mid-afternoon
 "$PY" pplog.py settle || echo "  pp log not settled (continuing)"
 # The models learn from every settled line (learn.py): fitted on older games,
 # used only where it beats the model on the newest unseen ones. LEARNING.md.
 "$PY" learn.py fit || echo "  learn: not refitted (continuing)"
+fi
+
 "$PY" pplog.py snapshot || echo "  pp log not updated (continuing)"
+if [ "${QUICK:-0}" != "1" ]; then  # QUICK=1
 "$PY" teamlog.py settle || echo "  team log not settled (continuing)"
 "$PY" value_books.py settle || echo "  value books not settled (continuing)"
+fi
+
 "$PY" teamlog.py snapshot || echo "  team log not updated (continuing)"
 # Each of those Paddy Power lines checked against Pinnacle's price for team lines, else Betfair's (sharp.py):
 # the soft-v-sharp check the value bots run, written into the same rows.
@@ -163,9 +179,13 @@ fi
 "$PY" value_books.py || echo "  value books not built (continuing)"
 "$PY" pplog.py page >/dev/null || echo "  pp-results.html not rebuilt (continuing)"
 # Fixed rules on trial (ruletrack.py): the record per rule, history v live.
+if [ "${QUICK:-0}" != "1" ]; then  # QUICK=1
 "$PY" ruletrack.py report >/dev/null || echo "  RULES_TRACK.md not rebuilt (continuing)"
+fi
+
 # Best selections (selections.py): log tonight's short list before kick-off, settle earlier ones.
 "$PY" selections.py log || echo "  selections not logged (continuing)"
+if [ "${QUICK:-0}" != "1" ]; then  # QUICK=1
 "$PY" papertrade.py --page >/dev/null || echo "  papertrade.html not rebuilt (continuing)"
 # Score the model against Betfair (exchange_eval.py): settle what finished,
 # refit the blend weights from the results, so the picks below use them.
@@ -173,12 +193,17 @@ if [ -f .betfair.env ]; then
   "$PY" exchange_eval.py settle || echo "  exchange log not settled (continuing)"
   "$PY" exchange_eval.py fit >/dev/null || echo "  exchange weights not refit (continuing)"
 fi
+fi
+
 "$PY" make_index.py
 # Then log every bet Betfair prices as it stands now, and render the page.
+if [ "${QUICK:-0}" != "1" ]; then  # QUICK=1
 if [ -f .betfair.env ]; then
   "$PY" exchange_eval.py log || echo "  exchange log not updated (continuing)"
 fi
 "$PY" exchange_eval.py page >/dev/null || echo "  market-check.html not rebuilt (continuing)"
+fi
+
 
 # The small page.
 #
@@ -189,7 +214,7 @@ fi
 "$PY" tonight.py --hours 8 || echo "  tonight.html not rebuilt (continuing)"
 
 STAGE="$(mktemp -d)"
-trap 'rm -rf "$STAGE"' EXIT
+trap 'rm -rf "$STAGE"; rm -rf "$LOCKD" 2>/dev/null || true; rm -f "$0" 2>/dev/null || true' EXIT
 
 cp index.html "$STAGE"/
 # `[ -f x ] && cp x y` is a trap under `set -e`: when the file is missing the
@@ -200,7 +225,10 @@ if [ -f tonight.html ]; then cp tonight.html "$STAGE"/; fi
 # the Best bets summary page that tracks how they actually did.
 "$PY" besttrack.py snapshot || echo "  best bets not snapshotted (continuing)"
 # And every line the model prices, not just the chosen ones (linelog.py).
+if [ "${QUICK:-0}" != "1" ]; then  # QUICK=1
 "$PY" linelog.py snapshot || echo "  line log not snapshotted (continuing)"
+fi
+
 "$PY" bets_page.py || echo "  best-bets-summary.html not rebuilt (continuing)"
 if [ -f best-bets-summary.html ]; then cp best-bets-summary.html "$STAGE"/; fi
 if [ -f market-check.html ]; then cp market-check.html "$STAGE"/; fi

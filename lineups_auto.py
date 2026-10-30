@@ -292,10 +292,11 @@ def main() -> None:
         # In the background (30 Oct 2026): a 10-minute publish here held up the
         # next 5-minute check, so a second game at the same kick-off waited for
         # its XI. publish.sh queues behind any publish already running.
-        PRICE_MARK.parent.mkdir(exist_ok=True)
-        PRICE_MARK.touch()          # that publish fetches prices too
         with open(ROOT / "cache" / "lineups_publish.log", "a") as out:
-            subprocess.Popen(["./publish.sh"], cwd=ROOT, start_new_session=True, stdout=out, stderr=out)
+            import os
+            # QUICK=1: no price fetching or settling, so the XI is live in about 3 minutes.
+            subprocess.Popen(["./publish.sh"], cwd=ROOT, start_new_session=True, stdout=out, stderr=out,
+                             env=dict(os.environ, QUICK="1"))
         say("publishing in the background (cache/lineups_publish.log)")
     else:
         background_prices()
