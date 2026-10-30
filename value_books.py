@@ -51,6 +51,8 @@ PIN_STATS = {"Corner kicks", "Yellow cards", "Goals"}
 MODEL_ONLY_MIN_P = 0.45     # stats no sharp book prices: our number alone
 MODEL_ONLY_EDGE = 0.10
 MODEL_ONLY_MAX_PRICE = 4.0
+MODEL_ONLY_MAX_EDGE = 0.25  # a bigger "edge" with no sharp check is our number being wrong
+PIN_SANITY = 1.30           # price x Pinnacle's chance above this: a mismatched line, dropped
 
 
 def _load(path):
@@ -217,12 +219,16 @@ def build(now: float | None = None) -> list[dict]:
             mp = model_team(tl, r)
             if mp is None or mp < MODEL_ONLY_MIN_P or mp * price < 1 + MODEL_ONLY_EDGE or price > MODEL_ONLY_MAX_PRICE:
                 continue
+            if mp * price > 1 + MODEL_ONLY_MAX_EDGE:
+                continue      # the whole market against our number by this much: trust the market
             item.update(team=team_side_name(r), scope=r["scope"], p=round(mp, 4), sharp=None,
                         sharp_src="model only")
         else:
             pin = pinnacle_team(r)
             if not pin or pin * price <= 1.0:
                 continue
+            if pin * price > PIN_SANITY:
+                continue      # 30%+ over Pinnacle is a mismatched line or side, not value
             mp = model_team(tl, r)
             if mp is None or mp * price < 1.0:
                 continue
@@ -234,7 +240,7 @@ def build(now: float | None = None) -> list[dict]:
     # one line per player: the biggest edge
     best = {}
     for b in bets:
-        k = (b["fid"], b.get("player") or f"{b.get('team')}|{b['stat']}|{b['line']}|{b['over']}")
+        k = (b["fid"], b.get("player") or f"{b.get('team')}|{b['stat']}|{b['over']}")
         if k not in best or b["edge"] > best[k]["edge"]:
             best[k] = b
     return sorted(best.values(), key=lambda b: (-(b.get("sharp_edge") or 0), -b["edge"]))

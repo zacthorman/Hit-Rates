@@ -369,12 +369,15 @@ def all_rows(market: dict) -> list[dict]:
             continue
         if line % 1 != 0.5:
             continue
+        if pstat and raw.endswith(" No"):
+            continue                      # "to be shown a card": only the Yes side is a bet we price
         over = not raw.endswith(" Under") and raw.lower() != "under"
         best_book = max(books, key=books.get)
         row = {"line": line, "over": over, "books": {k: round(v, 3) for k, v in books.items() if k in KEEP_BOOKS},
                "best": round(books[best_book], 3), "bestBook": best_book, "n": len(books)}
         if pstat:
-            player = raw[:-5].strip() if raw.endswith(" Over") else raw[:-6].strip() if raw.endswith(" Under") else raw
+            player = (raw[:-5].strip() if raw.endswith(" Over") else raw[:-6].strip() if raw.endswith(" Under")
+                      else raw[:-4].strip() if raw.endswith(" Yes") else raw)
             if not player:
                 continue
             row.update(player=player, key=norm(player), stat=pstat)
@@ -476,9 +479,10 @@ def lines_for(market: dict) -> list[dict]:
             continue
         b = bets.get(o.get("betId")) or {}
         raw = (b.get("betName") or "").strip()
-        if raw.endswith(" Under"):
+        if raw.endswith(" Under") or raw.endswith(" No"):
             continue
-        player = raw[:-5].strip() if raw.endswith(" Over") else raw
+        player = (raw[:-5].strip() if raw.endswith(" Over") else
+                  raw[:-4].strip() if raw.endswith(" Yes") else raw)
         if not player:
             continue
         if "{n}" in template:
@@ -659,6 +663,21 @@ def drop_ambiguous(lines: list[dict]) -> list[dict]:
 
 
 def run(window: float = WINDOW_HOURS, force: bool = False) -> int:
+    """One run at a time (30 Oct 2026: the odds job and a publish ran together,
+    and one moved a finished game's page while the other was reading it)."""
+    import fcntl
+    lock = ROOT / "cache" / "bet365.lock"
+    lock.parent.mkdir(exist_ok=True)
+    with open(lock, "w") as lf:
+        try:
+            fcntl.flock(lf, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            print("  bet365: another run is going, skipping")
+            return 0
+        return _run(window, force)
+
+
+def _run(window: float = WINDOW_HOURS, force: bool = False) -> int:
     if OFF.exists():
         print("  bet365: switched off (.bet365_off)")
         return 0
@@ -697,7 +716,10 @@ def run(window: float = WINDOW_HOURS, force: bool = False) -> int:
         ko_of = {e.get("page"): e.get("kickoff", 0) for e in held.values()}
         games = sorted(games, key=lambda p: (p.name in ko_of, ko_of.get(p.name, 0)))
         for page in games:
-            ids = list(page_markets(page.read_text(errors="ignore")))
+            try:
+                ids = list(page_markets(page.read_text(errors="ignore")))
+            except OSError:
+                continue                  # moved aside meanwhile
             if not ids:
                 continue
             prior = next((e for e in held.values() if e.get("page") == page.name), None)
