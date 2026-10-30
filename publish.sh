@@ -69,7 +69,13 @@ fi
 # kick-off), paced and capped per day by oddschecker_client.py. Needs
 # FlareSolverr only when the saved cookies have expired. `touch .bet365_off`
 # switches it off.
-"$PY" bet365_prices.py || echo "  bet365 prices not fetched (continuing)"
+# The odds job in lineups_auto.py runs this on its own through the day and
+# then publishes with SKIP_ODDS=1, so the same requests are not made twice.
+if [ "${SKIP_ODDS:-0}" = "1" ]; then
+  echo "  bet365: fetched just before this publish, not again"
+else
+  "$PY" bet365_prices.py || echo "  bet365 prices not fetched (continuing)"
+fi
 # Best bookmaker prices from Oddschecker pages saved by hand into
 # drop/oddschecker/ (oddschecker_import.py, IMPORTS.md). No requests; does
 # nothing when the folder is empty.

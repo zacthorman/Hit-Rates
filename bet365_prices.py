@@ -551,6 +551,33 @@ def team_lines_for(market: dict) -> list[dict]:
 
 # ------------------------------------------------------------ run
 
+def work_due(window: float = WINDOW_HOURS) -> int:
+    """How many things a run would do now, without a request: saved games never
+    priced or gone stale, games found but not saved, and competition pages due.
+    Read by lineups_auto.py to decide whether to run the odds job."""
+    if OFF.exists():
+        return 0
+    now = time.time()
+    held = {e.get("page"): e for e in (load_out().get("events") or {}).values()}
+    n = 0
+    for page in saved_games():
+        e = held.get(page.name)
+        if not e:
+            n += 1
+            continue
+        left = e.get("kickoff", 0) - now
+        if left <= 0 or left > window * 3600:
+            continue
+        fresh = FRESH_CLOSE if left < 3 * 3600 else FRESH_HOURS if left < 24 * 3600 else FRESH_FAR
+        if now - e.get("fetchedAt", 0) >= fresh * 3600:
+            n += 1
+    st = _dstate()
+    n += len(st.get("todo") or {})
+    comp = st.get("comp") or {}
+    n += sum(1 for p in COMPETITIONS if now - comp.get(p, 0) > COMP_FRESH_HOURS * 3600)
+    return n
+
+
 def load_out() -> dict:
     try:
         return json.loads(OUT.read_text())

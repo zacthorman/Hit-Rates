@@ -111,6 +111,53 @@ def prices_due() -> bool:
         return False
 
 
+# ------------------------------------------------------------ odds job
+# 30 Oct 2026: Oddschecker (Bet365, Paddy, Sky) on its own schedule. Every
+# ODDS_EVERY between ODDS_HOURS, if bet365_prices.work_due() says there is
+# anything to do (a game never priced, prices gone stale, games found but not
+# saved, a competition page due), run bet365_prices.py; if it fetched any game,
+# publish straight away (SKIP_ODDS=1, so publish.sh does not fetch them again),
+# so the site always carries the prices just grabbed.
+ODDS_EVERY = 40 * 60
+ODDS_HOURS = (8, 23)
+ODDS_MARK = ROOT / "cache" / ".odds_refresh"
+
+
+def odds_due() -> bool:
+    if not (ODDS_HOURS[0] <= datetime.now().hour < ODDS_HOURS[1]):
+        return False
+    if ODDS_MARK.exists() and time.time() - ODDS_MARK.stat().st_mtime < ODDS_EVERY:
+        return False
+    try:
+        import bet365_prices
+        return bet365_prices.work_due() > 0
+    except Exception as exc:  # noqa: BLE001
+        say(f"odds check failed ({type(exc).__name__}: {exc})")
+        return False
+
+
+def refresh_odds() -> None:
+    import os
+    import re
+    ODDS_MARK.parent.mkdir(exist_ok=True)
+    ODDS_MARK.touch()
+    r = subprocess.run([str(ROOT / ".venv" / "bin" / "python"), "bet365_prices.py"], cwd=ROOT,
+                       capture_output=True, text=True, timeout=15 * 60)
+    out = (r.stdout or "") + (r.stderr or "")
+    m = re.search(r"bet365: (\d+) game\(s\) fetched", out)
+    got = int(m.group(1)) if m else 0
+    say("odds job: " + " | ".join(l.strip() for l in out.splitlines() if "bet365:" in l)[-400:])
+    if not got:
+        return
+    PRICE_MARK.parent.mkdir(exist_ok=True)
+    PRICE_MARK.touch()
+    r = subprocess.run(["./publish.sh"], cwd=ROOT, capture_output=True, text=True,
+                       env=dict(os.environ, SKIP_ODDS="1"))
+    say(f"odds job: {got} game(s) priced, published" if r.returncode == 0
+        else f"odds job publish failed: {r.stderr[-300:]}")
+    notify_selections()
+
+
 def notify_selections() -> None:
     """A Mac notification for best selections not announced before."""
     try:
@@ -147,7 +194,9 @@ def main() -> None:
         return                      # the nightly build is running; next tick
     todo = due()
     if not todo:
-        if prices_due():
+        if odds_due():
+            refresh_odds()
+        elif prices_due():
             refresh_prices()
         else:
             notify_selections()     # e.g. after the morning build published
@@ -194,6 +243,8 @@ def main() -> None:
         PRICE_MARK.parent.mkdir(exist_ok=True)
         PRICE_MARK.touch()          # that publish fetched prices too
         notify_selections()
+    elif odds_due():
+        refresh_odds()
     elif prices_due():
         refresh_prices()
 

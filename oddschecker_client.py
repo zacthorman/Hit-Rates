@@ -246,7 +246,7 @@ class OddscheckerClient:
         if self.left() <= 0:
             raise BudgetExceeded("time budget spent")
         day = time.strftime("%Y-%m-%d")
-        cap = int(os.getenv("ODDSCHECKER_DAILY_CAP", "150"))
+        cap = int(os.getenv("ODDSCHECKER_DAILY_CAP", "300"))  # 30 Oct 2026: was 150; 3-day window, every game
         cfile = self.state_path.with_name("count.json")
         try:
             counts = json.loads(cfile.read_text())
