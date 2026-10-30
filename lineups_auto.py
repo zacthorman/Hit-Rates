@@ -94,7 +94,13 @@ def prices_due() -> bool:
         import paddypower_prices as pp
         st = pp.load_state()
         if pp.blocked(st):
-            return False
+            # Paddy paused: Betfair Sportsbook stands in (betfair_sb_prices.py).
+            from pathlib import Path as _P
+            bst = json.loads((_P(pp.ROOT) / "cache" / "betfair_sb_state.json").read_text()) \
+                if (_P(pp.ROOT) / "cache" / "betfair_sb_state.json").exists() else {}
+            if (_P(pp.ROOT) / ".betfair_sb_off").exists() or bst.get("lockoutUntil", 0) > time.time():
+                return False
+            return bool(pp.candidates(st))
         left = pp.MAX_PER_DAY - pp.count_today(st)
         todo = pp.candidates(st)
         far = [c for c in todo if c[0] - time.time() >= 3 * 3600]

@@ -145,6 +145,40 @@ def _verdict(row: dict, price: float):
     return teamlines.verdict(row["tl_market"], row.get("model_p"), price) if row.get("model_p") else None
 
 
+OC_ALL = ROOT / "reports" / "oddschecker_all.json"
+
+
+def _sources(pp: dict):
+    """Paddy Power's games, then the team lines only Oddschecker has (30 Oct 2026):
+    every team over/under Bet365, Paddy or Sky prices there, offsides, fouls,
+    throw-ins and the rest, so each gets our number and a settled record.
+    A line Paddy already prices is left to Paddy's row."""
+    pev = pp.get("events") or {}
+    for fid, ev in pev.items():
+        yield fid, ev
+    try:
+        oc = json.loads(OC_ALL.read_text()).get("events") or {}
+    except (OSError, ValueError):
+        return
+    for fid, ev in oc.items():
+        have = {(l["scope"], l["stat"], float(l["line"]), bool(l["over"]))
+                for l in ((pev.get(fid) or {}).get("team") or []) + ((pev.get(fid) or {}).get("goals") or [])}
+        team = []
+        for r in ev.get("rows") or []:
+            if r.get("player") or not r.get("scope"):
+                continue
+            if (r["scope"], r["stat"], float(r["line"]), bool(r["over"])) in have:
+                continue
+            books = r.get("books") or {}
+            book = next((b for b in ("B3", "PP", "SK") if books.get(b)), None)
+            if not book:
+                continue
+            team.append({"stat": r["stat"], "scope": r["scope"], "line": float(r["line"]), "over": bool(r["over"]),
+                         "price": books[book], "book": book, "market": "oddschecker"})
+        if team:
+            yield fid, {"team": team, "ppHome": ev.get("home") or ""}
+
+
 def snapshot(args=None) -> int:
     import playerlines
     import teamlines
@@ -161,7 +195,7 @@ def snapshot(args=None) -> int:
         for r in _read(path):
             existing[_key(r)] = (path, r)
     new_rows, updated = [], set()
-    for fid, ev in (pp.get("events") or {}).items():
+    for fid, ev in _sources(pp):
         if fid not in fixtures or not (ev.get("team") or ev.get("goals")):
             continue
         entry, meta = fixtures[fid]
@@ -197,6 +231,8 @@ def snapshot(args=None) -> int:
             mc = teamlines.model_chance(models, l["stat"], l["scope"], side_idx, l["line"], l["over"])
             row.update({"model_p": round(mc[0], 4) if mc and shown else None,
                         "model_mu": round(mc[1], 3) if mc else None})
+            if l.get("book"):
+                row["book"] = l["book"]
             snap = {"t": round(now), "price": l["price"], "verdict": _verdict(row, l["price"])}
             key = _key(row)
             if key in existing:

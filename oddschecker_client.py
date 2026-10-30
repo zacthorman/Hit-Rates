@@ -103,7 +103,7 @@ class OddscheckerClient:
         min_gap: float = MIN_GAP,
         jitter: float = JITTER,
         cache_ttl: float = 45,
-        batch_size: int = 10,
+        batch_size: int = 30,   # 30 Oct 2026: was 10; a game's team markets made it 5+ paced calls
         max_attempts: int = 3,
         state_path: Path = STATE_PATH,
         budget: float | None = BUDGET,

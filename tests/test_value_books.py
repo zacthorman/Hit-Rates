@@ -38,7 +38,7 @@ class AllBooks(unittest.TestCase):
         rows = b3.all_rows(MARKET_SHOTS)
         r = next(x for x in rows if x["line"] == 0.5)
         self.assertEqual((r["player"], r["stat"], r["over"]), ("Callum Wilson", "Shots", True))
-        self.assertEqual(r["books"], {"B3": 1.3, "PP": 1.36})
+        self.assertEqual(r["books"], {"B3": 1.3, "PP": 1.36, "SK": 1.4})
         self.assertEqual((r["best"], r["bestBook"], r["n"]), (1.4, "SK", 3))
         r2 = next(x for x in rows if x["line"] == 1.5)
         self.assertEqual(r2["books"], {})          # Bet365 suspended: not kept, Hill is still the best price
@@ -134,3 +134,18 @@ class Rules(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_model_only_team_stat(monkeypatch):
+    import value_books as vb
+    monkeypatch.setattr(vb, "candidates", lambda now: [
+        {"fid": "1", "kickoff": now + 3600, "game": "A v B", "home": "A", "away": "B",
+         "stat": "Offsides", "scope": "home", "line": 1.5, "over": True, "books": {"B3": 2.2}},
+        {"fid": "1", "kickoff": now + 3600, "game": "A v B", "home": "A", "away": "B",
+         "stat": "Throw-ins", "scope": "match", "line": 40.5, "over": True, "books": {"B3": 1.9}}])
+    probs = {"Offsides": 0.55, "Throw-ins": 0.55}
+    monkeypatch.setattr(vb, "model_team", lambda tl, r: probs[r["stat"]])
+    monkeypatch.setattr(vb, "team_side_name", lambda r: "A")
+    bets = vb.build(0)
+    assert [b["stat"] for b in bets] == ["Offsides"]          # 0.55 x 1.9 = 1.045, under the 10% bar
+    assert bets[0]["sharp_src"] == "model only" and bets[0]["sharp"] is None

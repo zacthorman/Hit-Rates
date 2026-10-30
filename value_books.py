@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Value at Paddy Power or Bet365: one list, the same rules for both books.
+"""Value at Paddy Power, Bet365 or Sky Bet: one list, the same rules for every book.
+
+Sky Bet added 30 Oct 2026: owned by Flutter like Paddy Power but priced by its own
+traders, so it is a separate chance of a long price, read from the same Oddschecker reply.
 
     python value_books.py            # build reports/value_books.json and log what qualifies (publish.sh)
     python value_books.py settle     # settle logged bets that have finished (publish.sh)
@@ -43,8 +46,11 @@ PLAYER_MIN_P = 0.50
 PLAYER_MIN_EDGE = 0.05
 SHARP_FLOOR = 0.98          # Betfair's chance x price must be at least this
 MAX_PRICE = 6.0
-BOOK_NAME = {"B3": "Bet365", "PP": "Paddy Power"}
+BOOK_NAME = {"B3": "Bet365", "PP": "Paddy Power", "SK": "Sky Bet"}
 PIN_STATS = {"Corner kicks", "Yellow cards", "Goals"}
+MODEL_ONLY_MIN_P = 0.45     # stats no sharp book prices: our number alone
+MODEL_ONLY_EDGE = 0.10
+MODEL_ONLY_MAX_PRICE = 4.0
 
 
 def _load(path):
@@ -204,9 +210,16 @@ def build(now: float | None = None) -> list[dict]:
             if bf is not None and bf * price < SHARP_FLOOR:
                 continue
             item.update(player=name, oc_player=r["player"], p=round(p, 4), sharp=bf, sharp_src="betfair" if bf else None)
-        else:
-            if r["stat"] not in PIN_STATS:
+        elif r["stat"] not in PIN_STATS:
+            # Offsides, shots, fouls, throw-ins and the rest (30 Oct 2026): no
+            # sharp book prices them, so it is our number alone, with a wider
+            # margin, and shown apart as unproven until the record says otherwise.
+            mp = model_team(tl, r)
+            if mp is None or mp < MODEL_ONLY_MIN_P or mp * price < 1 + MODEL_ONLY_EDGE or price > MODEL_ONLY_MAX_PRICE:
                 continue
+            item.update(team=team_side_name(r), scope=r["scope"], p=round(mp, 4), sharp=None,
+                        sharp_src="model only")
+        else:
             pin = pinnacle_team(r)
             if not pin or pin * price <= 1.0:
                 continue
@@ -320,7 +333,8 @@ def record() -> dict:
             continue
         price = r["first"]["price"]
         pr = price - 1 if r["result"] == "win" else -1.0
-        for k in ("all", "player" if r.get("player") else "team", BOOK_NAME.get(r["first"]["book"], r["first"]["book"])):
+        kind = "player" if r.get("player") else "model only" if r.get("sharp_src") == "model only" else "team"
+        for k in ("all", kind, BOOK_NAME.get(r["first"]["book"], r["first"]["book"]), f"stat:{r['stat']}"):
             g = by.setdefault(k, {"n": 0, "w": 0, "profit": 0.0, "said": 0.0})
             g["n"] += 1; g["w"] += r["result"] == "win"; g["profit"] += pr; g["said"] += r["first"]["p"]
     return by
@@ -335,7 +349,7 @@ def box(now: float, until: float) -> str:
     so_far = (f"{rec['n']} settled, {rec['w']} won (the model said {rec['said']:.0f}), "
               f"{rec['profit']:+.1f} pts at level stakes" if rec else "nothing settled yet: logging started 30 Oct 2026")
     if not bets:
-        return (f"<p class='none'>Nothing at Paddy Power or Bet365 clears the bar in this window.</p>"
+        return (f"<p class='none'>Nothing at Paddy Power, Bet365 or Sky Bet clears the bar in this window.</p>"
                 f"<p class='sub'>Record so far: {so_far}.</p>")
     rows = []
     for b in bets[:12]:
@@ -345,7 +359,8 @@ def box(now: float, until: float) -> str:
         sel = (f"{who} {int(b['line'] + 0.5)}+ {stat}" if b.get("player") and b["over"]
                else f"{who} {'over' if b['over'] else 'under'} {b['line']} {stat}")
         other = " &middot; ".join(f"{BOOK_NAME.get(k, k)} {v:.2f}" for k, v in b["other"].items())
-        sharp = (f"Pinnacle {1 / b['sharp']:.2f}" if b.get("sharp_src") == "pinnacle"
+        sharp = ("model only, no sharp price" if b.get("sharp_src") == "model only"
+                 else f"Pinnacle {1 / b['sharp']:.2f}" if b.get("sharp_src") == "pinnacle"
                  else f"Betfair {1 / b['sharp']:.2f}" if b.get("sharp") else "no sharp price")
         rows.append(
             f"<tr><td>{esc(sel)}<div class='sub'>{ko} &middot; {esc(b['game'])}"
@@ -354,9 +369,10 @@ def box(now: float, until: float) -> str:
             f"<td class='n'>{1 / b['p']:.2f}</td><td class='n'>{b['edge'] * 100:+.0f}%</td></tr>")
     return ("<table><thead><tr><th>Bet</th><th class='n'>Best price</th><th class='n'>Fair</th>"
             "<th class='n'>Edge</th></tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
-            "<p class='sub'>The better of Paddy Power and Bet365 at the last publish, against our model's fair price. "
+            "<p class='sub'>The best of Paddy Power, Bet365 and Sky Bet at the last publish, against our model's fair price. "
             "Player lines need the model at 50%+ and 5%+ over the price, and Betfair not saying the price is short; "
-            "corners, cards and goals need the price to beat Pinnacle and the model to agree. One line per player. "
+            "corners, cards and goals need the price to beat Pinnacle and the model to agree; other team stats (offsides, shots, fouls, "
+            "throw-ins and so on) have no sharp price, so they need our number 10%+ over the price and are unproven. One line per player. "
             f"Check the price before betting. Record so far: {so_far}.</p>")
 
 

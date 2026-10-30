@@ -253,7 +253,7 @@ def basketball_lines(page: dict) -> list[dict]:
             else:
                 who, side, line = sel, "OVER", int(ladder[0].group(1)) - 0.5
             out.append({"market": stat, "type": mtype, "player": who, "key": _norm(who),
-                        "selection": "", "side": side, "line": float(line), "price": round(price, 3)})
+                        "selection": "", "side": side, "line": float(line), "price": round(price, 3), "mid": m.get("marketId"), "sid": r.get("selectionId")})
     return out
 
 
@@ -289,7 +289,7 @@ def player_lines(page: dict) -> list[dict]:
                         "player": who, "key": _norm(who),
                         "selection": sel.replace(who, "").strip() if sep else "",
                         "side": (r.get("result") or {}).get("type"),
-                        "line": r.get("handicap") or None, "price": round(price, 3)})
+                        "line": r.get("handicap") or None, "price": round(price, 3), "mid": m.get("marketId"), "sid": r.get("selectionId")})
     return out
 
 
@@ -331,7 +331,7 @@ def basketball_team_lines(page: dict) -> list[dict]:
             except (KeyError, TypeError):
                 continue
             out.append({"stat": "Points", "scope": scope, "line": float(r["handicap"]),
-                        "over": side == "OVER", "price": round(price, 3), "market": m.get("marketName", "")})
+                        "over": side == "OVER", "price": round(price, 3), "mid": m.get("marketId"), "sid": r.get("selectionId"), "market": m.get("marketName", "")})
     return out
 
 
@@ -363,7 +363,7 @@ def goal_lines(page: dict) -> list[dict]:
             except (KeyError, TypeError):
                 continue
             out.append({"stat": "Goals", "scope": "match", "line": line, "over": sel.startswith("Over"),
-                        "price": round(price, 3), "market": m.get("marketName", "")})
+                        "price": round(price, 3), "mid": m.get("marketId"), "sid": r.get("selectionId"), "market": m.get("marketName", "")})
     return out
 
 
@@ -417,7 +417,7 @@ def team_lines(page: dict) -> list[dict]:
                     scope = g.group(1).lower() if kind == "side" else "match"
                     line = x + 0.5
                 out.append({"stat": stat, "scope": scope, "line": line, "over": over,
-                            "price": round(price, 3), "market": m.get("marketName", "")})
+                            "price": round(price, 3), "mid": m.get("marketId"), "sid": r.get("selectionId"), "market": m.get("marketName", "")})
             break
     return out
 

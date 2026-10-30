@@ -89,7 +89,7 @@ def build(data: dict) -> dict:
                  "l": l.get("line"), "p": l["price"]})
         team = e.get("team") or []
         if by or team:
-            events.setdefault(fid, {})["pp"] = {"at": e.get("fetchedAt"), "players": by, "team": team,
+            events.setdefault(fid, {})["pp"] = {"at": max(e.get("fetchedAt") or 0, e.get("pricesAt") or 0) or None, "via": e.get("via"), "players": by, "team": team,
                                                 "goals": e.get("goals") or [],
                                                 "home": e.get("ppHome") or "", "away": e.get("ppAway") or ""}
     # Pinnacle's margin-free chances for corners, cards and goals (pinnacle_prices.py),

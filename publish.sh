@@ -60,6 +60,9 @@ fi
 # day, nothing refetched inside 4 hours, and a 24 hour stop on the first
 # refusal. `touch .paddypower_off` switches it off completely.
 "$PY" paddypower_prices.py || echo "  paddypower prices not fetched (continuing)"
+# Betfair Sportsbook stands in when Paddy Power is paused (same platform, same
+# prices). Does nothing while Paddy is fetching. `touch .betfair_sb_off` stops it.
+"$PY" betfair_sb_prices.py || echo "  betfair sb prices not fetched (continuing)"
 # Bet365's player prices via Oddschecker (bet365_prices.py), for games whose
 # match page was saved with `python bet365_prices.py --add URL`. One batched
 # request per game, refetched at most every 4 hours (45 minutes close to
