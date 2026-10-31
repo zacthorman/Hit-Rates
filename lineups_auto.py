@@ -8,8 +8,16 @@ has its confirmed line-up it is never fetched again.
 
 Big games only: the leagues in update.json plus the Nations League, the NFL
 (inactives) and MLB (batting orders and starting pitchers). Darts has no
-line-up to pull, so darts.html is skipped. A run never overlaps the nightly
-build, and never publishes unless something actually changed.
+line-up to pull, so darts.html is skipped. It never publishes unless
+something actually changed.
+
+Line-ups run even while the nightly build is going (31 Oct 2026). They used
+to wait for it, and on 31 Oct the build re-published Thursday's leftovers
+for five hours and then rebuilt the leagues, so every 3pm Saturday XI was
+skipped. While the build runs only the background price jobs are held back;
+the line-ups themselves are fetched and published as usual (publish.sh
+queues the publishes). If the build later rewrites a report before kick-off
+without the XI, the next tick inside the window puts it back.
 """
 from __future__ import annotations
 
@@ -245,12 +253,12 @@ def main() -> None:
     if "--job" in sys.argv:
         run_job(sys.argv[sys.argv.index("--job") + 1])
         return
-    if (ROOT / ".update.lock").exists():
-        return                      # the nightly build is running; next tick
+    building = (ROOT / ".update.lock").exists()   # the nightly build is running
     todo = due()
     if not todo:
-        background_prices()
-        notify_selections()         # e.g. after the morning build published
+        if not building:            # price jobs wait for the build; line-ups never do
+            background_prices()
+            notify_selections()     # e.g. after the morning build published
         return
     import update                   # for the FlareSolverr health check
     update.say = say
@@ -297,8 +305,9 @@ def main() -> None:
             # QUICK=1: no price fetching or settling, so the XI is live in about 3 minutes.
             subprocess.Popen(["./publish.sh"], cwd=ROOT, start_new_session=True, stdout=out, stderr=out,
                              env=dict(os.environ, QUICK="1"))
-        say("publishing in the background (cache/lineups_publish.log)")
-    else:
+        say("publishing in the background (cache/lineups_publish.log)"
+            + (" while the nightly build runs" if building else ""))
+    elif not building:
         background_prices()
 
 
