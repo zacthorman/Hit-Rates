@@ -44,6 +44,30 @@ pplog, so their history is in sample like the rest:
                         range -15% to +34%); the favourite's starters in the
                         same games lost 15.8%.
 
+Added 31 Oct 2026 (live from 31 Oct, 12:00 UTC), chosen on 20 to 30 Oct of
+pplog (research in the 31 Oct session), so their history is in sample too:
+
+  nba_alt_drift_miss    NBA alt over where he cleared it in 8+ of his last
+                        10, he MISSED this same line in his previous logged
+                        game, and Paddy's first price is now 5%+ longer than
+                        it was for that game, 1.15 to 3.00. Paddy overreacts
+                        to one bad night. History: 30 of 30 won, +44.4%,
+                        over 18 games; it will not stay perfect. The same drift after a WIN lost 7.2%.
+  nba_alt_short_perfect the nba_alt_perfect record (10 of his last 10) at
+                        1.15 to 1.24, below that rule's band. An earlier cut
+                        of the log said 20 of 21, +13.8%; through this rule's
+                        own pick (one line per player, stat and game) it is
+                        41 of 48, +1.8% (90% range -9% to +12%). On trial to
+                        settle which.
+  nba_main_day_drift    NBA main line, either side, whose price lengthened
+                        8%+ between the first log and the last price before
+                        tip-off; scored at that LAST price, since it can only
+                        be bet late. History 128 bets, 57% won, +14.8% (90%
+                        range +2% to +29%).
+  control_nba_main_steam the mirror: main lines cut 8%+ on the day, scored
+                        at the last price. History -23.8%. Following
+                        Paddy's own price cuts should keep losing.
+
 One bet per player, stat and game in each rule (the line priced nearest
 evens), £1 at the first price logged. Also scored at the last price before
 kick-off, and closing line value: how far the price moved after the bet was
@@ -77,13 +101,22 @@ RECEIVING = {"Receiving yards", "Receiving receptions"}
 SHOW = 8  # bets listed per rule on the page, most model edge first
 
 # Rules added later start their own live record from when they were added.
+_OCT31 = datetime.datetime(2026, 10, 31, 12, 0, tzinfo=datetime.timezone.utc).timestamp()
 _OCT28 = datetime.datetime(2026, 10, 28, 12, 0, tzinfo=datetime.timezone.utc).timestamp()
 RULE_START = {
     "learned_value": datetime.datetime(2026, 10, 26, 12, 0, tzinfo=datetime.timezone.utc).timestamp(),
     "nba_alt_perfect": _OCT28,
     "control_nba_alt_nine": _OCT28,
     "nba_under_blowout": _OCT28,
+    "nba_alt_drift_miss": _OCT31,
+    "nba_alt_short_perfect": _OCT31,
+    "nba_main_day_drift": _OCT31,
+    "control_nba_main_steam": _OCT31,
 }
+# Rules that can only be bet near tip-off are scored at the last price.
+SCORE_AT = {"nba_main_day_drift": "last", "control_nba_main_steam": "last"}
+DRIFT_MISS_MIN = 0.05    # first price at least 5% longer than his previous game's
+DAY_DRIFT_MIN = 0.08     # last price at least 8% longer than the first
 BLOWOUT_MARGIN = 12.0
 SCORING = {"Points", "Points rebounds and assists", "Points and rebounds", "Points and assists"}
 
@@ -95,8 +128,12 @@ RULES = {
     "learned_value": "Learned value: the corrected chance (learn.py) 3 to 15% over Paddy's price, 3.0 or shorter",
     "nba_alt_perfect": "NBA alt over, cleared in all of his last 10, 1.25 to 2.00",
     "nba_under_blowout": "NBA under, main line, underdog starter, projected 12+ blowout, 1.60 to 2.20",
+    "nba_alt_drift_miss": "NBA alt over, 8+ of his last 10, missed it last game, price 5%+ longer, 1.15 to 3.00",
+    "nba_alt_short_perfect": "NBA alt over, cleared in all of his last 10, 1.15 to 1.24",
+    "nba_main_day_drift": "NBA main line, either side, price lengthened 8%+ on the day (at the last price)",
     "control_nba_over_main": "Control: NBA over, main line, 1.60 to 2.20 (should lose)",
     "control_nba_alt_nine": "Control: NBA alt over, 9 of his last 10, 1.25 to 2.00",
+    "control_nba_main_steam": "Control: NBA main line cut 8%+ on the day, at the last price (should lose)",
 }
 
 
@@ -153,10 +190,25 @@ def qualifying(rows: list[dict]) -> dict[str, list[dict]]:
             prices[(r["event_id"], r["player"], r["stat"], r["line"])][bool(r["over"])] = f["price"]
 
     def add(rule, r):
-        k = (r["event_id"], pplog._norm(r["player"]), r["stat"])
+        snap = SCORE_AT.get(rule, "first")
+        k = (r["event_id"], pplog._norm(r["player"]), r["stat"], bool(r["over"]) if snap == "last" else None)
         cur = picks[rule].get(k)
-        if cur is None or abs(r["first"]["price"] - 2.0) < abs(cur["first"]["price"] - 2.0):
+        if cur is None or abs(r[snap]["price"] - 2.0) < abs(cur[snap]["price"] - 2.0):
             picks[rule][k] = r
+
+    # Each player's earlier games on the same line and side, for nba_alt_drift_miss.
+    seen = defaultdict(list)
+    for r in rows:
+        if r.get("sport") == NBA and (r.get("first") or {}).get("price"):
+            seen[(pplog._norm(r["player"]), r["stat"], r["line"], bool(r["over"]))].append(r)
+    for v in seen.values():
+        v.sort(key=lambda x: x.get("kickoff") or 0)
+
+    def previous(r):
+        """His last logged game on this line and side, at least six hours before this one."""
+        prior = [x for x in seen.get((pplog._norm(r["player"]), r["stat"], r["line"], bool(r["over"])), [])
+                 if (x.get("kickoff") or 0) < (r.get("kickoff") or 0) - 6 * 3600]
+        return prior[-1] if prior else None
 
     for r in rows:
         f = r.get("first") or {}
@@ -179,6 +231,22 @@ def qualifying(rows: list[dict]) -> dict[str, list[dict]]:
                 add("nba_alt_perfect", r)
             elif r.get("k10") == 9:
                 add("control_nba_alt_nine", r)
+        if r["sport"] == NBA and r["over"] and not main and r.get("n10") == 10:
+            if r.get("k10") == 10 and 1.15 <= price < 1.25:
+                add("nba_alt_short_perfect", r)
+            if (r.get("k10") or 0) >= 8 and 1.15 <= price <= 3.0:
+                prev = previous(r)
+                if (prev is not None and prev.get("result") == "lose"
+                        and price >= prev["first"]["price"] * (1 + DRIFT_MISS_MIN)):
+                    r["_drift"] = price / prev["first"]["price"] - 1
+                    add("nba_alt_drift_miss", r)
+        last = (r.get("last") or {}).get("price")
+        if r["sport"] == NBA and main and last and 1.5 <= last <= 2.6:
+            if last >= price * (1 + DAY_DRIFT_MIN):
+                r["_day_drift"] = last / price - 1
+                add("nba_main_day_drift", r)
+            elif last <= price * (1 - DAY_DRIFT_MIN):
+                add("control_nba_main_steam", r)
         if (r["sport"] == NBA and main and not r["over"] and 1.6 <= price <= 2.2
                 and r["stat"] in SCORING):
             try:
@@ -226,11 +294,11 @@ def qualifying(rows: list[dict]) -> dict[str, list[dict]]:
     return {k: list(v.values()) for k, v in picks.items()}
 
 
-def _score(bets: list[dict]) -> dict:
+def _score(bets: list[dict], snap: str = "first") -> dict:
     done = [b for b in bets if b.get("result") in ("win", "lose")]
     if not done:
         return {"n": 0}
-    pf = [(b["first"]["price"] - 1) if b["result"] == "win" else -1.0 for b in done]
+    pf = [(b[snap]["price"] - 1) if b["result"] == "win" else -1.0 for b in done]
     pl = [(b["last"]["price"] - 1) if b["result"] == "win" else -1.0 for b in done]
     clv = [b["first"]["price"] / b["last"]["price"] - 1 for b in done if b["last"].get("price")]
     games = defaultdict(list)
@@ -266,7 +334,7 @@ def report(args=None) -> str:
         start = RULE_START.get(rule, FROZEN)
         for name, part in (("History", [b for b in bets if b["kickoff"] < start]),
                            ("Live", [b for b in bets if b["kickoff"] >= start])):
-            s = _score(part)
+            s = _score(part, SCORE_AT.get(rule, "first"))
             if not s["n"]:
                 lines.append(f"| {label} | {name} | 0 | | | | | | | | |")
                 continue
@@ -348,7 +416,8 @@ def box(now: float, until: float) -> str:
     for rule, label in RULES.items():
         if rule.startswith("control"):
             continue
-        live = _score([b for b in allq.get(rule, []) if b["kickoff"] >= RULE_START.get(rule, FROZEN)])
+        live = _score([b for b in allq.get(rule, []) if b["kickoff"] >= RULE_START.get(rule, FROZEN)],
+                      SCORE_AT.get(rule, "first"))
         rec = (f"live {live['n']} bets, {live['games']} games, {live['roi']:+.0%}, beat close {live['beat_close']:.0%}"
                if live["n"] else "no live results yet")
         bets = q.get(rule, [])

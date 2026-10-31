@@ -62,5 +62,52 @@ class NewRules(unittest.TestCase):
             self.assertIn(r, ruletrack.RULES)
 
 
+class DriftRules(unittest.TestCase):
+    """The rules added on 31 Oct 2026."""
+
+    def setUp(self):
+        ruletrack._hist_model = lambda: {}
+
+    def game(self, price, k10=9, result=None, kickoff=1793235600, event=1, over=True, last=None):
+        r = row("A", "Rebounds", 3.5, over, price, k10=k10, event=event, result=result)
+        r["kickoff"] = kickoff
+        if last is not None:
+            r["last"] = {"price": last, "chance": 0.5, "t": 0}
+        return r
+
+    def test_drift_after_a_miss(self):
+        earlier = self.game(1.20, result="lose", kickoff=1793149200, event=0)
+        now = self.game(1.33, k10=9, event=1)
+        q = ruletrack.qualifying([earlier, now])
+        self.assertEqual([r["event_id"] for r in q.get("nba_alt_drift_miss", [])], [1])
+
+    def test_no_drift_rule_after_a_win_or_without_a_drift(self):
+        for prev_result, now_price in (("win", 1.33), ("lose", 1.22)):
+            earlier = self.game(1.20, result=prev_result, kickoff=1793149200, event=0)
+            now = self.game(now_price, k10=9, event=1)
+            self.assertFalse(ruletrack.qualifying([earlier, now]).get("nba_alt_drift_miss"))
+
+    def test_drift_needs_eight_of_ten(self):
+        earlier = self.game(1.20, result="lose", kickoff=1793149200, event=0)
+        now = self.game(1.40, k10=7, event=1)
+        self.assertFalse(ruletrack.qualifying([earlier, now]).get("nba_alt_drift_miss"))
+
+    def test_short_perfect_band(self):
+        q = ruletrack.qualifying([row("A", "Points", 9.5, True, 1.20), row("B", "Points", 9.5, True, 1.12)])
+        self.assertEqual([r["player"] for r in q.get("nba_alt_short_perfect", [])], ["A"])
+
+    def test_day_drift_and_steam_on_main_lines(self):
+        o = row("A", "Points", 19.5, True, 1.80); o["last"] = {"price": 2.00, "chance": 0.5, "t": 0}
+        u = row("A", "Points", 19.5, False, 2.00); u["last"] = {"price": 1.80, "chance": 0.5, "t": 0}
+        q = ruletrack.qualifying([o, u])
+        self.assertEqual([r["over"] for r in q.get("nba_main_day_drift", [])], [True])
+        self.assertEqual([r["over"] for r in q.get("control_nba_main_steam", [])], [False])
+
+    def test_day_drift_scored_at_the_last_price(self):
+        o = row("A", "Points", 19.5, True, 1.80, result="win"); o["last"] = {"price": 2.00, "chance": 0.5, "t": 0}
+        s = ruletrack._score([o], ruletrack.SCORE_AT["nba_main_day_drift"])
+        self.assertAlmostEqual(s["profit"], 1.0)
+
+
 if __name__ == "__main__":
     unittest.main()
