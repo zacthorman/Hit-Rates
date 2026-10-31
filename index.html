@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Football hit rates</title>
+<style>
+:root {
+  color-scheme: light;
+  --surface: #fcfcfb; --page: #f9f9f7; --raised: #ffffff;
+  --text: #0b0b0b; --muted: #77756f;
+  --border: rgba(11,11,11,0.10); --grid: #e8e7e1;
+  --link: #2a78d6; --accent: #0b0b0b; --on-accent: #ffffff;
+  --today: #c2410c;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --surface: #1a1a19; --page: #0d0d0d; --raised: #232322;
+    --text: #ffffff; --muted: #8f8d87;
+    --border: rgba(255,255,255,0.12); --grid: #2c2c2a;
+    --link: #5ba3f5; --accent: #ffffff; --on-accent: #0b0b0b;
+    --today: #fb923c;
+  }
+}
+* { box-sizing: border-box; }
+
+/* Top bar: the site name and one tab per sport, full width. The sport is the
+   first choice anyone makes on this page, so it gets the top of the screen
+   and everything else hangs off it. */
+.topbar { position: sticky; top: 0; z-index: 20; background: var(--page);
+          border-bottom: 1px solid var(--border); }
+.topbar-in { max-width: 1240px; margin: 0 auto; padding: 0 18px;
+             display: flex; align-items: center; gap: 22px; min-height: 56px; }
+.brand { font-size: 19px; font-weight: 700; letter-spacing: -0.01em;
+         white-space: nowrap; margin: 0; }
+.sports { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none;
+          align-self: stretch; }
+.sports::-webkit-scrollbar { display: none; }
+.sports button { border: 0; background: none; padding: 0 14px; font: inherit;
+                 font-weight: 600; font-size: 0.92rem; color: var(--muted);
+                 cursor: pointer; white-space: nowrap;
+                 border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.sports button:hover { color: var(--text); }
+.sports button[aria-pressed="true"] { color: var(--text);
+                                      border-bottom-color: var(--accent); }
+.sports button .n { font-weight: 500; opacity: 0.5; margin-left: 4px; font-size: 0.8rem; }
+
+/* Two columns on a wide screen: fixtures in the middle, picks in a rail on
+   the right that scrolls on its own. Below 1100px the rail becomes a drawer
+   behind a tab on the right edge, so the fixture list keeps the full width. */
+.layout { max-width: 1240px; margin: 0 auto; padding: 18px 18px 60px;
+          display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 28px;
+          align-items: start; }
+.main { min-width: 0; max-width: 780px; width: 100%; justify-self: center; }
+.rail { position: sticky; top: 74px; max-height: calc(100vh - 92px);
+        overflow-y: auto; scrollbar-width: thin; padding-bottom: 12px; }
+.rail-head { display: flex; align-items: center; justify-content: space-between;
+             margin: 0 0 10px; }
+.rail-title { font-size: 0.72rem; letter-spacing: 0.07em; text-transform: uppercase;
+              color: var(--muted); font-weight: 650; margin: 0; }
+.quick { display: grid; gap: 6px; margin: 0 0 16px; }
+.quick a { display: flex; justify-content: space-between; align-items: center;
+           background: var(--raised); border: 1px solid var(--border);
+           border-radius: 9px; padding: 10px 13px; color: var(--text);
+           text-decoration: none; font-weight: 600; font-size: 0.88rem; }
+.quick a:hover { border-color: var(--muted); }
+.quick a span { color: var(--muted); font-weight: 500; font-size: 0.8rem; }
+.fold { background: none; border: 0; padding: 0; font: inherit; cursor: pointer;
+        display: flex; align-items: center; gap: 7px; color: var(--text);
+        font-weight: 650; font-size: 0.95rem; }
+.fold::before { content: ""; width: 0; height: 0;
+  border-left: 5px solid currentColor; border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent; transition: transform 0.15s ease; }
+.fold[aria-expanded="true"]::before { transform: rotate(90deg); }
+.fold small { color: var(--muted); font-weight: 500; font-size: 0.8rem; }
+.drawer-close { display: none; }
+.side-tab { display: none; }
+.scrim { display: none; }
+
+@media (max-width: 1099px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .rail { position: fixed; top: 0; right: 0; bottom: 0; width: min(380px, 88vw);
+          max-height: none; z-index: 40; background: var(--page);
+          border-left: 1px solid var(--border); padding: 18px 16px 40px;
+          transform: translateX(105%); transition: transform 0.2s ease;
+          box-shadow: -8px 0 24px rgba(0,0,0,0.12); }
+  body.drawer-open .rail { transform: none; }
+  .scrim { display: block; position: fixed; inset: 0; z-index: 30;
+           background: rgba(0,0,0,0.35); opacity: 0; pointer-events: none;
+           transition: opacity 0.2s ease; }
+  body.drawer-open .scrim { opacity: 1; pointer-events: auto; }
+  .drawer-close { display: inline-flex; border: 1px solid var(--border);
+                  background: var(--raised); color: var(--text); border-radius: 7px;
+                  font: inherit; font-size: 0.8rem; padding: 4px 10px; cursor: pointer; }
+  /* The tab that opens it: a strip on the right edge, always in reach. */
+  .side-tab { display: block; position: fixed; right: 0; top: 50%; z-index: 25;
+              transform: translateY(-50%); writing-mode: vertical-rl;
+              background: var(--accent); color: var(--on-accent); border: 0;
+              border-radius: 8px 0 0 8px; padding: 14px 7px; font: inherit;
+              font-size: 0.8rem; font-weight: 650; letter-spacing: 0.04em;
+              cursor: pointer; box-shadow: -2px 2px 10px rgba(0,0,0,0.15); }
+}
+@media (max-width: 560px) {
+  .topbar-in { gap: 12px; padding: 0 12px; }
+  .brand { font-size: 17px; }
+  .sports button { padding: 0 10px; font-size: 0.86rem; }
+  .layout { padding: 12px 12px 60px; }
+}
+
+.picks { display: grid; gap: 10px; margin: 0 0 12px; }
+.pick { background: var(--raised); border: 1px solid var(--border);
+        border-radius: 10px; padding: 13px 15px; font-size: 0.9rem; }
+.pick h2 { font-size: 0.68rem; letter-spacing: 0.07em; text-transform: uppercase;
+           color: var(--muted); margin: 0 0 8px; font-weight: 600; }
+.pick .sel { font-size: 0.97rem; font-weight: 600; line-height: 1.35; }
+.pick .where { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
+.pick .odds { margin-top: 8px; }
+.pick .str { color: var(--muted); font-size: 0.78rem; line-height: 1.45; margin-top: 6px; }
+.pick .str b { color: var(--text); font-weight: 600; }
+.pick .odds b { font-size: 1.05rem; }
+.pick ol { margin: 7px 0 0; padding-left: 17px; font-size: 0.85rem; line-height: 1.45; }
+.pick details { margin-top: 9px; }
+.pick summary { color: var(--muted); font-size: 0.78rem; cursor: pointer;
+                list-style: none; }
+.pick summary::-webkit-details-marker { display: none; }
+/* Drawn rather than typed. The chevron characters rendered as a missing-glyph
+   box on a machine without the font, and a marker that might not exist is
+   worse than one made of borders, which always does. */
+.pick summary::before { content: ""; display: inline-block; width: 0; height: 0;
+  border-left: 4px solid currentColor; border-top: 3.5px solid transparent;
+  border-bottom: 3.5px solid transparent; margin-right: 6px;
+  transform-origin: 30% 50%; transition: transform 0.15s ease; }
+.pick details[open] summary::before { transform: rotate(90deg); }
+.pick details p { color: var(--muted); font-size: 0.78rem; line-height: 1.45;
+                  margin: 6px 0 0; }
+.pick .flag { color: var(--today); font-weight: 600; }
+/* Pick cards, v2: the same anatomy for every card. A label and the price on
+   one line, the selection, the fixture, three numbers in chips, one short
+   strength line, and everything else behind the fold. */
+.pk-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.pk-top h2 { margin: 0; }
+.pk-price { font-size: 1.15rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.pk-price small { font-size: 0.68rem; font-weight: 600; color: var(--muted); letter-spacing: 0.05em;
+                  text-transform: uppercase; margin-right: 5px; }
+.pk-chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 10px; }
+.pk-chip { background: var(--page); border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; min-width: 0; }
+.pk-chip span { display: block; font-size: 0.64rem; color: var(--muted); text-transform: uppercase;
+                letter-spacing: 0.06em; }
+.pk-chip b { display: block; font-size: 0.95rem; font-variant-numeric: tabular-nums; white-space: nowrap;
+             overflow: hidden; text-overflow: ellipsis; }
+.pk-str { color: var(--muted); font-size: 0.78rem; margin-top: 8px; line-height: 1.4; }
+.pk-str b { color: var(--text); font-weight: 600; }
+.pick .pk-legs { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 0;
+                 border: 0; background: none; border-radius: 0; }
+.pk-leg { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; padding: 8px 0;
+          border-top: 1px solid var(--border); }
+.pk-leg:first-child { border-top: 0; padding-top: 2px; }
+.pk-leg .t { font-size: 0.86rem; font-weight: 600; line-height: 1.3; }
+.pk-leg .p { font-size: 0.9rem; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+.pk-leg .p small { font-size: 0.62rem; font-weight: 600; color: var(--muted); letter-spacing: 0.04em; }
+.pk-leg .m { grid-column: 1 / -1; color: var(--muted); font-size: 0.74rem; line-height: 1.35; }
+.pk-learn { color: var(--muted); font-size: 0.72rem; margin: 2px 0 10px; }
+.pk-pos { color: var(--hit, #2e9d5b); font-weight: 650; }
+.pk-why { margin-top: 8px; display: grid; gap: 3px; }
+.pk-why div { font-size: 0.76rem; line-height: 1.4; padding-left: 16px; position: relative; }
+.pk-why .y::before { content: "+"; position: absolute; left: 2px; color: var(--hit, #2e9d5b); font-weight: 700; }
+.pk-why .n::before { content: "−"; position: absolute; left: 2px; color: var(--today, #c4622d); font-weight: 700; }
+.pk-why .n { color: var(--muted); }
+.pick ol.pk-steps { margin: 6px 0 0; padding-left: 18px; color: var(--muted); font-size: 0.76rem; line-height: 1.45; }
+.pk-val { font-size: 0.8rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.pick.none { color: var(--muted); }
+body {
+  margin: 0; padding: 0;
+  background: var(--page); color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 15px; line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+.sub { color: var(--muted); font-size: 14px; margin: 0 0 20px; }
+
+/* Filters. Sticky, because on a phone the list is long and the filter is
+   the thing you reach for after scrolling, not before. Sits under the top
+   bar rather than behind it. */
+.filters {
+  position: sticky; top: 56px; z-index: 5;
+  background: var(--page); padding: 10px 0 12px;
+  margin: 0 0 6px; border-bottom: 1px solid var(--border);
+  display: flex; gap: 7px; flex-wrap: wrap; align-items: center;
+}
+.chip {
+  appearance: none; cursor: pointer;
+  background: var(--raised); color: var(--text);
+  border: 1px solid var(--border); border-radius: 999px;
+  padding: 7px 13px; font: inherit; font-size: 13.5px; font-weight: 550;
+  white-space: nowrap;
+}
+.chip:hover { border-color: var(--muted); }
+.chip[aria-pressed="true"] {
+  background: var(--accent); color: var(--on-accent); border-color: var(--accent);
+}
+.chip .n { opacity: 0.55; margin-left: 5px; font-weight: 500; }
+.search {
+  flex: 1 1 150px; min-width: 130px;
+  background: var(--raised); color: var(--text);
+  border: 1px solid var(--border); border-radius: 999px;
+  padding: 7px 13px; font: inherit; font-size: 13.5px;
+}
+.search::placeholder { color: var(--muted); }
+
+.day {
+  margin: 22px 0 8px; font-size: 13px; font-weight: 640;
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted);
+}
+.day.soon { color: var(--today); }
+
+ul { list-style: none; margin: 0; padding: 0;
+     background: var(--surface); border: 1px solid var(--border);
+     border-radius: 11px; overflow: hidden; }
+li { border-bottom: 1px solid var(--grid); }
+li:last-child { border-bottom: 0; }
+li a {
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 13px 16px; color: inherit; text-decoration: none;
+}
+li a:hover { background: var(--raised); }
+.time {
+  flex: 0 0 46px; font-variant-numeric: tabular-nums;
+  font-weight: 620; font-size: 14.5px; color: var(--text);
+}
+.match { flex: 1 1 auto; min-width: 0; }
+.teams { font-weight: 560; color: var(--link); }
+.meta { display: block; color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.tag {
+  display: inline-block; font-size: 11px; font-weight: 600;
+  padding: 1px 6px; border-radius: 5px; margin-left: 6px;
+  border: 1px solid var(--border); color: var(--muted);
+}
+li.played { opacity: 0.5; }
+
+.empty { padding: 26px 16px; color: var(--muted); text-align: center; }
+footer { margin-top: 26px; color: var(--muted); font-size: 12.5px; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-in">
+    <h1 class="brand">Hit rates</h1>
+    <nav class="sports" id="sports" aria-label="Sport"></nav>
+  </div>
+</header>
+
+<button type="button" class="side-tab" id="side-tab"
+        aria-controls="rail" aria-expanded="false">Best picks</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <main class="main">
+    <div class="filters" id="filters"></div>
+    <div id="list"></div>
+    <footer id="footer"></footer>
+  </main>
+
+  <aside class="rail" id="rail" aria-label="Best picks">
+    <div class="rail-head">
+      <p class="rail-title">Best picks</p>
+      <button type="button" class="drawer-close" id="drawer-close">Close</button>
+    </div>
+    <div class="quick">
+      <a href="tonight.html">Tonight <span>next 8 hours &rarr;</span></a>
+      <a href="best-bets-summary.html">Best bets summary <span>all sports &rarr;</span></a>
+      <a href="market-check.html">Market check <span>model v Betfair &rarr;</span></a>
+      <a href="pp-results.html">Paddy Power results <span>what hit, what paid &rarr;</span></a>
+    </div>
+    <div class="rail-head">
+      <button type="button" class="fold" id="picks-btn" aria-expanded="true"
+              aria-controls="picks">Picks of the week <small id="picks-sport"></small></button>
+    </div>
+    
+    <div id="picks"></div>
+  </aside>
+</div>
+
+<script>
+const DATA = {"fixtures":[{"id":16434076,"home":"FC Bayern M\u00fcnchen","away":"Borussia Dortmund","competition":"Bundesliga","kickoff":1793467800,"report":"bundesliga.html","sport":"football","players":true,"adjusted":true},{"id":16421087,"home":"Real Betis","away":"M\u00e1laga CF","competition":"LaLiga","kickoff":1793467800,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":16363910,"home":"Tottenham Hotspur","away":"Crystal Palace","competition":"Premier League","kickoff":1793467800,"report":"premier-league.html","sport":"football","players":true,"adjusted":true},{"id":15171749,"home":"Columbus Crew","away":"DC United","competition":"MLS","kickoff":1793469600,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15171740,"home":"FC Cincinnati","away":"Philadelphia Union","competition":"MLS","kickoff":1793469600,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15171748,"home":"New York City FC","away":"CF Montr\u00e9al","competition":"MLS","kickoff":1793469600,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15238227,"home":"Coritiba","away":"Vit\u00f3ria","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1793473200,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15171750,"home":"Sporting Kansas City","away":"FC Dallas","competition":"MLS","kickoff":1793473200,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15171752,"home":"St.Louis City","away":"San Diego FC","competition":"MLS","kickoff":1793473200,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":16824781,"home":"Utah Jazz","away":"Portland Trail Blazers","competition":"NBA","kickoff":1793473200,"report":"nba.html","sport":"basketball","players":true,"adjusted":true},{"id":16285075,"home":"AC Milan","away":"Inter","competition":"Serie A","kickoff":1793475900,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16311001,"home":"Troyes","away":"Le Mans","competition":"Ligue 1","kickoff":1793475900,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16363901,"home":"Aston Villa","away":"Fulham","competition":"Premier League","kickoff":1793476800,"report":"premier-league.html","sport":"football","players":true,"adjusted":true},{"id":16421091,"home":"FC Barcelona","away":"Deportivo Alav\u00e9s","competition":"LaLiga","kickoff":1793476800,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":15171753,"home":"LA Galaxy","away":"Austin FC","competition":"MLS","kickoff":1793480400,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15171754,"home":"San Jose Earthquakes","away":"Real Salt Lake","competition":"MLS","kickoff":1793480400,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":16824783,"home":"Charlotte Hornets","away":"Philadelphia 76ers","competition":"NBA","kickoff":1793484000,"report":"nba.html","sport":"basketball","players":true,"adjusted":true},{"id":16824784,"home":"New Orleans Pelicans","away":"Atlanta Hawks","competition":"NBA","kickoff":1793487600,"report":"nba.html","sport":"basketball","players":true,"adjusted":true},{"id":16824785,"home":"Memphis Grizzlies","away":"Sacramento Kings","competition":"NBA","kickoff":1793491200,"report":"nba.html","sport":"basketball","players":true,"adjusted":true},{"id":16824787,"home":"Milwaukee Bucks","away":"Cleveland Cavaliers","competition":"NBA","kickoff":1793491200,"report":"nba.html","sport":"basketball","players":true,"adjusted":true},{"id":16824786,"home":"San Antonio Spurs","away":"Minnesota Timberwolves","competition":"NBA","kickoff":1793491200,"report":"nba.html","sport":"basketball","players":true,"adjusted":true},{"id":16824788,"home":"Houston Rockets","away":"Oklahoma City Thunder","competition":"NBA","kickoff":1793493000,"report":"nba.html","sport":"basketball","players":true,"adjusted":true},{"id":15171751,"home":"Colorado Rapids","away":"Chicago Fire","competition":"MLS","kickoff":1793496600,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":16285078,"home":"Como","away":"Venezia","competition":"Serie A","kickoff":1793532600,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16421093,"home":"Getafe","away":"Sevilla","competition":"LaLiga","kickoff":1793538000,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":16285074,"home":"Frosinone","away":"Torino","competition":"Serie A","kickoff":1793541600,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16285073,"home":"Lazio","away":"Cagliari","competition":"Serie A","kickoff":1793541600,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16311000,"home":"RC Strasbourg","away":"Auxerre","competition":"Ligue 1","kickoff":1793541600,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16434084,"home":"1. FC Union Berlin","away":"1. FC K\u00f6ln","competition":"Bundesliga","kickoff":1793543400,"report":"bundesliga.html","sport":"football","players":true,"adjusted":true},{"id":16421098,"home":"Real Racing Club","away":"Real Madrid","competition":"LaLiga","kickoff":1793546100,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":16310996,"home":"Olympique Lyonnais","away":"Angers","competition":"Ligue 1","kickoff":1793549700,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16310999,"home":"Paris FC","away":"AS Monaco","competition":"Ligue 1","kickoff":1793549700,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16434082,"home":"Eintracht Frankfurt","away":"Hamburger SV","competition":"Bundesliga","kickoff":1793550600,"report":"bundesliga.html","sport":"football","players":true,"adjusted":true},{"id":16363907,"home":"Liverpool FC","away":"Arsenal","competition":"Premier League","kickoff":1793550600,"report":"premier-league.html","sport":"football","players":true,"adjusted":true},{"id":16285072,"home":"Lecce","away":"Genoa","competition":"Serie A","kickoff":1793552400,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16421092,"home":"Elche","away":"Valencia","competition":"LaLiga","kickoff":1793554200,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":16183751,"home":"Buffalo Bills","away":"Baltimore Ravens","competition":"NFL","kickoff":1793556000,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16183772,"home":"Cincinnati Bengals","away":"Tennessee Titans","competition":"NFL","kickoff":1793556000,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16183748,"home":"Dallas Cowboys","away":"Arizona Cardinals","competition":"NFL","kickoff":1793556000,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16183754,"home":"Detroit Lions","away":"Minnesota Vikings","competition":"NFL","kickoff":1793556000,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16183755,"home":"Jacksonville Jaguars","away":"Indianapolis Colts","competition":"NFL","kickoff":1793556000,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16183756,"home":"New York Jets","away":"Las Vegas Raiders","competition":"NFL","kickoff":1793556000,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16183753,"home":"Pittsburgh Steelers","away":"Cleveland Browns","competition":"NFL","kickoff":1793556000,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16183759,"home":"Tampa Bay Buccaneers","away":"Atlanta Falcons","competition":"NFL","kickoff":1793556000,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16285067,"home":"Juventus","away":"SSC Napoli","competition":"Serie A","kickoff":1793562300,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16310997,"home":"Olympique de Marseille","away":"Toulouse","competition":"Ligue 1","kickoff":1793562300,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16421088,"home":"Athletic Club","away":"Real Sociedad","competition":"LaLiga","kickoff":1793563200,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":16824789,"home":"Orlando Magic","away":"Boston Celtics","competition":"NBA","kickoff":1793565000,"report":"nba.html","sport":"basketball","players":true,"adjusted":true},{"id":15171756,"home":"Vancouver Whitecaps","away":"Seattle Sounders FC","competition":"MLS","kickoff":1793565000,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":16183760,"home":"Los Angeles Rams","away":"Los Angeles Chargers","competition":"NFL","kickoff":1793567100,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16183763,"home":"Denver Broncos","away":"Kansas City Chiefs","competition":"NFL","kickoff":1793568300,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16183761,"home":"Miami Dolphins","away":"New England Patriots","competition":"NFL","kickoff":1793568300,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":15171755,"home":"Atlanta United","away":"Toronto FC","competition":"MLS","kickoff":1793568600,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":15171747,"home":"Nashville SC","away":"New York Red Bulls","competition":"MLS","kickoff":1793568600,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":16824795,"home":"Indiana Pacers","away":"Brooklyn Nets","competition":"NBA","kickoff":1793570400,"report":"nba.html","sport":"basketball","players":true,"adjusted":true},{"id":15171757,"home":"New England Revolution","away":"Inter Miami CF","competition":"MLS","kickoff":1793577600,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":16183757,"home":"Washington Commanders","away":"Philadelphia Eagles","competition":"NFL","kickoff":1793582400,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16824797,"home":"Golden State Warriors","away":"Los Angeles Clippers","competition":"NBA","kickoff":1793583000,"report":"nba.html","sport":"basketball","players":true,"adjusted":true},{"id":15171758,"home":"Los Angeles FC","away":"Minnesota United","competition":"MLS","kickoff":1793583000,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":16824790,"home":"Los Angeles Lakers","away":"Toronto Raptors","competition":"NBA","kickoff":1793584800,"report":"nba.html","sport":"basketball","players":true,"adjusted":false},{"id":15171760,"home":"Portland Timbers","away":"Houston Dynamo","competition":"MLS","kickoff":1793587500,"report":"mls.html","sport":"football","players":true,"adjusted":true},{"id":16285070,"home":"Sassuolo","away":"Fiorentina","competition":"Serie A","kickoff":1793640600,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16285071,"home":"Atalanta","away":"Parma","competition":"Serie A","kickoff":1793648700,"report":"serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16310995,"home":"Lorient","away":"Stade Brestois","competition":"Ligue 1","kickoff":1793648700,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16421095,"home":"Deportivo de A Coru\u00f1a","away":"Osasuna","competition":"LaLiga","kickoff":1793649600,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":16363909,"home":"Newcastle United","away":"Everton","competition":"Premier League","kickoff":1793649600,"report":"premier-league.html","sport":"football","players":true,"adjusted":true},{"id":15238234,"home":"Red Bull Bragantino","away":"Santos","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1793660400,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16183758,"home":"Seattle Seahawks","away":"Chicago Bears","competition":"NFL","kickoff":1793668500,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16391595,"home":"Blackburn Rovers","away":"Stoke City","competition":"Championship","kickoff":1793735100,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":16391596,"home":"Derby County","away":"Norwich City","competition":"Championship","kickoff":1793735100,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":16391598,"home":"Preston North End","away":"Sheffield United","competition":"Championship","kickoff":1793735100,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":16391600,"home":"Watford","away":"Lincoln City","competition":"Championship","kickoff":1793735100,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":16391594,"home":"Birmingham City","away":"Millwall","competition":"Championship","kickoff":1793736000,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":15238238,"home":"Chapecoense","away":"Mirassol","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1793745000,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15238232,"home":"Internacional","away":"Coritiba","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1793752200,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16391605,"home":"Wrexham","away":"Middlesbrough","competition":"Championship","kickoff":1793821500,"report":"championship.html","sport":"football","players":true,"adjusted":true},{"id":15238239,"home":"Athletico","away":"Vasco da Gama","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1793831400,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15238230,"home":"Flamengo","away":"Gr\u00eamio","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1793831400,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15238231,"home":"Botafogo","away":"Atl\u00e9tico Mineiro","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1793838600,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15238229,"home":"S\u00e3o Paulo","away":"Corinthians","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1793838600,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15238233,"home":"Palmeiras","away":"Remo","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1793917800,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15238235,"home":"Cruzeiro","away":"Bahia","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1793925000,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":15238237,"home":"Vit\u00f3ria","away":"Fluminense","competition":"Campeonato Brasileiro S\u00e9rie A","kickoff":1794006000,"report":"campeonato-brasileiro-serie-a.html","sport":"football","players":true,"adjusted":true},{"id":16434091,"home":"1. FSV Mainz 05","away":"FC Bayern M\u00fcnchen","competition":"Bundesliga","kickoff":1794061800,"report":"bundesliga.html","sport":"football","players":true,"adjusted":true},{"id":16434086,"home":"Borussia Dortmund","away":"SV 07 Elversberg","competition":"Bundesliga","kickoff":1794061800,"report":"bundesliga.html","sport":"football","players":true,"adjusted":true},{"id":16421108,"home":"Espanyol","away":"Deportivo de A Coru\u00f1a","competition":"LaLiga","kickoff":1794064500,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":16311008,"home":"Paris Saint-Germain","away":"Troyes","competition":"Ligue 1","kickoff":1794080700,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16311009,"home":"Stade Rennais","away":"Lille","competition":"Ligue 1","kickoff":1794146400,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16311002,"home":"Angers","away":"Nice","competition":"Ligue 1","kickoff":1794154500,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16311005,"home":"Le Havre","away":"Lorient","competition":"Ligue 1","kickoff":1794154500,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16421104,"home":"Celta Vigo","away":"Levante UD","competition":"LaLiga","kickoff":1794159000,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":16421110,"home":"Villarreal","away":"Getafe","competition":"LaLiga","kickoff":1794159000,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":16183764,"home":"Carolina Panthers","away":"Denver Broncos","competition":"NFL","kickoff":1794160800,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16183769,"home":"New Orleans Saints","away":"Cleveland Browns","competition":"NFL","kickoff":1794160800,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16183775,"home":"Philadelphia Eagles","away":"New York Giants","competition":"NFL","kickoff":1794160800,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16311007,"home":"RC Lens","away":"Olympique de Marseille","competition":"Ligue 1","kickoff":1794167100,"report":"ligue-1.html","sport":"football","players":true,"adjusted":true},{"id":16421101,"home":"Atl\u00e9tico Madrid","away":"FC Barcelona","competition":"LaLiga","kickoff":1794168000,"report":"laliga.html","sport":"football","players":true,"adjusted":true},{"id":16183774,"home":"Los Angeles Chargers","away":"Houston Texans","competition":"NFL","kickoff":1794171900,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16184625,"home":"New England Patriots","away":"Green Bay Packers","competition":"NFL","kickoff":1794173100,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true},{"id":16183776,"home":"San Francisco 49ers","away":"Las Vegas Raiders","competition":"NFL","kickoff":1794173100,"report":"nfl.html","sport":"american-football","players":true,"adjusted":true}],"competitions":["Bundesliga","Campeonato Brasileiro S\u00e9rie A","Championship","LaLiga","Ligue 1","MLS","NBA","NFL","Premier League","Serie A"],"built":"31 Oct 2026, 17:23 UTC","stamp":"1793458945","picks":{"days":7,"floor":2.0,"sports":[{"matches":null,"sport":"football","label":"Football","fixtures":62,"legs":2396,"single":{"team":"Deportivo Alav\u00e9s","period":"ALL","stat":"Shots","line":1.5,"over":true,"hits":18,"total":26,"fair":1.6153846153846154,"venue":null,"player":"Lucas Boy\u00e9","position":"F","chance":0.619,"chanceBase":0.619,"avg":2.46,"last":[4.0,0.0,1.0,4.0,2.0],"book":{"name":"Bet365","price":2.0},"fairRecord":1.4444444444444444,"alt":true,"threshold":2.0,"why":{"for":["Landed in 18 of Lucas Boy\u00e9's last 26 appearances (69%).","Last 5: 4, 0, 1, 4, 2 (3 of 5 cleared 1.5).","Averages 2.5 against a line of 1.5."],"against":[],"steps":["Betfair's prices imply FC Barcelona 3.6 goals and Deportivo Alav\u00e9s 0.8.","Player records overstate (the site's settled player picks land below what they said), so 18/26 is pulled towards evens: 62%."]},"fixture":{"id":16421091,"home":"FC Barcelona","away":"Deportivo Alav\u00e9s","competition":"LaLiga","kickoff":1793476800,"report":"laliga.html"},"need":1.9995445643037086,"source":"record","evidence":0.5001138848576876,"crossLeague":false,"confirmed":true,"adjusted":0.2597151032863769,"z":4.178641801674157,"consideredGroups":1705},"value":{"legs":[],"quoted":28,"positive":0,"commission":0.05,"min":0.03,"show":null},"double":{"legs":[{"team":"Austin FC","period":"ALL","stat":"Shots","line":0.5,"over":true,"hits":20,"total":27,"fair":1.5357142857142856,"venue":null,"player":"Joseph Rosales","position":"M","chance":0.6512,"chanceBase":0.6512,"avg":1.19,"last":[0.0,2.0,1.0,4.0,0.0],"book":{"name":"Bet365","price":1.571},"fairRecord":1.35,"alt":true,"threshold":1.0,"why":{"for":["Landed in 20 of Joseph Rosales's last 27 appearances (74%).","Last 5: 0, 2, 1, 4, 0 (3 of 5 cleared 0.5).","Averages 1.2 against a line of 0.5."],"against":[],"steps":["Betfair's prices imply LA Galaxy 2.5 goals and Austin FC 1.1.","Player records overstate (the site's settled player picks land below what they said), so 20/27 is pulled towards evens: 65%."]},"fixture":{"id":15171753,"home":"LA Galaxy","away":"Austin FC","competition":"MLS","kickoff":1793480400,"report":"mls.html"},"need":1.8076295474360853,"source":"record","evidence":0.5532106959738432,"crossLeague":false},{"team":"Stade Brestois","period":"ALL","stat":"Shots on target","line":0.5,"over":true,"hits":14,"total":18,"fair":1.5454545454545454,"venue":null,"player":"Path\u00e9 Mboup","position":"M","chance":0.6471,"chanceBase":0.6471,"avg":1.0,"last":[1.0,2.0,3.0,1.0,1.0],"book":{"name":"Bet365","price":1.615},"fairRecord":1.2857142857142856,"alt":true,"threshold":1.0,"why":{"for":["Landed in 14 of Path\u00e9 Mboup's last 18 appearances (78%).","Last 5: 1, 2, 3, 1, 1 (5 of 5 cleared 0.5).","Averages 1 against a line of 0.5."],"against":[],"steps":["Betfair's prices imply Lorient 1.3 goals and Stade Brestois 1.2.","Player records overstate (the site's settled player picks land below what they said), so 14/18 is pulled towards evens: 65%."]},"fixture":{"id":16310995,"home":"Lorient","away":"Stade Brestois","competition":"Ligue 1","kickoff":1793648700,"report":"ligue-1.html"},"need":1.8253180301883756,"source":"record","evidence":0.547849735476945,"crossLeague":false}],"combined":2.537165,"joint":0.42134062927496585,"priced":true,"combinedFair":2.373376623376623,"sameGame":false},"banker":{"team":"Deportivo Alav\u00e9s","period":"ALL","stat":"Shots","line":0.5,"over":true,"hits":20,"total":23,"fair":1.3928571428571428,"venue":null,"player":"\u00c1ngel P\u00e9rez","position":"D","chance":0.7179,"chanceBase":0.7179,"avg":1.17,"last":[1.0,2.0,2.0,3.0,2.0],"book":{"name":"Paddy Power","price":1.667},"fairRecord":1.1500000000000001,"alt":true,"threshold":1.0,"why":{"for":["Landed in 20 of \u00c1ngel P\u00e9rez's last 23 appearances (87%).","Last 5: 1, 2, 2, 3, 2 (5 of 5 cleared 0.5).","Averages 1.2 against a line of 0.5."],"against":[],"steps":["Betfair's prices imply FC Barcelona 3.6 goals and Deportivo Alav\u00e9s 0.8.","Player records overstate (the site's settled player picks land below what they said), so 20/23 is pulled towards evens: 72%."]},"fixture":{"id":16421091,"home":"FC Barcelona","away":"Deportivo Alav\u00e9s","competition":"LaLiga","kickoff":1793476800,"report":"laliga.html"},"need":1.4733594070837253,"source":"record","evidence":0.678721020269818,"crossLeague":false,"adjusted":0.31367459959490923,"priced":true,"price":1.667},"acca":{"legs":[{"team":"Deportivo Alav\u00e9s","period":"ALL","stat":"Shots","line":0.5,"over":true,"hits":20,"total":23,"fair":1.3928571428571428,"venue":null,"player":"\u00c1ngel P\u00e9rez","position":"D","chance":0.7179,"chanceBase":0.7179,"avg":1.17,"last":[1.0,2.0,2.0,3.0,2.0],"book":{"name":"Paddy Power","price":1.667},"fairRecord":1.1500000000000001,"alt":true,"threshold":1.0,"why":{"for":["Landed in 20 of \u00c1ngel P\u00e9rez's last 23 appearances (87%).","Last 5: 1, 2, 2, 3, 2 (5 of 5 cleared 0.5).","Averages 1.2 against a line of 0.5."],"against":[],"steps":["Betfair's prices imply FC Barcelona 3.6 goals and Deportivo Alav\u00e9s 0.8.","Player records overstate (the site's settled player picks land below what they said), so 20/23 is pulled towards evens: 72%."]},"fixture":{"id":16421091,"home":"FC Barcelona","away":"Deportivo Alav\u00e9s","competition":"LaLiga","kickoff":1793476800,"report":"laliga.html"},"need":1.4733594070837253,"source":"record","evidence":0.678721020269818,"crossLeague":false},{"team":"Osasuna","period":"ALL","stat":"Shots on target","line":0.5,"over":true,"hits":25,"total":33,"fair":1.4848484848484849,"venue":null,"player":"Ante Budimir","position":"F","chance":0.6735,"chanceBase":0.6735,"avg":1.3,"last":[5.0,0.0,1.0,2.0,1.0],"book":{"name":"Bet365","price":1.667},"fairRecord":1.32,"alt":true,"threshold":1.0,"why":{"for":["Landed in 25 of Ante Budimir's last 33 appearances (76%).","Last 5: 5, 0, 1, 2, 1 (4 of 5 cleared 0.5).","Averages 1.3 against a line of 0.5."],"against":[],"steps":["Betfair's prices imply Deportivo de A Coru\u00f1a 1.4 goals and Osasuna 1.0.","Player records overstate (the site's settled player picks land below what they said), so 25/33 is pulled towards evens: 67%."]},"fixture":{"id":16421095,"home":"Deportivo de A Coru\u00f1a","away":"Osasuna","competition":"LaLiga","kickoff":1793649600,"report":"laliga.html"},"need":1.6956322677314373,"source":"record","evidence":0.5897505131450972,"crossLeague":false},{"team":"Austin FC","period":"ALL","stat":"Shots","line":0.5,"over":true,"hits":20,"total":27,"fair":1.5357142857142856,"venue":null,"player":"Joseph Rosales","position":"M","chance":0.6512,"chanceBase":0.6512,"avg":1.19,"last":[0.0,2.0,1.0,4.0,0.0],"book":{"name":"Bet365","price":1.571},"fairRecord":1.35,"alt":true,"threshold":1.0,"why":{"for":["Landed in 20 of Joseph Rosales's last 27 appearances (74%).","Last 5: 0, 2, 1, 4, 0 (3 of 5 cleared 0.5).","Averages 1.2 against a line of 0.5."],"against":[],"steps":["Betfair's prices imply LA Galaxy 2.5 goals and Austin FC 1.1.","Player records overstate (the site's settled player picks land below what they said), so 20/27 is pulled towards evens: 65%."]},"fixture":{"id":15171753,"home":"LA Galaxy","away":"Austin FC","competition":"MLS","kickoff":1793480400,"report":"mls.html"},"need":1.8076295474360853,"source":"record","evidence":0.5532106959738432,"crossLeague":false}],"combined":4.365634619,"combinedFair":3.176136363636363,"priced":true,"target":3.0,"short":false},"builder":{"fixture":{"id":16310995,"home":"Lorient","away":"Stade Brestois","competition":"Ligue 1","kickoff":1793648700,"report":"ligue-1.html"},"team":"Stade Brestois","venue":"away","legs":[{"team":"Stade Brestois","period":"ALL","stat":"Fouls","line":9.5,"over":true,"hits":16,"total":19,"fair":1.2212525137321149,"venue":"away","player":null,"position":null,"chance":0.8188,"avg":13.74,"last":[12.0,12.0,18.0,13.0,20.0],"fairRecord":1.2286179820219116,"strength":{"team":1561,"opp":1664,"teamLabel":"average","oppLabel":"good","gap":-19,"win":0.204,"draw":0.154,"loss":0.642,"eloGap":-103,"marketGap":37,"marketWeight":0.6,"marketWin":0.318,"marketDraw":0.299,"marketLoss":0.384,"similar":0.823,"similarHits":11.9,"similarN":14.2,"eloExpected":13.73,"projection":14.95},"why":{"for":["Landed in 16 of Stade Brestois's last 19 games away (84%).","Last 5: 12, 12, 18, 13, 20 (5 of 5 cleared 9.5).","Averages 13.7 against a line of 9.5.","Against opposition of a similar standing: 11.9 of 14.2 weighted games (84%).","For a gap like tonight's, strength expects 13.7 fouls."],"against":[],"steps":["Betfair has Stade Brestois 32% to win where the ratings said 20%, so the strength gap used (-19) leans 60% on the market's.","Betfair's prices imply Lorient 1.3 goals and Stade Brestois 1.2.","Record alone 81%; blended with the similar-opposition record, the strength expectation and the projection: 82%."]}},{"team":"Stade Brestois","period":"ALL","stat":"Shots on target","line":3.5,"over":false,"hits":13,"total":19,"fair":1.8386769242783578,"venue":"away","player":null,"position":null,"chance":0.5439,"avg":3.11,"last":[2.0,7.0,9.0,2.0,2.0],"fairRecord":1.6786601017672662,"strength":{"team":1561,"opp":1664,"teamLabel":"average","oppLabel":"good","gap":-19,"win":0.204,"draw":0.154,"loss":0.642,"eloGap":-103,"marketGap":37,"marketWeight":0.6,"marketWin":0.318,"marketDraw":0.299,"marketLoss":0.384,"similar":0.63,"similarHits":8.9,"similarN":14.2,"eloExpected":3.16,"projection":3.32},"why":{"for":["Landed in 13 of Stade Brestois's last 19 games away (68%).","Last 5: 2, 7, 9, 2, 2 (3 of 5 stayed under 3.5).","Averages 3.1 against a line of 3.5.","Against opposition of a similar standing: 8.9 of 14.2 weighted games (63%).","For a gap like tonight's, strength expects 3.2 shots on target."],"against":[],"steps":["Betfair has Stade Brestois 32% to win where the ratings said 20%, so the strength gap used (-19) leans 60% on the market's.","Betfair's prices imply Lorient 1.3 goals and Stade Brestois 1.2.","Record alone 60%; blended with the similar-opposition record, the strength expectation and the projection: 54%."]}},{"team":"Stade Brestois","period":"ALL","stat":"Total shots","line":10.5,"over":false,"hits":13,"total":19,"fair":1.8491833293493158,"venue":"away","player":null,"position":null,"chance":0.5408,"avg":9.58,"last":[3.0,26.0,19.0,8.0,8.0],"fairRecord":1.6664354541140085,"strength":{"team":1561,"opp":1664,"teamLabel":"average","oppLabel":"good","gap":-19,"win":0.204,"draw":0.154,"loss":0.642,"eloGap":-103,"marketGap":37,"marketWeight":0.6,"marketWin":0.318,"marketDraw":0.299,"marketLoss":0.384,"similar":0.62,"similarHits":8.7,"similarN":14.2,"eloExpected":9.75,"projection":9.93},"why":{"for":["Landed in 13 of Stade Brestois's last 19 games away (68%).","Last 5: 3, 26, 19, 8, 8 (3 of 5 stayed under 10.5).","Against opposition of a similar standing: 8.7 of 14.2 weighted games (61%).","For a gap like tonight's, strength expects 9.8 total shots.","The league projection says 9.9."],"against":[],"steps":["Betfair has Stade Brestois 32% to win where the ratings said 20%, so the strength gap used (-19) leans 60% on the market's.","Betfair's prices imply Lorient 1.3 goals and Stade Brestois 1.2.","Record alone 60%; blended with the similar-opposition record, the strength expectation and the projection: 54%."]}}],"hits":9,"total":19,"fair":2.111111111111111,"need":3.659049010086421,"naive":4.152320484262694,"evidence":0.2732950548744854,"crossLeague":false},"parlay":{"fixture":{"id":16421108,"home":"Espanyol","away":"Deportivo de A Coru\u00f1a","competition":"LaLiga","kickoff":1794064500,"report":"laliga.html"},"legs":[{"team":"Espanyol","player":"Edu Exp\u00f3sito","position":"F","stat":"Fouls","threshold":1.0,"alt":true,"line":0.5,"over":true,"hits":24,"total":34,"fair":1.4166666666666665,"label":"Edu Exp\u00f3sito 1+ fouls"},{"team":"Espanyol","player":"Pere Milla","position":"M","stat":"Fouls","threshold":1.0,"alt":true,"line":0.5,"over":true,"hits":12,"total":17,"fair":1.4166666666666665,"label":"Pere Milla 1+ fouls"},{"team":"Espanyol","player":"Leandro Cabrera","position":"D","stat":"Shots","threshold":1.0,"alt":true,"line":0.5,"over":true,"hits":25,"total":35,"fair":1.4,"label":"Leandro Cabrera 1+ shots"},{"team":"Espanyol","player":"Tyrhys Dolan","position":"M","stat":"Fouls","threshold":1.0,"alt":true,"line":0.5,"over":true,"hits":20,"total":27,"fair":1.35,"label":"Tyrhys Dolan 1+ fouls"}],"sides":[{"team":"Espanyol","hits":4,"total":12}],"fair":3.0,"naive":3.793125,"need":7.2401943206114705,"evidence":0.13811783989736134,"crossTeam":false,"crossLeague":false,"adjusted":0.06883916517297498,"z":3.618899943578122,"consideredGroups":169}},{"matches":null,"sport":"american-football","label":"NFL","fixtures":13,"legs":907,"single":{"team":"Tampa Bay Buccaneers","period":"ALL","stat":"Anytime touchdown","line":0.5,"over":true,"hits":8,"total":16,"fair":3.7230426265371284,"venue":null,"player":"Sean Tucker","position":"RB","chance":0.6834,"chanceBase":0.5,"exchange":{"p":0.9001,"back":1.01,"lay":null,"tight":false,"matched":32,"kind":"back","market":"Any Time Touchdown Scorer","weight":0.35},"chanceModel":0.5,"disagree":-0.4001,"chanceAnchored":0.5,"anchor":{"family":"player|Anytime touchdown|back","legs":18,"bias":0.0},"avg":0.62,"last":[0.0,0.0,1.0,0.0,1.0],"fairRecord":2.0,"alt":true,"threshold":1.0,"why":{"for":["Landed in 8 of Sean Tucker's last 16 appearances (50%).","Averages 0.6 against a line of 0.5."],"against":["Last 5: 0, 0, 1, 0, 1 (2 of 5 cleared 0.5).","Model and market are 40 points apart. A gap that size is more often the model missing something (team news, a rotation) than a real edge."],"steps":["Betfair's total and handicap imply Tampa Bay Buccaneers 22.5 and Atlanta Falcons 20.0 points.","Player records overstate (the site's settled player picks land below what they said), so 8/16 is pulled towards evens: 50%.","Betfair back price 1.01, margin estimated off, \u00a332 matched: 90%. Model 50%. Blended at 35% market: 68%."]},"fixture":{"id":16183759,"home":"Tampa Bay Buccaneers","away":"Atlanta Falcons","competition":"NFL","kickoff":1793556000,"report":"nfl.html"},"need":3.7230426265371284,"source":"usmodel","evidence":0.2799923761135083,"crossLeague":false,"book":null,"confirmed":false,"adjusted":0.25412183489173723,"z":3.9440163073803163,"consideredGroups":624},"value":{"legs":[],"quoted":19,"positive":7,"commission":0.05,"min":0.03,"show":null},"double":{"legs":[{"team":"Tampa Bay Buccaneers","period":"ALL","stat":"Passing touchdowns","line":0.5,"over":true,"hits":15,"total":17,"fair":1.3104627455163054,"venue":null,"player":"Baker Mayfield","position":"QB","chance":0.697,"chanceBase":0.697,"avg":1.24,"last":[1.0,0.0,1.0,1.0,1.0],"fairRecord":1.1333333333333333,"alt":true,"threshold":1.0,"why":{"for":["Landed in 15 of Baker Mayfield's last 17 appearances (88%).","Last 5: 1, 0, 1, 1, 1 (4 of 5 cleared 0.5).","Averages 1.2 against a line of 0.5."],"against":[],"steps":["Betfair's total and handicap imply Tampa Bay Buccaneers 22.5 and Atlanta Falcons 20.0 points.","Player records overstate (the site's settled player picks land below what they said), so 15/17 is pulled towards evens: 70%."]},"fixture":{"id":16183759,"home":"Tampa Bay Buccaneers","away":"Atlanta Falcons","competition":"NFL","kickoff":1793556000,"report":"nfl.html"},"need":1.5229240232090935,"source":"usmodel","evidence":0.6566315750229009,"crossLeague":false},{"team":"Los Angeles Rams","period":"ALL","stat":"Passing touchdowns","line":1.5,"over":true,"hits":17,"total":20,"fair":1.6316577032252808,"venue":null,"player":"Matthew Stafford","position":"QB","chance":0.6944,"chanceBase":0.6944,"avg":2.45,"last":[2.0,0.0,3.0,2.0,3.0],"fairRecord":1.1764705882352942,"alt":true,"threshold":2.0,"why":{"for":["Landed in 17 of Matthew Stafford's last 20 appearances (85%).","Last 5: 2, 0, 3, 2, 3 (4 of 5 cleared 1.5).","Averages 2.5 against a line of 1.5."],"against":[],"steps":["Betfair's total and handicap imply Los Angeles Rams 26.0 and Los Angeles Chargers 19.5 points.","Player records overstate (the site's settled player picks land below what they said), so 17/20 is pulled towards evens: 69%."]},"fixture":{"id":16183760,"home":"Los Angeles Rams","away":"Los Angeles Chargers","competition":"NFL","kickoff":1793567100,"report":"nfl.html"},"need":1.6316577032252808,"source":"usmodel","evidence":0.6395767041130426,"crossLeague":false}],"combined":2.1382266335114304,"joint":0.484006734006734,"priced":false,"combinedFair":2.1382266335114304,"sameGame":false},"banker":{"team":"Tampa Bay Buccaneers","period":"ALL","stat":"Passing touchdowns","line":0.5,"over":true,"hits":15,"total":17,"fair":1.3104627455163054,"venue":null,"player":"Baker Mayfield","position":"QB","chance":0.697,"chanceBase":0.697,"avg":1.24,"last":[1.0,0.0,1.0,1.0,1.0],"fairRecord":1.1333333333333333,"alt":true,"threshold":1.0,"why":{"for":["Landed in 15 of Baker Mayfield's last 17 appearances (88%).","Last 5: 1, 0, 1, 1, 1 (4 of 5 cleared 0.5).","Averages 1.2 against a line of 0.5."],"against":[],"steps":["Betfair's total and handicap imply Tampa Bay Buccaneers 22.5 and Atlanta Falcons 20.0 points.","Player records overstate (the site's settled player picks land below what they said), so 15/17 is pulled towards evens: 70%."]},"fixture":{"id":16183759,"home":"Tampa Bay Buccaneers","away":"Atlanta Falcons","competition":"NFL","kickoff":1793556000,"report":"nfl.html"},"need":1.5229240232090935,"source":"usmodel","evidence":0.6566315750229009,"crossLeague":false,"adjusted":0.2715359272842432,"priced":false,"price":1.3104627455163054},"acca":{"legs":[{"team":"Chicago Bears","period":"ALL","stat":"Rushing and receiving yards","line":69.5,"over":true,"hits":17,"total":19,"fair":1.8002692489441288,"venue":null,"player":"D'Andre Swift","position":"RB","chance":0.7143,"chanceBase":0.7143,"avg":84.05,"last":[88.0,74.0,73.0,70.0,90.0],"fairRecord":1.1176470588235294,"alt":true,"threshold":70.0,"why":{"for":["Landed in 17 of D'Andre Swift's last 19 appearances (89%).","Last 5: 88, 74, 73, 70, 90 (5 of 5 cleared 69.5).","Averages 84 against a line of 69.5."],"against":[],"steps":["Betfair's total and handicap imply Seattle Seahawks 24.8 and Chicago Bears 21.8 points.","Player records overstate (the site's settled player picks land below what they said), so 17/19 is pulled towards evens: 71%."]},"fixture":{"id":16183758,"home":"Seattle Seahawks","away":"Chicago Bears","competition":"NFL","kickoff":1793668500,"report":"nfl.html"},"need":1.8002692489441288,"source":"usmodel","evidence":0.6860544950515831,"crossLeague":false},{"team":"Buffalo Bills","period":"ALL","stat":"Receiving receptions","line":1.5,"over":true,"hits":13,"total":14,"fair":1.6311466752362915,"venue":null,"player":"Ty Johnson","position":"RB","chance":0.7,"chanceBase":0.7,"avg":2.5,"last":[2.0,4.0,2.0,4.0,2.0],"fairRecord":1.0769230769230769,"alt":true,"threshold":2.0,"why":{"for":["Landed in 13 of Ty Johnson's last 14 appearances (93%).","Last 5: 2, 4, 2, 4, 2 (5 of 5 cleared 1.5).","Averages 2.5 against a line of 1.5."],"against":[],"steps":["Betfair's total and handicap imply Buffalo Bills 28.8 and Baltimore Ravens 25.8 points.","Player records overstate (the site's settled player picks land below what they said), so 13/14 is pulled towards evens: 70%."]},"fixture":{"id":16183751,"home":"Buffalo Bills","away":"Baltimore Ravens","competition":"NFL","kickoff":1793556000,"report":"nfl.html"},"need":1.6311466752362915,"source":"usmodel","evidence":0.6853073044604219,"crossLeague":false},{"team":"Los Angeles Rams","period":"ALL","stat":"Passing touchdowns","line":1.5,"over":true,"hits":17,"total":20,"fair":1.6316577032252808,"venue":null,"player":"Matthew Stafford","position":"QB","chance":0.6944,"chanceBase":0.6944,"avg":2.45,"last":[2.0,0.0,3.0,2.0,3.0],"fairRecord":1.1764705882352942,"alt":true,"threshold":2.0,"why":{"for":["Landed in 17 of Matthew Stafford's last 20 appearances (85%).","Last 5: 2, 0, 3, 2, 3 (4 of 5 cleared 1.5).","Averages 2.5 against a line of 1.5."],"against":[],"steps":["Betfair's total and handicap imply Los Angeles Rams 26.0 and Los Angeles Chargers 19.5 points.","Player records overstate (the site's settled player picks land below what they said), so 17/20 is pulled towards evens: 69%."]},"fixture":{"id":16183760,"home":"Los Angeles Rams","away":"Los Angeles Chargers","competition":"NFL","kickoff":1793567100,"report":"nfl.html"},"need":1.6316577032252808,"source":"usmodel","evidence":0.6395767041130426,"crossLeague":false}],"combined":4.79136806673652,"combinedFair":4.79136806673652,"priced":false,"target":3.0,"short":false},"builder":null,"parlay":{"fixture":{"id":16183760,"home":"Los Angeles Rams","away":"Los Angeles Chargers","competition":"NFL","kickoff":1793567100,"report":"nfl.html"},"legs":[{"team":"Los Angeles Rams","player":"Colby Parkinson","position":"TE","stat":"Receiving yards","threshold":20.0,"alt":true,"line":19.5,"over":true,"hits":13,"total":19,"fair":1.4615384615384615,"label":"Colby Parkinson 20+ receiving yards"},{"team":"Los Angeles Rams","player":"Matthew Stafford","position":"QB","stat":"Passing and rushing yards","threshold":260.0,"alt":true,"line":259.5,"over":true,"hits":14,"total":20,"fair":1.4285714285714286,"label":"Matthew Stafford 260+ passing and rushing yards"},{"team":"Los Angeles Rams","player":"Kyren Williams","position":"RB","stat":"Anytime touchdown","threshold":1.0,"alt":true,"line":0.5,"over":true,"hits":14,"total":20,"fair":1.4285714285714286,"label":"Kyren Williams 1+ anytime touchdown"},{"team":"Los Angeles Rams","player":"Davante Adams","position":"WR","stat":"Receiving receptions","threshold":4.0,"alt":true,"line":3.5,"over":true,"hits":12,"total":16,"fair":1.3333333333333333,"label":"Davante Adams 4+ receiving receptions"}],"sides":[{"team":"Los Angeles Rams","hits":5,"total":15}],"fair":3.0,"naive":3.9769754055468347,"need":6.589307886905434,"evidence":0.15176100694691236,"crossTeam":false,"crossLeague":false,"adjusted":0.08426554612508141,"z":3.4725890761985787,"consideredGroups":97}},{"matches":null,"sport":"basketball","label":"Basketball","fixtures":11,"legs":2018,"single":{"team":"Portland Trail Blazers","period":"ALL","stat":"Three pointers made","line":2.5,"over":true,"hits":11,"total":20,"fair":1.8416206261510129,"venue":null,"player":"Toumani Camara","position":"F","chance":0.5278,"chanceBase":0.5278,"avg":3.35,"last":[1.0,4.0,5.0,4.0,3.0],"book":{"name":"Paddy Power","price":2.1},"fairRecord":1.8181818181818181,"alt":true,"threshold":3.0,"why":{"for":["Landed in 11 of Toumani Camara's last 20 appearances (55%).","Last 5: 1, 4, 5, 4, 3 (4 of 5 cleared 2.5).","Averages 3.4 against a line of 2.5."],"against":[],"steps":["Betfair's total and handicap imply Utah Jazz 112.2 and Portland Trail Blazers 120.2 points.","Player records overstate (the site's settled player picks land below what they said), so 11/20 is pulled towards evens: 53%."]},"fixture":{"id":16824781,"home":"Utah Jazz","away":"Portland Trail Blazers","competition":"NBA","kickoff":1793473200,"report":"nba.html"},"need":2.9232756348319886,"source":"usmodel","evidence":0.34208200830759966,"crossLeague":false,"confirmed":true,"adjusted":0.17783817779856959,"z":4.092766197655721,"consideredGroups":1173},"value":{"legs":[],"quoted":0,"positive":0,"commission":0.05,"min":0.03,"show":null},"double":{"legs":[{"team":"Utah Jazz","period":"ALL","stat":"Points","line":14.5,"over":true,"hits":13,"total":18,"fair":1.7244488411629888,"venue":null,"player":"Ace Bailey","position":"GF","chance":0.6176,"chanceBase":0.6176,"avg":18.39,"last":[12.0,6.0,17.0,17.0,19.0],"book":{"name":"Paddy Power","price":1.8},"fairRecord":1.3846153846153846,"alt":true,"threshold":15.0,"why":{"for":["Landed in 13 of Ace Bailey's last 18 appearances (72%).","Last 5: 12, 6, 17, 17, 19 (3 of 5 cleared 14.5).","Averages 18.4 against a line of 14.5."],"against":[],"steps":["Betfair's total and handicap imply Utah Jazz 112.2 and Portland Trail Blazers 120.2 points.","Player records overstate (the site's settled player picks land below what they said), so 13/18 is pulled towards evens: 62%."]},"fixture":{"id":16824781,"home":"Utah Jazz","away":"Portland Trail Blazers","competition":"NBA","kickoff":1793473200,"report":"nba.html"},"need":2.03554375086351,"source":"usmodel","evidence":0.49126922453805477,"crossLeague":false},{"team":"Portland Trail Blazers","period":"ALL","stat":"Three pointers made","line":0.5,"over":true,"hits":12,"total":20,"fair":1.392757660167131,"venue":null,"player":"Donovan Clingan","position":"C","chance":0.5556,"chanceBase":0.5556,"avg":1.05,"last":[2.0,2.0,0.0,2.0,1.0],"book":{"name":"Paddy Power","price":1.4},"fairRecord":1.6666666666666667,"alt":true,"threshold":1.0,"why":{"for":["Landed in 12 of Donovan Clingan's last 20 appearances (60%).","Last 5: 2, 2, 0, 2, 1 (4 of 5 cleared 0.5).","Averages 1.1 against a line of 0.5."],"against":[],"steps":["Betfair's total and handicap imply Utah Jazz 112.2 and Portland Trail Blazers 120.2 points.","Player records overstate (the site's settled player picks land below what they said), so 12/20 is pulled towards evens: 56%."]},"fixture":{"id":16824781,"home":"Utah Jazz","away":"Portland Trail Blazers","competition":"NBA","kickoff":1793473200,"report":"nba.html"},"need":2.5868004625691365,"source":"usmodel","evidence":0.38657794231520604,"crossLeague":false}],"combined":2.52,"joint":0.3431372549019608,"priced":true,"combinedFair":2.401739333096085,"sameGame":true},"banker":{"team":"Portland Trail Blazers","period":"ALL","stat":"Three pointers made","line":0.5,"over":true,"hits":12,"total":20,"fair":1.392757660167131,"venue":null,"player":"Donovan Clingan","position":"C","chance":0.5556,"chanceBase":0.5556,"avg":1.05,"last":[2.0,2.0,0.0,2.0,1.0],"book":{"name":"Paddy Power","price":1.4},"fairRecord":1.6666666666666667,"alt":true,"threshold":1.0,"why":{"for":["Landed in 12 of Donovan Clingan's last 20 appearances (60%).","Last 5: 2, 2, 0, 2, 1 (4 of 5 cleared 0.5).","Averages 1.1 against a line of 0.5."],"against":[],"steps":["Betfair's total and handicap imply Utah Jazz 112.2 and Portland Trail Blazers 120.2 points.","Player records overstate (the site's settled player picks land below what they said), so 12/20 is pulled towards evens: 56%."]},"fixture":{"id":16824781,"home":"Utah Jazz","away":"Portland Trail Blazers","competition":"NBA","kickoff":1793473200,"report":"nba.html"},"need":2.5868004625691365,"source":"usmodel","evidence":0.38657794231520604,"crossLeague":false,"adjusted":0.19380730540161945,"priced":true,"price":1.4},"acca":{"legs":[{"team":"Philadelphia 76ers","period":"ALL","stat":"Assists","line":3.5,"over":true,"hits":18,"total":20,"fair":1.522301720200944,"venue":null,"player":"Tyrese Maxey","position":"G","chance":0.7222,"chanceBase":0.7222,"avg":5.2,"last":[6.0,4.0,4.0,4.0,4.0],"fairRecord":1.1111111111111112,"alt":true,"threshold":4.0,"why":{"for":["Landed in 18 of Tyrese Maxey's last 20 appearances (90%).","Last 5: 6, 4, 4, 4, 4 (5 of 5 cleared 3.5).","Averages 5.2 against a line of 3.5."],"against":[],"steps":["Betfair's total and handicap imply Charlotte Hornets 106.2 and Philadelphia 76ers 108.2 points.","Player records overstate (the site's settled player picks land below what they said), so 18/20 is pulled towards evens: 72%."]},"fixture":{"id":16824783,"home":"Charlotte Hornets","away":"Philadelphia 76ers","competition":"NBA","kickoff":1793484000,"report":"nba.html"},"need":1.522301720200944,"source":"usmodel","evidence":0.6989617935882066,"crossLeague":false},{"team":"Milwaukee Bucks","period":"ALL","stat":"Three pointers made","line":1.5,"over":true,"hits":17,"total":19,"fair":1.4566642388929352,"venue":null,"player":"AJ Green","position":"G","chance":0.7143,"chanceBase":0.7143,"avg":3.53,"last":[2.0,3.0,3.0,1.0,3.0],"fairRecord":1.1176470588235294,"alt":true,"threshold":2.0,"why":{"for":["Landed in 17 of AJ Green's last 19 appearances (89%).","Last 5: 2, 3, 3, 1, 3 (4 of 5 cleared 1.5).","Averages 3.5 against a line of 1.5."],"against":[],"steps":["Betfair's total and handicap imply Milwaukee Bucks 113.0 and Cleveland Cavaliers 122.5 points.","Player records overstate (the site's settled player picks land below what they said), so 17/19 is pulled towards evens: 71%."]},"fixture":{"id":16824787,"home":"Milwaukee Bucks","away":"Cleveland Cavaliers","competition":"NBA","kickoff":1793491200,"report":"nba.html"},"need":1.4576101566462472,"source":"usmodel","evidence":0.6860544950515831,"crossLeague":false},{"team":"Houston Rockets","period":"ALL","stat":"Rebounds","line":4.5,"over":true,"hits":17,"total":19,"fair":1.5792798483891346,"venue":null,"player":"Jabari Smith Jr.","position":"F","chance":0.7143,"chanceBase":0.7143,"avg":6.68,"last":[5.0,5.0,12.0,2.0,3.0],"fairRecord":1.1176470588235294,"alt":true,"threshold":5.0,"why":{"for":["Landed in 17 of Jabari Smith Jr.'s last 19 appearances (89%).","Last 5: 5, 5, 12, 2, 3 (3 of 5 cleared 4.5).","Averages 6.7 against a line of 4.5."],"against":[],"steps":["Betfair's total and handicap imply Houston Rockets 110.5 and Oklahoma City Thunder 108.0 points.","Player records overstate (the site's settled player picks land below what they said), so 17/19 is pulled towards evens: 71%."]},"fixture":{"id":16824788,"home":"Houston Rockets","away":"Oklahoma City Thunder","competition":"NBA","kickoff":1793493000,"report":"nba.html"},"need":1.5792798483891346,"source":"usmodel","evidence":0.6860544950515831,"crossLeague":false}],"combined":3.502025389485019,"combinedFair":3.502025389485019,"priced":false,"target":3.0,"short":false},"builder":null,"parlay":{"fixture":{"id":16824784,"home":"New Orleans Pelicans","away":"Atlanta Hawks","competition":"NBA","kickoff":1793487600,"report":"nba.html"},"legs":[{"team":"Atlanta Hawks","player":"Nickeil Alexander-Walker","position":"G","stat":"Rebounds and assists","threshold":5.0,"alt":true,"line":4.5,"over":true,"hits":13,"total":19,"fair":1.4615384615384615,"label":"Nickeil Alexander-Walker 5+ rebounds and assists"},{"team":"Atlanta Hawks","player":"CJ McCollum","position":"G","stat":"Points and assists","threshold":16.0,"alt":true,"line":15.5,"over":true,"hits":13,"total":19,"fair":1.4615384615384615,"label":"CJ McCollum 16+ points and assists"},{"team":"Atlanta Hawks","player":"Dyson Daniels","position":"G","stat":"Rebounds and assists","threshold":10.0,"alt":true,"line":9.5,"over":true,"hits":13,"total":18,"fair":1.3846153846153846,"label":"Dyson Daniels 10+ rebounds and assists"},{"team":"Atlanta Hawks","player":"Onyeka Okongwu","position":"FC","stat":"Points and assists","threshold":12.0,"alt":true,"line":11.5,"over":true,"hits":13,"total":18,"fair":1.3846153846153846,"label":"Onyeka Okongwu 12+ points and assists"}],"sides":[{"team":"Atlanta Hawks","hits":6,"total":18}],"fair":3.0,"naive":4.09523476068765,"need":6.143051635053107,"evidence":0.16278554363662856,"crossTeam":false,"crossLeague":false,"adjusted":0.09477647737414288,"z":3.455412962455204,"consideredGroups":91}}],"valueShow":null,"playerShrink":8.0,"playerShrinkLegs":1473,"learned":{"legs":5439,"active":false,"updated":"31 Oct 2026 17:23","said":0.6955,"landed":0.7215,"test":1088}}};
+
+let competition = "all";
+let query = "";
+let sport = null;          // set on first render to whichever has most fixtures
+
+const SPORT_LABELS = { "football": "Football", "american-football": "NFL", "basketball": "Basketball", "darts": "Darts", "baseball": "MLB" };
+
+/* Sports present, busiest first. Two codes on one page need separating before
+   anything else: the league chips, the fixture list and the picks all mean
+   something different depending on which you are looking at. */
+function sportsPresent() {
+  const counts = {};
+  DATA.fixtures.forEach(f => {
+    const key = f.sport || "football";
+    counts[key] = (counts[key] || 0) + 1;
+  });
+  return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+}
+
+/* Day headings read better as "Today" and "Tomorrow" than as a date, and the
+   comparison has to be on calendar days in the reader's own timezone rather
+   than on a 24 hour difference: a match at 20:00 tonight and one at 12:00
+   tomorrow are 16 hours apart but belong under different headings. */
+function dayKey(ts) {
+  const d = new Date(ts * 1000);
+  return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+}
+
+function dayLabel(ts) {
+  const d = new Date(ts * 1000);
+  const today = new Date();
+  const tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+
+  if (dayKey(ts) === dayKey(today.getTime() / 1000)) return "Today";
+  if (dayKey(ts) === dayKey(tomorrow.getTime() / 1000)) return "Tomorrow";
+  return d.toLocaleDateString(undefined,
+    { weekday: "long", day: "numeric", month: "long" });
+}
+
+function timeLabel(ts) {
+  if (!ts) return "TBC";
+  return new Date(ts * 1000).toLocaleTimeString(undefined,
+    { hour: "2-digit", minute: "2-digit", hour12: false });
+}
+
+function matches(f) {
+  if (sport && (f.sport || "football") !== sport) return false;
+  if (competition !== "all" && f.competition !== competition) return false;
+  if (!query) return true;
+  const hay = `${f.home} ${f.away} ${f.competition}`.toLowerCase();
+  return hay.includes(query);
+}
+
+function renderSports() {
+  const present = sportsPresent();
+  if (!sport) sport = present.length ? present[0][0] : "football";
+
+  const box = document.getElementById("sports");
+  if (!present.length) { box.innerHTML = ""; return; }
+
+  box.innerHTML = present.map(([key, n]) =>
+    `<button type="button" data-sport="${escapeAttr(key)}"
+      aria-pressed="${key === sport}">${escapeHtml(SPORT_LABELS[key] || key)}<span class="n">${n}</span></button>`
+  ).join("");
+
+  box.querySelectorAll("[data-sport]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      sport = btn.dataset.sport;
+      competition = "all";
+      renderSports();
+      renderPicks();
+      renderFilters();
+      renderList();
+    });
+  });
+}
+
+function renderFilters() {
+  // Only the leagues that belong to the sport on screen, so the row is four
+  // chips rather than ten wrapping onto two lines with the NFL buried in it.
+  const mine = DATA.fixtures.filter(f => (f.sport || "football") === sport);
+  const comps = [...new Set(mine.map(f => f.competition))].sort();
+  const counts = { all: mine.length };
+  comps.forEach(c => {
+    counts[c] = mine.filter(f => f.competition === c).length;
+  });
+  if (competition !== "all" && !comps.includes(competition)) competition = "all";
+
+  const chips = ["all"].concat(comps).map(c => {
+    const label = c === "all" ? "All" : c;
+    return `<button type="button" class="chip" data-comp="${escapeAttr(c)}"
+      aria-pressed="${c === competition}">${escapeHtml(label)}<span class="n">${counts[c]}</span></button>`;
+  }).join("");
+
+  document.getElementById("filters").innerHTML = chips +
+    `<input class="search" id="search" type="search" placeholder="Search team"
+      value="${escapeAttr(query)}" aria-label="Search team">`;
+
+  document.querySelectorAll("[data-comp]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      competition = btn.dataset.comp;
+      renderFilters();
+      renderList();
+    });
+  });
+
+  const search = document.getElementById("search");
+  search.addEventListener("input", () => {
+    query = search.value.trim().toLowerCase();
+    renderList();
+  });
+  if (query) {
+    search.focus();
+    search.setSelectionRange(search.value.length, search.value.length);
+  }
+}
+
+function renderList() {
+  const shown = DATA.fixtures.filter(matches);
+  const now = Date.now() / 1000;
+
+  if (!shown.length) {
+    document.getElementById("list").innerHTML =
+      `<ul><li><div class="empty">Nothing to show. Build a new round with
+       <code>python run.py --league "Premier League"</code>.</div></li></ul>`;
+    return;
+  }
+
+  const groups = [];
+  shown.forEach(f => {
+    const key = f.kickoff ? dayKey(f.kickoff) : "tbc";
+    const last = groups[groups.length - 1];
+    if (last && last.key === key) last.items.push(f);
+    else groups.push({ key, ts: f.kickoff, items: [f] });
+  });
+
+  document.getElementById("list").innerHTML = groups.map(g => {
+    const label = g.ts ? dayLabel(g.ts) : "Date to be confirmed";
+    const soon = label === "Today" || label === "Tomorrow";
+    const rows = g.items.map(f => {
+      const played = f.kickoff && f.kickoff <= now;
+      const tags = (f.players ? '<span class="tag">players</span>' : "")
+                 + (f.adjusted ? '<span class="tag">adjusted</span>' : "");
+      // ?v= is the build stamp. It changes every time the index is rebuilt,
+      // so the browser is forced to fetch the report rather than serve a copy
+      // it cached before the report was re-rendered. Without this a fixed
+      // report looks unfixed for as long as the cache holds, which is the
+      // most confusing possible failure.
+      return `<li class="${played ? "played" : ""}">
+        <a href="reports/${escapeAttr(f.report)}?v=${DATA.stamp}#e${f.id}">
+          <span class="time">${timeLabel(f.kickoff)}</span>
+          <span class="match">
+            <span class="teams">${escapeHtml(f.home)} v ${escapeHtml(f.away)}</span>${tags}
+            <span class="meta">${escapeHtml(f.competition)}${played ? " &middot; kicked off" : ""}</span>
+          </span>
+        </a></li>`;
+    }).join("");
+    return `<div class="day${soon ? " soon" : ""}">${escapeHtml(label)}</div>
+            <ul>${rows}</ul>`;
+  }).join("");
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"]/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+}
+function escapeAttr(s) { return escapeHtml(s).replace(/'/g, "&#39;"); }
+
+document.getElementById("footer").textContent =
+  `Built ${DATA.built}. Each report is a snapshot: the numbers are frozen at ` +
+  `the moment it was generated. Times are shown in your own timezone.`;
+
+/* The picks, for whichever sport is on screen.
+
+   Decided at build time, not in the browser: a pick of the week that moves
+   when you nudge a slider is a search, not a pick. Kept behind a button
+   because it is a sidebar to the fixture list, not the point of the page. */
+const fmtOdds = v => (v === null || v === undefined || !isFinite(v))
+  ? "—" : v.toFixed(2);
+
+const half = p => p === "1ST" ? " (1st half)" : p === "2ND" ? " (2nd half)" : "";
+
+function legText(l) {
+  /* Alt lines read the way a book writes them. "50+ receiving yards" and
+     "over 49.5 receiving yards" are the same bet, and only one of them is
+     what you would go looking for on the coupon. */
+  const market = l.alt
+    ? `${l.threshold}+ ${l.stat.toLowerCase()}`
+    : `${l.over ? "over" : "under"} ${l.line} ${l.stat.toLowerCase()}`;
+  return l.player
+    ? `${escapeHtml(l.player)} ${market}${half(l.period)}`
+    : `${escapeHtml(l.team)} ${market}${half(l.period)}`;
+}
+
+/* Team strength, short: the two ratings and the chance of winning. The
+   similar-opposition record and what strength and the projection expect go
+   behind the fold, where they are read when wanted rather than every time. */
+function oppOf(l) {
+  return l.fixture ? (l.team === l.fixture.home ? l.fixture.away : l.fixture.home) : "opponent";
+}
+function strengthLine(l) {
+  const s = l.strength;
+  if (!s || s.team == null) return "";
+  const pct = x => `${Math.round(x * 100)}%`;
+  return `<div class="pk-str"><b>${escapeHtml(l.team)} ${s.team}</b> v ${escapeHtml(oppOf(l))} ${s.opp}`
+    + (s.win != null ? ` &middot; ${pct(s.win)} to win` : "") + `</div>`;
+}
+function strengthDetail(l) {
+  const s = l.strength;
+  if (!s || s.team == null) return "";
+  const bits = [`${escapeHtml(l.team)} rated ${s.teamLabel}, ${escapeHtml(oppOf(l))} ${s.oppLabel}`];
+  if (s.similarN >= 2) bits.push(`${s.similarHits} of ${s.similarN} against similar opposition`);
+  else bits.push("nothing comparable in the record");
+  const exp = [];
+  if (s.eloExpected != null) exp.push(`strength expects ${s.eloExpected}`);
+  if (s.projection != null) exp.push(`the projection ${s.projection}`);
+  if (exp.length) bits.push(`${exp.join(" and ")} against a line of ${l.line}`);
+  return bits.join("; ") + ". ";
+}
+function chanceText(l) {
+  return l.chance != null ? `${Math.round(l.chance * 100)}%` : "&mdash;";
+}
+/* Whether a value figure is shown as value: above the bar weekend.VALUE_SHOW
+   sets, and never while that is off (RULE-REVIEW.md). */
+function valueClaimed(v) {
+  const bar = DATA.picks && DATA.picks.valueShow;
+  return v != null && bar != null && v > bar;
+}
+/* The exchange, where Betfair prices the same bet: its chance with the margin
+   off, the back price you could take, and what the pick is worth at it. */
+function exchangeLine(l) {
+  const x = l.exchange;
+  if (!x) return "";
+  const pct = p => `${Math.round(p * 100)}%`;
+  const v = l.value;
+  if (l.disagree != null) {
+    return `<div class="pk-str">Exchange ${pct(x.p)}, model ${pct(l.chanceModel)}: <b>${Math.round(Math.abs(l.disagree) * 100)} points apart</b>,
+      a warning rather than an edge; the chance used leans on the exchange.</div>`;
+  }
+  const val = v == null ? "" : valueClaimed(v)
+    ? ` &middot; <b class="pk-pos">value +${Math.round(v * 100)}%</b> at ${fmtOdds(x.back)}`
+    : ` &middot; no value at ${fmtOdds(x.back)}`;
+  return `<div class="pk-str">Exchange ${pct(x.p)}, model ${pct(l.chanceModel)}${val}${x.tight ? "" : " &middot; thin market"}</div>`;
+}
+function thirdChip(s) {
+  return s.exchange && s.exchange.back ? ["Exchange", fmtOdds(s.exchange.back)] : ["Hold out", fmtOdds(s.need)];
+}
+function pkChips(items) {
+  return `<div class="pk-chips">${items.map(([k, v]) => `<div class="pk-chip"><span>${k}</span><b>${v}</b></div>`).join("")}</div>`;
+}
+function pkHead(label, price, priceLabel) {
+  return `<div class="pk-top"><h2>${label}</h2>${price == null ? "" : `<div class="pk-price"><small>${priceLabel || "fair"}</small>${fmtOdds(price)}</div>`}</div>`;
+}
+/* Book prices (23 Oct 2026): a leg Paddy Power or Bet365 offers at our fair
+   price or longer shows that price and the book; otherwise our fair price. */
+function bookOk(l) { return l.book && l.book.price >= l.fair && l.book.price <= l.fair * 1.3; }
+const bookShort = n => n === "Paddy Power" ? "PP" : n === "Bet365" ? "B365" : n;
+function legRow(l, extra) {
+  const where = l.fixture ? `${escapeHtml(l.fixture.home)} v ${escapeHtml(l.fixture.away)}` : "";
+  const s = l.strength;
+  const str = s && s.team != null ? ` &middot; ${s.team} v ${s.opp}` : "";
+  const ex = l.exchange && l.exchange.back
+    ? ` &middot; exchange ${fmtOdds(l.exchange.back)}${valueClaimed(l.value) ? ` <b class="pk-pos">+${Math.round(l.value * 100)}%</b>` : ""}` : "";
+  const bk = bookOk(l) ? ` &middot; fair ${fmtOdds(l.fair)}` : (l.book ? ` &middot; ${bookShort(l.book.name)} only ${fmtOdds(l.book.price)}` : " &middot; not priced at a book");
+  const shown = bookOk(l) ? `<small>${bookShort(l.book.name)}</small> ${fmtOdds(l.book.price)}` : fmtOdds(l.fair);
+  return `<li class="pk-leg"><span class="t">${legText(l)}</span><span class="p">${shown}</span>
+    <span class="m">${where}${where ? " &middot; " : ""}${l.hits}/${l.total}${l.chance != null ? " &middot; " + chanceText(l) : ""}${str}${ex}${bk}${extra || ""}</span></li>`;
+}
+
+/* Why a pick should land: the evidence for and against, then, behind a
+   fold, how its chance was built number by number (why.py writes these). */
+function whyList(l, max) {
+  const w = l.why;
+  if (!w) return "";
+  const pro = (w.for || []).slice(0, max || 4).map(t => `<div class="y">${escapeHtml(t)}</div>`);
+  const con = (w.against || []).slice(0, max || 3).map(t => `<div class="n">${escapeHtml(t)}</div>`);
+  return pro.length || con.length ? `<div class="pk-why">${pro.join("")}${con.join("")}</div>` : "";
+}
+function whySteps(l) {
+  const w = l.why;
+  if (!w || !w.steps || !w.steps.length) return "";
+  return `<ol class="pk-steps">${w.steps.map(t => `<li>${escapeHtml(t)}</li>`).join("")}</ol>`;
+}
+function whyFold(summary, l, extra) {
+  const steps = whySteps(l);
+  if (!steps && !extra) return "";
+  return `<details><summary>${summary}</summary>${steps}${extra ? `<p>${extra}</p>` : ""}</details>`;
+}
+function legsWhy(legs) {
+  const body = legs.map(l => `<p><b>${legText(l)}</b></p>${whyList(l, 3)}${whySteps(l)}`).join("");
+  return `<details><summary>why each leg</summary>${body}</details>`;
+}
+function valueText(v) {
+  return v == null ? "&mdash;" : `${v >= 0 ? "+" : "&minus;"}${Math.abs(v * 100).toFixed(1)}%`;
+}
+
+function note(summary, body) {
+  return `<details><summary>${summary}</summary><p>${body}</p></details>`;
+}
+
+function renderPicks() {
+  const box = document.getElementById("picks");
+  const all = DATA.picks && DATA.picks.sports;
+  if (!box || !all) return;
+
+  const p = all.find(x => x.sport === sport);
+  const lab = document.getElementById("picks-sport");
+  if (lab) lab.textContent = SPORT_LABELS[sport] || sport;
+  const floor = DATA.picks.floor;
+  const cards = [];
+  const learn = DATA.picks.learned;
+
+  if (p && p.matches && p.matches.length) {
+    const rows = p.matches.slice(0, 8).map(x => `<li class="pk-leg"><span class="t">${escapeHtml(x.fav)}</span>
+      <span class="p">${fmtOdds(x.fair)}</span>
+      <span class="m">${escapeHtml(x.home)} v ${escapeHtml(x.away)} &middot; ${Math.round(x.p * 100)}% to win${x.legs != null ? ` &middot; ${x.legs.toFixed(1)} legs` : ""}${x.s180 != null ? ` &middot; ${x.s180.toFixed(1)} 180s` : ""}</span></li>`).join("");
+    cards.push(`<div class="pick">
+      ${pkHead("Match prices", null, "")}
+      <div class="where">Favourite and fair price for each match; totals, handicaps and 180s on each match's Match tab.</div>
+      <ul class="pk-legs">${rows}</ul>
+      ${note("how good is this?",
+        `One leg-level rating per player over every PDC result since 2018. Replayed over 1,723 past matches it put
+         its favourite through 61% of the time and was calibrated within a point or two up to 80%. Fair is what the
+         chance is worth, not what anyone offers.`)}
+    </div>`);
+  }
+
+  if (p && p.single) {
+    const s = p.single;
+    cards.push(`<div class="pick">
+      ${s.confirmed && s.book ? pkHead(`Best bet &middot; ${fmtOdds(floor)}+`, s.book.price, s.book.name) : pkHead(`Best bet &middot; ${fmtOdds(floor)}+`, s.fair, "fair, not priced")}
+      <div class="sel">${legText(s)}</div>
+      <div class="where">${escapeHtml(s.fixture.home)} v ${escapeHtml(s.fixture.away)}${s.venue ? ` &middot; record ${s.venue}` : ""}</div>
+      ${pkChips([["Chance", chanceText(s)], ["Record", `${s.hits}/${s.total}`], thirdChip(s)])}
+      ${strengthLine(s)}${exchangeLine(s)}
+      ${whyList(s)}
+      ${whyFold("how the chance was built", s,
+        `Ranked on a calibrated chance, not the raw record${s.fairRecord ? `, which alone would have priced it at ${fmtOdds(s.fairRecord)}` : ""}.
+         Chosen from ${s.consideredGroups} separate questions this round. Asking for ${fmtOdds(floor)}+
+         caps the chance at 50%, so price and evidence pull against each other here.`)}
+    </div>`);
+  }
+
+  if (p && p.value && p.value.legs && p.value.legs.length) {
+    const v = p.value;
+    const rows = v.legs.map(l => `<li class="pk-leg"><span class="t">${legText(l)}</span>
+      <span class="p">${fmtOdds(l.exchange.back)}</span>
+      <span class="m">${escapeHtml(l.fixture.home)} v ${escapeHtml(l.fixture.away)} &middot; ours ${chanceText(l)}
+        v Betfair ${Math.round(l.exchange.p * 100)}% &middot; <b class="pk-pos">${valueText(l.value)}</b>
+        ${l.exchange.kind === "back" ? " &middot; back-only list" : ""}</span>
+      </li>`).join("");
+    cards.push(`<div class="pick">
+      ${pkHead("Value on Betfair", null, "")}
+      <div class="where">Priced on the exchange, worth more than the stake at the back price shown, after ${Math.round(v.commission * 100)}% commission.
+        ${v.positive} of ${v.quoted} bets Betfair prices cleared zero; these clear ${Math.round(v.min * 100)}%.</div>
+      <ul class="pk-legs">${rows}</ul>
+      ${legsWhy(v.legs)}
+      ${note("can I trust this?",
+        `Value uses our chance after it has been pulled towards Betfair's, so an edge has to survive the market
+         correcting it. The model's usual lean against the market on each kind of bet is taken off first, so a
+         bias repeated across a hundred legs does not show up as a hundred edges. It is unproven until enough
+         of these settle: the <a href="market-check.html">Market check</a> page tracks every one against the price it was offered at.`)}
+    </div>`);
+  }
+
+  if (p && p.banker) {
+    const s = p.banker;
+    cards.push(`<div class="pick">
+      ${s.priced ? pkHead("Banker", s.price, s.book.name) : pkHead("Banker", s.fair, "fair, not priced")}
+      <div class="sel">${legText(s)}</div>
+      <div class="where">${escapeHtml(s.fixture.home)} v ${escapeHtml(s.fixture.away)}</div>
+      ${pkChips([["Chance", chanceText(s)], ["Record", `${s.hits}/${s.total}`], thirdChip(s)])}
+      ${strengthLine(s)}${exchangeLine(s)}
+      ${whyList(s)}
+      ${whyFold("how the chance was built", s,
+        `The single most likely to land, on the calibrated chance, among those ${s.priced
+           ? `a book offers between 1.30 and 1.75, at our fair price (${fmtOdds(s.fair)}) or longer`
+           : "priced between 1.30 and 1.75 on our own numbers: no book offered a qualifying one yet"}.`)}
+    </div>`);
+  }
+
+  if (p && p.double) {
+    const d = p.double;
+    cards.push(`<div class="pick">
+      ${pkHead("Evens double", d.combined, d.priced ? "books" : "fair, not priced")}
+      <ul class="pk-legs">${d.legs.map(l => legRow(l)).join("")}</ul>
+      ${legsWhy(d.legs)}
+      ${note("why these two?",
+        `The pair most likely to both land (about ${(d.joint * 100).toFixed(0)}% on the calibrated chances)
+         among doubles priced around evens. Counts and 0.5 lines are left out.
+         ${d.sameGame ? "Both legs are in one game, so it goes on as a builder." : "Two different games, so neither leg rides on the other."}`)}
+    </div>`);
+  }
+
+  if (p && p.acca) {
+    const a = p.acca;
+    cards.push(`<div class="pick">
+      ${pkHead(`Acca &middot; ${a.legs.length} legs`, a.combined, a.priced ? "books" : "fair, not priced")}
+      <ul class="pk-legs">${a.legs.map(l => legRow(l)).join("")}</ul>
+      ${legsWhy(a.legs)}
+      ${note("read this first",
+        `One leg per match, so nothing rides twice on the same game.
+         ${a.short ? `Short of the ${fmtOdds(a.target)} target: reaching it would have meant worse legs. ` : ""}${a.priced
+         ? `Every leg is offered by Paddy Power or Bet365 at our fair price or longer (fair multiple ${fmtOdds(a.combinedFair)}). Prices are from the last fetch: check them before placing. Two books in one acca means two slips.`
+         : `No book priced enough legs yet, so these are fair prices, not offers: a book has to beat every one for the multiple to be worth taking, and the margin compounds with each leg.`}`)}
+    </div>`);
+  }
+
+  if (p && p.builder) {
+    const b = p.builder;
+    const over = 100 * (b.naive / b.fair - 1);
+    cards.push(`<div class="pick">
+      ${pkHead("Builder", b.fair)}
+      <div class="sel">${escapeHtml(b.team)}</div>
+      <div class="where">${escapeHtml(b.fixture.home)} v ${escapeHtml(b.fixture.away)}</div>
+      ${pkChips([["Together", `${b.hits}/${b.total}`], ["Legs", b.legs.length], ["Multiplied", fmtOdds(b.naive)]])}
+      <ul class="pk-legs">${b.legs.map(l => `<li class="pk-leg"><span class="t">${legText(l)}</span>
+        <span class="p">${l.hits}/${l.total}</span></li>`).join("")}</ul>
+      ${note("why not just multiply the legs?",
+        `Multiplying would say ${fmtOdds(b.naive)}, <span class="flag">${over.toFixed(0)}% longer than the record
+         supports</span>. Same-team legs move together, so the product always flatters a builder. This is priced by
+         counting the matches where every leg actually landed.`)}
+    </div>`);
+  }
+
+  if (p && p.parlay) {
+    const g = p.parlay;
+    const gap = 100 * (g.naive / g.fair - 1);
+    const together = g.sides.map(s => `${s.hits}/${s.total}`).join(" &middot; ");
+    cards.push(`<div class="pick">
+      ${pkHead(`Same-game parlay &middot; ${g.legs.length} legs`, g.fair)}
+      <div class="where">${escapeHtml(g.fixture.home)} v ${escapeHtml(g.fixture.away)}</div>
+      ${pkChips([["Together", together], ["Hold out", fmtOdds(g.need)], ["Multiplied", fmtOdds(g.naive)]])}
+      <ul class="pk-legs">${g.legs.map(l => `<li class="pk-leg"><span class="t">${legText(l)}</span>
+        <span class="p">${l.hits}/${l.total}</span></li>`).join("")}</ul>
+      ${note("how is this priced?",
+        `Legs on the same team are counted together, out of the matches that carried all of them, so nothing
+         assumes they are independent. Multiplying them would have said ${fmtOdds(g.naive)}, ${gap >= 0
+         ? `<span class="flag">${gap.toFixed(0)}% longer than the record supports</span>`
+         : `${Math.abs(gap).toFixed(0)}% shorter than the record supports`}.
+         ${g.crossTeam ? `The two sides share no matches outside a head to head, so their rates are multiplied
+         rather than counted, which slightly understates the real chance. ` : ""}Lines are the biggest number each
+         man clears at least 65% of the time.`)}
+    </div>`);
+  }
+
+  const pc = x => `${Math.round(x * 100)}%`;
+  const learnLine = learn && learn.legs
+    ? `<div class="pk-learn">${learn.active
+        ? `Chances corrected from ${learn.legs} settled picks, refit ${escapeHtml(learn.updated || "")}.`
+        : `Checked against ${learn.legs} settled picks${learn.said != null ? `: the latest ${learn.test} said ${pc(learn.said)} and landed ${pc(learn.landed)}` : ""}, so no correction needed.`}</div>`
+    : "";
+  box.innerHTML = cards.length
+    ? `${learnLine}<div class="picks">${cards.join("")}</div>`
+    : `<div class="picks"><div class="pick none">Nothing cleared the bar for
+       ${escapeHtml(SPORT_LABELS[sport] || sport)} this round.</div></div>`;
+}
+
+/* The picks rail. Open or folded is remembered per browser, which is a
+   convenience only: storage can be missing or throw, and the page works the
+   same without it. */
+const FOLD_KEY = "hitrates.picksOpen";
+function setFold(open) {
+  document.getElementById("picks").hidden = !open;
+  document.getElementById("picks-btn").setAttribute("aria-expanded", String(open));
+}
+try { setFold(localStorage.getItem(FOLD_KEY) !== "0"); } catch (e) { setFold(true); }
+document.getElementById("picks-btn").addEventListener("click", e => {
+  const open = e.currentTarget.getAttribute("aria-expanded") !== "true";
+  setFold(open);
+  try { localStorage.setItem(FOLD_KEY, open ? "1" : "0"); } catch (err) {}
+});
+
+/* Narrow screens: the rail is a drawer behind the tab on the right edge. */
+function drawer(open) {
+  document.body.classList.toggle("drawer-open", open);
+  document.getElementById("side-tab").setAttribute("aria-expanded", String(open));
+}
+document.getElementById("side-tab").addEventListener("click", () => drawer(true));
+document.getElementById("drawer-close").addEventListener("click", () => drawer(false));
+document.getElementById("scrim").addEventListener("click", () => drawer(false));
+document.addEventListener("keydown", e => { if (e.key === "Escape") drawer(false); });
+
+renderSports();
+renderPicks();
+renderFilters();
+renderList();
+</script>
+</body>
+</html>
