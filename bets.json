@@ -1868,12 +1868,12 @@
         "model_n": 10,
         "model_p": 0.658,
         "source": "nba.html",
-        "value": null,
-        "result": null
+        "value": 9.0,
+        "result": "win"
       }
     ],
-    "result": null,
-    "profit": null,
+    "result": "win",
+    "profit": 13.2,
     "note": "Jarvis pick. Price is the need price she said to take it at or better."
   }
 ]

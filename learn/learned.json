@@ -1,8 +1,8 @@
 {
- "generated": 1793382367.499449,
+ "generated": 1793447317.70931,
  "overround": {
   "american-football": 1.0934723110279967,
-  "basketball": 1.0779929201604834
+  "basketball": 1.0779305648151716
  },
  "segments": {
   "american-football|over": {
@@ -56,78 +56,78 @@
    ]
   },
   "basketball|over": {
-   "rows": 15586,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 4751,
-   "ll_model": 0.5100039256365454,
-   "ll_learned": 0.49233506743002176,
-   "ll_market": 0.4946712673322926,
+   "rows": 18206,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 5436,
+   "ll_model": 0.5041007422629495,
+   "ll_learned": 0.49274818709240226,
+   "ll_market": 0.4958061537873453,
    "coef_train": [
-    -0.044,
-    0.249,
-    0.846
+    -0.024,
+    0.214,
+    0.894
    ],
    "win_share": 0.992,
-   "bets_model": 450,
-   "roi_model": -0.2557,
-   "bets_learned": 2,
-   "roi_learned": 0.0,
+   "bets_model": 522,
+   "roi_model": -0.2361,
+   "bets_learned": 10,
+   "roi_learned": 0.6483,
    "adopted": true,
    "coef": [
-    -0.0387,
-    0.2251,
-    0.88
+    -0.0299,
+    0.2196,
+    0.8853
    ]
   },
   "basketball|under": {
-   "rows": 4315,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 1395,
-   "ll_model": 0.7108013882306057,
-   "ll_learned": 0.6892731521553471,
-   "ll_market": 0.690354921456388,
+   "rows": 5124,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 1670,
+   "ll_model": 0.6924238397749598,
+   "ll_learned": 0.6837478611204907,
+   "ll_market": 0.6864056189333737,
    "coef_train": [
-    -0.014,
-    0.33,
-    0.393
+    -0.041,
+    0.292,
+    0.457
    ],
-   "win_share": 0.986,
-   "bets_model": 555,
-   "roi_model": -0.0127,
-   "bets_learned": 250,
-   "roi_learned": -0.0001,
+   "win_share": 0.864,
+   "bets_model": 666,
+   "roi_model": 0.0386,
+   "bets_learned": 140,
+   "roi_learned": 0.1701,
    "adopted": true,
    "coef": [
-    -0.0176,
-    0.301,
-    0.4441
+    -0.0155,
+    0.3034,
+    0.5389
    ]
   },
   "football|over": {
-   "rows": 18321,
-   "games": 134,
-   "test_games": 40,
-   "test_rows": 6902,
-   "ll_model": 0.43718302251816904,
-   "ll_learned": 0.4345355784360584,
-   "ll_market": 0.4954099181777039,
+   "rows": 19236,
+   "games": 140,
+   "test_games": 42,
+   "test_rows": 7324,
+   "ll_model": 0.43924776299997986,
+   "ll_learned": 0.435810687871839,
+   "ll_market": 0.4992799423886243,
    "coef_train": [
-    -0.293,
+    -0.288,
     0.786,
-    0.184
+    0.191
    ],
-   "win_share": 0.964,
-   "bets_model": 180,
-   "roi_model": -0.2934,
-   "bets_learned": 31,
-   "roi_learned": -0.8226,
+   "win_share": 0.99,
+   "bets_model": 204,
+   "roi_model": -0.2455,
+   "bets_learned": 39,
+   "roi_learned": -0.859,
    "adopted": true,
    "coef": [
-    -0.2908,
-    0.7949,
-    0.1894
+    -0.2979,
+    0.7966,
+    0.1828
    ]
   }
  },
@@ -225,384 +225,395 @@
    "why": "did not beat the model on the newest games"
   },
   "basketball|over|Points rebounds and assists": {
-   "rows": 519,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 163,
-   "ll_model": 0.728139808751809,
-   "ll_learned": 0.6901256871820602,
-   "ll_market": 0.6905619108300028,
+   "rows": 616,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 196,
+   "ll_model": 0.6900275849893237,
+   "ll_learned": 0.6858781821452671,
+   "ll_market": 0.690489177411399,
    "coef_train": [
-    -0.021,
-    0.167,
+    -0.007,
+    0.124,
     0.874
    ],
-   "win_share": 0.936,
-   "bets_model": 13,
-   "roi_model": 0.1076,
+   "win_share": 0.53,
+   "bets_model": 17,
+   "roi_model": 0.0769,
+   "adopted": false,
+   "why": "did not beat the model on the newest games"
+  },
+  "basketball|over|Rebounds": {
+   "rows": 3671,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 1188,
+   "ll_model": 0.44793689831708966,
+   "ll_learned": 0.4366575609572996,
+   "ll_market": 0.44059499514771594,
+   "coef_train": [
+    -0.0,
+    0.081,
+    0.996
+   ],
+   "win_share": 0.896,
+   "bets_model": 83,
+   "roi_model": -0.1424,
    "adopted": false,
    "why": "no better than the side-wide correction"
   },
-  "basketball|over|Rebounds": {
-   "rows": 3115,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 1018,
-   "ll_model": 0.4684095604809768,
-   "ll_learned": 0.4434801648200575,
-   "ll_market": 0.4458864953518561,
+  "basketball|over|Rebounds and assists": {
+   "rows": 1040,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 195,
+   "ll_model": 0.706153397048017,
+   "ll_learned": 0.6699371877026477,
+   "ll_market": 0.6680428274344802,
    "coef_train": [
-    -0.007,
-    0.093,
-    0.963
+    -0.039,
+    0.114,
+    0.86
    ],
-   "win_share": 0.984,
-   "bets_model": 74,
-   "roi_model": 0.019,
+   "win_share": 0.966,
+   "bets_model": 14,
+   "roi_model": 0.0514,
    "adopted": true,
    "coef": [
-    -0.0156,
-    0.0706,
-    1.0305
+    -0.0348,
+    0.0933,
+    0.8829
    ]
   },
-  "basketball|over|Rebounds and assists": {
-   "rows": 939,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 261,
-   "ll_model": 0.6669478871087301,
-   "ll_learned": 0.6282521192644953,
-   "ll_market": 0.6206692771509056,
+  "basketball|over|Steals": {
+   "rows": 521,
+   "games": 45,
+   "test_games": 14,
+   "test_rows": 170,
+   "ll_model": 0.547073674634718,
+   "ll_learned": 0.5331099325721096,
+   "ll_market": 0.5294364433576367,
    "coef_train": [
-    -0.103,
-    0.119,
-    0.811
+    -0.036,
+    0.247,
+    0.901
    ],
-   "win_share": 0.896,
-   "bets_model": 20,
-   "roi_model": -0.1234,
+   "win_share": 0.824,
+   "bets_model": 15,
+   "roi_model": -0.4019,
    "adopted": false,
    "why": "no better than the side-wide correction"
   },
   "basketball|over|Three pointers made": {
-   "rows": 2486,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 805,
-   "ll_model": 0.48730642258695056,
-   "ll_learned": 0.4927510878693135,
-   "ll_market": 0.4933781658417786,
+   "rows": 2905,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 930,
+   "ll_model": 0.49499748178033515,
+   "ll_learned": 0.4973673162233685,
+   "ll_market": 0.49439325437003884,
    "coef_train": [
-    -0.188,
-    0.178,
-    0.883
+    -0.18,
+    0.202,
+    0.833
    ],
-   "win_share": 0.23,
-   "bets_model": 83,
-   "roi_model": -0.3931,
-   "adopted": false,
-   "why": "did not beat the model on the newest games"
-  },
-  "basketball|over|Points and rebounds": {
-   "rows": 636,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 209,
-   "ll_model": 0.715534618460937,
-   "ll_learned": 0.6972137114914773,
-   "ll_market": 0.6988573447389403,
-   "coef_train": [
-    0.058,
-    0.227,
-    0.86
-   ],
-   "win_share": 0.812,
-   "bets_model": 17,
-   "roi_model": 0.1962,
-   "bets_learned": 2,
-   "roi_learned": 0.9165,
-   "adopted": false,
-   "why": "no better than the side-wide correction"
-  },
-  "basketball|over|Points": {
-   "rows": 4679,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 1383,
-   "ll_model": 0.4710144976894548,
-   "ll_learned": 0.45173349675154456,
-   "ll_market": 0.4557869980270056,
-   "coef_train": [
-    -0.008,
-    0.334,
-    0.849
-   ],
-   "win_share": 0.972,
-   "bets_model": 167,
-   "roi_model": -0.3726,
-   "bets_learned": 6,
-   "roi_learned": 0.473,
-   "adopted": false,
-   "why": "no better than the side-wide correction"
-  },
-  "basketball|over|Assists": {
-   "rows": 2173,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 698,
-   "ll_model": 0.46389884004760706,
-   "ll_learned": 0.44683564371829915,
-   "ll_market": 0.4515775150350646,
-   "coef_train": [
-    -0.099,
-    0.22,
-    0.975
-   ],
-   "win_share": 0.988,
-   "bets_model": 63,
-   "roi_model": -0.3186,
-   "adopted": false,
-   "why": "no better than the side-wide correction"
-  },
-  "basketball|over|Points and assists": {
-   "rows": 462,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 155,
-   "ll_model": 0.7058910102057367,
-   "ll_learned": 0.6873491177475793,
-   "ll_market": 0.689014074244247,
-   "coef_train": [
-    -0.062,
-    0.219,
-    0.875
-   ],
-   "win_share": 0.838,
-   "bets_model": 12,
-   "roi_model": -0.2349,
-   "adopted": false,
-   "why": "no better than the side-wide correction"
-  },
-  "basketball|under|Points rebounds and assists": {
-   "rows": 519,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 163,
-   "ll_model": 0.728139808751809,
-   "ll_learned": 0.6919306832727137,
-   "ll_market": 0.6905619108300028,
-   "coef_train": [
-    -0.015,
-    0.225,
-    0.442
-   ],
-   "win_share": 0.932,
-   "bets_model": 70,
-   "roi_model": 0.0113,
-   "bets_learned": 17,
-   "roi_learned": -0.197,
-   "adopted": true,
-   "coef": [
-    0.001,
-    0.1965,
-    0.4484
-   ]
-  },
-  "basketball|under|Rebounds": {
-   "rows": 599,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 197,
-   "ll_model": 0.7144597695338366,
-   "ll_learned": 0.6874977229301212,
-   "ll_market": 0.6879746367094604,
-   "coef_train": [
-    -0.053,
-    0.275,
-    0.455
-   ],
-   "win_share": 0.88,
-   "bets_model": 93,
-   "roi_model": 0.0652,
-   "bets_learned": 15,
-   "roi_learned": 0.2573,
-   "adopted": false,
-   "why": "no better than the side-wide correction"
-  },
-  "basketball|under|Rebounds and assists": {
-   "rows": 418,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 147,
-   "ll_model": 0.7486710582146449,
-   "ll_learned": 0.7014310515890382,
-   "ll_market": 0.6985419727188639,
-   "coef_train": [
-    0.018,
-    0.243,
-    0.441
-   ],
-   "win_share": 0.974,
-   "bets_model": 71,
-   "roi_model": -0.036,
-   "bets_learned": 26,
-   "roi_learned": -0.1381,
-   "adopted": true,
-   "coef": [
-    0.0042,
-    0.1847,
-    0.4294
-   ]
-  },
-  "basketball|under|Three pointers made": {
-   "rows": 492,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 154,
-   "ll_model": 0.6711133529247838,
-   "ll_learned": 0.6728303342883272,
-   "ll_market": 0.6808676659597884,
-   "coef_train": [
-    0.072,
-    0.338,
-    0.516
-   ],
-   "win_share": 0.388,
-   "bets_model": 41,
-   "roi_model": 0.1421,
-   "bets_learned": 28,
-   "roi_learned": 0.1955,
-   "adopted": false,
-   "why": "did not beat the model on the newest games"
-  },
-  "basketball|under|Points and rebounds": {
-   "rows": 636,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 209,
-   "ll_model": 0.715534618460937,
-   "ll_learned": 0.6950555267788623,
-   "ll_market": 0.6988573447389403,
-   "coef_train": [
-    -0.089,
-    0.282,
-    0.43
-   ],
-   "win_share": 0.836,
-   "bets_model": 87,
-   "roi_model": -0.0846,
-   "bets_learned": 13,
-   "roi_learned": 0.0405,
-   "adopted": false,
-   "why": "no better than the side-wide correction"
-  },
-  "basketball|under|Points": {
-   "rows": 661,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 218,
-   "ll_model": 0.7016559171349758,
-   "ll_learned": 0.6888824199790387,
-   "ll_market": 0.696559135435854,
-   "coef_train": [
-    -0.076,
-    0.336,
-    0.447
-   ],
-   "win_share": 0.82,
-   "bets_model": 85,
-   "roi_model": -0.0831,
-   "bets_learned": 17,
-   "roi_learned": 0.2679,
-   "adopted": true,
-   "coef": [
-    -0.0902,
-    0.356,
-    0.4349
-   ]
-  },
-  "basketball|under|Assists": {
-   "rows": 408,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 138,
-   "ll_model": 0.6976196077208728,
-   "ll_learned": 0.67569694365289,
-   "ll_market": 0.670204328699018,
-   "coef_train": [
-    0.05,
-    0.312,
-    0.497
-   ],
-   "win_share": 0.9,
-   "bets_model": 50,
-   "roi_model": -0.0817,
-   "bets_learned": 41,
-   "roi_learned": -0.0447,
-   "adopted": true,
-   "coef": [
-    0.0461,
-    0.3117,
-    0.5459
-   ]
-  },
-  "basketball|under|Points and assists": {
-   "rows": 462,
-   "games": 67,
-   "test_games": 20,
-   "test_rows": 155,
-   "ll_model": 0.7058910102057367,
-   "ll_learned": 0.6879855781231683,
-   "ll_market": 0.689014074244247,
-   "coef_train": [
-    0.025,
-    0.284,
-    0.443
-   ],
-   "win_share": 0.848,
-   "bets_model": 56,
-   "roi_model": -0.0101,
-   "bets_learned": 31,
-   "roi_learned": -0.019,
-   "adopted": false,
-   "why": "no better than the side-wide correction"
-  },
-  "football|over|Shots": {
-   "rows": 5033,
-   "games": 107,
-   "test_games": 32,
-   "test_rows": 1482,
-   "ll_model": 0.4828564797157187,
-   "ll_learned": 0.4820552687833839,
-   "ll_market": 0.5518438988854157,
-   "coef_train": [
-    -0.247,
-    0.831,
-    0.106
-   ],
-   "win_share": 0.604,
-   "bets_model": 31,
-   "roi_model": -0.0711,
-   "bets_learned": 15,
+   "win_share": 0.37,
+   "bets_model": 115,
+   "roi_model": -0.4342,
+   "bets_learned": 1,
    "roi_learned": -1.0,
    "adopted": false,
    "why": "did not beat the model on the newest games"
   },
-  "football|over|Assists": {
-   "rows": 1560,
-   "games": 100,
-   "test_games": 30,
-   "test_rows": 460,
-   "ll_model": 0.27038175858138414,
-   "ll_learned": 0.27224076094307353,
-   "ll_market": 0.30027132257528244,
+  "basketball|over|Points and rebounds": {
+   "rows": 758,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 251,
+   "ll_model": 0.6962381620292054,
+   "ll_learned": 0.6952842428151883,
+   "ll_market": 0.697940416999215,
    "coef_train": [
-    -0.27,
-    0.807,
-    0.273
+    0.076,
+    0.205,
+    0.862
    ],
-   "win_share": 0.294,
+   "win_share": 0.54,
+   "bets_model": 20,
+   "roi_model": 0.0167,
+   "bets_learned": 3,
+   "roi_learned": 0.2777,
+   "adopted": false,
+   "why": "did not beat the model on the newest games"
+  },
+  "basketball|over|Points": {
+   "rows": 5371,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 1479,
+   "ll_model": 0.45684323117033493,
+   "ll_learned": 0.44529731236292397,
+   "ll_market": 0.45074852413432054,
+   "coef_train": [
+    -0.013,
+    0.262,
+    0.918
+   ],
+   "win_share": 0.966,
+   "bets_model": 172,
+   "roi_model": -0.1829,
+   "bets_learned": 4,
+   "roi_learned": -0.1395,
+   "adopted": false,
+   "why": "no better than the side-wide correction"
+  },
+  "basketball|over|Assists": {
+   "rows": 2540,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 815,
+   "ll_model": 0.4835528128687803,
+   "ll_learned": 0.4619446240408447,
+   "ll_market": 0.4611685966357482,
+   "coef_train": [
+    -0.041,
+    0.248,
+    0.981
+   ],
+   "win_share": 0.996,
+   "bets_model": 65,
+   "roi_model": -0.412,
+   "bets_learned": 1,
+   "roi_learned": 0.533,
+   "adopted": false,
+   "why": "no better than the side-wide correction"
+  },
+  "basketball|over|Points and assists": {
+   "rows": 546,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 181,
+   "ll_model": 0.6851536942757244,
+   "ll_learned": 0.6797448040307115,
+   "ll_market": 0.6856892250502532,
+   "coef_train": [
+    -0.035,
+    0.181,
+    0.875
+   ],
+   "win_share": 0.61,
+   "bets_model": 16,
+   "roi_model": -0.0682,
+   "adopted": false,
+   "why": "did not beat the model on the newest games"
+  },
+  "basketball|under|Points rebounds and assists": {
+   "rows": 616,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 196,
+   "ll_model": 0.6900275849893237,
+   "ll_learned": 0.6860955774177433,
+   "ll_market": 0.690489177411399,
+   "coef_train": [
+    -0.024,
+    0.181,
+    0.532
+   ],
+   "win_share": 0.522,
+   "bets_model": 82,
+   "roi_model": 0.0429,
+   "bets_learned": 5,
+   "roi_learned": 0.1484,
+   "adopted": false,
+   "why": "did not beat the model on the newest games"
+  },
+  "basketball|under|Rebounds": {
+   "rows": 712,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 237,
+   "ll_model": 0.6961186688108325,
+   "ll_learned": 0.6805754914061396,
+   "ll_market": 0.6824728384229466,
+   "coef_train": [
+    -0.062,
+    0.285,
+    0.557
+   ],
+   "win_share": 0.792,
+   "bets_model": 111,
+   "roi_model": 0.0823,
+   "bets_learned": 13,
+   "roi_learned": 0.1213,
+   "adopted": false,
+   "why": "did not beat the model on the newest games"
+  },
+  "basketball|under|Rebounds and assists": {
+   "rows": 497,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 173,
+   "ll_model": 0.7149460840416818,
+   "ll_learned": 0.6892949098004375,
+   "ll_market": 0.6877846004844351,
+   "coef_train": [
+    -0.017,
+    0.213,
+    0.535
+   ],
+   "win_share": 0.914,
+   "bets_model": 81,
+   "roi_model": -0.0763,
+   "bets_learned": 5,
+   "roi_learned": 0.24,
+   "adopted": false,
+   "why": "no better than the side-wide correction"
+  },
+  "basketball|under|Three pointers made": {
+   "rows": 573,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 176,
+   "ll_model": 0.6937067148075926,
+   "ll_learned": 0.6925726583854072,
+   "ll_market": 0.692771422038737,
+   "coef_train": [
+    0.09,
+    0.35,
+    0.603
+   ],
+   "win_share": 0.54,
+   "bets_model": 50,
+   "roi_model": 0.0598,
+   "bets_learned": 40,
+   "roi_learned": 0.2621,
+   "adopted": false,
+   "why": "did not beat the model on the newest games"
+  },
+  "basketball|under|Points and rebounds": {
+   "rows": 758,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 251,
+   "ll_model": 0.6962381620292054,
+   "ll_learned": 0.6934175893245565,
+   "ll_market": 0.697940416999215,
+   "coef_train": [
+    -0.102,
+    0.259,
+    0.521
+   ],
+   "win_share": 0.626,
+   "bets_model": 105,
+   "roi_model": -0.0494,
+   "bets_learned": 6,
+   "roi_learned": -0.0455,
+   "adopted": false,
+   "why": "did not beat the model on the newest games"
+  },
+  "basketball|under|Points": {
+   "rows": 780,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 249,
+   "ll_model": 0.6783584641400576,
+   "ll_learned": 0.6861698889657484,
+   "ll_market": 0.690632185427833,
+   "coef_train": [
+    -0.115,
+    0.319,
+    0.524
+   ],
+   "win_share": 0.19,
+   "bets_model": 98,
+   "roi_model": 0.1082,
+   "bets_learned": 13,
+   "roi_learned": 0.5398,
+   "adopted": false,
+   "why": "did not beat the model on the newest games"
+  },
+  "basketball|under|Assists": {
+   "rows": 482,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 162,
+   "ll_model": 0.7116082960876263,
+   "ll_learned": 0.6840947426023275,
+   "ll_market": 0.6788601300338291,
+   "coef_train": [
+    0.033,
+    0.324,
+    0.614
+   ],
+   "win_share": 0.978,
+   "bets_model": 61,
+   "roi_model": 0.0078,
+   "bets_learned": 31,
+   "roi_learned": -0.0431,
+   "adopted": true,
+   "coef": [
+    0.0427,
+    0.2962,
+    0.6549
+   ]
+  },
+  "basketball|under|Points and assists": {
+   "rows": 546,
+   "games": 77,
+   "test_games": 23,
+   "test_rows": 181,
+   "ll_model": 0.6851536942757244,
+   "ll_learned": 0.6813865440768853,
+   "ll_market": 0.6856892250502532,
+   "coef_train": [
+    0.005,
+    0.247,
+    0.532
+   ],
+   "win_share": 0.556,
+   "bets_model": 66,
+   "roi_model": 0.1202,
+   "bets_learned": 18,
+   "roi_learned": 0.0626,
+   "adopted": false,
+   "why": "did not beat the model on the newest games"
+  },
+  "football|over|Shots": {
+   "rows": 5333,
+   "games": 113,
+   "test_games": 34,
+   "test_rows": 1588,
+   "ll_model": 0.488706127609195,
+   "ll_learned": 0.48440174074323017,
+   "ll_market": 0.5646320706994765,
+   "coef_train": [
+    -0.234,
+    0.842,
+    0.109
+   ],
+   "win_share": 0.968,
+   "bets_model": 41,
+   "roi_model": -0.2177,
+   "bets_learned": 19,
+   "roi_learned": -1.0,
+   "adopted": false,
+   "why": "no better than the side-wide correction"
+  },
+  "football|over|Assists": {
+   "rows": 1610,
+   "games": 103,
+   "test_games": 31,
+   "test_rows": 476,
+   "ll_model": 0.26671934013918164,
+   "ll_learned": 0.26821243336210104,
+   "ll_market": 0.2960534427887131,
+   "coef_train": [
+    -0.274,
+    0.809,
+    0.27
+   ],
+   "win_share": 0.344,
    "bets_model": 1,
    "roi_model": -1.0,
    "bets_learned": 1,
@@ -611,82 +622,101 @@
    "why": "did not beat the model on the newest games"
   },
   "football|over|Goals": {
-   "rows": 1984,
-   "games": 132,
-   "test_games": 40,
-   "test_rows": 598,
-   "ll_model": 0.30916021124210497,
-   "ll_learned": 0.3073871078441174,
-   "ll_market": 0.31386170273131153,
+   "rows": 2084,
+   "games": 138,
+   "test_games": 41,
+   "test_rows": 618,
+   "ll_model": 0.31246383981521486,
+   "ll_learned": 0.3101291979359732,
+   "ll_market": 0.3157080502316686,
    "coef_train": [
-    -0.423,
-    0.678,
+    -0.425,
+    0.676,
     0.221
    ],
-   "win_share": 0.718,
-   "bets_model": 52,
-   "roi_model": -0.4231,
-   "bets_learned": 13,
+   "win_share": 0.796,
+   "bets_model": 57,
+   "roi_model": -0.3355,
+   "bets_learned": 15,
    "roi_learned": -1.0,
    "adopted": false,
    "why": "did not beat the model on the newest games"
   },
   "football|over|Fouled": {
-   "rows": 3865,
-   "games": 83,
-   "test_games": 25,
-   "test_rows": 1134,
-   "ll_model": 0.44723571879102086,
-   "ll_learned": 0.4421853872566314,
-   "ll_market": 0.5261423375501814,
+   "rows": 3958,
+   "games": 85,
+   "test_games": 26,
+   "test_rows": 1182,
+   "ll_model": 0.44823932245850306,
+   "ll_learned": 0.44249593926945474,
+   "ll_market": 0.530437633826326,
    "coef_train": [
-    -0.28,
-    0.707,
-    0.277
+    -0.273,
+    0.716,
+    0.273
    ],
-   "win_share": 0.984,
+   "win_share": 0.998,
    "bets_model": 14,
    "roi_model": -0.7897,
    "adopted": false,
    "why": "no better than the side-wide correction"
   },
   "football|over|Fouls": {
-   "rows": 2874,
-   "games": 91,
-   "test_games": 27,
-   "test_rows": 822,
-   "ll_model": 0.5925900605704748,
-   "ll_learned": 0.5845187668722887,
-   "ll_market": 0.6678631349865809,
+   "rows": 2972,
+   "games": 94,
+   "test_games": 28,
+   "test_rows": 858,
+   "ll_model": 0.5979032441786055,
+   "ll_learned": 0.5902164225356321,
+   "ll_market": 0.6655001211436653,
    "coef_train": [
-    -0.26,
-    0.856,
-    0.18
+    -0.262,
+    0.869,
+    0.172
    ],
-   "win_share": 0.996,
-   "bets_model": 24,
-   "roi_model": -0.5686,
+   "win_share": 0.99,
+   "bets_model": 25,
+   "roi_model": -0.5859,
    "adopted": false,
    "why": "no better than the side-wide correction"
   },
   "football|over|Shots on target": {
-   "rows": 2650,
-   "games": 89,
-   "test_games": 27,
-   "test_rows": 778,
-   "ll_model": 0.364529278104826,
-   "ll_learned": 0.364326632396517,
-   "ll_market": 0.41430287702257024,
+   "rows": 2828,
+   "games": 95,
+   "test_games": 28,
+   "test_rows": 813,
+   "ll_model": 0.35686074019766373,
+   "ll_learned": 0.3544498524580378,
+   "ll_market": 0.415747811982362,
    "coef_train": [
-    -0.372,
-    0.762,
-    0.161
+    -0.359,
+    0.751,
+    0.191
    ],
-   "win_share": 0.536,
-   "bets_model": 18,
-   "roi_model": 0.2917,
-   "bets_learned": 5,
+   "win_share": 0.77,
+   "bets_model": 19,
+   "roi_model": 0.3974,
+   "bets_learned": 3,
    "roi_learned": -1.0,
+   "adopted": false,
+   "why": "did not beat the model on the newest games"
+  },
+  "football|over|Card": {
+   "rows": 451,
+   "games": 31,
+   "test_games": 9,
+   "test_rows": 143,
+   "ll_model": 0.512824522246897,
+   "ll_learned": 0.5292391870843933,
+   "ll_market": 0.5337778670411925,
+   "coef_train": [
+    -0.324,
+    0.81,
+    0.223
+   ],
+   "win_share": 0.036,
+   "bets_model": 15,
+   "roi_model": 0.1667,
    "adopted": false,
    "why": "did not beat the model on the newest games"
   }
