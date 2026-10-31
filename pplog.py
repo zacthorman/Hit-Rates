@@ -540,6 +540,47 @@ def settle(args=None) -> int:
     return done
 
 
+def backfill_started(args=None) -> int:
+    """Add started / minutes to settled player rows from line-ups already in
+    cache/ (no requests). For rows settled before 31 Oct 2026, when settle()
+    began recording them. Paddy prices football props as if every squad
+    player starts, so without this a backtest mixes in bench players, whose
+    bets stand after one minute and almost always lose."""
+    done = 0
+    cache_dir = ROOT / "cache"
+    seen: dict = {}
+    for path in _files():
+        rows = _read(path)
+        changed = False
+        for r in rows:
+            if r.get("result") not in ("win", "lose") or "started" in r:
+                continue
+            eid = r["event_id"]
+            if eid not in seen:
+                try:
+                    seen[eid] = json.loads((cache_dir / f"event_{eid}_lineups.json").read_text())
+                except (OSError, ValueError):
+                    seen[eid] = None
+            data = seen[eid]
+            if not data:
+                continue
+            for side in ("home", "away"):
+                for p in (data.get(side) or {}).get("players", []) or []:
+                    if (p.get("player") or {}).get("name") == r["player"]:
+                        st = p.get("statistics") or {}
+                        r["started"] = not p.get("substitute", False)
+                        if r.get("sport") == "basketball":
+                            r["minutes"] = round((st.get("secondsPlayed") or 0) / 60, 1)
+                        else:
+                            r["minutes"] = st.get("minutesPlayed") or 0
+                        changed = True
+                        done += 1
+        if changed:
+            _write(path, rows)
+    print(f"pp log: started/minutes added to {done} row(s)")
+    return done
+
+
 def _card_value(r: dict):
     """1 if booked, 0 if played and not, 'dnp' if he did not play.
     Cards are not in the box score, so the match's incidents decide it."""
@@ -749,9 +790,9 @@ td {{ padding:8px 10px; border-bottom:1px solid var(--bd); vertical-align:top; }
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["snapshot", "settle", "report", "page"])
+    ap.add_argument("cmd", choices=["snapshot", "settle", "report", "page", "backfill-started"])
     args = ap.parse_args()
-    {"snapshot": snapshot, "settle": settle, "report": report,
+    {"snapshot": snapshot, "settle": settle, "report": report, "backfill-started": backfill_started,
      "page": lambda a=None: print("wrote", page())}[args.cmd]()
 
 

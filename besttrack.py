@@ -332,6 +332,12 @@ def _player_value(leg, sport):
                 mins_key = {"football": "minutesPlayed", "basketball": "secondsPlayed"}.get(sport)
                 if mins_key and not st.get(mins_key):
                     return "dnp"
+                # Who started and for how long, for the pp log (31 Oct 2026):
+                # Paddy prices football props as if every player starts, so a
+                # backtest has to be able to keep only the starters.
+                leg["started"] = not p.get("substitute", False)
+                if mins_key:
+                    leg["minutes"] = round(st.get(mins_key, 0) / (60 if mins_key == "secondsPlayed" else 1), 1)
                 vals = hitrates._player_stat_values(p.get("statistics") or {}, zero_fill=fill)
                 return vals.get(leg["stat"], 0.0) if vals else "dnp"
     return "dnp"
