@@ -1,16 +1,16 @@
 {
  "groups": {
   "football|team": {
-   "a": 0.1346,
-   "b": 1.0145,
+   "a": 0.1345,
+   "b": 1.0146,
    "c": {
-    "cards": -0.069,
+    "cards": -0.0689,
     "corners": -0.0672,
     "fouls": 0.022,
-    "goals": 0.1211,
+    "goals": 0.1209,
     "other": -0.0306,
-    "shots": 0.0472,
-    "shots on target": 0.1206,
+    "shots": 0.0471,
+    "shots on target": 0.1205,
     "tackles": -0.0094
    },
    "legs": 2051,
@@ -19,53 +19,53 @@
   },
   "football|player": {
    "a": 0.0254,
-   "b": 0.9274,
+   "b": 0.9275,
    "c": {
-    "fouls": -0.2451,
+    "fouls": -0.2449,
     "goals": -0.0118,
-    "other": 0.0586,
-    "saves": 0.1228,
-    "shots": 0.0894,
+    "other": 0.0585,
+    "saves": 0.1225,
+    "shots": 0.0893,
     "shots on target": -0.0327,
-    "tackles": 0.0444
+    "tackles": 0.0443
    },
    "legs": 1767,
    "said": 0.7041,
    "landed": 0.7023
   },
   "american-football|player": {
-   "a": 0.0886,
-   "b": 1.003,
+   "a": 0.0884,
+   "b": 1.0031,
    "c": {
     "other": 0.0143,
-    "passing": -0.0118,
-    "receiving": -0.121,
-    "rushing": 0.0545,
-    "tackles": 0.1525
+    "passing": -0.0117,
+    "receiving": -0.1208,
+    "rushing": 0.0544,
+    "tackles": 0.1523
    },
    "legs": 423,
    "said": 0.6922,
    "landed": 0.721
   },
   "american-football|team": {
-   "a": -0.0482,
+   "a": -0.0481,
    "b": 0.9631,
    "c": {
-    "goals": 0.0305,
-    "other": -0.0248,
+    "goals": 0.0304,
+    "other": -0.0247,
     "passing": 0.0008,
-    "rushing": -0.0547
+    "rushing": -0.0546
    },
    "legs": 109,
    "said": 0.6636,
    "landed": 0.6514
   },
   "darts|team": {
-   "a": 0.0047,
-   "b": 0.9153,
+   "a": 0.0046,
+   "b": 0.9155,
    "c": {
     "180s": -0.0012,
-    "other": 0.0059
+    "other": 0.0058
    },
    "legs": 258,
    "said": 0.6263,
@@ -86,17 +86,17 @@
    "b": 0.9926,
    "c": {
     "goals": -0.0078,
-    "other": 0.0072
+    "other": 0.0071
    },
    "legs": 111,
    "said": 0.6496,
    "landed": 0.6577
   },
   "basketball|player": {
-   "a": -0.0281,
-   "b": 1.1118,
+   "a": -0.028,
+   "b": 1.1116,
    "c": {
-    "other": -0.0281
+    "other": -0.028
    },
    "legs": 961,
    "said": 0.7085,
@@ -104,7 +104,7 @@
   }
  },
  "legs": 5851,
- "updated": "01 Nov 2026 11:38",
+ "updated": "01 Nov 2026 12:24",
  "check": {
   "ok": true,
   "test": 1171,

@@ -2651,15 +2651,15 @@
   "sport": "american-football",
   "kickoff": 1793556000,
   "selection": "Ty Johnson 2+ receiving receptions",
-  "chance": 0.6923650102285124,
-  "fair": 1.4443248651025185,
+  "chance": 0.6923617577290032,
+  "fair": 1.444331650090081,
   "team": "Buffalo Bills",
   "player": "Ty Johnson",
   "stat": "Receiving receptions",
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16183755": {
   "event_id": 16183755,
@@ -2668,15 +2668,15 @@
   "sport": "american-football",
   "kickoff": 1793556000,
   "selection": "Bhayshul Tuten 1+ receiving receptions",
-  "chance": 0.6826454872465804,
-  "fair": 1.4648891975151768,
+  "chance": 0.6826411220886337,
+  "fair": 1.464898564769089,
   "team": "Jacksonville Jaguars",
   "player": "Bhayshul Tuten",
   "stat": "Receiving receptions",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16183760": {
   "event_id": 16183760,
@@ -5212,15 +5212,15 @@
   "sport": "football",
   "kickoff": 1793538000,
   "selection": "Mart\u00edn Satriano 2+ shots",
-  "chance": 0.6704427475003945,
-  "fair": 1.8538173273296628,
+  "chance": 0.652437894130418,
+  "fair": 1.853984135127841,
   "team": "Getafe",
   "player": "Mart\u00edn Satriano",
   "stat": "Shots",
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16311000": {
   "event_id": 16311000,
@@ -5229,15 +5229,15 @@
   "sport": "football",
   "kickoff": 1793541600,
   "selection": "Romain Faivre 1+ shots",
-  "chance": 0.7209067142037441,
-  "fair": 1.5953710540960286,
+  "chance": 0.7208884134495582,
+  "fair": 1.5954642180173582,
   "team": "Auxerre",
   "player": "Romain Faivre",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16285073": {
   "event_id": 16285073,
@@ -5254,7 +5254,7 @@
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16285074": {
   "event_id": 16285074,
@@ -5263,15 +5263,15 @@
   "sport": "football",
   "kickoff": 1793541600,
   "selection": "Gvidas Gineitis 1+ shots",
-  "chance": 0.7316364208396203,
-  "fair": 1.5021105030308153,
+  "chance": 0.7316210549810389,
+  "fair": 1.5021798473105648,
   "team": "Torino",
   "player": "Gvidas Gineitis",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16434084": {
   "event_id": 16434084,
@@ -5280,15 +5280,15 @@
   "sport": "football",
   "kickoff": 1793543400,
   "selection": "Marius B\u00fclter 1+ shots",
-  "chance": 0.7508222376100808,
-  "fair": 1.4687642132612362,
+  "chance": 0.750808038627336,
+  "fair": 1.4688254778477141,
   "team": "1. FC K\u00f6ln",
   "player": "Marius B\u00fclter",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16421098": {
   "event_id": 16421098,
@@ -5297,15 +5297,15 @@
   "sport": "football",
   "kickoff": 1793546100,
   "selection": "Arda G\u00fcler 1+ shots",
-  "chance": 0.8133320222496396,
-  "fair": 1.3515996721759522,
+  "chance": 0.8133224305353874,
+  "fair": 1.3516347177875958,
   "team": "Real Madrid",
   "player": "Arda G\u00fcler",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16310999": {
   "event_id": 16310999,
@@ -5313,16 +5313,16 @@
   "competition": "Ligue 1",
   "sport": "football",
   "kickoff": 1793549700,
-  "selection": "Paris FC over 10.5 total shots",
-  "chance": 0.7187953668731515,
-  "fair": 1.478407895438247,
+  "selection": "Moses Simon 1+ shots",
+  "chance": 0.643269280694543,
+  "fair": 1.7402243204540235,
   "team": "Paris FC",
-  "player": null,
-  "stat": "Total shots",
+  "player": "Moses Simon",
+  "stat": "Shots",
   "period": "ALL",
-  "line": 10.5,
+  "line": 0.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16310996": {
   "event_id": 16310996,
@@ -5331,15 +5331,15 @@
   "sport": "football",
   "kickoff": 1793549700,
   "selection": "Corentin Tolisso 1+ shots",
-  "chance": 0.7907820222496396,
-  "fair": 1.3515996721759522,
+  "chance": 0.7907724305353875,
+  "fair": 1.3516347177875958,
   "team": "Olympique Lyonnais",
   "player": "Corentin Tolisso",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16434082": {
   "event_id": 16434082,
@@ -5348,15 +5348,15 @@
   "sport": "football",
   "kickoff": 1793550600,
   "selection": "Jonathan Burkardt 2+ shots",
-  "chance": 0.6862957440087109,
-  "fair": 1.7159798077404629,
+  "chance": 0.686291455704176,
+  "fair": 1.7161060898781264,
   "team": "Eintracht Frankfurt",
   "player": "Jonathan Burkardt",
   "stat": "Shots",
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16363907": {
   "event_id": 16363907,
@@ -5365,15 +5365,15 @@
   "sport": "football",
   "kickoff": 1793550600,
   "selection": "Viktor Gy\u00f6keres 1+ shots",
-  "chance": 0.6864135097447406,
-  "fair": 1.6120827490471004,
+  "chance": 0.6863947318093429,
+  "fair": 1.6121803555587508,
   "team": "Arsenal",
   "player": "Viktor Gy\u00f6keres",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16285072": {
   "event_id": 16285072,
@@ -5382,15 +5382,15 @@
   "sport": "football",
   "kickoff": 1793552400,
   "selection": "Lecce over 2.5 shots on target",
-  "chance": 0.7377687450413004,
-  "fair": 1.5892049272428324,
+  "chance": 0.7401607074572416,
+  "fair": 1.5772139423031923,
   "team": "Lecce",
   "player": null,
   "stat": "Shots on target",
   "period": "ALL",
   "line": 2.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16421092": {
   "event_id": 16421092,
@@ -5399,15 +5399,15 @@
   "sport": "football",
   "kickoff": 1793554200,
   "selection": "Arnaut Danjuma 1+ shots",
-  "chance": 0.7455722376100808,
-  "fair": 1.4687642132612362,
+  "chance": 0.745558038627336,
+  "fair": 1.4688254778477141,
   "team": "Valencia",
   "player": "Arnaut Danjuma",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16183753": {
   "event_id": 16183753,
@@ -5416,15 +5416,15 @@
   "sport": "american-football",
   "kickoff": 1793556000,
   "selection": "DK Metcalf 30+ rushing and receiving yards",
-  "chance": 0.6702852541179469,
-  "fair": 1.491902132497211,
+  "chance": 0.670279454951736,
+  "fair": 1.4919150402305046,
   "team": "Pittsburgh Steelers",
   "player": "DK Metcalf",
   "stat": "Rushing and receiving yards",
   "period": "ALL",
   "line": 29.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16183772": {
   "event_id": 16183772,
@@ -5433,15 +5433,15 @@
   "sport": "american-football",
   "kickoff": 1793556000,
   "selection": "Mike Gesicki 1+ anytime touchdown",
-  "chance": 0.6951022884377719,
-  "fair": 1.438637185683102,
+  "chance": 0.6950747361763785,
+  "fair": 1.4386942122238857,
   "team": "Cincinnati Bengals",
   "player": "Mike Gesicki",
   "stat": "Anytime touchdown",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16183756": {
   "event_id": 16183756,
@@ -5450,15 +5450,15 @@
   "sport": "american-football",
   "kickoff": 1793556000,
   "selection": "Breece Hall 50+ rushing and receiving yards",
-  "chance": 0.6711737390090476,
-  "fair": 1.4899271855845355,
+  "chance": 0.6711680435526725,
+  "fair": 1.4899398289387138,
   "team": "New York Jets",
   "player": "Breece Hall",
   "stat": "Rushing and receiving yards",
   "period": "ALL",
   "line": 49.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16183754": {
   "event_id": 16183754,
@@ -5467,15 +5467,15 @@
   "sport": "american-football",
   "kickoff": 1793556000,
   "selection": "Sam LaPorta 1+ anytime touchdown",
-  "chance": 0.6951022884377719,
-  "fair": 1.438637185683102,
+  "chance": 0.6950747361763785,
+  "fair": 1.4386942122238857,
   "team": "Detroit Lions",
   "player": "Sam LaPorta",
   "stat": "Anytime touchdown",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16183759": {
   "event_id": 16183759,
@@ -5484,15 +5484,15 @@
   "sport": "american-football",
   "kickoff": 1793556000,
   "selection": "Sean Tucker 1+ anytime touchdown",
-  "chance": 0.6951022884377719,
-  "fair": 1.438637185683102,
+  "chance": 0.6950747361763785,
+  "fair": 1.4386942122238857,
   "team": "Tampa Bay Buccaneers",
   "player": "Sean Tucker",
   "stat": "Anytime touchdown",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
  },
  "16183748": {
   "event_id": 16183748,
@@ -5500,15 +5500,66 @@
   "competition": "NFL",
   "sport": "american-football",
   "kickoff": 1793556000,
-  "selection": "Trey McBride 50+ receiving yards",
-  "chance": 0.661112399715727,
-  "fair": 1.512602093728679,
+  "selection": "Trey McBride 50+ rushing and receiving yards",
+  "chance": 0.6611055248654182,
+  "fair": 1.5126178233097822,
   "team": "Arizona Cardinals",
   "player": "Trey McBride",
-  "stat": "Receiving yards",
+  "stat": "Rushing and receiving yards",
   "period": "ALL",
   "line": 49.5,
   "over": true,
-  "written": 1793530393.287328
+  "written": 1793534971.253673
+ },
+ "16310997": {
+  "event_id": 16310997,
+  "fixture": "Olympique de Marseille v Toulouse",
+  "competition": "Ligue 1",
+  "sport": "football",
+  "kickoff": 1793562300,
+  "selection": "Amine Gouiri 1+ shots on target",
+  "chance": 0.6501,
+  "fair": 1.9553201940240612,
+  "team": "Olympique de Marseille",
+  "player": "Amine Gouiri",
+  "stat": "Shots on target",
+  "period": "ALL",
+  "line": 0.5,
+  "over": true,
+  "written": 1793534971.253673
+ },
+ "16285067": {
+  "event_id": 16285067,
+  "fixture": "Juventus v SSC Napoli",
+  "competition": "Serie A",
+  "sport": "football",
+  "kickoff": 1793562300,
+  "selection": "Kevin De Bruyne 1+ shots",
+  "chance": 0.6823669772834465,
+  "fair": 1.682838875689709,
+  "team": "SSC Napoli",
+  "player": "Kevin De Bruyne",
+  "stat": "Shots",
+  "period": "ALL",
+  "line": 0.5,
+  "over": true,
+  "written": 1793534971.253673
+ },
+ "16421088": {
+  "event_id": 16421088,
+  "fixture": "Athletic Club v Real Sociedad",
+  "competition": "LaLiga",
+  "sport": "football",
+  "kickoff": 1793563200,
+  "selection": "Robert Navarro 1+ shots",
+  "chance": 0.7078998903699054,
+  "fair": 1.5551928858843151,
+  "team": "Athletic Club",
+  "player": "Robert Navarro",
+  "stat": "Shots",
+  "period": "ALL",
+  "line": 0.5,
+  "over": true,
+  "written": 1793534971.253673
  }
 }
