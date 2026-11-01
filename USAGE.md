@@ -804,6 +804,7 @@ Everything scheduled runs on the Mac. Nothing here is a cloud job.
 | Every day, 07:00 | `update.py`: settle (`bettrack.py`, `besttrack.py`, `linelog.py`), build the NBA first and quick-publish it (`nba_first`, on unless `update.json` says false), then every league in `update.json` with `run.py`, then the Nations League, Champions League, Europa League, NFL, darts and MLB steps, `rerender.py`, `make_index.py --prune`, commit, `publish.sh`, then `tactics_fetch.py` | launchd, `com.zacthorman.football.plist` |
 | Every publish | `publish.sh`: `market_prices.py` (with `.betfair.env`), `paddypower_prices.py`, `bet365_prices.py`, `team_news.py`, `fmodel_live.py`, `usmodel_live.py`, `markets_sidecar.py`, `pplog.py settle` and `snapshot`, `teamlog.py settle` and `snapshot`, `pplog.py page`, `exchange_eval.py settle` and `fit` (with `.betfair.env`), `make_index.py`, `exchange_eval.py log` and `page`, `tonight.py --hours 8`, `besttrack.py snapshot`, `linelog.py snapshot`, `bets_page.py`, then the push to `gh-pages` | `update.py`, `lineups_auto.py`, `catchup.sh`, or by hand |
 | Every 15 minutes | `lineups_auto.py`: confirmed line-ups about an hour before kick-off, then a republish | launchd, `com.zacthorman.lineups.plist` |
+| Every 3 minutes, 16:00 to 03:30 UK | `news_watch.py`: ESPN's NBA injury feed, logging any change that can move a price tonight to `news/events.jsonl` (INJURY-NEWS-TEST.md, step 1). No Paddy Power requests, no publish | launchd, `com.zacthorman.news.plist` |
 | Weekly, Mondays 05:34 | `teammodel_train.py --weekly`: small, checked update of the team model, logged to `teammodel/CHANGELOG.md` | scheduled task `football-models-weekly-mac` |
 | Weekly, by hand | `gs_backtest.py build` then `gs_backtest.py test`, so `gs_fit.json` keeps up with the cache | you |
 | By hand, when needed | `darts.sh`, `nfl_fit.sh`, `catchup.sh`, `backfill.py`, `cards_backfill.py`, `strength.py --slopes` or `--tune`, `nba_team_train.py`, a full `teammodel_train.py`, `match_result.py`, the probes | you |
@@ -824,6 +825,7 @@ Everything scheduled runs on the Mac. Nothing here is a cloud job.
 | `make_index.py` | The front page: every upcoming fixture, soonest first, and the four picks. |
 | `tonight.py` | `tonight.html`: the small page of what is on soon. |
 | `lineups_auto.py` | Confirmed line-ups an hour before kick-off, then a republish. |
+| `news_watch.py` | NBA injury news as it lands: who changed status, for which game tonight, and how long after ESPN's stamp we saw it. `status` prints the record. |
 | `lineup_data.py` | Predicted and confirmed line-ups attached to each fixture at build time. |
 | `team_news.py` | Who is out, per fixture, for every sport. |
 | `nfl_injuries.py` | NFL injury report and quarterback changes. |
