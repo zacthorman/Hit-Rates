@@ -350,11 +350,21 @@ def report(args=None) -> str:
     return text
 
 
-def tonight(now: float | None = None, until: float | None = None) -> dict[str, list[dict]]:
+def tonight(now: float | None = None, until: float | None = None, q: dict | None = None) -> dict[str, list[dict]]:
+    """Tonight's bets per rule. The rules are run over the whole log, not only
+    tonight's rows: nba_alt_drift_miss needs each player's previous game, and
+    until 1 Nov 2026 this ran on tonight's rows alone, so the drift rule could
+    never fire live (it found Kuzma's 2+ assists by hand on 31 Oct). Picks are
+    keyed by game, so tonight's are the same either way for the other rules.
+    Pass q (qualifying over the whole log) to save working it out twice."""
     now = now or time.time()
     until = until or now + 24 * 3600
-    rows = [r for r in pplog.all_rows() if r.get("result") is None and now < (r.get("kickoff") or 0) < until]
-    return {k: sorted(v, key=lambda r: r["kickoff"]) for k, v in qualifying(rows).items() if not k.startswith("control")}
+    if q is None:
+        q = qualifying(pplog.all_rows())
+    keep = lambda r: r.get("result") is None and now < (r.get("kickoff") or 0) < until
+    out = {k: sorted((r for r in v if keep(r)), key=lambda r: r["kickoff"])
+           for k, v in q.items() if not k.startswith("control")}
+    return {k: v for k, v in out.items() if v}
 
 
 def shortlist(bets: list[dict]) -> list[dict]:
@@ -401,8 +411,8 @@ def box(now: float, until: float) -> str:
     import html
     esc = html.escape
     try:
-        q = tonight(now, until)
         allq = qualifying(pplog.all_rows())
+        q = tonight(now, until, allq)
     except Exception as exc:  # never cost the page
         return f"<p class='sub'>Rules on trial unavailable ({esc(str(exc))})</p>"
     if value_claimed():

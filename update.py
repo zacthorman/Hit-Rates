@@ -477,7 +477,11 @@ def main() -> None:
             if stale:
                 say(f"the previous run built {len(stale)} report(s) and never "
                     "published them, pushing those first")
-                if run(["./publish.sh"], args.dry):
+                # 1 Nov 2026: QUICK=1. The full publish fetched prices and
+                # settled first and took about 5 hours on 31 Oct, all of it
+                # redone by the rebuild's own publish at the end. The quick one
+                # pushes what is on disk in a few minutes.
+                if run(["env", "QUICK=1", "./publish.sh"], args.dry):
                     say("recovered, the site is serving the previous run's reports")
                 else:
                     say("could not publish those, carrying on with the rebuild")
@@ -534,6 +538,31 @@ def main() -> None:
         if args.only_render:
             say("skipping the fetch, --only-render")
         else:
+            # The NBA. Only games in the next two days: there are games most
+            # nights, and a whole slate of thirty teams every run would be the
+            # slowest build here for pages that are stale by tomorrow. Never
+            # fatal.
+            def build_nba():
+                say("building the NBA slate")
+                optional_build([python, "run.py", "--league", "NBA", "--games", "20",
+                                "--players", "--adjust", "--h2h", "--within-days", "2",
+                                "--no-open"],
+                               args.dry, "NBA", feeds)
+
+            # 1 Nov 2026: the NBA goes first (nba_first, on unless update.json
+            # says false), with a quick publish straight after, so its page is
+            # live by mid-morning rather than waiting the 5 to 8 hours the
+            # football leagues take. The page's prices come later from the
+            # afternoon Paddy refresh either way. The full publish at the end
+            # still republishes everything.
+            nba_first = bool(settings.get("nba")) and settings.get("nba_first", True)
+            if nba_first:
+                build_nba()
+                if ("NBA" in feeds["built"] and not args.dry and not args.no_push
+                        and settings.get("push")):
+                    say("publishing the NBA page early (quick publish)")
+                    if not run(["env", "QUICK=1", "./publish.sh"], args.dry, allow_fail=True):
+                        say("the early NBA publish failed, it goes out with the rest at the end")
             leagues = settings["leagues"]
             say(f"building {len(leagues)} league(s): {', '.join(leagues)}")
 
@@ -643,16 +672,9 @@ def main() -> None:
                                 "--players", "--adjust", "--h2h", "--no-open"],
                                args.dry, "MLB", feeds)
 
-            # 1f. The NBA. Same shape as the NFL and MLB steps, but only games
-            #     in the next two days: there are games most nights, and a
-            #     whole slate of thirty teams every run would be the slowest
-            #     build here for pages that are stale by tomorrow. Never fatal.
-            if settings.get("nba"):
-                say("building the NBA slate")
-                optional_build([python, "run.py", "--league", "NBA", "--games", "20",
-                                "--players", "--adjust", "--h2h", "--within-days", "2",
-                                "--no-open"],
-                               args.dry, "NBA", feeds)
+            # 1f. The NBA, unless it was built first (nba_first, above).
+            if settings.get("nba") and not nba_first:
+                build_nba()
 
             check_feeds(feeds)
 
