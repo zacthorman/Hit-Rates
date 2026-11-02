@@ -63,6 +63,13 @@ JITTER = 15           # plus up to this much, randomised
 MAX_PER_RUN = 15      # games per run
 MAX_PER_DAY = 60      # games per day, across all runs
 RESERVE_CLOSE = 15    # of those, kept for games inside 3 hours of kick-off
+# 2 Nov 2026: of the day's cap, US_RESERVE is kept for NBA / NFL games inside
+# 3 hours of tip-off whenever any are still to come today. That evening the
+# cap was spent by 21:50 and 12 of 15 NBA games carried Paddy prices from
+# 10:40, while Pinnacle's (pinnacle_props.py) were current: the comparison
+# that finds value needs both sides fresh. A US game far from tip-off is
+# fetched at most once (its morning price is enough to plan with).
+US_RESERVE = 20
 WINDOW_HOURS = 48     # only games kicking off within this (was 30; 22 Oct: model-liked lines shorten before kick-off, so catch prices earlier)
 FRESH_HOURS = 4       # do not refetch a game inside this
 FRESH_CLOSE = 1       # ...or this, in the last 3 hours before kick-off
@@ -475,6 +482,54 @@ def candidates(st: dict) -> list[tuple]:
     return out
 
 
+def choose(todo: list[tuple], left: int, by_hand: bool, held: dict, us_ahead: int) -> list[tuple]:
+    """Which of the candidates (ko, fid, pp_id, betfair name) to fetch this run."""
+    close = [c for c in todo if c[0] - now() < 3 * 3600]
+    far = [c for c in todo if c[0] - now() >= 3 * 3600]
+    # US games: once early (to plan with), then again only near tip-off.
+    far = [c for c in far if not (_us(c) and (held.get(c[1]) or {}).get("fetchedAt"))]
+    # Keep US_RESERVE for tonight's US tip-offs while any are still ahead.
+    hold = 0 if by_hand else min(US_RESERVE, us_ahead)
+    close.sort(key=lambda c: (not _us(c), c[0]))       # US tip-offs first inside 3 hours
+    take = []
+    for c in close:
+        if len(take) >= min(MAX_PER_RUN, left):
+            break
+        if not _us(c) and len(take) >= left - hold:
+            continue
+        take.append(c)
+    far_room = min(MAX_PER_RUN - len(take), left - len(take) - (0 if by_hand else RESERVE_CLOSE + hold))
+    return take + far[:max(0, far_room)]
+
+
+def _us(c: tuple) -> bool:
+    """NBA / NFL: Betfair names those 'Away @ Home'."""
+    return " @ " in (c[3] or "")
+
+
+def _us_still_to_come(held: dict) -> int:
+    """How many NBA / NFL games start between 30 min and 20 hours from now
+    and have not had a fetch inside their last 3 hours (each still needs one)."""
+    try:
+        mp = json.loads((ROOT / "market_prices.json").read_text())
+    except (OSError, ValueError):
+        return 0
+    n = 0
+    for fid, ev in (mp.get("events") or {}).items():
+        if " @ " not in (ev.get("betfair") or ""):
+            continue
+        try:
+            ko = datetime.fromisoformat(ev["start"].replace("Z", "+00:00")).timestamp()
+        except (KeyError, ValueError):
+            continue
+        if not 1800 < ko - now() < 20 * 3600:
+            continue
+        last = (held.get(fid) or {}).get("fetchedAt", 0)
+        if ko - last > 3 * 3600:
+            n += 1
+    return n
+
+
 def _bet365_ids() -> set:
     try:
         return set((json.loads((ROOT / "reports" / "bet365.json").read_text()).get("events") or {}))
@@ -523,11 +578,8 @@ def run(extra: int = 0, us_only: bool = False) -> int:
         # old at kick-off.
         # --extra: a one-off, by-hand allowance above the daily cap (24 Oct 2026).
         left = MAX_PER_DAY + extra - count_today(st)
-        close = [c for c in todo if c[0] - now() < 3 * 3600]
-        far = [c for c in todo if c[0] - now() >= 3 * 3600]
-        take = close[:min(MAX_PER_RUN, left)]
-        far_room = min(MAX_PER_RUN - len(take), left - (0 if extra else RESERVE_CLOSE))
-        take += far[:max(0, far_room)]
+        held = load_out().get("events") or {}
+        take = choose(todo, left, bool(extra), held, _us_still_to_come(held))
         if left <= 0:
             print(f"  paddypower: daily cap of {MAX_PER_DAY} reached")
             return 0
