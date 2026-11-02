@@ -153,6 +153,46 @@ def props_of(market: dict, sides: dict, player: str, stat: str) -> list[dict]:
     return out
 
 
+def game_lines(markets: list[dict]) -> dict:
+    """The main game's full-time spread, total and win chance, margin-free.
+
+    {"spread": home handicap in points (negative = home favoured), "total",
+     "p_over": chance the total goes over, "p_home": home win chance}. Of
+    several lines (alternates) the one priced nearest evens is kept, as the
+    main line is."""
+    out: dict = {}
+    best: dict = {}
+    for mkt in markets or []:
+        if mkt.get("period", 0) != 0 or mkt.get("status", "open") != "open":
+            continue
+        t = mkt.get("type")
+        dec = {}
+        pts = {}
+        for pr in mkt.get("prices") or []:
+            d = PP.decimal(pr.get("price"))
+            des = str(pr.get("designation", "")).lower()
+            if d and des:
+                dec[des] = d
+                pts[des] = pr.get("points")
+        if len(dec) != 2:
+            continue
+        book = sum(1 / d for d in dec.values())
+        fair = {k: (1 / d) / book for k, d in dec.items()}
+        if t == "total" and "over" in fair and pts.get("over") is not None:
+            gap = abs(fair["over"] - 0.5)
+            if gap < best.get("total", 9):
+                best["total"] = gap
+                out["total"], out["p_over"] = float(pts["over"]), round(fair["over"], 4)
+        elif t == "spread" and "home" in fair and pts.get("home") is not None:
+            gap = abs(fair["home"] - 0.5)
+            if gap < best.get("spread", 9):
+                best["spread"] = gap
+                out["spread"] = float(pts["home"])
+        elif t == "moneyline" and "home" in fair:
+            out["p_home"] = round(fair["home"], 4)
+    return out
+
+
 def _game(parent: dict | None):
     if not parent:
         return None
@@ -297,8 +337,28 @@ def run(probe: bool = False) -> int:
                     except Exception:  # noqa: BLE001
                         fid = None
                 held[str(gid)] = {"name": f"{home} v {away}", "home": home, "away": away, "kickoff": ko,
-                                  "sport": sport, "fid": fid, "fetchedAt": time.time(), "props": g["rows"]}
+                                  "sport": sport, "fid": fid, "fetchedAt": time.time(), "props": g["rows"],
+                                  "game": game_lines(by_m.get(gid, []))}
                 got += 1
+            # Every game's spread and total, props or not (2 Nov 2026): the
+            # market's own forecast of game script and pace, logged beside
+            # every Paddy line (pplog "game_sharp").
+            for m in ms:
+                if m.get("type") != "matchup" or m.get("parentId") or str(m.get("id")) in held:
+                    continue
+                home, away, ko = _game(m) or (None, None, None)
+                if not ko or not now - 3 * 3600 < ko < now + WINDOW_HOURS * 3600:
+                    continue
+                gl = game_lines(by_m.get(m.get("id"), []))
+                if not gl:
+                    continue
+                try:
+                    fid = bet365_prices.match_fixture(f"{home} v {away}", ko, events) if home and away else None
+                except Exception:  # noqa: BLE001
+                    fid = None
+                held[str(m["id"])] = {"name": f"{home} v {away}", "home": home, "away": away, "kickoff": ko,
+                                      "sport": sport, "fid": fid, "fetchedAt": time.time(), "props": [],
+                                      "game": gl}
     except PP.Capped as e:
         print(f"  pinnacle props: stopped early ({e})")
     except PP.Transient as e:
@@ -309,10 +369,61 @@ def run(probe: bool = False) -> int:
     out["updated"] = time.time()
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(json.dumps(out, separators=(",", ":")))
+    _log_near_tip(held)
     n = sum(len(e["props"]) for e in held.values())
     print(f"  pinnacle props: {got} game(s) priced, {n} prop prices held, "
           f"{st.get('count', {}).get(PP.today(), 0)}/{MAX_PER_DAY} requests today")
     return 0
+
+
+CLOSE_HOURS = 3.0   # games this close to the start get every fetch appended to the closing log
+
+
+def _log_near_tip(held: dict) -> None:
+    """Append this run's prices for games starting within CLOSE_HOURS to
+    pplog/pinnacle-YYYY-MM.jsonl, so the last one before tip-off (Pinnacle's
+    closing price) survives the game dropping out of pinnacle_props.json.
+    Closing-line value against Pinnacle is the quickest honest test of any
+    method: it shows in days, results take months."""
+    now = time.time()
+    rows = []
+    for gid, e in held.items():
+        ko = e.get("kickoff") or 0
+        if not (now < ko < now + CLOSE_HOURS * 3600) or now - (e.get("fetchedAt") or 0) > 600:
+            continue
+        base = {"t": round(now), "gid": gid, "fid": e.get("fid"), "sport": e.get("sport"), "kickoff": ko}
+        if e.get("game"):
+            rows.append(dict(base, kind="game", **e["game"]))
+        for r in e.get("props") or []:
+            rows.append(dict(base, kind="prop", **r))
+    if not rows:
+        return
+    path = ROOT / "pplog" / f"pinnacle-{time.strftime('%Y-%m', time.gmtime(now))}.jsonl"
+    try:
+        path.parent.mkdir(exist_ok=True)
+        with open(path, "a", encoding="utf-8") as f:
+            for r in rows:
+                f.write(json.dumps(r, separators=(",", ":")) + "\n")
+    except OSError:
+        pass
+
+
+def game_for(sport: str, fid=None, home: str = "", kickoff: float = 0):
+    """Pinnacle's spread / total for a site fixture: by fixture id, else by home side and kick-off."""
+    try:
+        data = json.loads(OUT.read_text())
+    except (OSError, ValueError):
+        return None
+    for e in (data.get("events") or {}).values():
+        if e.get("sport") != sport or not e.get("game"):
+            continue
+        if fid is not None and e.get("fid") is not None and str(e["fid"]) == str(fid):
+            return dict(e["game"], home=e.get("home"))
+    for e in (data.get("events") or {}).values():
+        if (e.get("sport") == sport and e.get("game") and abs((e.get("kickoff") or 0) - kickoff) < 4 * 3600
+                and home and _norm(home).split()[-1:] == _norm(e.get("home") or "").split()[-1:]):
+            return dict(e["game"], home=e.get("home"))
+    return None
 
 
 def _load() -> dict:
