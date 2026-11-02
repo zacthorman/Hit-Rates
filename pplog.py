@@ -243,6 +243,31 @@ def _form(apps: list[dict]):
             "sd10": round(sd, 2), "n": len(vals[-20:])}
 
 
+def _game_sharp(sport: str, fid, meta: dict, t: int):
+    """Pinnacle's game line from side t's point of view: {"margin": expected
+    winning margin (minus the spread), "total", "p_win"} or None. NBA / NFL
+    only (pinnacle_props.py, 2 Nov 2026): the market's forecast of game
+    script and pace, the thing proj_margin approximates from our own form."""
+    if sport not in ("basketball", "american-football"):
+        return None
+    try:
+        import pinnacle_props
+        g = pinnacle_props.game_for(sport, fid, meta.get("home", ""), meta.get("kickoff") or 0)
+    except Exception:  # noqa: BLE001
+        return None
+    if not g:
+        return None
+    # Pinnacle's home side may not be ours (a neutral venue, a reversed listing).
+    same = _norm(g.get("home") or "").split()[-1:] == _norm(meta.get("home") or "").split()[-1:]
+    side = t if same else 1 - t
+    out = {"total": g.get("total")}
+    if g.get("spread") is not None:
+        out["margin"] = -g["spread"] if side == 0 else g["spread"]
+    if g.get("p_home") is not None:
+        out["p_win"] = g["p_home"] if side == 0 else round(1 - g["p_home"], 4)
+    return out
+
+
 def _proj_margin(entry: dict, t: int):
     """The report's pre-game projected margin for side t (points; NFL from
     touchdowns and field goals), or None. Logged from 2 Nov 2026 so game
@@ -512,6 +537,7 @@ def snapshot(args=None) -> int:
                             "fresh": fresh,
                             "adj": round(adj, 3), "injury": _injury(entry, t, name),
                             "proj_margin": _proj_margin(entry, t),
+                            "game_sharp": _game_sharp(sport, fid, meta, t),
                             "form": _form(apps) if sport == "basketball" else None,
                             "result": None, "value": None})
                 new_rows.append(row)

@@ -345,6 +345,11 @@ def _score(bets: list[dict], snap: str = "first") -> dict:
     pf = [(b[snap]["price"] - 1) if b["result"] == "win" else -1.0 for b in done]
     pl = [(b["last"]["price"] - 1) if b["result"] == "win" else -1.0 for b in done]
     clv = [b["first"]["price"] / b["last"]["price"] - 1 for b in done if b["last"].get("price")]
+    # 2 Nov 2026: value against Pinnacle's latest margin-free chance at the
+    # same line (its near-closing price, pinnacle_props.py) -- the quickest
+    # honest read on a rule, known before the results are.
+    pin = [b["first"]["price"] * b["last"]["sharp"]["p"] - 1 for b in done
+           if (b.get("last") or {}).get("sharp", {}).get("same") and b["last"]["sharp"].get("p")]
     games = defaultdict(list)
     for b, p in zip(done, pf):
         games[b["event_id"]].append(p)
@@ -360,6 +365,7 @@ def _score(bets: list[dict], snap: str = "first") -> dict:
             "profit": sum(pf), "roi": sum(pf) / len(done), "roi_close": sum(pl) / len(done),
             "clv": sum(clv) / len(clv) if clv else 0.0,
             "beat_close": sum(1 for c in clv if c > 0) / len(clv) if clv else 0.0,
+            "pin_ev": sum(pin) / len(pin) if pin else None, "pin_n": len(pin),
             "lo": boots[100], "hi": boots[1899]}
 
 
@@ -371,8 +377,8 @@ def report(args=None) -> str:
              "Rules frozen 23 Oct 2026, 13:00 BST. £1 a bet at the first price logged. "
              "**History is in sample (the rules were chosen on it). Judge on Live only**, "
              "after about 40 games, by the range, not the middle.", "",
-             "| Rule | Period | Bets | Games | Won | Profit | ROI | 90% range | ROI at close | Beat close | CLV |",
-             "|---|---|---|---|---|---|---|---|---|---|---|"]
+             "| Rule | Period | Bets | Games | Won | Profit | ROI | 90% range | ROI at close | Beat close | CLV | EV v Pinnacle |",
+             "|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for rule, label in RULES.items():
         bets = q.get(rule, [])
         start = RULE_START.get(rule, FROZEN)
@@ -380,14 +386,17 @@ def report(args=None) -> str:
                            ("Live", [b for b in bets if b["kickoff"] >= start])):
             s = _score(part, SCORE_AT.get(rule, "first"))
             if not s["n"]:
-                lines.append(f"| {label} | {name} | 0 | | | | | | | | |")
+                lines.append(f"| {label} | {name} | 0 | | | | | | | | | |")
                 continue
             lines.append(f"| {label} | {name} | {s['n']} | {s['games']} | {s['won']} | {s['profit']:+.2f} | "
                          f"{s['roi']:+.1%} | {s['lo']:+.0%} to {s['hi']:+.0%} | {s['roi_close']:+.1%} | "
-                         f"{s['beat_close']:.0%} | {s['clv']:+.1%} |")
+                         f"{s['beat_close']:.0%} | {s['clv']:+.1%} | "
+                         f"{(format(s['pin_ev'], '+.1%') + ' (' + str(s['pin_n']) + ')') if s.get('pin_ev') is not None else ''} |")
     lines += ["", "Beat close: share of bets where the price shortened after it was logged. "
               "CLV: average first price over last price, minus one. Both positive over many games is the "
-              "early sign of an edge; results take far longer to say the same."]
+              "early sign of an edge; results take far longer to say the same. EV v Pinnacle: the first price "
+              "against Pinnacle's latest margin-free chance at the same line (bets with one), the sharpest "
+              "early read there is."]
     text = "\n".join(lines) + "\n"
     OUT.write_text(text)
     print(text)

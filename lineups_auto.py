@@ -238,11 +238,48 @@ def run_job(job: str) -> None:
             fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except OSError:
             return
-        (refresh_odds if job == "odds" else refresh_prices)()
+        {"odds": refresh_odds, "sharp": refresh_sharp}.get(job, refresh_prices)()
+
+
+# 2 Nov 2026: Pinnacle's price just before tip-off is the benchmark every
+# NBA / NFL bet is judged against (closing-line value), so for games starting
+# within the hour, pinnacle_props.py is run again and pplog takes a fresh
+# snapshot (its "last" then carries Pinnacle's near-closing price). Two to
+# twelve requests a run, inside pinnacle_props' own daily cap.
+SHARP_MARK = ROOT / "cache" / ".sharp_close"
+SHARP_EVERY = 40 * 60
+SHARP_WINDOW = (15 * 60, 75 * 60)
+
+
+def sharp_due() -> bool:
+    if (ROOT / ".pinnacle_off").exists():
+        return False
+    if SHARP_MARK.exists() and time.time() - SHARP_MARK.stat().st_mtime < SHARP_EVERY:
+        return False
+    try:
+        held = json.loads((ROOT / "reports" / "pinnacle_props.json").read_text()).get("events", {})
+    except (OSError, ValueError):
+        return False
+    now = time.time()
+    return any(SHARP_WINDOW[0] < (e.get("kickoff") or 0) - now < SHARP_WINDOW[1] for e in held.values())
+
+
+def refresh_sharp() -> None:
+    SHARP_MARK.parent.mkdir(exist_ok=True)
+    SHARP_MARK.touch()
+    py = str(ROOT / ".venv" / "bin" / "python")
+    for cmd in ([py, "pinnacle_props.py"], [py, "pplog.py", "snapshot"]):
+        r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
+        if r.returncode != 0:
+            say(f"sharp close: {cmd[1]} failed: {r.stderr[-200:]}")
+            return
+    say("sharp close: Pinnacle props refreshed near tip-off, pp log snapshot taken")
 
 
 def background_prices() -> None:
-    if odds_due():
+    if sharp_due():
+        spawn("sharp", SHARP_MARK)
+    elif odds_due():
         spawn("odds", ODDS_MARK)
     elif prices_due():
         spawn("prices", PRICE_MARK)
