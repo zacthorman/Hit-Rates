@@ -18,6 +18,8 @@ The filter, written down from the hand-picked slips that kept landing (26 Oct
   5. one bet per player, two per game, eight a day per sport, most model edge first.
 
 Football is left out: no version of it made money on real prices.
+
+2 Nov 2026: replaced by NBA drift after a miss (RULE below); see candidates().
 Every list is logged before kick-off and settled from pplog, never edited.
 """
 from __future__ import annotations
@@ -89,7 +91,34 @@ def teammates_against(r: dict, ctx) -> bool:
     return ctx["miss_key"] < m if r["over"] else ctx["miss_key"] > m
 
 
+# 2 Nov 2026: the backtest of every settled line (20 Oct to 2 Nov) found the
+# model-edge filter below losing money (positive-edge NBA bets lost; the
+# model is overconfident above 0.6), while NBA "drift after a miss"
+# (ruletrack.nba_alt_drift_miss) won 34 of 35, +37% at the first price, in
+# both halves. So the best selections are now that rule's picks; the old
+# filter is kept behind RULE = "model" for comparison.
+RULE = "drift"
+
+
+def _drift_candidates(rows: list[dict], snap: str = "last") -> list[dict]:
+    want = {(str(r["event_id"]), pplog._norm(r["player"]), r["stat"], r["line"], bool(r["over"])) for r in rows}
+    allq = ruletrack.qualifying(pplog.all_rows()).get("nba_alt_drift_miss", [])
+    hist = ruletrack._hist_model()
+    out = []
+    for r in allq:
+        if (str(r["event_id"]), pplog._norm(r["player"]), r["stat"], r["line"], bool(r["over"])) not in want:
+            continue
+        price = (r.get(snap) or r.get("first") or {}).get("price")
+        if not price or not (1.15 <= price <= 3.0):
+            continue
+        m = ruletrack._model(r, hist)
+        out.append(dict(r, _price=price, _model=m if m is not None else 1 / price, _edge=r.get("_drift") or 0.0))
+    return out
+
+
 def candidates(rows: list[dict], snap: str = "last", ctx_fn=None) -> list[dict]:
+    if RULE == "drift":
+        return _drift_candidates(rows, snap)
     ctx_fn = ctx_fn or _ctx_live
     hist = ruletrack._hist_model()
     out = []

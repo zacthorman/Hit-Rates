@@ -424,8 +424,15 @@ def parlays_for(entry, meta, legs=PARLAY_LEGS):
 
     import bettable
     sport = weekend.sport_of(entry)
-    for leg in alt_legs_for(entry, meta):
+    alt = alt_legs_for(entry, meta)
+    if weekend.PRICED_ONLY:            # every leg at a real Paddy Power / Bet365 price
+        weekend.attach_books(alt)
+    for leg in alt:
         if not bettable.ok(leg, meta, sport):     # only what Paddy Power sells
+            continue
+        if weekend.PRICED_ONLY and not leg.get("book"):
+            continue
+        if weekend.stopped(dict(leg, fixture=meta)):
             continue
         pool_by_team.setdefault(leg["teamIndex"], []).append(leg)
 
@@ -483,9 +490,13 @@ def parlays_for(entry, meta, legs=PARLAY_LEGS):
         for leg in combo:
             naive *= leg["fair"]
 
+        book = 1.0
+        for l in combo:
+            book *= (l.get("book") or {}).get("price") or float("nan")
         out.append({
             "fixture": meta,
             "legs": [_leg_public(l) for l in combo],
+            "bookCombined": book if book == book else None,
             "sides": counted,
             "fair": fair,
             "naive": naive,
@@ -504,6 +515,7 @@ def _leg_public(leg):
         "line": leg["line"], "over": True, "hits": leg["hits"],
         "total": leg["total"], "fair": leg["fair"],
         "label": f"{leg['player']} {int(leg['threshold'])}+ {leg['stat'].lower()}",
+        "book": leg.get("book"),
     }
 
 
