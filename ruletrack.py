@@ -68,6 +68,28 @@ pplog (research in the 31 Oct session), so their history is in sample too:
                         at the last price. History -23.8%. Following
                         Paddy's own price cuts should keep losing.
 
+Added 2 Nov 2026 (live from 2 Nov, 15:00 UTC), chosen on the pplog after
+Super Sub was priced and settled on every market it covers (SUPERSUB-ALL-
+MARKETS.md), so their history is in sample too. Football player overs only
+in games Super Sub covers (supersub.eligible_row), only for players who
+START (pplog's "started", recorded at settling from the line-ups), and so
+scored at the LAST price logged before kick-off: whether he starts is only
+known about an hour before, so the first price, often a day earlier, is one
+these rules could not have taken.
+  fb_ss_fouls_model     fouls over, our chance 5%+ over Paddy's last price.
+                        History at the last price: 24 bets, 12 games, +40.7%
+                        (90% range -16% to +143%). At the first price the same
+                        idea was 70 bets, +17.5%.
+  fb_ss_shots_model     shots over, the same. History at the last price: 68
+                        bets, 31 games, +39.9% (-23% to +126%); at the first
+                        price 298 bets, -8.3%. The gap is likely the player
+                        model switching to the confirmed XI near kick-off.
+  control_fb_ss_fouls   fouls over for starters in the same games where the
+                        model does NOT agree. If it keeps pace with the
+                        first, the model is not what is doing the work.
+                        History at the last price: 764 bets, 47 games, -20.5%
+                        (-25% to -16%).
+
 One bet per player, stat and game in each rule (the line priced nearest
 evens), £1 at the first price logged. Also scored at the last price before
 kick-off, and closing line value: how far the price moved after the bet was
@@ -104,6 +126,7 @@ SHOW = 8  # bets listed per rule on the page, most model edge first
 _OCT31 = datetime.datetime(2026, 10, 31, 12, 0, tzinfo=datetime.timezone.utc).timestamp()
 _OCT28 = datetime.datetime(2026, 10, 28, 12, 0, tzinfo=datetime.timezone.utc).timestamp()
 _NOV02 = datetime.datetime(2026, 11, 2, 18, 0, tzinfo=datetime.timezone.utc).timestamp()
+_NOV02_FB = datetime.datetime(2026, 11, 2, 15, 0, tzinfo=datetime.timezone.utc).timestamp()
 
 # 2 Nov 2026 deep backtest (research/BACKTEST-2026-11-02-DEEP.md): Paddy's NBA
 # main lines put about twice the weight on the last 3 games that 11.5k past
@@ -141,9 +164,15 @@ RULE_START = {
     "props_beat_pinnacle": _NOV02,
     "control_props_under_pinnacle": _NOV02,
     "nba_under_reversion_strong": _NOV02,
+    "fb_ss_fouls_model": _NOV02_FB,
+    "fb_ss_shots_model": _NOV02_FB,
+    "control_fb_ss_fouls": _NOV02_FB,
 }
 # Rules that can only be bet near tip-off are scored at the last price.
-SCORE_AT = {"nba_main_day_drift": "last", "control_nba_main_steam": "last"}
+SCORE_AT = {"nba_main_day_drift": "last", "control_nba_main_steam": "last",
+            # starters are only known about an hour before kick-off
+            "fb_ss_fouls_model": "last", "fb_ss_shots_model": "last", "control_fb_ss_fouls": "last"}
+FB_EDGE = 0.05           # our chance over Paddy's last price, for the football starter rules
 DRIFT_MISS_MIN = 0.05    # first price at least 5% longer than his previous game's
 DAY_DRIFT_MIN = 0.08     # last price at least 8% longer than the first
 BLOWOUT_MARGIN = 12.0
@@ -167,6 +196,9 @@ RULES = {
     "control_nba_over_main": "Control: NBA over, main line, 1.60 to 2.20 (should lose)",
     "control_nba_alt_nine": "Control: NBA alt over, 9 of his last 10, 1.25 to 2.00",
     "control_nba_main_steam": "Control: NBA main line cut 8%+ on the day, at the last price (should lose)",
+    "fb_ss_fouls_model": "Football fouls over, Super Sub game, starters only, our chance 5%+ over Paddy (at the last price)",
+    "fb_ss_shots_model": "Football shots over, Super Sub game, starters only, our chance 5%+ over Paddy (at the last price)",
+    "control_fb_ss_fouls": "Control: football fouls over, Super Sub game, starters only, model does not agree (at the last price)",
 }
 
 
@@ -301,6 +333,18 @@ def qualifying(rows: list[dict]) -> dict[str, list[dict]]:
             if mg is not None:
                 r["_blowout"] = mg
                 add("nba_under_blowout", r)
+        # 2 Nov 2026: football starters in Super Sub games. A settled row
+        # counts only if he started; an unsettled one may still (the line-up
+        # decides), so tonight's list shows it to be checked.
+        if (r["sport"] == "football" and r["over"] and r["stat"] in ("Fouls", "Shots")
+                and (r.get("started") is True or r.get("result") is None)):
+            import supersub
+            lst = r.get("last") or {}
+            if lst.get("price") and lst.get("edge") is not None and supersub.eligible_row(r):
+                if lst["edge"] >= FB_EDGE:
+                    add("fb_ss_fouls_model" if r["stat"] == "Fouls" else "fb_ss_shots_model", r)
+                elif r["stat"] == "Fouls":
+                    add("control_fb_ss_fouls", r)
         if r["sport"] == NFL and r["over"] and r["stat"] in RECEIVING and price <= 2.2 and agrees:
             add("nfl_receiving_model", r)
         # learned_value (26 Oct): the chance after learn.py's correction, only
