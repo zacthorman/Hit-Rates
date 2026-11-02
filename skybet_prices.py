@@ -376,15 +376,21 @@ def probe(eid: str) -> int:
 
 
 def from_saved() -> int:
-    """Read pages already saved in cache/skybet (by --probe) into reports/skybet.json: no requests."""
+    """Read pages saved in cache/skybet into reports/skybet.json: no requests.
+
+    Takes the game pages --probe saves (ID-points.html), pages you save from
+    your own browser, and the site's card replies copied from the browser's
+    network tab (any .json or .txt; the game is read from inside it)."""
     try:
         mp = json.loads((ROOT / "market_prices.json").read_text()).get("events") or {}
     except (OSError, ValueError):
         mp = {}
     out = load_out()
     held = out.setdefault("events", {})
-    for f in sorted(RAW.glob("*.html")):
-        eid = f.stem.split("-")[0]
+    for f in sorted(list(RAW.glob("*.html")) + list(RAW.glob("*.json")) + list(RAW.glob("*.txt"))):
+        text = f.read_text()
+        m = re.search(r"ppb:event:(\d+)", text)
+        eid = f.stem.split("-")[0] if f.stem.split("-")[0].isdigit() else (m.group(1) if m else "")
         fid, ev = next(((k, e) for k, e in mp.items() if str(e.get("bfEvent")) == eid), (None, None))
         if not fid:
             continue
@@ -394,7 +400,15 @@ def from_saved() -> int:
             continue
         prev = held.get(fid) or {}
         lines = {(l["key"], l["market"], l["side"], l["line"]): l for l in prev.get("lines", [])}
-        for l in lines_of(f.read_text()):
+        if f.suffix == ".html":
+            got = lines_of(text)
+        else:
+            import paddypower_prices as pp
+            try:
+                got = pp.player_lines(as_page(json.loads(text)))
+            except ValueError:
+                got = []
+        for l in got:
             lines[(l["key"], l["market"], l["side"], l["line"])] = l
         held[fid] = {"skEvent": eid, "name": ev.get("betfair"), "kickoff": ko,
                      "fetchedAt": f.stat().st_mtime, "lines": list(lines.values())}
