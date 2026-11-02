@@ -5767,5 +5767,22 @@
   "line": 1.5,
   "over": true,
   "written": 1793585276.8403788
+ },
+ "16285070": {
+  "event_id": 16285070,
+  "fixture": "Sassuolo v Fiorentina",
+  "competition": "Serie A",
+  "sport": "football",
+  "kickoff": 1793640600,
+  "selection": "Sassuolo over 3.5 shots on target",
+  "chance": 0.7269666227603739,
+  "fair": 1.5571053206255123,
+  "team": "Sassuolo",
+  "player": null,
+  "stat": "Shots on target",
+  "period": "ALL",
+  "line": 3.5,
+  "over": true,
+  "written": 1793613559.9895601
  }
 }

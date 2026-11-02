@@ -1,16 +1,16 @@
 {
  "groups": {
   "football|team": {
-   "a": 0.129,
-   "b": 1.0296,
+   "a": 0.1289,
+   "b": 1.0297,
    "c": {
-    "cards": -0.0649,
-    "corners": -0.0695,
+    "cards": -0.0648,
+    "corners": -0.0694,
     "fouls": 0.0116,
-    "goals": 0.1144,
-    "other": -0.0308,
-    "shots": 0.0735,
-    "shots on target": 0.1037,
+    "goals": 0.1143,
+    "other": -0.0307,
+    "shots": 0.0734,
+    "shots on target": 0.1036,
     "tackles": -0.009
    },
    "legs": 2102,
@@ -18,13 +18,13 @@
    "landed": 0.7331
   },
   "football|player": {
-   "a": -0.0033,
+   "a": -0.0034,
    "b": 0.9683,
    "c": {
-    "fouls": -0.2371,
+    "fouls": -0.2369,
     "goals": -0.0286,
     "other": 0.0519,
-    "saves": 0.1148,
+    "saves": 0.1146,
     "shots": 0.0621,
     "shots on target": -0.0039,
     "tackles": 0.0375
@@ -38,10 +38,10 @@
    "b": 0.9895,
    "c": {
     "other": -0.0049,
-    "passing": -0.1537,
-    "receiving": -0.0545,
+    "passing": -0.1534,
+    "receiving": -0.0544,
     "rushing": -0.0089,
-    "tackles": 0.1704
+    "tackles": 0.1701
    },
    "legs": 530,
    "said": 0.6878,
@@ -51,18 +51,18 @@
    "a": -0.0462,
    "b": 0.9647,
    "c": {
-    "goals": 0.0285,
+    "goals": 0.0284,
     "other": -0.0235,
     "passing": 0.0005,
-    "rushing": -0.0517
+    "rushing": -0.0516
    },
    "legs": 109,
    "said": 0.6636,
    "landed": 0.6514
   },
   "darts|team": {
-   "a": 0.0038,
-   "b": 0.9197,
+   "a": 0.0037,
+   "b": 0.9198,
    "c": {
     "180s": -0.0015,
     "other": 0.0052
@@ -72,10 +72,10 @@
    "landed": 0.6395
   },
   "baseball|player": {
-   "a": 0.0349,
-   "b": 0.9814,
+   "a": 0.0348,
+   "b": 0.9815,
    "c": {
-    "other": 0.0349
+    "other": 0.0348
    },
    "legs": 156,
    "said": 0.6694,
@@ -93,10 +93,10 @@
    "landed": 0.6577
   },
   "basketball|player": {
-   "a": -0.0223,
-   "b": 1.1084,
+   "a": -0.0222,
+   "b": 1.1082,
    "c": {
-    "other": -0.0223
+    "other": -0.0222
    },
    "legs": 1007,
    "said": 0.7073,
@@ -104,7 +104,7 @@
   }
  },
  "legs": 6170,
- "updated": "02 Nov 2026 09:32",
+ "updated": "02 Nov 2026 10:13",
  "check": {
   "ok": true,
   "test": 1234,
