@@ -788,10 +788,13 @@ def builders_for(entry, meta):
         # like three opinions when it is one.
         best_by_stat = {}
         import bettable
-        for leg in legs_for(entry, meta):
-            if leg["teamIndex"] != team_index:
-                continue
+        team_legs = [l for l in legs_for(entry, meta) if l["teamIndex"] == team_index]
+        if PRICED_ONLY:
+            attach_books(team_legs)
+        for leg in team_legs:
             if not bettable.ok(leg, meta, sport_of(entry)):   # only what Paddy Power sells
+                continue
+            if PRICED_ONLY and not leg.get("book"):
                 continue
             current = best_by_stat.get(leg["stat"])
             if current is None or leg["evidence"] > current["evidence"]:
@@ -816,8 +819,12 @@ def builders_for(entry, meta):
                 naive *= leg["fair"]
 
             low = model.wilson_low(hits, total)
+            book = 1.0
+            for leg in combo:
+                book *= (leg.get("book") or {}).get("price") or float("nan")
             out.append({
                 "fixture": meta,
+                "bookCombined": book if book == book else None,
                 "team": team.get("name"),
                 "venue": venue_used,
                 "legs": [_leg_public(l) for l in combo],
@@ -964,7 +971,27 @@ def group_count(legs) -> int:
 # fair price whenever there are any. Paddy Power prices about 30 hours out,
 # so early in the week the pick falls back to the unpriced best, marked so.
 
+# 2 Nov 2026: every pick of the week carries a price Paddy Power or Bet365
+# actually offers. Of the 1,059 picks recorded in best_bets.json up to 2 Nov,
+# 918 (87%) had no book price at all and were quoted at our own fair price,
+# which is a number no one can bet at. With PRICED_ONLY a pick with no book
+# price is not shown; the slot says it is waiting for prices instead.
+PRICED_ONLY = True
+_BOOK_CACHE: dict = {}
+
+
 def _book_index() -> dict:
+    """Cached per process, keyed on the price files' modification times."""
+    root = Path(__file__).parent / "reports"
+    stamp = tuple((root / f).stat().st_mtime if (root / f).exists() else 0
+                  for f in ("paddypower.json", "bet365.json"))
+    if _BOOK_CACHE.get("stamp") != stamp:
+        _BOOK_CACHE["stamp"] = stamp
+        _BOOK_CACHE["idx"] = _read_book_index()
+    return _BOOK_CACHE["idx"]
+
+
+def _read_book_index() -> dict:
     import pplog
     out = {}
     root = Path(__file__).parent / "reports"
@@ -1095,7 +1122,8 @@ def best_single(legs):
                  # called value until the results say how far off they run
                  and not (l.get("player") and l["stat"] in ("Goals", "Card", "Yellow cards"))
                  and max(ODDS_FLOOR, l["fair"]) <= l["book"]["price"] <= l["fair"] * 1.3]
-    eligible = confirmed or [l for l in legs if l["fair"] >= ODDS_FLOOR and _headline_ok(l)]
+    eligible = confirmed or ([] if PRICED_ONLY else
+                             [l for l in legs if l["fair"] >= ODDS_FLOOR and _headline_ok(l)])
     if not eligible:
         return None
 
@@ -1124,7 +1152,7 @@ def best_acca(legs, wanted=ACCA_LEGS, target=ACCA_TARGET):
     ok = [l for l in legs if 1.05 < l["fair"] < 100 and l["total"] >= MIN_SAMPLE]
     priced = [l for l in ok if _book_ok(l)]
     out = _acca_from(priced, wanted, target, True) if len(priced) >= wanted else None
-    return out or _acca_from(ok, wanted, target, False)
+    return out or (None if PRICED_ONLY else _acca_from(ok, wanted, target, False))
 
 
 def _acca_from(pool, wanted, target, priced):
@@ -1250,7 +1278,8 @@ def best_double(legs, target=DOUBLE_TARGET):
     priced = [l for l in ok if _book_ok(l) and 1.25 <= l["book"]["price"] <= 1.8]
     # Book prices when two qualifying legs can make the double, else fair.
     out = _double_from(priced, target, True) if len(priced) >= 2 else None
-    return out or _double_from([l for l in ok if 1.25 <= l["fair"] <= 1.8], target, False)
+    return out or (None if PRICED_ONLY else
+                   _double_from([l for l in ok if 1.25 <= l["fair"] <= 1.8], target, False))
 
 
 def _double_from(pool, target, priced):
@@ -1297,7 +1326,7 @@ def best_banker(legs):
     ok = [l for l in legs if _headline_ok(l, HEADLINE_SAMPLE)]
     pool = _dedupe([l for l in ok if _book_ok(l) and lo <= l["book"]["price"] <= hi])
     priced = bool(pool)
-    if not pool:
+    if not pool and not PRICED_ONLY:
         pool = _dedupe([l for l in ok if lo <= l["fair"] <= hi])
     if not pool:
         return None

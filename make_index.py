@@ -1016,12 +1016,13 @@ function renderPicks() {
     const b = p.builder;
     const over = 100 * (b.naive / b.fair - 1);
     cards.push(`<div class="pick">
-      ${pkHead("Builder", b.fair)}
+      ${b.bookCombined ? pkHead("Builder", b.bookCombined, "legs at book prices") : pkHead("Builder", b.fair, "fair, not priced")}
       <div class="sel">${escapeHtml(b.team)}</div>
       <div class="where">${escapeHtml(b.fixture.home)} v ${escapeHtml(b.fixture.away)}</div>
       ${pkChips([["Together", `${b.hits}/${b.total}`], ["Legs", b.legs.length], ["Multiplied", fmtOdds(b.naive)]])}
       <ul class="pk-legs">${b.legs.map(l => `<li class="pk-leg"><span class="t">${legText(l)}</span>
-        <span class="p">${l.hits}/${l.total}</span></li>`).join("")}</ul>
+        <span class="p">${l.book ? `${escapeHtml(l.book.name)} ${fmtOdds(l.book.price)} &middot; ` : ""}${l.hits}/${l.total}</span></li>`).join("")}</ul>
+      ${b.bookCombined ? `<div class="where">The legs multiplied at Paddy Power / Bet365 prices; the book's own builder price will be a little shorter, as it allows for the legs moving together.</div>` : ""}
       ${note("why not just multiply the legs?",
         `Multiplying would say ${fmtOdds(b.naive)}, <span class="flag">${over.toFixed(0)}% longer than the record
          supports</span>. Same-team legs move together, so the product always flatters a builder. This is priced by
@@ -1034,11 +1035,11 @@ function renderPicks() {
     const gap = 100 * (g.naive / g.fair - 1);
     const together = g.sides.map(s => `${s.hits}/${s.total}`).join(" &middot; ");
     cards.push(`<div class="pick">
-      ${pkHead(`Same-game parlay &middot; ${g.legs.length} legs`, g.fair)}
+      ${g.bookCombined ? pkHead(`Same-game parlay &middot; ${g.legs.length} legs`, g.bookCombined, "legs at book prices") : pkHead(`Same-game parlay &middot; ${g.legs.length} legs`, g.fair, "fair, not priced")}
       <div class="where">${escapeHtml(g.fixture.home)} v ${escapeHtml(g.fixture.away)}</div>
       ${pkChips([["Together", together], ["Hold out", fmtOdds(g.need)], ["Multiplied", fmtOdds(g.naive)]])}
       <ul class="pk-legs">${g.legs.map(l => `<li class="pk-leg"><span class="t">${legText(l)}</span>
-        <span class="p">${l.hits}/${l.total}</span></li>`).join("")}</ul>
+        <span class="p">${l.book ? `${escapeHtml(l.book.name)} ${fmtOdds(l.book.price)} &middot; ` : ""}${l.hits}/${l.total}</span></li>`).join("")}</ul>
       ${note("how is this priced?",
         `Legs on the same team are counted together, out of the matches that carried all of them, so nothing
          assumes they are independent. Multiplying them would have said ${fmtOdds(g.naive)}, ${gap >= 0
@@ -1059,7 +1060,8 @@ function renderPicks() {
   box.innerHTML = cards.length
     ? `${learnLine}<div class="picks">${cards.join("")}</div>`
     : `<div class="picks"><div class="pick none">Nothing cleared the bar for
-       ${escapeHtml(SPORT_LABELS[sport] || sport)} this round.</div></div>`;
+       ${escapeHtml(SPORT_LABELS[sport] || sport)} this round at a price Paddy Power or Bet365 actually offers.
+       Picks appear once the books price the games (Paddy Power about a day before kick-off).</div></div>`;
 }
 
 /* The picks rail. Open or folded is remembered per browser, which is a

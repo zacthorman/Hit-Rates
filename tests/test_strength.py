@@ -149,7 +149,11 @@ class Picks(unittest.TestCase):
         z = weekend.selection_z(weekend.group_count(legs))
         old = max([l for l in legs if l["fair"] >= weekend.ODDS_FLOOR],
                   key=lambda l: (__import__("model").wilson_low(l["hits"], l["total"], z=z), l["fair"]))
-        new = weekend.best_single([dict(l) for l in legs])
+        was, weekend.PRICED_ONLY = weekend.PRICED_ONLY, False   # ranking only; prices tested in test_priced_picks
+        try:
+            new = weekend.best_single([dict(l) for l in legs])
+        finally:
+            weekend.PRICED_ONLY = was
         self.assertEqual(new["stat"], old["stat"])
 
 
