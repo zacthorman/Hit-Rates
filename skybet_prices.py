@@ -110,9 +110,15 @@ def wait_turn(st: dict) -> None:
 
 
 def lockout(st: dict, why: str) -> None:
+    """Stop for LOCKOUT_HOURS; a second refusal switches the fetcher off for good."""
     st["lockedUntil"], st["lockedWhy"] = time.time() + LOCKOUT_HOURS * 3600, why
+    st["refusals"] = st.get("refusals", 0) + 1
     save_state(st)
-    print(f"  skybet: refused ({why}); locked out for {LOCKOUT_HOURS}h")
+    if st["refusals"] >= 2:
+        OFF.write_text(f"Sky Bet refused twice ({why}); delete this file to try again.\n")
+        print(f"  skybet: refused again ({why}); switched off (.skybet_off)")
+    else:
+        print(f"  skybet: refused ({why}); locked out for {LOCKOUT_HOURS}h")
 
 
 # ------------------------------------------------------------ pages
@@ -346,6 +352,9 @@ def probe(eid: str) -> int:
         print(f"no game with event id {eid} in market_prices.json")
         return 1
     st = load_state()
+    if OFF.exists() or st.get("lockedUntil", 0) > time.time():
+        print("  skybet: switched off or locked out; no request made")
+        return 1
     RAW.mkdir(parents=True, exist_ok=True)
     url = page_url(eid, name, "points")
     print("GET", url)
@@ -366,6 +375,35 @@ def probe(eid: str) -> int:
     return 0
 
 
+def from_saved() -> int:
+    """Read pages already saved in cache/skybet (by --probe) into reports/skybet.json: no requests."""
+    try:
+        mp = json.loads((ROOT / "market_prices.json").read_text()).get("events") or {}
+    except (OSError, ValueError):
+        mp = {}
+    out = load_out()
+    held = out.setdefault("events", {})
+    for f in sorted(RAW.glob("*.html")):
+        eid = f.stem.split("-")[0]
+        fid, ev = next(((k, e) for k, e in mp.items() if str(e.get("bfEvent")) == eid), (None, None))
+        if not fid:
+            continue
+        try:
+            ko = datetime.fromisoformat(ev["start"].replace("Z", "+00:00")).timestamp()
+        except (KeyError, ValueError):
+            continue
+        prev = held.get(fid) or {}
+        lines = {(l["key"], l["market"], l["side"], l["line"]): l for l in prev.get("lines", [])}
+        for l in lines_of(f.read_text()):
+            lines[(l["key"], l["market"], l["side"], l["line"])] = l
+        held[fid] = {"skEvent": eid, "name": ev.get("betfair"), "kickoff": ko,
+                     "fetchedAt": f.stat().st_mtime, "lines": list(lines.values())}
+        print(f"  {ev.get('betfair')}: {len(lines)} lines from {f.name}")
+    OUT.parent.mkdir(exist_ok=True)
+    OUT.write_text(json.dumps(out, separators=(",", ":")))
+    return 0
+
+
 def status() -> None:
     st = load_state()
     for fid, e in sorted((load_out().get("events") or {}).items(), key=lambda kv: kv[1].get("kickoff", 0)):
@@ -379,10 +417,13 @@ def main() -> int:
     ap.add_argument("--value", action="store_true")
     ap.add_argument("--probe", metavar="EVENT_ID")
     ap.add_argument("--status", action="store_true")
+    ap.add_argument("--saved", action="store_true", help="read pages already saved by --probe; no requests")
     a = ap.parse_args()
     if a.status:
         status()
         return 0
+    if a.saved:
+        return from_saved()
     if a.probe:
         return probe(a.probe)
     if a.value:
