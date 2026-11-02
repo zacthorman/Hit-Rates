@@ -90,6 +90,13 @@ these rules could not have taken.
                         History at the last price: 764 bets, 47 games, -20.5%
                         (-25% to -16%).
 
+Added 2 Nov 2026 (live from 21:00 UTC), chosen on 20 Oct to 2 Nov of pplog:
+  us_likely_top5        NBA and NFL: each day's 5 lines our model rates most
+                        likely, first price 1.60 to 2.50, one per player per
+                        game. History 70 bets, +13.4% (90% range +2% to
+                        +25%); a random 5 a day from the same pool +4.9%.
+                        The picks of the week show it while it is on trial.
+
 One bet per player, stat and game in each rule (the line priced nearest
 evens), £1 at the first price logged. Also scored at the last price before
 kick-off, and closing line value: how far the price moved after the bet was
@@ -127,6 +134,9 @@ _OCT31 = datetime.datetime(2026, 10, 31, 12, 0, tzinfo=datetime.timezone.utc).ti
 _OCT28 = datetime.datetime(2026, 10, 28, 12, 0, tzinfo=datetime.timezone.utc).timestamp()
 _NOV02 = datetime.datetime(2026, 11, 2, 18, 0, tzinfo=datetime.timezone.utc).timestamp()
 _NOV02_FB = datetime.datetime(2026, 11, 2, 15, 0, tzinfo=datetime.timezone.utc).timestamp()
+_NOV02_PM = datetime.datetime(2026, 11, 2, 21, 0, tzinfo=datetime.timezone.utc).timestamp()
+LIKELY_PER_DAY = 5
+LIKELY_PRICE = (1.60, 2.50)
 
 # 2 Nov 2026 deep backtest (research/BACKTEST-2026-11-02-DEEP.md): Paddy's NBA
 # main lines put about twice the weight on the last 3 games that 11.5k past
@@ -167,6 +177,7 @@ RULE_START = {
     "fb_ss_fouls_model": _NOV02_FB,
     "fb_ss_shots_model": _NOV02_FB,
     "control_fb_ss_fouls": _NOV02_FB,
+    "us_likely_top5": _NOV02_PM,
 }
 # Rules that can only be bet near tip-off are scored at the last price.
 SCORE_AT = {"nba_main_day_drift": "last", "control_nba_main_steam": "last",
@@ -199,6 +210,7 @@ RULES = {
     "fb_ss_fouls_model": "Football fouls over, Super Sub game, starters only, our chance 5%+ over Paddy (at the last price)",
     "fb_ss_shots_model": "Football shots over, Super Sub game, starters only, our chance 5%+ over Paddy (at the last price)",
     "control_fb_ss_fouls": "Control: football fouls over, Super Sub game, starters only, model does not agree (at the last price)",
+    "us_likely_top5": "NBA/NFL: the 5 lines our model rates most likely each day, first price 1.60 to 2.50",
 }
 
 
@@ -379,6 +391,28 @@ def qualifying(rows: list[dict]) -> dict[str, list[dict]]:
             sh["bf_p"] * sh["price"] - 1 if sh.get("bf_p") is not None and sh.get("price") else None)
         if bf_edge is not None and bf_edge >= 0.02 and price <= 10:
             add("beats_betfair", r)
+    # us_likely_top5 (2 Nov 2026): each day's 5 NBA/NFL lines our chance rates
+    # most likely, first price 1.60 to 2.50, one per player per game. On the
+    # log it was chosen on: 70 bets, +13.4% (90% range +2% to +25%), both
+    # halves positive; a random 5 a day from the same pool made +4.9%.
+    by_day = defaultdict(list)
+    for r in rows:
+        f = r.get("first") or {}
+        if (r.get("sport") in (NBA, NFL) and r.get("player") and f.get("price") and f.get("chance") is not None
+                and LIKELY_PRICE[0] <= f["price"] <= LIKELY_PRICE[1] and (r.get("n10") or 0) >= 5):
+            day = datetime.datetime.fromtimestamp((r.get("kickoff") or 0) - 6 * 3600, datetime.timezone.utc).strftime("%Y-%m-%d")
+            by_day[day].append(r)
+    for day, rs in by_day.items():
+        seen, n = set(), 0
+        for r in sorted(rs, key=lambda r: -(r["first"]["chance"])):
+            k = (r["event_id"], pplog._norm(r["player"]))
+            if k in seen:
+                continue
+            seen.add(k)
+            picks["us_likely_top5"][(r["event_id"], pplog._norm(r["player"]), r["stat"], None)] = r
+            n += 1
+            if n >= LIKELY_PER_DAY:
+                break
     return {k: list(v.values()) for k, v in picks.items()}
 
 
