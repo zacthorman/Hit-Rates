@@ -418,6 +418,25 @@ def from_saved() -> int:
     return 0
 
 
+def paste() -> int:
+    """Read Sky Bet data from the clipboard (Mac pbpaste), save it, then show value. No requests."""
+    import subprocess
+    try:
+        text = subprocess.run(["pbpaste"], capture_output=True, text=True, check=True).stdout
+    except (OSError, subprocess.CalledProcessError):
+        print("could not read the clipboard (pbpaste)")
+        return 1
+    if "ppb:sbkMarket" not in text and "__TBD_PRELOADED_CATALOG__" not in text:
+        print("the clipboard has no Sky Bet markets in it: copy the response first")
+        return 1
+    RAW.mkdir(parents=True, exist_ok=True)
+    ext = ".html" if "__TBD_PRELOADED_CATALOG__" in text else ".json"
+    m = re.search(r"ppb:event:(\d+)", text)
+    (RAW / f"{m.group(1) if m else 'paste'}-paste-{int(time.time())}{ext}").write_text(text)
+    from_saved()
+    return value()
+
+
 def status() -> None:
     st = load_state()
     for fid, e in sorted((load_out().get("events") or {}).items(), key=lambda kv: kv[1].get("kickoff", 0)):
@@ -431,11 +450,14 @@ def main() -> int:
     ap.add_argument("--value", action="store_true")
     ap.add_argument("--probe", metavar="EVENT_ID")
     ap.add_argument("--status", action="store_true")
+    ap.add_argument("--paste", action="store_true", help="read a copied Sky Bet response from the clipboard, then --value")
     ap.add_argument("--saved", action="store_true", help="read pages already saved by --probe; no requests")
     a = ap.parse_args()
     if a.status:
         status()
         return 0
+    if a.paste:
+        return paste()
     if a.saved:
         return from_saved()
     if a.probe:
