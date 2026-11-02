@@ -31,6 +31,12 @@ class Parse(unittest.TestCase):
         self.assertAlmostEqual(sum(r["p"] for r in rows), 1.0, places=3)
         self.assertGreater(over["p"], 0.5)
 
+    def test_nfl_total_format(self):
+        m = {"special": {"category": "Player Props", "description": "Zach Charbonnet Total Rushing Yards"},
+             "participants": [{"id": 1, "name": "Over"}, {"id": 2, "name": "Under"}], "parent": {"id": 9}}
+        self.assertEqual(PR.parse_special(m, "american-football")[:2], ("Zach Charbonnet", "Rushing yards"))
+        self.assertEqual(PR.split_desc("Kalif Raymond Total Receptions"), ("Kalif Raymond", "Receptions"))
+
     def test_combo_and_unknown_stats(self):
         self.assertEqual(PR.stat_of("basketball", "Pts+Rebs+Asts"), "Points rebounds and assists")
         self.assertEqual(PR.stat_of("basketball", "3 Point FG"), "Three pointers made")

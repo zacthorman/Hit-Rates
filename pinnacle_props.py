@@ -52,6 +52,7 @@ OUT = ROOT / "reports" / "pinnacle_props.json"
 STATE = ROOT / "cache" / "pinnacle_props_state.json"
 MAX_PER_DAY = 120
 MAX_RELATED = 16          # per-game lookups per run, only when the league call lacks prices
+GAME_CALLS = 6            # games asked for their own props when the league call has none (NBA)
 FRESH_HOURS = 1.0
 WINDOW_HOURS = 36
 SPORTS = {   # site sport -> (Pinnacle sport id, league name, fallback league id)
@@ -78,13 +79,25 @@ STATS = {
         (r"^(passing yards|pass yards)$", "Passing yards"),
         (r"^(rushing yards|rush yards)$", "Rushing yards"),
         (r"^(receiving yards|rec yards)$", "Receiving yards"),
-        (r"^(receptions)$", "Receiving receptions"),
+        (r"^(receptions|total receptions)$", "Receiving receptions"),
         (r"^(pass(ing)? \+ rush(ing)? yards|passing and rushing yards)$", "Passing and rushing yards"),
         (r"^(rush(ing)? \+ rec(eiving)? yards|rushing and receiving yards)$", "Rushing and receiving yards"),
-        (r"^(td passes|passing touchdowns|pass tds)$", "Passing touchdowns"),
+        (r"^(td passes|passing touchdowns|pass tds|touchdown passes)$", "Passing touchdowns"),
     ],
 }
 DESC = re.compile(r"^\s*(.+?)\s*\(([^)]+)\)\s*$")
+# Seen on the NFL feed on 2 Nov 2026 (--probe): "Zach Charbonnet Total Rushing
+# Yards", "Kalif Raymond Total Receptions", no brackets.
+DESC_TOTAL = re.compile(r"^\s*(.+?)\s+Total\s+(.+?)\s*$", re.I)
+
+
+def split_desc(text: str):
+    """(player, stat words) from either "Name (Stat)" or "Name Total Stat"."""
+    for rx in (DESC, DESC_TOTAL):
+        got = rx.match(text or "")
+        if got:
+            return got.group(1), got.group(2)
+    return None
 
 
 def stat_of(sport: str, text: str):
@@ -100,10 +113,10 @@ def parse_special(m: dict, sport: str):
     sp = m.get("special") or {}
     if "player" not in str(sp.get("category", "")).lower():
         return None
-    got = DESC.match(str(sp.get("description") or m.get("description") or ""))
+    got = split_desc(str(sp.get("description") or m.get("description") or ""))
     if not got:
         return None
-    player, stat = got.group(1), stat_of(sport, got.group(2))
+    player, stat = got[0], stat_of(sport, got[1])
     if not stat:
         return None
     sides = {}
@@ -201,6 +214,37 @@ def run(probe: bool = False) -> int:
             for x in mk:
                 by_m.setdefault(x.get("matchupId"), []).append(x)
             specials = [m for m in ms if m.get("type") == "special"]
+            # 2 Nov 2026 probe: the NBA league call held no player props at all
+            # (futures only), so for games starting soon, ask each game for its
+            # related matchups and their prices (two calls a game, capped).
+            if not any("player" in str((m.get("special") or {}).get("category", "")).lower() for m in specials):
+                games_soon = []
+                for m in ms:
+                    if m.get("type") != "matchup" or m.get("parentId"):
+                        continue
+                    try:
+                        ko = datetime.fromisoformat(m["startTime"].replace("Z", "+00:00")).timestamp()
+                    except (KeyError, ValueError):
+                        continue
+                    if now < ko < now + 30 * 3600:
+                        games_soon.append((ko, m))
+                for ko, m in sorted(games_soon, key=lambda x: x[0])[:GAME_CALLS]:
+                    rel = PP.get(f"/matchups/{m['id']}/related", st)
+                    sp = [r for r in rel if isinstance(r, dict) and r.get("type") == "special"] if isinstance(rel, list) else []
+                    if not any("player" in str((r.get("special") or {}).get("category", "")).lower() for r in sp):
+                        if probe:
+                            print(f"  related for game {m['id']}: {len(sp)} specials, no player props")
+                        continue
+                    for r in sp:
+                        r.setdefault("parent", {"id": m["id"], "startTime": m.get("startTime"),
+                                                "participants": m.get("participants")})
+                    specials += sp
+                    rm = PP.get(f"/matchups/{m['id']}/markets/related/straight", st)
+                    for x in rm if isinstance(rm, list) else []:
+                        by_m.setdefault(x.get("matchupId"), []).append(x)
+                    if probe:
+                        print(f"  related for game {m['id']}: {len(sp)} specials, "
+                              f"{len(rm) if isinstance(rm, list) else rm} markets")
             if probe:
                 print(f"\n== {sport} league {lid}: {len(ms)} matchups ({len(specials)} specials), {len(mk)} markets")
                 print("  categories:", sorted({str((m.get('special') or {}).get('category')) for m in specials}))
@@ -216,9 +260,9 @@ def run(probe: bool = False) -> int:
                 if not parsed:
                     sp = m.get("special") or {}
                     if "player" in str(sp.get("category", "")).lower():
-                        d = DESC.match(str(sp.get("description") or ""))
+                        d = split_desc(str(sp.get("description") or ""))
                         if d:
-                            unmatched_stats.add(d.group(2))
+                            unmatched_stats.add(d[1])
                     continue
                 player, stat, sides, parent_id = parsed
                 game = games.setdefault(parent_id, {"parent": m.get("parent"), "rows": [], "need": []})
