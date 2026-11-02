@@ -5775,14 +5775,14 @@
   "sport": "football",
   "kickoff": 1793640600,
   "selection": "Sassuolo over 3.5 shots on target",
-  "chance": 0.7269666227603739,
-  "fair": 1.5571053206255123,
+  "chance": 0.7267800333365617,
+  "fair": 1.558010647534953,
   "team": "Sassuolo",
   "player": null,
   "stat": "Shots on target",
   "period": "ALL",
   "line": 3.5,
   "over": true,
-  "written": 1793613559.9895601
+  "written": 1793616870.749697
  }
 }
