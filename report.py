@@ -1402,6 +1402,22 @@ header { position: relative; }
 .gs2 .gs-tnum { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .gs2 .gs-tnum .from { color: var(--muted); } .gs2 .gs-tnum b { font-size: 16px; }
 .gs2 .gs-pp { display: inline-block; margin-top: 3px; font-size: 12px; padding: 1px 8px; border-radius: 999px; background: var(--tint); }
+.gs2 .gs-ev { display: inline-block; margin-top: 3px; font-size: 11px; padding: 0 7px; border-radius: 999px; font-weight: 600; }
+.gs2 .gs-ev.tested { background: rgba(46,139,87,.14); color: #2e8b57; } .gs2 .gs-ev.partly { background: rgba(212,160,23,.16); color: #9a7410; }
+.gs2 .gs-ev.untested { background: var(--tint); color: var(--muted); }
+.gs2 .gs-ev-t { display: block; color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+.gs2 .gs-mu { padding: 9px 0; border-top: 1px solid var(--border); }
+.gs2 .gs-mu-h { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.gs2 .gs-mu-h small { color: var(--muted); font-size: 11.5px; }
+.gs2 .gs-eff { display: inline-block; font-size: 12px; font-weight: 650; padding: 1px 8px; border-radius: 999px; margin: 3px 4px 0 0; }
+.gs2 .gs-eff.up { background: rgba(46,139,87,.14); color: #2e8b57; } .gs2 .gs-eff.down { background: rgba(192,57,43,.12); color: #c0392b; }
+.gs2 .gs-line { font-size: 12.5px; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.gs2 .gs-line .bk { display: inline-block; margin: 2px 6px 0 0; padding: 0 7px; border-radius: 999px; background: var(--tint); font-size: 11.5px; }
+.gs2 .gs-line .bk.val { background: rgba(46,139,87,.16); color: #2e8b57; font-weight: 650; }
+.gs2 details.gs-trailh > summary { cursor: pointer; font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+.gs2 table.gs-tr { width: 100%; border-collapse: collapse; font-size: 11.5px; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.gs2 table.gs-tr th, .gs2 table.gs-tr td { text-align: left; padding: 2px 4px; border-bottom: 1px solid var(--border); }
+.gs2 table.gs-tr td.n { text-align: right; } .gs2 table.gs-tr tr.hit td { color: #2e8b57; font-weight: 620; }
 .gs2 .gs-pp.pos { background: rgba(11, 138, 74, .12); color: #0b8a4a; }
 .gs2 .gs-out { font-size: 13px; color: var(--text-secondary); margin: 10px 0 0; } .gs2 .gs-out b { color: var(--text-primary); }
 .gs2 .gs-reason { padding: 9px 0 9px 12px; border-left: 3px solid var(--border); margin: 8px 0; font-size: 14px; }

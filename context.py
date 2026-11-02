@@ -1306,13 +1306,69 @@ def shape(entry: dict, side: str) -> dict | None:
         elif len(mid) == 3:
             piv = [mid[1]]
         elif len(mid) == 5:
-            piv = mid[1:4]
+            piv = [mid[2]]
     out["pivot"] = piv
     out["attack_mids"] = lines[2] if len(lines) >= 4 else []
+    # Who actually plays between the lines, centrally (2 Nov 2026). The "3"
+    # of a 4-2-3-1 is two wingers and a number 10, and only the 10 is between
+    # the lines; counting all three made every double pivot "outnumbered".
+    # Four lines: the central men of the third (one of three, both of two,
+    # the middle two of four). Three lines: the two eights of a 4-3-3, or the
+    # two shuttlers either side of a 3-5-2's holder.
+    between = []
+    if len(lines) >= 4:
+        am = lines[2]
+        between = {1: am, 2: am, 3: am[1:2], 4: am[1:3]}.get(len(am), [])
+    elif len(lines) == 3:
+        mid = lines[1]
+        if len(mid) == 3:
+            between = [mid[0], mid[2]]
+        elif len(mid) == 5:
+            between = [mid[1], mid[3]]
+    out["between"] = between
     out["front"] = lines[-1] if lines else []
     out["central"] = (len(piv) + (len(lines[2]) if len(lines) >= 4 and len(lines[2]) in (1, 2, 3) else 0)
                       if lines else None)
     return out
+
+
+def overload(mine: dict, theirs: dict) -> str | None:
+    """Is my holding midfield outnumbered between the lines, judged against
+    theirs? "double" or "single" (my pivot is the one stretched), "even" (the
+    midfields match up), or None (nothing to say: shapes unknown, or I am the
+    side with the extra man). Never true for both sides of one game: my
+    deficit is their attacking midfielders minus my pivot, theirs is mine
+    minus theirs, and only the side whose deficit is strictly bigger is
+    outnumbered."""
+    piv, ams = (mine or {}).get("pivot") or [], (theirs or {}).get("between") or []
+    opiv, mams = (theirs or {}).get("pivot") or [], (mine or {}).get("between") or []
+    if not piv or not opiv or not (mine or {}).get("lines") or not (theirs or {}).get("lines"):
+        return None
+    mine_short, theirs_short = len(ams) - len(piv), len(mams) - len(opiv)
+    if mine_short == theirs_short:
+        return "even"
+    if mine_short <= 0 or mine_short < theirs_short:
+        return None
+    if len(piv) == 2 and len(ams) >= 3:
+        return "double"
+    if len(piv) == 1 and len(ams) >= 2:
+        return "single"
+    return None
+
+
+def ball_side(gs: dict | None, s0: dict, s1: dict, t: int) -> int | None:
+    """Which side (in the order of the loop, t being 'me') should have more
+    of the ball: the game state's projection when there is one, else the
+    two sides' usual possession. None when level."""
+    if gs and gs.get("poss") and len(gs["poss"]) == 2:
+        a, b = gs["poss"][0], gs["poss"][1]
+        if a == b:
+            return None
+        return 0 if a > b else 1
+    pm, po = s0.get("possession"), s1.get("possession")
+    if pm is None or po is None or pm == po:
+        return None
+    return t if pm > po else 1 - t
 
 
 def _fmt_p(p):
@@ -1336,22 +1392,34 @@ def story(entry: dict, meta: dict, gs: dict | None, b: dict | None) -> dict:
             me, op = sides[t], sides[1 - t]
             ms, os_ = me["style"], op["style"]
             mshape, oshape = me["shape"] or {}, op["shape"] or {}
-            # 1. Pivot against attacking midfielders: who covers ground
-            piv = mshape.get("pivot") or []
-            ams = oshape.get("attack_mids") or []
-            if len(piv) == 2 and len(ams) >= 3:
+            # 1. Pivot against attacking midfielders: who covers ground.
+            # Judged against the other side's midfield too (2 Nov 2026): in a
+            # 4-2-3-1 mirror both double pivots face three attacking
+            # midfielders, and both used to be called "outnumbered", which
+            # cannot be true of both. overload() only names the side that is
+            # short in the middle on balance, so at most one side gets this.
+            ov = overload(mshape, oshape)
+            if ov == "double":
+                piv, ams = mshape["pivot"], oshape["between"]
                 pc = [(n, fm_chance(ev, n, "Tackles", 2), fm_chance(ev, n, "Fouls", 1)) for n in piv]
                 nums = "; ".join(f"{n}: 2+ tackles {_fmt_p(a)}, 1+ foul {_fmt_p(f)}" for n, a, f in pc)
-                lines.append((0.9, f"{me['name']} play a double pivot ({' and '.join(piv)}) against "
-                                   f"{op['name']}'s {len(ams)} attacking midfielders ({', '.join(ams)}).",
-                              f"so the pivot is outnumbered between the lines and has more ground to cover: "
-                              f"expect tackles and fouls from them ({nums})."))
-            elif len(piv) == 1 and len(ams) >= 2:
-                n = piv[0]
+                lines.append((0.9, f"{me['name']}'s double pivot ({' and '.join(piv)}) faces "
+                                   f"{len(ams)} {op['name']} players between the lines ({', '.join(ams)}), "
+                                   f"more than {op['name']}'s own holders have to deal with.",
+                              f"so {me['name']}'s pivot is the one stretched: more ground to cover and more "
+                              f"tackles and fouls from them ({nums})."))
+            elif ov == "single":
+                n, ams = mshape["pivot"][0], oshape["between"]
                 lines.append((0.85, f"{me['name']} have a single holding midfielder ({n}) facing "
-                                    f"{len(ams)} {op['name']} players between the lines.",
+                                    f"{len(ams)} {op['name']} players between the lines ({', '.join(ams)}).",
                               f"so {n} is the one exposed: 2+ tackles {_fmt_p(fm_chance(ev, n, 'Tackles', 2))}, "
                               f"1+ foul {_fmt_p(fm_chance(ev, n, 'Fouls', 1))}."))
+            elif ov == "even" and t == 0:
+                lines.append((0.5, f"The midfields match up ({me['shape'].get('formation')} against "
+                                   f"{op['shape'].get('formation')}): neither side has a spare man between "
+                                   f"the lines.",
+                              "so neither holding midfield is overloaded: shape alone gives no reason to "
+                              "expect extra tackles or fouls from either."))
             # 2. Press against a short build-up
             pp, od = _pct("ppda", ms.get("ppda")), _pct("direct", os_.get("direct"))
             if pp is not None and pp <= 0.25 and od is not None and od <= 0.4:
@@ -1383,9 +1451,11 @@ def story(entry: dict, meta: dict, gs: dict | None, b: dict | None) -> dict:
                                    f"{op['name']} foul ({os_['fouls']:.0f} a game).",
                               f"so expect {me['name']}'s ball-carriers to be fouled and {op['name']} to pick up cards."))
             # 6. Sitting deep against a side that keeps the ball
+            # Only the side expected to have more of the ball (2 Nov 2026):
+            # both sides used to qualify when both keep the ball as a rule.
             po = _pct("possession", ms.get("possession"))
             if po is not None and po >= 0.75 and _pct("ppda", os_.get("ppda")) is not None \
-                    and _pct("ppda", os_.get("ppda")) >= 0.7:
+                    and _pct("ppda", os_.get("ppda")) >= 0.7 and ball_side(gs, ms, os_, t) == t:
                 lines.append((0.7, f"{me['name']} keep the ball ({ms['possession']:.0f}%) and {op['name']} sit off "
                                    f"({os_['ppda']:.1f} passes per defensive action).",
                               f"so {me['name']} will have long spells of possession in front of a set block: "
@@ -1427,7 +1497,44 @@ def story(entry: dict, meta: dict, gs: dict | None, b: dict | None) -> dict:
                                f"{'regular starters' if many else 'a regular starter'}.",
                           verdict(side["name"])))
     lines.sort(key=lambda x: -x[0])
-    return {"sides": sides, "lines": [(r, s) for _, r, s in lines[:8]]}
+    top = lines[:8]
+    return {"sides": sides, "lines": [(r, s) for _, r, s in top],
+            "evidence": [evidence_of(r) for _, r, _ in top]}
+
+
+# What each kind of reasoning line has behind it (2 Nov 2026,
+# research/TRAIL-2026-11-02.md): ("tested", text) when a walk-forward or
+# after-the-fact test on 35,000 player-games backs it, ("partly", text) when
+# part of it is, ("untested", text) when it is a tactical read the data has
+# not checked yet. The page shows the label, so nothing reads as more proven
+# than it is.
+EVIDENCE = [
+    (("double pivot", "single holding midfielder", "midfields match up"),
+     ("untested", "Shape only. Being outnumbered in midfield has not been shown to change tackles or fouls "
+                  "(FINDINGS.md, and the 2 Nov trail test).")),
+    (("should have",),
+     ("tested", "Possession moves counts: per 10 points more of the ball a side's players make about 5% fewer "
+                "tackles and 3% fewer fouls and win 3% more. Shots follow territory, not possession: x1.17 per "
+                "10 points of momentum, x0.90 per 10 points of possession.")),
+    (("are favourites",),
+     ("partly", "Game state is tested in part: players shoot about 12% more when their side is ahead or behind "
+                "than when level. Which side opens up late is a reading of it.")),
+    (("keep the ball",),
+     ("partly", "Tested in part: the side without the ball makes more tackles (about 5% per 10 points of "
+                "possession). Corners and blocked shots from it are a tactical read.")),
+    (("run with the ball",),
+     ("partly", "After the fact, a player's fouls do follow the man he faces (x1.16 per extra foul won by his "
+                "opponent), but a team's foul habit did not predict it before kick-off.")),
+    (("press hard", "attack wide", "get into the box", "are without"),
+     ("untested", "A tactical read. The data has not tested it yet.")),
+]
+
+
+def evidence_of(reason: str) -> tuple[str, str]:
+    for keys, ev in EVIDENCE:
+        if any(k in reason for k in keys):
+            return ev
+    return ("untested", "A tactical read. The data has not tested it yet.")
 
 
 # ================================================= the team model (tactics)

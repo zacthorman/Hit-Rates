@@ -122,7 +122,13 @@ def plays_card(entry, meta, gs) -> str:
     if sides:
         parts.append("<div class='gs-sides'>" + "".join(sides) + "</div>")
     if st.get("lines"):
-        items = "".join(f"<li><b>{esc(_so(so))}</b><span>{esc(r)}</span></li>" for r, so in st["lines"])
+        evs = st.get("evidence") or [None] * len(st["lines"])
+        label = {"tested": "Tested", "partly": "Partly tested", "untested": "Not tested yet"}
+        items = "".join(
+            f"<li><b>{esc(_so(so))}</b><span>{esc(r)}</span>"
+            + (f"<span class='gs-ev {ev[0]}'>{label.get(ev[0], ev[0])}</span><span class='gs-ev-t'>{esc(ev[1])}</span>"
+               if ev else "")
+            + "</li>" for (r, so), ev in zip(st["lines"], evs))
         parts.append(f"<details class='gs-why'><summary>Why</summary><ol>{items}</ol></details>")
     parts.append("</section>")
     return "".join(parts)
@@ -188,12 +194,162 @@ def targets_card(entry, meta, gs) -> str:
             "<p class='gs-lab'>Record &rarr; with the game state</p>" + "".join(out) + "</section>")
 
 
+# ------------------------------------------------------------ matchups (the paper trail)
+
+_BOOKS: dict = {}
+
+
+def _books() -> dict:
+    """Paddy Power, Bet365 (with Oddschecker's market median) and the player
+    model, read once per run."""
+    if not _BOOKS:
+        for k, f in (("pp", "paddypower.json"), ("b365", "bet365.json"), ("fm", "fmodel.json")):
+            try:
+                _BOOKS[k] = json.loads((ROOT / "reports" / f).read_text()).get("events") or {}
+            except (OSError, ValueError):
+                _BOOKS[k] = {}
+    return _BOOKS
+
+
+def _book_lines(book: str, fid, name: str, stat: str) -> dict:
+    """{k: line dict} for one player's overs on one stat at one book."""
+    import pplog
+    ev = (_books().get(book) or {}).get(str(fid)) or {}
+    n = pplog._norm(name)
+    sur = n.split()[-1:] if n else []
+    out = {}
+    for l in ev.get("lines") or []:
+        key = l.get("key") or pplog._norm(l.get("player", ""))
+        if key != n and not (sur and key.split()[-1:] == sur and key[:1] == n[:1]):
+            continue
+        rd = pplog.read_line(l)
+        if not rd or rd[0] != stat or not rd[2]:
+            continue
+        out[int(round(rd[1] + 0.5))] = l
+    return out
+
+
+def _model_p(fid, name: str, stat: str, k: int):
+    import pplog
+    ev = (_books().get("fm") or {}).get(str(fid)) or {}
+    for nm, pl in (ev.get("players") or {}).items():
+        if pplog._norm(nm) == pplog._norm(name):
+            v = ((pl.get("lines") or {}).get(stat) or {}).get(str(k))
+            return v if isinstance(v, (int, float)) else None
+    return None
+
+
+TRAIL_WHY = {
+    "Tackles": "The man he faces carries the ball a lot, so he has more to win back: the clearest matchup "
+               "effect in 35,000 starter-games, for every position, and strongest for forwards and midfielders "
+               "pressing a ball-carrying defender. It improved forecasts on games the fit had not seen.",
+    "Shots": "Defenders and midfielders shoot a little more when the attacker they face wins the ball back a "
+             "lot. Tested the same way and small; why is not clear. Not used for forwards: it did not hold there.",
+    "Fouled": "Defenders and midfielders win a few more fouls when the attacker they face tackles a lot. "
+              "Tested, small. Not used for forwards: it did not hold there.",
+    "Fouls": "Facing a man who wins a lot of fouls means committing a few more. Tested, tiny. "
+             "'He faces a fouler, so he will be fouled' did not predict, so it is never claimed.",
+}
+TRAIL_MIN = 0.04          # show a matchup when it moves a count by 4% or more
+TRAIL_SHOW = 8
+
+
+def _line_html(fid, name, stat, mult) -> str:
+    """His line nearest evens: our chance before and after the matchup, and
+    every book's price beside it."""
+    import trail_live
+    pp, b3 = _book_lines("pp", fid, name, stat), _book_lines("b365", fid, name, stat)
+    ks = sorted(set(pp) | set(b3), key=lambda k: abs(((pp.get(k) or b3.get(k))["price"]) - 1.9))
+    for k in ks:
+        price = (pp.get(k) or b3.get(k))["price"]
+        if not 1.3 <= price <= 4.0:
+            continue
+        base = _model_p(fid, name, stat, k)
+        adj = trail_live.adjust(base, stat, k, mult) if base else None
+        books = []
+        for lab, l in (("Paddy", pp.get(k)), ("Bet365", b3.get(k))):
+            if l:
+                v = adj is not None and adj * l["price"] >= 1.05
+                books.append(f"<span class='bk{' val' if v else ''}'>{lab} <b>{l['price']:.2f}</b></span>")
+        l3 = b3.get(k) or {}
+        if l3.get("mkt_median") and l3.get("mkt_n"):
+            books.append(f"<span class='bk'>Market <b>{l3['mkt_median']:.2f}</b> ({l3['mkt_n']} books)</span>")
+        ch = (f"ours {base * 100:.0f}% &rarr; <b>{adj * 100:.0f}%</b> with the matchup" if adj is not None
+              else "no model price")
+        return f"<div class='gs-line'>{k}+ {esc(stat.lower())}: {ch} {''.join(books)}</div>"
+    return ""
+
+
+def _history_html(entry, t, name, stat) -> str:
+    import trail_live
+    rows = trail_live.history(entry, t, name, stat)
+    if not rows:
+        return ""
+    drv = (trail_live.fit().get(trail_live.STAT_FIT.get(stat, "")) or {}).get("driver")
+    dw = trail_live.DRIVER_WORDS.get(drv, drv or "")
+    cells = []
+    for r in rows:
+        did = "" if r["opp_did"] is None else str(r["opp_did"])
+        poss = "" if r["poss"] is None else f"{r['poss']:.0f}%"
+        cells.append(f"<tr><td>{esc((r['date'] or '')[5:])}</td><td>{esc(_short(r['opponent'] or ''))}</td>"
+                     f"<td class='n'><b>{r['value']}</b></td><td>{esc(r['opp'] or '?')}</td>"
+                     f"<td class='n'>{did}</td><td class='n'>{poss}</td></tr>")
+    body = "".join(cells)
+    return (f"<details class='gs-trailh'><summary>His last {len(rows)} starts: who he faced</summary>"
+            f"<table class='gs-tr'><tr><th>Date</th><th>v</th><th>{esc(stat)}</th><th>Faced</th>"
+            f"<th>Their {esc(dw)}</th><th>Ball</th></tr>{body}</table></details>")
+
+
+def matchups_card(entry, meta) -> str:
+    import trail_live
+    mu = trail_live.matchups(entry)
+    if not mu:
+        return ""
+    teams = entry.get("teams") or []
+    tix = {(tm or {}).get("side"): i for i, tm in enumerate(teams[:2])}
+    items = []
+    for side in ("home", "away"):
+        for m in mu.get(side) or []:
+            effs = {s: e for s, e in m["effects"].items() if e["rate"] is not None and abs(e["mult"] - 1) >= TRAIL_MIN}
+            if not effs:
+                continue
+            items.append((max(abs(e["mult"] - 1) for e in effs.values()), side, m, effs))
+    if not items:
+        return ""
+    items.sort(key=lambda x: -x[0])
+    out = []
+    for _, side, m, effs in items[:TRAIL_SHOW]:
+        team = _short((teams[tix.get(side, 0)] or {}).get("name") or "")
+        main = max(effs, key=lambda s: abs(effs[s]["mult"] - 1))
+        e = effs[main]
+        dw = trail_live.DRIVER_WORDS.get(e["driver"], e["driver"])
+        chips = "".join(f"<span class='gs-eff {'up' if v['mult'] > 1 else 'down'}'>{esc(s)} "
+                        f"{(v['mult'] - 1) * 100:+.0f}%</span>" for s, v in sorted(effs.items(), key=lambda kv: -abs(kv[1]['mult'] - 1)))
+        out.append(
+            f"<div class='gs-mu'><div class='gs-mu-h'><span><b>{esc(m['player'])}</b> <small>{esc(team)}, {esc(m['pos'] or '')}</small>"
+            f" faces <b>{esc(m['opp'])}</b> <small>{esc(m['opp_pos'] or '')}</small></span></div>"
+            f"<small>{esc(m['opp'])}: {e['rate']:.1f} {esc(dw)} a 90, {esc(e['band'])} of direct opponents</small>"
+            f"<div>{chips}</div>"
+            + "".join(_line_html(meta.get("id"), m["player"], s, effs[s]["mult"]) for s in effs)
+            + _history_html(entry, tix.get(side, 0), m["player"], main) + "</div>")
+    why = "".join(f"<li><b>{esc(s)}</b> {esc(w)}</li>" for s, w in TRAIL_WHY.items())
+    return ("<section class='gs-card gs-trail'><h3>Matchups</h3>"
+            "<p class='gs-lab'>Who each starter faces, from where they usually play, and what it is worth</p>"
+            + "".join(out)
+            + f"<details class='gs-why'><summary>What these are based on</summary><ul>{why}</ul></details></section>")
+
+
 ABOUT_FOOTBALL = (
     "The result and goals come from the score model (the style model for same-league games, Elo and recent xG "
     "for European ties). Checked against Betfair on 85 games the exchange was better on goals, and against "
     "closing odds on 2,579 league games it was worse on the result too: read it as a picture of the game, not a "
     "price to bet against the market. The game state's weights come from a walk-forward backtest (GS_BACKTEST.md). "
-    "Only Paddy Power markets are listed.")
+    "Only Paddy Power markets are listed in Lines it backs. Matchups: each outfield starter is paired one to one "
+    "with the opponent nearest where he usually plays (average positions over his last 10 games), and the "
+    "opponent's habit moves his expected count by what 35,000 starter-games showed it is worth "
+    "(research/TRAIL-2026-11-02.md). 'Faces a fouler, so he will be fouled' did not predict and is never claimed. "
+    "Chances there are the player model's before and after the matchup, without Super Sub or Sub On Play On; "
+    "a price is marked when our chance times it is 1.05 or more. Market is the median of every book Oddschecker lists.")
 
 
 def block(entry, meta) -> str:
@@ -205,6 +361,7 @@ def block(entry, meta) -> str:
         pass
     parts = []
     for fn in (lambda: result_card(entry, meta), lambda: plays_card(entry, meta, gs),
+               lambda: matchups_card(entry, meta),
                lambda: leans_card(meta, gs), lambda: targets_card(entry, meta, gs)):
         try:
             parts.append(fn() or "")
