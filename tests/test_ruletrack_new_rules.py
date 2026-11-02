@@ -108,6 +108,22 @@ class DriftRules(unittest.TestCase):
         s = ruletrack._score([o], ruletrack.SCORE_AT["nba_main_day_drift"])
         self.assertAlmostEqual(s["profit"], 1.0)
 
+    def test_tonight_sees_the_previous_game(self):
+        # 1 Nov 2026: tonight() used to pass only unsettled rows, so the drift
+        # rule never saw last game's miss and never fired live.
+        import time
+        now = time.time()
+        earlier = self.game(1.20, result="lose", kickoff=now - 2 * 86400, event=0)
+        later = self.game(1.33, k10=9, event=1, kickoff=now + 3600)
+        old = ruletrack.pplog.all_rows
+        ruletrack.pplog.all_rows = lambda: [earlier, later]
+        try:
+            got = ruletrack.tonight(now)
+        finally:
+            ruletrack.pplog.all_rows = old
+        self.assertEqual([r["event_id"] for r in got.get("nba_alt_drift_miss", [])], [1])
+        self.assertTrue(all(r["result"] is None for v in got.values() for r in v))
+
 
 if __name__ == "__main__":
     unittest.main()

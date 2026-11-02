@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Every 3 minutes: news_watch.py reads ESPN's NBA injury feed and logs any
+  change that can move a price tonight to news/events.jsonl (step 1 of
+  INJURY-NEWS-TEST.md). Outside 16:00 to 03:30 UK it exits at once. It makes
+  no Paddy Power request and never publishes.
+
+  Install:
+      cp com.zacthorman.news.plist ~/Library/LaunchAgents/
+      launchctl load ~/Library/LaunchAgents/com.zacthorman.news.plist
+  Stop:
+      launchctl unload ~/Library/LaunchAgents/com.zacthorman.news.plist
+  or, without unloading: touch .news_off in this folder.
+  Log: news/watch.log in this folder. Check it with: python news_watch.py status
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.zacthorman.news</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/zacthorman/Vaults/Cowork Base/03 Code Projects/Football stats/.venv/bin/python</string>
+        <string>/Users/zacthorman/Vaults/Cowork Base/03 Code Projects/Football stats/news_watch.py</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/zacthorman/Vaults/Cowork Base/03 Code Projects/Football stats</string>
+
+    <key>StartInterval</key>
+    <integer>180</integer>
+
+    <key>StandardOutPath</key>
+    <string>/Users/zacthorman/Vaults/Cowork Base/03 Code Projects/Football stats/news_launchd.out.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/zacthorman/Vaults/Cowork Base/03 Code Projects/Football stats/news_launchd.err.log</string>
+
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>
