@@ -26,10 +26,13 @@ clicks through the other tabs in a random order, with browsing-speed gaps
 BREAK). SKYBET_FLARESOLVERR=0 goes back to plain requests; if FlareSolverr
 cannot be reached the run falls back to plain requests and says so.
 
-Still capped per run and per day, a game not refetched inside FRESH_HOURS
-(FRESH_CLOSE in the last 3 hours), any refusal or a page that is not the
-game locks it out for LOCKOUT_HOURS (a second refusal switches it off), and
-`touch .skybet_off` switches it off.
+Limits, so the IP is never pushed into a ban: MAX_PER_RUN, MAX_PER_HOUR
+(rolling, shared by runs and --probe) and MAX_PER_DAY, one run at a time
+(cache/skybet.lock), a game not refetched inside FRESH_HOURS (FRESH_CLOSE in
+the last 3 hours). A 403 or 429 switches it off (.skybet_off) until that
+file is deleted by hand; any other refusal, or a page that is not the game,
+locks it out for LOCKOUT_HOURS, and a second one switches it off.
+`touch .skybet_off` switches it off too.
 
 Each tab of a game page (points, rebounds, assists, threes, combos) carries
 the grid it shows first: 15+/20+/25+ points, 6+/8+/10+ rebounds, 4+/6+/8+
@@ -66,7 +69,7 @@ OFF = ROOT / ".skybet_off"
 SITE = "https://skybet.com/"
 HUB = SITE + "basketball/nba"
 TABS = ("points", "rebounds", "assists", "threes", "combos")
-MIN_GAP, JITTER = 8.0, 8.0      # floor between any two requests, kept across runs
+MIN_GAP, JITTER = 12.0, 8.0     # floor between any two requests, kept across runs
 TAB_GAP = (6.0, 18.0)           # reading one tab before clicking the next
 GAME_GAP = (25.0, 75.0)         # going back to the list and picking another game
 BREAK, BREAK_CHANCE = (90.0, 240.0), 0.12   # now and then, a longer look away
@@ -74,8 +77,15 @@ _flare = os.getenv("SKYBET_FLARESOLVERR", os.getenv("FLARESOLVERR_URL", "http://
 FLARE_URL = "" if _flare.lower() in ("0", "false", "no", "off") else _flare
 CHALLENGE_MARKERS = ("Just a moment", "challenge-platform", "cf-chl", "Attention Required",
                      "Access Denied", "px-captcha")
-MAX_PER_RUN = 40          # requests (a game is up to len(TABS))
-MAX_PER_DAY = 120
+# IP-ban guard (2 Nov 2026). Sky Bet answered a plain request with 403 seconds
+# after serving the page, so the caps stay well under what one person browsing
+# would do, and a hard refusal (403/429) stops everything until Zac says so.
+MAX_PER_RUN = 26          # the NBA hub + 5 games of len(TABS) tabs
+MAX_PER_HOUR = 30         # rolling 60 minutes, across every run and --probe
+MAX_PER_DAY = 100         # 15 games x 5 tabs + a hub per run fits
+HARD_REFUSALS = ("HTTP 403", "HTTP 429")
+LOCK = ROOT / "cache" / "skybet.lock"
+LOCK_STALE = 45 * 60      # a lock older than this is a crashed run
 WINDOW_HOURS = 30
 FRESH_HOURS, FRESH_CLOSE = 3.0, 0.75
 LOCKOUT_HOURS = 24
@@ -113,9 +123,55 @@ def used(st: dict) -> int:
     return st.get("count", 0) if st.get("day") == today() else 0
 
 
+def hour_used(st: dict) -> int:
+    return sum(1 for t in st.get("times", []) if t > time.time() - 3600)
+
+
+def left(st: dict) -> int:
+    """Requests still allowed now: the tighter of the hourly and daily caps."""
+    return max(0, min(MAX_PER_HOUR - hour_used(st), MAX_PER_DAY - used(st)))
+
+
 def bump(st: dict) -> None:
-    st["count"], st["day"], st["last"] = used(st) + 1, today(), time.time()
+    now = time.time()
+    st["count"], st["day"], st["last"] = used(st) + 1, today(), now
+    st["times"] = [t for t in st.get("times", []) if t > now - 3600] + [now]
     save_state(st)
+
+
+def blocked(st: dict) -> str:
+    """Why no request may be made right now, or ''."""
+    if OFF.exists():
+        return "switched off (.skybet_off)"
+    if st.get("lockedUntil", 0) > time.time():
+        return f"locked out ({st.get('lockedWhy')})"
+    if left(st) <= 0:
+        return f"cap reached ({hour_used(st)}/{MAX_PER_HOUR} this hour, {used(st)}/{MAX_PER_DAY} today)"
+    return ""
+
+
+def take_lock() -> bool:
+    """One run at a time, so two runs (publish.sh and a manual one) never double the rate."""
+    LOCK.parent.mkdir(exist_ok=True)
+    try:
+        if time.time() - LOCK.stat().st_mtime > LOCK_STALE:
+            LOCK.unlink()
+    except OSError:
+        pass
+    try:
+        fd = os.open(LOCK, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    except FileExistsError:
+        return False
+    os.write(fd, str(os.getpid()).encode())
+    os.close(fd)
+    return True
+
+
+def drop_lock() -> None:
+    try:
+        LOCK.unlink()
+    except OSError:
+        pass
 
 
 def human_gap(kind: str) -> float:
@@ -144,11 +200,17 @@ def tab_order() -> list[str]:
 
 
 def lockout(st: dict, why: str) -> None:
-    """Stop for LOCKOUT_HOURS; a second refusal switches the fetcher off for good."""
+    """Stop for LOCKOUT_HOURS. A 403 or 429, or a second refusal of any kind,
+    switches the fetcher off until .skybet_off is deleted by hand: pushing on
+    after a site has said no is what turns a block into an IP ban."""
     st["lockedUntil"], st["lockedWhy"] = time.time() + LOCKOUT_HOURS * 3600, why
     st["refusals"] = st.get("refusals", 0) + 1
     save_state(st)
-    if st["refusals"] >= 2:
+    if any(why.startswith(h) for h in HARD_REFUSALS):
+        OFF.write_text(f"Sky Bet refused ({why}) at {time.strftime('%d %b %H:%M')}; "
+                       "wait a day or more, then delete this file to try again.\n")
+        print(f"  skybet: refused ({why}); switched off (.skybet_off) until you delete it")
+    elif st["refusals"] >= 2:
         OFF.write_text(f"Sky Bet refused twice ({why}); delete this file to try again.\n")
         print(f"  skybet: refused again ({why}); switched off (.skybet_off)")
     else:
@@ -359,18 +421,26 @@ def load_out() -> dict:
 
 
 def run() -> int:
-    if OFF.exists():
-        print("  skybet: switched off (.skybet_off)")
-        return 0
     st = load_state()
-    if st.get("lockedUntil", 0) > time.time():
-        print(f"  skybet: locked out ({st.get('lockedWhy')})")
+    why = blocked(st)
+    if why:
+        print(f"  skybet: {why}; no request made")
         return 0
+    if not take_lock():
+        print("  skybet: another run is going (cache/skybet.lock); no request made")
+        return 0
+    try:
+        return _run(st)
+    finally:
+        drop_lock()
+
+
+def _run(st: dict) -> int:
     out = load_out()
     held = out.setdefault("events", {})
     for k in [k for k, e in held.items() if (e.get("kickoff") or 0) < time.time() - 6 * 3600]:
         held.pop(k)
-    budget = min(MAX_PER_RUN, MAX_PER_DAY - used(st))
+    budget = min(MAX_PER_RUN, left(st))
     games = 0
     todo = candidates()
     with Browser() as b:
@@ -424,7 +494,8 @@ def run() -> int:
     out["updated"] = time.time()
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(json.dumps(out, separators=(",", ":")))
-    print(f"  skybet: {games} game(s) fetched via {mode}, {len(held)} held, {used(st)}/{MAX_PER_DAY} requests today")
+    print(f"  skybet: {games} game(s) fetched via {mode}, {len(held)} held, "
+          f"{hour_used(st)}/{MAX_PER_HOUR} requests this hour, {used(st)}/{MAX_PER_DAY} today")
     return 0
 
 
@@ -468,8 +539,9 @@ def probe(eid: str) -> int:
         print(f"no game with event id {eid} in market_prices.json")
         return 1
     st = load_state()
-    if OFF.exists() or st.get("lockedUntil", 0) > time.time():
-        print("  skybet: switched off or locked out; no request made")
+    why = blocked(st)
+    if why:
+        print(f"  skybet: {why}; no request made")
         return 1
     RAW.mkdir(parents=True, exist_ok=True)
     url = page_url(eid, name, "points")
@@ -477,7 +549,8 @@ def probe(eid: str) -> int:
     try:
         html = fetch(url)
     except Refused as exc:
-        print("refused:", exc)
+        bump(st)
+        lockout(st, str(exc))
         return 1
     bump(st)
     (RAW / f"{eid}-points.html").write_text(html)
@@ -557,7 +630,8 @@ def status() -> None:
     st = load_state()
     for fid, e in sorted((load_out().get("events") or {}).items(), key=lambda kv: kv[1].get("kickoff", 0)):
         print(f"  {e['name']:<44} {time.strftime('%a %H:%M', time.localtime(e['kickoff']))}  {len(e['lines'])} lines")
-    print(f"  requests today: {used(st)}/{MAX_PER_DAY}",
+    print(f"  requests: {hour_used(st)}/{MAX_PER_HOUR} this hour, {used(st)}/{MAX_PER_DAY} today",
+          "SWITCHED OFF" if OFF.exists() else "",
           f"locked: {st.get('lockedWhy')}" if st.get("lockedUntil", 0) > time.time() else "")
 
 

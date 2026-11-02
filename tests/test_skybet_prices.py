@@ -133,5 +133,57 @@ class Candidates(unittest.TestCase):
             sk.ROOT, sk.OUT = root, out
 
 
+class Limits(unittest.TestCase):
+    def setUp(self):
+        import tempfile
+        from pathlib import Path
+        d = Path(tempfile.mkdtemp())
+        self.saved = sk.STATE, sk.OFF, sk.LOCK
+        sk.STATE, sk.OFF, sk.LOCK = d / "s.json", d / "off", d / "lock"
+
+    def tearDown(self):
+        sk.STATE, sk.OFF, sk.LOCK = self.saved
+
+    def test_hourly_cap_blocks(self):
+        import time
+        st = {"times": [time.time() - 60] * sk.MAX_PER_HOUR, "count": sk.MAX_PER_HOUR, "day": sk.today()}
+        self.assertEqual(sk.left(st), 0)
+        self.assertIn("cap reached", sk.blocked(st))
+
+    def test_old_requests_drop_out_of_the_hour(self):
+        import time
+        st = {"times": [time.time() - 4000] * sk.MAX_PER_HOUR, "count": sk.MAX_PER_HOUR, "day": sk.today()}
+        self.assertEqual(sk.hour_used(st), 0)
+        self.assertEqual(sk.blocked(st), "")
+
+    def test_daily_cap_blocks(self):
+        st = {"count": sk.MAX_PER_DAY, "day": sk.today()}
+        self.assertIn("cap reached", sk.blocked(st))
+
+    def test_403_switches_off_first_time(self):
+        st = {}
+        sk.lockout(st, "HTTP 403")
+        self.assertTrue(sk.OFF.exists())
+        self.assertIn("switched off", sk.blocked(st))
+
+    def test_challenge_locks_then_second_switches_off(self):
+        st = {}
+        sk.lockout(st, "challenge page")
+        self.assertFalse(sk.OFF.exists())
+        self.assertIn("locked out", sk.blocked(st))
+        sk.lockout(st, "challenge page")
+        self.assertTrue(sk.OFF.exists())
+
+    def test_one_run_at_a_time(self):
+        self.assertTrue(sk.take_lock())
+        self.assertFalse(sk.take_lock())
+        sk.drop_lock()
+        self.assertTrue(sk.take_lock())
+        sk.drop_lock()
+
+    def test_run_caps_fit_inside_hour(self):
+        self.assertLessEqual(sk.MAX_PER_RUN, sk.MAX_PER_HOUR)
+
+
 if __name__ == "__main__":
     unittest.main()
