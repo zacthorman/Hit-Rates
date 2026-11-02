@@ -432,6 +432,8 @@ def parlays_for(entry, meta, legs=PARLAY_LEGS):
             continue
         if weekend.PRICED_ONLY and not leg.get("book"):
             continue
+        if weekend.stopped(dict(leg, fixture=meta)):
+            continue
         pool_by_team.setdefault(leg["teamIndex"], []).append(leg)
 
     # One leg per player -- the longest-priced rung, not the safest, for the

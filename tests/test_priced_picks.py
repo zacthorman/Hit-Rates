@@ -46,5 +46,33 @@ class PricedOnly(unittest.TestCase):
         self.assertIsNotNone(weekend.best_single([leg(1, 2.2, 14, 20), leg(2, 2.1, 30, 50)]))
 
 
+class StopList(unittest.TestCase):
+    """2 Nov 2026 backtest: markets kept out of every pick."""
+
+    def mk(self, sport, **kw):
+        l = leg(1, kw.pop("fair", 1.6), 15, 20, book=kw.pop("book", None), stat=kw.pop("stat", "Points"),
+                player=kw.pop("player", "P"))
+        l["fixture"]["sport"] = sport
+        l.update(kw)
+        return l
+
+    def test_football_player_props_out_team_lines_in(self):
+        self.assertTrue(weekend.stopped(self.mk("football", stat="Shots")))
+        self.assertFalse(weekend.stopped(self.mk("football", stat="Corner kicks", player=None)))
+
+    def test_long_alt_overs_out(self):
+        self.assertTrue(weekend.stopped(self.mk("basketball", alt=True, book=3.4)))
+        self.assertFalse(weekend.stopped(self.mk("basketball", alt=True, book=1.8)))
+
+    def test_nba_main_overs_out_unders_in(self):
+        self.assertTrue(weekend.stopped(self.mk("basketball")))
+        self.assertFalse(weekend.stopped(self.mk("basketball", over=False)))
+
+    def test_nfl_low_volume_receiving_out(self):
+        self.assertTrue(weekend.stopped(self.mk("american-football", stat="Receiving yards", position="RB", avg=40)))
+        self.assertTrue(weekend.stopped(self.mk("american-football", stat="Receiving yards", position="WR", avg=18)))
+        self.assertFalse(weekend.stopped(self.mk("american-football", stat="Receiving yards", position="WR", avg=60)))
+
+
 if __name__ == "__main__":
     unittest.main()

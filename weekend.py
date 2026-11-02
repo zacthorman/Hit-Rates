@@ -796,6 +796,8 @@ def builders_for(entry, meta):
                 continue
             if PRICED_ONLY and not leg.get("book"):
                 continue
+            if stopped(dict(leg, fixture=meta)):
+                continue
             current = best_by_stat.get(leg["stat"])
             if current is None or leg["evidence"] > current["evidence"]:
                 best_by_stat[leg["stat"]] = leg
@@ -1149,7 +1151,7 @@ def best_acca(legs, wanted=ACCA_LEGS, target=ACCA_TARGET):
     whole round there is no reason to accept that correlation when there are
     ninety other fixtures to choose from.
     """
-    ok = [l for l in legs if 1.05 < l["fair"] < 100 and l["total"] >= MIN_SAMPLE]
+    ok = [l for l in legs if 1.05 < l["fair"] < 100 and l["total"] >= MIN_SAMPLE and not stopped(l)]
     priced = [l for l in ok if _book_ok(l)]
     out = _acca_from(priced, wanted, target, True) if len(priced) >= wanted else None
     return out or (None if PRICED_ONLY else _acca_from(ok, wanted, target, False))
@@ -1249,8 +1251,48 @@ def _price(leg) -> float:
 BAD_PRICE = -0.05
 
 
+# ------------------------------------------------------------ stop list
+#
+# 2 Nov 2026, the backtest of every settled Paddy Power line in pplog/ (20 Oct
+# to 2 Nov; research/BACKTEST-2026-11-02.md). Markets that lost in both halves
+# of the period with the whole 90% range below zero are kept out of every pick.
+#   * football player props: -51% (starters -26% to -58%, every market)
+#   * alt overs at 3.0 or longer: -18% to -58% in every sport
+#   * NBA main-line overs: -11.6% (the unders: -2.9%)
+#   * NFL running backs' receiving overs, and receiving overs on low-volume
+#     players (fewer than 3 catches or 25 yards a game): one target decides them
+STOP_LIST = True
+LONG_ALT = 3.0
+NFL_RECEIVING = {"Receiving yards", "Receiving receptions"}
+
+
+def stopped(leg) -> bool:
+    """True when the leg is in a market the backtest says to stay out of."""
+    if not STOP_LIST:
+        return False
+    sport = (leg.get("fixture") or {}).get("sport", "football")
+    player, over = leg.get("player"), bool(leg.get("over", True))
+    price = (leg.get("book") or {}).get("price") or leg.get("fair") or 0
+    if player and sport == "football":
+        return True
+    if leg.get("alt") and over and price >= LONG_ALT:
+        return True
+    if player and sport == "basketball" and over and not leg.get("alt"):
+        return True
+    if player and sport == "american-football" and over and leg.get("stat") in NFL_RECEIVING:
+        if leg.get("position") == "RB":
+            return True
+        avg = leg.get("avg")
+        low = 3 if leg["stat"] == "Receiving receptions" else 25
+        if avg is not None and avg < low:
+            return True
+    return False
+
+
 def _headline_ok(leg, sample=MIN_SAMPLE):
     if leg["total"] < sample or leg.get("stat") in PICK_COUNT_STATS:
+        return False
+    if stopped(leg):
         return False
     if leg.get("value") is not None and leg["value"] < BAD_PRICE:
         return False

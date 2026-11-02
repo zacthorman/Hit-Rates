@@ -227,6 +227,25 @@ def _card_chance(played: list[dict], entry: dict, t: int, mins: int) -> float | 
     return 1 - math.exp(-(a + b) / 2)
 
 
+def _proj_margin(entry: dict, t: int):
+    """The report's pre-game projected margin for side t (points; NFL from
+    touchdowns and field goals), or None. Logged from 2 Nov 2026 so game
+    script can be backtested before kick-off: the backtest found NFL rushing
+    overs lost 57% for sides beaten by 8+, but only the final score was known."""
+    try:
+        pj = (entry.get("projection") or {}).get("ALL") or {}
+        if "Points" in pj:
+            a, b = pj["Points"]
+        elif "Touchdowns" in pj:
+            fg = pj.get("Field goals") or [0, 0]
+            a, b = 7 * pj["Touchdowns"][0] + 3 * fg[0], 7 * pj["Touchdowns"][1] + 3 * fg[1]
+        else:
+            return None
+        return round((a - b) if t == 0 else (b - a), 1)
+    except (TypeError, ValueError, IndexError, KeyError):
+        return None
+
+
 def _injury(entry: dict, t: int, name: str):
     side = (entry.get("injuries") or {}).get("home" if t == 0 else "away") or []
     for r in side:
@@ -466,6 +485,7 @@ def snapshot(args=None) -> int:
                             "k5": k5, "n5": min(5, len(vals)), "k10": k10, "n10": len(vals),
                             "fresh": fresh,
                             "adj": round(adj, 3), "injury": _injury(entry, t, name),
+                            "proj_margin": _proj_margin(entry, t),
                             "result": None, "value": None})
                 new_rows.append(row)
     # Rewrite the files that had rows updated, then append the new ones.
