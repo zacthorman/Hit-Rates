@@ -17,12 +17,19 @@ SportsbookRunnerLiveData), with the same market types Paddy Power uses
 paddypower_prices' own parser, and Sky Bet's prices sit beside Paddy's and
 Pinnacle's without spending Paddy Power's cap.
 
-Built like paddypower_prices.py, and deliberately no more than that: plain
-requests, never through FlareSolverr or anything else that gets round a
-site's protection. Paced (MIN_GAP to MIN_GAP + JITTER seconds), capped per
-run and per day, a game not refetched inside FRESH_HOURS (FRESH_CLOSE in the
-last 3 hours), any refusal or a page that is not the game locks it out for
-LOCKOUT_HOURS, and `touch .skybet_off` switches it off.
+Pages load through FlareSolverr (the same container update.py keeps healthy
+for SofaScore and Oddschecker), as one browser session per run, so cookies
+and the site's own scripts carry across pages the way one visitor's tab
+would. The run opens the NBA hub first, lands on a game's points tab, then
+clicks through the other tabs in a random order, with browsing-speed gaps
+(TAB_GAP between tabs, GAME_GAP between games, now and then a longer
+BREAK). SKYBET_FLARESOLVERR=0 goes back to plain requests; if FlareSolverr
+cannot be reached the run falls back to plain requests and says so.
+
+Still capped per run and per day, a game not refetched inside FRESH_HOURS
+(FRESH_CLOSE in the last 3 hours), any refusal or a page that is not the
+game locks it out for LOCKOUT_HOURS (a second refusal switches it off), and
+`touch .skybet_off` switches it off.
 
 Each tab of a game page (points, rebounds, assists, threes, combos) carries
 the grid it shows first: 15+/20+/25+ points, 6+/8+/10+ rebounds, 4+/6+/8+
@@ -38,6 +45,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import random
 import re
 import sys
@@ -56,8 +64,16 @@ RAW = ROOT / "cache" / "skybet"
 OFF = ROOT / ".skybet_off"
 
 SITE = "https://skybet.com/"
+HUB = SITE + "basketball/nba"
 TABS = ("points", "rebounds", "assists", "threes", "combos")
-MIN_GAP, JITTER = 8.0, 8.0
+MIN_GAP, JITTER = 8.0, 8.0      # floor between any two requests, kept across runs
+TAB_GAP = (6.0, 18.0)           # reading one tab before clicking the next
+GAME_GAP = (25.0, 75.0)         # going back to the list and picking another game
+BREAK, BREAK_CHANCE = (90.0, 240.0), 0.12   # now and then, a longer look away
+_flare = os.getenv("SKYBET_FLARESOLVERR", os.getenv("FLARESOLVERR_URL", "http://localhost:8191/v1")).strip()
+FLARE_URL = "" if _flare.lower() in ("0", "false", "no", "off") else _flare
+CHALLENGE_MARKERS = ("Just a moment", "challenge-platform", "cf-chl", "Attention Required",
+                     "Access Denied", "px-captcha")
 MAX_PER_RUN = 40          # requests (a game is up to len(TABS))
 MAX_PER_DAY = 120
 WINDOW_HOURS = 30
@@ -102,11 +118,29 @@ def bump(st: dict) -> None:
     save_state(st)
 
 
-def wait_turn(st: dict) -> None:
-    gap = MIN_GAP + random.uniform(0, JITTER)
+def human_gap(kind: str) -> float:
+    """Seconds a person might take before the next page: 'tab' or 'game'."""
+    lo, hi = TAB_GAP if kind == "tab" else GAME_GAP
+    gap = random.triangular(lo, hi, lo + (hi - lo) * 0.35)   # mostly quick, sometimes slow
+    if random.random() < BREAK_CHANCE:
+        gap += random.uniform(*BREAK)
+    return gap
+
+
+def wait_turn(st: dict, kind: str = "tab") -> None:
+    """Sleep for a browsing-speed gap, never less than the cross-run floor."""
+    floor = MIN_GAP + random.uniform(0, JITTER)
     since = time.time() - st.get("last", 0)
-    if since < gap:
-        time.sleep(gap - since)
+    wait = max(floor - since, human_gap(kind) if st.get("last") else 0)
+    if wait > 0:
+        time.sleep(wait)
+
+
+def tab_order() -> list[str]:
+    """Points first (the tab a game page opens on), the rest in a random order."""
+    rest = list(TABS[1:])
+    random.shuffle(rest)
+    return [TABS[0]] + rest
 
 
 def lockout(st: dict, why: str) -> None:
@@ -132,7 +166,7 @@ def page_url(event_id, name: str, tab: str) -> str:
     return f"{SITE}basketball/nba/{slug(name)}/e-{event_id}?tab={tab}"
 
 
-def fetch(url: str) -> str:
+def fetch_plain(url: str) -> str:
     req = urllib.request.Request(url, headers=HEADERS)
     try:
         with urllib.request.urlopen(req, timeout=25) as r:
@@ -141,6 +175,71 @@ def fetch(url: str) -> str:
         raise Refused(f"HTTP {exc.code}")
     except Exception as exc:  # noqa: BLE001
         raise Refused(type(exc).__name__)
+
+
+def _flare_call(payload: dict, timeout: float = 90) -> dict:
+    req = urllib.request.Request(FLARE_URL, data=json.dumps(payload).encode(),
+                                 headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return json.load(r)
+
+
+class Browser:
+    """One FlareSolverr browser session for the run, or plain requests.
+
+    Use as a context manager: the session is destroyed on the way out, so a
+    crashed run does not leave a Chrome open inside the container."""
+
+    def __init__(self, flare_url: str = None):
+        self.url = FLARE_URL if flare_url is None else flare_url
+        self.session = None
+
+    def __enter__(self):
+        if self.url:
+            try:
+                made = _flare_call({"cmd": "sessions.create"}, 60)
+                if made.get("status") == "ok" and made.get("session"):
+                    self.session = made["session"]
+            except Exception as exc:  # noqa: BLE001
+                print(f"  skybet: FlareSolverr not reachable ({type(exc).__name__}); using plain requests")
+        return self
+
+    def __exit__(self, *exc):
+        if self.session:
+            try:
+                _flare_call({"cmd": "sessions.destroy", "session": self.session}, 20)
+            except Exception:  # noqa: BLE001
+                pass
+            self.session = None
+        return False
+
+    @property
+    def mode(self) -> str:
+        return "FlareSolverr" if self.session else "plain"
+
+    def get(self, url: str) -> str:
+        if not self.session:
+            return fetch_plain(url)
+        try:
+            got = _flare_call({"cmd": "request.get", "url": url, "session": self.session,
+                               "maxTimeout": 60000})
+        except Exception as exc:  # noqa: BLE001
+            raise Refused(f"FlareSolverr {type(exc).__name__}")
+        if got.get("status") != "ok":
+            raise Refused(f"FlareSolverr: {str(got.get('message'))[:80]}")
+        sol = got.get("solution") or {}
+        code, body = int(sol.get("status") or 0), sol.get("response") or ""
+        if code >= 400:
+            raise Refused(f"HTTP {code}")
+        if any(m in body[:5000] for m in CHALLENGE_MARKERS) and "__TBD_PRELOADED_CATALOG__" not in body:
+            raise Refused("challenge page")
+        return body
+
+
+def fetch(url: str) -> str:
+    """One page, outside a run (used by --probe)."""
+    with Browser() as b:
+        return b.get(url)
 
 
 def catalog(html: str) -> dict:
@@ -271,44 +370,59 @@ def run() -> int:
         held.pop(k)
     budget = min(MAX_PER_RUN, MAX_PER_DAY - used(st))
     games = 0
-    for ko, fid, eid, name in candidates():
-        if budget < len(TABS):
-            break
-        lines, ok = [], True
-        for tab in TABS:
-            wait_turn(st)
+    todo = candidates()
+    with Browser() as b:
+        if todo and budget > len(TABS):
+            # Arrive the way a person does: the NBA list first, not straight onto a deep link.
+            wait_turn(st, "game")
             try:
-                html = fetch(page_url(eid, name, tab))
+                b.get(HUB)
             except Refused as exc:
                 bump(st)
-                lockout(st, str(exc))
-                ok = False
+                lockout(st, f"{exc} on the NBA hub")
+                todo = []
+            else:
+                bump(st)
+                budget -= 1
+        for ko, fid, eid, name in todo:
+            if budget < len(TABS):
                 break
-            bump(st)
-            budget -= 1
-            data = catalog(html)
-            if not data:
-                lockout(st, "a page with no game data (a challenge page?)")
-                ok = False
+            lines, ok = [], True
+            for i, tab in enumerate(tab_order()):
+                wait_turn(st, "game" if i == 0 else "tab")
+                try:
+                    html = b.get(page_url(eid, name, tab))
+                except Refused as exc:
+                    bump(st)
+                    lockout(st, str(exc))
+                    ok = False
+                    break
+                bump(st)
+                budget -= 1
+                data = catalog(html)
+                if not data:
+                    lockout(st, "a page with no game data (a challenge page?)")
+                    ok = False
+                    break
+                if event_name(data) and event_name(data).split(" @ ")[-1] != name.split(" @ ")[-1]:
+                    print(f"  skybet: {eid} is {event_name(data)!r}, not {name!r}; skipped")
+                    break
+                lines += lines_of(html)
+            if not ok:
                 break
-            if event_name(data) and event_name(data).split(" @ ")[-1] != name.split(" @ ")[-1]:
-                print(f"  skybet: {eid} is {event_name(data)!r}, not {name!r}; skipped")
-                break
-            lines += lines_of(html)
-        if not ok:
-            break
-        seen, keep = set(), []
-        for l in lines:
-            k = (l["key"], l["market"], l["side"], l["line"])
-            if k not in seen:
-                seen.add(k)
-                keep.append(l)
-        held[fid] = {"skEvent": eid, "name": name, "kickoff": ko, "fetchedAt": time.time(), "lines": keep}
-        games += 1
+            seen, keep = set(), []
+            for l in lines:
+                k = (l["key"], l["market"], l["side"], l["line"])
+                if k not in seen:
+                    seen.add(k)
+                    keep.append(l)
+            held[fid] = {"skEvent": eid, "name": name, "kickoff": ko, "fetchedAt": time.time(), "lines": keep}
+            games += 1
+        mode = b.mode
     out["updated"] = time.time()
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(json.dumps(out, separators=(",", ":")))
-    print(f"  skybet: {games} game(s) fetched, {len(held)} held, {used(st)}/{MAX_PER_DAY} requests today")
+    print(f"  skybet: {games} game(s) fetched via {mode}, {len(held)} held, {used(st)}/{MAX_PER_DAY} requests today")
     return 0
 
 

@@ -50,5 +50,70 @@ class Parse(unittest.TestCase):
                          "https://skybet.com/basketball/nba/oklahoma-city-thunder-cleveland-cavaliers/e-36262178?tab=points")
 
 
+class FetchLayer(unittest.TestCase):
+    def setUp(self):
+        self.calls = []
+        self._real = sk._flare_call
+
+    def tearDown(self):
+        sk._flare_call = self._real
+
+    def _fake(self, solution=None, create_ok=True):
+        def call(payload, timeout=90):
+            self.calls.append(payload["cmd"])
+            if payload["cmd"] == "sessions.create":
+                return {"status": "ok", "session": "s1"} if create_ok else {"status": "error"}
+            if payload["cmd"] == "request.get":
+                self.assertEqual(payload["session"], "s1")
+                return {"status": "ok", "solution": solution}
+            return {"status": "ok"}
+        sk._flare_call = call
+
+    def test_one_session_reused_then_destroyed(self):
+        page = _catalog_html([], [])
+        self._fake({"status": 200, "response": page})
+        with sk.Browser("http://fs") as b:
+            self.assertEqual(b.mode, "FlareSolverr")
+            b.get("https://skybet.com/a")
+            b.get("https://skybet.com/b")
+        self.assertEqual(self.calls, ["sessions.create", "request.get", "request.get", "sessions.destroy"])
+
+    def test_http_error_is_refused(self):
+        self._fake({"status": 403, "response": "nope"})
+        with sk.Browser("http://fs") as b, self.assertRaises(sk.Refused):
+            b.get("https://skybet.com/a")
+
+    def test_challenge_page_is_refused(self):
+        self._fake({"status": 200, "response": "<title>Just a moment...</title>"})
+        with sk.Browser("http://fs") as b, self.assertRaises(sk.Refused):
+            b.get("https://skybet.com/a")
+
+    def test_flare_off_is_plain(self):
+        with sk.Browser("") as b:
+            self.assertEqual(b.mode, "plain")
+        self.assertEqual(self.calls, [])
+
+    def test_flare_unreachable_falls_back_to_plain(self):
+        def boom(payload, timeout=90):
+            raise ConnectionRefusedError
+        sk._flare_call = boom
+        with sk.Browser("http://fs") as b:
+            self.assertEqual(b.mode, "plain")
+
+
+class Pacing(unittest.TestCase):
+    def test_points_first_then_every_other_tab_once(self):
+        for _ in range(20):
+            order = sk.tab_order()
+            self.assertEqual(order[0], "points")
+            self.assertEqual(sorted(order), sorted(sk.TABS))
+
+    def test_gaps_inside_their_ranges(self):
+        for _ in range(200):
+            t, g = sk.human_gap("tab"), sk.human_gap("game")
+            self.assertTrue(sk.TAB_GAP[0] <= t <= sk.TAB_GAP[1] + sk.BREAK[1])
+            self.assertTrue(sk.GAME_GAP[0] <= g <= sk.GAME_GAP[1] + sk.BREAK[1])
+
+
 if __name__ == "__main__":
     unittest.main()
