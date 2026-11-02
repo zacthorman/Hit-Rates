@@ -115,5 +115,23 @@ class Pacing(unittest.TestCase):
             self.assertTrue(sk.GAME_GAP[0] <= g <= sk.GAME_GAP[1] + sk.BREAK[1])
 
 
+class Candidates(unittest.TestCase):
+    def test_nba_only(self):
+        import tempfile, time
+        from datetime import datetime, timezone
+        from pathlib import Path
+        d = Path(tempfile.mkdtemp())
+        ko = datetime.fromtimestamp(time.time() + 3600, timezone.utc).isoformat()
+        (d / "market_prices.json").write_text(json.dumps({"events": {
+            "a": {"betfair": "Oklahoma City Thunder @ Cleveland Cavaliers", "bfEvent": "1", "start": ko, "sport": "basketball"},
+            "b": {"betfair": "Chicago Bears @ Seattle Seahawks", "bfEvent": "2", "start": ko, "sport": "american-football"}}}))
+        root, out = sk.ROOT, sk.OUT
+        sk.ROOT, sk.OUT = d, d / "o.json"
+        try:
+            self.assertEqual([c[1] for c in sk.candidates()], ["a"])
+        finally:
+            sk.ROOT, sk.OUT = root, out
+
+
 if __name__ == "__main__":
     unittest.main()
