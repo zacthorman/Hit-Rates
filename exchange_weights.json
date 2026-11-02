@@ -1,48 +1,50 @@
 {
- "updated": "2026-11-01 11:58 UTC",
+ "updated": "2026-11-01 22:39 UTC",
  "weights": {
-  "team|Goals|derived": 0.975,
-  "team|Goals|exchange": 0.823,
-  "team|Both teams to score|exchange": 0.179,
-  "team|Match goals|exchange": 0.176,
-  "team|Match corners|exchange": 0.825,
-  "player|Shots on target|back": 0.064,
+  "team|Goals|derived": 0.976,
+  "team|Goals|exchange": 0.824,
+  "team|Both teams to score|exchange": 0.174,
+  "team|Match goals|exchange": 0.204,
+  "team|Match corners|exchange": 0.83,
+  "player|Shots on target|back": 0.104,
   "player|Goals|back": 0.391,
-  "team|Match cards|exchange": 0.284
+  "player|Anytime touchdown|back": 0.617,
+  "team|Match cards|exchange": 0.469
  },
  "backMargin": {
-  "SHOTS_ON_TARGET_P1": 0.334,
-  "TO_SCORE": 0.224
+  "SHOTS_ON_TARGET_P1": 0.336,
+  "TO_SCORE": 0.224,
+  "TO_SCORE_A_TOUCHDOWN": 0.122
  },
  "fit": {
   "team|Goals|derived": {
-   "n": 946,
+   "n": 989,
    "raw": 1.0,
    "default": 0.5
   },
   "team|Goals|exchange": {
-   "n": 91,
+   "n": 92,
    "raw": 1.0,
    "default": 0.5
   },
   "team|Both teams to score|exchange": {
-   "n": 90,
+   "n": 94,
    "raw": 0.0,
    "default": 0.5
   },
   "team|Match goals|exchange": {
-   "n": 92,
-   "raw": 0.0,
+   "n": 96,
+   "raw": 0.05,
    "default": 0.5
   },
   "team|Match corners|exchange": {
-   "n": 93,
+   "n": 97,
    "raw": 1.0,
    "default": 0.5
   },
   "player|Shots on target|back": {
-   "n": 223,
-   "raw": 0.0,
+   "n": 229,
+   "raw": 0.05,
    "default": 0.35
   },
   "player|Goals|back": {
@@ -50,13 +52,18 @@
    "raw": 0.45,
    "default": 0.35
   },
+  "player|Anytime touchdown|back": {
+   "n": 40,
+   "raw": 0.95,
+   "default": 0.35
+  },
   "team|Match cards|exchange": {
-   "n": 81,
-   "raw": 0.15,
+   "n": 85,
+   "raw": 0.45,
    "default": 0.5
   },
   "SHOTS_ON_TARGET_P1": {
-   "n": 208,
+   "n": 214,
    "raw": 0.4,
    "default": 0.06
   },
@@ -64,7 +71,12 @@
    "n": 35,
    "raw": 0.4,
    "default": 0.1
+  },
+  "TO_SCORE_A_TOUCHDOWN": {
+   "n": 40,
+   "raw": 0.15,
+   "default": 0.1
   }
  },
- "settled": 1694
+ "settled": 1773
 }

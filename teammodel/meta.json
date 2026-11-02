@@ -138,7 +138,7 @@
     "x_central"
    ],
    "alpha_gbm": 0.013537065354851661,
-   "trees": 231
+   "trees": 271
   },
   "Corner kicks": {
    "use": "gbm",
@@ -610,7 +610,7 @@
     "x_central"
    ],
    "alpha_gbm": 0.0,
-   "trees": 216
+   "trees": 256
   },
   "Clearances": {
    "use": "linear",
@@ -748,7 +748,7 @@
     "x_central"
    ],
    "alpha_gbm": 0.012831432211148474,
-   "trees": 229
+   "trees": 269
   },
   "Offsides": {
    "use": "linear",
@@ -886,8 +886,8 @@
     "x_central"
    ],
    "alpha_gbm": 0.01751255631145833,
-   "trees": 267
+   "trees": 307
   }
  },
- "weekly": "2026-10-26T12:31:50+00:00"
+ "weekly": "2026-11-02T05:36:20+00:00"
 }
