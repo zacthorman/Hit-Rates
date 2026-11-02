@@ -911,6 +911,7 @@ Everything scheduled runs on the Mac. Nothing here is a cloud job.
 | `linelog.py` | Every line the model prices, settled. |
 | `pplog.py` | Every Paddy Power player line, our chance and the result. |
 | `b365log.py` | The same for every Bet365 player line, Sub On Play On included (b365log/). `report` prints the record. |
+| `trail_live.py` | The paper trail: each starter's direct opponent (from usual positions), what that opponent's habit is worth to his tackles, shots, fouls and fouled (`trail_fit.json`), and his recent games told the same way. Feeds the Matchups card and pplog's `trail_chance`. |
 | `supersub.py` | Paddy Power's Super Sub on every market and competition it covers: the extra chance, settling through the replacement chain, `fit` for the replacement rates, `audit` and `resettle --apply` for the record (SUPERSUB-ALL-MARKETS.md). |
 | `teamlog.py` | The same for Paddy Power team lines (21 October). `python teamlog.py scoreboard` judges the team-line take tier against Paddy Power's real prices, with 95% intervals (TEAMLINE-CHECK.md). |
 | `nba_check.py` | NBA player lines: calibration by stat and line from the committed record, and on the Mac the early-season shrink test on `cache/` and a scoreboard of Paddy Power's settled basketball lines (NBA-CHECK.md, 24 October). |

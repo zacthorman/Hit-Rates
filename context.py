@@ -1497,7 +1497,44 @@ def story(entry: dict, meta: dict, gs: dict | None, b: dict | None) -> dict:
                                f"{'regular starters' if many else 'a regular starter'}.",
                           verdict(side["name"])))
     lines.sort(key=lambda x: -x[0])
-    return {"sides": sides, "lines": [(r, s) for _, r, s in lines[:8]]}
+    top = lines[:8]
+    return {"sides": sides, "lines": [(r, s) for _, r, s in top],
+            "evidence": [evidence_of(r) for _, r, _ in top]}
+
+
+# What each kind of reasoning line has behind it (2 Nov 2026,
+# research/TRAIL-2026-11-02.md): ("tested", text) when a walk-forward or
+# after-the-fact test on 35,000 player-games backs it, ("partly", text) when
+# part of it is, ("untested", text) when it is a tactical read the data has
+# not checked yet. The page shows the label, so nothing reads as more proven
+# than it is.
+EVIDENCE = [
+    (("double pivot", "single holding midfielder", "midfields match up"),
+     ("untested", "Shape only. Being outnumbered in midfield has not been shown to change tackles or fouls "
+                  "(FINDINGS.md, and the 2 Nov trail test).")),
+    (("should have",),
+     ("tested", "Possession moves counts: per 10 points more of the ball a side's players make about 5% fewer "
+                "tackles and 3% fewer fouls and win 3% more. Shots follow territory, not possession: x1.17 per "
+                "10 points of momentum, x0.90 per 10 points of possession.")),
+    (("are favourites",),
+     ("partly", "Game state is tested in part: players shoot about 12% more when their side is ahead or behind "
+                "than when level. Which side opens up late is a reading of it.")),
+    (("keep the ball",),
+     ("partly", "Tested in part: the side without the ball makes more tackles (about 5% per 10 points of "
+                "possession). Corners and blocked shots from it are a tactical read.")),
+    (("run with the ball",),
+     ("partly", "After the fact, a player's fouls do follow the man he faces (x1.16 per extra foul won by his "
+                "opponent), but a team's foul habit did not predict it before kick-off.")),
+    (("press hard", "attack wide", "get into the box", "are without"),
+     ("untested", "A tactical read. The data has not tested it yet.")),
+]
+
+
+def evidence_of(reason: str) -> tuple[str, str]:
+    for keys, ev in EVIDENCE:
+        if any(k in reason for k in keys):
+            return ev
+    return ("untested", "A tactical read. The data has not tested it yet.")
 
 
 # ================================================= the team model (tactics)

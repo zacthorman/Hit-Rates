@@ -1,0 +1,79 @@
+{
+ "stats": {
+  "tackles": {
+   "driver": "dribbles",
+   "coef": 0.06743156578840945,
+   "centre": -0.11228031306591062,
+   "gain_per_1000": 4.6,
+   "quantiles": [
+    0.2,
+    0.486,
+    1.073,
+    2.003,
+    3.218
+   ]
+  },
+  "fouled": {
+   "driver": "tackles",
+   "coef": 0.06879371139147403,
+   "centre": 0.13539124821122567,
+   "gain_per_1000": 1.6,
+   "quantiles": [
+    0.443,
+    0.807,
+    1.316,
+    1.924,
+    2.542
+   ],
+   "roles": {
+    "player": [
+     "D",
+     "M"
+    ],
+    "opponent": [
+     "F",
+     "M"
+    ]
+   },
+   "n": 19910
+  },
+  "fouls": {
+   "driver": "fouled",
+   "coef": 0.02393471655614727,
+   "centre": -0.1518480306184549,
+   "gain_per_1000": 0.12,
+   "quantiles": [
+    0.308,
+    0.573,
+    0.964,
+    1.486,
+    2.083
+   ]
+  },
+  "shots": {
+   "driver": "interc",
+   "coef": 0.055941189787075504,
+   "centre": -0.7805890150623055,
+   "gain_per_1000": 1.9,
+   "quantiles": [
+    0.113,
+    0.262,
+    0.557,
+    0.952,
+    1.357
+   ],
+   "roles": {
+    "player": [
+     "D",
+     "M"
+    ],
+    "opponent": [
+     "F",
+     "M"
+    ]
+   },
+   "n": 19910
+  }
+ },
+ "note": "Pre-match direct-opponent effects (research/TRAIL-2026-11-02.md, research/trail/fit_trail.py). Multiplier on the player's expected count: exp(coef * (log(opponent rate per 90) - centre)). Coefficients from the combined fit on 35,000 starter-games; gain_per_1000 is the out-of-sample gain of the matchup term alone (fitted on the first 70% of games by date, scored on the last 30%). 2 Nov 2026: shots and fouled hold only for defenders and midfielders facing a forward or midfielder (refitted on those roles; 'roles'); tackles held for every role, most for forwards and midfielders facing ball-carrying defenders."
+}

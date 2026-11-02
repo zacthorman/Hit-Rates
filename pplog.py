@@ -414,6 +414,7 @@ def snapshot(args=None) -> int:
             existing[_key(r)] = (path, r)
     new_rows, touched = [], set()
     fm = _fmodel()
+    trails: dict = {}
     um = _usmodel()
     for fid, ev in (pp.get("events") or {}).items():
         if fid not in fixtures:
@@ -531,6 +532,17 @@ def snapshot(args=None) -> int:
                 snap["model_chance"] = round(us[1] if over else 1 - us[1], 4)
             if ss_extra:
                 snap["supersub"] = round(ss_extra, 4)
+            # The paper trail (trail_live.py, 2 Nov 2026): the direct
+            # opponent's habit as a multiplier on his count. Logged beside
+            # the chance, not in it, so the record can say whether it helps.
+            tm = _trail_mult(trails, entry, fid, t, name, stat) if sport == "football" and over else None
+            if tm is not None:
+                snap["trail_mult"] = round(tm, 4)
+                try:
+                    import trail_live
+                    snap["trail_chance"] = round(trail_live.adjust(p, stat, int(round(line + 0.5)), tm), 4)
+                except Exception:  # noqa: BLE001
+                    pass
             # "Over 2.5" and "3+" are one bet: keep the better price.
             if key in touched:
                 prev = next((x for x in new_rows if _key(x) == key), None) \
@@ -695,6 +707,23 @@ def _card_value(r: dict):
 
 
 # ------------------------------------------------------------------ scoring
+
+def _trail_mult(cache: dict, entry: dict, fid, t: int, name: str, stat: str):
+    """His matchup multiplier for this stat, or None. One pairing per game."""
+    try:
+        import trail_live
+        if stat not in trail_live.STAT_FIT:
+            return None
+        if fid not in cache:
+            cache[fid] = trail_live.matchups(entry)
+        side = ((entry.get("teams") or [{}, {}])[t] or {}).get("side") or ("home", "away")[t]
+        for m in (cache[fid] or {}).get(side) or []:
+            if _norm(m["player"]) == _norm(name):
+                return m["effects"][stat]["mult"]
+    except Exception:  # noqa: BLE001  never cost the snapshot
+        return None
+    return None
+
 
 def _untested(sport: str, stat: str, line) -> bool:
     """A football line no Paddy Power record has ever tested: a stat Paddy
