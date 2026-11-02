@@ -409,8 +409,11 @@ def candidates() -> list[tuple]:
         fresh = (FRESH_CLOSE if ko - now < 3 * 3600 else FRESH_HOURS) * 3600
         if now - (held.get(fid) or {}).get("fetchedAt", 0) < fresh:
             continue
-        out.append((ko, fid, eid, name))
-    return sorted(out)
+        out.append((fid in held, ko, fid, eid, name))
+    # Games never fetched come before refreshes, so a night's runs work through
+    # every game before going back over the early ones (2 Nov: an hour on,
+    # the first five were stale again and would have taken every run).
+    return [c[1:] for c in sorted(out)]
 
 
 def load_out() -> dict:
