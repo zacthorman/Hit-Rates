@@ -181,6 +181,14 @@ class Limits(unittest.TestCase):
         self.assertTrue(sk.take_lock())
         sk.drop_lock()
 
+    def test_max_has_a_ceiling(self):
+        run, hour = sk.MAX_PER_RUN, sk.MAX_PER_HOUR
+        try:
+            self.assertEqual(sk.set_max(500), sk.HARD_CEILING)
+            self.assertEqual(sk.MAX_PER_HOUR, sk.HARD_CEILING)
+        finally:
+            sk.MAX_PER_RUN, sk.MAX_PER_HOUR = run, hour
+
     def test_run_caps_fit_inside_hour(self):
         self.assertLessEqual(sk.MAX_PER_RUN, sk.MAX_PER_HOUR)
 
