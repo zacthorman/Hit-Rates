@@ -455,6 +455,16 @@ def snapshot(args=None) -> int:
             key = _key(row)
             snap = {"t": round(now), "price": l["price"], "chance": round(p, 4),
                     "edge": round(p * l["price"] - 1, 4)}
+            # Pinnacle's margin-free chance for the same side (pinnacle_props.py,
+            # 2 Nov 2026), the sharp benchmark ruletrack's props_beat_pinnacle uses.
+            if sport in ("basketball", "american-football"):
+                try:
+                    import pinnacle_props
+                    sh = pinnacle_props.sharp_for(sport, name, stat, line, over, meta["kickoff"], fid)
+                    if sh:
+                        snap["sharp"] = sh
+                except Exception:  # noqa: BLE001 - never cost the log
+                    pass
             if m_over is not None:
                 # The model's chance is the one logged; the old one is kept
                 # beside it so the two can be compared on results.

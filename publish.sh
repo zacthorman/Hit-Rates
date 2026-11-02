@@ -136,6 +136,9 @@ fi
 # at 150 a day, locked out for a day on any refusal. The sharp reference for
 # the soft books' lines. `touch .pinnacle_off` switches it off.
 "$PY" pinnacle_prices.py || echo "  pinnacle prices not fetched (continuing)"
+# Pinnacle's NBA / NFL player props (pinnacle_props.py, 2 Nov 2026): the sharp
+# benchmark pplog records beside every Paddy player line. Same off switch.
+"$PY" pinnacle_props.py || echo "  pinnacle props not fetched (continuing)"
 fi
 
 # The backtested player model (fmodel_live.py): a chance for every starter in

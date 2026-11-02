@@ -118,6 +118,7 @@ REVERSION_W = {
     "Points and assists": (0.81, 0.20, 0.29, 0.45), "Rebounds and assists": (0.43, 0.21, 0.18, 0.54),
 }
 REVERSION_Z, REVERSION_STRONG_Z = 0.25, 0.75
+PIN_EDGE = 0.03          # props_beat_pinnacle: Paddy's price at least 3% over Pinnacle's fair
 
 
 def reversion_z(r: dict):
@@ -137,6 +138,8 @@ RULE_START = {
     "nba_main_day_drift": _OCT31,
     "control_nba_main_steam": _OCT31,
     "nba_under_reversion": _NOV02,
+    "props_beat_pinnacle": _NOV02,
+    "control_props_under_pinnacle": _NOV02,
     "nba_under_reversion_strong": _NOV02,
 }
 # Rules that can only be bet near tip-off are scored at the last price.
@@ -159,6 +162,8 @@ RULES = {
     "nba_main_day_drift": "NBA main line, either side, price lengthened 8%+ on the day (at the last price)",
     "nba_under_reversion": "NBA under, main line, 1.60 to 2.20, line 0.25+ sd above his long-run baseline (tracking)",
     "nba_under_reversion_strong": "NBA under, main line, 1.60 to 2.20, line 0.75+ sd above his 20-game mean (tracking)",
+    "props_beat_pinnacle": "NBA/NFL player line, Paddy pays 3%+ over Pinnacle's margin-free chance at the same line, 1.40 to 3.00",
+    "control_props_under_pinnacle": "Control: NBA/NFL player line, Paddy 3%+ under Pinnacle's fair price, 1.40 to 3.00 (should lose)",
     "control_nba_over_main": "Control: NBA over, main line, 1.60 to 2.20 (should lose)",
     "control_nba_alt_nine": "Control: NBA alt over, 9 of his last 10, 1.25 to 2.00",
     "control_nba_main_steam": "Control: NBA main line cut 8%+ on the day, at the last price (should lose)",
@@ -247,6 +252,12 @@ def qualifying(rows: list[dict]) -> dict[str, list[dict]]:
         m = _model(r, hist)
         agrees = m is not None and m * price >= 1.05
         r["_model_edge"] = (m * price - 1) if m is not None else None
+        sh = f.get("sharp") or {}
+        if r["sport"] in (NBA, NFL) and sh.get("same") and sh.get("p") and 1.4 <= price <= 3.0:
+            if sh["p"] * price >= 1 + PIN_EDGE:
+                add("props_beat_pinnacle", r)
+            elif sh["p"] * price <= 1 - PIN_EDGE:
+                add("control_props_under_pinnacle", r)
         if r["sport"] == NBA and main and 1.6 <= price <= 2.2:
             if not r["over"]:
                 add("nba_under_main", r)
