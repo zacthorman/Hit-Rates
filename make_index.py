@@ -234,6 +234,14 @@ def main() -> None:
         print(f"  picks failed, index built without them: "
               f"{type(exc).__name__}: {exc}")
         chosen = None
+    # The picks of the week, rebuilt on evidence (weekpicks.py, 2 Nov 2026):
+    # sharp-backed lines and the rules on trial. weekend.py still gives the
+    # darts match prices.
+    try:
+        import weekpicks
+        chosen = dict(chosen or {}, evidence=weekpicks.build())
+    except Exception as exc:                       # never lose the index to this
+        print(f"  evidence picks not built: {type(exc).__name__}: {exc}")
 
     payload = json.dumps(
         {"fixtures": fixtures, "competitions": competitions,
@@ -478,6 +486,21 @@ PAGE = """<!DOCTYPE html>
 .pk-leg:first-child { border-top: 0; padding-top: 2px; }
 .pk-leg .t { font-size: 0.86rem; font-weight: 600; line-height: 1.3; }
 .pk-leg .p { font-size: 0.9rem; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+/* Evidence picks (weekpicks.py): a short line on why the method is trusted,
+   its record as a strip, then the bets. */
+.pk-intro { color: var(--muted); font-size: 0.8rem; line-height: 1.45; margin: 6px 0 0; }
+.pk-rec { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.pk-rec span { background: var(--page); border: 1px solid var(--border); border-radius: 999px;
+               padding: 2px 9px; font-size: 0.74rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.pk-rec span b { color: var(--text); font-weight: 650; }
+.pk-rule { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
+.pk-rule:first-of-type { border-top: 0; padding-top: 0; }
+.pk-rule .rt { font-size: 0.84rem; font-weight: 600; line-height: 1.35; }
+.pk-tag { display: inline-block; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+          border-radius: 999px; padding: 1px 7px; margin-left: 6px; vertical-align: 1px; }
+.pk-tag.trial { background: var(--page); border: 1px solid var(--border); color: var(--muted); }
+.pk-tag.proven { background: rgba(46,139,87,.14); color: #2e8b57; }
+.pk-leg .bk { font-size: 0.66rem; font-weight: 600; color: var(--muted); margin-right: 4px; text-transform: uppercase; letter-spacing: .04em; }
 .pk-leg .p small { font-size: 0.62rem; font-weight: 600; color: var(--muted); letter-spacing: 0.04em; }
 .pk-leg .m { grid-column: 1 / -1; color: var(--muted); font-size: 0.74rem; line-height: 1.35; }
 .pk-learn { color: var(--muted); font-size: 0.72rem; margin: 2px 0 10px; }
@@ -931,137 +954,62 @@ function renderPicks() {
     </div>`);
   }
 
-  if (p && p.single) {
-    const s = p.single;
+  // Picks of the week, rebuilt on evidence (weekpicks.py, 2 Nov 2026): only
+  // methods with a record behind them, and the record shown with them.
+  const ev = DATA.picks && DATA.picks.evidence;
+  const es = ev && ev.sports ? ev.sports[sport] : null;
+  const pct = x => x == null ? "&mdash;" : `${Math.round(x * 100)}%`;
+  const sgn = x => `${x >= 0 ? "+" : "&minus;"}${Math.abs(x * 100).toFixed(1)}%`;
+  const when = t => {
+    const d = new Date(t * 1000);
+    return d.toLocaleDateString("en-GB", { weekday: "short" }) + " " + d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+  };
+  const evRow = (b, extra) => `<li class="pk-leg"><span class="t">${escapeHtml(b.bet)}</span>
+    <span class="p"><span class="bk">${escapeHtml(bookShort(b.book))}</span>${fmtOdds(b.price)}</span>
+    <span class="m">${escapeHtml(b.game || "")} &middot; ${when(b.kickoff)}${b.chance != null ? ` &middot; ours ${pct(b.chance)}` : ""}${extra || ""}</span></li>`;
+  if (es && es.sharp && es.sharp.length) {
+    const r = ev.sharpRecord;
     cards.push(`<div class="pick">
-      ${s.confirmed && s.book ? pkHead(`Best bet &middot; ${fmtOdds(floor)}+`, s.book.price, s.book.name) : pkHead(`Best bet &middot; ${fmtOdds(floor)}+`, s.fair, "fair, not priced")}
-      <div class="sel">${legText(s)}</div>
-      <div class="where">${escapeHtml(s.fixture.home)} v ${escapeHtml(s.fixture.away)}${s.venue ? ` &middot; record ${s.venue}` : ""}</div>
-      ${pkChips([["Chance", chanceText(s)], ["Record", `${s.hits}/${s.total}`], thirdChip(s)])}
-      ${strengthLine(s)}${exchangeLine(s)}
-      ${whyList(s)}
-      ${whyFold("how the chance was built", s,
-        `Ranked on a calibrated chance, not the raw record${s.fairRecord ? `, which alone would have priced it at ${fmtOdds(s.fairRecord)}` : ""}.
-         Chosen from ${s.consideredGroups} separate questions this round. Asking for ${fmtOdds(floor)}+
-         caps the chance at 50%, so price and evidence pull against each other here.`)}
+      ${pkHead("Beats the sharp price", null, "")}
+      <p class="pk-intro">A soft book paying more than Pinnacle or Betfair's margin-free chance. The sharp price, not
+        our model, is the judge here, so these are the lines with the best case for being underpriced.</p>
+      ${r ? `<div class="pk-rec"><span>Settled <b>${r.n}</b></span><span>Returned <b>${sgn(r.roi)}</b></span>
+        <span>Sharp price said <b>${sgn(r.expected)}</b></span></div>
+        <p class="pk-intro">${r.noise
+          ? `The gap is within normal swing for ${r.n} bets (one standard error is ${Math.round(r.se * 100)} points), so it says nothing yet either way.`
+          : `The gap is bigger than luck explains at ${r.n} bets: treat these with caution until it closes.`}</p>` : ""}
+      <ul class="pk-legs">${es.sharp.map(b => evRow(b, ` &middot; <b class="pk-pos">${escapeHtml(b.note)}</b>`)).join("")}</ul>
+      ${note("read this first", `Each line is ${Math.round((ev.sharpMin || 0.02) * 100)}%+ over the sharp chance at the
+        price shown, from the last fetch: check the price is still there. The edge is small and real only on average,
+        over many bets; level stakes.`)}
+    </div>`);
+  }
+  if (es && es.rules && es.rules.length) {
+    const blocks = es.rules.map(g => {
+      const r = g.record;
+      const rec = r ? `<div class="pk-rec"><span>Live <b>${r.n}</b> bets, <b>${r.games}</b> games</span>
+          <span>ROI <b>${sgn(r.roi)}</b></span><span>90% range <b>${sgn(r.lo)}</b> to <b>${sgn(r.hi)}</b></span></div>`
+        : `<div class="pk-rec"><span>No live result yet</span></div>`;
+      return `<div class="pk-rule"><div class="rt">${escapeHtml(g.title)}<span class="pk-tag ${g.proven ? "proven" : "trial"}">${g.proven ? "Proven" : "On trial"}</span></div>
+        ${rec}<ul class="pk-legs">${g.bets.map(b => evRow(b)).join("")}</ul></div>`;
+    }).join("");
+    cards.push(`<div class="pick">
+      ${pkHead("Rules on trial", null, "")}
+      <p class="pk-intro">Fixed rules, frozen before their live record started, and today's bets from each. A rule is
+        only "proven" once 20+ live games put its whole 90% range above zero; until then this is tracking, not advice.</p>
+      ${blocks}
+      ${note("how rules get here", `Each rule was found on past prices, then frozen: nothing about it may change once
+        its trial starts, and it is judged on games after that only. Rules whose live record has clearly failed are
+        left off. Every rule's full record is on the <a href="tonight.html">Tonight</a> page.`)}
     </div>`);
   }
 
-  if (p && p.value && p.value.legs && p.value.legs.length) {
-    const v = p.value;
-    const rows = v.legs.map(l => `<li class="pk-leg"><span class="t">${legText(l)}</span>
-      <span class="p">${fmtOdds(l.exchange.back)}</span>
-      <span class="m">${escapeHtml(l.fixture.home)} v ${escapeHtml(l.fixture.away)} &middot; ours ${chanceText(l)}
-        v Betfair ${Math.round(l.exchange.p * 100)}% &middot; <b class="pk-pos">${valueText(l.value)}</b>
-        ${l.exchange.kind === "back" ? " &middot; back-only list" : ""}</span>
-      </li>`).join("");
-    cards.push(`<div class="pick">
-      ${pkHead("Value on Betfair", null, "")}
-      <div class="where">Priced on the exchange, worth more than the stake at the back price shown, after ${Math.round(v.commission * 100)}% commission.
-        ${v.positive} of ${v.quoted} bets Betfair prices cleared zero; these clear ${Math.round(v.min * 100)}%.</div>
-      <ul class="pk-legs">${rows}</ul>
-      ${legsWhy(v.legs)}
-      ${note("can I trust this?",
-        `Value uses our chance after it has been pulled towards Betfair's, so an edge has to survive the market
-         correcting it. The model's usual lean against the market on each kind of bet is taken off first, so a
-         bias repeated across a hundred legs does not show up as a hundred edges. It is unproven until enough
-         of these settle: the <a href="market-check.html">Market check</a> page tracks every one against the price it was offered at.`)}
-    </div>`);
-  }
-
-  if (p && p.banker) {
-    const s = p.banker;
-    cards.push(`<div class="pick">
-      ${s.priced ? pkHead("Banker", s.price, s.book.name) : pkHead("Banker", s.fair, "fair, not priced")}
-      <div class="sel">${legText(s)}</div>
-      <div class="where">${escapeHtml(s.fixture.home)} v ${escapeHtml(s.fixture.away)}</div>
-      ${pkChips([["Chance", chanceText(s)], ["Record", `${s.hits}/${s.total}`], thirdChip(s)])}
-      ${strengthLine(s)}${exchangeLine(s)}
-      ${whyList(s)}
-      ${whyFold("how the chance was built", s,
-        `The single most likely to land, on the calibrated chance, among those ${s.priced
-           ? `a book offers between 1.30 and 1.75, at our fair price (${fmtOdds(s.fair)}) or longer`
-           : "priced between 1.30 and 1.75 on our own numbers: no book offered a qualifying one yet"}.`)}
-    </div>`);
-  }
-
-  if (p && p.double) {
-    const d = p.double;
-    cards.push(`<div class="pick">
-      ${pkHead("Evens double", d.combined, d.priced ? "books" : "fair, not priced")}
-      <ul class="pk-legs">${d.legs.map(l => legRow(l)).join("")}</ul>
-      ${legsWhy(d.legs)}
-      ${note("why these two?",
-        `The pair most likely to both land (about ${(d.joint * 100).toFixed(0)}% on the calibrated chances)
-         among doubles priced around evens. Counts and 0.5 lines are left out.
-         ${d.sameGame ? "Both legs are in one game, so it goes on as a builder." : "Two different games, so neither leg rides on the other."}`)}
-    </div>`);
-  }
-
-  if (p && p.acca) {
-    const a = p.acca;
-    cards.push(`<div class="pick">
-      ${pkHead(`Acca &middot; ${a.legs.length} legs`, a.combined, a.priced ? "books" : "fair, not priced")}
-      <ul class="pk-legs">${a.legs.map(l => legRow(l)).join("")}</ul>
-      ${legsWhy(a.legs)}
-      ${note("read this first",
-        `One leg per match, so nothing rides twice on the same game.
-         ${a.short ? `Short of the ${fmtOdds(a.target)} target: reaching it would have meant worse legs. ` : ""}${a.priced
-         ? `Every leg is offered by Paddy Power or Bet365 at our fair price or longer (fair multiple ${fmtOdds(a.combinedFair)}). Prices are from the last fetch: check them before placing. Two books in one acca means two slips.`
-         : `No book priced enough legs yet, so these are fair prices, not offers: a book has to beat every one for the multiple to be worth taking, and the margin compounds with each leg.`}`)}
-    </div>`);
-  }
-
-  if (p && p.builder) {
-    const b = p.builder;
-    const over = 100 * (b.naive / b.fair - 1);
-    cards.push(`<div class="pick">
-      ${b.bookCombined ? pkHead("Builder", b.bookCombined, "legs at book prices") : pkHead("Builder", b.fair, "fair, not priced")}
-      <div class="sel">${escapeHtml(b.team)}</div>
-      <div class="where">${escapeHtml(b.fixture.home)} v ${escapeHtml(b.fixture.away)}</div>
-      ${pkChips([["Together", `${b.hits}/${b.total}`], ["Legs", b.legs.length], ["Multiplied", fmtOdds(b.naive)]])}
-      <ul class="pk-legs">${b.legs.map(l => `<li class="pk-leg"><span class="t">${legText(l)}</span>
-        <span class="p">${l.book ? `${escapeHtml(l.book.name)} ${fmtOdds(l.book.price)} &middot; ` : ""}${l.hits}/${l.total}</span></li>`).join("")}</ul>
-      ${b.bookCombined ? `<div class="where">The legs multiplied at Paddy Power / Bet365 prices; the book's own builder price will be a little shorter, as it allows for the legs moving together.</div>` : ""}
-      ${note("why not just multiply the legs?",
-        `Multiplying would say ${fmtOdds(b.naive)}, <span class="flag">${over.toFixed(0)}% longer than the record
-         supports</span>. Same-team legs move together, so the product always flatters a builder. This is priced by
-         counting the matches where every leg actually landed.`)}
-    </div>`);
-  }
-
-  if (p && p.parlay) {
-    const g = p.parlay;
-    const gap = 100 * (g.naive / g.fair - 1);
-    const together = g.sides.map(s => `${s.hits}/${s.total}`).join(" &middot; ");
-    cards.push(`<div class="pick">
-      ${g.bookCombined ? pkHead(`Same-game parlay &middot; ${g.legs.length} legs`, g.bookCombined, "legs at book prices") : pkHead(`Same-game parlay &middot; ${g.legs.length} legs`, g.fair, "fair, not priced")}
-      <div class="where">${escapeHtml(g.fixture.home)} v ${escapeHtml(g.fixture.away)}</div>
-      ${pkChips([["Together", together], ["Hold out", fmtOdds(g.need)], ["Multiplied", fmtOdds(g.naive)]])}
-      <ul class="pk-legs">${g.legs.map(l => `<li class="pk-leg"><span class="t">${legText(l)}</span>
-        <span class="p">${l.book ? `${escapeHtml(l.book.name)} ${fmtOdds(l.book.price)} &middot; ` : ""}${l.hits}/${l.total}</span></li>`).join("")}</ul>
-      ${note("how is this priced?",
-        `Legs on the same team are counted together, out of the matches that carried all of them, so nothing
-         assumes they are independent. Multiplying them would have said ${fmtOdds(g.naive)}, ${gap >= 0
-         ? `<span class="flag">${gap.toFixed(0)}% longer than the record supports</span>`
-         : `${Math.abs(gap).toFixed(0)}% shorter than the record supports`}.
-         ${g.crossTeam ? `The two sides share no matches outside a head to head, so their rates are multiplied
-         rather than counted, which slightly understates the real chance. ` : ""}Lines are the biggest number each
-         man clears at least 65% of the time.`)}
-    </div>`);
-  }
-
-  const pc = x => `${Math.round(x * 100)}%`;
-  const learnLine = learn && learn.legs
-    ? `<div class="pk-learn">${learn.active
-        ? `Chances corrected from ${learn.legs} settled picks, refit ${escapeHtml(learn.updated || "")}.`
-        : `Checked against ${learn.legs} settled picks${learn.said != null ? `: the latest ${learn.test} said ${pc(learn.said)} and landed ${pc(learn.landed)}` : ""}, so no correction needed.`}</div>`
-    : "";
   box.innerHTML = cards.length
-    ? `${learnLine}<div class="picks">${cards.join("")}</div>`
-    : `<div class="picks"><div class="pick none">Nothing cleared the bar for
-       ${escapeHtml(SPORT_LABELS[sport] || sport)} this round at a price Paddy Power or Bet365 actually offers.
-       Picks appear once the books price the games (Paddy Power about a day before kick-off).</div></div>`;
+    ? `<div class="picks">${cards.join("")}</div>`
+    : `<div class="picks"><div class="pick none">Nothing for
+       ${escapeHtml(SPORT_LABELS[sport] || sport)} in the next ${(ev && ev.windowHours) || 48} hours beats a sharp
+       price or comes from a rule on trial. Picks appear once the books price the games (Paddy Power about a day
+       before kick-off).</div></div>`;
 }
 
 /* The picks rail. Open or folded is remembered per browser, which is a

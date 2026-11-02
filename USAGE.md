@@ -232,6 +232,38 @@ Kick-off times render in the reader's own timezone. The page ships unix
 timestamps and lets the device do it, because a 20:00 UTC kick-off is 21:00 in
 most of Europe and being an hour out is the sort of thing that loses a bet.
 
+## Picks of the week, rebuilt on evidence (`weekpicks.py`, 2 November)
+
+The old rail (best single, banker, evens double, acca, bet builder, parlay)
+was built from our own chances, and our chances on player props are the part
+of the tool the record says is weakest. It is gone. The rail now has two
+cards per sport, both built by `weekpicks.py` and read by `make_index.py`:
+
+- **Beats the sharp price.** Lines from `reports/value_books.json` where
+  Paddy Power, Bet365 or Sky pay 2%+ more than Pinnacle or Betfair's
+  margin-free chance, kicking off in the next 48 hours, best 6 by edge. Above
+  them sits the settled record of every such line in `value/log.jsonl`: what
+  it returned, what the sharp price said it should, and whether the gap is
+  inside two standard errors (luck) or not. On 2 November it was 155 bets,
+  returned -5.3% against +5.1% expected, one standard error 10 points: noise
+  so far.
+- **Rules on trial.** Today's bets from each frozen rule in `ruletrack.py`,
+  with its live record (games after its start date only) and 90% range. A
+  rule is tagged Proven only at 20+ live games with the whole range above
+  zero. It is left off once its live run says no (range wholly below zero
+  after 3+ games, or not in profit after 10). Each bet appears once, under the
+  strongest rule that takes it; prices over 6.0 are left off the page, and a
+  rule with no live result shows 3 bets, not 5. All of these still count in
+  the rule's record.
+
+New rule `us_likely_top5` (live from 2 Nov, 21:00 UTC): each day's 5 NBA/NFL
+lines our chance rates most likely, first price 1.60 to 2.50, one per player
+per game. On the log it was chosen on it made +13.4% over 70 bets (90% range
++2% to +25%) against +4.9% for a random 5 from the same pool. That is a
+backtest, so it starts On trial like the rest.
+
+Run `python3 weekpicks.py` for a text preview.
+
 ## Reviewing itself after the games (`review.py`)
 
     python review.py reports/laliga-11-fixtures.html
