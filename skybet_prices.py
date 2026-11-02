@@ -84,6 +84,7 @@ MAX_PER_RUN = 26          # the NBA hub + 5 games of len(TABS) tabs
 MAX_PER_HOUR = 30         # rolling 60 minutes, across every run and --probe
 MAX_PER_DAY = 100         # 15 games x 5 tabs + a hub per run fits
 HARD_REFUSALS = ("HTTP 403", "HTTP 429")
+HARD_CEILING = 80        # --max can lift the run and hour caps this far, never the day cap
 LOCK = ROOT / "cache" / "skybet.lock"
 LOCK_STALE = 45 * 60      # a lock older than this is a crashed run
 WINDOW_HOURS = 30
@@ -130,6 +131,14 @@ def hour_used(st: dict) -> int:
 def left(st: dict) -> int:
     """Requests still allowed now: the tighter of the hourly and daily caps."""
     return max(0, min(MAX_PER_HOUR - hour_used(st), MAX_PER_DAY - used(st)))
+
+
+def set_max(n: int) -> int:
+    """One-off: lift the run and hour caps to n (at most HARD_CEILING) for this process."""
+    global MAX_PER_RUN, MAX_PER_HOUR
+    n = max(1, min(int(n), HARD_CEILING))
+    MAX_PER_RUN = MAX_PER_HOUR = n
+    return n
 
 
 def bump(st: dict) -> None:
@@ -194,9 +203,9 @@ def wait_turn(st: dict, kind: str = "tab") -> None:
 
 def tab_order() -> list[str]:
     """Points first (the tab a game page opens on), the rest in a random order."""
-    rest = list(TABS[1:])
+    rest = [t for t in TABS if t != "points"]
     random.shuffle(rest)
-    return [TABS[0]] + rest
+    return (["points"] if "points" in TABS else []) + rest
 
 
 def lockout(st: dict, why: str) -> None:
@@ -409,8 +418,11 @@ def candidates() -> list[tuple]:
         fresh = (FRESH_CLOSE if ko - now < 3 * 3600 else FRESH_HOURS) * 3600
         if now - (held.get(fid) or {}).get("fetchedAt", 0) < fresh:
             continue
-        out.append((ko, fid, eid, name))
-    return sorted(out)
+        out.append((fid in held, ko, fid, eid, name))
+    # Games never fetched come before refreshes, so a night's runs work through
+    # every game before going back over the early ones (2 Nov: an hour on,
+    # the first five were stale again and would have taken every run).
+    return [c[1:] for c in sorted(out)]
 
 
 def load_out() -> dict:
@@ -642,6 +654,9 @@ def main() -> int:
     ap.add_argument("--status", action="store_true")
     ap.add_argument("--paste", action="store_true", help="read a copied Sky Bet response from the clipboard, then --value")
     ap.add_argument("--saved", action="store_true", help="read pages already saved by --probe; no requests")
+    ap.add_argument("--max", type=int, metavar="N",
+                    help=f"one-off: lift this run's run and hour caps to N (ceiling {HARD_CEILING}); day cap unchanged")
+    ap.add_argument("--tabs", metavar="LIST", help="comma list of tabs to read, e.g. points,threes (default all)")
     a = ap.parse_args()
     if a.status:
         status()
@@ -654,6 +669,13 @@ def main() -> int:
         return probe(a.probe)
     if a.value:
         return value()
+    global TABS
+    if a.tabs:
+        want = tuple(t.strip() for t in a.tabs.split(",") if t.strip() in TABS)
+        if want:
+            TABS = want
+    if a.max:
+        print(f"  skybet: caps lifted to {set_max(a.max)} for this run (403/429 still switches off)")
     return run()
 
 

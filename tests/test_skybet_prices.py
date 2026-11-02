@@ -133,6 +133,24 @@ class Candidates(unittest.TestCase):
             sk.ROOT, sk.OUT = root, out
 
 
+    def test_unfetched_games_before_refreshes(self):
+        import tempfile, time
+        from datetime import datetime, timezone
+        from pathlib import Path
+        d = Path(tempfile.mkdtemp())
+        iso = lambda h: datetime.fromtimestamp(time.time() + h * 3600, timezone.utc).isoformat()
+        (d / "market_prices.json").write_text(json.dumps({"events": {
+            "early": {"betfair": "A @ B", "bfEvent": "1", "start": iso(1), "sport": "basketball"},
+            "late": {"betfair": "C @ D", "bfEvent": "2", "start": iso(3.5), "sport": "basketball"}}}))
+        (d / "o.json").write_text(json.dumps({"events": {"early": {"fetchedAt": time.time() - 3600, "kickoff": 0}}}))
+        root, out = sk.ROOT, sk.OUT
+        sk.ROOT, sk.OUT = d, d / "o.json"
+        try:
+            self.assertEqual([c[1] for c in sk.candidates()], ["late", "early"])
+        finally:
+            sk.ROOT, sk.OUT = root, out
+
+
 class Limits(unittest.TestCase):
     def setUp(self):
         import tempfile
@@ -180,6 +198,14 @@ class Limits(unittest.TestCase):
         sk.drop_lock()
         self.assertTrue(sk.take_lock())
         sk.drop_lock()
+
+    def test_max_has_a_ceiling(self):
+        run, hour = sk.MAX_PER_RUN, sk.MAX_PER_HOUR
+        try:
+            self.assertEqual(sk.set_max(500), sk.HARD_CEILING)
+            self.assertEqual(sk.MAX_PER_HOUR, sk.HARD_CEILING)
+        finally:
+            sk.MAX_PER_RUN, sk.MAX_PER_HOUR = run, hour
 
     def test_run_caps_fit_inside_hour(self):
         self.assertLessEqual(sk.MAX_PER_RUN, sk.MAX_PER_HOUR)
