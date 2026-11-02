@@ -103,6 +103,31 @@ SHOW = 8  # bets listed per rule on the page, most model edge first
 # Rules added later start their own live record from when they were added.
 _OCT31 = datetime.datetime(2026, 10, 31, 12, 0, tzinfo=datetime.timezone.utc).timestamp()
 _OCT28 = datetime.datetime(2026, 10, 28, 12, 0, tzinfo=datetime.timezone.utc).timestamp()
+_NOV02 = datetime.datetime(2026, 11, 2, 18, 0, tzinfo=datetime.timezone.utc).timestamp()
+
+# 2 Nov 2026 deep backtest (research/BACKTEST-2026-11-02-DEEP.md): Paddy's NBA
+# main lines put about twice the weight on the last 3 games that 11.5k past
+# results justify, so when the line sits well above his long-run baseline the
+# under is the side to track. base = c0 + w3*m3 + w10*m10 + w20*m20, weights
+# fitted on box scores before 20 Oct 2026. Priced history: +5.0%, 1,669 bets,
+# 88 games, 90% range -1.8% to +11.9% -- tracked, not proven.
+REVERSION_W = {
+    "Points": (0.77, 0.17, 0.26, 0.50), "Rebounds": (0.29, 0.15, 0.14, 0.64),
+    "Assists": (0.16, 0.20, 0.19, 0.55), "Three pointers made": (0.14, 0.12, 0.10, 0.67),
+    "Points rebounds and assists": (1.05, 0.23, 0.27, 0.44), "Points and rebounds": (1.00, 0.20, 0.26, 0.48),
+    "Points and assists": (0.81, 0.20, 0.29, 0.45), "Rebounds and assists": (0.43, 0.21, 0.18, 0.54),
+}
+REVERSION_Z, REVERSION_STRONG_Z = 0.25, 0.75
+PIN_EDGE = 0.03          # props_beat_pinnacle: Paddy's price at least 3% over Pinnacle's fair
+
+
+def reversion_z(r: dict):
+    """(z against the fitted baseline, z against the 20-game mean) or None."""
+    f, w = r.get("form"), REVERSION_W.get(r.get("stat"))
+    if not f or not w or not f.get("sd10"):
+        return None
+    base = w[0] + w[1] * f["m3"] + w[2] * f["m10"] + w[3] * f["m20"]
+    return (r["line"] - base) / f["sd10"], (r["line"] - f["m20"]) / f["sd10"]
 RULE_START = {
     "learned_value": datetime.datetime(2026, 10, 26, 12, 0, tzinfo=datetime.timezone.utc).timestamp(),
     "nba_alt_perfect": _OCT28,
@@ -112,6 +137,10 @@ RULE_START = {
     "nba_alt_short_perfect": _OCT31,
     "nba_main_day_drift": _OCT31,
     "control_nba_main_steam": _OCT31,
+    "nba_under_reversion": _NOV02,
+    "props_beat_pinnacle": _NOV02,
+    "control_props_under_pinnacle": _NOV02,
+    "nba_under_reversion_strong": _NOV02,
 }
 # Rules that can only be bet near tip-off are scored at the last price.
 SCORE_AT = {"nba_main_day_drift": "last", "control_nba_main_steam": "last"}
@@ -131,6 +160,10 @@ RULES = {
     "nba_alt_drift_miss": "NBA alt over, 8+ of his last 10, missed it last game, price 5%+ longer, 1.15 to 3.00",
     "nba_alt_short_perfect": "NBA alt over, cleared in all of his last 10, 1.15 to 1.24",
     "nba_main_day_drift": "NBA main line, either side, price lengthened 8%+ on the day (at the last price)",
+    "nba_under_reversion": "NBA under, main line, 1.60 to 2.20, line 0.25+ sd above his long-run baseline (tracking)",
+    "nba_under_reversion_strong": "NBA under, main line, 1.60 to 2.20, line 0.75+ sd above his 20-game mean (tracking)",
+    "props_beat_pinnacle": "NBA/NFL player line, Paddy pays 3%+ over Pinnacle's margin-free chance at the same line, 1.40 to 3.00",
+    "control_props_under_pinnacle": "Control: NBA/NFL player line, Paddy 3%+ under Pinnacle's fair price, 1.40 to 3.00 (should lose)",
     "control_nba_over_main": "Control: NBA over, main line, 1.60 to 2.20 (should lose)",
     "control_nba_alt_nine": "Control: NBA alt over, 9 of his last 10, 1.25 to 2.00",
     "control_nba_main_steam": "Control: NBA main line cut 8%+ on the day, at the last price (should lose)",
@@ -219,9 +252,20 @@ def qualifying(rows: list[dict]) -> dict[str, list[dict]]:
         m = _model(r, hist)
         agrees = m is not None and m * price >= 1.05
         r["_model_edge"] = (m * price - 1) if m is not None else None
+        sh = f.get("sharp") or {}
+        if r["sport"] in (NBA, NFL) and sh.get("same") and sh.get("p") and 1.4 <= price <= 3.0:
+            if sh["p"] * price >= 1 + PIN_EDGE:
+                add("props_beat_pinnacle", r)
+            elif sh["p"] * price <= 1 - PIN_EDGE:
+                add("control_props_under_pinnacle", r)
         if r["sport"] == NBA and main and 1.6 <= price <= 2.2:
             if not r["over"]:
                 add("nba_under_main", r)
+                z = reversion_z(r)
+                if z and z[0] >= REVERSION_Z:
+                    add("nba_under_reversion", r)
+                if z and z[1] >= REVERSION_STRONG_Z:
+                    add("nba_under_reversion_strong", r)
                 if agrees:
                     add("nba_under_model", r)
             else:

@@ -125,5 +125,30 @@ class DriftRules(unittest.TestCase):
         self.assertTrue(all(r["result"] is None for v in got.values() for r in v))
 
 
+class ReversionRules(unittest.TestCase):
+    """2 Nov 2026: NBA main-line unders when the line sits above his long-run baseline."""
+
+    def setUp(self):
+        ruletrack._hist_model = lambda: {}
+
+    def pair(self, form, line=24.5):
+        o = row("A", "Points", line, True, 1.9)
+        u = row("A", "Points", line, False, 1.9)
+        u["form"] = form
+        return [o, u]
+
+    def test_line_above_baseline_is_tracked(self):
+        q = ruletrack.qualifying(self.pair({"m3": 30, "m10": 22, "m20": 20, "sd10": 4}))
+        self.assertEqual(len(q.get("nba_under_reversion", [])), 1)
+        self.assertEqual(len(q.get("nba_under_reversion_strong", [])), 1)
+
+    def test_line_at_baseline_is_not(self):
+        q = ruletrack.qualifying(self.pair({"m3": 24, "m10": 24, "m20": 24, "sd10": 6}))
+        self.assertFalse(q.get("nba_under_reversion"))
+
+    def test_no_form_logged_no_bet(self):
+        self.assertFalse(ruletrack.qualifying(self.pair(None)).get("nba_under_reversion"))
+
+
 if __name__ == "__main__":
     unittest.main()

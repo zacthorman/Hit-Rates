@@ -230,6 +230,22 @@ def _card_chance(played: list[dict], entry: dict, t: int, mins: int) -> float | 
     return 1 - math.exp(-(a + b) / 2)
 
 
+def _form(apps: list[dict]):
+    """His played-game means over the last 3, 10 and 20 and the spread of the
+    last 10, at logging time, for ruletrack's nba_under_reversion (2 Nov 2026:
+    Paddy's NBA lines weight the last 3 games about twice as heavily as the
+    long history says they should)."""
+    vals = [a["value"] for a in apps]
+    if len(vals) < 5:
+        return None
+    m = lambda xs: sum(xs) / len(xs)
+    last10 = vals[-10:]
+    mu = m(last10)
+    sd = (sum((v - mu) ** 2 for v in last10) / max(1, len(last10) - 1)) ** 0.5
+    return {"m3": round(m(vals[-3:]), 2), "m10": round(mu, 2), "m20": round(m(vals[-20:]), 2),
+            "sd10": round(sd, 2), "n": len(vals[-20:])}
+
+
 def _proj_margin(entry: dict, t: int):
     """The report's pre-game projected margin for side t (points; NFL from
     touchdowns and field goals), or None. Logged from 2 Nov 2026 so game
@@ -447,6 +463,16 @@ def snapshot(args=None) -> int:
             key = _key(row)
             snap = {"t": round(now), "price": l["price"], "chance": round(p, 4),
                     "edge": round(p * l["price"] - 1, 4)}
+            # Pinnacle's margin-free chance for the same side (pinnacle_props.py,
+            # 2 Nov 2026), the sharp benchmark ruletrack's props_beat_pinnacle uses.
+            if sport in ("basketball", "american-football"):
+                try:
+                    import pinnacle_props
+                    sh = pinnacle_props.sharp_for(sport, name, stat, line, over, meta["kickoff"], fid)
+                    if sh:
+                        snap["sharp"] = sh
+                except Exception:  # noqa: BLE001 - never cost the log
+                    pass
             if m_over is not None:
                 # The model's chance is the one logged; the old one is kept
                 # beside it so the two can be compared on results.
@@ -494,6 +520,7 @@ def snapshot(args=None) -> int:
                             "fresh": fresh,
                             "adj": round(adj, 3), "injury": _injury(entry, t, name),
                             "proj_margin": _proj_margin(entry, t),
+                            "form": _form(apps) if sport == "basketball" else None,
                             "ss_ok": ss_ok,
                             "result": None, "value": None})
                 new_rows.append(row)
