@@ -19,8 +19,11 @@ What is recorded, per line (player, stat, line, over or under):
   * the last-5 and last-10 records behind it, and the player's injury status.
   * the result, settled from SofaScore exactly as besttrack and linelog
     settle player legs. A player who did not play voids the line, as Paddy
-    Power voids the bet. Anytime goalscorer lines follow Paddy Power's Super
-    Sub (supersub.py): a starter taken off whose replacement scores is a win.
+    Power voids the bet. Lines Paddy Power's Super Sub covers (supersub.py:
+    shots, shots on target, fouls, fouled, goals, assists and cards, on the
+    competitions it runs on) are priced and settled with it: a starter taken
+    off counts his own total plus his replacements'. Each football row keeps
+    the game page's own answer as "ss_ok" (True, False or None).
 
 Our chance here is model.price_player on the player's last ten appearances,
 the Python mirror of the page's pricePlayer, times the same opponent
@@ -390,6 +393,7 @@ def snapshot(args=None) -> int:
     import playerlines
     import supersub
     ss_fit = supersub.load_fit()
+    ss_rates = supersub.load_rates()
     try:
         pp = json.loads(PP.read_text())
     except (OSError, ValueError):
@@ -455,11 +459,15 @@ def snapshot(args=None) -> int:
             if us is not None:
                 p_over = us[0]
             # Paddy Power's Super Sub: the bet moves to his replacement if
-            # he is taken off, so to-score is worth more there than his own
-            # chance. supersub.py has the measured figures.
+            # he is taken off, so every line it covers is worth more there
+            # than his own chance (2 Nov 2026: all its markets, not just
+            # to-score). supersub.py has the measured figures. Overs only:
+            # it never applies to an under.
             ss_extra = 0.0
-            if stat == "Goals" and supersub.applies(l.get("market"), sport):
-                p_over, ss_extra = supersub.uplift(p_over, squads[t][name], ss_fit)
+            ss_ok = ev.get("superSub") if sport == "football" else None
+            if over and supersub.eligible(sport, stat, line, True, ss_ok, meta.get("competition")):
+                p_over, ss_extra = supersub.extra_for(p_over, stat, int(round(line + 0.5)),
+                                                      squads[t][name], ss_rates, ss_fit)
             p = p_over if over else 1 - p_over
             vals = [a["value"] for a in recent]
             hit = (lambda v: v > line) if over else (lambda v: v <= line)
@@ -539,6 +547,7 @@ def snapshot(args=None) -> int:
                             "proj_margin": _proj_margin(entry, t),
                             "game_sharp": _game_sharp(sport, fid, meta, t),
                             "form": _form(apps) if sport == "basketball" else None,
+                            "ss_ok": ss_ok,
                             "result": None, "value": None})
                 new_rows.append(row)
     # Rewrite the files that had rows updated, then append the new ones.
@@ -578,6 +587,11 @@ def settle(args=None) -> int:
             data = api.get_json(f"event/{eid}/incidents", max_age_hours=6, verbose=False)
             incidents[eid] = (data or {}).get("incidents")
         return incidents[eid]
+
+    def lineups_for(eid):
+        # besttrack._player_value has just refreshed this copy after the
+        # match, so the cached one is the final one.
+        return api.get_json(f"event/{eid}/lineups", max_age_hours=None, verbose=False)
     for path in _files():
         rows = _read(path)
         changed = False
@@ -604,7 +618,7 @@ def settle(args=None) -> int:
                 r["value"] = v
                 won = v > r["line"] if r["over"] else v < r["line"]
                 r["result"] = "win" if won else "lose"
-                supersub.settle_row(r, incidents_for)
+                supersub.settle_row(r, incidents_for, lineups_for)
             done += 1
             changed = True
         if changed:

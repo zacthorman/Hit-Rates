@@ -91,7 +91,8 @@ def build(data: dict) -> dict:
         if by or team:
             events.setdefault(fid, {})["pp"] = {"at": max(e.get("fetchedAt") or 0, e.get("pricesAt") or 0) or None, "via": e.get("via"), "players": by, "team": team,
                                                 "goals": e.get("goals") or [],
-                                                "home": e.get("ppHome") or "", "away": e.get("ppAway") or ""}
+                                                "home": e.get("ppHome") or "", "away": e.get("ppAway") or "",
+                                                "ss": e.get("superSub")}
     # Pinnacle's margin-free chances for corners, cards and goals (pinnacle_prices.py),
     # so the pages can show a team line only when Paddy Power beats it (29 Oct 2026).
     try:
