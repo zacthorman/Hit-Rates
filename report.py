@@ -6538,21 +6538,80 @@ const OC_BOOKS = { B3: "bet365", SK: "Sky Bet", PP: "Paddy Power", WH: "William 
   VC: "BetVictor", BY: "BoyleSports", EE: "888sport", FR: "Betfred", SX: "Spreadex",
   QN: "QuinnBet", MR: "Midnite" };
 
-/* Paddy Power's Super Sub: an anytime goalscorer bet on a starter who is
-   taken off moves to his replacement. Mirrors supersub.py: the extra chance
-   is (1 - his own) x the share of his starts that ended before 85 minutes x
-   how often a replacement for his position scores, measured on 6,765
-   matches in the backtest cache (supersub_fit.json). */
+/* Paddy Power's Super Sub: a bet on a starter who is taken off moves to his
+   replacement. Mirrors supersub.py. Anytime goalscorer: (1 - his own) x the
+   share of his starts that ended before 85 minutes x how often a replacement
+   for his position scores (supersub_fit.json). Every other line it covers
+   (2 Nov 2026: shots 1-6+, shots on target 1-4+, fouls and fouled 1-3+,
+   goals 2-3+, assists, cards): his own count carries over and the extra is
+   share x s x [P(Poisson(a + b) >= k) - P(Poisson(a) >= k)], share the starts
+   in his last ten appearances, a his own expected count (his rate backed out
+   of our chance)
+   in the minutes he plays when taken off, b his replacement's in the rest at
+   SUPER_SUB_RATES (per 90, by the position he plays). */
 const SUPER_SUB_REP = { G: 0, D: 0.024, M: 0.052, F: 0.080 };
-function superSub(p, played) {
+const SUPER_SUB_RATES = {"D": {"Shots": 1.0801, "Shots on target": 0.3255, "Fouls": 1.3714, "Fouled": 1.0713, "Goals": 0.0836, "Assists": 0.0935, "Card": 0.2953, "_off": 64.3}, "F": {"Shots": 2.6826, "Shots on target": 1.0541, "Fouls": 1.8052, "Fouled": 1.5907, "Goals": 0.3449, "Assists": 0.1576, "Card": 0.2922, "_off": 67.4}, "M": {"Shots": 2.0059, "Shots on target": 0.7083, "Fouls": 1.659, "Fouled": 1.4969, "Goals": 0.2096, "Assists": 0.1574, "Card": 0.3125, "_off": 66.9}};
+const SUPER_SUB_MAX = { Goals: 3, Shots: 6, "Shots on target": 4, Fouls: 3, Fouled: 3, Assists: 1, Card: 1 };
+const SUPER_SUB_COMPS = ["Premier League", "Championship", "League One", "League Two", "FA Cup",
+  "EFL Cup", "UEFA Champions League", "UEFA Europa League", "Community Shield", "UEFA Super Cup",
+  "Premier Division"];
+/* Does Super Sub cover this Paddy Power line? The game page's own answer
+   (markets.json pp.ss) when there is one, else the competition. */
+function superSubOn(stat, line, over) {
+  if (SPORT !== "football" || over === false) return false;
+  const k = Math.round(line + 0.5), mx = SUPER_SUB_MAX[stat];
+  if (!mx || k < 1 || k > mx) return false;
+  const m = fixtureMarket();
+  const flag = m && m.pp ? m.pp.ss : null;
+  if (flag === true || flag === false) return flag;
+  return SUPER_SUB_COMPS.includes(((typeof DATA !== "undefined" && DATA.fixture) || {}).competition);
+}
+function poissonTail(lam, k) {
+  if (k <= 0) return 1;
+  if (lam <= 0) return 0;
+  let term = Math.exp(-lam), below = term;
+  for (let i = 1; i < k; i++) { term *= lam / i; below += term; }
+  return Math.max(0, 1 - below);
+}
+function rateFromChance(p, k, minutes) {
+  p = Math.min(Math.max(p, 0), 0.999);
+  if (p <= 0 || minutes <= 0) return 0;
+  let lo = 0, hi = 40;
+  for (let i = 0; i < 60; i++) {
+    const mid = (lo + hi) / 2;
+    if (poissonTail(mid * minutes / 90, k) < p) lo = mid; else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
+function superSub(p, played, stat, k) {
+  stat = stat || "Goals"; k = k || 1;
   const starts = (played || []).filter(g => g.started && (g.minutes || 0) > 0);
   if (SPORT !== "football" || starts.length < 5) return { p, extra: 0 };
   const counts = {};
   played.forEach(g => { if (g.position) counts[g.position] = (counts[g.position] || 0) + 1; });
   const pos = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0];
-  const rep = SUPER_SUB_REP[pos] || 0;
-  const s = starts.filter(g => g.minutes < 85).length / starts.length;
-  const q = p + (1 - p) * s * rep;
+  const offs = starts.filter(g => g.minutes < 85);
+  const s = offs.length / starts.length;
+  if (stat === "Goals" && k === 1) {
+    const rep = SUPER_SUB_REP[pos] || 0;
+    const q = p + (1 - p) * s * rep;
+    return { p: q, extra: q - p };
+  }
+  const rp = SUPER_SUB_RATES[pos] || {};
+  const rho = rp[stat];
+  if (!s || !rho || !SUPER_SUB_MAX[stat]) return { p, extra: 0 };
+  const mOff = offs.length >= 3
+    ? Math.min(84, Math.max(45, offs.reduce((t, g) => t + g.minutes, 0) / offs.length)) : (rp._off || 68);
+  const apps = played.filter(g => (g.minutes || 0) > 0)
+    .sort((x, y) => String(x.date || "").localeCompare(String(y.date || ""))).slice(-10);
+  const share = apps.length ? apps.filter(g => g.started).length / apps.length : 0;
+  // His rate backed out of the model's chance over his expected minutes,
+  // as supersub.rate_from_chance does.
+  const expMin = (1 - s) * 90 + s * mOff;
+  const lam = rateFromChance(p, k, expMin);
+  const a = lam * mOff / 90, b = rho * Math.max(0, 90 - mOff) / 90;
+  const extra = Math.max(0, share * s * (poissonTail(a + b, k) - poissonTail(a, k)));
+  const q = Math.min(0.995, p + extra);
   return { p: q, extra: q - p };
 }
 
@@ -6749,12 +6808,12 @@ function bestHtml(name, stat, line, ours) {
   const m = fixtureMarket();
   const at = m && m.oc && m.oc.at ? Math.round((Date.now() / 1000 - m.oc.at) / 3600) : null;
   const book = b.book ? (OC_BOOKS[b.book] || b.book) : "bookmaker not known (copied text)";
-  // Paddy Power's to-score carries Super Sub, which is worth more than the
-  // player alone; anyone else's is the player alone.
+  // Paddy Power's lines carry Super Sub where it applies, which is worth
+  // more than the player alone; anyone else's is the player alone.
   let p = ours;
   let ss = "";
-  if (b.book === "PP" && stat === "Goals" && SPORT === "football") {
-    const q = superSub(ours, playedOf(name));
+  if (b.book === "PP" && superSubOn(stat, line, true)) {
+    const q = superSub(ours, playedOf(name), stat, Math.round(line + 0.5));
     if (q.extra > 0) { p = q.p; ss = `, Super Sub makes ours ${Math.round(p * 100)}%`; }
   }
   const e = p * b.price - 1;
@@ -6778,9 +6837,14 @@ function ppValued(t, name, played, src = "pp") {
       // half everything. Heuristic: shown, never counted as value.
       const r = cardCase(t, name, recent), f = cardCase(t, name, played);
       if (!r || !f) continue;
-      const p = cardModelP(name) ?? 1 - Math.exp(-(r.lam + f.lam) / 2);
+      let p = cardModelP(name) ?? 1 - Math.exp(-(r.lam + f.lam) / 2);
+      let supersub = 0;
+      if (src === "pp" && superSubOn("Card", x.line ?? 0.5, x.over)) {
+        const q = superSub(p, played, "Card", 1);
+        if (q.extra > 0) { supersub = q.extra; p = q.p; }
+      }
       out.push(Object.assign({}, x, { t, name, p, edge: p * x.price - 1, k: 0, n: r.n, fresh: fr && fr.share, freshInfo: fr,
-        k5: null, n5: null, priced: { p, fair: fairOdds(p), need: fairOdds(p) }, heuristic: true }));
+        k5: null, n5: null, priced: { p, fair: fairOdds(p), need: fairOdds(p) }, heuristic: true, supersub }));
       continue;
     }
     const apps = appearances(recent, x.stat);
@@ -6803,10 +6867,11 @@ function ppValued(t, name, played, src = "pp") {
       if (sc === null) continue;
       overPrice = Object.assign({}, overPrice, { p: sc, fair: fairOdds(sc) });
     }
-    // Paddy Power's to-score carries Super Sub: worth more than his own chance.
+    // Paddy Power's Super Sub, on every line it covers: worth more than his
+    // own chance. Overs only; an under is turned round from the plain over.
     let supersub = 0;
-    if (x.stat === "Goals" && SPORT === "football" && src === "pp") {
-      const q = superSub(overPrice.p, played);
+    if (src === "pp" && x.over && superSubOn(x.stat, x.line, true)) {
+      const q = superSub(overPrice.p, played, x.stat, Math.round(x.line + 0.5));
       if (q.extra > 0) {
         supersub = q.extra;
         overPrice = Object.assign({}, overPrice, { p: q.p, fair: fairOdds(q.p) });

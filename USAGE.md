@@ -910,6 +910,7 @@ Everything scheduled runs on the Mac. Nothing here is a cloud job.
 | `besttrack.py` | Every best bet the site publishes, settled. |
 | `linelog.py` | Every line the model prices, settled. |
 | `pplog.py` | Every Paddy Power player line, our chance and the result. |
+| `supersub.py` | Paddy Power's Super Sub on every market and competition it covers: the extra chance, settling through the replacement chain, `fit` for the replacement rates, `audit` and `resettle --apply` for the record (SUPERSUB-ALL-MARKETS.md). |
 | `teamlog.py` | The same for Paddy Power team lines (21 October). `python teamlog.py scoreboard` judges the team-line take tier against Paddy Power's real prices, with 95% intervals (TEAMLINE-CHECK.md). |
 | `nba_check.py` | NBA player lines: calibration by stat and line from the committed record, and on the Mac the early-season shrink test on `cache/` and a scoreboard of Paddy Power's settled basketball lines (NBA-CHECK.md, 24 October). |
 | `nba_stats.py` | NBA.com minutes, starters and five-man line-ups into `cache/nba_stats/`, by hand on the Mac, then the with/without team-mate split and the small-ball test (NBA-STATS.md, 28 October). Not run live yet. |

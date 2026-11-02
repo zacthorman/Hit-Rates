@@ -367,6 +367,24 @@ def goal_lines(page: dict) -> list[dict]:
     return out
 
 
+def super_sub(page: dict) -> bool | None:
+    """Does Paddy Power's Super Sub apply to this game? The event page carries
+    its promotions as cards (layout.cards.promotionlayoutid), each pointing at
+    a promotion in layout.promotions; Super Sub's is titled "SUPER SUB ...".
+    True or False when the page lists its promotions, None when it lists none
+    (then supersub.py falls back to the competition). Added 2 Nov 2026."""
+    lay = page.get("layout") or {}
+    card = (lay.get("cards") or {}).get("promotionlayoutid")
+    promos = lay.get("promotions")
+    if not card and not promos:
+        return None
+    ids = {str(p.get("id")) for p in (card or {}).get("promotions") or []}
+    for pid, p in (promos or {}).items():
+        if (not ids or str(pid) in ids) and "SUPER SUB" in str((p or {}).get("title", "")).upper():
+            return True
+    return False
+
+
 def event_teams(page: dict) -> tuple[str, str]:
     import market_prices as mpx
     ev = next(iter(((page.get("attachments") or {}).get("events") or {}).values()), {})
@@ -559,9 +577,13 @@ def run(extra: int = 0, us_only: bool = False) -> int:
                 goals = goal_lines(page)
             except Exception:  # noqa: BLE001
                 goals = []
+            try:
+                ssub = super_sub(page)
+            except Exception:  # noqa: BLE001
+                ssub = None
             events[fid] = {"ppEvent": pp_id, "name": bf_name, "kickoff": ko,
                            "fetchedAt": now(), "lines": lines, "team": team, "goals": goals,
-                           "ppHome": pp_home, "ppAway": pp_away}
+                           "ppHome": pp_home, "ppAway": pp_away, "superSub": ssub}
             got += 1
         # Drop games long finished.
         for fid in [f for f, e in events.items() if e.get("kickoff", 0) + KEEP_AFTER_KO * 3600 < now()]:

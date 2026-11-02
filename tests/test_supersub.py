@@ -6,6 +6,7 @@ Players, matches and incidents are made up. Nothing here makes a request:
 pplog.settle runs against stand-in sofascore_api and besttrack modules.
 """
 import json
+import math
 import re
 import shutil
 import subprocess
@@ -83,17 +84,157 @@ class Settling(unittest.TestCase):
             [inc_sub("Ana Silva", "Tomás Ferreira", 46), inc_sub("Tomás Ferreira", "Kofi Mensah", 80),
              inc_goal("Kofi Mensah", 88)], "Tomás Ferreira"))
 
-    def test_settle_row_flips_only_goalscorer_losses(self):
+    def test_settle_row_goals_needs_an_eligible_game(self):
         inc = [inc_sub("Tomás Ferreira", "Kofi Mensah", 62), inc_goal("Kofi Mensah", 80)]
         row = {"event_id": 1, "player": "Tomás Ferreira", "stat": "Goals", "market": "Anytime Goalscorer",
-               "sport": "football", "result": "lose"}
+               "sport": "football", "result": "lose", "line": 0.5, "over": True, "value": 0.0,
+               "competition": "Premier League"}
         self.assertTrue(ss.settle_row(row, lambda eid: inc))
-        self.assertEqual((row["result"], row["supersub"]), ("win", "Kofi Mensah"))
-        shots = dict(row, stat="Shots", market="Player To Have 2 Or More Shots", result="lose")
-        shots.pop("supersub")
-        self.assertFalse(ss.settle_row(shots, lambda eid: inc))
-        self.assertEqual(shots["result"], "lose")
+        self.assertEqual((row["result"], row["supersub"], row["supersub_value"]), ("win", "Kofi Mensah", 1.0))
         self.assertFalse(ss.settle_row(dict(row, result="lose"), lambda eid: None))
+        # LaLiga is not a Super Sub competition, and the page's own flag wins over the name.
+        laliga = dict(row, result="lose", competition="LaLiga")
+        laliga.pop("supersub")
+        self.assertFalse(ss.settle_row(laliga, lambda eid: inc))
+        self.assertTrue(ss.settle_row(dict(laliga, ss_ok=True), lambda eid: inc))
+        self.assertFalse(ss.settle_row(dict(row, result="lose", ss_ok=False), lambda eid: inc))
+
+    def test_settle_row_counts_carry_over_on_shots(self):
+        # 1 shot of his own before going off at 62, his replacement 1 more: 2+ shots wins.
+        inc = [inc_sub("Tomás Ferreira", "Kofi Mensah", 62)]
+        lu = {"home": {"players": [
+            {"player": {"name": "Tomás Ferreira"}, "statistics": {"minutesPlayed": 62, "totalShots": 1}},
+            {"player": {"name": "Kofi Mensah"}, "substitute": True, "statistics": {"minutesPlayed": 28, "totalShots": 1}}]}}
+        row = {"event_id": 1, "player": "Tomás Ferreira", "stat": "Shots", "sport": "football", "result": "lose",
+               "line": 1.5, "over": True, "value": 1.0, "competition": "Championship"}
+        self.assertTrue(ss.settle_row(row, lambda e: inc, lambda e: lu))
+        self.assertEqual((row["result"], row["supersub_value"]), ("win", 2.0))
+        three = dict(row, line=2.5, result="lose")
+        for k in ("supersub", "supersub_value"):
+            three.pop(k)
+        self.assertFalse(ss.settle_row(three, lambda e: inc, lambda e: lu))
+        self.assertEqual(three["result"], "lose")
+        # No line-ups: cannot tell, so it stays as graded.
+        self.assertFalse(ss.settle_row(dict(three, line=1.5), lambda e: inc, lambda e: None))
+        # Tackles are not a Super Sub market.
+        self.assertFalse(ss.settle_row(dict(three, stat="Tackles", line=0.5), lambda e: inc, lambda e: lu))
+
+    def test_settle_row_follows_a_sub_of_a_sub(self):
+        inc = [inc_sub("Tomás Ferreira", "Kofi Mensah", 55), inc_sub("Kofi Mensah", "Ana Silva", 80)]
+        lu = {"away": {"players": [
+            {"player": {"name": "Kofi Mensah"}, "substitute": True, "statistics": {"minutesPlayed": 25, "fouls": 1}},
+            {"player": {"name": "Ana Silva"}, "substitute": True, "statistics": {"minutesPlayed": 10, "fouls": 1}}]}}
+        row = {"event_id": 1, "player": "Tomás Ferreira", "stat": "Fouls", "sport": "football", "result": "lose",
+               "line": 1.5, "over": True, "value": 0.0, "competition": "UEFA Europa League"}
+        self.assertTrue(ss.settle_row(row, lambda e: inc, lambda e: lu))
+        self.assertEqual(row["supersub_value"], 2.0)
+
+    def test_settle_row_cards_from_incidents(self):
+        inc = [inc_sub("Tomás Ferreira", "Kofi Mensah", 70),
+               {"incidentType": "card", "player": {"name": "Kofi Mensah"}, "time": 85, "incidentClass": "yellow"}]
+        row = {"event_id": 1, "player": "Tomás Ferreira", "stat": "Card", "sport": "football", "result": "lose",
+               "line": 0.5, "over": True, "value": 0.0, "competition": "EFL Cup"}
+        self.assertTrue(ss.settle_row(row, lambda e: inc))
+
+    def test_chain(self):
+        inc = [inc_sub("A", "B", 50), inc_sub("B", "C", 80)]
+        self.assertEqual(ss.chain(inc, "A"), [("B", 50), ("C", 80)])
+        self.assertEqual(ss.chain(inc, "Z"), [])
+        self.assertIsNone(ss.chain(inc, "B"))            # came on himself
+
+
+class Eligible(unittest.TestCase):
+    def test_markets_lines_and_competitions(self):
+        self.assertTrue(ss.eligible("football", "Shots", 5.5, True, None, "Premier League"))    # 6+
+        self.assertFalse(ss.eligible("football", "Shots", 6.5, True, None, "Premier League"))   # 7+ not listed
+        self.assertTrue(ss.eligible("football", "Shots on target", 3.5, True, None, "Championship"))
+        self.assertFalse(ss.eligible("football", "Shots on target", 4.5, True, None, "Championship"))
+        self.assertTrue(ss.eligible("football", "Fouled", 2.5, True, None, "UEFA Champions League"))
+        self.assertTrue(ss.eligible("football", "Goals", 1.5, True, None, "FA Cup"))
+        self.assertFalse(ss.eligible("football", "Assists", 1.5, True, None, "Premier League"))
+        self.assertFalse(ss.eligible("football", "Tackles", 0.5, True, None, "Premier League"))
+        self.assertFalse(ss.eligible("football", "Shots", 0.5, False, None, "Premier League"))  # under
+        self.assertFalse(ss.eligible("football", "Shots", 0.5, True, None, "Serie A"))
+        self.assertTrue(ss.eligible("football", "Shots", 0.5, True, True, "Serie A"))           # page says yes
+        self.assertFalse(ss.eligible("football", "Shots", 0.5, True, False, "Premier League"))  # page says no
+        self.assertFalse(ss.eligible("basketball", "Shots", 0.5, True, True, "NBA"))
+
+
+def played(minutes, stat=None, per_game=0.0, pos="F"):
+    return [{"started": True, "minutes": m, "position": pos, "stats": {stat: per_game} if stat else {}}
+            for m in minutes]
+
+
+class Pricing(unittest.TestCase):
+    RATES = {"F": {"Shots": 2.7, "Card": 0.3, "_off_minutes": 67}}
+
+    def test_tail(self):
+        self.assertAlmostEqual(ss._tail(1.0, 1), 1 - math.exp(-1))
+        self.assertAlmostEqual(ss._tail(1.0, 2), 1 - 2 * math.exp(-1))
+        self.assertEqual(ss._tail(0.0, 1), 0.0)
+        self.assertEqual(ss._tail(3.0, 0), 1.0)
+
+    def test_two_plus_shots_formula(self):
+        # Off at 60 in 4 of 6 starts (90, 90, 60 x 4); our chance of 2+ is 40%.
+        pl = played([90, 90, 60, 60, 60, 60], "Shots", 1.0)
+        s, m_off = 4 / 6, 60
+        lam = ss.rate_from_chance(0.40, 2, (1 - s) * 90 + s * m_off)
+        self.assertAlmostEqual(ss._tail(lam * 70 / 90, 2), 0.40, places=9)
+        a, b = lam * 60 / 90, 2.7 * 30 / 90
+        want = s * (ss._tail(a + b, 2) - ss._tail(a, 2))
+        p, extra = ss.extra_for(0.40, "Shots", 2, pl, self.RATES)
+        self.assertAlmostEqual(extra, want)
+        self.assertAlmostEqual(p, 0.40 + want)
+
+    def test_thin_record_does_not_override_the_model(self):
+        # No shots in his record, but the model says 53%: the extra follows the model.
+        pl = played([71, 77, 50, 90, 90, 60], "Shots", 0.0, pos="M")
+        p, extra = ss.extra_for(0.53, "Shots", 1, pl, {"M": {"Shots": 2.0}})
+        self.assertLess(extra, 0.15)
+
+    def test_more_for_two_plus_than_three_plus_at_this_rate_and_never_negative(self):
+        pl = played([90, 60, 60, 60, 60, 60], "Shots", 1.0)
+        e1 = ss.extra_for(0.6, "Shots", 1, pl, self.RATES)[1]
+        e2 = ss.extra_for(0.3, "Shots", 2, pl, self.RATES)[1]
+        e6 = ss.extra_for(0.01, "Shots", 6, pl, self.RATES)[1]
+        self.assertTrue(e1 > 0 and e2 > 0 and e6 >= 0)
+
+    def test_no_extra_without_a_record(self):
+        self.assertEqual(ss.extra_for(0.4, "Shots", 2, played([60] * 3, "Shots", 1.0), self.RATES), (0.4, 0.0))
+        self.assertEqual(ss.extra_for(0.4, "Shots", 2, played([90] * 6, "Shots", 1.0), self.RATES), (0.4, 0.0))
+        self.assertEqual(ss.extra_for(0.4, "Shots", 2, played([60] * 6, "Shots", 1.0, pos="G"), self.RATES), (0.4, 0.0))
+
+    def test_rotation_player_gets_only_his_start_share(self):
+        pl = played([90, 60, 60, 60, 60, 60], "Shots", 1.0)
+        full = ss.extra_for(0.3, "Shots", 2, pl, self.RATES)[1]
+        for i, g in enumerate(pl):
+            g["date"] = f"2026-10-{10 + i:02d}"
+        bench = [{"started": False, "minutes": 20, "position": "F", "date": f"2026-10-{20 + i:02d}",
+                  "stats": {"Shots": 1}} for i in range(4)]
+        half = ss.extra_for(0.3, "Shots", 2, pl + bench, self.RATES)[1]
+        self.assertAlmostEqual(ss.start_share(pl + bench), 0.6)
+        self.assertLess(half, full)
+
+    def test_off_minute_needs_three_early_starts_and_is_held_in_range(self):
+        self.assertIsNone(ss.off_minutes(played([90, 90, 90, 60, 60])))
+        self.assertEqual(ss.off_minutes(played([10, 20, 15, 90, 90])), 45)
+        self.assertEqual(ss.off_minutes(played([60, 70, 80, 90])), 70)
+
+    def test_card_backs_out_his_own_rate(self):
+        p, extra = ss.extra_for(0.20, "Card", 1, played([90, 60, 60, 60, 60, 60]), self.RATES)
+        self.assertTrue(0 < extra < 0.1)
+        self.assertAlmostEqual(p, 0.20 + extra)
+
+    def test_goals_one_plus_keeps_the_checked_formula(self):
+        pl = [{"started": True, "minutes": m, "position": "F"} for m in [90, 70, 60, 65, 90, 75]]
+        self.assertEqual(ss.extra_for(0.30, "Goals", 1, pl, self.RATES, FIT), ss.uplift(0.30, pl, FIT))
+
+    def test_committed_fit_has_rates(self):
+        fit = json.loads((ROOT / "supersub_fit.json").read_text())
+        for pos in ("D", "M", "F"):
+            for stat in ("Shots", "Shots on target", "Fouls", "Fouled", "Goals", "Assists", "Card"):
+                self.assertGreater(fit["rates"][pos][stat], 0)
+                self.assertAlmostEqual(fit["rates"][pos][stat], ss.DEFAULT_RATES[pos][stat], delta=0.006)
 
 
 def lineup_side(starters, subs):
@@ -149,15 +290,21 @@ class PplogSettle(unittest.TestCase):
         tmp = Path(tempfile.mkdtemp())
         inc = [inc_sub("Tomás Ferreira", "Kofi Mensah", 62), inc_goal("Kofi Mensah", 80)]
         fake_api = types.ModuleType("sofascore_api")
+        lu = {"home": {"players": [
+            {"player": {"name": "Kofi Mensah"}, "substitute": True, "statistics": {"minutesPlayed": 28, "totalShots": 1}}]}}
         fake_api.get_json = lambda path, **kw: (
-            {"incidents": inc} if path.endswith("/incidents") else {"event": {"status": {"type": "finished"}}})
+            {"incidents": inc} if path.endswith("/incidents") else lu if path.endswith("/lineups")
+            else {"event": {"status": {"type": "finished"}}})
         fake_bt = types.ModuleType("besttrack")
         fake_bt._player_value = lambda r, sport: 0.0
         base = {"event_id": 7, "fixture": "Northbridge v Southfield", "kickoff": 1_000_000, "sport": "football",
                 "player": "Tomás Ferreira", "line": 0.5, "over": True, "result": None, "value": None,
+                "competition": "Premier League",
                 "first": {"price": 3.0, "chance": 0.3, "edge": -0.1}, "last": {"price": 3.0, "chance": 0.3, "edge": -0.1}}
         rows = [dict(base, stat="Goals", market="Anytime Goalscorer"),
-                dict(base, stat="Shots", market="Player To Have 1 Or More Shots")]
+                dict(base, stat="Shots", market="Player To Have 1 Or More Shots"),
+                dict(base, stat="Shots", market="Player To Have 2 Or More Shots", line=1.5),
+                dict(base, stat="Goals", market="Anytime Goalscorer", competition="LaLiga")]
         saved = {k: sys.modules.get(k) for k in ("sofascore_api", "besttrack")}
         old_dir = pplog.DIR
         try:
@@ -174,10 +321,12 @@ class PplogSettle(unittest.TestCase):
                 else:
                     sys.modules[k] = v
             shutil.rmtree(tmp)
-        goals, shots = out
+        goals, shots1, shots2, laliga = out
         self.assertEqual((goals["result"], goals["supersub"], goals["value"]), ("win", "Kofi Mensah", 0.0))
-        self.assertEqual(shots["result"], "lose")
-        self.assertNotIn("supersub", shots)
+        self.assertEqual((shots1["result"], shots1["supersub_value"]), ("win", 1.0))
+        self.assertEqual(shots2["result"], "lose")
+        self.assertNotIn("supersub", shots2)
+        self.assertEqual(laliga["result"], "lose")         # no Super Sub in LaLiga
 
 
 @unittest.skipUnless(shutil.which("node"), "node is not installed")
@@ -187,15 +336,23 @@ class PageMirror(unittest.TestCase):
     def test_page_matches_python(self):
         import report
         js = report.JS
-        rep = re.search(r"const SUPER_SUB_REP = \{[^}]*\};", js).group(0)
-        fn = re.search(r"function superSub\(p, played\) \{.*?\n\}", js, re.S).group(0)
-        cases = [(0.30, starts([90, 70, 60, 65, 90, 75])),
-                 (0.12, starts([90, 80, 90, 90, 60], pos="M")),
-                 (0.30, starts([60] * 6, pos="G")),
-                 (0.30, starts([60] * 3))]
-        prog = (f'const SPORT = "football";\n{rep}\n{fn}\n'
+        consts = "\n".join(re.search(rf"const {n} = .*?;\n", js, re.S).group(0)
+                           for n in ("SUPER_SUB_REP", "SUPER_SUB_RATES", "SUPER_SUB_MAX"))
+        tail = re.search(r"function poissonTail\(lam, k\) \{.*?\n\}", js, re.S).group(0) + "\n" + \
+            re.search(r"function rateFromChance\(p, k, minutes\) \{.*?\n\}", js, re.S).group(0)
+        fn = re.search(r"function superSub\(p, played, stat, k\) \{.*?\n\}", js, re.S).group(0)
+        rates = ss.load_rates()
+        sh = played([90, 60, 70, 60, 75, 60], "Shots", 1.0, pos="M")
+        fl = played([90, 90, 60, 60, 80, 60], "Fouled", 2.0, pos="D")
+        cases = [(0.30, starts([90, 70, 60, 65, 90, 75]), None, None),
+                 (0.12, starts([90, 80, 90, 90, 60], pos="M"), None, None),
+                 (0.30, starts([60] * 6, pos="G"), None, None),
+                 (0.30, starts([60] * 3), None, None),
+                 (0.55, sh, "Shots", 1), (0.25, sh, "Shots", 2), (0.05, sh, "Shots", 4),
+                 (0.40, fl, "Fouled", 2), (0.20, fl, "Card", 1), (0.08, sh, "Goals", 2)]
+        prog = (f'const SPORT = "football";\n{consts}\n{tail}\n{fn}\n'
                 f'const cases = {json.dumps(cases)};\n'
-                'console.log(JSON.stringify(cases.map(([p, pl]) => superSub(p, pl).p)));\n')
+                'console.log(JSON.stringify(cases.map(([p, pl, st, k]) => superSub(p, pl, st, k).p)));\n')
         tmp = Path(tempfile.mkdtemp())
         try:
             (tmp / "t.js").write_text(prog)
@@ -204,8 +361,10 @@ class PageMirror(unittest.TestCase):
             shutil.rmtree(tmp)
         self.assertEqual(done.returncode, 0, done.stderr)
         page = json.loads(done.stdout)
-        for (p, played), got in zip(cases, page):
-            self.assertAlmostEqual(got, ss.uplift(p, played, ss.DEFAULT_REP)[0], places=9)
+        for (p, pl, st, k), got in zip(cases, page):
+            want = (ss.uplift(p, pl, ss.DEFAULT_REP)[0] if st is None
+                    else ss.extra_for(p, st, k, pl, rates, ss.DEFAULT_REP)[0])
+            self.assertAlmostEqual(got, want, places=9, msg=f"{st} {k}")
 
 
 if __name__ == "__main__":
