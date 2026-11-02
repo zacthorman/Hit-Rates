@@ -162,12 +162,16 @@ fi
 # games not yet started with our chance at it, then the results page.
 if [ "${QUICK:-0}" != "1" ]; then  # QUICK=1: nothing settles mid-afternoon
 "$PY" pplog.py settle || echo "  pp log not settled (continuing)"
+# The Bet365 record (b365log.py, 2 Nov 2026): the same log for Bet365's lines,
+# Sub On Play On included, so its prices carry a record too.
+"$PY" b365log.py settle || echo "  bet365 log not settled (continuing)"
 # The models learn from every settled line (learn.py): fitted on older games,
 # used only where it beats the model on the newest unseen ones. LEARNING.md.
 "$PY" learn.py fit || echo "  learn: not refitted (continuing)"
 fi
 
 "$PY" pplog.py snapshot || echo "  pp log not updated (continuing)"
+"$PY" b365log.py snapshot || echo "  bet365 log not updated (continuing)"
 if [ "${QUICK:-0}" != "1" ]; then  # QUICK=1
 "$PY" teamlog.py settle || echo "  team log not settled (continuing)"
 "$PY" value_books.py settle || echo "  value books not settled (continuing)"

@@ -64,7 +64,8 @@
    "Card": 0.2953,
    "_off_minutes": 64.3,
    "_pairs": 9815,
-   "_card_source": "cache/ incidents, 2,952 matches, 2 Nov 2026"
+   "_card_source": "cache/ incidents, 2,952 matches, 2 Nov 2026",
+   "Tackles": 1.9995
   },
   "F": {
    "Shots": 2.6826,
@@ -76,7 +77,8 @@
    "Card": 0.2922,
    "_off_minutes": 67.4,
    "_pairs": 14268,
-   "_card_source": "cache/ incidents, 2,952 matches, 2 Nov 2026"
+   "_card_source": "cache/ incidents, 2,952 matches, 2 Nov 2026",
+   "Tackles": 1.3814
   },
   "M": {
    "Shots": 2.0059,
@@ -88,7 +90,8 @@
    "Card": 0.3125,
    "_off_minutes": 66.9,
    "_pairs": 26723,
-   "_card_source": "cache/ incidents, 2,952 matches, 2 Nov 2026"
+   "_card_source": "cache/ incidents, 2,952 matches, 2 Nov 2026",
+   "Tackles": 1.8986
   }
  },
  "rates_note": "Per 90 for the replacement of a starter in that position, over the minutes the replacement played; _off_minutes is the starter's average when taken off before 85. Counted stats from the backtest line-ups (7,949 matches), cards from the live cache's incidents. supersub.fit_rates."

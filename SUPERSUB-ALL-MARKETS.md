@@ -93,3 +93,33 @@ Two cautions:
 
 - These are every line Paddy Power offered, not our model's picks.
 - The multi figure assumes the legs are independent, which holds for different players in different games.
+
+## Bet365's Sub On Play On (added 2 Nov 2026, later the same day)
+
+Bet365 runs the same idea under its own name. `supersub.py` now keeps a rule set per book (`BOOKS`):
+
+| | Paddy Power Super Sub | Bet365 Sub On Play On |
+|---|---|---|
+| Markets | shots 1-6+, on target 1-4+, fouls and fouled 1-3+, goals 1-3+, assists, cards | the same plus tackles, every line Bet365 offers (shots to 11+, fouls to 8+, fouled to 7+, tackles to 8+, on target to 6+), assists 1-2+ |
+| Competitions | English leagues and cups, Champions and Europa League, a few others | Premier League, Champions League, Europa League, LaLiga, Bundesliga, Ligue 1, Serie A |
+| Which games | the game page says (`superSub`), else the list | the list only: Oddschecker does not pass Bet365's icon through |
+
+Bet365's own terms page would not load, so its competitions are the ones betting sites list for it. Only games showing its icon qualify: check the slip before staking.
+
+**Replacement tackles rate.** Per 90, by the position of the starter replaced: D 2.00, M 1.90, F 1.38. From the same 50,806 pairs as the rest.
+
+**Where it applies:**
+- the page's Bet365 lines;
+- `b365value.py`;
+- `value_books.py`, where each book's chance now includes its own cover before the better book is chosen, and settling credits it;
+- `b365log.py`, a new settled record of every Bet365 line, built on pplog.py and kept in `b365log/`.
+
+**Lines no record has tested.** Bet365 offers lines Paddy Power never did (to 11+ shots, 8+ fouls) and tackles, where the site's fallback pricing runs far too high. It made Kane 41% for 7+ shots off 1 in his last 10, and Osimhen 43% for 9+ at 17.0. The Bet365 log marks those rows `untested`, still logs and settles them, and never calls them value (`pplog._untested`). `value_books.py` and `b365value.py` only price lines the player model covers, so they were not affected.
+
+**Dry run on 2 Nov:**
+- 9,420 Bet365 lines would be logged.
+- 6,403 of them are covered by Sub On Play On. The extra is about +4 pts on 1+ shots, fouls and tackles, and +3.5 on 2+.
+- 1,621 are untested.
+- 181 qualify as value. Some carry very large claimed edges (+100% and more), the same overconfidence seen on Paddy Power, where 15%+ edges lost 52%.
+
+Sky Bet also runs a Super Sub; it is not modelled yet.

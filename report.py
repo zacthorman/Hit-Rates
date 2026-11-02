@@ -6550,21 +6550,32 @@ const OC_BOOKS = { B3: "bet365", SK: "Sky Bet", PP: "Paddy Power", WH: "William 
    in the minutes he plays when taken off, b his replacement's in the rest at
    SUPER_SUB_RATES (per 90, by the position he plays). */
 const SUPER_SUB_REP = { G: 0, D: 0.024, M: 0.052, F: 0.080 };
-const SUPER_SUB_RATES = {"D": {"Shots": 1.0801, "Shots on target": 0.3255, "Fouls": 1.3714, "Fouled": 1.0713, "Goals": 0.0836, "Assists": 0.0935, "Card": 0.2953, "_off": 64.3}, "F": {"Shots": 2.6826, "Shots on target": 1.0541, "Fouls": 1.8052, "Fouled": 1.5907, "Goals": 0.3449, "Assists": 0.1576, "Card": 0.2922, "_off": 67.4}, "M": {"Shots": 2.0059, "Shots on target": 0.7083, "Fouls": 1.659, "Fouled": 1.4969, "Goals": 0.2096, "Assists": 0.1574, "Card": 0.3125, "_off": 66.9}};
+const SUPER_SUB_RATES = {"D": {"Shots": 1.0801, "Shots on target": 0.3255, "Fouls": 1.3714, "Fouled": 1.0713, "Goals": 0.0836, "Assists": 0.0935, "Card": 0.2953, "Tackles": 1.9995, "_off": 64.3}, "F": {"Shots": 2.6826, "Shots on target": 1.0541, "Fouls": 1.8052, "Fouled": 1.5907, "Goals": 0.3449, "Assists": 0.1576, "Card": 0.2922, "Tackles": 1.3814, "_off": 67.4}, "M": {"Shots": 2.0059, "Shots on target": 0.7083, "Fouls": 1.659, "Fouled": 1.4969, "Goals": 0.2096, "Assists": 0.1574, "Card": 0.3125, "Tackles": 1.8986, "_off": 66.9}};
 const SUPER_SUB_MAX = { Goals: 3, Shots: 6, "Shots on target": 4, Fouls: 3, Fouled: 3, Assists: 1, Card: 1 };
 const SUPER_SUB_COMPS = ["Premier League", "Championship", "League One", "League Two", "FA Cup",
   "EFL Cup", "UEFA Champions League", "UEFA Europa League", "Community Shield", "UEFA Super Cup",
   "Premier Division"];
-/* Does Super Sub cover this Paddy Power line? The game page's own answer
-   (markets.json pp.ss) when there is one, else the competition. */
-function superSubOn(stat, line, over) {
+/* Bet365's Sub On Play On (supersub.py B365_*): wider markets and the big
+   five leagues. Oddschecker does not pass its icon through, so the
+   competition decides. */
+const SUB_ON_MAX = { Goals: 3, Shots: 11, "Shots on target": 6, Fouls: 8, Fouled: 7, Tackles: 8, Assists: 2, Card: 1 };
+const SUB_ON_COMPS = ["Premier League", "UEFA Champions League", "UEFA Europa League", "LaLiga",
+  "Bundesliga", "Ligue 1", "Serie A"];
+/* Does the book's substitute cover this line? book "pp" (Super Sub: the
+   game page's own answer in markets.json pp.ss when there is one, else the
+   competition) or "b365" (Sub On Play On: the competition). */
+function superSubOn(stat, line, over, book) {
+  book = book || "pp";
   if (SPORT !== "football" || over === false) return false;
-  const k = Math.round(line + 0.5), mx = SUPER_SUB_MAX[stat];
+  const k = Math.round(line + 0.5);
+  const mx = (book === "b365" ? SUB_ON_MAX : book === "pp" ? SUPER_SUB_MAX : {})[stat];
   if (!mx || k < 1 || k > mx) return false;
+  const comp = ((typeof DATA !== "undefined" && DATA.fixture) || {}).competition;
+  if (book === "b365") return SUB_ON_COMPS.includes(comp);
   const m = fixtureMarket();
   const flag = m && m.pp ? m.pp.ss : null;
   if (flag === true || flag === false) return flag;
-  return SUPER_SUB_COMPS.includes(((typeof DATA !== "undefined" && DATA.fixture) || {}).competition);
+  return SUPER_SUB_COMPS.includes(comp);
 }
 function poissonTail(lam, k) {
   if (k <= 0) return 1;
@@ -6808,11 +6819,13 @@ function bestHtml(name, stat, line, ours) {
   const m = fixtureMarket();
   const at = m && m.oc && m.oc.at ? Math.round((Date.now() / 1000 - m.oc.at) / 3600) : null;
   const book = b.book ? (OC_BOOKS[b.book] || b.book) : "bookmaker not known (copied text)";
-  // Paddy Power's lines carry Super Sub where it applies, which is worth
-  // more than the player alone; anyone else's is the player alone.
+  // Paddy Power's and Bet365's lines carry their substitute cover where it
+  // applies, which is worth more than the player alone; anyone else's is the
+  // player alone.
   let p = ours;
   let ss = "";
-  if (b.book === "PP" && superSubOn(stat, line, true)) {
+  const ssBook = b.book === "PP" ? "pp" : b.book === "B3" ? "b365" : null;
+  if (ssBook && superSubOn(stat, line, true, ssBook)) {
     const q = superSub(ours, playedOf(name), stat, Math.round(line + 0.5));
     if (q.extra > 0) { p = q.p; ss = `, Super Sub makes ours ${Math.round(p * 100)}%`; }
   }
@@ -6839,12 +6852,13 @@ function ppValued(t, name, played, src = "pp") {
       if (!r || !f) continue;
       let p = cardModelP(name) ?? 1 - Math.exp(-(r.lam + f.lam) / 2);
       let supersub = 0;
-      if (src === "pp" && superSubOn("Card", x.line ?? 0.5, x.over)) {
+      if ((src === "pp" || src === "b365") && superSubOn("Card", x.line ?? 0.5, x.over, src)) {
         const q = superSub(p, played, "Card", 1);
         if (q.extra > 0) { supersub = q.extra; p = q.p; }
       }
       out.push(Object.assign({}, x, { t, name, p, edge: p * x.price - 1, k: 0, n: r.n, fresh: fr && fr.share, freshInfo: fr,
-        k5: null, n5: null, priced: { p, fair: fairOdds(p), need: fairOdds(p) }, heuristic: true, supersub }));
+        k5: null, n5: null, priced: { p, fair: fairOdds(p), need: fairOdds(p) }, heuristic: true, supersub,
+        subName: src === "b365" ? "Sub On Play On" : "Super Sub" }));
       continue;
     }
     const apps = appearances(recent, x.stat);
@@ -6870,7 +6884,7 @@ function ppValued(t, name, played, src = "pp") {
     // Paddy Power's Super Sub, on every line it covers: worth more than his
     // own chance. Overs only; an under is turned round from the plain over.
     let supersub = 0;
-    if (src === "pp" && x.over && superSubOn(x.stat, x.line, true)) {
+    if ((src === "pp" || src === "b365") && x.over && superSubOn(x.stat, x.line, true, src)) {
       const q = superSub(overPrice.p, played, x.stat, Math.round(x.line + 0.5));
       if (q.extra > 0) {
         supersub = q.extra;
@@ -6886,6 +6900,7 @@ function ppValued(t, name, played, src = "pp") {
     const basis = opponentBasis(x.stat, t);
     out.push(Object.assign({}, x, { t, name, p: price.p, edge: price.p * x.price - 1,
       k, n: vals.length, k5, n5: last5.length, priced: price, supersub, fresh: fr && fr.share, freshInfo: fr,
+      subName: src === "b365" ? "Sub On Play On" : "Super Sub",
       unadjusted: price.source !== "fmodel" && !basis,
       oddsAdj: price.source !== "fmodel" && basis === "odds" }));
   }
@@ -6971,7 +6986,7 @@ function teamNewsHtml() {
 /* Under a value row: whether the chance is the model's, whether it rests on
    a predicted XI, and a warning when the edge is too big to take on trust. */
 function modelNote(v) {
-  const ss = v.supersub ? ` &middot; Super Sub +${(v.supersub * 100).toFixed(1)} pts` : "";
+  const ss = v.supersub ? ` &middot; ${v.subName || "Super Sub"} +${(v.supersub * 100).toFixed(1)} pts` : "";
   return modelNoteBase(v) + ss;
 }
 

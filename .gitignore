@@ -55,6 +55,8 @@ linelog/
 # Paddy Power line record (pplog.py), kept on this machine like linelog/
 pplog/
 .paddypower_off
+# Bet365 line record (b365log.py), kept on this machine like pplog/
+b365log/
 
 # NBA injury news log (news_watch.py), kept on this machine like pplog/
 news/

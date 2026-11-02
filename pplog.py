@@ -50,6 +50,10 @@ ROOT = Path(__file__).resolve().parent
 DIR = ROOT / "pplog"
 PAGE = ROOT / "pp-results.html"
 PP = ROOT / "reports" / "paddypower.json"
+# Which bookmaker this log is. b365log.py points DIR, PP and PAGE at Bet365's
+# files and sets these, so the same code logs and settles Bet365 (2 Nov 2026).
+BOOK = "pp"
+BOOK_NAME = "Paddy Power"
 
 # Value, for the scoreboard: what the site would have flagged.
 VALUE_EDGE = 0.05
@@ -91,6 +95,9 @@ PP_PATTERNS = [
     # Added 23 Oct 2026 so they can be checked against Betfair (sharp.py).
     (re.compile(r"^Player To Have (\d+) Or More Shots On Target$"), "Shots on target"),
     (re.compile(r"^Player Shots on Target (\d+) or More$"), "Shots on target"),
+    # Bet365's names through Oddschecker (bet365_prices.py), 2 Nov 2026.
+    (re.compile(r"^Player To Have (\d+) Or More Assists$"), "Assists"),
+    (re.compile(r"^Player To Make (\d+) Or More Tackles$"), "Tackles"),
 ]
 PP_YES = {"Player Shown a Card": "Card", "Shown a Card": "Card", "Player Assists": "Assists"}
 
@@ -397,7 +404,7 @@ def snapshot(args=None) -> int:
     try:
         pp = json.loads(PP.read_text())
     except (OSError, ValueError):
-        print("pp log: no Paddy Power prices held")
+        print(f"pp log: no {BOOK_NAME} prices held")
         return 0
     now = time.time()
     fixtures = {str(m["id"]): (e, m) for e, m in playerlines.upcoming(48)}
@@ -465,7 +472,7 @@ def snapshot(args=None) -> int:
             # it never applies to an under.
             ss_extra = 0.0
             ss_ok = ev.get("superSub") if sport == "football" else None
-            if over and supersub.eligible(sport, stat, line, True, ss_ok, meta.get("competition")):
+            if over and supersub.eligible(sport, stat, line, True, ss_ok, meta.get("competition"), BOOK):
                 p_over, ss_extra = supersub.extra_for(p_over, stat, int(round(line + 0.5)),
                                                       squads[t][name], ss_rates, ss_fit)
             p = p_over if over else 1 - p_over
@@ -548,6 +555,8 @@ def snapshot(args=None) -> int:
                             "game_sharp": _game_sharp(sport, fid, meta, t),
                             "form": _form(apps) if sport == "basketball" else None,
                             "ss_ok": ss_ok,
+                            **({"book": BOOK} if BOOK != "pp" else {}),
+                            **({"untested": True} if _untested(sport, stat, line) else {}),
                             "result": None, "value": None})
                 new_rows.append(row)
     # Rewrite the files that had rows updated, then append the new ones.
@@ -687,10 +696,25 @@ def _card_value(r: dict):
 
 # ------------------------------------------------------------------ scoring
 
+def _untested(sport: str, stat: str, line) -> bool:
+    """A football line no Paddy Power record has ever tested: a stat Paddy
+    Power does not offer (tackles) or a line above its top one (Bet365 goes to
+    11+ shots, 8+ fouls). Logged and settled, never called value, until its own
+    record says otherwise. 2 Nov 2026: above the model's lines the site's
+    fallback made Kane 41% for 7+ shots off 1 in his last 10, Osimhen 43% for
+    9+ at 17.0."""
+    if BOOK == "pp" or sport != "football":
+        return False
+    import supersub
+    top = supersub.MAX_LINE.get(stat)
+    return top is None or line is None or float(line) + 0.5 > top
+
+
 def is_value(r: dict, snap: str = "first") -> bool:
     import freshness
     s = r.get(snap) or {}
-    return (s.get("chance", 0) >= VALUE_MIN_P and s.get("edge", -1) >= VALUE_EDGE
+    return (not r.get("untested")
+            and s.get("chance", 0) >= VALUE_MIN_P and s.get("edge", -1) >= VALUE_EDGE
             and (r.get("n10") or 0) >= VALUE_MIN_N
             # A record mostly from before his last long break is never value
             # (PLAYER-STALE.md); rows logged before 24 Oct 2026 carry no share.
@@ -763,7 +787,7 @@ def summary() -> dict:
 
 def report(args=None) -> None:
     s = summary()
-    print(f"{s['logged']} Paddy Power lines logged, {s['settled']} settled, "
+    print(f"{s['logged']} {BOOK_NAME} lines logged, {s['settled']} settled, "
           f"{s['open']} open, {s['void']} void\n")
     for name, b in (("Every line", s["all"]), ("Value bets (edge 5%+, ours 50%+)", s["value"]),
                     ("Strong lines (ours 70%+)", s["strong"])):

@@ -12,6 +12,8 @@ How to read it (23 Oct 2026):
   * Model is the player model's chance, cut by how far that market's hits have
     fallen short of the model on settled Paddy Power bets (boostcheck's shrink,
     pplog), where there is a record.
+  * On the lines and leagues Bet365's Sub On Play On covers, the chance also
+    carries the replacement's share (supersub.py, 2 Nov 2026).
   * Edge is that chance times the Bet365 price, minus one.
   * Over 15% is flagged CHECK, not "better": a real edge on a player line is a
     few per cent, and a big one nearly always means the model is missing
@@ -83,6 +85,15 @@ def rows(show_all: bool = False) -> list[dict]:
     fm = json.loads((ROOT / "reports" / "fmodel.json").read_text()).get("events", {})
     shrink, pp = _shrink(), _pp_prices()
     now, out = time.time(), []
+    # Bet365's Sub On Play On (supersub.py, 2 Nov 2026): the starter's count
+    # carries over to his replacement on the lines and leagues it covers.
+    try:
+        import playerlines
+        import supersub
+        fixtures = {str(m["id"]): (en, m) for en, m in playerlines.upcoming(72)}
+        rates, fit = supersub.load_rates(), supersub.load_fit()
+    except Exception:  # noqa: BLE001
+        fixtures, supersub = {}, None
     for fid, e in (b.get("events") or {}).items():
         if e.get("kickoff", 0) < now:
             continue
@@ -114,6 +125,14 @@ def rows(show_all: bool = False) -> list[dict]:
                     ps = lp
             except Exception:  # noqa: BLE001
                 pass
+            sub = 0.0
+            entry, meta = fixtures.get(str(fid), (None, {}))
+            if supersub and entry is not None and supersub.eligible(
+                    "football", stat, n - 0.5, True, None, meta.get("competition"), "b365"):
+                played = [g for side in (0, 1) for g in (entry.get("players") or [[], []])[side]
+                          if pplog._norm(g.get("player")) == pplog._norm(hit[0])]
+                if played:
+                    ps, sub = supersub.extra_for(ps, stat, n, played, rates, fit)
             edge = ps * l["price"] - 1
             if edge <= 0 and not show_all:
                 continue
@@ -126,7 +145,7 @@ def rows(show_all: bool = False) -> list[dict]:
                         "both": bool(vs is not None and nb >= 8 and 0 <= vs <= 0.30 and 0 < edge <= CHECK),
                         "odd": bool(vs is not None and vs > 0.40),
                         "fixture": e.get("name"), "kickoff": e["kickoff"], "player": hit[0], "stat": stat,
-                        "n": n, "price": l["price"], "model": ps, "raw": p, "edge": edge,
+                        "n": n, "price": l["price"], "model": ps, "raw": p, "edge": edge, "sub_on": sub,
                         "pp": pp.get((fid, hit[0] and pplog._norm(hit[0]), stat, n - 0.5)),
                         "xi": "confirmed" if fe.get("confirmed") else "predicted",
                         "fetched": e.get("fetchedAt")})
