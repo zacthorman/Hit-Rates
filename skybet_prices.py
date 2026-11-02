@@ -334,7 +334,9 @@ def candidates() -> list[tuple]:
     now, out = time.time(), []
     for fid, ev in (mp.get("events") or {}).items():
         name, eid = ev.get("betfair") or "", ev.get("bfEvent")
-        if " @ " not in name or not eid:
+        # NBA only: NFL games are "Away @ Home" too (Bears @ Seahawks, 2 Nov), and a
+        # basketball/nba URL for one 404s, which would lock the fetcher out.
+        if ev.get("sport") != "basketball" or " @ " not in name or not eid:
             continue
         try:
             ko = datetime.fromisoformat(ev["start"].replace("Z", "+00:00")).timestamp()
