@@ -23,6 +23,13 @@ is the price; a line qualifies only if:
                  (the price beats the sharpest book), and the model agrees
                  (its chance times the price is 1.00 or more).
 
+Player lines carry each book's substitute cover (2 Nov 2026): Paddy Power's
+Super Sub and Bet365's Sub On Play On (supersub.py), on the markets and
+competitions each covers. The model's chance for a book is its own chance
+plus that book's extra, the better book is the one with the higher chance x
+price, and settling counts the replacement's stats where the book does. Sky
+Bet's own Super Sub is not modelled yet, so its lines are on the player alone.
+
 One line per player (two legs on one player land together). Football only:
 Oddschecker's NBA and NFL pages do not list matches the way discovery reads.
 Every line listed is logged to value/log.jsonl with the price first seen and
@@ -181,11 +188,55 @@ def model_team(rows_by_key, r):
 
 # ------------------------------------------------------------ the list
 
+# Oddschecker book code -> supersub.py's book. Sky Bet: not modelled yet.
+SS_BOOK = {"PP": "pp", "B3": "b365"}
+
+
+def _sub_context(now: float):
+    """(fid -> (entry, meta)) for upcoming games, and Paddy Power's per-game
+    Super Sub flags. Empty on any failure: lines are then priced as before."""
+    try:
+        import playerlines
+        fixtures = {str(m["id"]): (e, m) for e, m in playerlines.upcoming(72)}
+    except Exception:  # noqa: BLE001
+        fixtures = {}
+    flags = {fid: ev.get("superSub") for fid, ev in
+             (_load(ROOT / "reports" / "paddypower.json").get("events") or {}).items()}
+    return fixtures, flags
+
+
+def _played(entry: dict, name: str) -> list[dict]:
+    n = _norm(name)
+    return [g for side in (0, 1) for g in (entry.get("players") or [[], []])[side]
+            if _norm(g.get("player")) == n]
+
+
+def sub_chance(r: dict, p: float, book: str, name: str, ctx) -> tuple[float, float, dict]:
+    """(our chance at this book, the substitute extra, what settling needs)."""
+    import supersub
+    fixtures, flags = ctx
+    sb = SS_BOOK.get(book)
+    entry, meta = fixtures.get(str(r["fid"]), (None, {}))
+    comp = meta.get("competition")
+    flag = flags.get(str(r["fid"])) if sb == "pp" else None
+    info = {"competition": comp, "ss_book": sb, "ss_ok": flag}
+    if not sb or not r["over"] or entry is None or not supersub.eligible(
+            "football", r["stat"], r["line"], True, flag, comp, sb):
+        return p, 0.0, info
+    played = _played(entry, name)
+    if not played:
+        return p, 0.0, info
+    q, extra = supersub.extra_for(p, r["stat"], int(round(r["line"] + 0.5)), played,
+                                  supersub.load_rates(), supersub.load_fit())
+    return q, extra, info
+
+
 def build(now: float | None = None) -> list[dict]:
     import sharp
     import teamlog
     now = time.time() if now is None else now
     fm = _load(FMODEL)
+    ctx = None
     try:
         bfix = sharp.index()
     except Exception:  # noqa: BLE001
@@ -199,19 +250,41 @@ def build(now: float | None = None) -> list[dict]:
     for r in candidates(now):
         book = max(r["books"], key=r["books"].get)
         price = r["books"][book]
+        ss = None
+        if r.get("player"):
+            # Each book's chance includes its own substitute cover; the
+            # better book is the one with the higher chance x price.
+            name, p = model_player(fm, r)
+            if p is None:
+                continue
+            if ctx is None:
+                ctx = _sub_context(now)
+            best = None
+            for bk, pr in r["books"].items():
+                if not 1.2 <= pr <= MAX_PRICE:
+                    continue
+                q, extra, info = sub_chance(r, p, bk, name, ctx)
+                if best is None or q * pr > best[0]:
+                    best = (q * pr, bk, pr, q, extra, info)
+            if best is None:
+                continue
+            _, book, price, q, extra, info = best
+            ss = (p, q, extra, info)
         if not 1.2 <= price <= MAX_PRICE:
             continue
         other = {k: v for k, v in r["books"].items() if k != book}
         item = {"fid": r["fid"], "kickoff": r["kickoff"], "game": r["game"], "stat": r["stat"],
                 "line": r["line"], "over": r["over"], "book": book, "price": price, "other": other}
         if r.get("player"):
-            name, p = model_player(fm, r)
-            if p is None or p < PLAYER_MIN_P or p * price < 1 + PLAYER_MIN_EDGE:
+            p_own, q, extra, info = ss
+            if q < PLAYER_MIN_P or q * price < 1 + PLAYER_MIN_EDGE:
                 continue
             bf = betfair_player(bfix, r, name)
-            if bf is not None and bf * price < SHARP_FLOOR:
+            # Betfair prices the player alone: add the same extra before the check.
+            if bf is not None and (bf + extra) * price < SHARP_FLOOR:
                 continue
-            item.update(player=name, oc_player=r["player"], p=round(p, 4), sharp=bf, sharp_src="betfair" if bf else None)
+            item.update(player=name, oc_player=r["player"], p=round(q, 4), sharp=bf, sharp_src="betfair" if bf else None,
+                        p_own=round(p_own, 4), supersub=round(extra, 4), **info)
         elif r["stat"] not in PIN_STATS:
             # Offsides, shots, fouls, throw-ins and the rest (30 Oct 2026): no
             # sharp book prices them, so it is our number alone, with a wider
@@ -325,10 +398,32 @@ def settle() -> int:
             continue
         r["value"] = v
         r["result"] = "win" if (v > r["line"] if r["over"] else v < r["line"]) else "lose"
+        if r["result"] == "lose" and r.get("player") and r.get("ss_book"):
+            _sub_settle(r, eid, api)
         done += 1
     LOG.write_text("".join(json.dumps(r) + "\n" for r in rows))
     print(f"  value books: settled {done} line(s)")
     return done
+
+
+def _sub_settle(r: dict, eid: int, api) -> None:
+    """A lost player line the book's substitute cover won: his count plus his
+    replacements' clears the line (supersub.settle_row)."""
+    import supersub
+    row = {"event_id": eid, "player": r["player"], "stat": r["stat"], "line": r["line"],
+           "over": r["over"], "value": r.get("value"), "sport": "football", "result": "lose",
+           "competition": r.get("competition"), "ss_ok": r.get("ss_ok"), "book": r.get("ss_book")}
+    try:
+        won = supersub.settle_row(
+            row,
+            lambda e: (api.get_json(f"event/{e}/incidents", max_age_hours=6, verbose=False) or {}).get("incidents"),
+            lambda e: api.get_json(f"event/{e}/lineups", max_age_hours=None, verbose=False))
+    except Exception:  # noqa: BLE001  never cost the settle
+        return
+    if won:
+        r["result"] = "win"
+        r["supersub_by"] = row.get("supersub")
+        r["supersub_value"] = row.get("supersub_value")
 
 
 def record() -> dict:

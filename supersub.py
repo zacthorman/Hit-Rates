@@ -92,6 +92,21 @@ COMPETITIONS = {"Premier League", "Championship", "League One", "League Two", "F
                 "UEFA Super Cup", "Premier Division"}
 P_CAP = 0.995
 
+# Bet365's version, "Sub On Play On" (added 2 Nov 2026). Same idea: a
+# starter taken off hands the bet to his replacement, both men's counts add
+# up. Wider than Paddy Power's: tackles and fouls won too, every line Bet365
+# offers, and the big five leagues. Bet365's own terms page would not load;
+# the competitions are the ones betting sites list for it (PL, Champions
+# League, Europa League, LaLiga, Bundesliga, Ligue 1, Serie A) and only games
+# with its icon qualify, which Oddschecker does not pass through. So these
+# are the competition fallback with no page flag to overrule them: check the
+# icon before staking.
+B365_MAX_LINE = {"Goals": 3, "Shots": 11, "Shots on target": 6, "Fouls": 8, "Fouled": 7,
+                 "Tackles": 8, "Assists": 2, "Card": 1}
+B365_COMPETITIONS = {"Premier League", "UEFA Champions League", "UEFA Europa League", "LaLiga",
+                     "Bundesliga", "Ligue 1", "Serie A"}
+BOOKS = {"pp": (MAX_LINE, COMPETITIONS), "b365": (B365_MAX_LINE, B365_COMPETITIONS)}
+
 SUB_BEFORE = 85      # a start that ended before this many minutes was a substitution
 MIN_STARTS = 5       # starts needed before his own substitution rate is used
 # Used when supersub_fit.json is missing: the fit of 23 Oct 2026 on the
@@ -156,23 +171,26 @@ def applies(market: str | None, sport: str = "football") -> bool:
 
 
 def eligible(sport: str | None, stat: str | None, line, over=True, flag=None,
-             competition: str | None = None) -> bool:
-    """Does Super Sub cover this line? `flag` is the game page's own answer
+             competition: str | None = None, book: str = "pp") -> bool:
+    """Does the book's substitute cover (Paddy Power's Super Sub, Bet365's
+    Sub On Play On) cover this line? `flag` is the game page's own answer
     (True/False) when there is one; otherwise the competition decides."""
-    if sport != "football" or not over or stat not in MAX_LINE or line is None:
+    max_line, comps = BOOKS.get(book or "pp", (None, None))
+    if not max_line or sport != "football" or not over or stat not in max_line or line is None:
         return False
     k = int(round(float(line) + 0.5))
-    if k < 1 or k > MAX_LINE[stat]:
+    if k < 1 or k > max_line[stat]:
         return False
     if flag is not None:
         return bool(flag)
-    return (competition or "") in COMPETITIONS
+    return (competition or "") in comps
 
 
 def eligible_row(r: dict) -> bool:
-    """eligible() for a pplog row: its own page flag (ss_ok) or competition."""
+    """eligible() for a price-log row: its book (pplog rows carry none and
+    are Paddy Power's), its own page flag (ss_ok) or its competition."""
     return eligible(r.get("sport"), r.get("stat"), r.get("line"), r.get("over", True),
-                    r.get("ss_ok"), r.get("competition"))
+                    r.get("ss_ok"), r.get("competition"), r.get("book") or "pp")
 
 
 # Replacements' per-90 rates by the position of the man they replace, and the
@@ -181,9 +199,9 @@ def eligible_row(r: dict) -> bool:
 # measured from incidents, which the backtest cache does not keep, so they
 # come from the live cache (see fit).
 DEFAULT_RATES = {
-    "D": {"Shots": 1.08, "Shots on target": 0.33, "Fouls": 1.37, "Fouled": 1.07, "Goals": 0.08, "Assists": 0.09, "Card": 0.3, "_off_minutes": 64.3},
-    "M": {"Shots": 2.01, "Shots on target": 0.71, "Fouls": 1.66, "Fouled": 1.5, "Goals": 0.21, "Assists": 0.16, "Card": 0.31, "_off_minutes": 66.9},
-    "F": {"Shots": 2.68, "Shots on target": 1.05, "Fouls": 1.81, "Fouled": 1.59, "Goals": 0.34, "Assists": 0.16, "Card": 0.29, "_off_minutes": 67.4},
+    "D": {"Shots": 1.08, "Shots on target": 0.33, "Fouls": 1.37, "Fouled": 1.07, "Goals": 0.08, "Assists": 0.09, "Card": 0.3, "Tackles": 2.0, "_off_minutes": 64.3},
+    "M": {"Shots": 2.01, "Shots on target": 0.71, "Fouls": 1.66, "Fouled": 1.5, "Goals": 0.21, "Assists": 0.16, "Card": 0.31, "Tackles": 1.9, "_off_minutes": 66.9},
+    "F": {"Shots": 2.68, "Shots on target": 1.05, "Fouls": 1.81, "Fouled": 1.59, "Goals": 0.34, "Assists": 0.16, "Card": 0.29, "Tackles": 1.38, "_off_minutes": 67.4},
 }
 
 
@@ -265,7 +283,7 @@ def extra_for(p_own: float, stat: str, k: int, played: list[dict],
     pos = position_of(played) or ""
     rp = (rates if rates is not None else load_rates()).get(pos) or {}
     rho = rp.get(stat)
-    if s is None or not s or not rho or stat not in MAX_LINE:
+    if s is None or not s or not rho:
         return p_own, 0.0
     m_off = off_minutes(played) or rp.get("_off_minutes") or 68.0
     share = start_share(played)
@@ -472,7 +490,7 @@ def fit(folder: Path) -> dict:
             "rates": fit_rates(folder)}
 
 
-RATE_STATS = ("Shots", "Shots on target", "Fouls", "Fouled", "Goals", "Assists")
+RATE_STATS = ("Shots", "Shots on target", "Fouls", "Fouled", "Goals", "Assists", "Tackles")
 
 
 def fit_rates(folder: Path) -> dict:
