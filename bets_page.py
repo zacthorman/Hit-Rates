@@ -279,9 +279,13 @@ JS = """
 const tabs=[...document.querySelectorAll('.tabs button')];
 function show(id){tabs.forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===id));
 document.querySelectorAll('.panel').forEach(p=>p.hidden=p.id!==id);
-try{history.replaceState(null,'','#'+id)}catch(e){}}
+try{history.replaceState(null,'',id==='summary'?location.pathname:'#t-'+id)}catch(e){}}
 tabs.forEach(b=>b.addEventListener('click',()=>show(b.dataset.tab)));
-show(['summary','challenge','detail'].includes(location.hash.slice(1))?location.hash.slice(1):'summary');
+/* '#t-detail', not '#detail': a hash matching a panel's id made the browser jump
+   past the header to that panel on every load (3 Nov 2026). */
+const want=location.hash.replace(/^#(t-)?/,'');
+show(['summary','challenge','detail'].includes(want)?want:'summary');
+if(location.hash&&!location.hash.startsWith('#t-'))scrollTo(0,0);
 """
 
 

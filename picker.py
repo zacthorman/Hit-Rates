@@ -463,7 +463,7 @@ def main(argv: list[str] | None = None) -> None:
         data = slim(payload)
         out = REPORTS / f"pick-{slug}.html"
         import sitenav
-        out.write_text(sitenav.wrap(build(slug, label, data), "index", "../" if out.parent.name == "reports" else ""),
+        out.write_text(sitenav.wrap(build(slug, label, data), "index", "../" if out.parent.name == "reports" else "", kind="picker"),
                        encoding="utf-8")
         made += 1
         print(f"  {out.name:34} {len(data):3} fixtures  {out.stat().st_size / 1e6:.1f} MB")

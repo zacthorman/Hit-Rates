@@ -265,6 +265,18 @@ if ! "$PY" site_guard.py gate "$STAGE"; then
   exit 1
 fi
 
+# Only now, after the gate has passed on the full pages, shrink what ships
+# (packsite.py, 3 Nov 2026): the match pages' data goes out as key lists plus
+# value rows, about half the size and half the parse time on a phone. The
+# reports in the repo are never touched. A page that will not pack, or would
+# not read back identically, ships as it was.
+"$PY" packsite.py "$STAGE" || echo "  reports not packed (publishing them as they are)"
+# Bookmaker price files the build reads but no page loads: kept in the repo,
+# not published.
+for f in bet365 oddschecker_all paddypower pinnacle pinnacle_props skybet value_books; do
+  rm -f "$STAGE/reports/$f.json"
+done
+
 cd "$STAGE"
 git init -q
 git checkout -q -b gh-pages

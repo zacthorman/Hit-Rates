@@ -277,6 +277,24 @@ select { max-width: 100%; min-width: 0; text-overflow: ellipsis; }
 .def-soft .def-bar em { background: var(--hit); } .def-tough .def-bar em { background: var(--miss); }
 .def-pick { padding: 9px 0; border-top: 1px solid var(--grid); }
 .gs-card { padding: 14px 16px; }
+/* The verdict card (verdictView). */
+#verdict { margin: 4px 0 18px; }
+.hrv { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 0;
+      background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.hrv-main, .hrv-side { padding: 14px 18px; }
+.hrv-side { border-left: 1px solid var(--border); background: var(--tint); }
+.hrv-k { margin: 0 0 8px; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.hrv.gs2 .gs-score { font-size: 17px; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); }
+.hrv.gs2 .gs-score .t { overflow-wrap: anywhere; }
+.hrv.gs2 .gs-score b { font-size: 26px; }
+.hrv.gs2 .gs-bar3-l { flex-wrap: wrap; gap: 2px 10px; }
+.hrv-main, .hrv-side { min-width: 0; }
+.hrv .gs-target { padding: 6px 0; }
+.hrv-note { margin: 8px 0 0; font-size: 12px; color: var(--muted); }
+.hrv-none { margin: 0; color: var(--text-secondary); }
+.hrv-more { margin-left: 6px; font: inherit; font-size: 12px; font-weight: 600; color: var(--team-1);
+           background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
+@media (max-width: 760px) { .hrv { grid-template-columns: 1fr; } .hrv-side { border-left: 0; border-top: 1px solid var(--border); } }
 .gs-teams { display: flex; justify-content: space-between; gap: 12px; }
 .gs-side { display: flex; flex-direction: column; gap: 1px; font-size: 15px; min-width: 0; }
 .gs-name { display: inline-flex; align-items: center; gap: 7px; }
@@ -5909,7 +5927,7 @@ function playerMarket(name) {
 
 function loadMarkets() {
   if (typeof fetch !== "function" || location.protocol === "file:") return;
-  fetch("markets.json", { cache: "no-store" })
+  fetch("markets.json", { cache: "no-cache" })
     .then(r => (r.ok ? r.json() : null))
     .then(j => {
       if (!j || !j.events) return;
@@ -5951,7 +5969,7 @@ let USMODEL = null;
 function loadUSModel() {
   if (SPORT !== "basketball" && SPORT !== "american-football") return;
   if (typeof fetch !== "function" || location.protocol === "file:") return;
-  fetch("usmodel.json", { cache: "no-store" })
+  fetch("usmodel.json", { cache: "no-cache" })
     .then(r => (r.ok ? r.json() : null))
     .then(j => {
       if (!j || !j.events) return;
@@ -5978,11 +5996,12 @@ let GSTATE = null;
 function loadGameState() {
   if (SPORT !== "football" && SPORT !== "basketball" && SPORT !== "american-football") return;
   if (typeof fetch !== "function" || location.protocol === "file:") return;
-  fetch("gamestate.json", { cache: "no-store" })
+  fetch("gamestate.json", { cache: "no-cache" })
     .then(r => (r.ok ? r.json() : null))
     .then(j => {
       if (!j || !j.events) return;
       GSTATE = j;
+      verdictView();
       if (tab === "gamestate") gameStateView();
     })
     .catch(() => {});
@@ -6005,9 +6024,40 @@ function gameStateView() {
   el.innerHTML = ev.html;
 }
 
+/* The verdict: how the game should go and the lines the game state backs,
+   at the top of the page, so the answer is not three tabs deep. Taken from
+   the same gamestate.json card the Game state tab shows (3 Nov 2026). */
+function verdictView() {
+  const el = document.getElementById("verdict");
+  if (!el) return;
+  const ev = GSTATE && DATA && DATA.fixture ? GSTATE.events[String(DATA.fixture.id)] : null;
+  const box = document.createElement("div");
+  box.innerHTML = (ev && ev.html) || "";
+  const res = box.querySelector(".gs-result");
+  if (!res) { el.hidden = true; el.innerHTML = ""; return; }
+  const h = res.querySelector("h3"); if (h) h.remove();
+  const tiles = res.querySelector(".gs-tiles"); if (tiles) tiles.remove();
+  const lines = [...box.querySelectorAll(".gs-target")].slice(0, 3)
+    .map(t => t.outerHTML.replace(/fair (\d)/g, "our price $1")).join("");
+  el.innerHTML = `<div class="hrv gs2">
+      <div class="hrv-main"><p class="hrv-k">How it should go</p>${res.innerHTML}</div>
+      <div class="hrv-side"><p class="hrv-k">Strongest lines</p>${lines ||
+        '<p class="hrv-none">No bet: nothing in this game stands out.</p>'}
+        <p class="hrv-note">Our prices, not a bookie's: only worth it at that price or longer.
+        <button type="button" class="hrv-more">Full game state</button></p></div>
+    </div>`;
+  el.hidden = false;
+  const more = el.querySelector(".hrv-more");
+  if (more) more.addEventListener("click", () => {
+    switchTab("gamestate");
+    const t = document.getElementById("nav2") || document.querySelector(".tabs");
+    if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 70, behavior: "smooth" });
+  });
+}
+
 function loadFModel() {
   if (typeof fetch !== "function" || location.protocol === "file:") return;
-  fetch("fmodel.json", { cache: "no-store" })
+  fetch("fmodel.json", { cache: "no-cache" })
     .then(r => (r.ok ? r.json() : null))
     .then(j => {
       if (!j || !j.events) return;
@@ -8021,6 +8071,7 @@ function applyFixture() {
   applyTeamColours();
   fillCustom();
   resultView();
+  verdictView();
   if (tab === "gamestate") gameStateView();
   SUGGESTED = {};
   for (const [key, bucket] of Object.entries(DATA.lines)) {
@@ -10626,6 +10677,7 @@ def build_html(payload: dict) -> str:
   </div>
 </div>
 
+<div id="verdict" hidden></div>
 <div id="odds-strip" hidden></div>
 <nav class="nav2" id="nav2" hidden></nav>
 <div class="tabs" role="tablist">
@@ -10940,5 +10992,5 @@ def write_report(payload: dict, path: Path) -> Path:
     _attach_team_lines(payload)
     import sitenav
     prefix = "../" if Path(path).parent.name == "reports" else ""
-    site_guard.atomic_write(path, sitenav.wrap(build_html(payload), "index", prefix))
+    site_guard.atomic_write(path, sitenav.wrap(build_html(payload), "index", prefix, kind="report"))
     return path

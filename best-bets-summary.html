@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<!DOCTYPE html><html class="hr-p-bets" lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Best bets · Hit Rates</title><style>
 :root{--bg:#fbfbfa;--fg:#18181b;--muted:#71717a;--line:#e7e7e4;--card:#fff;--win:#15803d;--lose:#b91c1c;--open:#a16207;--accent:#18181b}
@@ -52,8 +52,111 @@ html{overflow-x:clip}
 .hr-foot p{max-width:1240px;margin:0 auto;padding:16px;color:var(--hn-mu);font-size:12.5px}
 .hr-foot a{color:var(--hn-mu)!important}
 @media (max-width:720px){.hr-nav-in{flex-wrap:wrap;gap:8px 10px;padding:8px 12px}.hr-links{order:3;flex-basis:100%}.hr-rec{margin-left:auto}}
+</style><style id="hr-theme">/* Hit Rates colour layer (3 Nov 2026). Navy and amber for the site itself;
+   green, red and amber only ever mean won, lost and open; blue and purple
+   are the two teams on match pages. Loaded after each page's own styles. */
+:root {
+  --hr-navy: #13265c; --hr-navy-2: #1f3f8f; --hr-head: #1d3a8a;
+  --hr-amber: #f5a524; --hr-ink: #241600;
+  --hr-tint: #eef2fb; --hr-tint-2: #f6f8fd;
+  --hr-win: #15803d; --hr-win-bg: #dcf5e4;
+  --hr-lose: #b91c1c; --hr-lose-bg: #fde3e3;
+  --hr-open: #9a6200; --hr-open-bg: #fdf0cf;
+  --hr-sel: #1f3f8f; --hr-sel-ink: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --hr-head: #9db8ff; --hr-amber: #fbbf24;
+    --hr-tint: rgba(110,140,255,.10); --hr-tint-2: rgba(110,140,255,.05);
+    --hr-win: #4ade80; --hr-win-bg: rgba(74,222,128,.14);
+    --hr-lose: #f87171; --hr-lose-bg: rgba(248,113,113,.14);
+    --hr-open: #facc15; --hr-open-bg: rgba(250,204,21,.13);
+    --hr-sel: #fbbf24; --hr-sel-ink: #241600;
+  }
+}
+:root[data-theme="dark"] {
+  --hr-head: #9db8ff; --hr-amber: #fbbf24;
+  --hr-tint: rgba(110,140,255,.10); --hr-tint-2: rgba(110,140,255,.05);
+  --hr-win: #4ade80; --hr-win-bg: rgba(74,222,128,.14);
+  --hr-lose: #f87171; --hr-lose-bg: rgba(248,113,113,.14);
+  --hr-open: #facc15; --hr-open-bg: rgba(250,204,21,.13);
+  --hr-sel: #fbbf24; --hr-sel-ink: #241600;
+}
+
+/* ---- the shared header and footer ---- */
+.hr-nav { background: linear-gradient(100deg, #10204f 0%, #1c3a86 70%, #2547a3 100%) !important;
+  border-bottom: 0 !important; box-shadow: 0 2px 10px rgba(16,32,79,.18); }
+.hr-brand { color: #fff !important; }
+.hr-brand i { background: var(--hr-amber) !important; border-radius: 50% !important; width: 10px !important; height: 10px !important;
+  box-shadow: 0 0 0 3px rgba(245,165,36,.25); }
+.hr-links a { color: rgba(255,255,255,.78) !important; }
+.hr-links a:hover { color: #fff !important; background: rgba(255,255,255,.12) !important; }
+.hr-links a[aria-current] { background: var(--hr-amber) !important; color: var(--hr-ink) !important; font-weight: 650; }
+.hr-rec { color: rgba(255,255,255,.85) !important; border-color: rgba(255,255,255,.28) !important; background: rgba(255,255,255,.06); }
+.hr-rec .pos { color: #6ee7a0 !important; } .hr-rec .neg { color: #ffb4b4 !important; }
+.hr-foot { border-top: 3px solid var(--hr-amber) !important; }
+
+/* ---- fixtures (home) ---- */
+html.hr-p-index { --accent: var(--hr-sel); --on-accent: var(--hr-sel-ink); --link: var(--hr-head); }
+html.hr-p-index .sports button[aria-pressed="true"] { color: var(--hr-head); border-bottom-color: var(--hr-amber); border-bottom-width: 3px; }
+html.hr-p-index .day { color: var(--hr-head); }
+html.hr-p-index .day.soon { color: #c2410c; }
+html.hr-p-index .day.soon::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: #f97316; margin-right: 8px; vertical-align: 1px; box-shadow: 0 0 0 3px rgba(249,115,22,.2); }
+html.hr-p-index .time { color: var(--hr-head); }
+html.hr-p-index li a:hover { background: var(--hr-tint-2); }
+html.hr-p-index ul { border-left: 3px solid var(--hr-navy-2); }
+html.hr-p-index .rail-title { color: var(--hr-head); }
+html.hr-p-index .rail a { border-left: 3px solid var(--hr-amber) !important; }
+html.hr-p-index .pick { border-top: 3px solid var(--hr-amber); }
+
+/* ---- tonight ---- */
+html.hr-p-tonight h1 { color: var(--hr-head); }
+html.hr-p-tonight .main > input:checked + label { background: var(--hr-sel); border-color: var(--hr-sel); color: var(--hr-sel-ink); }
+html.hr-p-tonight .warn { border-left-color: var(--hr-amber); background: var(--hr-tint-2); border-radius: 0 8px 8px 0; }
+html.hr-p-tonight details.game > summary .ko { color: var(--hr-head); }
+html.hr-p-tonight details.game[open] { background: var(--hr-tint-2); border-radius: 10px; padding: 0 12px 6px; margin: 0 -12px; }
+html.hr-p-tonight .pbar .ph { background: #2a78d6; } html.hr-p-tonight .pbar .pa { background: #7a4fd6; }
+html.hr-p-tonight .best .k { background: var(--hr-amber) !important; color: var(--hr-ink) !important; }
+html.hr-p-tonight .nobet { color: var(--hr-lose); }
+html.hr-p-tonight h3 { color: var(--hr-head); }
+html.hr-p-tonight .vbox { border-left: 3px solid var(--hr-navy-2); padding-left: 12px; }
+html.hr-p-tonight th { background: var(--hr-tint); }
+
+/* ---- match pages and the pick pages ---- */
+/* :root.x:not([data-x]) outranks the page's own :root:not([data-theme]) dark block. */
+:root.hr-p-report:not([data-x]), :root.hr-p-picker:not([data-x]) { --control-active: var(--hr-sel); --control-active-text: var(--hr-sel-ink); }
+html.hr-p-report h1, html.hr-p-picker h1 { color: var(--hr-head); }
+html.hr-p-report .n2-top[aria-selected="true"] { color: var(--hr-head); border-bottom-color: var(--hr-amber); }
+html.hr-p-report .n2-sub[aria-selected="true"] { background: var(--hr-sel); color: var(--hr-sel-ink); border-color: var(--hr-sel); }
+
+/* ---- best bets, track record, Paddy Power log, model v market ---- */
+html.hr-p-bets h1, html.hr-p-record h1, html.hr-p-pp h1, html.hr-p-market h1 { color: var(--hr-head); }
+html.hr-p-bets h2, html.hr-p-record h2, html.hr-p-pp h2, html.hr-p-market h2 { color: var(--hr-head); }
+html.hr-p-bets .stat, html.hr-p-pp .card, html.hr-p-market .kpi { border-top: 3px solid var(--hr-amber) !important; }
+html.hr-p-bets .stat:nth-child(1), html.hr-p-pp .cards > .card:nth-child(1), html.hr-p-market .kpi:nth-child(1) { border-top-color: var(--hr-navy-2) !important; }
+html.hr-p-bets .tabs button[aria-selected=true] { color: var(--hr-head); border-color: var(--hr-amber); }
+html.hr-p-bets .card { border-left: 3px solid var(--hr-navy-2); }
+html.hr-p-bets .pill.win, html.hr-p-bets .pill.open, html.hr-p-bets .pill.lose { border-color: transparent; }
+html.hr-p-bets .pill.win { background: var(--hr-win-bg); color: var(--hr-win); }
+html.hr-p-bets .pill.lose { background: var(--hr-lose-bg); color: var(--hr-lose); }
+html.hr-p-bets .pill.open { background: var(--hr-open-bg); color: var(--hr-open); }
+html.hr-p-record th, html.hr-p-pp th, html.hr-p-market th, html.hr-p-bets th { background: var(--hr-tint); }
+html.hr-p-record .big { color: var(--hr-head); }
+html.hr-p-record td .pos, html.hr-p-record td .neg { padding: 1px 7px; border-radius: 99px; font-weight: 600; }
+html.hr-p-record td .pos { background: var(--hr-win-bg); } html.hr-p-record td .neg { background: var(--hr-lose-bg); }
+html.hr-p-pp .res.win { background: var(--hr-win-bg); border-radius: 99px; }
+html.hr-p-pp .res.lose { background: var(--hr-lose-bg); border-radius: 99px; }
+html.hr-p-pp td.pos, html.hr-p-pp td.neg { font-weight: 600; }
+
+/* The header sits flush with the top on pages whose body has top padding. */
+html.hr-p-tonight body, html.hr-p-record body, html.hr-p-report body, html.hr-p-picker body { padding-top: 0 !important; }
+.hr-nav { margin-bottom: 22px !important; }
+html.hr-p-tonight .tabs > input:checked + label { background: var(--hr-sel); color: var(--hr-sel-ink); border-color: var(--hr-sel); }
+html.hr-p-tonight .argue { border-left-color: var(--hr-navy-2); }
+html.hr-p-tonight .tag.ok { color: var(--hr-win); border-color: var(--hr-win); background: var(--hr-win-bg); }
 </style></head><body><!--sitenav--><nav class="hr-nav" aria-label="Site"><div class="hr-nav-in"><a class="hr-brand" href="index.html"><i></i>Hit Rates</a><div class="hr-links"><a href="index.html">Fixtures</a><a href="tonight.html">Tonight</a><a href="best-bets-summary.html" aria-current="page">Best bets</a><a href="papertrade.html">Track record</a><a href="pp-results.html">Paddy Power log</a><a href="market-check.html">Model v market</a></div><a class="hr-rec" href="papertrade.html" title="Every pick the site has made, at Paddy Power prices, level stakes">Record <b class="neg">-13.9%</b> on 1,220 bets</a></div></nav><div class="wrap">
-<header><h1>Best bets</h1><span class="muted">updated Tue 03 Nov 16:23</span></header>
+<header><h1>Best bets</h1><span class="muted">updated Tue 03 Nov 18:10</span></header>
 <nav class="tabs" role="tablist">
 <button data-tab="summary" role="tab">Summary</button>
 <button data-tab="challenge" role="tab">Challenge</button>
@@ -67,7 +170,7 @@ html{overflow-x:clip}
 </div><ul class='plain'><li><b>Best market:</b> Corners, 362/502 (72% vs 69% expected)</li><li><b>Leaking:</b> Cards and fouls, 651/957 (68% vs 81% expected)</li></ul>
 <h2>Strongest records, next 48 hours</h2>
 <p class="muted">Picked on how often the line has landed, not on price. At Paddy Power prices the site's picks have
-lost money so far, so only take one at its "worth it at" price or longer (shown on each game in Tonight).</p><div class="card"><div class="head"><span class="pill open">evens double</span><span class="muted">our price 2.21</span><span class="muted right">Tue 03 Nov 17:45</span></div><ul><li><b>Manchester United</b> 5+ shots on target<span class="muted"> &middot; Manchester United v AS Roma &middot; 15/19</span></li><li><b>VfB Stuttgart</b> 5+ shots on target<span class="muted"> &middot; Galatasaray v VfB Stuttgart &middot; 17/21</span></li></ul></div><div class="card"><div class="head"><span class="pill open">evens double</span><span class="muted">our price 2.21</span><span class="muted right">Tue 03 Nov 20:00</span></div><ul><li><b>Manchester United</b> 5+ shots on target<span class="muted"> &middot; Manchester United v AS Roma &middot; 15/19</span></li><li><b>Anis Hadj Moussa</b> 2+ shots<span class="muted"> &middot; Feyenoord v Inter &middot; 27/33</span></li></ul></div><div class="card"><div class="head"><span class="pill open">banker</span><span class="muted">our price 1.39</span><span class="muted right">Tue 03 Nov 17:45</span></div><ul><li><b>VfB Stuttgart</b> 5+ shots on target<span class="muted"> &middot; Galatasaray v VfB Stuttgart &middot; 17/21</span></li></ul></div><div class="card"><div class="head"><span class="pill open">banker</span><span class="muted">our price 1.35</span><span class="muted right">Tue 03 Nov 20:00</span></div><ul><li><b>Manchester United</b> 5+ shots on target<span class="muted"> &middot; Manchester United v AS Roma &middot; 15/19</span></li></ul></div><div class="card"><div class="head"><span class="pill open">acca</span><span class="muted">our price 3.69</span><span class="muted right">Tue 03 Nov 17:45</span></div><ul><li><b>Manchester United</b> 5+ shots on target<span class="muted"> &middot; Manchester United v AS Roma &middot; 15/19</span></li><li><b>VfB Stuttgart</b> 5+ shots on target<span class="muted"> &middot; Galatasaray v VfB Stuttgart &middot; 17/21</span></li><li><b>Nicolas Pépé</b> 1+ shots on target<span class="muted"> &middot; Villarreal v Paris Saint-Germain &middot; 19/23</span></li></ul></div>
+lost money so far, so only take one at its "worth it at" price or longer (shown on each game in Tonight).</p><div class="card"><div class="head"><span class="pill open">evens double</span><span class="muted">our price 2.21</span><span class="muted right">Tue 03 Nov 20:00</span></div><ul><li><b>Manchester United</b> 5+ shots on target<span class="muted"> &middot; Manchester United v AS Roma &middot; 15/19</span></li><li><b>Anis Hadj Moussa</b> 2+ shots<span class="muted"> &middot; Feyenoord v Inter &middot; 27/33</span></li></ul></div><div class="card"><div class="head"><span class="pill open">evens double</span><span class="muted">our price 2.27</span><span class="muted right">Tue 03 Nov 20:00</span></div><ul><li><b>Manchester United</b> 5+ shots on target<span class="muted"> &middot; Manchester United v AS Roma &middot; 15/19</span></li><li><b>Feyenoord</b> 5+ shots on target<span class="muted"> &middot; Feyenoord v Inter &middot; 15/18</span></li></ul></div><div class="card"><div class="head"><span class="pill open">banker</span><span class="muted">our price 1.35</span><span class="muted right">Tue 03 Nov 20:00</span></div><ul><li><b>Manchester United</b> 5+ shots on target<span class="muted"> &middot; Manchester United v AS Roma &middot; 15/19</span></li></ul></div><div class="card"><div class="head"><span class="pill open">acca</span><span class="muted">our price 5.84</span><span class="muted right">Tue 03 Nov 20:00</span></div><ul><li><b>Feyenoord</b> 5+ shots on target<span class="muted"> &middot; Feyenoord v Inter &middot; 15/18</span></li><li><b>FC Bayern München</b> 6+ shots on target<span class="muted"> &middot; Atlético Madrid v FC Bayern München &middot; 16/18</span></li><li><b>Southampton</b> under 4.5 corner kicks<span class="muted"> &middot; West Bromwich Albion v Southampton &middot; 6/18</span></li></ul></div><div class="card"><div class="head"><span class="pill open">parlay</span><span class="muted">our price 3.05</span><span class="muted right">Tue 03 Nov 20:00</span></div><ul><li><b>Sondre Auklend</b> 1+ shots<span class="muted"> &middot; Bodø/Glimt v LOSC Lille &middot; 19/29</span></li><li><b>Ole Didrik Blomberg</b> 1+ shots<span class="muted"> &middot; Bodø/Glimt v LOSC Lille &middot; 22/33</span></li><li><b>Patrick Berg</b> 2+ shots<span class="muted"> &middot; Bodø/Glimt v LOSC Lille &middot; 23/32</span></li><li><b>Romain Perraud</b> 1+ shots<span class="muted"> &middot; Bodø/Glimt v LOSC Lille &middot; 20/28</span></li></ul></div>
 <h2>Recent wins</h2><div class="card"><div class="head"><span class="pill win">acca</span><span class="muted">our price 6.18</span><span class="muted right">Thu 29 Oct 00:30</span></div><ul><li><b>Nashville SC</b> under 5.5 corner kicks<span class="muted"> &middot; Nashville SC v Philadelphia Union &middot; 8/18 &middot; got 2</span></li><li><b>Real Salt Lake</b> 5+ corner kicks<span class="muted"> &middot; Austin FC v Real Salt Lake &middot; 9/19 &middot; got 7</span></li><li><b>Colorado Rapids</b> 5+ corner kicks<span class="muted"> &middot; San Jose Earthquakes v Colorado Rapids &middot; 7/19 &middot; got 5</span></li></ul></div><div class="card"><div class="head"><span class="pill win">acca</span><span class="muted">our price 5.92</span><span class="muted right">Sun 01 Nov 22:00</span></div><ul><li><b>RJ Barrett</b> 20+ points<span class="muted"> &middot; Los Angeles Lakers v Toronto Raptors &middot; 15/19 &middot; got 22</span></li><li><b>Brandin Podziemski</b> 17+ points<span class="muted"> &middot; Golden State Warriors v Los Angeles Clippers &middot; 14/18 &middot; got 17</span></li><li><b>Obi Toppin</b> 15+ points and assists<span class="muted"> &middot; Indiana Pacers v Brooklyn Nets &middot; 12/17</span></li></ul></div><div class="card"><div class="head"><span class="pill win">acca</span><span class="muted">our price 5.92</span><span class="muted right">Sun 01 Nov 22:00</span></div><ul><li><b>RJ Barrett</b> 20+ points<span class="muted"> &middot; Los Angeles Lakers v Toronto Raptors &middot; 15/19 &middot; got 22</span></li><li><b>Brandin Podziemski</b> 17+ points<span class="muted"> &middot; Golden State Warriors v Los Angeles Clippers &middot; 14/18 &middot; got 17</span></li><li><b>Obi Toppin</b> 13+ points<span class="muted"> &middot; Indiana Pacers v Brooklyn Nets &middot; 12/17</span></li></ul></div></section>
 <section class="panel" id="challenge" hidden><div class="tablewrap"><div class="stats">
 <div class="stat"><span>Pot</span><b>&pound;0.00</b><small>run 3 bust</small></div>
@@ -89,7 +192,11 @@ lost money so far, so only take one at its "worth it at" price or longer (shown 
 const tabs=[...document.querySelectorAll('.tabs button')];
 function show(id){tabs.forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===id));
 document.querySelectorAll('.panel').forEach(p=>p.hidden=p.id!==id);
-try{history.replaceState(null,'','#'+id)}catch(e){}}
+try{history.replaceState(null,'',id==='summary'?location.pathname:'#t-'+id)}catch(e){}}
 tabs.forEach(b=>b.addEventListener('click',()=>show(b.dataset.tab)));
-show(['summary','challenge','detail'].includes(location.hash.slice(1))?location.hash.slice(1):'summary');
+/* '#t-detail', not '#detail': a hash matching a panel's id made the browser jump
+   past the header to that panel on every load (3 Nov 2026). */
+const want=location.hash.replace(/^#(t-)?/,'');
+show(['summary','challenge','detail'].includes(want)?want:'summary');
+if(location.hash&&!location.hash.startsWith('#t-'))scrollTo(0,0);
 </script><footer class="hr-foot"><p>Hit Rates is a stats project shared with mates, not betting advice. Most lines on here lose money over time: the <a href="papertrade.html">track record</a> shows it honestly. Prices change, so check before you bet. 18+, and if it stops being fun, <a href="https://www.begambleaware.org" rel="noopener">BeGambleAware.org</a>.</p></footer><script>(function(){var a=document.querySelector('.hr-links [aria-current]');if(a){var l=a.parentNode;l.scrollLeft=a.offsetLeft-l.offsetLeft-40;}})();</script></body></html>

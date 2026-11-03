@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
+THEME = ROOT / "sitenav.css"   # the colour layer, loaded after each page's own styles
 RECORD = ROOT / "record.json"
 MARK = "<!--sitenav-->"
 
@@ -81,10 +82,14 @@ def footer(prefix: str = "") -> str:
             '<a href="https://www.begambleaware.org" rel="noopener">BeGambleAware.org</a>.</p></footer>')
 
 
-def wrap(page: str, active: str = "", prefix: str = "") -> str:
-    """Add the shared header after <body ...> and the footer before </body>, once."""
+def wrap(page: str, active: str = "", prefix: str = "", kind: str | None = None) -> str:
+    """Add the shared header after <body ...> and the footer before </body>, once.
+    kind names the page for the colour layer (html class hr-p-<kind>); it
+    defaults to active, and match and pick pages pass "report" and "picker"."""
     if MARK in page or "<body" not in page:
         return page
+    import re
+    page = re.sub(r"<html(\s|>)", lambda m: f'<html class="hr-p-{kind or active or "page"}"{m.group(1)}', page, count=1)
     i = page.find("<body")
     j = page.find(">", i) + 1
     page = page[:j] + header(active, prefix) + page[j:]
@@ -93,7 +98,11 @@ def wrap(page: str, active: str = "", prefix: str = "") -> str:
         page = page[:k] + footer(prefix) + SCRIPT + page[k:]
     h = page.find("</head>")
     if h != -1:
-        page = page[:h] + CSS + page[h:]
+        try:
+            theme = f'<style id="hr-theme">{THEME.read_text(encoding="utf-8")}</style>'
+        except OSError:
+            theme = ""
+        page = page[:h] + CSS + theme + page[h:]
     return page
 
 
