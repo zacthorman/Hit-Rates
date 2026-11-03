@@ -1004,11 +1004,34 @@ function renderPicks() {
     </div>`);
   }
 
+  // Strong record, model backs it (weekpicks.py, 3 Nov 2026): a record of 9+
+  // in his last 10 that our model also rates at or above the price.
+  if (es && es.record && es.record.length) {
+    const rr = ev.recordRecord || {};
+    const rule = ev.recordRule || {};
+    const tally = (label, t) => t && t.n
+      ? `${label} <b>${t.n}</b> settled &middot; won <b>${pct(t.won / t.n)}</b> (price said ${pct(t.implied)})
+          &middot; returned <b class="${tone(t.roi)}">${sgn(t.roi)}</b>`
+      : `${label}: no settled bets yet`;
+    cards.push(`<div class="pick ev">
+      <h2>Strong record, model backs it</h2>
+      <p class="ev-sub">Cleared in ${rule.minK10 || 9}+ of his last 10, at ${fmtOdds(rule.priceLo || 1.25)} to
+        ${fmtOdds(rule.priceHi || 2.5)}, and our model rates it at or above the price.</p>
+      <div class="ev-rec">${tally("Live", rr.live)}<br>${tally("Before 3 Nov", rr.history)}</div>
+      <ul class="ev-list">${es.record.map(b => evRow(b,
+        `<span>${escapeHtml(b.form)} &middot; ours ${pct(b.chance)}</span><b class="${tone(b.edge)}">${sgn(b.edge)}</b>`)).join("")}</ul>
+      ${note("how to read this", `The "Before 3 Nov" record is the data this filter was chosen on, so it flatters
+        it: judge it on the live record. Left off: players listed out or doubtful, players who came off the bench in
+        their last game, and NBA games projected ${rule.marginMax || 12}+ points apart. NFL is receiving lines only.
+        One line per player; level stakes.`)}
+    </div>`);
+  }
+
   box.innerHTML = cards.length
     ? `<div class="picks">${cards.join("")}</div>`
     : `<div class="picks"><div class="pick none">Nothing for
        ${escapeHtml(SPORT_LABELS[sport] || sport)} in the next ${(ev && ev.windowHours) || 48} hours beats a sharp
-       price or comes from a rule on trial. Picks appear once the books price the games (Paddy Power about a day
+       price, comes from a rule on trial or has a strong record the model backs. Picks appear once the books price the games (Paddy Power about a day
        before kick-off).</div></div>`;
 }
 

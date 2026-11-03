@@ -112,7 +112,12 @@ def _files() -> list[Path]:
     # teamlog.py writes team-YYYY-MM.jsonl into the same folder; those rows
     # have no player and are teamlog's to read, so they are left out here.
     # Reading them crashed every snapshot from 21 October (KeyError 'player').
-    return sorted(p for p in DIR.glob("*.jsonl") if not p.name.startswith("team-")) if DIR.exists() else []
+    # pinnacle_props.py writes pinnacle-YYYY-MM.jsonl here too (from 2 Nov
+    # 2026): Pinnacle game and prop prices with no event_id. Reading them broke
+    # ruletrack.qualifying with KeyError 'event_id' (Rules on trial box and the
+    # picks of the week). pinnacle_props.py reads its own file directly.
+    return sorted(p for p in DIR.glob("*.jsonl")
+                  if not p.name.startswith(("team-", "pinnacle-"))) if DIR.exists() else []
 
 
 def _read(path: Path) -> list[dict]:
