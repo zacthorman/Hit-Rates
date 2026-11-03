@@ -252,9 +252,10 @@ cards per sport, both built by `weekpicks.py` and read by `make_index.py`:
   rule is tagged Proven only at 20+ live games with the whole range above
   zero. It is left off once its live run says no (range wholly below zero
   after 3+ games, or not in profit after 10). Each bet appears once, under the
-  strongest rule that takes it; prices over 6.0 are left off the page, and a
-  rule with no live result shows 3 bets, not 5. All of these still count in
-  the rule's record.
+  strongest rule that takes it, at most 3 bets a rule; prices over 6.0 are
+  left off the page. The three best live records show open, the rest fold
+  under "more rules". Control rules (built to lose) are never shown. All of
+  these still count in the rule's record.
 
 New rule `us_likely_top5` (live from 2 Nov, 21:00 UTC): each day's 5 NBA/NFL
 lines our chance rates most likely, first price 1.60 to 2.50, one per player
