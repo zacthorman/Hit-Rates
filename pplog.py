@@ -108,11 +108,16 @@ def _month_file(ts: float) -> Path:
     return DIR / f"{time.strftime('%Y-%m', time.gmtime(ts))}.jsonl"
 
 
+_OWN = re.compile(r"^\d{4}-\d{2}\.jsonl$")
+
+
 def _files() -> list[Path]:
-    # teamlog.py writes team-YYYY-MM.jsonl into the same folder; those rows
-    # have no player and are teamlog's to read, so they are left out here.
-    # Reading them crashed every snapshot from 21 October (KeyError 'player').
-    return sorted(p for p in DIR.glob("*.jsonl") if not p.name.startswith("team-")) if DIR.exists() else []
+    # Only this log's own month files (YYYY-MM.jsonl). Other tools share the
+    # folder: teamlog.py writes team-YYYY-MM.jsonl (crashed every snapshot from
+    # 21 October, KeyError 'player') and pinnacle_props.py writes
+    # pinnacle-YYYY-MM.jsonl (crashed everything reading this log from 02:37 on
+    # 3 November, KeyError 'event_id'). Whitelisting the name stops the next one.
+    return sorted(p for p in DIR.glob("*.jsonl") if _OWN.match(p.name)) if DIR.exists() else []
 
 
 def _read(path: Path) -> list[dict]:
