@@ -251,7 +251,8 @@ def main() -> None:
 
     page = PAGE.replace("__PAYLOAD__", payload).replace("__RESEARCH__", research_card())
     out = ROOT / "index.html"
-    site_guard.atomic_write(out, page)
+    import sitenav
+    site_guard.atomic_write(out, sitenav.wrap(page, "index"))
 
     # The picker reads the same reports this index just read, so building it
     # here is what stops the two drifting: a report rebuilt without its picker
@@ -331,7 +332,7 @@ PAGE = """<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Football hit rates</title>
+<title>Hit Rates</title>
 <style>
 :root {
   color-scheme: light;
@@ -422,12 +423,13 @@ PAGE = """<!DOCTYPE html>
                   background: var(--raised); color: var(--text); border-radius: 7px;
                   font: inherit; font-size: 0.8rem; padding: 4px 10px; cursor: pointer; }
   /* The tab that opens it: a strip on the right edge, always in reach. */
-  .side-tab { display: block; position: fixed; right: 0; top: 50%; z-index: 25;
-              transform: translateY(-50%); writing-mode: vertical-rl;
+  .side-tab { display: block; position: fixed; left: 50%; bottom: 16px; z-index: 25;
+              transform: translateX(-50%);
               background: var(--accent); color: var(--on-accent); border: 0;
-              border-radius: 8px 0 0 8px; padding: 14px 7px; font: inherit;
-              font-size: 0.8rem; font-weight: 650; letter-spacing: 0.04em;
-              cursor: pointer; box-shadow: -2px 2px 10px rgba(0,0,0,0.15); }
+              border-radius: 999px; padding: 11px 20px; font: inherit;
+              font-size: 0.9rem; font-weight: 650;
+              cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.22); }
+  .main { padding-bottom: 64px; }
 }
 @media (max-width: 560px) {
   .topbar-in { gap: 12px; padding: 0 12px; }
@@ -561,6 +563,12 @@ body {
   margin: 0 0 6px; border-bottom: 1px solid var(--border);
   display: flex; gap: 7px; flex-wrap: wrap; align-items: center;
 }
+@media (max-width: 560px) {
+  /* One swipeable row of leagues on a phone, not six rows before the first game. */
+  .filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .filters::-webkit-scrollbar { display: none; }
+  .filters .search { flex: 0 0 150px; }
+}
 .chip {
   appearance: none; cursor: pointer;
   background: var(--raised); color: var(--text);
@@ -602,7 +610,8 @@ li a:hover { background: var(--raised); }
   font-weight: 620; font-size: 14.5px; color: var(--text);
 }
 .match { flex: 1 1 auto; min-width: 0; }
-.teams { font-weight: 560; color: var(--link); }
+.teams { font-weight: 600; color: var(--text); }
+a:hover .teams { text-decoration: underline; }
 .meta { display: block; color: var(--muted); font-size: 12.5px; margin-top: 2px; }
 .tag {
   display: inline-block; font-size: 11px; font-weight: 600;
@@ -618,7 +627,6 @@ footer { margin-top: 26px; color: var(--muted); font-size: 12.5px; }
 <body>
 <header class="topbar">
   <div class="topbar-in">
-    <h1 class="brand">Hit rates</h1>
     <nav class="sports" id="sports" aria-label="Sport"></nav>
   </div>
 </header>
@@ -641,9 +649,8 @@ footer { margin-top: 26px; color: var(--muted); font-size: 12.5px; }
     </div>
     <div class="quick">
       <a href="tonight.html">Tonight <span>next 8 hours &rarr;</span></a>
-      <a href="best-bets-summary.html">Best bets summary <span>all sports &rarr;</span></a>
-      <a href="market-check.html">Market check <span>model v Betfair &rarr;</span></a>
-      <a href="pp-results.html">Paddy Power results <span>what hit, what paid &rarr;</span></a>
+      <a href="best-bets-summary.html">Best bets <span>strongest records &rarr;</span></a>
+      <a href="papertrade.html">Track record <span>is it making money? &rarr;</span></a>
     </div>
     <div class="rail-head">
       <button type="button" class="fold" id="picks-btn" aria-expanded="true"
@@ -798,8 +805,8 @@ function renderList() {
     const soon = label === "Today" || label === "Tomorrow";
     const rows = g.items.map(f => {
       const played = f.kickoff && f.kickoff <= now;
-      const tags = (f.players ? '<span class="tag">players</span>' : "")
-                 + (f.adjusted ? '<span class="tag">adjusted</span>' : "");
+      // Nearly every fixture has both, so only the gaps are worth a tag.
+      const tags = (f.players ? "" : '<span class="tag" title="No player stats for this game yet">team stats only</span>');
       // ?v= is the build stamp. It changes every time the index is rebuilt,
       // so the browser is forced to fetch the report rather than serve a copy
       // it cached before the report was re-rendered. Without this a fixed
@@ -877,7 +884,7 @@ function strengthDetail(l) {
   return bits.join("; ") + ". ";
 }
 function chanceText(l) {
-  return l.chance != null ? `${Math.round(l.chance * 100)}%` : "&mdash;";
+  return l.chance != null ? `${Math.round(l.chance * 100)}%` : "&ndash;";
 }
 /* Whether a value figure is shown as value: above the bar weekend.VALUE_SHOW
    sets, and never while that is off (RULE-REVIEW.md). */
@@ -950,7 +957,7 @@ function legsWhy(legs) {
   return `<details><summary>why each leg</summary>${body}</details>`;
 }
 function valueText(v) {
-  return v == null ? "&mdash;" : `${v >= 0 ? "+" : "&minus;"}${Math.abs(v * 100).toFixed(1)}%`;
+  return v == null ? "&ndash;" : `${v >= 0 ? "+" : "&minus;"}${Math.abs(v * 100).toFixed(1)}%`;
 }
 
 function note(summary, body) {
@@ -988,7 +995,7 @@ function renderPicks() {
   // methods with a record behind them, and the record shown with them.
   const ev = DATA.picks && DATA.picks.evidence;
   const es = ev && ev.sports ? ev.sports[sport] : null;
-  const pct = x => x == null ? "&mdash;" : `${Math.round(x * 100)}%`;
+  const pct = x => x == null ? "&ndash;" : `${Math.round(x * 100)}%`;
   const sgn = x => `${x >= 0 ? "+" : "&minus;"}${Math.abs(x * 100).toFixed(1)}%`;
   const when = t => {
     const d = new Date(t * 1000);

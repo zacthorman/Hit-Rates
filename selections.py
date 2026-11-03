@@ -106,6 +106,8 @@ def _drift_candidates(rows: list[dict], snap: str = "last") -> list[dict]:
     hist = ruletrack._hist_model()
     out = []
     for r in allq:
+        if r.get("event_id") is None:       # Pinnacle rows carry no event id (3 Nov 2026)
+            continue
         if (str(r["event_id"]), pplog._norm(r["player"]), r["stat"], r["line"], bool(r["over"])) not in want:
             continue
         price = (r.get(snap) or r.get("first") or {}).get("price")
@@ -308,7 +310,8 @@ def box(now: float, until: float) -> str:
         picks = annotate(tonight(now, until))
         rec = record()
     except Exception as exc:  # never cost the page
-        return f"<p class='sub'>Best selections unavailable ({esc(str(exc))})</p>"
+        print(f"selections.box: {exc!r}")
+        return "<p class='sub'>The short list could not be built this run. It returns at the next update.</p>"
     live = (f"Live since 26 Oct: {rec['won']}/{rec['n']} won, {rec['profit']:+.2f} units, {rec['roi']:+.0%}."
             if rec["n"] else "Live record starts tonight.")
     head = (f"<div class='vbox'><p class='call'><b>The short list.</b> NBA and NFL player lines at Paddy Power where "

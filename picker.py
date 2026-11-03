@@ -426,7 +426,7 @@ def build(slug: str, label: str, data: list[dict]) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{label} &middot; pick a bet</title>
+<title>{label} · pick a bet · Hit Rates</title>
 <style>{CSS}</style>
 </head>
 <body>
@@ -462,7 +462,9 @@ def main(argv: list[str] | None = None) -> None:
         label = (payload["fixtures"][0]["fixture"].get("competition") or slug).split(",")[0]
         data = slim(payload)
         out = REPORTS / f"pick-{slug}.html"
-        out.write_text(build(slug, label, data), encoding="utf-8")
+        import sitenav
+        out.write_text(sitenav.wrap(build(slug, label, data), "index", "../" if out.parent.name == "reports" else ""),
+                       encoding="utf-8")
         made += 1
         print(f"  {out.name:34} {len(data):3} fixtures  {out.stat().st_size / 1e6:.1f} MB")
     print(f"{made} picker page(s) written")

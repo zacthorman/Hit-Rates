@@ -406,6 +406,7 @@ CSS = """:root{--bg:#fbfbfa;--fg:#18181b;--muted:#71717a;--line:#e7e7e4;--card:#
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,system-ui,sans-serif}
 .wrap{max-width:860px;margin:0 auto;padding:24px 16px 60px}a{color:inherit}
 h1{font-size:1.5rem;margin:0 0 4px}h2{font-size:1.05rem;margin:28px 0 8px}.sub{color:var(--muted);font-size:.85rem}
+.muted{color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:12px}
 table{width:100%;border-collapse:collapse;font-size:.85rem;font-variant-numeric:tabular-nums}
 th,td{text-align:right;padding:6px 8px;border-bottom:1px solid var(--line)}th:first-child,td:first-child{text-align:left}
@@ -429,15 +430,19 @@ def page() -> Path:
     v = c["value"]
     kpis = [
         ("Bets logged", f"{s['logged']:,}", f"{s['settled']} settled, {s['open']} open"),
-        ("Value v close", (f"<span class='{_cls(v.get('edge'))}'>{v['edge']:+.1%}</span>" if v.get("n") else "-"),
-         f"{v.get('n', 0)} value bets seen twice"),
+        ("Did prices move our way?", (f"<span class='{_cls(v.get('edge'))}'>{v['edge']:+.1%}</span>" if v.get("n") else "-"),
+         f"{v.get('n', 0)} value bets, first price v kick-off"),
     ]
     r0 = s["roi"].get("3%+") or {}
-    kpis.append(("Value ROI", (f"<span class='{_cls(r0.get('roi'))}'>{r0['roi']:+.1%}</span>" if r0.get("n") else "-"),
-                 f"{r0.get('n', 0)} settled at 3%+ value"))
+    # Under 100 settled bets a return is mostly noise: shown, but greyed and labelled.
+    early = r0.get("n", 0) < 100
+    kpis.append(("Value bets return", (f"<span class='{'muted' if early else _cls(r0.get('roi'))}'>{r0['roi']:+.1%}</span>"
+                                       if r0.get("n") else "-"),
+                 f"{r0.get('n', 0)} settled{', too early to tell' if early else ''}"))
     if o.get("blend") and o.get("market"):
         d = o["market"]["logloss"] - o["blend"]["logloss"]
-        kpis.append(("Blend v market", f"<span class='{_cls(d)}'>{d:+.4f}</span>", "log loss saved per bet"))
+        kpis.append(("Forecasts v Betfair", f"<span class='{_cls(d)}'>{'better' if d > 0 else 'worse'}</span>",
+                     f"by {abs(d):.4f} log loss a bet (tiny)"))
     kp = "".join(f"<div class='card kpi'><span>{e(a)}</span><b>{b}</b><span>{e(c_)}</span></div>"
                  for a, b, c_ in kpis)
 
@@ -456,7 +461,7 @@ def page() -> Path:
            f"on both scores; the row with the lowest log loss is the one to trust.</p>"
            if o.get("n") else "<p class='sub'>Nothing settled yet. Fixtures settle three hours after kick-off.</p>")
     fam_rows = "".join(
-        f"<tr><td>{e(f.replace('|', ' &middot; '))}</td><td>{x['n']}</td>"
+        f"<tr><td>{e(f).replace('|', ' &middot; ')}</td><td>{x['n']}</td>"
         f"<td>{x.get('model', {}).get('logloss', float('nan')):.3f}</td>"
         f"<td>{x.get('market', {}).get('logloss', float('nan')):.3f}</td>"
         f"<td>{x.get('blend', {}).get('logloss', float('nan')):.3f}</td></tr>"
@@ -491,9 +496,9 @@ def page() -> Path:
         tuned_line = f"<p class='sub'>No fitted weights yet: each family needs {FIT_MIN} settled bets.</p>"
 
     doc = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>Market check</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Model v market · Hit Rates</title>
 <style>{CSS}</style></head><body><div class="wrap">
-<p class="sub"><a href="index.html">&larr; Hit Rates</a></p>
+
 <h1>Market check</h1>
 <p class="sub">Every bet the site prices that Betfair also prices, scored against Betfair. Built {built}.</p>
 <div class="kpis">{kp}</div>
@@ -512,7 +517,8 @@ then, after commission.</p>
 <h2>By market</h2>
 <div class="card">{fams}{tuned_line}</div>
 </div></body></html>"""
-    PAGE.write_text(doc)
+    import sitenav
+    PAGE.write_text(sitenav.wrap(doc, "market"))
     print(f"wrote {PAGE.name}")
     return PAGE
 

@@ -1,49 +1,49 @@
 {
- "updated": "2026-11-02 11:12 UTC",
+ "updated": "2026-11-03 16:05 UTC",
  "weights": {
   "team|Goals|derived": 0.977,
-  "team|Goals|exchange": 0.824,
-  "team|Both teams to score|exchange": 0.174,
-  "team|Match goals|exchange": 0.204,
-  "team|Match corners|exchange": 0.83,
-  "player|Shots on target|back": 0.061,
+  "team|Goals|exchange": 0.833,
+  "team|Both teams to score|exchange": 0.17,
+  "team|Match goals|exchange": 0.367,
+  "team|Match corners|exchange": 0.834,
+  "player|Shots on target|back": 0.06,
   "player|Goals|back": 0.434,
-  "player|Anytime touchdown|back": 0.373,
-  "team|Match cards|exchange": 0.469
+  "player|Anytime touchdown|back": 0.374,
+  "team|Match cards|exchange": 0.564
  },
  "backMargin": {
-  "SHOTS_ON_TARGET_P1": 0.337,
+  "SHOTS_ON_TARGET_P1": 0.338,
   "TO_SCORE": 0.226,
-  "TO_SCORE_A_TOUCHDOWN": 0.155
+  "TO_SCORE_A_TOUCHDOWN": 0.157
  },
  "fit": {
   "team|Goals|derived": {
-   "n": 1022,
+   "n": 1038,
    "raw": 1.0,
    "default": 0.5
   },
   "team|Goals|exchange": {
-   "n": 92,
+   "n": 100,
    "raw": 1.0,
    "default": 0.5
   },
   "team|Both teams to score|exchange": {
-   "n": 94,
+   "n": 97,
    "raw": 0.0,
    "default": 0.5
   },
   "team|Match goals|exchange": {
-   "n": 96,
-   "raw": 0.05,
+   "n": 100,
+   "raw": 0.3,
    "default": 0.5
   },
   "team|Match corners|exchange": {
-   "n": 97,
+   "n": 101,
    "raw": 1.0,
    "default": 0.5
   },
   "player|Shots on target|back": {
-   "n": 235,
+   "n": 240,
    "raw": 0.0,
    "default": 0.35
   },
@@ -53,17 +53,17 @@
    "default": 0.35
   },
   "player|Anytime touchdown|back": {
-   "n": 43,
+   "n": 45,
    "raw": 0.4,
    "default": 0.35
   },
   "team|Match cards|exchange": {
-   "n": 85,
-   "raw": 0.45,
+   "n": 88,
+   "raw": 0.6,
    "default": 0.5
   },
   "SHOTS_ON_TARGET_P1": {
-   "n": 220,
+   "n": 225,
    "raw": 0.4,
    "default": 0.06
   },
@@ -73,10 +73,10 @@
    "default": 0.1
   },
   "TO_SCORE_A_TOUCHDOWN": {
-   "n": 43,
+   "n": 45,
    "raw": 0.22,
    "default": 0.1
   }
  },
- "settled": 1816
+ "settled": 1861
 }

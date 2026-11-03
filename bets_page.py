@@ -111,7 +111,7 @@ def best_to_do(items: list[dict], limit: int = 5) -> list[dict]:
 
 def pick_card(i: dict, badge: str) -> str:
     cat = i["category"].replace("Pick: ", "").replace("Fixture single", "single")
-    price = f'fair {i["fair"]:.2f}' if i.get("fair") else ""
+    price = f'our price {i["fair"]:.2f}' if i.get("fair") else ""
     ko = when(min(l["kickoff"] for l in i["legs"]))
     legs = "".join(f"<li>{leg_txt(l)}</li>" for l in i["legs"])
     return (f'<div class="card"><div class="head"><span class="pill {badge}">{esc(cat)}</span>'
@@ -135,9 +135,14 @@ def what_works(s: dict) -> str:
 
 def summary_tab(s: dict, items: list[dict], ch: dict) -> str:
     hit = s["legs_won"] / s["legs_settled"] if s["legs_settled"] else None
-    tiles = f"""<div class="stats">
-<div class="stat"><span>Legs landed</span><b>{pct(hit)}</b><small>{s["legs_won"]}/{s["legs_settled"]}</small></div>
-<div class="stat"><span>Site said</span><b>{pct(s["said"])}</b><small>{"honest" if hit is not None and s["said"] and abs(hit - s["said"]) <= .05 else "over-confident" if hit is not None and s["said"] and hit < s["said"] else "under-selling" if hit is not None else ""}</small></div>
+    import sitenav
+    rec = sitenav._record() or {}
+    roi = rec.get("roi")
+    money_tile = (f'<div class="stat"><span>At Paddy prices</span><b class="{"pos" if roi > 0 else "neg"}">{roi * 100:+.1f}%</b>'
+                  f'<small><a href="papertrade.html">{rec["n"]:,} bets, level stakes</a></small></div>') if roi is not None else ""
+    tiles = f"""<div class="stats">{money_tile}
+<div class="stat"><span>Legs landed</span><b>{pct(hit)}</b><small>{s["legs_won"]}/{s["legs_settled"]}, site said {pct(s["said"])}</small></div>
+<div class="stat" hidden><span>Site said</span><b>{pct(s["said"])}</b><small>{"honest" if hit is not None and s["said"] and abs(hit - s["said"]) <= .05 else "over-confident" if hit is not None and s["said"] and hit < s["said"] else "under-selling" if hit is not None else ""}</small></div>
 <div class="stat"><span>Bets landed</span><b>{s["bets_won"]}/{s["bets_settled"]}</b><small>{pct(s["bets_won"] / s["bets_settled"]) if s["bets_settled"] else ""}</small></div>
 <div class="stat"><span>Challenge</span><b class="{"pos" if ch["total"] >= 0 else "neg"}">{money(ch["total"])}</b><small>{ch["label"]}</small></div>
 </div>"""
@@ -146,8 +151,10 @@ def summary_tab(s: dict, items: list[dict], ch: dict) -> str:
     todo = "".join(pick_card(i, "open") for i in best_to_do(items)) or \
         '<p class="muted">Nothing in the next 48 hours.</p>'
     return f"""{tiles}{what_works(s)}
-<h2>Best ones to do</h2>{todo}
-<h2>Wins worth noting</h2>{wins}"""
+<h2>Strongest records, next 48 hours</h2>
+<p class="muted">Picked on how often the line has landed, not on price. At Paddy Power prices the site's picks have
+lost money so far, so only take one at its "worth it at" price or longer (shown on each game in Tonight).</p>{todo}
+<h2>Recent wins</h2>{wins}"""
 
 
 # ---------------------------------------------------------------- challenge
@@ -287,8 +294,7 @@ def main() -> None:
     updated = datetime.now().astimezone().strftime("%a %d %b %H:%M")
     page = f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Best bets</title><style>{CSS}</style></head><body><div class="wrap">
-<a href="index.html" class="muted">&larr; All fixtures</a>
+<title>Best bets · Hit Rates</title><style>{CSS}</style></head><body><div class="wrap">
 <header><h1>Best bets</h1><span class="muted">updated {esc(updated)}</span></header>
 <nav class="tabs" role="tablist">
 <button data-tab="summary" role="tab">Summary</button>
@@ -299,7 +305,8 @@ def main() -> None:
 <section class="panel" id="challenge" hidden><div class="tablewrap">{challenge_tab(ch)}</div></section>
 <section class="panel" id="detail" hidden><div class="tablewrap">{detail_tab(s, cal)}</div></section>
 </div><script>{JS}</script></body></html>"""
-    OUT.write_text(page, encoding="utf-8")
+    import sitenav
+    OUT.write_text(sitenav.wrap(page, "bets"), encoding="utf-8")
     print(f"Wrote {OUT.name}: summary, challenge ({ch['label']}), detail")
 
 

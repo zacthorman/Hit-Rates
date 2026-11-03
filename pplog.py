@@ -848,14 +848,19 @@ def _cls(x):
     return "pos" if x > 0.0001 else "neg" if x < -0.0001 else ""
 
 
+def _u(x):
+    """Units: '-31,544u', '+4.2u'. A decimal on a five-figure total is noise."""
+    return f"{x:+,.0f}u" if abs(x) >= 100 else f"{x:+.1f}u"
+
+
 def page(args=None) -> Path:
     s = summary()
     e = html.escape
 
     def card(title, b, note):
         return f"""<div class="card"><h3>{e(title)}</h3>
-          <div class="big {_cls(b['profit'])}">{b['profit']:+.1f}u</div>
-          <div class="sub">{b['n']} bets &middot; {b['won']} won &middot; hit {_pct(b['hit'])}
+          <div class="big {_cls(b['profit'])}">{_u(b['profit'])}</div>
+          <div class="sub">{b['n']:,} bets &middot; {b['won']:,} won &middot; hit {_pct(b['hit'])}
             (said {_pct(b['said'])}) &middot; ROI <b class="{_cls(b['roi'])}">{_pct(b['roi'], True)}</b></div>
           <p>{note}</p></div>"""
 
@@ -878,37 +883,39 @@ def page(args=None) -> Path:
                 f"<td class='res {res}'>{res}{(' (' + val + ')') if val else ''}</td></tr>")
 
     mk = [f"<tr><td>{e(k)}</td><td>{b['n']}</td><td>{_pct(b['hit'])}</td><td>{_pct(b['said'])}</td>"
-          f"<td class='{_cls(b['profit'])}'>{b['profit']:+.1f}u</td><td class='{_cls(b['roi'])}'>{_pct(b['roi'], True)}</td></tr>"
+          f"<td class='{_cls(b['profit'])}'>{_u(b['profit'])}</td><td class='{_cls(b['roi'])}'>{_pct(b['roi'], True)}</td></tr>"
           for k, b in s["value_by_market"].items()]
+    now = time.time()
+    open_value = [r for r in s["open_value"] if (r.get("kickoff") or 0) > now]
     bands = [f"<tr><td>{e(k)}</td><td>{b['n']}</td><td>{_pct(b['hit'])}</td></tr>" for k, b in s["by_band"].items()]
     c = s["clv"]
     body = f"""
-<h1>Paddy Power results</h1>
-<p class="lede">Every Paddy Power player line the site has seen, our chance at the time, and how it landed.
-Value bets are lines where ours was 50%+ and beat Paddy Power's price by 5%+, at the price first seen, 1 unit each, and only each player's biggest edge in a game (lines on one player land together).
-{s['logged']} logged &middot; {s['settled']} settled &middot; {s['open']} open &middot; {s['void']} void (did not play).
-Updated {time.strftime('%a %d %b %H:%M')}.</p>
+<h1>Paddy Power log</h1>
+<p class="lede">Every Paddy Power player line the site has seen, what we gave it, and how it landed.
+{s['settled']:,} settled &middot; updated {time.strftime('%a %d %b %H:%M')}.</p>
+<details class="lede"><summary>How this is counted</summary>
+Value bets are lines where our chance was 50%+ and beat Paddy Power's price by 5%+, at the price first seen, 1 unit each,
+and only each player's biggest gap in a game (lines on one player land together).
+{s['logged']:,} logged &middot; {s['open']:,} open &middot; {s['void']:,} void (did not play).</details>
 <div class="cards">
 {card('Value bets', s['value'], 'The number that matters: would backing what the site flagged have made money?')}
 {card('Strong lines (ours 70%+)', s['strong'], 'Hit rate on the lines the site rates most likely, value or not.')}
 {card('Every line', s['all'], 'Backing everything Paddy Power offers at their price. Should lose about their margin.')}
-<div class="card"><h3>Price moves</h3><div class="big {_cls(c['avg'])}">{_pct(c['avg'], True)}</div>
-<div class="sub">{c['beat']} shortened &middot; {c['lost']} drifted, of {c['n']} value bets seen twice</div>
-<p>When Paddy Power shortens a price after we flagged it, the market agreed with us. Beating the closing price over time is the best early sign of real value.</p></div>
 </div>
 <h2>Open value bets</h2>
-{table([bet_row(r, 'last') for r in s['open_value']], ['Kick-off', 'Player', 'Line', 'Last 5 · 10', 'Ours', 'Paddy Power', 'Edge', ''])
-  if s['open_value'] else '<p class="muted">None right now.</p>'}
+{table([bet_row(r, 'last') for r in open_value], ['Kick-off', 'Player', 'Line', 'Last 5 · 10', 'Our chance', 'Paddy Power', 'Gap', ''])
+  if open_value else '<p class="muted">None right now.</p>'}
 <h2>Value bets by market</h2>
 {table(mk, ['Market', 'Bets', 'Hit', 'Said', 'Profit', 'ROI']) if mk else '<p class="muted">Nothing settled yet.</p>'}
 <h2>Is the model honest? Every line</h2>
 {table(bands, ['Ours said', 'Lines', 'Actually hit']) if bands else '<p class="muted">Nothing settled yet.</p>'}
 <h2>Recent value bets</h2>
-{table([bet_row(r, 'first') for r in s['recent_value']], ['Kick-off', 'Player', 'Line', 'Last 5 · 10', 'Ours', 'Paddy Power', 'Edge', 'Result'])
+{table([bet_row(r, 'first') for r in s['recent_value']], ['Kick-off', 'Player', 'Line', 'Last 5 · 10', 'Our chance', 'Paddy Power', 'Gap', 'Result'])
   if s['recent_value'] else '<p class="muted">Nothing settled yet.</p>'}
 """
-    PAGE.write_text(f"""<!doctype html><html lang="en-GB"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><title>Paddy Power results</title>
+    import sitenav
+    PAGE.write_text(sitenav.wrap(f"""<!doctype html><html lang="en-GB"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Paddy Power log · Hit Rates</title>
 <style>
 :root {{ --bg:#f9f9f7; --card:#fff; --tx:#0b0b0b; --mu:#6b6a66; --bd:rgba(0,0,0,.1); --pos:#0a8f3c; --neg:#c43a3a; }}
 @media (prefers-color-scheme: dark) {{ :root {{ --bg:#0d0d0d; --card:#1a1a19; --tx:#fff; --mu:#a5a49d; --bd:rgba(255,255,255,.1); --pos:#3ccf73; --neg:#ff6b6b; }} }}
@@ -928,7 +935,7 @@ td {{ padding:8px 10px; border-bottom:1px solid var(--bd); vertical-align:top; }
 .res.win {{ color:var(--pos); font-weight:700; }} .res.lose {{ color:var(--neg); font-weight:700; }} .res.open {{ color:var(--mu); }}
 .tag {{ font-size:11px; border:1px solid var(--neg); color:var(--neg); border-radius:999px; padding:0 6px; }}
 @media (max-width:700px) {{ table {{ display:block; overflow-x:auto; }} }}
-</style></head><body><main><p><a href="index.html">&larr; All fixtures</a></p>{body}</main></body></html>""",
+</style></head><body><main>{body}</main></body></html>""", "pp"),
                     encoding="utf-8")
     return PAGE
 

@@ -441,11 +441,18 @@ def record() -> dict:
     return by
 
 
+MAX_SHOWN_EDGE = 0.25
+
+
 def box(now: float, until: float) -> str:
     """The tonight-page section: tonight's list, and the record it has earned."""
     import html
     esc = html.escape
     bets = [b for b in (_load(OUT).get("bets") or []) if now < b["kickoff"] <= until]
+    # 3 Nov 2026: claimed edges over 25% lost 22% on the record (model too far from the
+    # market, usually a stale price or a model error), so they are logged but not shown.
+    wild = [b for b in bets if b["edge"] > MAX_SHOWN_EDGE]
+    bets = [b for b in bets if b["edge"] <= MAX_SHOWN_EDGE]
     rec = record().get("all")
     so_far = (f"{rec['n']} settled, {rec['w']} won (the model said {rec['said']:.0f}), "
               f"{rec['profit']:+.1f} pts at level stakes" if rec else "nothing settled yet: logging started 30 Oct 2026")
@@ -468,13 +475,15 @@ def box(now: float, until: float) -> str:
             f"{' &middot; ' + other if other else ''} &middot; {sharp}</div></td>"
             f"<td class='n'><b>{b['price']:.2f}</b><div class='sub'>{BOOK_NAME.get(b['book'], b['book'])}</div></td>"
             f"<td class='n'>{1 / b['p']:.2f}</td><td class='n'>{b['edge'] * 100:+.0f}%</td></tr>")
-    return ("<table><thead><tr><th>Bet</th><th class='n'>Best price</th><th class='n'>Fair</th>"
-            "<th class='n'>Edge</th></tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
+    return ("<table><thead><tr><th>Bet</th><th class='n'>Best price</th><th class='n'>Our price</th>"
+            "<th class='n'>Gap</th></tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
             "<p class='sub'>The best of Paddy Power, Bet365 and Sky Bet at the last publish, against our model's fair price. "
             "Player lines need the model at 50%+ and 5%+ over the price, and Betfair not saying the price is short; "
             "corners, cards and goals need the price to beat Pinnacle and the model to agree; other team stats (offsides, shots, fouls, "
             "throw-ins and so on) have no sharp price, so they need our number 10%+ over the price and are unproven. One line per player. "
-            f"Check the price before betting. Record so far: {so_far}.</p>")
+            f"Check the price before betting. Record so far: {so_far}."
+            + (f" {len(wild)} more hidden: our number is over 25% above the price, which on the record "
+               "means the model or the price is wrong, not value." if wild else "") + "</p>")
 
 
 def report() -> None:

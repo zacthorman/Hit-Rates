@@ -145,12 +145,12 @@ def unavailable(entry) -> tuple[set, dict]:
 
 
 def odds(x) -> str:
-    return f"{x:.2f}" if isinstance(x, (int, float)) and x == x and x != float("inf") else "&mdash;"
+    return f"{x:.2f}" if isinstance(x, (int, float)) and x == x and x != float("inf") else "&ndash;"
 
 
 def leg_row(leg, entry=None) -> str:
     hits, total = leg.get("hits"), leg.get("total")
-    record = f"{hits}/{total}" if total else "&mdash;"
+    record = f"{hits}/{total}" if total else "&ndash;"
     # The venue split is printed because it repeatedly changes the answer, and
     # a rate quoted without it has quietly averaged two different teams.
     where = {"home": " at home", "away": " away"}.get(leg.get("venue"), "")
@@ -331,8 +331,8 @@ def case_block(entry, meta, lead, gs=None) -> str:
             why_for = why.reasons(lead).get("for")
         except Exception:
             why_for = None
-        parts.append(f"<p class='call'><b>Lead:</b> {esc(fmt_leg(lead))} &middot; fair "
-                     f"<b>{odds(lead.get('fair'))}</b>, need <b>{odds(lead.get('need'))}</b></p>")
+        parts.append(f"<p class='call'><b>Strongest line:</b> {esc(fmt_leg(lead))} &middot; our price "
+                     f"<b>{odds(lead.get('fair'))}</b>, worth it at <b>{odds(lead.get('need'))}</b></p>")
     argument = context.case(lead, b, allows, why_for)
     if gs and gs.get("poss"):
         argument += " " + gs["script"]
@@ -360,9 +360,9 @@ def _possessive(text: str) -> str:
 def lead_only(lead) -> str:
     """Outside football the case is just the lead: the argument and story are football's."""
     if not lead:
-        return "<p class='none'>Nothing for us here: no leg cleared the bar on the evidence.</p>"
-    return (f"<p class='call'><b>Lead:</b> {html.escape(fmt_leg(lead))} &middot; fair "
-            f"<b>{odds(lead.get('fair'))}</b>, need <b>{odds(lead.get('need'))}</b></p>")
+        return "<p class='none'>No bet in this game.</p>"
+    return (f"<p class='call'><b>Strongest line:</b> {html.escape(fmt_leg(lead))} &middot; our price "
+            f"<b>{odds(lead.get('fair'))}</b>, worth it at <b>{odds(lead.get('need'))}</b></p>")
 
 
 def nba_story_block(entry, meta, score: bool = True) -> str:
@@ -504,7 +504,7 @@ def acca_block(acca, wanted, target) -> str:
     )
     combined = acca.get("combined")
     short = acca.get("short")
-    note = (f" Short of the {target:.2f} asked for &mdash; nothing on the board "
+    note = (f" Short of the {target:.2f} asked for, nothing on the board "
             f"multiplies that far at this many legs." if short else "")
     return (
         f"<h3>{wanted} legs, aiming at {target:.2f}</h3>"
@@ -542,7 +542,7 @@ def research_block(now: float) -> str:
         parts.append(
             f"<h3>{esc(group.get('kickoff', ''))}</h3>"
             f"<table><thead><tr><th>Selection</th><th class='n'>Chance</th>"
-            f"<th class='n'>Fair</th></tr></thead><tbody>{rows}</tbody></table>")
+            f"<th class='n'>Our price</th></tr></thead><tbody>{rows}</tbody></table>")
         if group.get("avoid"):
             parts.append(f"<p class='price'>{esc(group['avoid'])}</p>")
     multi = data.get("multi")
@@ -735,7 +735,7 @@ def bet_card(leg, entry, sport_key=None) -> str:
     except Exception:
         pass
     ch = tonight_chance(leg, sport_key)
-    pct = f"{ch * 100:.0f}%" if ch else "&mdash;"
+    pct = f"{ch * 100:.0f}%" if ch else "&ndash;"
     rec = f"{hits}/{total}{where}" if total else where.strip()
     who = leg.get("team") if leg.get("player") else None
     sub = " &middot; ".join(x for x in (esc(str(who)) if who else "", f"record {rec}" if total else "") if x)
@@ -743,8 +743,8 @@ def bet_card(leg, entry, sport_key=None) -> str:
         "<div class='bet'><div class='top'>"
         f"<div class='sel'>{esc(fmt_leg(leg))}{'' if total else where}"
         + (f"<div class='sub'>{sub}</div>" if sub else "") + "</div>"
-        f"<div class='nums'><b>{pct}</b><span>fair {odds(leg.get('fair'))}</span>"
-        f"<span>need {odds(leg.get('need'))}</span>"
+        f"<div class='nums'><b>{pct}</b><span>our price {odds(leg.get('fair'))}</span>"
+        f"<span>worth it at {odds(leg.get('need'))}</span>"
         + (f"<span class='pp'>Paddy <b>{leg['pp_price']:.2f}</b></span>" if leg.get("pp_price")
            else "<span class='pp none'>Paddy price due</span>")
         + "</div></div>"
@@ -756,7 +756,7 @@ def bet_card(leg, entry, sport_key=None) -> str:
 
 def bets_section(title, legs, entry, sport_key, note="") -> str:
     if not legs:
-        return f"<h3>{title}</h3><p class='none'>Nothing cleared the bar.</p>"
+        return f"<h3>{title}</h3><p class='none'>No bet.</p>"
     first = "".join(bet_card(l, entry, sport_key) for l in legs[:BETS_SHOWN])
     rest = legs[BETS_SHOWN:]
     more = (f"<details class='rest'><summary>{len(rest)} more</summary>"
@@ -820,11 +820,19 @@ def verdict_block(sport, entry, meta, lead, gs) -> str:
     except Exception:
         pass
     if lead:
-        pp = f" &middot; Paddy <b>{lead['pp_price']:.2f}</b>" if lead.get("pp_price") else ""
-        parts.append(f"<p class='best'><span class='k'>Best bet</span> {esc(fmt_leg(lead))} &middot; fair "
-                     f"<b>{odds(lead.get('fair'))}</b> &middot; need <b>{odds(lead.get('need'))}</b>{pp}</p>")
+        ppx, nd = lead.get("pp_price"), lead.get("need")
+        pp = f" &middot; Paddy <b>{ppx:.2f}</b>" if ppx else ""
+        # Only call it a bet when the price on offer clears the price it needs.
+        if ppx and nd and ppx >= nd:
+            tag, verdict = "Bet", ""
+        elif ppx and nd:
+            tag, verdict = "Strongest line", " &middot; <span class='nobet'>price too short, no bet</span>"
+        else:
+            tag, verdict = "Strongest line", ""
+        parts.append(f"<p class='best'><span class='k'>{tag}</span> {esc(fmt_leg(lead))} &middot; our price "
+                     f"<b>{odds(lead.get('fair'))}</b> &middot; worth it at <b>{odds(nd)}</b>{pp}{verdict}</p>")
     else:
-        parts.append("<p class='none'>No leg cleared the bar on the evidence.</p>")
+        parts.append("<p class='none'>No bet in this game.</p>")
     if argument:
         parts.append(f"<p class='argue'>{esc(argument)}</p>")
     parts.append("</div>")
@@ -934,9 +942,9 @@ def own_lines_block(entry, meta) -> str:
         return ""
     return ("<h3>Each player's own line</h3>"
             "<p class='sub'>The highest line each has cleared in 7 of the last 10, with the average 10% "
-            "clear of it. Back at the fair price or longer.</p>"
+            "clear of it. Back at our price or longer.</p>"
             "<table><thead><tr><th>Selection</th><th class='n'>Last 10</th>"
-            f"<th class='n'>Chance</th><th class='n'>Fair</th></tr></thead><tbody>{rows}</tbody></table>")
+            f"<th class='n'>Chance</th><th class='n'>Our price</th></tr></thead><tbody>{rows}</tbody></table>")
 
 
 def game_card(n, entry, meta, sport, sport_key, lead, team_pool, player_pool, best, gs) -> str:
@@ -951,8 +959,8 @@ def game_card(n, entry, meta, sport, sport_key, lead, team_pool, player_pool, be
     label = comp if (not kind or kind.lower() in comp.lower()) else f"{kind} · {comp}"
     title = (f"<span class='ko'>{kick}</span> <span class='fx'>{esc(meta['home'])} v {esc(meta['away'])}</span>"
              f"<span class='comp'>{esc(label)}{xi}</span>")
-    lead_txt = (f"<span class='lead'>{esc(fmt_leg(lead))} &middot; fair <b>{odds(lead.get('fair'))}</b></span>"
-                if lead else "<span class='lead none'>nothing cleared the bar</span>")
+    lead_txt = (f"<span class='lead'>{esc(fmt_leg(lead))} &middot; our price <b>{odds(lead.get('fair'))}</b></span>"
+                if lead else "<span class='lead none'>no bet</span>")
 
     starters = " <span class='sub'>(confirmed starters only)</span>" if lu.get("confirmed") else ""
     sections = [("Team bets", team_pool[:SINGLES_PER_FIXTURE], ""),
@@ -1049,7 +1057,7 @@ def build(hours: float | None) -> str:
     def singles_table(rows):
         body = "".join(leg_row(l, ent) for l, ent in rows) or "<tr><td colspan='4'>nothing qualified</td></tr>"
         return ("<table><thead><tr><th>Selection</th><th class='n'>Record</th>"
-                f"<th class='n'>Fair</th><th class='n'>Need</th></tr></thead><tbody>{body}</tbody></table>")
+                f"<th class='n'>Our price</th><th class='n'>Worth it at</th></tr></thead><tbody>{body}</tbody></table>")
 
     for n, (entry, meta) in enumerate(window):
         sport = (entry.get("fixture") or {}).get("sport") or "football"
@@ -1158,6 +1166,7 @@ details.game[open] > summary { padding-bottom:4px; }
 .pbar { display:flex; height:6px; border-radius:3px; overflow:hidden; margin:0 0 4px; background:var(--line); }
 .pbar .ph { background:var(--fg); } .pbar .pd { background:var(--muted); opacity:.5; } .pbar .pa { background:var(--accent); }
 .best { margin:10px 0 4px; font-size:15px; }
+.nobet { color:var(--muted); font-weight:600; }
 .best .k, .rate b { font-weight:700; }
 .best .k { display:inline-block; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--bg);
   background:var(--fg); border-radius:4px; padding:1px 6px; margin-right:4px; vertical-align:1px; }
@@ -1196,7 +1205,7 @@ PAGE = """<!DOCTYPE html>
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tonight</title>
+<title>Tonight · Hit Rates</title>
 <style>
 :root {{ --bg:#fcfcfb; --fg:#0b0b0b; --muted:#75736e; --line:rgba(11,11,11,.12); --accent:#d03b3b; }}
 @media (prefers-color-scheme: dark) {{
@@ -1259,14 +1268,12 @@ table.form td {{ padding:3px 4px; font-size:13px; }}
 </style></head><body>
 <h1>Tonight</h1>
 <p class="stamp">{span} &middot; page made {stamp} &middot; numbers from reports built {built}</p>
-<details class="warn"><summary>How to read Fair and Need</summary>
-Fair and Need are what the evidence implies, not what anyone is offering.
-For a football team leg that evidence includes team strength (Elo as of
-kick-off, shown under the selection) as well as the record; a player leg's
-record is pulled towards a coin flip by as much as past picks show it should be.
-<b>Need</b> is the price the evidence supports once the sample size is paid for,
-and it is the one to bet off. Neither includes the bookmaker's margin, which
-runs 5&ndash;8% a market and compounds with every leg you add.
+<details class="warn"><summary>How to read the prices</summary>
+<b>Our price</b> is what the line should be priced at on the record. <b>Worth it at</b>
+is the lowest bookmaker price worth taking once small samples are allowed for: take the
+bet only if the bookie offers this or longer. Bookies take a 5&ndash;8% margin a market,
+and it stacks with every leg in a multiple. <b>No bet</b> means nothing in the game is
+worth backing at the prices on offer.
 </details>
 {body}
 <details class="warn"><summary>Why multiples are worse than their legs</summary>
@@ -1295,7 +1302,8 @@ def main(argv=None) -> None:
 
     page = build(None if args.all else args.hours)
     out = ROOT / "tonight.html"
-    import site_guard
+    import site_guard, sitenav
+    page = sitenav.wrap(page, "tonight")
     site_guard.atomic_write(out, page)
     print(f"Wrote {out} ({len(page)/1024:.0f} KB)")
 

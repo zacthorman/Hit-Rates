@@ -121,7 +121,7 @@ def site_picks():
             seen.add(k)
             out.append({"t": r["kickoff"], "category": b.get("category") or "", "sport": r.get("sport"),
                         "what": f"{r['player']} {r['label']} {r['stat'].lower()} ({r['fixture']})",
-                        "p": leg.get("chance") or 0.0, "price": r["last"]["price"],
+                        "p": leg.get("chance") or None, "price": r["last"]["price"],
                         "result": r.get("result")})
     return sorted(out, key=lambda c: c["t"])
 
@@ -139,10 +139,35 @@ def picks_summary(picks, stake_pct=0.01):
     flat = sum((c["price"] - 1) if c["result"] == "win" else -1 for c in done)
     by = {}
     for c in done:
-        g = by.setdefault(f"{c['sport']}: {c['category']}", [0, 0, 0.0, 0.0])
-        g[0] += 1; g[1] += c["result"] == "win"; g[2] += (c["price"] - 1) if c["result"] == "win" else -1; g[3] += c["p"]
+        g = by.setdefault(_label(c['sport'], c['category']), [0, 0, 0.0, 0.0, 0])
+        g[0] += 1; g[1] += c["result"] == "win"; g[2] += (c["price"] - 1) if c["result"] == "win" else -1
+        if c["p"]:
+            g[3] += c["p"]; g[4] += 1
+    known = [c["p"] for c in done if c["p"]]
     return {"n": n, "won": won, "flat_roi": flat / n if n else 0.0, "bank": bank, "pending": len(picks) - n,
-            "by": by, "said": sum(c["p"] for c in done) / n if n else 0.0}
+            "by": by, "said": sum(known) / len(known) if known else None}
+
+
+SPORT_NAME = {"football": "Football", "basketball": "NBA", "american-football": "NFL", "baseball": "MLB", "darts": "Darts"}
+
+
+def _label(sport, category) -> str:
+    """'football: Pick: parlay' -> 'Football, parlay legs (as singles)'. Legs of multiples are
+    priced here as singles, so they are labelled as legs, not as the multiple's return."""
+    cat = (category or "other").strip()
+    if cat.lower().startswith("pick:"):
+        kind = cat.split(":", 1)[1].strip().replace("parlay", "acca")
+        cat = "singles from picks" if kind == "single" else f"{kind} legs (as singles)"
+    return f"{SPORT_NAME.get(sport, (sport or '').title())}, {cat[0].lower() + cat[1:]}"
+
+
+def _said(v) -> str:
+    return f"{v * 100:.0f}%" if v else "n/a"
+
+
+def _ret(v) -> str:
+    cls = "pos" if v > 0 else "neg" if v < 0 else ""
+    return f"<span class='{cls}'>{v * 100:+.1f}%</span>"
 
 
 def _bands(picks) -> str:
@@ -159,15 +184,17 @@ def _bands(picks) -> str:
             lab = next((f"{a:g} to {b:g}" if b < 99 else f"{a:g}+" for a, b in cuts if a <= v < b), None)
             if lab is None:
                 continue
-            x = g.setdefault(lab, [0, 0, 0.0, 0.0, cuts.index(next(ab for ab in cuts if ab[0] <= v < ab[1]))])
-            x[0] += 1; x[1] += c["result"] == "win"; x[2] += (c["price"] - 1) if c["result"] == "win" else -1; x[3] += c["p"]
+            x = g.setdefault(lab, [0, 0, 0.0, 0.0, cuts.index(next(ab for ab in cuts if ab[0] <= v < ab[1])), 0])
+            x[0] += 1; x[1] += c["result"] == "win"; x[2] += (c["price"] - 1) if c["result"] == "win" else -1
+            if c["p"]:
+                x[3] += c["p"]; x[5] += 1
         rows = "".join(f"<tr><td>{k}</td><td class=n>{v[0]}</td><td class=n>{v[1] / v[0] * 100:.0f}%</td>"
-                       f"<td class=n>{v[3] / v[0] * 100:.0f}%</td><td class=n>{v[2] / v[0] * 100:+.1f}%</td></tr>"
+                       f"<td class=n>{_said(v[3] / v[5] if v[5] else None)}</td><td class=n>{_ret(v[2] / v[0])}</td></tr>"
                        for k, v in sorted(g.items(), key=lambda kv: kv[1][4]))
         return (f"<h2>{title}</h2><table><thead><tr><th></th><th class=n>Bets</th><th class=n>Won</th>"
                 f"<th class=n>Site said</th><th class=n>Return</th></tr></thead><tbody>{rows}</tbody></table>")
     return (table("By price", lambda c: c["price"], [(1, 1.5), (1.5, 2), (2, 3), (3, 5), (5, 99)])
-            + table("By the edge the site claimed", lambda c: (c["p"] * c["price"] - 1) * 100 if c["p"] > 0 else None,
+            + table("By the edge the site claimed", lambda c: (c["p"] * c["price"] - 1) * 100 if c["p"] else None,
                     [(-99, 0), (0, 5), (5, 10), (10, 20), (20, 999)])
             + "<p class='sub'>Where it goes wrong: a row where Won sits well under Site said is where the "
               "model is overconfident. If the bigger claimed edges do not return more, staking bigger on them "
@@ -189,33 +216,36 @@ def page() -> Path:
     s = picks_summary(picks)
     rows = "".join(
         f"<tr><td>{e(k)}</td><td class=n>{v[0]}</td><td class=n>{v[1] / v[0] * 100:.0f}%</td>"
-        f"<td class=n>{v[3] / v[0] * 100:.0f}%</td><td class=n>{v[2] / v[0] * 100:+.1f}%</td></tr>"
+        f"<td class=n>{_said(v[3] / v[4] if v[4] else None)}</td><td class=n>{_ret(v[2] / v[0])}</td></tr>"
         for k, v in sorted(s["by"].items(), key=lambda kv: -kv[1][0]))
     recent = "".join(
         f"<tr><td>{time.strftime('%d %b', time.localtime(c['t']))}</td><td>{e(c['what'])}</td>"
-        f"<td class=n>{c['price']:.2f}</td><td class=n>{c['p'] * 100:.0f}%</td>"
+        f"<td class=n>{c['price']:.2f}</td><td class=n>{_said(c['p'])}</td>"
         f"<td class=n>{'&#10003;' if c['result'] == 'win' else '&#10007;' if c['result'] == 'lose' else '&middot;'}</td></tr>"
         for c in picks[::-1][:40])
     out = ROOT / "papertrade.html"
-    out.write_text(f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><title>Paper trade</title>
+    import sitenav
+    sitenav.save_record(s["n"], s["flat_roi"], s["bank"])
+    out.write_text(sitenav.wrap(f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Track record · Hit Rates</title>
 <style>:root{{--bg:#fcfcfb;--fg:#0b0b0b;--muted:#75736e;--line:rgba(11,11,11,.12)}}
 @media (prefers-color-scheme:dark){{:root{{--bg:#141413;--fg:#fff;--muted:#908e88;--line:rgba(255,255,255,.14)}}}}
 body{{margin:0 auto;max-width:760px;padding:20px 16px 60px;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,Segoe UI,Helvetica,Arial,sans-serif}}
 h1{{font-size:22px;margin:0 0 4px}} h2{{font-size:16px;margin:26px 0 6px}} .sub{{color:var(--muted);font-size:13px}}
 table{{width:100%;border-collapse:collapse;font-size:13.5px}} th,td{{text-align:left;padding:6px 4px;border-bottom:1px solid var(--line)}}
 th{{color:var(--muted);font-size:11.5px;text-transform:uppercase}} .n{{text-align:right;font-variant-numeric:tabular-nums}}
-.big{{font-size:28px;font-weight:700}}</style></head><body>
+.big{{font-size:28px;font-weight:700}} .pos{{color:#15803d}} .neg{{color:#b91c1c}}
+@media (prefers-color-scheme:dark){{.pos{{color:#4ade80}} .neg{{color:#f87171}}}}</style></head><body>
 <h1>Paper trade: the site's picks at Paddy Power prices</h1>
 <p class="sub">Every player bet the site put forward (best bets, picks, singles), matched to the Paddy Power price logged
 for the same line before kick-off. Updated with every publish. Made {time.strftime('%a %d %b, %H:%M')}.</p>
 <p><span class="big">£{s['bank']:,.0f}</span> <span class="sub">from £1,000 at 1% of the bank a bet</span></p>
-<p>{s['n']} settled, {s['won']} won ({s['won'] / s['n'] * 100 if s['n'] else 0:.0f}%; the site said {s['said'] * 100:.0f}%),
-flat-stake return <b>{s['flat_roi'] * 100:+.1f}%</b>; {s['pending']} still to play.</p>
+<p>{s['n']:,} settled, {s['won']:,} won ({s['won'] / s['n'] * 100 if s['n'] else 0:.0f}%; the site said {_said(s['said'])}),
+level-stakes return <b>{_ret(s['flat_roi'])}</b>; {s['pending']} still to play.</p>
 <h2>By type</h2><table><thead><tr><th>Type</th><th class=n>Bets</th><th class=n>Won</th><th class=n>Site said</th><th class=n>Return</th></tr></thead><tbody>{rows}</tbody></table>
 {_bands(picks)}{_sharp()}<h2>Latest</h2><table><thead><tr><th>Date</th><th>Bet</th><th class=n>PP price</th><th class=n>Site said</th><th class=n></th></tr></thead><tbody>{recent}</tbody></table>
 <p class="sub">Only lines Paddy Power priced count, and only player lines (team lines are in the team log). A few hundred settled bets are needed
-before the return means much; under 100 it is mostly noise.</p></body></html>""", encoding="utf-8")
+before the return means much; under 100 it is mostly noise.</p></body></html>""", "record"), encoding="utf-8")
     return out
 
 

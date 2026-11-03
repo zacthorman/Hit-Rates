@@ -387,13 +387,18 @@ def box(now: float, until: float, team: bool) -> str:
         bets = [b for b in live(now, until) if bool(b["row"].get("scope")) == team]
         rec = record()
     except Exception as exc:  # never cost the page
-        return f"<p class='sub'>Betfair check unavailable ({esc(str(exc))})</p>"
+        print(f"sharp.box: {exc!r}")
+        return "<p class='sub'>The Betfair check could not run this time. It returns at the next update.</p>"
     g = rec.get("all")
     so_far = (f"{g['n']} settled, {g['w']} won (Betfair said {g['exp']:.0f}), {g['profit']:+.1f} pts at level stakes"
               if g else "nothing settled yet: the record starts now")
     what = "team lines (goals, corners, cards)" if team else "player lines (to score, shots on target, cards)"
+    # The record covers team and player lines together, so it is shown once, under Player lines (the last box).
+    rec_p = "" if team else f"<p class='sub'>Record so far, team and player lines together: {so_far}.</p>"
     if not value_claimed():
-        would = (f" {len(bets)} {what} beat Betfair's price tonight and are logged for the record."
+        one = what.replace("lines", "line", 1) if len(bets) == 1 else what
+        would = (f" {len(bets)} {one} beat{'s' if len(bets) == 1 else ''} Betfair's price tonight and "
+                 f"{'is' if len(bets) == 1 else 'are'} logged for the record."
                  if bets else "")
         mix = ""
         if team and bets:
@@ -403,10 +408,10 @@ def box(now: float, until: float, team: bool) -> str:
             mix = " (" + ", ".join(f"{v} {k}" for k, v in sorted(c.items(), key=lambda kv: -kv[1])) + ")"
         return (f"<div class='vbox'><p class='none'>Value claims are switched off until these bets have a "
                 f"settled record that shows them making money.{would[:-1] + mix + '.' if would else ''}</p>"
-                f"<p class='sub'>Record so far: {so_far}.</p></div>")
+                f"{rec_p}</div>")
     if not bets:
         return (f"<div class='vbox'><p class='none'>No Paddy Power {what} longer than Betfair's price right now.</p>"
-                f"<p class='sub'>Record so far: {so_far}.</p></div>")
+                f"{rec_p}</div>")
     rows = []
     for b in bets[:8]:
         r, sg = b["row"], b["sig"]

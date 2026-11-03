@@ -13,6 +13,7 @@ screen the same row stacks into a card.
 
 from __future__ import annotations
 
+import html
 import json
 from datetime import datetime, timezone
 from pathlib import Path
@@ -36,7 +37,7 @@ CSS = """
   --tint: rgba(11,11,11,0.035);
   --track: #e8e7e1;
   --team-1: #2a78d6;
-  --team-2: #eb6834;
+  --team-2: #7a4fd6;
   --control-bg: #ffffff;
   --control-active: #0b0b0b;
   --control-active-text: #ffffff;
@@ -57,8 +58,8 @@ CSS = """
     --border: rgba(255,255,255,0.10);
     --tint: rgba(255,255,255,0.045);
     --track: #2c2c2a;
-    --team-1: #3987e5;
-    --team-2: #d95926;
+    --team-1: #5b9bef;
+    --team-2: #a283f0;
     --control-bg: #222220;
     --control-active: #ffffff;
     --control-active-text: #0b0b0b;
@@ -76,8 +77,8 @@ CSS = """
   --border: rgba(255,255,255,0.10);
   --tint: rgba(255,255,255,0.045);
   --track: #2c2c2a;
-  --team-1: #3987e5;
-  --team-2: #d95926;
+  --team-1: #5b9bef;
+  --team-2: #a283f0;
   --control-bg: #222220;
   --control-active: #ffffff;
   --control-active-text: #0b0b0b;
@@ -1678,8 +1679,8 @@ function staleWarning() {
   const months = Math.round(days / 30);
   return `<div class="warn">
     <strong>Last season's numbers.</strong> The most recent match behind these
-    figures was <strong>${days} days</strong> ago &mdash; roughly ${months}
-    months &mdash; so this is a first outing priced off an old sample. Squads,
+    figures was <strong>${days} days</strong> ago, roughly ${months}
+    months, so this is a first outing priced off an old sample. Squads,
     starters and coaching staff all move in a gap that size, and a player's
     share of the work is the first thing to change. Treat every line here as a
     starting point rather than an answer, and do your own due diligence before
@@ -3376,8 +3377,8 @@ function usageNote(u) {
   let trend = "", cls = "usage-flat";
   if (u.prior !== null && u.prior > 0) {
     const ratio = u.recent / u.prior;
-    if (ratio <= 0.6) { trend = ` &mdash; down from ${pct(u.prior)}`; cls = "usage-down"; }
-    else if (ratio >= 1.4) { trend = ` &mdash; up from ${pct(u.prior)}`; cls = "usage-up"; }
+    if (ratio <= 0.6) { trend = `, down from ${pct(u.prior)}`; cls = "usage-down"; }
+    else if (ratio >= 1.4) { trend = `, up from ${pct(u.prior)}`; cls = "usage-up"; }
   }
   const dry = u.recentOpps.every(v => v <= 1);
   return `<span class="usage ${cls}" title="His share of the squad's ${
@@ -3551,7 +3552,7 @@ function matchupHalf(m, teamIndex) {
   if (!m.n) {
     return `<div class="half">
       <span class="half-label">${escapeHtml(matchupLabel(m))}</span>
-      <span class="half-num">&mdash;</span>
+      <span class="half-num">&ndash;</span>
       <span class="mu-seq">${matchupEmpty(m)}</span>
     </div>`;
   }
@@ -4191,6 +4192,7 @@ function recommendedSlip() {
   const wanted = Math.max(2, parseInt(document.getElementById("rlegs")?.value, 10) || 3);
 
   const priceable = (window.__pool || window.__best || []).filter(r => {
+    if (playerOut(r)) return false;
     const pr = r.price || priceRow(r);
     return isFinite(pr.fair) && pr.fair > 1.05 && !pr.conflict;
   });
@@ -4319,7 +4321,7 @@ function recommendedSlip() {
       ${r.alt ? `${r.threshold}+` : `${r.over ? "over" : "under"} ${r.line}`}
       ${escapeHtml(r.stat.toLowerCase())}
       ${r.period !== "ALL" ? `(${escapeHtml((ALL.periods || {})[r.period] || r.period)})` : ""}
-      &mdash; <strong>${fmtOdds(pr.fair)}</strong> fair,
+     , <strong>${fmtOdds(pr.fair)}</strong> fair,
       record ${r.k}/${r.n}</li>`;
   }).join("");
 
@@ -4329,7 +4331,7 @@ function recommendedSlip() {
     <strong>Suggested ${legs.length}-leg slip.</strong>
     Fair combined price <strong>${fmtOdds(combined)}</strong>
     ${short
-      ? `, which is short of your ${fmtOdds(target)} target &mdash; the longest
+      ? `, which is short of your ${fmtOdds(target)} target, the longest
          ${wanted} legs that qualify here do not multiply that far. Only
          ${pool.length} selection${pool.length === 1 ? "" : "s"} clear the
          current filters, so widen Scope to the whole round, drop Min each
@@ -4525,6 +4527,10 @@ function bestBetsView() {
     found.sort((a, b) => (fairOf(b) - fairOf(a)) || (valueEdge(b) - valueEdge(a)));
   }
 
+  // A player listed as missing (injured, suspended) is not a bet, and must
+  // not reach the cards or the suggested slip.
+  for (let i = found.length - 1; i >= 0; i--) if (playerOut(found[i])) found.splice(i, 1);
+
   // Grouped by competition, because "top three this gameweek" means three
   // per division, not three across a file that happens to hold six leagues.
   const byComp = new Map();
@@ -4575,15 +4581,15 @@ function bestBetsView() {
             <span class="seq">${
               small ? `only ${r.vs.n} meeting${r.vs.n === 1 ? "" : "s"} with player data`
               : r.vs.deep ? `${r.vs.n} appearance${r.vs.n === 1 ? "" : "s"} against them`
-              : `${r.vs.n} inside the last ${games === 99 ? "" : games + " "}matches &mdash; rebuild with --h2h --players for the full history`}</span>
+              : `${r.vs.n} inside the last ${games === 99 ? "" : games + " "}matches, rebuild with --h2h --players for the full history`}</span>
           </div>`;
         } else {
           vsHalf = `<div class="half">
             <span class="half-label">v ${escapeHtml(r.opponent)}</span>
-            <span class="half-num">&mdash;</span>
+            <span class="half-num">&ndash;</span>
             <span class="seq">${(r.fx && r.fx.h2hPlayers) || false
               ? "no previous meeting has player data"
-              : "no meetings with player data &mdash; rebuild with --h2h --players"}</span>
+              : "no meetings with player data, rebuild with --h2h --players"}</span>
           </div>`;
         }
 
@@ -4621,8 +4627,8 @@ function bestBetsView() {
             <span><b>${r.k}/${r.n}</b> in form</span>
             ${usageNote(r.usage)}
             ${scoreChip}
-            <span>fair <b>${fmtOdds(price.fair)}</b></span>
-            <span class="need-cell">need <b>${fmtOdds(price.need)}</b>
+            <span>our price <b>${fmtOdds(price.fair)}</b></span>
+            <span class="need-cell">worth it at <b>${fmtOdds(price.need)}</b>
               ${price.source === "model"
                 ? `<span class="src" title="${price.per90.toFixed(2)} per 90 over ` +
                   `${price.expectedMinutes} expected minutes, adjusted for the matchup, ` +
@@ -4696,8 +4702,8 @@ function bestBetsView() {
         <div class="pick-foot">
           <span><b>${r.k}/${r.n}</b> combined</span>
           ${scoreChip}
-          <span>fair <b>${fmtOdds(fair)}</b></span>
-          <span class="need-cell">need <b>${fmtOdds(need)}</b>
+          <span>our price <b>${fmtOdds(fair)}</b></span>
+          <span class="need-cell">worth it at <b>${fmtOdds(need)}</b>
             ${price.source === "model"
               ? `<span class="src" title="Priced from an expected ${price.expected} in this fixture, ` +
                 `read off a fitted count distribution. The record on its own would have said ` +
@@ -4736,7 +4742,7 @@ function bestBetsView() {
       of what is here, and the one that ignores price entirely.`,
     likely: `Ordered by <strong>how often it lands</strong>: the calibrated
       probability itself, with no charge for sample size. A perfect three from
-      three can lead this list, so read the record beside each one &mdash; that
+      three can lead this list, so read the record beside each one, that
       is the difference between this order and Evidence, and the reason both
       exist.`,
     value: noProjection
@@ -4748,7 +4754,7 @@ function bestBetsView() {
       : `Ordered by <strong>value</strong>: how far the opponent-adjusted
          projection sits above the raw record. A book prices mostly off form;
          the projection knows who the opponent is. Where it says a bet lands
-         more often than the form does, the price on offer is too long &mdash;
+         more often than the form does, the price on offer is too long &ndash;
          and that, not a long price on its own, is what value means.`,
   };
   const orderNote =
@@ -4787,7 +4793,7 @@ function bestBetsView() {
         ? `fewer than <strong>one</strong> of them would`
         : `roughly <strong>${expected.toFixed(0)}</strong> of them would`}
       look this good with nothing behind them at all. Both records also come from the same matches
-      the lines were derived from, which flatters them. <strong>Need</strong> is
+      the lines were derived from, which flatters them. <strong>Worth it at</strong> is
       the price the evidence supports once the sample size is accounted for, and
       it is the only number here worth betting off. Nothing on this page knows
       what the bookmaker is offering, and the price is the entire bet.
@@ -4880,8 +4886,8 @@ function standoutView() {
         promoted side's numbers against weaker opposition are exactly the sort of
         true record that loses money.` : ""}
       <br><br>
-      <strong>Fair</strong> is the price the hit rate implies on its own.
-      <strong>Need</strong> is the price the <em>evidence</em> supports, taken from the
+      <strong>Our price</strong> is the price the hit rate implies on its own.
+      <strong>Worth it at</strong> is the price the <em>evidence</em> supports, taken from the
       bottom of a 95% interval, and it is the one to bet off. Ten matches cannot tell
       80% from 55%, so 8/10 reads as a fair 1.25 while only really justifying 2.04.
       Neither figure includes the bookmaker's margin, which is typically 5 to 8% on
@@ -4890,8 +4896,8 @@ function standoutView() {
     <div class="board"><table class="ptable">
       <thead><tr>
         <th>Stat</th><th>Line</th><th>Record</th>
-        <th title="Price implied by the hit rate itself">Fair</th>
-        <th title="Price implied by the bottom of the confidence interval">Need</th>
+        <th title="Price implied by the hit rate itself">Our price</th>
+        <th title="Price implied by the bottom of the confidence interval">Worth it at</th>
         <th>Your price</th><th>Verdict</th><th>By chance</th><th></th>
       </tr></thead>
       <tbody>${rows}</tbody>
@@ -5155,7 +5161,7 @@ function breakdownText(sc) {
   const p = sc.parts;
   return (sc.priced
       ? `<span>value ${p.value}/45</span>`
-      : `<span class="unscored">value &mdash;/45 &middot; no price yet</span>`)
+      : `<span class="unscored">value &ndash;/45 &middot; no price yet</span>`)
     + `<span>evidence ${p.evidence}/25</span>`
     + `<span>model ${p.agreement}/15</span>`
     + `<span>context ${p.context}/15</span>`;
@@ -5263,8 +5269,8 @@ function slipView() {
     <div class="board"><table class="ptable">
       <thead><tr>
         <th>Selection</th><th>Record</th>
-        <th title="One over the strike rate: what the record alone implies">Fair</th>
-        <th title="One over the bottom of the 95% interval: what the evidence supports once the sample size is paid for">Need</th>
+        <th title="One over the strike rate: what the record alone implies">Our price</th>
+        <th title="One over the bottom of the 95% interval: what the evidence supports once the sample size is paid for">Worth it at</th>
         <th>Your price</th><th>Score</th><th></th>
       </tr></thead>
       <tbody>${rows}</tbody>
@@ -5360,7 +5366,7 @@ function resultView() {
 
   box.innerHTML = `<div class="caution">
     <strong>${escapeHtml(DATA.fixture.home)} ${res.home}&ndash;${res.away}
-    ${escapeHtml(DATA.fixture.away)} &mdash; how the projections did.</strong>
+    ${escapeHtml(DATA.fixture.away)}, how the projections did.</strong>
     ${close} of ${lines.length} landed within 20% of the projection (${share}%).
     <div class="board"><table class="ptable">
       <thead><tr>
@@ -5821,8 +5827,8 @@ function playerView() {
             marking have drawn, over ${escapeHtml(oppName)}'s matches under
             the same filters. Position is G, D, M or F only. Context: it is
             not part of the price.">Matchup</th>` : ""}
-          <th title="Price implied by the record and the model">Fair</th>
-          <th title="Price the evidence supports">Need</th><th></th>
+          <th title="Price implied by the record and the model">Our price</th>
+          <th title="Price the evidence supports">Worth it at</th><th></th>
         </tr></thead>
         <tbody>${body}</tbody>
       </table></div>
@@ -6164,6 +6170,17 @@ function currentXI(t) {
            xi: side.xi || [], missing: (side.missing || []).map(m => m[0]) };
 }
 
+/* True when a player row's man is listed as missing for his side in his own
+   fixture's line-up (confirmed, else predicted). Team rows are never out. */
+function playerOut(r) {
+  if (!r || !r.player) return false;
+  const fx = ALL.fixtures[r.fixtureIndex] || DATA;
+  const store = (fx && fx.lineups) || {};
+  const lu = store.confirmed || store.predicted;
+  const side = lu && (r.teamIndex === 0 ? lu.home : lu.away);
+  return !!(side && (side.missing || []).some(m => m[0] === r.player));
+}
+
 /* Real appearances only, oldest first. */
 function gatedApps(played) {
   const gated = reportsMinutes(played);
@@ -6357,7 +6374,7 @@ function rungHtml(key, label, record, ours, book, bf, addIndex) {
                            fresh: fr && fr.share }) : ""}<span class="pp-line">${label}</span>
     <span class="pp-rec">${record}${staleNoteHtml(fr)}</span>
     <span class="pp-kv"><small>Ours</small><b>${Math.round(ours * 100)}%</b></span>
-    <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(ours))}</b></span>
+    <span class="pp-kv"><small>Our price</small><b>${fmtOdds(fairOdds(ours))}</b></span>
     ${b3 ? `<span class="pp-kv pp-ppp"><small>Bet365</small><b>${fmtOdds(b3)}</b></span>` : ""}
     ${ppp ? `<span class="pp-kv pp-ppp"><small>Paddy Power</small><b>${fmtOdds(ppp)}</b></span>` : ""}
     ${parts.length === 4 ? bestHtml(parts[1], parts[2], parseFloat(parts[3]), ours)
@@ -7029,7 +7046,7 @@ function ppRowHtml(v, withName) {
     ${verdictHtml(v)}<span class="pp-line">${withName ? `<b>${escapeHtml(v.name)}</b><br>` : ""}To be booked</span>
     <span class="pp-rec">fouls-based estimate, not yet calibrated</span>
     <span class="pp-kv"><small>Ours</small><b>${Math.round(v.p * 100)}%</b></span>
-    <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(v.p))}</b></span>
+    <span class="pp-kv"><small>Our price</small><b>${fmtOdds(fairOdds(v.p))}</b></span>
     <span class="pp-kv pp-ppp"><small>${BOOKS[v.src || "pp"]}</small><b>${fmtOdds(v.price)}</b></span>
     <span class="pp-kv"><small>Edge</small><span class="pp-edge pp-long">${v.edge >= 0 ? "+" : ""}${Math.round(v.edge * 100)}%</span></span>
   </div>`;
@@ -7042,7 +7059,7 @@ function ppRowHtml(v, withName) {
     ${verdictHtml(v)}<span class="pp-line">${withName ? `<b>${escapeHtml(v.name)}</b>${inj ? ` <span class="lu-badge pp-out">${escapeHtml(inj)}</span>` : ""}<br>` : ""}${escapeHtml(v.stat)} ${escapeHtml(v.label)}</span>
     <span class="pp-rec">${v.k5 === null ? "fouls-based estimate" : `${v.k5}/${v.n5} last 5 &middot; ${v.k}/${v.n} last ${v.n}`}${modelNote(v)}${staleNoteHtml(v.freshInfo)}</span>
     <span class="pp-kv"><small>Ours</small><b>${Math.round(v.p * 100)}%</b></span>
-    <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(v.p))}</b></span>
+    <span class="pp-kv"><small>Our price</small><b>${fmtOdds(fairOdds(v.p))}</b></span>
     <span class="pp-kv pp-ppp"><small>${BOOKS[v.src || "pp"]}</small><b>${fmtOdds(v.price)}</b></span>
     <span class="pp-kv"><small>${long ? "Long shot" : "Edge"}</small><span class="pp-edge ${cls}">${v.edge >= 0 ? "+" : ""}${Math.round(v.edge * 100)}%</span></span>
     <button type="button" class="add-btn" data-padd="${idx}" data-in="${inSlip ? 1 : 0}">${inSlip ? "Added" : "Add"}</button>
@@ -7280,7 +7297,7 @@ function teamRowHtml(v) {
     ${verdictHtml(v)}<span class="pp-line"><b>${escapeHtml(v.name)}</b><br>${escapeHtml(v.label)}</span>
     <span class="pp-rec">${v.k}/${v.n} last ${v.n} &middot; expect ${v.expected.toFixed(1)} &middot; ${basis}${v.suspect ? " &middot; edge too big to trust" : v.disagree ? " &middot; record disagrees" : ""}</span>
     <span class="pp-kv"><small>Ours</small><b>${Math.round(v.p * 100)}%</b></span>
-    <span class="pp-kv"><small>Fair</small><b>${fmtOdds(fairOdds(v.p))}</b></span>
+    <span class="pp-kv"><small>Our price</small><b>${fmtOdds(fairOdds(v.p))}</b></span>
     <span class="pp-kv pp-ppp"><small>${BOOKS[v.src]}</small><b>${fmtOdds(v.price)}</b></span>
     ${v.pin ? `<span class="pp-kv"><small>Pinnacle</small><b>${fmtOdds(1 / v.pin)}</b></span>` : ""}
     <span class="pp-kv"><small>${long ? "Long shot" : "Edge"}</small><span class="pp-edge ${cls}">${v.edge >= 0 ? "+" : ""}${Math.round(v.edge * 100)}%</span></span>
@@ -7976,9 +7993,14 @@ function fillPlayerStats() {
 
    Reports built before this existed have no colours block and simply keep the
    stylesheet's defaults. */
+/* 3 Nov 2026: off. Kit colours collided with hit (green) and miss (red), so
+   Arsenal v Hull City drew a red line with green hit dots. Teams now always
+   take the stylesheet's blue and purple, and green and red only ever mean
+   hit and miss. Set true to bring the kits back. */
+const USE_KIT_COLOURS = false;
 function applyTeamColours() {
   const root = document.documentElement;
-  if (!DATA.colours) {
+  if (!USE_KIT_COLOURS || !DATA.colours) {
     root.style.removeProperty("--team-1");
     root.style.removeProperty("--team-2");
     return;
@@ -9326,7 +9348,7 @@ function dartsMatchView(el) {
     return;
   }
   const pct = x => `${Math.round(x * 100)}%`;
-  const fair = x => x > 0.005 ? (1 / x).toFixed(2) : "&mdash;";
+  const fair = x => x > 0.005 ? (1 / x).toFixed(2) : "&ndash;";
   const fmt = m.format[0] === "legs" ? `first to ${m.format[1]} legs` : `first to ${m.format[1]} sets, each first to ${m.format[2]} legs`;
   const thin = Math.min(m.gamesA, m.gamesB) < 10;
   const pa = m.winA, pb = 1 - m.winA;
@@ -10455,7 +10477,7 @@ def build_html(payload: dict) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{fixture['home']} v {fixture['away']}: hit rates</title>
+<title>{html.escape((fixture.get('competition') or '').split(',')[0] if count > 1 and fixture.get('competition') else fixture['home'] + ' v ' + fixture['away'])} · Hit Rates</title>
 <style>{CSS}</style>
 </head>
 <body>
@@ -10916,5 +10938,7 @@ def write_report(payload: dict, path: Path) -> Path:
     import site_guard
     _attach_darts(payload)
     _attach_team_lines(payload)
-    site_guard.atomic_write(path, build_html(payload))
+    import sitenav
+    prefix = "../" if Path(path).parent.name == "reports" else ""
+    site_guard.atomic_write(path, sitenav.wrap(build_html(payload), "index", prefix))
     return path

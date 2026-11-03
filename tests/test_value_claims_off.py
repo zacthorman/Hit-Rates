@@ -55,7 +55,7 @@ class Sharp(unittest.TestCase):
         lv.assert_called_once()
         rc.assert_called_once()
         self.assertIn("Value claims are switched off", html)
-        self.assertIn("1 player lines", html)
+        self.assertIn("1 player line (", html)
         self.assertIn("4 settled, 2 won", html)
         for gone in ("sbudget", "data-k=", "Saka", "+6%"):
             self.assertNotIn(gone, html)
