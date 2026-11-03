@@ -49,7 +49,7 @@ ROOT = Path(__file__).resolve().parent
 WINDOW_H = 48
 SHARP_MIN = 0.02          # 2%+ over the sharp chance
 SHARP_SHOW = 6
-RULE_SHOW = 5
+RULE_SHOW = 3
 UNTRIED_SHOW = 3          # bets shown for a rule with no live result yet
 PRICE_SHOW = 6.0          # longer prices are left off the page (still tracked)
 PROVEN_GAMES = 20         # live games before a rule can count as failed or proven
@@ -60,6 +60,26 @@ RECORD_MARGIN_MAX = 12.0  # NBA projected margin: bigger games cut minutes on bo
 RECORD_START = 1793719800  # 3 Nov 2026 15:30 UTC: the live record counts from here
 RECORD_OUT = ("out", "doubtful")
 SPORTS = ("football", "basketball", "american-football")
+
+# Plain names for the page; the full rule text goes in the tooltip.
+SHORT = {
+    "nba_under_main": "NBA unders, main line",
+    "nba_under_model": "NBA unders, model agrees",
+    "nfl_receiving_model": "NFL receiving overs, model agrees",
+    "beats_betfair": "Paddy beats Betfair's price",
+    "learned_value": "Learned value over Paddy",
+    "nba_alt_perfect": "NBA alt overs, 10 from 10",
+    "nba_under_blowout": "NBA unders, blowout underdog",
+    "nba_alt_drift_miss": "NBA alt overs, drifted after a miss",
+    "nba_alt_short_perfect": "NBA short alt overs, 10 from 10",
+    "nba_main_day_drift": "NBA main line, drifted on the day",
+    "nba_under_reversion": "NBA unders, line above baseline",
+    "nba_under_reversion_strong": "NBA unders, line well above form",
+    "props_beat_pinnacle": "Paddy beats Pinnacle on props",
+    "fb_ss_fouls_model": "Football fouls overs, Super Sub",
+    "fb_ss_shots_model": "Football shots overs, Super Sub",
+    "us_likely_top5": "Five most likely a day",
+}
 
 
 def _load(path: Path) -> dict:
@@ -170,6 +190,8 @@ def rule_bets(now: float) -> dict[str, list[dict]]:
     today = ruletrack.tonight(now, now + WINDOW_H * 3600, q)
     groups = []
     for rule, bets in today.items():
+        if rule.startswith("control_"):
+            continue          # controls are built to lose: tracked, never shown
         rec = _live(rule, q.get(rule) or [])
         if not _keep(rec):
             continue
@@ -200,7 +222,8 @@ def rule_bets(now: float) -> dict[str, list[dict]]:
                 "price": s.get("price"), "chance": s.get("chance")})
         for sport, items in by_sport.items():
             out.setdefault(sport, []).append({
-                "rule": rule, "title": ruletrack.RULES.get(rule, rule), "proven": proven,
+                "rule": rule, "name": SHORT.get(rule, ruletrack.RULES.get(rule, rule)),
+                "title": ruletrack.RULES.get(rule, rule), "proven": proven,
                 "record": {k: rec.get(k) for k in ("n", "games", "won", "roi", "lo", "hi")} if rec.get("n") else None,
                 "bets": items})
     return out

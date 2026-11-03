@@ -512,6 +512,36 @@ PAGE = """<!DOCTYPE html>
 .pk-why .n { color: var(--muted); }
 .pick ol.pk-steps { margin: 6px 0 0; padding-left: 18px; color: var(--muted); font-size: 0.76rem; line-height: 1.45; }
 .pk-val { font-size: 0.8rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.pick.ev h2 { margin: 0; }
+.ev-sub { color: var(--muted); font-size: 0.8rem; line-height: 1.4; margin: 4px 0 0; }
+.ev-rec { font-size: 0.74rem; color: var(--muted); line-height: 1.5; margin-top: 8px; padding: 6px 9px;
+  background: var(--page); border-radius: 8px; }
+.ev-rec b { color: var(--text); font-weight: 650; font-variant-numeric: tabular-nums; }
+.pick .ev-list { list-style: none; margin: 6px 0 0; padding: 0; border: 0; border-radius: 0;
+  background: none; overflow: visible; }
+li.ev-row { border-bottom: 0; }
+.ev-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; row-gap: 1px;
+  padding: 9px 0; border-top: 1px solid var(--border); }
+.ev-row:first-child { border-top: 0; }
+.ev-row:last-child { border-bottom: 0; }
+.ev-row .t { font-size: 0.88rem; font-weight: 600; line-height: 1.3; }
+.ev-row .p { font-size: 0.95rem; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.ev-row .p small { font-size: 0.6rem; font-weight: 600; color: var(--muted); letter-spacing: 0.05em; margin-right: 5px; }
+.ev-row .m { color: var(--muted); font-size: 0.74rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ev-row .e { font-size: 0.74rem; color: var(--muted); text-align: right; white-space: nowrap; }
+.ev-row .e b { margin-left: 6px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.pick.ev .up { color: var(--hit, #2e9d5b); }
+.pick.ev .down { color: var(--today, #c4622d); }
+.ev-rule { margin-top: 14px; }
+.ev-rh { display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  font-size: 0.86rem; font-weight: 650; }
+.ev-rh > b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ev-rs { color: var(--muted); font-size: 0.72rem; margin-top: 1px; }
+.ev-new { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted);
+  border: 1px solid var(--border); border-radius: 999px; padding: 1px 7px; }
+.pick details.ev-fresh { margin-top: 14px; }
+.ev-fresh > summary { font-weight: 600; }
+.ev-fresh .ev-rule:first-of-type { margin-top: 10px; }
 .pick.none { color: var(--muted); }
 body {
   margin: 0; padding: 0;
@@ -964,43 +994,52 @@ function renderPicks() {
     const d = new Date(t * 1000);
     return d.toLocaleDateString("en-GB", { weekday: "short" }) + " " + d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
   };
-  const evRow = (b, extra) => `<li class="pk-leg"><span class="t">${escapeHtml(b.bet)}</span>
-    <span class="p"><span class="bk">${escapeHtml(bookShort(b.book))}</span>${fmtOdds(b.price)}</span>
-    <span class="m">${escapeHtml(b.game || "")} &middot; ${when(b.kickoff)}${b.chance != null ? ` &middot; ours ${pct(b.chance)}` : ""}${extra || ""}</span></li>`;
+  const evRow = (b, right) => `<li class="ev-row">
+    <span class="t">${escapeHtml(b.bet)}</span>
+    <span class="p"><small>${escapeHtml(bookShort(b.book))}</small>${fmtOdds(b.price)}</span>
+    <span class="m">${escapeHtml(b.game || "")} &middot; ${when(b.kickoff)}</span>
+    <span class="e">${right || ""}</span></li>`;
+  const tone = x => x > 0 ? "up" : x < 0 ? "down" : "";
   if (es && es.sharp && es.sharp.length) {
     const r = ev.sharpRecord;
-    cards.push(`<div class="pick">
-      ${pkHead("Beats the sharp price", null, "")}
-      <p class="pk-intro">A soft book paying more than Pinnacle or Betfair's margin-free chance. The sharp price, not
-        our model, is the judge here, so these are the lines with the best case for being underpriced.</p>
-      ${r ? `<div class="pk-rec"><span>Settled <b>${r.n}</b></span><span>Returned <b>${sgn(r.roi)}</b></span>
-        <span>Sharp price said <b>${sgn(r.expected)}</b></span></div>
-        <p class="pk-intro">${r.noise
-          ? `The gap is within normal swing for ${r.n} bets (one standard error is ${Math.round(r.se * 100)} points), so it says nothing yet either way.`
-          : `The gap is bigger than luck explains at ${r.n} bets: treat these with caution until it closes.`}</p>` : ""}
-      <ul class="pk-legs">${es.sharp.map(b => evRow(b, ` &middot; <b class="pk-pos">${escapeHtml(b.note)}</b>`)).join("")}</ul>
-      ${note("read this first", `Each line is ${Math.round((ev.sharpMin || 0.02) * 100)}%+ over the sharp chance at the
-        price shown, from the last fetch: check the price is still there. The edge is small and real only on average,
-        over many bets; level stakes.`)}
+    const rec = r ? `<div class="ev-rec">Record <b>${r.n}</b> settled &middot; returned
+        <b class="${tone(r.roi)}">${sgn(r.roi)}</b> &middot; sharp price said <b>${sgn(r.expected)}</b>
+        &middot; ${r.noise ? "within normal swing" : '<b class="down">bigger gap than luck</b>'}</div>` : "";
+    cards.push(`<div class="pick ev">
+      <h2>Beats the sharp price</h2>
+      <p class="ev-sub">Bookies paying more than Pinnacle or Betfair's fair chance.</p>
+      ${rec}
+      <ul class="ev-list">${es.sharp.map(b => evRow(b,
+        `<span title="${escapeAttr(b.note)}">${escapeHtml(b.sharpSrc || "Sharp")} ${pct(b.sharp)}</span><b class="up">${sgn(b.edge)}</b>`)).join("")}</ul>
+      ${note("how to read this", `The green figure is the edge: what the sharp chance says this price is worth. It is
+        small and only real on average, over many bets, so use level stakes and check the price is still there.
+        ${r ? `One standard error on the record is ${Math.round(r.se * 100)} points, so the gap between returned and
+        expected means nothing until it is well past that.` : ""}`)}
     </div>`);
   }
   if (es && es.rules && es.rules.length) {
-    const blocks = es.rules.map(g => {
+    const block = g => {
       const r = g.record;
-      const rec = r ? `<div class="pk-rec"><span>Live <b>${r.n}</b> bets, <b>${r.games}</b> games</span>
-          <span>ROI <b>${sgn(r.roi)}</b></span><span>90% range <b>${sgn(r.lo)}</b> to <b>${sgn(r.hi)}</b></span></div>`
-        : `<div class="pk-rec"><span>No live result yet</span></div>`;
-      return `<div class="pk-rule"><div class="rt">${escapeHtml(g.title)}<span class="pk-tag ${g.proven ? "proven" : "trial"}">${g.proven ? "Proven" : "On trial"}</span></div>
-        ${rec}<ul class="pk-legs">${g.bets.map(b => evRow(b)).join("")}</ul></div>`;
-    }).join("");
-    cards.push(`<div class="pick">
-      ${pkHead("Rules on trial", null, "")}
-      <p class="pk-intro">Fixed rules, frozen before their live record started, and today's bets from each. A rule is
-        only "proven" once 20+ live games put its whole 90% range above zero; until then this is tracking, not advice.</p>
-      ${blocks}
-      ${note("how rules get here", `Each rule was found on past prices, then frozen: nothing about it may change once
-        its trial starts, and it is judged on games after that only. Rules whose live record has clearly failed are
-        left off. Every rule's full record is on the <a href="tonight.html">Tonight</a> page.`)}
+      const stat = r ? `<b class="${tone(r.roi)}">${sgn(r.roi)}</b>` : `<span class="ev-new">new</span>`;
+      const sub = r ? `${r.games} game${r.games === 1 ? "" : "s"} live &middot; range ${sgn(r.lo)} to ${sgn(r.hi)}`
+        : "No live result yet";
+      return `<div class="ev-rule">
+        <div class="ev-rh"><span class="n" title="${escapeAttr(g.title)}">${escapeHtml(g.name || g.title)}${g.proven ? ` <span class="pk-tag proven">Proven</span>` : ""}</span>${stat}</div>
+        <div class="ev-rs">${sub}</div>
+        <ul class="ev-list">${g.bets.map(b => evRow(b)).join("")}</ul></div>`;
+    };
+    // the three strongest live records open; the rest, and untried rules, folded
+    const tried = es.rules.filter(g => g.record), top = tried.slice(0, 3);
+    const more = tried.slice(3).concat(es.rules.filter(g => !g.record));
+    cards.push(`<div class="pick ev">
+      <h2>Rules on trial</h2>
+      <p class="ev-sub">Fixed rules and today's bets from each, judged on live results only.</p>
+      ${top.map(block).join("")}
+      ${more.length ? `<details class="ev-fresh"><summary>${more.length} more rule${more.length === 1 ? "" : "s"}${top.length ? "" : " (none tested live yet)"}</summary>${more.map(block).join("")}</details>` : ""}
+      ${note("how rules get here", `Each rule was found on past prices, then frozen, and is judged only on games
+        after that. It is marked Proven once 20+ live games put its whole 90% range above zero; until then this is
+        tracking, not advice. Rules that are clearly failing are left off. Full records are on the
+        <a href="tonight.html">Tonight</a> page.`)}
     </div>`);
   }
 
