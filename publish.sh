@@ -30,6 +30,14 @@ fi
 SRC="$PUBLISH_SRC"
 cd "$SRC"
 
+# Paused (3 Nov 2026): while .pause_publish exists, nothing is pushed, so work
+# in progress cannot go live half-done. Delete the file to resume. FORCE=1
+# publishes anyway.
+if [ -f "$SRC/.pause_publish" ] && [ "${FORCE:-0}" != "1" ]; then
+  echo "  publish paused: .pause_publish exists ($(head -1 "$SRC/.pause_publish" 2>/dev/null)). Delete it to resume."
+  exit 0
+fi
+
 # One publish at a time (30 Oct 2026): the odds job, the line-ups job and a
 # by-hand run can now overlap. A second publish waits for the first (up to
 # 25 minutes), then goes; a lock older than 45 minutes is a crashed run's.

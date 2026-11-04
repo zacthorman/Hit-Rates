@@ -707,6 +707,11 @@ def main() -> None:
         # 4. Publish. Only if there is something to publish.
         if args.no_push or not settings.get("push"):
             say("not pushing, --no-push")
+        elif (ROOT / ".pause_publish").exists():
+            # 3 Nov 2026: work in progress. Everything is built locally, but
+            # nothing is committed, pushed or published until the file goes.
+            say("publishing paused: .pause_publish exists, so nothing was committed, pushed or published. "
+                "Delete it to resume.")
         elif args.dry:
             say("  $ git add -A && git commit && git push && ./publish.sh")
         elif not git_has_changes():

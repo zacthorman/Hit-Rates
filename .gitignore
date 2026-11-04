@@ -97,3 +97,15 @@ _stage_tmp/
 # Full results of case_score_backtest.py, regenerable from the cache.
 case_score_results.json
 research/selbt/*.pkl
+
+# 3 Nov 2026 tidy: old patch backups, the old bin and the backup folder were
+# committed before the rules above existed. Moved here so the next update
+# commit drops them from the repo; nothing was deleted. Empty by hand.
+_binned/
+_backup/
+*.ipynb
+# The 79 MB backtest cache archive lives here, outside the public repo.
+archive/
+
+# Pause switch for update.py and publish.sh (3 Nov 2026). Never committed.
+.pause_publish

@@ -6183,15 +6183,15 @@
   "sport": "football",
   "kickoff": 1793736000,
   "selection": "Flynn Downes 1+ fouls",
-  "chance": 0.6416797504846776,
-  "fair": 1.8383721549452927,
+  "chance": 0.6417467949175415,
+  "fair": 1.8379190982623121,
   "team": "Southampton",
   "player": "Flynn Downes",
   "stat": "Fouls",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793726414.8065338
+  "written": 1793735967.8339992
  },
  "16938922": {
   "event_id": 16938922,
@@ -6199,16 +6199,16 @@
   "competition": "UEFA Champions League",
   "sport": "football",
   "kickoff": 1793736000,
-  "selection": "Tajon Buchanan 1+ shots",
-  "chance": 0.7141702826459081,
-  "fair": 1.5816764296647767,
+  "selection": "Ayoze P\u00e9rez 1+ shots",
+  "chance": 0.7838056635808155,
+  "fair": 1.4068430844977386,
   "team": "Villarreal",
-  "player": "Tajon Buchanan",
+  "player": "Ayoze P\u00e9rez",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793726414.8065338
+  "written": 1793735967.8339992
  },
  "16938783": {
   "event_id": 16938783,
@@ -6217,15 +6217,15 @@
   "sport": "football",
   "kickoff": 1793736000,
   "selection": "Ferm\u00edn L\u00f3pez 2+ shots",
-  "chance": 0.7214617892257673,
-  "fair": 1.7463652699661156,
+  "chance": 0.7214598880403451,
+  "fair": 1.7464232540856581,
   "team": "FC Barcelona",
   "player": "Ferm\u00edn L\u00f3pez",
   "stat": "Shots",
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1793726414.8065338
+  "written": 1793735967.8339992
  },
  "16938788": {
   "event_id": 16938788,
@@ -6234,15 +6234,15 @@
   "sport": "football",
   "kickoff": 1793736000,
   "selection": "Juli\u00e1n Alvarez 2+ shots",
-  "chance": 0.6718592059234294,
-  "fair": 1.5559551197682526,
+  "chance": 0.6718581176411075,
+  "fair": 1.555981467489529,
   "team": "Atl\u00e9tico Madrid",
   "player": "Juli\u00e1n Alvarez",
   "stat": "Shots",
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1793726414.8065338
+  "written": 1793735967.8339992
  },
  "16938878": {
   "event_id": 16938878,
@@ -6251,15 +6251,15 @@
   "sport": "football",
   "kickoff": 1793736000,
   "selection": "Bryan Mbeumo 2+ shots",
-  "chance": 0.6831914161059317,
-  "fair": 1.6484943217509511,
+  "chance": 0.683189907275776,
+  "fair": 1.6485353257362148,
   "team": "Manchester United",
   "player": "Bryan Mbeumo",
   "stat": "Shots",
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1793726414.8065338
+  "written": 1793735967.8339992
  },
  "16938971": {
   "event_id": 16938971,
@@ -6268,15 +6268,15 @@
   "sport": "football",
   "kickoff": 1793736000,
   "selection": "Anis Hadj Moussa 2+ shots",
-  "chance": 0.7910004923740288,
-  "fair": 1.3804434056532144,
+  "chance": 0.7910003252544976,
+  "fair": 1.3804465903304488,
   "team": "Feyenoord",
   "player": "Anis Hadj Moussa",
   "stat": "Shots",
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1793726414.8065338
+  "written": 1793735967.8339992
  },
  "16939046": {
   "event_id": 16939046,
@@ -6284,16 +6284,16 @@
   "competition": "UEFA Champions League",
   "sport": "football",
   "kickoff": 1793736000,
-  "selection": "Krystof Dan\u011bk 1+ shots",
-  "chance": 0.7246702826459082,
-  "fair": 1.5816764296647767,
+  "selection": "Moses Usor 2+ shots",
+  "chance": 0.7388402327248701,
+  "fair": 1.455599144772608,
   "team": "LASK",
-  "player": "Krystof Dan\u011bk",
+  "player": "Moses Usor",
   "stat": "Shots",
   "period": "ALL",
-  "line": 0.5,
+  "line": 1.5,
   "over": true,
-  "written": 1793726414.8065338
+  "written": 1793735967.8339992
  },
  "16938932": {
   "event_id": 16938932,
@@ -6301,16 +6301,16 @@
   "competition": "UEFA Champions League",
   "sport": "football",
   "kickoff": 1793736000,
-  "selection": "Ole Didrik Blomberg 1+ shots",
-  "chance": 0.740334190426761,
-  "fair": 1.5947224107183806,
+  "selection": "Jens Petter Hauge 2+ shots",
+  "chance": 0.679276603908968,
+  "fair": 1.9272797305339988,
   "team": "Bod\u00f8/Glimt",
-  "player": "Ole Didrik Blomberg",
+  "player": "Jens Petter Hauge",
   "stat": "Shots",
   "period": "ALL",
-  "line": 0.5,
+  "line": 1.5,
   "over": true,
-  "written": 1793726414.8065338
+  "written": 1793735967.8339992
  },
  "16391595": {
   "event_id": 16391595,
@@ -6319,15 +6319,15 @@
   "sport": "football",
   "kickoff": 1793735100,
   "selection": "Stoke City under 4.5 corner kicks",
-  "chance": 0.5355533753938778,
-  "fair": 2.208471666673602,
+  "chance": 0.535322158878488,
+  "fair": 2.210729418851498,
   "team": "Stoke City",
   "player": null,
   "stat": "Corner kicks",
   "period": "ALL",
   "line": 4.5,
   "over": false,
-  "written": 1793726414.8065338
+  "written": 1793733355.8940642
  },
  "15238238": {
   "event_id": 15238238,
@@ -6336,15 +6336,15 @@
   "sport": "football",
   "kickoff": 1793745000,
   "selection": "Giovanni Augusto 1+ shots",
-  "chance": 0.6599455017249087,
-  "fair": 1.9271870071971895,
+  "chance": 0.6547580550434696,
+  "fair": 1.9274652050269363,
   "team": "Chapecoense",
   "player": "Giovanni Augusto",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793726414.8065338
+  "written": 1793743025.63055
  },
  "15238232": {
   "event_id": 15238232,
@@ -6353,14 +6353,14 @@
   "sport": "football",
   "kickoff": 1793752200,
   "selection": "Joaqu\u00edn Lavega 1+ shots",
-  "chance": 0.7421436303594783,
-  "fair": 1.4726133394598124,
+  "chance": 0.7421184920340369,
+  "fair": 1.472722376977468,
   "team": "Coritiba",
   "player": "Joaqu\u00edn Lavega",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1793726414.8065338
+  "written": 1793745524.498513
  }
 }

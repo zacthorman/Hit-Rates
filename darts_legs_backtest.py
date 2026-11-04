@@ -4,7 +4,7 @@ Walk-forward check of darts_legs.py against what is live.
     python darts_legs_backtest.py --cache DIR            # every table in DARTS-MODEL.md
     python darts_legs_backtest.py --cache DIR --tune     # refit LEG and STATS on the tuning window
 
-DIR is an unpacked cache_backtest.tar.zst (or the live cache/). Nothing is
+DIR is an unpacked archive/cache_backtest.tar.zst (or the live cache/). Nothing is
 fetched. Every price is made from matches strictly before the one priced.
 
 Two comparisons:

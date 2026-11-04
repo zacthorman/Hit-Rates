@@ -53,7 +53,7 @@ Two things went wrong without it:
 The extra chance is (1 - his own chance) x how often he is taken off x how
 often the replacement scores, given he was taken off without scoring. The
 last figure is by position (G, D, M, F) and is measured by `fit` on the
-backtest line-ups in cache_backtest.tar.zst, not assumed; supersub_fit.json
+backtest line-ups in archive/cache_backtest.tar.zst, not assumed; supersub_fit.json
 holds it. How often he is taken off is his own record: the share of his
 starts that ended before SUB_BEFORE minutes.
 

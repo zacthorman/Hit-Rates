@@ -1106,7 +1106,9 @@ def build(hours: float | None) -> str:
     games_pane = ("<p class='sub'>Tap a game for its bets, how it should go, and the builder.</p>"
                   + "".join(rows))
     leads = results_block(now)
-    picks_pane = ("<h2 class='first'>Best selections</h2>" + selections.box(now, until)
+    import confluence
+    picks_pane = ("<h2 class='first'>Where the evidence agrees</h2>" + confluence.box(now, until)
+                  + "<h2>Best selections</h2>" + selections.box(now, until)
                   + research_block(now)
                   + "<h2>Paddy Power v the sharp price</h2>"
                   "<p class='sub'>Team lines are checked against Pinnacle where it prices them, else Betfair; "
@@ -1128,7 +1130,8 @@ def build(hours: float | None) -> str:
             f"<div class='mpane team'>{games_pane}</div><div class='mpane player'>{picks_pane}</div></div>")
     page = PAGE.format(built=built, span=span, body=body,
                        stamp=time.strftime("%a %d %b, %H:%M %Z", time.localtime(now)))
-    return (page.replace("</style>", boostcheck.CSS + LAYOUT_CSS + "</style>", 1)
+    import confluence
+    return (page.replace("</style>", boostcheck.CSS + LAYOUT_CSS + confluence.CSS + "</style>", 1)
                 .replace("</body>", boostcheck.script() + sharp.SCRIPT + "</body>", 1))
 
 

@@ -403,7 +403,7 @@ def replay_report(path: Path) -> list[str]:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("part", choices=["committed", "replay"])
-    ap.add_argument("--cache", help="SofaScore cache folder (cache/ unpacked from cache_backtest.tar.zst)")
+    ap.add_argument("--cache", help="SofaScore cache folder (cache/ unpacked from archive/cache_backtest.tar.zst)")
     ap.add_argument("--rows", default=str(ROOT / "cache" / "acceptable_rows.json.gz"))
     a = ap.parse_args(argv)
     lines = committed_report(Path(a.cache) if a.cache else None) if a.part == "committed" else replay_report(Path(a.rows))

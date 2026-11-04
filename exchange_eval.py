@@ -499,7 +499,7 @@ def page() -> Path:
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>Model v market · Hit Rates</title>
 <style>{CSS}</style></head><body><div class="wrap">
 
-<h1>Market check</h1>
+<h1>Model v market</h1>
 <p class="sub">Every bet the site prices that Betfair also prices, scored against Betfair. Built {built}.</p>
 <div class="kpis">{kp}</div>
 <h2>Closing line value</h2>

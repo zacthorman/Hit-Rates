@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03 16:05 UTC",
+ "updated": "2026-11-03 22:38 UTC",
  "weights": {
   "team|Goals|derived": 0.977,
   "team|Goals|exchange": 0.833,
@@ -7,18 +7,18 @@
   "team|Match goals|exchange": 0.367,
   "team|Match corners|exchange": 0.834,
   "player|Shots on target|back": 0.06,
-  "player|Goals|back": 0.434,
+  "player|Goals|back": 0.456,
   "player|Anytime touchdown|back": 0.374,
   "team|Match cards|exchange": 0.564
  },
  "backMargin": {
   "SHOTS_ON_TARGET_P1": 0.338,
-  "TO_SCORE": 0.226,
+  "TO_SCORE": 0.228,
   "TO_SCORE_A_TOUCHDOWN": 0.157
  },
  "fit": {
   "team|Goals|derived": {
-   "n": 1038,
+   "n": 1042,
    "raw": 1.0,
    "default": 0.5
   },
@@ -48,8 +48,8 @@
    "default": 0.35
   },
   "player|Goals|back": {
-   "n": 36,
-   "raw": 0.55,
+   "n": 37,
+   "raw": 0.6,
    "default": 0.35
   },
   "player|Anytime touchdown|back": {
@@ -68,7 +68,7 @@
    "default": 0.06
   },
   "TO_SCORE": {
-   "n": 36,
+   "n": 37,
    "raw": 0.4,
    "default": 0.1
   },
@@ -78,5 +78,5 @@
    "default": 0.1
   }
  },
- "settled": 1861
+ "settled": 1866
 }

@@ -8,7 +8,7 @@ Replay the daily page build from cache/ alone, timed, for before-and-after check
 
 WORKDIR is a checkout of the code to test (for example `git archive` of a
 branch unpacked somewhere). Its cache/ is symlinked to this checkout's cache/,
-so extract cache_backtest.tar.zst into cache/ first.
+so extract archive/cache_backtest.tar.zst into cache/ first.
 
 Why it exists. The real build (update.py, then publish.sh) starts by asking
 SofaScore for each league's next round, which needs the network and returns

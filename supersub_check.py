@@ -10,7 +10,7 @@ scorer_audit.py with the recalibrated to-score path (rule-review, which
 carries scorer-audit). PKL is scorer_audit.py's replay (`scorer_audit.py
 build`, cache/scorer_audit.pkl): every starter's fmodel to-score chance, made
 with only what was known before kick-off. CACHE is the unpacked
-cache_backtest.tar.zst the replay was built from. Nothing is fetched and
+archive/cache_backtest.tar.zst the replay was built from. Nothing is fetched and
 nothing live is changed.
 
 What is checked. For every starter from 1 July 2026 (where fmodel is out of

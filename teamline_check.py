@@ -342,7 +342,7 @@ def cache_report(df) -> tuple[list[str], dict]:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("part", choices=["record", "cache"])
-    ap.add_argument("--cache", help="folder of SofaScore cache files (cache/ unpacked from cache_backtest.tar.zst)")
+    ap.add_argument("--cache", help="folder of SofaScore cache files (cache/ unpacked from archive/cache_backtest.tar.zst)")
     ap.add_argument("--load", help="a walk saved with --dump")
     ap.add_argument("--dump", help="save the walk here (with --cache)")
     a = ap.parse_args(argv)

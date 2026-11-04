@@ -12,7 +12,7 @@ branch stack, then compare them. Read-only for the repo and the site.
     python release_check.py compare WORK            # what a visitor would see change
 
 WORK is a scratch folder outside the repo. It needs the cache extracted into
-WORK/cache (cache_backtest.tar.zst, or the Mac's cache/ copied or linked).
+WORK/cache (archive/cache_backtest.tar.zst, or the Mac's cache/ copied or linked).
 
 prepare makes a git worktree in WORK/merge from origin/oct21-work and merges
 STACK into it in order with --no-ff (it stops at the first conflict), then

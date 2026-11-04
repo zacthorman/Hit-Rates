@@ -15,7 +15,7 @@ asked to (--out). It does four things.
      best_bets  the same bet (or another line on the same stat) in best_bets.json
      pplog      Paddy Power's player-line log, pplog/*.jsonl, where present
      cache      SofaScore's own match statistics and line-ups, read from
-                cache/ or cache_backtest.tar.zst, the same numbers besttrack
+                cache/ or archive/cache_backtest.tar.zst, the same numbers besttrack
                 settles from
 
    Player lines the log settled at 0 are a known hazard: before 20 Oct the
@@ -60,7 +60,7 @@ LOG = HERE / "exchange_log.json"
 BEST = HERE / "best_bets.json"
 PPLOG = HERE / "pplog"
 CACHE = HERE / "cache"
-TARBALL = HERE / "cache_backtest.tar.zst"
+TARBALL = HERE / "archive" / "cache_backtest.tar.zst"
 
 COMMISSION = 0.05
 SHOWN = 0.005         # the page prints +n% value above this (make_index.py)
