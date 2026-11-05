@@ -775,7 +775,11 @@ def main() -> None:
         #    momentum and incidents per match, and Understat's pressing
         #    numbers. After the publish on purpose, so the site is never held
         #    up by the backfill, and never fatal.
-        if not args.dry:
+        #    5 Nov 2026: off here by default. It took 1 h 48 min of a 5 hour
+        #    morning run, all after the site was already live; it now runs on
+        #    its own at 15:00 (com.zacthorman.tactics.plist). "tactics_in_update":
+        #    true in update.json puts it back here.
+        if not args.dry and settings.get("tactics_in_update", False):
             # 27 Oct 2026: release the lock first. The backfill runs for hours
             # and held it, so lineups_auto (line-ups, the afternoon Paddy price
             # refresh and its publish) skipped every tick until it finished:

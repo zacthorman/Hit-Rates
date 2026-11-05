@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Daily at 15:00: the tactical-data backfill (tactics_fetch.py), moved out of
+  the 07:00 update on 5 Nov 2026, where it took 1 h 48 min after the site was
+  already published. caffeinate keeps the Mac awake while it runs. Asleep at
+  15:00, it runs on wake; switched off, that day is skipped, which costs
+  nothing (it is a backfill and carries on the next day). Its SofaScore
+  requests take turns with lineups_auto's through sofascore_api's lock.
+
+  Install:
+      cp com.zacthorman.tactics.plist ~/Library/LaunchAgents/
+      launchctl load ~/Library/LaunchAgents/com.zacthorman.tactics.plist
+  Stop:
+      launchctl unload ~/Library/LaunchAgents/com.zacthorman.tactics.plist
+  Log: tactics_launchd.out.log in this folder.
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.zacthorman.tactics</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/caffeinate</string>
+        <string>-i</string>
+        <string>/Users/zacthorman/Vaults/Cowork Base/03 Code Projects/Football stats/.venv/bin/python</string>
+        <string>/Users/zacthorman/Vaults/Cowork Base/03 Code Projects/Football stats/tactics_fetch.py</string>
+        <string>--budget</string>
+        <string>1500</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/zacthorman/Vaults/Cowork Base/03 Code Projects/Football stats</string>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>15</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/zacthorman/Vaults/Cowork Base/03 Code Projects/Football stats/tactics_launchd.out.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/zacthorman/Vaults/Cowork Base/03 Code Projects/Football stats/tactics_launchd.err.log</string>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <!-- Same as the other jobs: SofaScore through the FlareSolverr container,
+             so Docker Desktop must be running. -->
+        <key>SOFA_FLARESOLVERR</key>
+        <string>1</string>
+    </dict>
+</dict>
+</plist>
