@@ -1059,6 +1059,7 @@ def build(hours: float | None) -> str:
         return ("<table><thead><tr><th>Selection</th><th class='n'>Record</th>"
                 f"<th class='n'>Our price</th><th class='n'>Worth it at</th></tr></thead><tbody>{body}</tbody></table>")
 
+    board_items = []
     for n, (entry, meta) in enumerate(window):
         sport = (entry.get("fixture") or {}).get("sport") or "football"
         import bettable
@@ -1088,6 +1089,8 @@ def build(hours: float | None) -> str:
         team_legs_all.extend(l for l in legs if not l.get("player"))
         player_legs_all.extend(l for l in legs if l.get("player"))
         lead = own[0] if own else None
+        for l in team_pool[:SINGLES_PER_FIXTURE] + player_pool[:SINGLES_PER_FIXTURE]:
+            board_items.append((meta, sport, l, tonight_chance(l, sport_key)))
         rows.append(game_card(n, entry, meta, sport, sport_key, lead, team_pool, player_pool, best, gs))
 
     try:
@@ -1124,26 +1127,110 @@ def build(hours: float | None) -> str:
                   f"<details class='game'><summary><b>Team multi across the games</b></summary>{multi(team_legs_all)}</details>"
                   f"<details class='game'><summary><b>Player multi across the games</b></summary>{multi(player_legs_all)}</details>"
                   + (f"<details class='game'><summary><b>Last night's leads</b></summary>{leads}</details>" if leads else ""))
+    # Board first (4 Nov 2026): every rated leg in one table, then the games
+    # one by one, then the cross-game lists.
+    try:
+        board_pane = board_block(board_items)
+    except Exception as exc:  # never cost the page
+        board_pane = f"<p class='none'>Board not built ({html.escape(type(exc).__name__)}).</p>"
     body = ("<div class='main'>"
-            f"<input type='radio' name='main' id='mt' checked><label for='mt'>Games <span class='cnt'>{len(rows)}</span></label>"
+            "<input type='radio' name='main' id='mb' checked><label for='mb'>Board</label>"
+            f"<input type='radio' name='main' id='mt'><label for='mt'>Games <span class='cnt'>{len(rows)}</span></label>"
             "<input type='radio' name='main' id='mp'><label for='mp'>Picks</label>"
+            f"<div class='mpane board'>{board_pane}</div>"
             f"<div class='mpane team'>{games_pane}</div><div class='mpane player'>{picks_pane}</div></div>")
     page = PAGE.format(built=built, span=span, body=body,
                        stamp=time.strftime("%a %d %b, %H:%M %Z", time.localtime(now)))
     import confluence
     return (page.replace("</style>", boostcheck.CSS + LAYOUT_CSS + confluence.CSS + "</style>", 1)
-                .replace("</body>", boostcheck.script() + sharp.SCRIPT + "</body>", 1))
+                .replace("</body>", boostcheck.script() + sharp.SCRIPT + BOARD_SCRIPT + "</body>", 1))
+
+
+def board_block(items) -> str:
+    """The Board tab (4 Nov 2026): every leg the game cards show, across all
+    tonight's games, in one table. Zac: the picks need to be easier to see.
+    Bets first (Paddy at or above "worth it at"), then the rest, each by
+    chance. items: (meta, sport, leg, chance)."""
+    esc = html.escape
+    rows, seen = [], set()
+    for meta, sport, leg, ch in items:
+        key = (meta.get("home"), meta.get("away"), fmt_leg(leg))
+        if key in seen or not ch:
+            continue
+        seen.add(key)
+        pp, need = leg.get("pp_price"), leg.get("need")
+        bet = bool(pp and isinstance(need, (int, float)) and pp >= need)
+        rows.append((not bet, -ch, meta["kickoff"], meta, sport, leg, ch, pp, need, bet))
+    if not rows:
+        return "<p class='none'>Nothing rated tonight yet.</p>"
+    rows.sort(key=lambda r: r[:3])
+    label = {"football": "Football", "basketball": "NBA", "american-football": "NFL"}
+    sports = sorted({r[4] for r in rows}, key=lambda x: list(label).index(x) if x in label else 9)
+    chips = ("<div class='bchips'><button class='on' data-f='all'>All</button>"
+             + "".join(f"<button data-f='{esc(sp)}'>{esc(label.get(sp, sp))}</button>" for sp in sports)
+             + "<button data-f='bet'>Bets only</button></div>")
+    body = []
+    for _, _, _, meta, sport, leg, ch, pp, need, bet in rows:
+        hits, total = leg.get("hits"), leg.get("total")
+        rec = f"{hits}/{total}" if total else "&ndash;"
+        verdict = ("<span class='bv yes'>Bet</span>" if bet
+                   else "<span class='bv'>short</span>" if pp else "<span class='bv'>price due</span>")
+        body.append(
+            f"<tr data-s='{esc(sport)}' data-b='{1 if bet else 0}'>"
+            f"<td class='n'>{time.strftime('%H:%M', time.localtime(meta['kickoff']))}</td>"
+            f"<td><b>{esc(fmt_leg(leg))}</b><div class='sub'>{esc(meta['home'])} v {esc(meta['away'])}</div></td>"
+            f"<td class='n'>{rec}</td><td class='n'>{ch * 100:.0f}%</td>"
+            f"<td class='n'>{odds(pp) if pp else '&ndash;'}</td><td class='n'>{odds(need)}</td>"
+            f"<td class='n'>{verdict}</td></tr>")
+    n_bet = sum(1 for r in rows if r[9])
+    return (f"<p class='sub'>Every leg tonight's game cards rate, in one list. <b>Bet</b> means Paddy pays at least "
+            f"the &ldquo;worth it at&rdquo; price ({n_bet} tonight); <b>short</b> means it does not. Chance is our "
+            "model, record is his recent games.</p>" + chips
+            + "<div class='bwrap'><table class='board'><thead><tr><th class='n'>Time</th><th>Leg</th>"
+            "<th class='n'>Record</th><th class='n'>Chance</th><th class='n'>Paddy</th><th class='n'>Worth it at</th>"
+            "<th class='n'></th></tr></thead><tbody>" + "".join(body) + "</tbody></table></div>")
+
+
+BOARD_SCRIPT = """<script>
+(function () {
+  var chips = document.querySelectorAll('.bchips button');
+  chips.forEach(function (b) {
+    b.addEventListener('click', function () {
+      chips.forEach(function (c) { c.classList.toggle('on', c === b); });
+      var f = b.getAttribute('data-f');
+      document.querySelectorAll('table.board tbody tr').forEach(function (r) {
+        var show = f === 'all' || (f === 'bet' ? r.getAttribute('data-b') === '1' : r.getAttribute('data-s') === f);
+        r.style.display = show ? '' : 'none';
+      });
+    });
+  });
+})();
+</script>"""
 
 
 LAYOUT_CSS = """
 .main > input { position:absolute; opacity:0; pointer-events:none; }
-.main > label { display:inline-block; width:calc(50% - 4px); text-align:center; padding:12px 0; margin:14px 0 6px;
+.main > label { display:inline-block; width:calc(33.33% - 4px); text-align:center; padding:12px 0; margin:14px 0 6px;
   font-size:17px; font-weight:700; border:1px solid var(--line); border-radius:10px; cursor:pointer; color:var(--muted); }
 .main > label + input + label { margin-left:4px; }
 .main > input:checked + label { background:var(--fg); color:var(--bg); border-color:var(--fg); }
 .main > input:focus-visible + label { outline:2px solid var(--accent); outline-offset:2px; }
 .main .mpane { display:none; }
-.main > input:nth-of-type(1):checked ~ .team, .main > input:nth-of-type(2):checked ~ .player { display:block; }
+.main > input:nth-of-type(1):checked ~ .board, .main > input:nth-of-type(2):checked ~ .team,
+.main > input:nth-of-type(3):checked ~ .player { display:block; }
+.bchips { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+.bchips button { font:inherit; font-size:13px; padding:5px 12px; border:1px solid var(--line); border-radius:999px;
+  background:none; color:var(--muted); cursor:pointer; }
+.bchips button.on { background:var(--fg); color:var(--bg); border-color:var(--fg); }
+.bwrap { overflow-x:auto; }
+table.board { width:100%; border-collapse:collapse; font-size:14px; }
+table.board th { font-size:12px; color:var(--muted); font-weight:600; text-align:left; padding:6px 6px 6px 0;
+  border-bottom:1px solid var(--line); }
+table.board td { padding:7px 6px 7px 0; border-bottom:1px solid var(--line); vertical-align:top; }
+table.board .n { text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
+table.board td .sub { font-size:12px; }
+.bv { font-size:12px; color:var(--muted); }
+.bv.yes { font-weight:700; color:var(--hit, #2e9d5b); }
 details.game { border-top:1px solid var(--line); }
 details.game > summary { list-style:none; cursor:pointer; padding:10px 22px 10px 0; position:relative; font-size:15px; }
 details.game > summary::-webkit-details-marker { display:none; }
