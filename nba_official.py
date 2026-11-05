@@ -108,24 +108,17 @@ def team_matches(sofa_name: str, team: dict) -> bool:
 # ------------------------------------------------------------ fetching
 
 def _get(url: str) -> dict:
+    """Through nba_api's session (5 Nov 2026: NBA.com answered plain urllib
+    with 403 and nba_api's curl_cffi session with 200)."""
     if _state["stopped"]:
         raise Refused(_state["stopped"])
-    wait = _state["last"] + MIN_GAP + random.random() * JITTER - time.time()
-    if wait > 0:
-        time.sleep(wait)
-    _state["last"] = time.time()
-    try:
-        req = urllib.request.Request(url, headers=HEADERS)
-        with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
-            if resp.status != 200:
-                raise Refused(f"HTTP {resp.status}")
-            return json.loads(resp.read().decode("utf-8"))
-    except Refused as exc:
-        _state["stopped"] = str(exc)
-        raise
-    except Exception as exc:  # 403, 404, timeout, bad JSON: stop asking this run
-        _state["stopped"] = f"{type(exc).__name__}: {exc}"
-        raise Refused(_state["stopped"]) from exc
+    import nba_api
+    path = url.split("/static/json/", 1)[-1]
+    data = nba_api.get_json(path, max_age_hours=0)
+    if data is None:
+        _state["stopped"] = nba_api.stopped() or f"no answer for {path}"
+        raise Refused(_state["stopped"])
+    return data
 
 
 def _read(path: Path):

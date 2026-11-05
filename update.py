@@ -38,6 +38,7 @@ import json
 import os
 import subprocess
 import sys
+import threading
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -300,7 +301,7 @@ def read_build_status(path: Path) -> dict:
         return {}
 
 
-def run_code(command: list[str], dry: bool) -> int:
+def run_code(command: list[str], dry: bool, prefix: str = "") -> int:
     """Run a command, streaming its output into the log as it happens.
 
     Streaming rather than capturing, which is how this was written first. A
@@ -313,7 +314,7 @@ def run_code(command: list[str], dry: bool) -> int:
     own stdout when it is writing to a pipe rather than a terminal, and the
     output arrives in 8KB lumps regardless of what this function does.
     """
-    say("  $ " + " ".join(command))
+    say(f"  {prefix}$ " + " ".join(command))
     if dry:
         return 0
 
@@ -329,7 +330,7 @@ def run_code(command: list[str], dry: bool) -> int:
     for raw in process.stdout:
         for line in raw.replace("\r", "\n").splitlines():
             if line.strip():
-                say("    " + line.rstrip())
+                say("    " + prefix + line.rstrip())
 
     process.wait()
     return process.returncode
@@ -542,12 +543,34 @@ def main() -> None:
             # nights, and a whole slate of thirty teams every run would be the
             # slowest build here for pages that are stale by tomorrow. Never
             # fatal.
+            nba_command = [python, "run.py", "--league", "NBA", "--games", "20",
+                           "--players", "--adjust", "--h2h", "--within-days", "2",
+                           "--no-open"]
+
             def build_nba():
                 say("building the NBA slate")
-                optional_build([python, "run.py", "--league", "NBA", "--games", "20",
-                                "--players", "--adjust", "--h2h", "--within-days", "2",
-                                "--no-open"],
-                               args.dry, "NBA", feeds)
+                optional_build(nba_command, args.dry, "NBA", feeds)
+
+            # 5 Nov 2026: the NBA builds alongside the football instead of
+            # before it (nba_parallel, on unless update.json says false). Its
+            # box scores come from NBA.com (nba_api.py), and the few SofaScore
+            # requests it still makes take turns with the football's through
+            # sofascore_api's lock, so SofaScore sees the same pace as before.
+            # It took 15 minutes on 5 Nov with the quick publish 6 more, all
+            # before the first football league started. The NBA page now goes
+            # out with the rest; the quick publish is skipped, since running
+            # publish.sh while the football is still writing reports is not safe.
+            nba_parallel = bool(settings.get("nba")) and settings.get("nba_parallel", True) and not args.dry
+            nba_job: dict = {}
+            nba_thread = None
+            if nba_parallel:
+                say("building the NBA slate alongside the football (nba_parallel)")
+
+                def _nba_job():
+                    nba_job["code"] = run_code(nba_command, args.dry, prefix="[NBA] ")
+
+                nba_thread = threading.Thread(target=_nba_job, name="nba-build", daemon=True)
+                nba_thread.start()
 
             # 1 Nov 2026: the NBA goes first (nba_first, on unless update.json
             # says false), with a quick publish straight after, so its page is
@@ -555,7 +578,8 @@ def main() -> None:
             # football leagues take. The page's prices come later from the
             # afternoon Paddy refresh either way. The full publish at the end
             # still republishes everything.
-            nba_first = bool(settings.get("nba")) and settings.get("nba_first", True)
+            nba_first = (bool(settings.get("nba")) and settings.get("nba_first", True)
+                         and not nba_parallel)
             if nba_first:
                 build_nba()
                 if ("NBA" in feeds["built"] and not args.dry and not args.no_push
@@ -592,11 +616,27 @@ def main() -> None:
                     keep_yesterday(feeds, name, why)
             else:
                 say(f"  FAILED with exit code {code}")
+                if nba_thread is not None and nba_thread.is_alive():
+                    say("waiting for the NBA build to finish before stopping")
+                    nba_thread.join()
                 say("build failed, stopping before anything is published")
                 say("if the log above shows repeated 403s, SofaScore is refusing:")
                 say("  raise delay_min and delay_max in update.json, and build")
                 say("  fewer leagues per run. Cached data still works meanwhile.")
                 fail("the league build failed, nothing was published")
+
+            # The NBA build that ran alongside: wait for it, then record it
+            # exactly as optional_build would have.
+            if nba_thread is not None:
+                if nba_thread.is_alive():
+                    say("football leagues done, waiting for the NBA build")
+                nba_thread.join()
+                code_nba = nba_job.get("code", 1)
+                if code_nba == 0:
+                    feeds["built"].append("NBA")
+                elif code_nba == site_guard.BAD_FETCH:
+                    keep_yesterday(feeds, "NBA", "the fetch failed")
+                say(f"NBA build finished (exit {code_nba})")
 
             # 1b. The Nations League. Not a league with a round, so it is
             #     read off the schedule for the next few days instead. Off

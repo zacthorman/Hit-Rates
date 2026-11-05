@@ -288,11 +288,30 @@ def _minutes(v) -> float:
     return int(m.group(1)) + float(m.group(2)) / 60 if m else 0.0
 
 
-def player_statistics(st: dict) -> dict:
-    """One NBA.com player line in SofaScore's basketball keys."""
+def player_statistics(st: dict, team: dict | None = None) -> dict:
+    """One NBA.com player line in SofaScore's basketball keys.
+
+    SofaScore also sends three derived numbers, computed here the standard
+    way. usage feeds the NBA player model (usfeatures.py), so it has to be
+    there; on 650 lines from 2 to 4 Nov these came within 0.3 points of
+    SofaScore's usage and matched its eFG% and TS% exactly. SofaScore's own
+    "rating" has no public formula and nothing downstream needs it."""
     g = lambda k: int(st.get(k) or 0)  # noqa: E731
     fgm, fga = g("fieldGoalsMade"), g("fieldGoalsAttempted")
-    return {
+    fta, tov, pts, tpm = g("freeThrowsAttempted"), g("turnovers"), g("points"), g("threePointersMade")
+    mins = _minutes(st.get("minutes"))
+    extra: dict[str, float] = {}
+    if fga:
+        extra["effectiveFieldGoalPercentage"] = round(100 * (fgm + 0.5 * tpm) / fga, 2)
+    if fga + 0.44 * fta:
+        extra["trueShootingPercentage"] = round(100 * pts / (2 * (fga + 0.44 * fta)), 2)
+    t = team or {}
+    t_poss = float(t.get("fieldGoalsAttempted") or 0) + 0.44 * float(t.get("freeThrowsAttempted") or 0) \
+        + float(t.get("turnoversTotal", t.get("turnovers")) or 0)
+    t_min = _minutes(t.get("minutes"))
+    if mins > 0 and t_poss and t_min:
+        extra["usage"] = 100 * (fga + 0.44 * fta + tov) * (t_min / 5) / (mins * t_poss)
+    return {**extra,
         "secondsPlayed": round(_minutes(st.get("minutes")) * 60),
         "points": g("points"),
         "twoPointsMade": g("twoPointersMade"), "twoPointAttempts": g("twoPointersAttempted"),
@@ -304,24 +323,39 @@ def player_statistics(st: dict) -> dict:
         "assists": g("assists"), "steals": g("steals"), "blocks": g("blocks"),
         "turnovers": g("turnovers"), "personalFouls": g("foulsPersonal"),
         "plusMinus": int(float(st.get("plusMinusPoints") or 0)),
-        "fieldGoalPct": round(100 * fgm / fga, 2) if fga else 0,
+        **({"fieldGoalPct": round(100 * fgm / fga)} if fga else {}),   # whole numbers, as SofaScore
         "statisticsType": {"sportSlug": "basketball", "statisticsType": "player"},
         "source": "nba.com",
     }
 
 
 def _sofa_players(event_id) -> dict[str, dict]:
-    """norm(name) -> SofaScore's player dict, from its cached line-ups, so the
-    NBA.com rows carry SofaScore's ids and names."""
+    """norm(name) -> SofaScore's player dict, so the NBA.com rows carry
+    SofaScore's ids and names: from its line-ups for the game when it has
+    them, else from both teams' squads (cache/team_<id>_players.json), which
+    the build fetches anyway."""
+    out: dict[str, dict] = {}
     try:
         d = json.loads((SOFA_CACHE / f"event_{event_id}_lineups.json").read_text())
     except (OSError, ValueError):
-        return {}
-    out = {}
+        d = None
+    if d:
+        for side in ("home", "away"):
+            for p in (d.get(side) or {}).get("players") or []:
+                pl = p.get("player") or {}
+                out[norm(pl.get("name") or "")] = {"player": pl, "teamId": p.get("teamId"), "side": side}
+        return out
+    e = _sofa_event(event_id)
     for side in ("home", "away"):
-        for p in (d.get(side) or {}).get("players") or []:
+        tid = (e.get(f"{side}Team") or {}).get("id")
+        try:
+            sq = json.loads((SOFA_CACHE / f"team_{tid}_players.json").read_text())
+        except (OSError, ValueError):
+            continue
+        for p in sq.get("players") or []:
             pl = p.get("player") or {}
-            out[norm(pl.get("name") or "")] = {"player": pl, "teamId": p.get("teamId"), "side": side}
+            if pl.get("name"):
+                out.setdefault(norm(pl["name"]), {"player": pl, "teamId": tid, "side": side})
     return out
 
 
@@ -345,19 +379,21 @@ def event_lineups(event_id) -> dict | None:
             played = str(p.get("played", "1")) == "1"
             players.append({
                 "player": known.get("player") or {"name": name, "id": None, "nbaPersonId": p.get("personId")},
-                "teamId": known.get("teamId"),
+                "teamId": known.get("teamId") or (_sofa_event(event_id).get(f"{side}Team") or {}).get("id"),
                 "jerseyNumber": p.get("jerseyNum"),
                 "position": p.get("position"),
                 "substitute": str(p.get("starter", "0")) != "1",
-                "statistics": player_statistics(p.get("statistics") or {}) if played else {},
+                "statistics": player_statistics(p.get("statistics") or {},
+                                                (game.get(key) or {}).get("statistics")) if played else {},
             })
         out[side] = {"players": players}
     return out
 
 
 def event_statistics(event_id) -> dict | None:
-    """sofascore_api's event/<id>/statistics (the 'Other' group the NBA build
-    reads), built from NBA.com's team totals."""
+    """sofascore_api's event/<id>/statistics, built from NBA.com's team
+    totals, with SofaScore's display names: hitrates.py reads items by name
+    ("Rebounds", "Free throws"), so the names must match SofaScore's."""
     gid, flipped = game_id_for(event_id)
     if not gid:
         return None
@@ -366,15 +402,55 @@ def event_statistics(event_id) -> dict | None:
         return None
     h, a = ("awayTeam", "homeTeam") if flipped else ("homeTeam", "awayTeam")
     hs, as_ = (game.get(h) or {}).get("statistics") or {}, (game.get(a) or {}).get("statistics") or {}
-    keys = [("rebounds", "reboundsTotal"), ("defensiveRebounds", "reboundsDefensive"),
-            ("offensiveRebounds", "reboundsOffensive"), ("assists", "assists"), ("turnovers", "turnovers"),
-            ("steals", "steals"), ("blocks", "blocks"), ("totalFouls", "foulsPersonal"),
-            ("freeThrowsScored", "freeThrowsMade"), ("twoPointersScored", "twoPointersMade"),
-            ("threePointersScored", "threePointersMade"), ("fieldGoalsScored", "fieldGoalsMade")]
-    items = [{"key": k, "name": k, "homeValue": hs.get(n), "awayValue": as_.get(n),
-              "home": str(hs.get(n)), "away": str(as_.get(n))} for k, n in keys]
-    return {"statistics": [{"period": "ALL", "groups": [{"groupName": "Other", "statisticsItems": items}]}],
-            "source": "nba.com"}
+
+    def num(d, k):
+        try:
+            return int(float(d.get(k) or 0))
+        except (TypeError, ValueError):
+            return 0
+
+    def made(key, name, m, att):
+        hm, ha, am, aa = num(hs, m), num(hs, att), num(as_, m), num(as_, att)
+        txt = lambda x, y: f"{x}/{y} ({round(100 * x / y) if y else 0}%)"  # noqa: E731
+        return {"key": key, "name": name, "home": txt(hm, ha), "away": txt(am, aa),
+                "homeValue": hm, "awayValue": am, "homeTotal": ha, "awayTotal": aa,
+                "compareCode": 1, "statisticsType": "positive", "valueType": "team"}
+
+    def plain(key, name, n, kind="positive"):
+        hv, av = num(hs, n), num(as_, n)
+        return {"key": key, "name": name, "home": str(hv), "away": str(av), "homeValue": hv, "awayValue": av,
+                "compareCode": 1 if hv >= av else 2, "statisticsType": kind, "valueType": "event"}
+
+    scoring = [made("freeThrowsScored", "Free throws", "freeThrowsMade", "freeThrowsAttempted"),
+               made("twoPointersScored", "2 pointers", "twoPointersMade", "twoPointersAttempted"),
+               made("threePointersScored", "3 pointers", "threePointersMade", "threePointersAttempted"),
+               made("fieldGoalsScored", "Field goals", "fieldGoalsMade", "fieldGoalsAttempted")]
+    # reboundsPersonal, not reboundsTotal: NBA.com's total adds "team
+    # rebounds" no player is credited with, SofaScore's is its players' sum.
+    other = [plain("rebounds", "Rebounds", "reboundsPersonal" if "reboundsPersonal" in hs else "reboundsTotal"),
+             plain("defensiveRebounds", "Defensive rebounds", "reboundsDefensive"),
+             plain("offensiveRebounds", "Offensive rebounds", "reboundsOffensive"),
+             plain("assists", "Assists", "assists"),
+             plain("turnovers", "Turnovers", "turnovers", "negative"),
+             plain("steals", "Steals", "steals"),
+             plain("blocks", "Blocks", "blocks"),
+             plain("totalFouls", "Fouls", "foulsPersonal", "negative")]
+    lead = []
+    if "biggestLead" in hs or "biggestLead" in as_:
+        lead.append(plain("biggestLead", "Biggest lead", "biggestLead"))
+    if "biggestScoringRun" in hs or "biggestScoringRun" in as_:
+        lead.append(plain("maxPointsInARow", "Max points in a row", "biggestScoringRun"))
+    if "timeLeading" in hs or "timeLeading" in as_:
+        hl, al = round(_minutes(hs.get("timeLeading")) * 60), round(_minutes(as_.get("timeLeading")) * 60)
+        mmss = lambda x: f"{x // 60}:{x % 60:02d}"  # noqa: E731
+        lead.append({"key": "timeSpentInLead", "name": "Time spent in lead", "home": mmss(hl), "away": mmss(al),
+                     "homeValue": hl, "awayValue": al, "compareCode": 1 if hl >= al else 2,
+                     "statisticsType": "positive", "valueType": "time"})
+    groups = [{"groupName": "Scoring", "statisticsItems": scoring},
+              {"groupName": "Other", "statisticsItems": other}]
+    if lead:
+        groups.append({"groupName": "Lead", "statisticsItems": lead})
+    return {"statistics": [{"period": "ALL", "groups": groups}], "source": "nba.com"}
 
 
 # ------------------------------------------------------------ side by side

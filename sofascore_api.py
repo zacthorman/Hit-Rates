@@ -500,11 +500,24 @@ def get_json(
                 # Half-written file from an interrupted run. Drop it and refetch.
                 cache_file.unlink(missing_ok=True)
 
+    # NBA (5 Nov 2026): a finished game's line-ups and team statistics come
+    # from NBA.com's official box score (nba_api.py), in this file's shape and
+    # with SofaScore's ids, so nothing downstream changes. Faster, it does not
+    # queue behind the football's paced requests, and it is the box score the
+    # bookmakers settle on (SofaScore gave Harden's 4 Nov steal to Proctor).
+    # SofaScore is asked as before when NBA.com does not have the game.
+    # NBA_SOURCE=sofascore switches this off.
+    nba = _from_nba(path)
+    if nba is not None:
+        cache_file.write_text(json.dumps(nba))
+        return nba
+
     url = f"{BASE}/{path.strip('/')}"
 
     for attempt in range(ATTEMPTS):
         try:
-            response = _get_session().get(url, timeout=30)
+            with _one_at_a_time():
+                response = _get_session().get(url, timeout=30)
         except Exception as exc:
             global _last_transport_error
             _last_transport_error = type(exc).__name__
@@ -574,6 +587,63 @@ def get_json(
 
     note_failure(path, f"gave up after {ATTEMPTS} attempts")
     return None
+
+
+def _from_nba(path: str):
+    """NBA.com's answer for event/<id>/lineups or /statistics of a finished
+    NBA game, or None to ask SofaScore."""
+    if os.environ.get("NBA_SOURCE", "nbacom").strip().lower() == "sofascore":
+        return None
+    import re
+    m = re.fullmatch(r"event/(\d+)/(lineups|statistics)", path.strip("/"))
+    if not m:
+        return None
+    try:
+        ev = json.loads(_cache_file(f"event/{m.group(1)}").read_text())
+    except (OSError, ValueError):
+        return None
+    e = ev.get("event", ev)
+    if ((e.get("tournament") or {}).get("uniqueTournament") or {}).get("name") != "NBA":
+        return None
+    if (e.get("status") or {}).get("type") != "finished":
+        return None
+    try:
+        import nba_api
+        return (nba_api.event_lineups if m.group(2) == "lineups" else nba_api.event_statistics)(m.group(1))
+    except Exception:  # noqa: BLE001 - never cost a build: SofaScore is still there
+        return None
+
+
+class _one_at_a_time:
+    """One SofaScore request at a time across every process on this Mac, and
+    at least MIN_DELAY apart (5 Nov 2026). The NBA now builds alongside the
+    football, and two processes each pacing themselves would double the rate
+    SofaScore sees. A lock file in cache/ makes them take turns instead."""
+
+    def __enter__(self):
+        import fcntl
+        CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        self.f = open(CACHE_DIR / ".sofa_pace.lock", "a+")
+        fcntl.flock(self.f, fcntl.LOCK_EX)
+        self.f.seek(0)
+        try:
+            last = float(self.f.read().strip() or 0)
+        except ValueError:
+            last = 0.0
+        wait = last + random.uniform(MIN_DELAY, MAX_DELAY) - time.time()
+        if wait > 0:
+            time.sleep(wait)
+        return self
+
+    def __exit__(self, *exc):
+        import fcntl
+        self.f.seek(0)
+        self.f.truncate()
+        self.f.write(str(time.time()))
+        self.f.flush()
+        fcntl.flock(self.f, fcntl.LOCK_UN)
+        self.f.close()
+        return False
 
 
 # --------------------------------------------------------------- endpoints

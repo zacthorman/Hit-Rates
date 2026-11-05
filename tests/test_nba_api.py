@@ -74,8 +74,10 @@ class Shaped(unittest.TestCase):
 
     def test_team_statistics_in_sofascore_shape(self):
         st = na.event_statistics(99)
-        items = {i["key"]: i for i in st["statistics"][0]["groups"][0]["statisticsItems"]}
-        self.assertEqual((items["steals"]["homeValue"], items["steals"]["awayValue"]), (7, 5))
+        items = {i["name"]: i for g in st["statistics"][0]["groups"] for i in g["statisticsItems"]}
+        self.assertEqual((items["Steals"]["homeValue"], items["Steals"]["awayValue"]), (7, 5))
+        self.assertEqual(items["Rebounds"]["homeValue"], 47)
+        self.assertIn("Free throws", items)
 
     def test_compare_finds_the_harden_steal(self):
         r = na.compare(days=10 ** 6)
