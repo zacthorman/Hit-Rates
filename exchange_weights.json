@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-04 23:05 UTC",
+ "updated": "2026-11-05 11:55 UTC",
  "weights": {
   "team|Goals|derived": 0.979,
   "team|Goals|exchange": 0.836,
@@ -18,7 +18,7 @@
  },
  "fit": {
   "team|Goals|derived": {
-   "n": 1146,
+   "n": 1162,
    "raw": 1.0,
    "default": 0.5
   },
@@ -78,5 +78,5 @@
    "default": 0.1
   }
  },
- "settled": 2057
+ "settled": 2073
 }

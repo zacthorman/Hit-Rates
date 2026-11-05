@@ -169,7 +169,11 @@ fi
 # The Paddy Power record (pplog.py): settle what finished, log every line on
 # games not yet started with our chance at it, then the results page.
 if [ "${QUICK:-0}" != "1" ]; then  # QUICK=1: nothing settles mid-afternoon
+"$PY" nba_official.py fetch --days 2 || echo "  nba.com box scores not fetched (continuing)"
 "$PY" pplog.py settle || echo "  pp log not settled (continuing)"
+# Lines settled before NBA.com had the box score, or before a stat
+# correction, are re-checked against it (nba_official.py, 5 Nov 2026).
+"$PY" nba_official.py recheck --days 3 --apply || echo "  nba.com recheck not run (continuing)"
 # The Bet365 record (b365log.py, 2 Nov 2026): the same log for Bet365's lines,
 # Sub On Play On included, so its prices carry a record too.
 "$PY" b365log.py settle || echo "  bet365 log not settled (continuing)"

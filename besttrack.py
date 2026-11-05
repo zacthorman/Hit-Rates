@@ -339,7 +339,24 @@ def _player_value(leg, sport):
                 if mins_key:
                     leg["minutes"] = round(st.get(mins_key, 0) / (60 if mins_key == "secondsPlayed" else 1), 1)
                 vals = hitrates._player_stat_values(p.get("statistics") or {}, zero_fill=fill)
-                return vals.get(leg["stat"], 0.0) if vals else "dnp"
+                if not vals:
+                    return "dnp"
+                v = vals.get(leg["stat"], 0.0)
+                # NBA: the league's own box score wins over SofaScore's (5 Nov
+                # 2026: SofaScore gave Harden's steal to Proctor, Paddy Power
+                # paid on NBA.com's number). nba_official.py; SofaScore stands
+                # when NBA.com cannot be reached.
+                if sport == "basketball":
+                    try:
+                        import nba_official
+                        o = nba_official.official_value(leg)
+                        if o is not None and o != v:
+                            leg["sofascore_value"] = v
+                            leg["official_source"] = "nba.com"
+                            v = o
+                    except Exception:  # noqa: BLE001
+                        pass
+                return v
     return "dnp"
 
 
