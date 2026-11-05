@@ -25,13 +25,15 @@ reruns cost nothing, the raw data is kept if the format changes, and a final
 box score is permanent once it has had FINAL_SETTLE_HOURS for late stat
 corrections.
 
-The transport. cdn.nba.com is plain static JSON with no Cloudflare in front,
-so a plain request works and is the default. The same branches as
-sofascore_api are here in case that ever changes:
+The transport. cdn.nba.com is static JSON with no Cloudflare in front, so
+FlareSolverr is not needed (5 Nov 2026: through FlareSolverr the schedule
+came back wrapped in a page, not JSON). The default is curl_cffi with a
+browser fingerprint, the same as sofascore_api's direct mode, which fetched
+29 games and the schedule cleanly on 5 Nov:
 
-  NBA_FLARESOLVERR=<url>   go through FlareSolverr (sofascore_api's session)
-  NBA_IMPERSONATE=chrome142  curl_cffi with a browser fingerprint
-  otherwise                urllib, with NBA.com's own Referer
+  default                   curl_cffi, impersonating NBA_IMPERSONATE (chrome142)
+  NBA_IMPERSONATE=0         plain urllib, with NBA.com's own Referer
+  NBA_FLARESOLVERR=<url>    FlareSolverr, only if NBA.com ever starts checking
 
 Being polite: one request at a time, MIN_GAP plus up to JITTER seconds
 apart, network errors retried with backoff (no request reached NBA.com, so a
@@ -69,7 +71,9 @@ FINAL_SETTLE_HOURS = 6
 MATCH_WINDOW_HOURS = 6
 
 FLARESOLVERR = os.environ.get("NBA_FLARESOLVERR", "").strip()
-IMPERSONATE = os.environ.get("NBA_IMPERSONATE", "").strip()
+IMPERSONATE = os.environ.get("NBA_IMPERSONATE", "chrome142").strip()
+if IMPERSONATE.lower() in ("0", "off", "no", "false"):
+    IMPERSONATE = ""
 HEADERS = {
     "User-Agent": ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
                    "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"),
@@ -166,7 +170,8 @@ def get_json(path: str, max_age_hours: float | None = None, verbose: bool = Fals
             try:
                 data = r.json()
             except ValueError:
-                _state["stopped"] = f"not JSON from {path}"
+                head = " ".join((r.text or "")[:160].split())
+                _state["stopped"] = f"not JSON from {path} (starts: {head!r})"
                 return _cached_anyway(f)
             tmp = f.with_suffix(".tmp")
             tmp.write_text(json.dumps(data, separators=(",", ":")))
@@ -200,6 +205,22 @@ def norm(name: str) -> str:
     s = unicodedata.normalize("NFKD", name or "")
     s = re.sub(r"[^a-z ]", " ", "".join(c for c in s if c.isascii()).lower())
     return " ".join(p for p in s.split() if p not in ("jr", "sr", "ii", "iii", "iv"))
+
+
+def short(name: str) -> str:
+    """First initial and surname: 'Ron Holland' and 'Ronald Holland II' both 'r holland'."""
+    parts = norm(name).split()
+    return f"{parts[0][0]} {parts[-1]}" if len(parts) >= 2 else norm(name)
+
+
+def _lookup(table: dict, name: str):
+    """By full name, else by initial and surname when only one player fits."""
+    hit = table.get(norm(name))
+    if hit is not None:
+        return hit
+    want = short(name)
+    found = [v for k, v in table.items() if short(k) == want]
+    return found[0] if len(found) == 1 else None
 
 
 def _team_matches(sofa_name: str, team: dict) -> bool:
@@ -320,7 +341,7 @@ def event_lineups(event_id) -> dict | None:
         players = []
         for p in (game.get(key) or {}).get("players") or []:
             name = p.get("name") or f"{p.get('firstName', '')} {p.get('familyName', '')}".strip()
-            known = sofa.get(norm(name)) or {}
+            known = _lookup(sofa, name) or {}
             played = str(p.get("played", "1")) == "1"
             players.append({
                 "player": known.get("player") or {"name": name, "id": None, "nbaPersonId": p.get("personId")},
@@ -390,7 +411,7 @@ def compare(days: float = 3) -> dict:
                     continue
                 players += 1
                 name = (p.get("player") or {}).get("name") or ""
-                q = mine.get(norm(name))
+                q = _lookup(mine, name)
                 if not q:
                     unmatched += 1
                     out.append((e.get("slug", eid), name, "not found on NBA.com", None, None))

@@ -83,6 +83,10 @@ class Shaped(unittest.TestCase):
         self.assertIn(("James Harden", "steals", 0, 1), [(n, k, a, b) for _, n, k, a, b in r["rows"]])
         self.assertEqual(r["differences"], 1)
 
+    def test_short_name_fallback(self):
+        self.assertEqual(na._lookup({"ronald holland": 1}, "Ron Holland"), 1)
+        self.assertIsNone(na._lookup({"jalen williams": 1, "jaylin williams": 2}, "J. Williams"))
+
     def test_names(self):
         self.assertEqual(na.norm("Nikola Jokić"), na.norm("Nikola Jokic"))
         self.assertEqual(na.norm("Jabari Smith Jr."), "jabari smith")
