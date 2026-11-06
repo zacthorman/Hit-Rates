@@ -1935,5 +1935,35 @@
     "result": "win",
     "profit": 13.2,
     "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-11-06-1",
+    "kind": "single",
+    "logged_at": "2026-11-06T07:30:54+00:00",
+    "price": 2.32,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16814832,
+        "fixture": "Milwaukee Bucks v Toronto Raptors",
+        "kickoff": 1794013200,
+        "player": "Jamal Shead",
+        "player_id": 1179509,
+        "team": "Toronto Raptors",
+        "stat": "Rebounds and assists",
+        "line": 7.0,
+        "model_k": 9,
+        "model_n": 10,
+        "model_p": 0.69,
+        "source": "nba.html",
+        "value": null,
+        "result": null
+      }
+    ],
+    "result": null,
+    "profit": null,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
   }
 ]
