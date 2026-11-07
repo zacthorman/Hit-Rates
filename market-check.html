@@ -1,0 +1,162 @@
+<!doctype html><html class="hr-p-market" lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Model v market · Hit Rates</title>
+<style>:root{--bg:#fbfbfa;--fg:#18181b;--muted:#71717a;--line:#e7e7e4;--card:#fff;--win:#15803d;--lose:#b91c1c}
+@media (prefers-color-scheme:dark){:root{--bg:#0f0f10;--fg:#ececec;--muted:#8b8b93;--line:#26262a;--card:#17171a;--win:#4ade80;--lose:#f87171}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,system-ui,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:24px 16px 60px}a{color:inherit}
+h1{font-size:1.5rem;margin:0 0 4px}h2{font-size:1.05rem;margin:28px 0 8px}.sub{color:var(--muted);font-size:.85rem}
+.muted{color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:12px}
+table{width:100%;border-collapse:collapse;font-size:.85rem;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:6px 8px;border-bottom:1px solid var(--line)}th:first-child,td:first-child{text-align:left}
+th{color:var(--muted);font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em}
+.tbl{overflow-x:auto}.pos{color:var(--win);font-weight:650}.neg{color:var(--lose);font-weight:650}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi b{display:block;font-size:1.3rem}.kpi span{color:var(--muted);font-size:.78rem}
+p{margin:6px 0}</style><style id="sitenav-css">
+.hr-nav,.hr-foot{--hn-bg:#fcfcfb;--hn-fg:#111;--hn-mu:#6b6963;--hn-bd:rgba(0,0,0,.1);--hn-on:#111;--hn-onfg:#fff;--hn-pos:#15803d;--hn-neg:#b91c1c;
+  font:14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:var(--hn-fg)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hr-nav,:root:not([data-theme="light"]) .hr-foot{
+  --hn-bg:#141413;--hn-fg:#f2f2f0;--hn-mu:#9a988f;--hn-bd:rgba(255,255,255,.12);--hn-on:#f2f2f0;--hn-onfg:#111;--hn-pos:#4ade80;--hn-neg:#f87171}}
+:root[data-theme="dark"] .hr-nav,:root[data-theme="dark"] .hr-foot{
+  --hn-bg:#141413;--hn-fg:#f2f2f0;--hn-mu:#9a988f;--hn-bd:rgba(255,255,255,.12);--hn-on:#f2f2f0;--hn-onfg:#111;--hn-pos:#4ade80;--hn-neg:#f87171}
+html{overflow-x:clip}
+.hr-nav,.hr-foot{width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);box-sizing:border-box}
+.hr-nav{background:var(--hn-bg);border-bottom:1px solid var(--hn-bd);position:relative;z-index:40;margin-bottom:16px}
+.hr-nav-in{max-width:1240px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px}
+.hr-brand{font-weight:700;font-size:16px;color:var(--hn-fg)!important;text-decoration:none;white-space:nowrap;letter-spacing:-.01em}
+.hr-brand i{display:inline-block;width:9px;height:9px;border-radius:3px;background:var(--hn-pos);margin-right:7px;vertical-align:1px}
+.hr-links{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1 1 auto;min-width:0}
+.hr-links::-webkit-scrollbar{display:none}
+.hr-links a{padding:6px 10px;border-radius:999px;color:var(--hn-mu)!important;text-decoration:none!important;white-space:nowrap;font-weight:550;font-size:13.5px}
+.hr-links a:hover{color:var(--hn-fg)!important;background:var(--hn-bd)}
+.hr-links a[aria-current]{background:var(--hn-on);color:var(--hn-onfg)!important}
+.hr-rec{white-space:nowrap;font-size:12.5px;color:var(--hn-mu)!important;text-decoration:none!important;border:1px solid var(--hn-bd);border-radius:999px;padding:4px 10px}
+.hr-rec b{font-variant-numeric:tabular-nums}.hr-rec .pos{color:var(--hn-pos)}.hr-rec .neg{color:var(--hn-neg)}
+.hr-foot{border-top:1px solid var(--hn-bd);margin-top:40px;background:var(--hn-bg)}
+.hr-foot p{max-width:1240px;margin:0 auto;padding:16px;color:var(--hn-mu);font-size:12.5px}
+.hr-foot a{color:var(--hn-mu)!important}
+@media (max-width:720px){.hr-nav-in{flex-wrap:wrap;gap:8px 10px;padding:8px 12px}.hr-links{order:3;flex-basis:100%}.hr-rec{margin-left:auto}}
+</style><style id="hr-theme">/* Hit Rates colour layer (3 Nov 2026). Navy and amber for the site itself;
+   green, red and amber only ever mean won, lost and open; blue and purple
+   are the two teams on match pages. Loaded after each page's own styles. */
+:root {
+  --hr-navy: #13265c; --hr-navy-2: #1f3f8f; --hr-head: #1d3a8a;
+  --hr-amber: #f5a524; --hr-ink: #241600;
+  --hr-tint: #eef2fb; --hr-tint-2: #f6f8fd;
+  --hr-win: #15803d; --hr-win-bg: #dcf5e4;
+  --hr-lose: #b91c1c; --hr-lose-bg: #fde3e3;
+  --hr-open: #9a6200; --hr-open-bg: #fdf0cf;
+  --hr-sel: #1f3f8f; --hr-sel-ink: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --hr-head: #9db8ff; --hr-amber: #fbbf24;
+    --hr-tint: rgba(110,140,255,.10); --hr-tint-2: rgba(110,140,255,.05);
+    --hr-win: #4ade80; --hr-win-bg: rgba(74,222,128,.14);
+    --hr-lose: #f87171; --hr-lose-bg: rgba(248,113,113,.14);
+    --hr-open: #facc15; --hr-open-bg: rgba(250,204,21,.13);
+    --hr-sel: #fbbf24; --hr-sel-ink: #241600;
+  }
+}
+:root[data-theme="dark"] {
+  --hr-head: #9db8ff; --hr-amber: #fbbf24;
+  --hr-tint: rgba(110,140,255,.10); --hr-tint-2: rgba(110,140,255,.05);
+  --hr-win: #4ade80; --hr-win-bg: rgba(74,222,128,.14);
+  --hr-lose: #f87171; --hr-lose-bg: rgba(248,113,113,.14);
+  --hr-open: #facc15; --hr-open-bg: rgba(250,204,21,.13);
+  --hr-sel: #fbbf24; --hr-sel-ink: #241600;
+}
+
+/* ---- the shared header and footer ---- */
+.hr-nav { background: linear-gradient(100deg, #10204f 0%, #1c3a86 70%, #2547a3 100%) !important;
+  border-bottom: 0 !important; box-shadow: 0 2px 10px rgba(16,32,79,.18); }
+.hr-brand { color: #fff !important; }
+.hr-brand i { background: var(--hr-amber) !important; border-radius: 50% !important; width: 10px !important; height: 10px !important;
+  box-shadow: 0 0 0 3px rgba(245,165,36,.25); }
+.hr-links a { color: rgba(255,255,255,.78) !important; }
+.hr-links a:hover { color: #fff !important; background: rgba(255,255,255,.12) !important; }
+.hr-links a[aria-current] { background: var(--hr-amber) !important; color: var(--hr-ink) !important; font-weight: 650; }
+.hr-rec { color: rgba(255,255,255,.85) !important; border-color: rgba(255,255,255,.28) !important; background: rgba(255,255,255,.06); }
+.hr-rec .pos { color: #6ee7a0 !important; } .hr-rec .neg { color: #ffb4b4 !important; }
+.hr-foot { border-top: 3px solid var(--hr-amber) !important; }
+
+/* ---- fixtures (home) ---- */
+html.hr-p-index { --accent: var(--hr-sel); --on-accent: var(--hr-sel-ink); --link: var(--hr-head); }
+html.hr-p-index .sports button[aria-pressed="true"] { color: var(--hr-head); border-bottom-color: var(--hr-amber); border-bottom-width: 3px; }
+html.hr-p-index .day { color: var(--hr-head); }
+html.hr-p-index .day.soon { color: #c2410c; }
+html.hr-p-index .day.soon::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: #f97316; margin-right: 8px; vertical-align: 1px; box-shadow: 0 0 0 3px rgba(249,115,22,.2); }
+html.hr-p-index .time { color: var(--hr-head); }
+html.hr-p-index li a:hover { background: var(--hr-tint-2); }
+html.hr-p-index ul { border-left: 3px solid var(--hr-navy-2); }
+html.hr-p-index .rail-title { color: var(--hr-head); }
+html.hr-p-index .rail a { border-left: 3px solid var(--hr-amber) !important; }
+html.hr-p-index .pick { border-top: 3px solid var(--hr-amber); }
+
+/* ---- tonight ---- */
+html.hr-p-tonight h1 { color: var(--hr-head); }
+html.hr-p-tonight .main > input:checked + label { background: var(--hr-sel); border-color: var(--hr-sel); color: var(--hr-sel-ink); }
+html.hr-p-tonight .warn { border-left-color: var(--hr-amber); background: var(--hr-tint-2); border-radius: 0 8px 8px 0; }
+html.hr-p-tonight details.game > summary .ko { color: var(--hr-head); }
+html.hr-p-tonight details.game[open] { background: var(--hr-tint-2); border-radius: 10px; padding: 0 12px 6px; margin: 0 -12px; }
+html.hr-p-tonight .pbar .ph { background: #2a78d6; } html.hr-p-tonight .pbar .pa { background: #7a4fd6; }
+html.hr-p-tonight .best .k { background: var(--hr-amber) !important; color: var(--hr-ink) !important; }
+html.hr-p-tonight .nobet { color: var(--hr-lose); }
+html.hr-p-tonight h3 { color: var(--hr-head); }
+html.hr-p-tonight .vbox { border-left: 3px solid var(--hr-navy-2); padding-left: 12px; }
+html.hr-p-tonight th { background: var(--hr-tint); }
+
+/* ---- match pages and the pick pages ---- */
+/* :root.x:not([data-x]) outranks the page's own :root:not([data-theme]) dark block. */
+:root.hr-p-report:not([data-x]), :root.hr-p-picker:not([data-x]) { --control-active: var(--hr-sel); --control-active-text: var(--hr-sel-ink); }
+html.hr-p-report h1, html.hr-p-picker h1 { color: var(--hr-head); }
+html.hr-p-report .n2-top[aria-selected="true"] { color: var(--hr-head); border-bottom-color: var(--hr-amber); }
+html.hr-p-report .n2-sub[aria-selected="true"] { background: var(--hr-sel); color: var(--hr-sel-ink); border-color: var(--hr-sel); }
+
+/* ---- best bets, track record, Paddy Power log, model v market ---- */
+html.hr-p-bets h1, html.hr-p-record h1, html.hr-p-pp h1, html.hr-p-market h1 { color: var(--hr-head); }
+html.hr-p-bets h2, html.hr-p-record h2, html.hr-p-pp h2, html.hr-p-market h2 { color: var(--hr-head); }
+html.hr-p-bets .stat, html.hr-p-pp .card, html.hr-p-market .kpi { border-top: 3px solid var(--hr-amber) !important; }
+html.hr-p-bets .stat:nth-child(1), html.hr-p-pp .cards > .card:nth-child(1), html.hr-p-market .kpi:nth-child(1) { border-top-color: var(--hr-navy-2) !important; }
+html.hr-p-bets .tabs button[aria-selected=true] { color: var(--hr-head); border-color: var(--hr-amber); }
+html.hr-p-bets .card { border-left: 3px solid var(--hr-navy-2); }
+html.hr-p-bets .pill.win, html.hr-p-bets .pill.open, html.hr-p-bets .pill.lose { border-color: transparent; }
+html.hr-p-bets .pill.win { background: var(--hr-win-bg); color: var(--hr-win); }
+html.hr-p-bets .pill.lose { background: var(--hr-lose-bg); color: var(--hr-lose); }
+html.hr-p-bets .pill.open { background: var(--hr-open-bg); color: var(--hr-open); }
+html.hr-p-record th, html.hr-p-pp th, html.hr-p-market th, html.hr-p-bets th { background: var(--hr-tint); }
+html.hr-p-record .big { color: var(--hr-head); }
+html.hr-p-record td .pos, html.hr-p-record td .neg { padding: 1px 7px; border-radius: 99px; font-weight: 600; }
+html.hr-p-record td .pos { background: var(--hr-win-bg); } html.hr-p-record td .neg { background: var(--hr-lose-bg); }
+html.hr-p-pp .res.win { background: var(--hr-win-bg); border-radius: 99px; }
+html.hr-p-pp .res.lose { background: var(--hr-lose-bg); border-radius: 99px; }
+html.hr-p-pp td.pos, html.hr-p-pp td.neg { font-weight: 600; }
+
+/* The header sits flush with the top on pages whose body has top padding. */
+html.hr-p-tonight body, html.hr-p-record body, html.hr-p-report body, html.hr-p-picker body { padding-top: 0 !important; }
+.hr-nav { margin-bottom: 22px !important; }
+html.hr-p-tonight .tabs > input:checked + label { background: var(--hr-sel); color: var(--hr-sel-ink); border-color: var(--hr-sel); }
+html.hr-p-tonight .argue { border-left-color: var(--hr-navy-2); }
+html.hr-p-tonight .tag.ok { color: var(--hr-win); border-color: var(--hr-win); background: var(--hr-win-bg); }
+</style></head><body><!--sitenav--><nav class="hr-nav" aria-label="Site"><div class="hr-nav-in"><a class="hr-brand" href="index.html"><i></i>Hit Rates</a><div class="hr-links"><a href="index.html">Fixtures</a><a href="tonight.html">Tonight</a><a href="best-bets-summary.html">Best bets</a><a href="papertrade.html">Track record</a><a href="pp-results.html">Paddy Power log</a><a href="market-check.html" aria-current="page">Model v market</a></div><a class="hr-rec" href="papertrade.html" title="Every pick the site has made, at Paddy Power prices, level stakes">Record <b class="neg">-14.5%</b> on 1,570 bets</a></div></nav><div class="wrap">
+
+<h1>Model v market</h1>
+<p class="sub">Every bet the site prices that Betfair also prices, scored against Betfair. Built 07 Nov 2026, 20:04 UTC.</p>
+<div class="kpis"><div class='card kpi'><span>Bets logged</span><b>2,749</b><span>2355 settled, 320 open</span></div><div class='card kpi'><span>Did prices move our way?</span><b><span class='neg'>-3.5%</span></b><span>129 value bets, first price v kick-off</span></div><div class='card kpi'><span>Value bets return</span><b><span class='muted'>+19.6%</span></b><span>58 settled, too early to tell</span></div><div class='card kpi'><span>Forecasts v Betfair</span><b><span class='pos'>better</span></b><span>by 0.0018 log loss a bet (tiny)</span></div></div>
+<h2>Closing line value</h2>
+<p class="sub">Did Betfair's price move towards us between the first time we saw a bet and kick-off? The
+quickest honest test of an edge: if value bets shorten, the market came round to the model.</p>
+<div class="card"><div class='tbl'><table><tr><th></th><th>Bets</th><th>Edge v close</th><th>Shortened</th><th>Drifted</th></tr><tr><td>Value bets</td><td>129</td><td class='neg'>-3.5%</td><td>43%</td><td>43%</td></tr><tr><td>Model above Betfair</td><td>504</td><td class='neg'>-8.5%</td><td>54%</td><td>35%</td></tr><tr><td>Everything</td><td>1135</td><td class='neg'>-9.8%</td><td>52%</td><td>38%</td></tr></table></div></div>
+<h2>Accuracy</h2>
+<div class="card"><div class='tbl'><table><tr><th>Chance</th><th>Log loss</th><th>Brier</th><th>Said</th></tr><tr><td>Model alone</td><td>0.6423</td><td>0.2254</td><td>52%</td></tr><tr><td>Model, bias off</td><td>0.6409</td><td>0.2245</td><td>52%</td></tr><tr><td>Betfair</td><td>0.6267</td><td>0.2189</td><td>50%</td></tr><tr><td>Blend (used)</td><td>0.6249</td><td>0.2182</td><td>51%</td></tr></table></div><p class='sub'>Landed 49% of 2355. Lower is better on both scores; the row with the lowest log loss is the one to trust.</p></div>
+<h2>Backing the value bets</h2>
+<p class="sub">One unit on every bet whose value cleared the bar when first seen, at the back price on offer
+then, after commission.</p>
+<div class="card"><div class='tbl'><table><tr><th>Value at least</th><th>Bets</th><th>Won</th><th>Profit</th><th>ROI</th><th>95% range</th></tr><tr><td>0%+</td><td>104</td><td>61</td><td class='pos'>+28.1u</td><td class='pos'>+27.0%</td><td>+5.7% to +48.3%</td></tr><tr><td>3%+</td><td>58</td><td>31</td><td class='pos'>+11.4u</td><td class='pos'>+19.6%</td><td>-10.0% to +49.1%</td></tr><tr><td>6%+</td><td>32</td><td>20</td><td class='pos'>+13.6u</td><td class='pos'>+42.4%</td><td>+3.1% to +81.7%</td></tr><tr><td>10%+</td><td>12</td><td>8</td><td class='pos'>+7.3u</td><td class='pos'>+60.9%</td><td>-7.0% to +128.7%</td></tr></table></div></div>
+<h2>Calibration of the blend</h2>
+<div class="card"><div class='tbl'><table><tr><th>Blend said</th><th>Bets</th><th>Average</th><th>Landed</th></tr><tr><td>0-10%</td><td>22</td><td>8%</td><td>14%</td></tr><tr><td>10-20%</td><td>141</td><td>16%</td><td>16%</td></tr><tr><td>20-30%</td><td>243</td><td>25%</td><td>25%</td></tr><tr><td>30-40%</td><td>266</td><td>35%</td><td>40%</td></tr><tr><td>40-50%</td><td>476</td><td>46%</td><td>44%</td></tr><tr><td>50-60%</td><td>461</td><td>55%</td><td>49%</td></tr><tr><td>60-70%</td><td>319</td><td>64%</td><td>58%</td></tr><tr><td>70-80%</td><td>249</td><td>75%</td><td>73%</td></tr><tr><td>80-90%</td><td>153</td><td>84%</td><td>85%</td></tr><tr><td>90-100%</td><td>25</td><td>92%</td><td>84%</td></tr></table></div></div>
+<h2>By market</h2>
+<div class="card"><div class='tbl'><table><tr><th>Family</th><th>n</th><th>Model</th><th>Betfair</th><th>Blend</th></tr><tr><td>team &middot; Goals &middot; derived</td><td>1382</td><td>0.610</td><td>0.578</td><td>0.579</td></tr><tr><td>player &middot; Shots on target &middot; back</td><td>322</td><td>0.689</td><td>0.699</td><td>0.686</td></tr><tr><td>team &middot; Match corners &middot; exchange</td><td>113</td><td>0.704</td><td>0.670</td><td>0.679</td></tr><tr><td>team &middot; Match goals &middot; exchange</td><td>111</td><td>0.707</td><td>0.754</td><td>0.744</td></tr><tr><td>team &middot; Both teams to score &middot; exchange</td><td>109</td><td>0.697</td><td>0.770</td><td>0.752</td></tr><tr><td>team &middot; Goals &middot; exchange</td><td>102</td><td>0.654</td><td>0.629</td><td>0.640</td></tr><tr><td>team &middot; Match cards &middot; exchange</td><td>100</td><td>0.658</td><td>0.654</td><td>0.657</td></tr><tr><td>player &middot; Goals &middot; back</td><td>52</td><td>0.714</td><td>0.682</td><td>0.676</td></tr><tr><td>player &middot; Anytime touchdown &middot; back</td><td>47</td><td>0.695</td><td>0.686</td><td>0.668</td></tr><tr><td>player &middot; Goals &middot; exchange</td><td>7</td><td>0.714</td><td>0.633</td><td>0.666</td></tr><tr><td>player &middot; Anytime touchdown &middot; exchange</td><td>6</td><td>0.654</td><td>0.675</td><td>0.658</td></tr><tr><td>player &middot; Shots on target &middot; exchange</td><td>4</td><td>0.648</td><td>0.821</td><td>0.737</td></tr></table></div><p class='sub'>Fitted blend weights (2026-11-07 20:04 UTC): team Goals derived 0.98, team Goals exchange 0.84, team Both teams to score exchange 0.16, team Match goals exchange 0.15, team Match corners exchange 0.85, player Shots on target back 0.13, player Goals back 0.48, player Anytime touchdown back 0.40, team Match cards exchange 0.43.</p></div>
+</div><footer class="hr-foot"><p>Hit Rates is a stats project shared with mates, not betting advice. Most lines on here lose money over time: the <a href="papertrade.html">track record</a> shows it honestly. Prices change, so check before you bet. 18+, and if it stops being fun, <a href="https://www.begambleaware.org" rel="noopener">BeGambleAware.org</a>.</p></footer><script>(function(){var a=document.querySelector('.hr-links [aria-current]');if(a){var l=a.parentNode;l.scrollLeft=a.offsetLeft-l.offsetLeft-40;}})();</script></body></html>
