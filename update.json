@@ -27,5 +27,6 @@
   "mlb": true,
   "nba": true,
   "conference_league_days": 3,
-  "efl_cup_days": 3
+  "efl_cup_days": 3,
+  "nba_parallel": false
 }

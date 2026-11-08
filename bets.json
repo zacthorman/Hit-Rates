@@ -1959,10 +1959,10 @@
         "model_p": 0.69,
         "source": "nba.html",
         "value": null,
-        "result": null
+        "result": "void"
       }
     ],
-    "result": null,
+    "result": "void",
     "profit": null,
     "note": "Jarvis pick. Price is the need price she said to take it at or better."
   }
