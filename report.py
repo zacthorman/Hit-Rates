@@ -3045,9 +3045,10 @@ function pricePlayer(apps, line, over, adjustment, prior) {
    Position is the coarsest thing SofaScore gives: G, D, M or F. There is no
    winger, no left or right, so "right wingers facing Villa" is not
    expressible here and is not attempted. The formation string on a lineup
-   could in principle place a man on a flank, but the mapping is undocumented,
-   and a bet hung on a guessed flank is worse than one hung on nothing.
-   Position class it is, and the page says so.
+   does place a man: role.py (8 Nov 2026) checked SofaScore's order on the
+   cached line-ups (back to front, each line right to left) and the player
+   page shows today's role from it. This ranking still uses the position
+   class, because a role per opponent needs the opponents' line-ups too.
 
    The join is by id. A player record carries a match id, and that match sits
    in its own team's records with the opponent's id. The record's `opponent`
@@ -6038,7 +6039,7 @@ function verdictView() {
   const h = res.querySelector("h3"); if (h) h.remove();
   const tiles = res.querySelector(".gs-tiles"); if (tiles) tiles.remove();
   const lines = [...box.querySelectorAll(".gs-target")].slice(0, 3)
-    .map(t => t.outerHTML.replace(/fair (\d)/g, "our price $1")).join("");
+    .map(t => t.outerHTML.replace(/fair (\\d)/g, "our price $1")).join("");
   el.innerHTML = `<div class="hrv gs2">
       <div class="hrv-main"><p class="hrv-k">How it should go</p>${res.innerHTML}</div>
       <div class="hrv-side"><p class="hrv-k">Strongest lines</p>${lines ||
@@ -6276,6 +6277,36 @@ function lastRate(played, stat, line, count) {
   const v = apps.map(g => (g.stats || {})[stat] ?? 0);
   const k = v.filter(x => x > line).length;
   return { k, n: v.length, p: v.length ? k / v.length : 0 };
+}
+
+/* Where he plays (role.py, 8 Nov 2026): today's role from the line-up's
+   formation and his slot in it, his usual one over his last ten starts, and a
+   line's record in starts at today's role. Information only: on the Oct to
+   Nov lines the model already priced role changes about right. */
+const ROLE_NAME = { GK: "Goalkeeper", CB: "Centre-back", FB: "Full-back", WB: "Wing-back",
+  DM: "Holding midfield", CM: "Central midfield", AM: "Attacking midfield", W: "Wide", ST: "Striker" };
+const ROLE_FAMILY = { GK: "GK", CB: "CB", FB: "FB", WB: "FB", DM: "CM", CM: "CM", AM: "AM", W: "AM", ST: "ST" };
+const FAMILY_LABEL = { GK: "in goal", CB: "centre-back", FB: "full-back", CM: "central midfield",
+  AM: "attacking or wide", ST: "up front" };
+
+function todayRole(t, name) {
+  if (SPORT !== "football") return null;
+  const xi = currentXI(t);
+  const p = xi && xi.xi.find(x => x.name === name);
+  return p && p.role ? p.role : null;
+}
+
+function usualFamily(played) {
+  const fams = gatedApps(played).filter(g => g.role).slice(-10).map(g => g.role);
+  if (!fams.length) return null;
+  const c = {};
+  fams.forEach(f => { c[f] = (c[f] || 0) + 1; });
+  const best = Math.max(...Object.values(c));
+  return fams.slice().reverse().find(f => c[f] === best);
+}
+
+function roleRate(played, stat, line, fam) {
+  return lastRate(played.filter(g => g.role === fam), stat, line);
 }
 
 let FOULED90_BASE = null;
@@ -7477,7 +7508,7 @@ function squadList(t) {
       ? `<span class="pp-tag pp-card">Card ${Math.round(card.p * 100)}%</span>` : "";
     return `<button type="button" class="pp-row" data-pteam="${t}" data-pplayer="${escapeHtml(name)}">
       <span class="lu-shirt">${escapeHtml(shirts.get(name) ?? "")}</span>
-      <span class="pp-name"><b>${escapeHtml(name)}</b><small>${escapeHtml(role || POSITION_NAME[pos] || pos)} &middot; ${gatedApps(played).length} apps</small></span>
+      <span class="pp-name"><b>${escapeHtml(name)}</b><small>${todayRole(t, name) ? escapeHtml(ROLE_NAME[todayRole(t, name)]) + " today &middot; " : ""}${escapeHtml(role || POSITION_NAME[pos] || pos)} &middot; ${gatedApps(played).length} apps</small></span>
       <span class="pp-tags">${chips}${cardTag}</span>
       <span class="pp-go">&rsaquo;</span>
     </button>`;
@@ -7534,10 +7565,16 @@ function profileView(t, name) {
   // "9 of his last 10" case is about; the bookmaker estimate reads every
   // match on file. The edge is the gap between the two.
   const recent = apps.slice(-10);
+  const tRole = todayRole(t, name);
+  const tFam = tRole ? ROLE_FAMILY[tRole] : null;
+  const uFam = tRole ? usualFamily(played) : null;
+  const roleTag = !tRole ? ""
+    : `<span class="lu-badge${uFam && uFam !== tFam ? " pp-out" : ""}">${escapeHtml(ROLE_NAME[tRole])} today${
+        uFam && uFam !== tFam ? ", usually " + escapeHtml(FAMILY_LABEL[uFam]) : ""}</span>`;
 
   let html = back + `<div class="pp-hero">
     <div><span class="swatch" style="background:var(${VARS[t]})"></span>
-      <b class="pp-big">${escapeHtml(name)}</b> ${status}</div>
+      <b class="pp-big">${escapeHtml(name)}</b> ${status} ${roleTag}</div>
     <div class="pp-sub">${escapeHtml(DATA.teams[t].name)} &middot; ${escapeHtml(role || POSITION_NAME[pos] || pos)}
       &middot; ${apps.length} apps here${avgMin > 0 ? ", " + Math.round(avgMin) + " min average" : ""}
       ${teamWinText(t) ? " &middot; side " + teamWinText(t) : ""}</div>
@@ -7626,7 +7663,9 @@ function profileView(t, name) {
       const row = playerRow(p0, stat, line, t, price);
       const idx = PLAYER_ROWS.push({ row, price }) - 1;
       const r10 = lastRate(played, stat, line);
-      const rec = `${r10.k}/${r10.n} last ${r10.n}${vals.length > r10.n ? ` &middot; ${hits}/${vals.length} all` : ""}`;
+      const rr = tFam ? roleRate(played, stat, line, tFam) : null;
+      const rec = `${r10.k}/${r10.n} last ${r10.n}${vals.length > r10.n ? ` &middot; ${hits}/${vals.length} all` : ""}${
+        rr && rr.n ? ` &middot; ${rr.k}/${rr.n} as ${escapeHtml(FAMILY_LABEL[tFam])}` : ""}`;
       return rungHtml(`${DATA.fixture.id}|${name}|${stat}|${line}`, lineLabel(line), rec,
                       price.p, book.p, betfairFor(name, stat, line), idx);
     }).join("");

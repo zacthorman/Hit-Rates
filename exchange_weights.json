@@ -1,24 +1,24 @@
 {
- "updated": "2026-11-08 00:21 UTC",
+ "updated": "2026-11-08 19:33 UTC",
  "weights": {
-  "team|Goals|derived": 0.983,
+  "team|Goals|derived": 0.984,
   "team|Goals|exchange": 0.836,
-  "team|Both teams to score|exchange": 0.153,
-  "team|Match goals|exchange": 0.152,
-  "team|Match corners|exchange": 0.85,
-  "player|Shots on target|back": 0.176,
-  "player|Goals|back": 0.482,
-  "player|Anytime touchdown|back": 0.398,
-  "team|Match cards|exchange": 0.399
+  "team|Both teams to score|exchange": 0.138,
+  "team|Match goals|exchange": 0.355,
+  "team|Match corners|exchange": 0.864,
+  "player|Shots on target|back": 0.175,
+  "player|Goals|back": 0.487,
+  "player|Anytime touchdown|back": 0.399,
+  "team|Match cards|exchange": 0.5
  },
  "backMargin": {
-  "SHOTS_ON_TARGET_P1": 0.353,
-  "TO_SCORE": 0.258,
-  "TO_SCORE_A_TOUCHDOWN": 0.153
+  "SHOTS_ON_TARGET_P1": 0.355,
+  "TO_SCORE": 0.265,
+  "TO_SCORE_A_TOUCHDOWN": 0.149
  },
  "fit": {
   "team|Goals|derived": {
-   "n": 1437,
+   "n": 1528,
    "raw": 1.0,
    "default": 0.5
   },
@@ -28,55 +28,55 @@
    "default": 0.5
   },
   "team|Both teams to score|exchange": {
-   "n": 113,
+   "n": 131,
    "raw": 0.0,
    "default": 0.5
   },
   "team|Match goals|exchange": {
-   "n": 114,
-   "raw": 0.0,
+   "n": 132,
+   "raw": 0.3,
    "default": 0.5
   },
   "team|Match corners|exchange": {
-   "n": 117,
+   "n": 134,
    "raw": 1.0,
    "default": 0.5
   },
   "player|Shots on target|back": {
-   "n": 333,
+   "n": 355,
    "raw": 0.15,
    "default": 0.35
   },
   "player|Goals|back": {
-   "n": 56,
+   "n": 61,
    "raw": 0.6,
    "default": 0.35
   },
   "player|Anytime touchdown|back": {
-   "n": 47,
+   "n": 49,
    "raw": 0.45,
    "default": 0.35
   },
   "team|Match cards|exchange": {
-   "n": 103,
-   "raw": 0.35,
+   "n": 117,
+   "raw": 0.5,
    "default": 0.5
   },
   "SHOTS_ON_TARGET_P1": {
-   "n": 311,
+   "n": 332,
    "raw": 0.4,
    "default": 0.06
   },
   "TO_SCORE": {
-   "n": 56,
+   "n": 61,
    "raw": 0.4,
    "default": 0.1
   },
   "TO_SCORE_A_TOUCHDOWN": {
-   "n": 47,
-   "raw": 0.21,
+   "n": 49,
+   "raw": 0.2,
    "default": 0.1
   }
  },
- "settled": 2439
+ "settled": 2627
 }

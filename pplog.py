@@ -511,6 +511,22 @@ def snapshot(args=None) -> int:
                         snap["sharp"] = sh
                 except Exception:  # noqa: BLE001 - never cost the log
                     pass
+            # Today's role from the line-up's formation and his slot in it, his
+            # usual one over his last ten starts, and his record on this line in
+            # starts at today's role (role.py, 8 Nov 2026). Logged only: on the
+            # Oct to Nov lines the model already priced role changes about
+            # right, so nothing acts on it until the results say it should.
+            if sport == "football":
+                try:
+                    import role
+                    rl = role.line_role(fid, squads[t][name], "Fouls" if stat == "Card" else stat,
+                                        line, over, fill, mins)
+                    if rl:
+                        if stat == "Card":
+                            rl["k"] = rl["n"] = None
+                        snap["role"] = rl
+                except Exception:  # noqa: BLE001 - never cost the log
+                    pass
             if m_over is not None:
                 # The model's chance is the one logged; the old one is kept
                 # beside it so the two can be compared on results.
