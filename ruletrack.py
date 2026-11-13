@@ -97,6 +97,15 @@ Added 2 Nov 2026 (live from 21:00 UTC), chosen on 20 Oct to 2 Nov of pplog:
                         +25%); a random 5 a day from the same pool +4.9%.
                         The picks of the week show it while it is on trial.
 
+Added 13 Nov 2026 (live from 13 Nov, 19:00 UTC), from a few nights of picks
+made by hand (8 to 12 Nov), so nothing behind them is tested yet:
+  nba_alt_model_9plus   NBA alt over he cleared in 9 or 10 of his last 10,
+                        first price 1.15 to 2.00, and pplog's own edge at
+                        that price 3% or more. The low alt lines being bet.
+  nfl_receiving_wr      nfl_receiving_model for wide receivers only (WR in
+                        his SofaScore line-ups). Running backs' and tight
+                        ends' receiving overs are the ones one target decides.
+
 One bet per player, stat and game in each rule (the line priced nearest
 evens), £1 at the first price logged. Also scored at the last price before
 kick-off, and closing line value: how far the price moved after the bet was
@@ -135,6 +144,8 @@ _OCT28 = datetime.datetime(2026, 10, 28, 12, 0, tzinfo=datetime.timezone.utc).ti
 _NOV02 = datetime.datetime(2026, 11, 2, 18, 0, tzinfo=datetime.timezone.utc).timestamp()
 _NOV02_FB = datetime.datetime(2026, 11, 2, 15, 0, tzinfo=datetime.timezone.utc).timestamp()
 _NOV02_PM = datetime.datetime(2026, 11, 2, 21, 0, tzinfo=datetime.timezone.utc).timestamp()
+_NOV13 = datetime.datetime(2026, 11, 13, 19, 0, tzinfo=datetime.timezone.utc).timestamp()
+NBA9_EDGE = 0.03         # nba_alt_model_9plus: pplog's edge at the first price
 LIKELY_PER_DAY = 5
 LIKELY_PRICE = (1.60, 2.50)
 
@@ -178,6 +189,8 @@ RULE_START = {
     "fb_ss_shots_model": _NOV02_FB,
     "control_fb_ss_fouls": _NOV02_FB,
     "us_likely_top5": _NOV02_PM,
+    "nba_alt_model_9plus": _NOV13,
+    "nfl_receiving_wr": _NOV13,
 }
 # Rules that can only be bet near tip-off are scored at the last price.
 SCORE_AT = {"nba_main_day_drift": "last", "control_nba_main_steam": "last",
@@ -211,6 +224,8 @@ RULES = {
     "fb_ss_shots_model": "Football shots over, Super Sub game, starters only, our chance 5%+ over Paddy (at the last price)",
     "control_fb_ss_fouls": "Control: football fouls over, Super Sub game, starters only, model does not agree (at the last price)",
     "us_likely_top5": "NBA/NFL: the 5 lines our model rates most likely each day, first price 1.60 to 2.50",
+    "nba_alt_model_9plus": "NBA alt over, 9+ of his last 10, 1.15 to 2.00, edge 3%+ at the first price",
+    "nfl_receiving_wr": "NFL receiving over, wide receivers only, 2.20 or shorter, model agrees",
 }
 
 
@@ -253,9 +268,34 @@ def _model(r: dict, hist: dict):
     return us[1] if r["over"] else 1 - us[1]
 
 
+def _nfl_positions(rows: list[dict]) -> dict[str, str]:
+    """Player -> position (WR, RB, TE...) from the cached SofaScore line-ups
+    of every NFL game in the log, the latest game winning. pplog does not
+    record positions, so this is the only way a rule can split by them."""
+    import json
+    out, ko = {}, {}
+    for eid, t in sorted({(r["event_id"], r.get("kickoff") or 0) for r in rows
+                          if r.get("sport") == NFL}, key=lambda x: x[1]):
+        f = ROOT / "cache" / f"event_{eid}_lineups.json"
+        if not f.exists():
+            continue
+        try:
+            d = json.loads(f.read_text())
+        except (OSError, ValueError):
+            continue
+        for side in ("home", "away"):
+            for e in (d.get(side) or {}).get("players") or []:
+                name = (e.get("player") or {}).get("name")
+                pos = e.get("position") or (e.get("player") or {}).get("position")
+                if name and pos and t >= ko.get(pplog._norm(name), 0):
+                    out[pplog._norm(name)], ko[pplog._norm(name)] = pos, t
+    return out
+
+
 def qualifying(rows: list[dict]) -> dict[str, list[dict]]:
     """Rule -> rows it would have bet, one per player, stat and game."""
     hist = _hist_model()
+    positions = _nfl_positions(rows)
     sides = defaultdict(set)
     for r in rows:
         sides[(r["event_id"], pplog._norm(r["player"]), r["stat"], r["line"])].add(bool(r["over"]))
@@ -359,6 +399,12 @@ def qualifying(rows: list[dict]) -> dict[str, list[dict]]:
                     add("control_fb_ss_fouls", r)
         if r["sport"] == NFL and r["over"] and r["stat"] in RECEIVING and price <= 2.2 and agrees:
             add("nfl_receiving_model", r)
+            if positions.get(pplog._norm(r["player"])) == "WR":
+                add("nfl_receiving_wr", r)
+        if (r["sport"] == NBA and r["over"] and not main and r.get("n10") == 10
+                and (r.get("k10") or 0) >= 9 and 1.15 <= price <= 2.0
+                and f.get("edge") is not None and f["edge"] >= NBA9_EDGE):
+            add("nba_alt_model_9plus", r)
         # learned_value (26 Oct): the chance after learn.py's correction, only
         # where a correction has been adopted for that sport, side or stat.
         try:

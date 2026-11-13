@@ -1,0 +1,4 @@
+
+FlareSolverr is not answering at http://localhost:8191/v1 (URLError).
+Start Docker Desktop and the flaresolverr container, then run this again.
+(SOFA_FLARESOLVERR=0 goes direct with curl_cffi, which is what gets blocked.)
