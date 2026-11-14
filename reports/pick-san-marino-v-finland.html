@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UEFA Nations League &middot; pick a bet</title>
+<style>
+:root {
+  --bg:#fbfbfa; --card:#fff; --fg:#1a1a18; --muted:#78776f; --line:#e7e6e1;
+  --accent:#b4541f; --accent-soft:#fdf2ec; --good:#2f6f4f;
+  --radius:10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme=light]) {
+    --bg:#131312; --card:#1c1c1a; --fg:#eceae4; --muted:#95938a; --line:#2c2c29;
+    --accent:#e08a55; --accent-soft:#2a1d15; --good:#6fbb8f;
+  }
+}
+:root[data-theme=dark] {
+  --bg:#131312; --card:#1c1c1a; --fg:#eceae4; --muted:#95938a; --line:#2c2c29;
+  --accent:#e08a55; --accent-soft:#2a1d15; --good:#6fbb8f;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--fg);
+  font:15px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Inter,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased; }
+.wrap { max-width:760px; margin:0 auto; padding:0 20px 80px; }
+header { display:flex; align-items:baseline; gap:12px; padding:28px 0 20px; }
+h1 { font-size:17px; font-weight:600; margin:0; letter-spacing:-0.01em; }
+.sub { color:var(--muted); font-size:13px; }
+.ghost { margin-left:auto; background:none; border:1px solid var(--line);
+  color:var(--muted); border-radius:99px; padding:5px 12px; font-size:12px;
+  cursor:pointer; font-family:inherit; }
+.ghost:hover { color:var(--fg); border-color:var(--muted); }
+
+.rows { border-top:1px solid var(--line); }
+.row { display:flex; gap:14px; align-items:center; width:100%; text-align:left;
+  padding:13px 4px; border:0; border-bottom:1px solid var(--line);
+  background:none; color:inherit; font:inherit; cursor:pointer; }
+.row:hover { background:var(--card); }
+.row .when { color:var(--muted); font-size:12px; width:96px; flex:none;
+  font-variant-numeric:tabular-nums; }
+.row .tie { font-weight:500; }
+.row .comp { margin-left:auto; color:var(--muted); font-size:11px;
+  border:1px solid var(--line); border-radius:99px; padding:2px 9px; flex:none; }
+
+.back { background:none; border:0; color:var(--muted); font:inherit;
+  font-size:13px; cursor:pointer; padding:20px 0 6px; }
+.back:hover { color:var(--fg); }
+h2 { font-size:20px; margin:0 0 2px; letter-spacing:-0.015em; }
+.meta { color:var(--muted); font-size:13px; margin-bottom:22px; }
+
+.seg { display:inline-flex; background:var(--card); border:1px solid var(--line);
+  border-radius:99px; padding:3px; margin-bottom:18px; }
+.seg button { border:0; background:none; color:var(--muted); font:inherit;
+  font-size:13px; padding:5px 15px; border-radius:99px; cursor:pointer; }
+.seg button[aria-pressed=true] { background:var(--accent); color:#fff; }
+
+.picks { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:22px; }
+@media (max-width:560px) { .picks { grid-template-columns:1fr; } }
+label { display:block; font-size:11px; color:var(--muted); margin-bottom:5px;
+  text-transform:uppercase; letter-spacing:.06em; }
+select { width:100%; appearance:none; background:var(--card); color:var(--fg);
+  border:1px solid var(--line); border-radius:var(--radius); padding:10px 34px 10px 12px;
+  font:inherit; font-size:14px; cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),
+    linear-gradient(135deg,currentColor 50%,transparent 50%);
+  background-position:calc(100% - 17px) 50%, calc(100% - 12px) 50%;
+  background-size:5px 5px,5px 5px; background-repeat:no-repeat; }
+select:focus { outline:none; border-color:var(--accent); }
+
+.summary { background:var(--card); border:1px solid var(--line);
+  border-radius:var(--radius); padding:16px 18px; margin-bottom:6px; }
+.summary .big { font-size:19px; font-weight:600; letter-spacing:-0.01em; }
+.summary .seq { color:var(--muted); font-size:12px; margin-top:8px;
+  font-variant-numeric:tabular-nums; word-spacing:2px; }
+.chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+.chip { font-size:12px; color:var(--muted); border:1px solid var(--line);
+  border-radius:99px; padding:3px 10px; }
+.chip b { color:var(--fg); font-weight:600; }
+
+table { width:100%; border-collapse:collapse; margin-top:14px;
+  font-variant-numeric:tabular-nums; }
+th { text-align:right; font-size:11px; font-weight:500; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.06em; padding:0 0 8px;
+  border-bottom:1px solid var(--line); }
+th:first-child, td:first-child { text-align:left; }
+td { padding:9px 0; border-bottom:1px solid var(--line); text-align:right;
+  font-size:14px; }
+tr.here td { background:var(--accent-soft); }
+tr.here td:first-child { box-shadow:inset 2px 0 0 var(--accent); padding-left:9px; }
+td.line { font-weight:600; }
+td.dim { color:var(--muted); }
+.note { color:var(--muted); font-size:12px; line-height:1.6; margin:18px 0 0; }
+.empty { color:var(--muted); padding:28px 0; }
+a.full { color:var(--accent); font-size:13px; text-decoration:none; }
+a.full:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>UEFA Nations League</h1>
+    <span class="sub">pick a bet</span>
+    <button class="ghost" id="theme">Theme</button>
+  </header>
+  <div id="main"></div>
+</div>
+<script>
+const D = [{"id":15534152,"h":"San Marino","a":"Finland","k":1790438400,"c":"UEFA Nations League","sp":"football","teams":[{"n":"San Marino","side":"home","s":{"Total shots":[[4.0,"h"],[4.0,"a"],[5.0,"h"],[3.0,"a"]],"Corner kicks":[[0.0,"h"],[2.0,"a"],[2.0,"h"],[0.0,"a"]],"Fouls":[[17.0,"h"],[9.0,"a"],[15.0,"h"],[18.0,"a"]],"Tackles":[[6.0,"h"],[15.0,"a"],[27.0,"h"],[26.0,"a"]],"Free kicks":[[20.0,"h"],[14.0,"a"],[13.0,"h"],[7.0,"a"]],"Yellow cards":[[2.0,"h"],[3.0,"a"],[2.0,"h"],[4.0,"a"]],"Red cards":[[1.0,"h"]],"Shots on target":[[1.0,"h"],[1.0,"a"],[0.0,"h"],[1.0,"a"]],"Offsides":[[2.0,"h"],[0.0,"a"],[0.0,"h"],[0.0,"a"]],"Throw-ins":[[15.0,"h"],[7.0,"a"],[22.0,"h"],[20.0,"a"]],"Goal kicks":[[9.0,"h"],[16.0,"a"],[9.0,"h"],[12.0,"a"]],"Goals":[[0.0,"h"],[0.0,"a"],[0.0,"h"],[1.0,"a"]]}},{"n":"Finland","side":"away","s":{"Total shots":[[5.0,"a"],[11.0,"h"],[7.0,"a"],[16.0,"h"],[10.0,"a"],[12.0,"a"]],"Corner kicks":[[2.0,"a"],[5.0,"h"],[1.0,"a"],[9.0,"h"],[7.0,"a"],[6.0,"a"]],"Fouls":[[11.0,"a"],[21.0,"h"],[13.0,"a"],[15.0,"h"],[9.0,"a"]],"Tackles":[[11.0,"a"],[10.0,"h"],[14.0,"a"],[20.0,"h"],[10.0,"a"],[12.0,"a"]],"Free kicks":[[11.0,"a"],[13.0,"h"],[8.0,"a"],[9.0,"h"],[12.0,"a"],[13.0,"a"]],"Yellow cards":[[0.0,"a"],[2.0,"h"],[2.0,"a"],[3.0,"a"],[1.0,"a"]],"Shots on target":[[2.0,"a"],[7.0,"h"],[3.0,"a"],[8.0,"h"],[3.0,"a"],[7.0,"a"]],"Offsides":[[1.0,"a"],[1.0,"a"],[1.0,"h"],[2.0,"a"],[1.0,"a"]],"Throw-ins":[[25.0,"a"],[22.0,"h"],[11.0,"a"],[22.0,"h"],[23.0,"a"],[19.0,"a"]],"Goal kicks":[[7.0,"a"],[5.0,"h"],[7.0,"a"],[4.0,"h"],[12.0,"a"],[14.0,"a"]],"Goals":[[1.0,"a"],[2.0,"h"],[0.0,"a"],[0.0,"h"],[2.0,"a"],[3.0,"a"]]}}],"pl":[]}];
+const LEAGUE = "UEFA Nations League";
+const REPORT = "san-marino-v-finland.html";
+
+const $ = s => document.querySelector(s);
+const odds = v => (!isFinite(v) || v <= 0) ? "—" : v >= 100 ? "99+" : v.toFixed(2);
+const isYards = s => /yards/i.test(s);
+
+function wilsonLow(k, n, z = 1.96) {
+  if (!n) return 0;
+  const p = k / n, d = 1 + z * z / n;
+  const c = p + z * z / (2 * n);
+  const m = z * Math.sqrt(p * (1 - p) / n + z * z / (4 * n * n));
+  return Math.max(0, (c - m) / d);
+}
+
+/* The rungs a book posts: fives up to fifty, tens above, whole numbers for
+   anything countable. Same shape as the report and the parlay engine. */
+function rungs(stat, values) {
+  const top = Math.max(...values);
+  if (!(top > 0)) return [];
+  const out = [];
+  if (isYards(stat)) {
+    for (let t = 5; t < 50; t += 5) out.push(t);
+    for (let t = 50; t <= top + 10; t += 10) out.push(t);
+  } else {
+    for (let t = 1; t <= Math.floor(top); t++) out.push(t);
+  }
+  return out.filter(t => t <= top);
+}
+
+function ladder(stat, values) {
+  const n = values.length;
+  const all = rungs(stat, values).map(t => {
+    const k = values.filter(v => v >= t).length;
+    return { t, k, n, rate: k / n };
+  }).filter(r => r.k > 0 && r.rate < 1 && r.rate >= 0.15);
+  // One row per distinct record, at the highest line that achieves it.
+  return all.filter((r, i) => i === all.length - 1 || all[i + 1].k !== r.k);
+}
+
+let view = { fixture: null, mode: "players", team: 0, who: "", stat: "", venue: "all" };
+
+/* Markets in the order this player actually does them, not alphabetically.
+   A receiver's receiving yards should be the first thing offered; his
+   defensive tackles, if the feed bothered to record one, should be last. */
+function statsByVolume(bag) {
+  return Object.keys(bag).sort((a, b) => {
+    const live = k => bag[k].filter(v => v[0] > 0).length;
+    return live(b) - live(a) || a.localeCompare(b);
+  });
+}
+
+// Appearances matching the venue filter, values only.
+function pick(rows) {
+  const want = view.venue;
+  return (rows || []).filter(r => want === "all" || r[1] === want[0]).map(r => r[0]);
+}
+
+function fmtWhen(ts) {
+  if (!ts) return "";
+  const d = new Date(ts * 1000);
+  return d.toLocaleString(undefined,
+    { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+}
+
+function renderList() {
+  const rows = [...D].sort((a, b) => (a.k || 0) - (b.k || 0)).map((f, i) => `
+    <button class="row" data-fx="${i}">
+      <span class="when">${fmtWhen(f.k)}</span>
+      <span class="tie">${f.h} v ${f.a}</span>
+      <span class="comp">${f.c || ""}</span>
+    </button>`).join("");
+  $("#main").innerHTML = `<div class="rows">${rows || '<p class="empty">No fixtures.</p>'}</div>`;
+  document.querySelectorAll("[data-fx]").forEach(b =>
+    b.addEventListener("click", () => {
+      // venue has to be reset here too. Leaving it out set view.venue to
+      // undefined on every fixture opened from the list, and pick() then read
+      // want[0] off nothing at all.
+      view = { fixture: +b.dataset.fx, mode: "players", team: 0, who: "",
+               stat: "", venue: "all" };
+      history.replaceState(null, "", "#e" + D[view.fixture].id);
+      renderFixture();
+    }));
+}
+
+function optionsFor(f) {
+  if (view.mode === "team") {
+    const t = f.teams[view.team] || { s: {} };
+    return { names: [t.n], stats: statsByVolume(t.s), values: s => pick(t.s[s]) };
+  }
+  const squad = f.pl.filter(p => p.t === view.team);   // already in squad order
+  const byName = Object.fromEntries(squad.map(p => [p.n, p]));
+  const names = squad.map(p => p.n);
+  const who = byName[view.who] ? view.who : names[0];
+  const stats = who ? statsByVolume(byName[who].s) : [];
+  return { names, stats, values: s => (byName[who] ? pick(byName[who].s[s]) : []), who, byName };
+}
+
+function renderFixture() {
+  const f = D[view.fixture];
+  const opt = optionsFor(f);
+  if (view.mode === "players") view.who = opt.who || "";
+  if (!opt.stats.includes(view.stat)) view.stat = opt.stats[0] || "";
+  const values = opt.values(view.stat);
+
+  const teamBtns = f.teams.map((t, i) =>
+    `<button data-team="${i}" aria-pressed="${i === view.team}">${t.n}</button>`).join("");
+
+  const rows = values.length ? ladder(view.stat, values) : [];
+  const body = rows.map(r => `
+    <tr>
+      <td class="line">${r.t}+</td>
+      <td class="dim">${r.k}/${r.n}</td>
+      <td>${Math.round(r.rate * 100)}%</td>
+      <td><b>${odds(1 / r.rate)}</b></td>
+      <td class="dim">${odds(1 / (1 - r.rate))}</td>
+      <td class="dim">${odds(1 / wilsonLow(r.k, r.n))}</td>
+    </tr>`).join("");
+
+  const sorted = [...values].sort((a, b) => a - b);
+  const n = sorted.length;
+  const median = !n ? 0 : n % 2 ? sorted[(n - 1) / 2] : (sorted[n / 2 - 1] + sorted[n / 2]) / 2;
+  const mean = n ? values.reduce((a, b) => a + b, 0) / n : 0;
+
+  $("#main").innerHTML = `
+    <button class="back" id="back">&larr; All fixtures</button>
+    <h2>${f.h} v ${f.a}</h2>
+    <div class="meta">${fmtWhen(f.k)} &middot; ${f.c || ""} &middot;
+      <a class="full" href="${REPORT}#e${f.id}">full report</a></div>
+
+    <div class="seg" id="mode">
+      <button data-mode="players" aria-pressed="${view.mode === "players"}">Players</button>
+      <button data-mode="team" aria-pressed="${view.mode === "team"}">Team</button>
+    </div>
+    <div class="seg" id="teams" style="margin-left:8px">${teamBtns}</div>
+    <div class="seg" id="venue" style="margin-left:8px">
+      ${[["all", "All games"], ["home", "Home"], ["away", "Away"]].map(([v, t]) =>
+        `<button data-venue="${v}" aria-pressed="${view.venue === v}">${t}</button>`).join("")}
+    </div>
+
+    <div class="picks">
+      ${view.mode === "players" ? `<div><label>Player</label>
+        <select id="who">${opt.names.map(x =>
+          `<option${x === view.who ? " selected" : ""}>${x}</option>`).join("")}</select></div>` : ""}
+      <div><label>Market</label>
+        <select id="stat">${opt.stats.map(x =>
+          `<option${x === view.stat ? " selected" : ""}>${x}</option>`).join("")}</select></div>
+    </div>
+
+    ${n ? `<div class="summary">
+      <div class="big">${view.mode === "players" ? view.who : f.teams[view.team].n}
+        &middot; ${view.stat.toLowerCase()}</div>
+      <div class="chips">
+        <span class="chip">games <b>${n}</b></span>
+        <span class="chip">median <b>${median % 1 ? median.toFixed(1) : median}</b></span>
+        <span class="chip">average <b>${mean.toFixed(1)}</b></span>
+        <span class="chip">best <b>${sorted[n - 1]}</b></span>
+      </div>
+      <div class="seq">${values.join("  ")}</div>
+    </div>
+
+    <table>
+      <thead><tr><th>Line</th><th>Record</th><th>Rate</th>
+        <th>Over</th><th>Under</th><th>Hold out</th></tr></thead>
+      <tbody>${body}</tbody>
+    </table>
+    <p class="note"><b>Over</b> and <b>Under</b> are fair prices &mdash; one over
+      the rate, and one over what is left. They are break-even, not an edge:
+      back a line only where the book pays more than the number here.
+      <b>Hold out</b> is the over price once the sample size is paid for, which
+      on a short record is a long way further out. Lines the record never
+      settles between are collapsed to the bigger number.</p>`
+    : `<p class="empty">No record for that market.</p>`}`;
+
+  $("#back").addEventListener("click", () => {
+    history.replaceState(null, "", location.pathname + location.search);
+    renderList();
+  });
+  document.querySelectorAll("#mode button").forEach(b =>
+    b.addEventListener("click", () => { view.mode = b.dataset.mode; view.stat = ""; renderFixture(); }));
+  document.querySelectorAll("#venue button").forEach(b =>
+    b.addEventListener("click", () => { view.venue = b.dataset.venue; renderFixture(); }));
+  document.querySelectorAll("#teams button").forEach(b =>
+    b.addEventListener("click", () => { view.team = +b.dataset.team; view.who = ""; view.stat = ""; renderFixture(); }));
+  const who = $("#who");
+  if (who) who.addEventListener("change", () => { view.who = who.value; view.stat = ""; renderFixture(); });
+  $("#stat").addEventListener("change", () => { view.stat = $("#stat").value; renderFixture(); });
+}
+
+$("#theme").addEventListener("click", () => {
+  const now = document.documentElement.getAttribute("data-theme");
+  const next = now === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  try { localStorage.setItem("pickTheme", next); } catch (e) {}
+});
+try {
+  const saved = localStorage.getItem("pickTheme");
+  if (saved) document.documentElement.setAttribute("data-theme", saved);
+} catch (e) {}
+
+/* Open straight onto a fixture when the index sent us to one, and keep the
+   address bar honest as you move around, so a link to a match is a link to
+   that match rather than to the list it lives in. */
+function fromHash() {
+  const id = (location.hash.match(/^#e(\d+)/) || [])[1];
+  if (!id) return false;
+  const i = D.findIndex(f => String(f.id) === id);
+  if (i < 0) return false;
+  view = { fixture: i, mode: "players", team: 0, who: "", stat: "", venue: "all" };
+  renderFixture();
+  return true;
+}
+window.addEventListener("hashchange", () => { if (!fromHash()) renderList(); });
+if (!fromHash()) renderList();
+</script>
+</body>
+</html>

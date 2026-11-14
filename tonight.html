@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html class="hr-p-tonight" lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tonight · Hit Rates</title>
+<style>
+:root { --bg:#fcfcfb; --fg:#0b0b0b; --muted:#75736e; --line:rgba(11,11,11,.12); --accent:#d03b3b; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#141413; --fg:#fff; --muted:#908e88; --line:rgba(255,255,255,.14); }
+}
+* { box-sizing:border-box; }
+body { margin:0; padding:20px 16px 60px; background:var(--bg); color:var(--fg);
+  font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  max-width:760px; margin-inline:auto; }
+h1 { font-size:22px; margin:0 0 4px; }
+h2 { font-size:18px; margin:32px 0 2px; }
+h3 { font-size:14px; text-transform:uppercase; letter-spacing:.06em;
+  color:var(--muted); margin:20px 0 6px; font-weight:600; }
+section { border-top:1px solid var(--line); padding-top:4px; }
+.comp, .sub { color:var(--muted); font-size:13px; }
+.stamp { color:var(--muted); font-size:13px; margin:0 0 8px; }
+.legs { margin:6px 0; padding-left:20px; }
+.legs li { margin:3px 0; }
+.price { font-size:14px; margin:6px 0 0; }
+.none { color:var(--muted); font-size:14px; }
+table { width:100%; border-collapse:collapse; font-size:14px; margin-top:4px; }
+th, td { text-align:left; padding:6px 4px; border-bottom:1px solid var(--line); }
+th { color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase;
+  letter-spacing:.04em; }
+.n { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.case { font-size:14px; }
+.call { margin:4px 0; }
+.argue { margin:8px 0; padding:8px 12px; border-left:3px solid var(--fg); }
+.facts { margin:6px 0 10px; padding-left:20px; }
+.facts li { margin:2px 0; }
+.sides { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media (max-width:620px) { .sides { grid-template-columns:1fr; } }
+.side h4 { margin:8px 0 2px; font-size:14px; }
+.side .line { margin:4px 0; }
+table.form td { padding:3px 4px; font-size:13px; }
+.res { display:inline-block; min-width:20px; text-align:center; border-radius:4px;
+  font-weight:700; font-size:12px; color:#fff; }
+.res.W { background:#2e8b57; } .res.D { background:#8a8a8a; } .res.L { background:#c0392b; }
+.allow { font-size:13px; font-weight:600; }
+.gs { font-size:13px; }
+.gsbox { margin:10px 0; padding:8px 12px; border:1px solid var(--line); border-radius:6px; }
+.gsarg { border-left-color:var(--accent); }
+.mark { display:inline-block; width:18px; font-weight:700; }
+.story { font-size:14px; }
+.story .line { margin:8px 0; }
+.why { padding-left:20px; }
+.why li { margin:6px 0; }
+.mark.win { color:#2e8b57; } .mark.lose { color:#c0392b; }
+.tabs > input { position:absolute; opacity:0; pointer-events:none; }
+.tabs > label { display:inline-block; margin:10px 6px 0 0; padding:6px 14px; font-size:14px;
+  font-weight:600; border:1px solid var(--line); border-radius:999px; cursor:pointer; color:var(--muted); }
+.tabs > input:checked + label { background:var(--fg); color:var(--bg); border-color:var(--fg); }
+.tabs > input:focus-visible + label { outline:2px solid var(--accent); outline-offset:2px; }
+.tabs .pane { display:none; }
+.tabs > input:nth-of-type(1):checked ~ .bets { display:block; }
+.tabs > input:nth-of-type(2):checked ~ .state { display:block; }
+.tabs > input:nth-of-type(3):checked ~ .boostp { display:block; }
+.warn { border-left:3px solid var(--accent); padding:10px 14px; margin:16px 0;
+  font-size:13.5px; color:var(--muted); }
+
+.vbox { margin:8px 0 4px; }
+.budget input, .boost input, .boost select { font:inherit; font-size:15px; padding:4px 6px;
+  border:1px solid var(--line); border-radius:6px; background:var(--bg); color:var(--fg); }
+.budget input { width:80px; }
+.boost .bl { display:flex; justify-content:space-between; align-items:center; gap:10px; margin:6px 0; font-size:14px; }
+.boost .bl select, .boost .bl input { max-width:58%; }
+.ok { border-left:3px solid #2e8b57; padding-left:8px; }
+.meh { border-left:3px solid #c9a227; padding-left:8px; }
+.bad { border-left:3px solid #c0392b; padding-left:8px; }
+
+.main > input { position:absolute; opacity:0; pointer-events:none; }
+.main > label { display:inline-block; width:calc(33.33% - 4px); text-align:center; padding:12px 0; margin:14px 0 6px;
+  font-size:17px; font-weight:700; border:1px solid var(--line); border-radius:10px; cursor:pointer; color:var(--muted); }
+.main > label + input + label { margin-left:4px; }
+.main > input:checked + label { background:var(--fg); color:var(--bg); border-color:var(--fg); }
+.main > input:focus-visible + label { outline:2px solid var(--accent); outline-offset:2px; }
+.main .mpane { display:none; }
+.main > input:nth-of-type(1):checked ~ .board, .main > input:nth-of-type(2):checked ~ .team,
+.main > input:nth-of-type(3):checked ~ .player { display:block; }
+.bchips { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+.bchips button { font:inherit; font-size:13px; padding:5px 12px; border:1px solid var(--line); border-radius:999px;
+  background:none; color:var(--muted); cursor:pointer; }
+.bchips button.on { background:var(--fg); color:var(--bg); border-color:var(--fg); }
+.bwrap { overflow-x:auto; }
+table.board { width:100%; border-collapse:collapse; font-size:14px; }
+table.board th { font-size:12px; color:var(--muted); font-weight:600; text-align:left; padding:6px 6px 6px 0;
+  border-bottom:1px solid var(--line); }
+table.board td { padding:7px 6px 7px 0; border-bottom:1px solid var(--line); vertical-align:top; }
+table.board .n { text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
+table.board td .sub { font-size:12px; }
+.bv { font-size:12px; color:var(--muted); }
+.bv.yes { font-weight:700; color:var(--hit, #2e9d5b); }
+details.game { border-top:1px solid var(--line); }
+details.game > summary { list-style:none; cursor:pointer; padding:10px 22px 10px 0; position:relative; font-size:15px; }
+details.game > summary::-webkit-details-marker { display:none; }
+details.game > summary::after { content:'+'; position:absolute; right:2px; top:10px; color:var(--muted); font-size:18px; }
+details.game[open] > summary::after { content:'\2212'; }
+details.game > summary .ko { font-weight:700; margin-right:4px; font-variant-numeric:tabular-nums; }
+details.game > summary .fx { font-weight:600; }
+details.game > summary .comp { display:block; font-size:12px; margin-top:1px; }
+details.game > summary .comp .tag { margin-left:6px; }
+details.game > summary .lead { display:block; }
+ul.gsl { list-style:none; padding:0; margin:4px 0 10px; font-size:14px; }
+ul.gsl li { display:flex; justify-content:space-between; gap:10px; padding:4px 0; border-bottom:1px solid var(--line); }
+ul.gsl li .n { white-space:nowrap; }
+.out { margin:4px 0 0; }
+.verdict .out b { color:var(--fg); font-weight:600; }
+details.game > summary .lead { font-size:13px; color:var(--muted); }
+details.game > summary .lead b { color:var(--fg); }
+details.game[open] > summary { padding-bottom:4px; }
+.main .cnt { font-weight:500; opacity:.6; margin-left:2px; }
+.verdict { margin:12px 0 4px; }
+.verdict .score { font-size:19px; margin:0 0 6px; }
+.verdict .score b { font-variant-numeric:tabular-nums; padding:0 4px; }
+.pbar { display:flex; height:6px; border-radius:3px; overflow:hidden; margin:0 0 4px; background:var(--line); }
+.pbar .ph { background:var(--fg); } .pbar .pd { background:var(--muted); opacity:.5; } .pbar .pa { background:var(--accent); }
+.best { margin:10px 0 4px; font-size:15px; }
+.nobet { color:var(--muted); font-weight:600; }
+.best .k, .rate b { font-weight:700; }
+.best .k { display:inline-block; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--bg);
+  background:var(--fg); border-radius:4px; padding:1px 6px; margin-right:4px; vertical-align:1px; }
+.verdict .argue { font-size:14px; color:var(--fg); }
+.rate { margin:8px 0 0; }
+.bet { padding:10px 0; border-bottom:1px solid var(--line); }
+.bet .top { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+.bet .sel { font-size:15px; font-weight:600; min-width:0; }
+.bet .sel .sub { font-weight:400; }
+.bet .nums { text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; font-size:12px; color:var(--muted); }
+.bet .nums b { display:block; font-size:17px; color:var(--fg); }
+.bet .nums span { display:block; }
+.bet .nums .pp { margin-top:2px; color:var(--fg); }
+.bet .nums .pp b { display:inline; font-size:13px; }
+.bet .nums .pp.none { color:var(--muted); font-style:italic; }
+.bet .reason { margin:4px 0 0; font-size:13px; }
+details.more > summary, details.rest > summary { cursor:pointer; color:var(--muted); font-size:13px; margin-top:4px; }
+details.more ul { margin:4px 0 0; padding-left:18px; font-size:13px; color:var(--muted); }
+details.more li { margin:2px 0; }
+details.rest > summary { padding:8px 0; font-weight:600; }
+.chips { display:flex; flex-wrap:wrap; gap:4px 10px; margin:4px 0 6px; font-size:12.5px; }
+.chips .fm { white-space:nowrap; color:var(--muted); }
+.tabs > label { margin:12px 4px 4px 0; }
+.pane-one { margin-top:4px; }
+details.game[open] { padding-bottom:10px; }
+.tag { display:inline-block; font-size:11px; padding:1px 7px; border-radius:999px; border:1px solid var(--line);
+  color:var(--muted); margin-left:4px; vertical-align:1px; }
+.tag.ok { border-color:#2e8b57; color:#2e8b57; }
+h2.first { margin-top:12px; }
+.tabs .p0, .tabs .p1, .tabs .p2 { display:none; }
+.tabs > input:nth-of-type(1):checked ~ .p0, .tabs > input:nth-of-type(2):checked ~ .p1,
+.tabs > input:nth-of-type(3):checked ~ .p2 { display:block; }
+
+.cf-row { display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); }
+.cf-row:last-child { border-bottom:0; }
+.cf-sel { font-weight:600; }
+.cf-sub { font-size:12.5px; color:var(--muted); margin-top:2px; }
+.cf-chips { display:flex; flex-wrap:wrap; gap:4px; margin-top:6px; }
+.cf-chip { font-size:11px; font-weight:600; padding:1px 7px; border-radius:99px; background:rgba(21,128,61,.12); color:#15803d; }
+.cf-chip.sh { background:rgba(31,63,143,.12); color:#1f3f8f; }
+@media (prefers-color-scheme:dark) { .cf-chip { color:#4ade80; background:rgba(74,222,128,.14); } .cf-chip.sh { color:#9db8ff; background:rgba(110,140,255,.16); } }
+.cf-tier { display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+           padding:1px 7px; border-radius:5px; margin-right:6px; vertical-align:1px; }
+.cf-tier.strong { background:#f5a524; color:#241600; } .cf-tier.trial { background:rgba(127,127,127,.18); }
+.cf-price { text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.cf-price b { font-size:17px; }
+</style><style id="sitenav-css">
+.hr-nav,.hr-foot{--hn-bg:#fcfcfb;--hn-fg:#111;--hn-mu:#6b6963;--hn-bd:rgba(0,0,0,.1);--hn-on:#111;--hn-onfg:#fff;--hn-pos:#15803d;--hn-neg:#b91c1c;
+  font:14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:var(--hn-fg)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hr-nav,:root:not([data-theme="light"]) .hr-foot{
+  --hn-bg:#141413;--hn-fg:#f2f2f0;--hn-mu:#9a988f;--hn-bd:rgba(255,255,255,.12);--hn-on:#f2f2f0;--hn-onfg:#111;--hn-pos:#4ade80;--hn-neg:#f87171}}
+:root[data-theme="dark"] .hr-nav,:root[data-theme="dark"] .hr-foot{
+  --hn-bg:#141413;--hn-fg:#f2f2f0;--hn-mu:#9a988f;--hn-bd:rgba(255,255,255,.12);--hn-on:#f2f2f0;--hn-onfg:#111;--hn-pos:#4ade80;--hn-neg:#f87171}
+html{overflow-x:clip}
+.hr-nav,.hr-foot{width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);box-sizing:border-box}
+.hr-nav{background:var(--hn-bg);border-bottom:1px solid var(--hn-bd);position:relative;z-index:40;margin-bottom:16px}
+.hr-nav-in{max-width:1240px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px}
+.hr-brand{font-weight:700;font-size:16px;color:var(--hn-fg)!important;text-decoration:none;white-space:nowrap;letter-spacing:-.01em}
+.hr-brand i{display:inline-block;width:9px;height:9px;border-radius:3px;background:var(--hn-pos);margin-right:7px;vertical-align:1px}
+.hr-links{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1 1 auto;min-width:0}
+.hr-links::-webkit-scrollbar{display:none}
+.hr-links a{padding:6px 10px;border-radius:999px;color:var(--hn-mu)!important;text-decoration:none!important;white-space:nowrap;font-weight:550;font-size:13.5px}
+.hr-links a:hover{color:var(--hn-fg)!important;background:var(--hn-bd)}
+.hr-links a[aria-current]{background:var(--hn-on);color:var(--hn-onfg)!important}
+.hr-rec{white-space:nowrap;font-size:12.5px;color:var(--hn-mu)!important;text-decoration:none!important;border:1px solid var(--hn-bd);border-radius:999px;padding:4px 10px}
+.hr-rec b{font-variant-numeric:tabular-nums}.hr-rec .pos{color:var(--hn-pos)}.hr-rec .neg{color:var(--hn-neg)}
+.hr-foot{border-top:1px solid var(--hn-bd);margin-top:40px;background:var(--hn-bg)}
+.hr-foot p{max-width:1240px;margin:0 auto;padding:16px;color:var(--hn-mu);font-size:12.5px}
+.hr-foot a{color:var(--hn-mu)!important}
+@media (max-width:720px){.hr-nav-in{flex-wrap:wrap;gap:8px 10px;padding:8px 12px}.hr-links{order:3;flex-basis:100%}.hr-rec{margin-left:auto}}
+</style><style id="hr-theme">/* Hit Rates colour layer (3 Nov 2026). Navy and amber for the site itself;
+   green, red and amber only ever mean won, lost and open; blue and purple
+   are the two teams on match pages. Loaded after each page's own styles. */
+:root {
+  --hr-navy: #13265c; --hr-navy-2: #1f3f8f; --hr-head: #1d3a8a;
+  --hr-amber: #f5a524; --hr-ink: #241600;
+  --hr-tint: #eef2fb; --hr-tint-2: #f6f8fd;
+  --hr-win: #15803d; --hr-win-bg: #dcf5e4;
+  --hr-lose: #b91c1c; --hr-lose-bg: #fde3e3;
+  --hr-open: #9a6200; --hr-open-bg: #fdf0cf;
+  --hr-sel: #1f3f8f; --hr-sel-ink: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --hr-head: #9db8ff; --hr-amber: #fbbf24;
+    --hr-tint: rgba(110,140,255,.10); --hr-tint-2: rgba(110,140,255,.05);
+    --hr-win: #4ade80; --hr-win-bg: rgba(74,222,128,.14);
+    --hr-lose: #f87171; --hr-lose-bg: rgba(248,113,113,.14);
+    --hr-open: #facc15; --hr-open-bg: rgba(250,204,21,.13);
+    --hr-sel: #fbbf24; --hr-sel-ink: #241600;
+  }
+}
+:root[data-theme="dark"] {
+  --hr-head: #9db8ff; --hr-amber: #fbbf24;
+  --hr-tint: rgba(110,140,255,.10); --hr-tint-2: rgba(110,140,255,.05);
+  --hr-win: #4ade80; --hr-win-bg: rgba(74,222,128,.14);
+  --hr-lose: #f87171; --hr-lose-bg: rgba(248,113,113,.14);
+  --hr-open: #facc15; --hr-open-bg: rgba(250,204,21,.13);
+  --hr-sel: #fbbf24; --hr-sel-ink: #241600;
+}
+
+/* ---- the shared header and footer ---- */
+.hr-nav { background: linear-gradient(100deg, #10204f 0%, #1c3a86 70%, #2547a3 100%) !important;
+  border-bottom: 0 !important; box-shadow: 0 2px 10px rgba(16,32,79,.18); }
+.hr-brand { color: #fff !important; }
+.hr-brand i { background: var(--hr-amber) !important; border-radius: 50% !important; width: 10px !important; height: 10px !important;
+  box-shadow: 0 0 0 3px rgba(245,165,36,.25); }
+.hr-links a { color: rgba(255,255,255,.78) !important; }
+.hr-links a:hover { color: #fff !important; background: rgba(255,255,255,.12) !important; }
+.hr-links a[aria-current] { background: var(--hr-amber) !important; color: var(--hr-ink) !important; font-weight: 650; }
+.hr-rec { color: rgba(255,255,255,.85) !important; border-color: rgba(255,255,255,.28) !important; background: rgba(255,255,255,.06); }
+.hr-rec .pos { color: #6ee7a0 !important; } .hr-rec .neg { color: #ffb4b4 !important; }
+.hr-foot { border-top: 3px solid var(--hr-amber) !important; }
+
+/* ---- fixtures (home) ---- */
+html.hr-p-index { --accent: var(--hr-sel); --on-accent: var(--hr-sel-ink); --link: var(--hr-head); }
+html.hr-p-index .sports button[aria-pressed="true"] { color: var(--hr-head); border-bottom-color: var(--hr-amber); border-bottom-width: 3px; }
+html.hr-p-index .day { color: var(--hr-head); }
+html.hr-p-index .day.soon { color: #c2410c; }
+html.hr-p-index .day.soon::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: #f97316; margin-right: 8px; vertical-align: 1px; box-shadow: 0 0 0 3px rgba(249,115,22,.2); }
+html.hr-p-index .time { color: var(--hr-head); }
+html.hr-p-index li a:hover { background: var(--hr-tint-2); }
+html.hr-p-index ul { border-left: 3px solid var(--hr-navy-2); }
+html.hr-p-index .rail-title { color: var(--hr-head); }
+html.hr-p-index .rail a { border-left: 3px solid var(--hr-amber) !important; }
+html.hr-p-index .pick { border-top: 3px solid var(--hr-amber); }
+
+/* ---- tonight ---- */
+html.hr-p-tonight h1 { color: var(--hr-head); }
+html.hr-p-tonight .main > input:checked + label { background: var(--hr-sel); border-color: var(--hr-sel); color: var(--hr-sel-ink); }
+html.hr-p-tonight .warn { border-left-color: var(--hr-amber); background: var(--hr-tint-2); border-radius: 0 8px 8px 0; }
+html.hr-p-tonight details.game > summary .ko { color: var(--hr-head); }
+html.hr-p-tonight details.game[open] { background: var(--hr-tint-2); border-radius: 10px; padding: 0 12px 6px; margin: 0 -12px; }
+html.hr-p-tonight .pbar .ph { background: #2a78d6; } html.hr-p-tonight .pbar .pa { background: #7a4fd6; }
+html.hr-p-tonight .best .k { background: var(--hr-amber) !important; color: var(--hr-ink) !important; }
+html.hr-p-tonight .nobet { color: var(--hr-lose); }
+html.hr-p-tonight h3 { color: var(--hr-head); }
+html.hr-p-tonight .vbox { border-left: 3px solid var(--hr-navy-2); padding-left: 12px; }
+html.hr-p-tonight th { background: var(--hr-tint); }
+
+/* ---- match pages and the pick pages ---- */
+/* :root.x:not([data-x]) outranks the page's own :root:not([data-theme]) dark block. */
+:root.hr-p-report:not([data-x]), :root.hr-p-picker:not([data-x]) { --control-active: var(--hr-sel); --control-active-text: var(--hr-sel-ink); }
+html.hr-p-report h1, html.hr-p-picker h1 { color: var(--hr-head); }
+html.hr-p-report .n2-top[aria-selected="true"] { color: var(--hr-head); border-bottom-color: var(--hr-amber); }
+html.hr-p-report .n2-sub[aria-selected="true"] { background: var(--hr-sel); color: var(--hr-sel-ink); border-color: var(--hr-sel); }
+
+/* ---- best bets, track record, Paddy Power log, model v market ---- */
+html.hr-p-bets h1, html.hr-p-record h1, html.hr-p-pp h1, html.hr-p-market h1 { color: var(--hr-head); }
+html.hr-p-bets h2, html.hr-p-record h2, html.hr-p-pp h2, html.hr-p-market h2 { color: var(--hr-head); }
+html.hr-p-bets .stat, html.hr-p-pp .card, html.hr-p-market .kpi { border-top: 3px solid var(--hr-amber) !important; }
+html.hr-p-bets .stat:nth-child(1), html.hr-p-pp .cards > .card:nth-child(1), html.hr-p-market .kpi:nth-child(1) { border-top-color: var(--hr-navy-2) !important; }
+html.hr-p-bets .tabs button[aria-selected=true] { color: var(--hr-head); border-color: var(--hr-amber); }
+html.hr-p-bets .card { border-left: 3px solid var(--hr-navy-2); }
+html.hr-p-bets .pill.win, html.hr-p-bets .pill.open, html.hr-p-bets .pill.lose { border-color: transparent; }
+html.hr-p-bets .pill.win { background: var(--hr-win-bg); color: var(--hr-win); }
+html.hr-p-bets .pill.lose { background: var(--hr-lose-bg); color: var(--hr-lose); }
+html.hr-p-bets .pill.open { background: var(--hr-open-bg); color: var(--hr-open); }
+html.hr-p-record th, html.hr-p-pp th, html.hr-p-market th, html.hr-p-bets th { background: var(--hr-tint); }
+html.hr-p-record .big { color: var(--hr-head); }
+html.hr-p-record td .pos, html.hr-p-record td .neg { padding: 1px 7px; border-radius: 99px; font-weight: 600; }
+html.hr-p-record td .pos { background: var(--hr-win-bg); } html.hr-p-record td .neg { background: var(--hr-lose-bg); }
+html.hr-p-pp .res.win { background: var(--hr-win-bg); border-radius: 99px; }
+html.hr-p-pp .res.lose { background: var(--hr-lose-bg); border-radius: 99px; }
+html.hr-p-pp td.pos, html.hr-p-pp td.neg { font-weight: 600; }
+
+/* The header sits flush with the top on pages whose body has top padding. */
+html.hr-p-tonight body, html.hr-p-record body, html.hr-p-report body, html.hr-p-picker body { padding-top: 0 !important; }
+.hr-nav { margin-bottom: 22px !important; }
+html.hr-p-tonight .tabs > input:checked + label { background: var(--hr-sel); color: var(--hr-sel-ink); border-color: var(--hr-sel); }
+html.hr-p-tonight .argue { border-left-color: var(--hr-navy-2); }
+html.hr-p-tonight .tag.ok { color: var(--hr-win); border-color: var(--hr-win); background: var(--hr-win-bg); }
+</style></head><body><!--sitenav--><nav class="hr-nav" aria-label="Site"><div class="hr-nav-in"><a class="hr-brand" href="index.html"><i></i>Hit Rates</a><div class="hr-links"><a href="index.html">Fixtures</a><a href="tonight.html" aria-current="page">Tonight</a><a href="best-bets-summary.html">Best bets</a><a href="papertrade.html">Track record</a><a href="pp-results.html">Paddy Power log</a><a href="market-check.html">Model v market</a></div><a class="hr-rec" href="papertrade.html" title="Every pick the site has made, at Paddy Power prices, level stakes">Record <b class="neg">-14.4%</b> on 1,915 bets</a></div></nav>
+<h1>Tonight</h1>
+<p class="stamp">the next 8 hours &middot; page made Sat 14 Nov, 10:34 GMT &middot; numbers from reports built Sat 14 Nov, 10:03 GMT</p>
+<details class="warn"><summary>How to read the prices</summary>
+<b>Our price</b> is what the line should be priced at on the record. <b>Worth it at</b>
+is the lowest bookmaker price worth taking once small samples are allowed for: take the
+bet only if the bookie offers this or longer. Bookies take a 5&ndash;8% margin a market,
+and it stacks with every leg in a multiple. <b>No bet</b> means nothing in the game is
+worth backing at the prices on offer.
+</details>
+<div class='main'><input type='radio' name='main' id='mb' checked><label for='mb'>Board</label><input type='radio' name='main' id='mt'><label for='mt'>Games <span class='cnt'>10</span></label><input type='radio' name='main' id='mp'><label for='mp'>Picks</label><div class='mpane board'><p class='sub'>Every leg tonight's game cards rate, in one list. <b>Bet</b> means Paddy pays at least the &ldquo;worth it at&rdquo; price (0 tonight); <b>short</b> means it does not. Chance is our model, record is his recent games.</p><div class='bchips'><button class='on' data-f='all'>All</button><button data-f='football'>Football</button><button data-f='bet'>Bets only</button></div><div class='bwrap'><table class='board'><thead><tr><th class='n'>Time</th><th>Leg</th><th class='n'>Record</th><th class='n'>Chance</th><th class='n'>Paddy</th><th class='n'>Worth it at</th><th class='n'></th></tr></thead><tbody><tr data-s='football' data-b='0'><td class='n'>17:00</td><td><b>Patrick Berg 1+ shots</b><div class='sub'>Norway v Wales</div></td><td class='n'>7/11</td><td class='n'>68%</td><td class='n'>1.14</td><td class='n'>2.83</td><td class='n'><span class='bv'>short</span></td></tr><tr data-s='football' data-b='0'><td class='n'>17:00</td><td><b>Antonio Nusa 2+ shots</b><div class='sub'>Norway v Wales</div></td><td class='n'>7/11</td><td class='n'>65%</td><td class='n'>1.12</td><td class='n'>2.83</td><td class='n'><span class='bv'>short</span></td></tr><tr data-s='football' data-b='0'><td class='n'>17:00</td><td><b>Erling Haaland 3+ shots</b><div class='sub'>Norway v Wales</div></td><td class='n'>9/12</td><td class='n'>61%</td><td class='n'>1.01</td><td class='n'>2.14</td><td class='n'><span class='bv'>short</span></td></tr><tr data-s='football' data-b='0'><td class='n'>17:00</td><td><b>Kristoffer Ajer 1+ shots</b><div class='sub'>Norway v Wales</div></td><td class='n'>6/12</td><td class='n'>46%</td><td class='n'>1.80</td><td class='n'>3.94</td><td class='n'><span class='bv'>short</span></td></tr></tbody></table></div></div><div class='mpane team'><p class='sub'>Tap a game for its bets, how it should go, and the builder.</p><details class='game' data-sport='darts'><summary><span class='ko'>13:15</span> <span class='fx'>Luke Woodhouse v Tom Sykes</span><span class='comp'>Grand Slam of Darts</span><span class='lead none'>no bet</span></summary><div class='pane-one'><div class='verdict'><p class='none'>No bet in this game.</p></div><h3>Team bets</h3><p class='none'>No bet.</p><h3>Player bets</h3><p class='none'>No bet.</p></div></details><details class='game' data-sport='darts'><summary><span class='ko'>13:45</span> <span class='fx'>Jermaine Wattimena v Lisa Ashton</span><span class='comp'>Grand Slam of Darts</span><span class='lead none'>no bet</span></summary><div class='pane-one'><div class='verdict'><p class='none'>No bet in this game.</p></div><h3>Team bets</h3><p class='none'>No bet.</p><h3>Player bets</h3><p class='none'>No bet.</p></div></details><details class='game' data-sport='football'><summary><span class='ko'>14:00</span> <span class='fx'>Kosovo v Israel</span><span class='comp'>UEFA Nations League<span class='tag'>predicted XI</span></span><span class='lead none'>no bet</span></summary><div class='tabs'><input type='radio' name='g2' id='g20' checked><label for='g20'>Bets</label><input type='radio' name='g2' id='g21'><label for='g21'>Match</label><input type='radio' name='g2' id='g22'><label for='g22'>Build</label><div class='pane p0'><div class='verdict'><p class='score'>Kosovo <b>1-0</b> Israel</p><div class='pbar'><span class='ph' style='width:59.7%'></span><span class='pd' style='width:22.5%'></span><span class='pa' style='width:17.8%'></span></div><p class='sub'>Home 60% &middot; draw 22% &middot; away 18% &middot; 2.7 goals expected &middot; team attack and defence ratings (backtested)</p><p class='none'>No bet in this game.</p></div><h3>Team bets</h3><p class='none'>No bet.</p><h3>Player bets</h3><p class='none'>No bet.</p></div><div class='pane p1'><h3>Game state</h3><p class='argue gsarg'>Even on the ball, so the matchup matters more than the possession tonight.</p><p class='sub line'>Possession Kosovo 45% (usually 45), Israel 55% (usually 53). xG Kosovo 1.18-0.91, Israel 1.03-1.87. predicted XI; backtested weights.</p><h3>How it plays</h3><div class='story'><p class='line'><b>Kosovo</b> <span class='sub'>3-4-3 (predicted) &middot; double pivot: Leon Avdullahu, Veldin Hodža</span><br>They sit off and let the opponent play (14.5 passes per defensive action); play without the ball (45%); go long (27 long balls a game); run with the ball (9 dribbles a game).</p><p class='line'><b>Israel</b> <span class='sub'>4-3-2-1 (predicted) &middot; single pivot: Dor Peretz &middot; behind the striker: Liel Abada, Oscar Gloukh</span><br>They sit off and let the opponent play (14.9 passes per defensive action); build short (only 20 long balls a game).</p><p class='call'><b>Why</b></p><ol class='why'><li>Kosovo are favourites (60% to win). <b>So the likeliest script is Kosovo ahead and Israel chasing: Israel open up late, which adds shots at both ends and fouls from Israel.</b></li><li>Kosovo are without Lumbardh Dellova (8 starts in 10), Albian Hajdari (6 starts in 10), regular starters. <b>So Kosovo&#x27;s defence is weaker than its last 10 say: shade Israel&#x27;s shots and goals up.</b></li><li>Israel are without Eliel Peretz (7 starts in 7), a regular starter. <b>So Israel&#x27;s attack is weaker than its last 10 say: shade their shots and goals down.</b></li></ol><p class='sub'>Style words are used only when a side is in the top or bottom quarter of every team on the site. Player chances are the backtested player model's.</p></div><h3>Form</h3><ul class='facts'><li>Israel have conceded in 6 of their last 7 (1 clean sheet).</li><li>Kosovo are without Lumbardh Dellova (8 starts in 10), Albian Hajdari (6 starts in 10).</li><li>Israel are without Eliel Peretz (7 starts in 7).</li><li>Israel have 2 points from 4 UEFA Nation. games, 4th of 4: this one matters to them.</li><li>5 of Israel&#x27;s last 7 had three goals or more.</li><li>Kosovo play again in 3 days (UEFA Nation., away to Ireland): rotation is possible.</li></ul><div class='side'><h4>Kosovo</h4><div class='chips'><span class='fm' title='4 Oct UEFA Nation.'><span class='res D'>D</span> 1-1 v Austria</span><span class='fm' title='1 Oct UEFA Nation.'><span class='res D'>D</span> 0-0 @ Israel</span><span class='fm' title='27 Sep UEFA Nation.'><span class='res L'>L</span> 1-3 @ Austria</span><span class='fm' title='24 Sep UEFA Nation.'><span class='res W'>W</span> 1-0 v Ireland</span><span class='fm' title='31 Mar World Cup Q.'><span class='res L'>L</span> 0-1 v Türkiye</span></div><p class='sub line'>Last 10: won 4, scored in 7, conceded in 5, BTTS 4, 3+ goals 2 (11-9)</p><p class='sub line'>xG 1.36 for, 0.99 against a game (last 5)</p><p class='sub line'>UEFA Nation.: 5 pts from 4, 2nd of 4</p><p class='sub line'>Missing: Lumbardh Dellova (8/10 starts), Albian Hajdari (6/10 starts), Edon Zhegrova (2/10 starts)</p><p class='sub line'>Next: @ Ireland (17 Nov)</p></div><div class='side'><h4>Israel</h4><div class='chips'><span class='fm' title='4 Oct UEFA Nation.'><span class='res D'>D</span> 1-1 @ Ireland</span><span class='fm' title='1 Oct UEFA Nation.'><span class='res D'>D</span> 0-0 v Kosovo</span><span class='fm' title='27 Sep UEFA Nation.'><span class='res L'>L</span> 0-3 v Ireland</span><span class='fm' title='24 Sep UEFA Nation.'><span class='res L'>L</span> 1-3 @ Austria</span><span class='fm' title='16 Nov World Cup Q.'><span class='res W'>W</span> 4-1 v Moldova</span></div><p class='sub line'>Last 7: won 1, scored in 3, conceded in 6, BTTS 3, 3+ goals 5 (6-16)</p><p class='sub line'>xG 1.33 for, 1.47 against a game (last 5)</p><p class='sub line'>UEFA Nation.: 2 pts from 4, 4th of 4</p><p class='sub line'>Missing: Eliel Peretz (7/7 starts)</p><p class='sub line'>Next: v Austria (17 Nov)</p></div></div><div class='pane p2'><h3>Check a boost or bet builder</h3><div class='boost' data-g='{&quot;home&quot;: &quot;Kosovo&quot;, &quot;away&quot;: &quot;Israel&quot;, &quot;ph&quot;: 0.5967139580809763, &quot;pd&quot;: 0.2248049127148627, &quot;pa&quot;: 0.17848112920416104, &quot;lh&quot;: 1.8382879517303163, &quot;la&quot;: 0.8921442160955922, &quot;bucket&quot;: &quot;home_fav&quot;, &quot;src&quot;: &quot;team attack and defence ratings (backtested)&quot;}'><p class='sub'>Tick the legs of a boost or bet builder and type its price. Our model: Kosovo 60%, draw 22%, Israel 18%; goals 1.8&ndash;0.9; Kosovo favourites on recent xG.</p><label class='bl'><span>Result</span><select data-leg='Result'><option value=''>any</option><option value='H'>Kosovo win</option><option value='D'>draw</option><option value='A'>Israel win</option><option value='HD'>Kosovo or draw</option><option value='AD'>Israel or draw</option></select></label><label class='bl'><span>Most shots on target</span><select data-leg='Most shots on target'><option value=''>any</option><option value='H'>Kosovo</option><option value='A'>Israel</option></select></label><label class='bl'><span>Most corners</span><select data-leg='Most corners'><option value=''>any</option><option value='H'>Kosovo</option><option value='A'>Israel</option></select></label><label class='bl'><span>Goals</span><select data-leg='Goals'><option value=''>any</option><option value='o1.5'>over 1.5</option><option value='o2.5'>over 2.5</option><option value='o3.5'>over 3.5</option><option value='u2.5'>under 2.5</option><option value='u3.5'>under 3.5</option></select></label><label class='bl'><span>Both teams to score</span><select data-leg='Both teams to score'><option value=''>any</option><option value='y'>yes</option><option value='n'>no</option></select></label><label class='bl'><span>Price</span><input type='number' step='0.01' min='1.01' inputmode='decimal' placeholder='e.g. 2.25'></label><div class='bout'></div><p class='sub'>Shots-on-target and corners winners come from 5,000 matches: how often each side won them given the result and who was favourite. Ties lose, as they do on most boosts. A guide, not a price: player legs are not in here.</p></div></div></div></details><details class='game' data-sport='darts'><summary><span class='ko'>14:15</span> <span class='fx'>Stephen Bunting v Raymond Smith</span><span class='comp'>Grand Slam of Darts</span><span class='lead none'>no bet</span></summary><div class='pane-one'><div class='verdict'><p class='none'>No bet in this game.</p></div><h3>Team bets</h3><p class='none'>No bet.</p><h3>Player bets</h3><p class='none'>No bet.</p></div></details><details class='game' data-sport='darts'><summary><span class='ko'>14:45</span> <span class='fx'>Ryan Searle v Charlie Manby</span><span class='comp'>Grand Slam of Darts</span><span class='lead none'>no bet</span></summary><div class='pane-one'><div class='verdict'><p class='none'>No bet in this game.</p></div><h3>Team bets</h3><p class='none'>No bet.</p><h3>Player bets</h3><p class='none'>No bet.</p></div></details><details class='game' data-sport='darts'><summary><span class='ko'>15:15</span> <span class='fx'>Josh Rock v Tommy Morris</span><span class='comp'>Grand Slam of Darts</span><span class='lead none'>no bet</span></summary><div class='pane-one'><div class='verdict'><p class='none'>No bet in this game.</p></div><h3>Team bets</h3><p class='none'>No bet.</p><h3>Player bets</h3><p class='none'>No bet.</p></div></details><details class='game' data-sport='darts'><summary><span class='ko'>16:15</span> <span class='fx'>Nathan Aspinall v Kuivenhoven M.</span><span class='comp'>Grand Slam of Darts</span><span class='lead none'>no bet</span></summary><div class='pane-one'><div class='verdict'><p class='none'>No bet in this game.</p></div><h3>Team bets</h3><p class='none'>No bet.</p><h3>Player bets</h3><p class='none'>No bet.</p></div></details><details class='game' data-sport='darts'><summary><span class='ko'>16:45</span> <span class='fx'>Jonny Clayton v Östlund A.</span><span class='comp'>Grand Slam of Darts</span><span class='lead none'>no bet</span></summary><div class='pane-one'><div class='verdict'><p class='none'>No bet in this game.</p></div><h3>Team bets</h3><p class='none'>No bet.</p><h3>Player bets</h3><p class='none'>No bet.</p></div></details><details class='game' data-sport='football'><summary><span class='ko'>17:00</span> <span class='fx'>Georgia v Hungary</span><span class='comp'>UEFA Nations League<span class='tag'>predicted XI</span></span><span class='lead none'>no bet</span></summary><div class='tabs'><input type='radio' name='g8' id='g80' checked><label for='g80'>Bets</label><input type='radio' name='g8' id='g81'><label for='g81'>Match</label><input type='radio' name='g8' id='g82'><label for='g82'>Build</label><div class='pane p0'><div class='verdict'><p class='score'>Georgia <b>1-0</b> Hungary</p><div class='pbar'><span class='ph' style='width:44.4%'></span><span class='pd' style='width:27.5%'></span><span class='pa' style='width:28.0%'></span></div><p class='sub'>Home 44% &middot; draw 28% &middot; away 28% &middot; 2.3 goals expected &middot; team attack and defence ratings (backtested)</p><p class='none'>No bet in this game.</p></div><h3>Team bets</h3><p class='none'>No bet.</p><h3>Player bets</h3><p class='none'>No bet.</p></div><div class='pane p1'><h3>Game state</h3><p class='argue gsarg'>Even on the ball, so the matchup matters more than the possession tonight.</p><p class='sub line'>Possession Georgia 52% (usually 52), Hungary 48% (usually 52). xG Georgia 0.78-1.72, Hungary 1.57-1.24. predicted XI; backtested weights.</p><h3>How it plays</h3><div class='story'><p class='line'><b>Georgia</b> <span class='sub'>3-4-1-2 (predicted) &middot; double pivot: Giorgi Chakvetadze, Giorgi Kvernadze &middot; behind the striker: Zuriko Davitashvili</span><br>They build short (only 20 long balls a game).</p><p class='line'><b>Hungary</b> <span class='sub'>4-2-3-1 (predicted) &middot; double pivot: András Schäfer, Dominik Szoboszlai &middot; behind the striker: Dániel Lukács, Barnabás Varga, Roland Sallai</span><br>They attack wide and cross (7.2 crosses a game).</p><p class='call'><b>Why</b></p><ol class='why'><li>Hungary attack wide (7.2 crosses a game) and Georgia let opponents cross (4.8 a game). <b>So expect Hungary corners (5.9 a game usually) and headers for their front line (Damir Redzic).</b></li><li>Georgia are without Khvicha Kvaratskhelia (8 starts in 8), Giorgi Kochorashvili (6 starts in 8), regular starters. <b>So Georgia&#x27;s attack is weaker than its last 10 say: shade their shots and goals down.</b></li><li>The midfields match up (3-4-1-2 against 4-2-3-1): neither side has a spare man between the lines. <b>So neither holding midfield is overloaded: shape alone gives no reason to expect extra tackles or fouls from either.</b></li></ol><p class='sub'>Style words are used only when a side is in the top or bottom quarter of every team on the site. Player chances are the backtested player model's.</p></div><h3>Form</h3><ul class='facts'><li>Georgia are without Khvicha Kvaratskhelia (8 starts in 8), Giorgi Kochorashvili (6 starts in 8).</li><li>Georgia have 2 points from 4 UEFA Nation. games, 4th of 4: this one matters to them.</li><li>Georgia have lost 6 of their last 8.</li><li>Georgia have failed to score in 6 of their last 8.</li><li>Georgia play again in 3 days (UEFA Nation., away to Ukraine): rotation is possible.</li><li>Hungary play again in 3 days (UEFA Nation., home to Northern Ireland): rotation is possible.</li></ul><div class='side'><h4>Georgia</h4><div class='chips'><span class='fm' title='5 Oct UEFA Nation.'><span class='res D'>D</span> 0-0 @ Northern Ireland</span><span class='fm' title='2 Oct UEFA Nation.'><span class='res L'>L</span> 0-1 @ Hungary</span><span class='fm' title='28 Sep UEFA Nation.'><span class='res D'>D</span> 0-0 v Ukraine</span><span class='fm' title='25 Sep UEFA Nation.'><span class='res L'>L</span> 0-1 v Northern Ireland</span><span class='fm' title='18 Nov World Cup Q.'><span class='res L'>L</span> 1-2 @ Bulgaria</span></div><p class='sub line'>Last 8: won 0, scored in 2, conceded in 6, BTTS 2, 3+ goals 3 (2-14)</p><p class='sub line'>xG 0.99 for, 1.13 against a game (last 5)</p><p class='sub line'>UEFA Nation.: 2 pts from 4, 4th of 4</p><p class='sub line'>Missing: Khvicha Kvaratskhelia (8/8 starts), Giorgi Kochorashvili (6/8 starts)</p><p class='sub line'>Next: @ Ukraine (17 Nov)</p></div><div class='side'><h4>Hungary</h4><div class='chips'><span class='fm' title='5 Oct UEFA Nation.'><span class='res W'>W</span> 2-1 @ Ukraine</span><span class='fm' title='2 Oct UEFA Nation.'><span class='res W'>W</span> 1-0 v Georgia</span><span class='fm' title='28 Sep UEFA Nation.'><span class='res D'>D</span> 0-0 @ Northern Ireland</span><span class='fm' title='25 Sep UEFA Nation.'><span class='res L'>L</span> 0-1 v Ukraine</span><span class='fm' title='16 Nov World Cup Q.'><span class='res L'>L</span> 2-3 v Ireland</span></div><p class='sub line'>Last 8: won 4, scored in 6, conceded in 4, BTTS 3, 3+ goals 3 (10-7)</p><p class='sub line'>xG 1.47 for, 1.30 against a game (last 5)</p><p class='sub line'>UEFA Nation.: 7 pts from 4, 2nd of 4</p><p class='sub line'>Next: v Northern Ireland (17 Nov)</p></div></div><div class='pane p2'><h3>Check a boost or bet builder</h3><div class='boost' data-g='{&quot;home&quot;: &quot;Georgia&quot;, &quot;away&quot;: &quot;Hungary&quot;, &quot;ph&quot;: 0.44420596392726414, &quot;pd&quot;: 0.27542757710840965, &quot;pa&quot;: 0.28036645896432616, &quot;lh&quot;: 1.340569808469805, &quot;la&quot;: 1.0044574076867971, &quot;bucket&quot;: &quot;even&quot;, &quot;src&quot;: &quot;team attack and defence ratings (backtested)&quot;}'><p class='sub'>Tick the legs of a boost or bet builder and type its price. Our model: Georgia 44%, draw 28%, Hungary 28%; goals 1.3&ndash;1.0; evenly matched on recent xG.</p><label class='bl'><span>Result</span><select data-leg='Result'><option value=''>any</option><option value='H'>Georgia win</option><option value='D'>draw</option><option value='A'>Hungary win</option><option value='HD'>Georgia or draw</option><option value='AD'>Hungary or draw</option></select></label><label class='bl'><span>Most shots on target</span><select data-leg='Most shots on target'><option value=''>any</option><option value='H'>Georgia</option><option value='A'>Hungary</option></select></label><label class='bl'><span>Most corners</span><select data-leg='Most corners'><option value=''>any</option><option value='H'>Georgia</option><option value='A'>Hungary</option></select></label><label class='bl'><span>Goals</span><select data-leg='Goals'><option value=''>any</option><option value='o1.5'>over 1.5</option><option value='o2.5'>over 2.5</option><option value='o3.5'>over 3.5</option><option value='u2.5'>under 2.5</option><option value='u3.5'>under 3.5</option></select></label><label class='bl'><span>Both teams to score</span><select data-leg='Both teams to score'><option value=''>any</option><option value='y'>yes</option><option value='n'>no</option></select></label><label class='bl'><span>Price</span><input type='number' step='0.01' min='1.01' inputmode='decimal' placeholder='e.g. 2.25'></label><div class='bout'></div><p class='sub'>Shots-on-target and corners winners come from 5,000 matches: how often each side won them given the result and who was favourite. Ties lose, as they do on most boosts. A guide, not a price: player legs are not in here.</p></div></div></div></details><details class='game' data-sport='football'><summary><span class='ko'>17:00</span> <span class='fx'>Norway v Wales</span><span class='comp'>UEFA Nations League<span class='tag'>predicted XI</span></span><span class='lead'>Patrick Berg 1+ shots &middot; our price <b>1.73</b></span></summary><div class='tabs'><input type='radio' name='g9' id='g90' checked><label for='g90'>Bets</label><input type='radio' name='g9' id='g91'><label for='g91'>Match</label><input type='radio' name='g9' id='g92'><label for='g92'>Build</label><div class='pane p0'><div class='verdict'><p class='score'>Norway <b>2-1</b> Wales</p><div class='pbar'><span class='ph' style='width:68.8%'></span><span class='pd' style='width:16.9%'></span><span class='pa' style='width:14.3%'></span></div><p class='sub'>Home 69% &middot; draw 17% &middot; away 14% &middot; 3.6 goals expected &middot; team attack and defence ratings (backtested)</p><p class='best'><span class='k'>Strongest line</span> Patrick Berg 1+ shots &middot; our price <b>1.73</b> &middot; worth it at <b>2.83</b> &middot; Paddy <b>1.14</b> &middot; <span class='nobet'>price too short, no bet</span></p><p class='argue'>Norway come off a 2-1 defeat away to Portugal (UEFA Nation., 4 Oct). Norway have conceded in 10 of their last 10 (0 clean sheets). Wales have conceded in 7 of their last 8 (1 clean sheet). Landed in 7 of Patrick Berg&#x27;s last 11 appearances (64%). The backtested player model makes this bet 79%; with the record, 68%.</p></div><h3>Player bets</h3><div class='bet'><div class='top'><div class='sel'>Patrick Berg 1+ shots<div class='sub'>Norway &middot; record 7/11</div></div><div class='nums'><b>68%</b><span>our price 1.73</span><span>worth it at 2.83</span><span class='pp'>Paddy <b>1.14</b></span></div></div><p class='reason'>Landed in 7 of Patrick Berg&#x27;s last 11 appearances (64%).</p><details class='more'><summary>Why</summary><ul><li>Backtested player model 79%, 68% with the record (opponent &times;1.10, game state &times;0.91)</li><li>Minutes: plays 71% of the minutes (last 10), 6 of 7 when he plays 60+, 3 of 4 misses came in under an hour</li><li>+ Last 5: 1, 1, 1, 2, 1 (5 of 5 cleared 0.5).</li><li>+ Averages 0.7 against a line of 0.5.</li></ul></details></div><div class='bet'><div class='top'><div class='sel'>Antonio Nusa 2+ shots<div class='sub'>Norway &middot; record 7/11</div></div><div class='nums'><b>65%</b><span>our price 1.73</span><span>worth it at 2.83</span><span class='pp'>Paddy <b>1.12</b></span></div></div><p class='reason'>Landed in 7 of Antonio Nusa&#x27;s last 11 appearances (64%).</p><details class='more'><summary>Why</summary><ul><li>Backtested player model 65%, 65% with the record (opponent &times;1.10, game state &times;0.91)</li><li>Minutes: plays 65% of the minutes (last 10), 3 of 6 when he plays 60+, 3 of 6 misses came in under an hour</li><li>+ Last 5: 0, 3, 1, 2, 2 (3 of 5 cleared 1.5).</li><li>+ Averages 2.1 against a line of 1.5.</li></ul></details></div><div class='bet'><div class='top'><div class='sel'>Erling Haaland 3+ shots<div class='sub'>Norway &middot; record 9/12</div></div><div class='nums'><b>61%</b><span>our price 1.59</span><span>worth it at 2.14</span><span class='pp'>Paddy <b>1.01</b></span></div></div><p class='reason'>Landed in 9 of Erling Haaland&#x27;s last 12 appearances (75%).</p><details class='more'><summary>Why</summary><ul><li>Backtested player model 61% (opponent &times;1.10, game state &times;0.91)</li><li>Minutes: plays 87% of the minutes (last 10), 7 of 9 when he plays 60+, 1 of 3 misses came in under an hour</li><li>+ Last 5: 2, 5, 8, 2, 3 (3 of 5 cleared 2.5).</li><li>+ Averages 4.1 against a line of 2.5.</li></ul></details></div><details class='rest'><summary>1 more</summary><div class='bet'><div class='top'><div class='sel'>Kristoffer Ajer 1+ shots<div class='sub'>Norway &middot; record 6/12</div></div><div class='nums'><b>46%</b><span>our price 1.91</span><span>worth it at 3.94</span><span class='pp'>Paddy <b>1.80</b></span></div></div><p class='reason'>Landed in 6 of Kristoffer Ajer&#x27;s last 12 appearances (50%).</p><details class='more'><summary>Why</summary><ul><li>Backtested player model 40%, 46% with the record (opponent &times;1.10, game state &times;0.91)</li><li>Minutes: plays 90% of the minutes (last 10), 4 of 9 when he plays 60+, 1 of 6 misses came in under an hour</li><li>+ Last 5: 1, 1, 0, 0, 2 (3 of 5 cleared 0.5).</li></ul></details></div></details></div><div class='pane p1'><h3>Game state</h3><p class='argue gsarg'>Even on the ball, so the matchup matters more than the possession tonight.</p><p class='sub line'>Possession Norway 47% (usually 52), Wales 53% (usually 57). xG Norway 1.57-1.41, Wales 1.47-1.62. predicted XI; backtested weights.</p><p class='call'><b>Leans to</b></p><ul class='gsl'><li><span>Daniel James 1+ shots <span class='sub'>Wales</span></span><span class='n'><b>83%</b> <span class='sub'>rec 4/5</span></span></li><li><span>Neco Williams 1+ shots <span class='sub'>Wales</span></span><span class='n'><b>66%</b> <span class='sub'>rec 4/8</span></span></li><li><span>Julian Ryerson 1+ fouled <span class='sub'>Norway</span></span><span class='n'><b>73%</b> <span class='sub'>rec 5/8</span></span></li></ul><p class='call'><b>Works against</b> <span class='sub'>good record, weaker tonight</span></p><ul class='gsl'><li><span>Erling Haaland 2+ shots on target <span class='sub'>Norway</span></span><span class='n'><b>44%</b> <span class='sub'>rec 7/10</span></span></li><li><span>Antonio Nusa 2+ fouled <span class='sub'>Norway</span></span><span class='n'><b>47%</b> <span class='sub'>rec 6/9</span></span></li></ul><h3>How it plays</h3><div class='story'><p class='line'><b>Norway</b> <span class='sub'>4-2-3-1 (predicted) &middot; double pivot: Sander Berge, Patrick Berg &middot; behind the striker: Andreas Schjelderup, Martin Ødegaard, Antonio Nusa</span><br>They sit off and let the opponent play (14.4 passes per defensive action); build short (only 20 long balls a game); let opponents into their box (28 touches allowed).</p><p class='line'><b>Wales</b> <span class='sub'>4-2-3-1 (predicted) &middot; double pivot: Daniel James, Ethan Ampadu &middot; behind the striker: Brennan Johnson, Liam Cullen, Cian Ashford</span><br>They sit off and let the opponent play (15.0 passes per defensive action); keep the ball (57%); build short (only 21 long balls a game); attack wide and cross (5.6 crosses a game); camp in the final third (56% of final-third entries); run with the ball (9 dribbles a game).</p><p class='call'><b>Why</b></p><ol class='why'><li>Norway are favourites (69% to win). <b>So the likeliest script is Norway ahead and Wales chasing: Wales open up late, which adds shots at both ends and fouls from Wales.</b></li><li>Wales attack wide (5.6 crosses a game) and Norway let opponents cross (4.8 a game). <b>So expect Wales corners (5.4 a game usually) and headers for their front line (Lewis Koumas).</b></li><li>Wales keep the ball (57%) and Norway sit off (14.4 passes per defensive action). <b>So Wales will have long spells of possession in front of a set block: more corners and blocked shots than clear chances, and tackles and clearances for Norway&#x27;s back line.</b></li><li>Wales are without Jordan James (6 starts in 8), Sorba Thomas (5 starts in 8), regular starters. <b>So Wales&#x27; attack is weaker than its last 10 say: shade their shots and goals down.</b></li><li>The midfields match up (4-2-3-1 against 4-2-3-1): neither side has a spare man between the lines. <b>So neither holding midfield is overloaded: shape alone gives no reason to expect extra tackles or fouls from either.</b></li></ol><p class='sub'>Style words are used only when a side is in the top or bottom quarter of every team on the site. Player chances are the backtested player model's.</p></div><h3>Form</h3><ul class='facts'><li>Norway have conceded in 10 of their last 10 (0 clean sheets).</li><li>Both teams scored in 10 of their last 10 Norway games.</li><li>Norway have scored in 10 of their last 10.</li><li>10 of Norway&#x27;s last 10 had three goals or more.</li><li>Wales have conceded in 7 of their last 8 (1 clean sheet).</li><li>Norway: over 1.5 goals in 13 straight games.</li></ul><div class='side'><h4>Norway</h4><div class='chips'><span class='fm' title='4 Oct UEFA Nation.'><span class='res L'>L</span> 1-2 @ Portugal</span><span class='fm' title='1 Oct UEFA Nation.'><span class='res L'>L</span> 1-2 @ Wales</span><span class='fm' title='27 Sep UEFA Nation.'><span class='res L'>L</span> 1-2 v Portugal</span><span class='fm' title='24 Sep UEFA Nation.'><span class='res W'>W</span> 3-2 v Denmark</span><span class='fm' title='11 Jul FIFA World .'><span class='res L'>L</span> 1-2 v England</span></div><p class='sub line'>Last 10: won 5, scored in 10, conceded in 10, BTTS 10, 3+ goals 10 (19-19)</p><p class='sub line'>xG 1.27 for, 1.20 against a game (last 5)</p><p class='sub line'>UEFA Nation.: 3 pts from 4, 4th of 4</p><p class='sub line'>Missing: Sondre Langås (0/10 starts)</p><p class='sub line'>Next: @ Denmark (17 Nov)</p></div><div class='side'><h4>Wales</h4><div class='chips'><span class='fm' title='4 Oct UEFA Nation.'><span class='res L'>L</span> 0-1 v Denmark</span><span class='fm' title='1 Oct UEFA Nation.'><span class='res W'>W</span> 2-1 v Norway</span><span class='fm' title='27 Sep UEFA Nation.'><span class='res L'>L</span> 0-2 @ Denmark</span><span class='fm' title='24 Sep UEFA Nation.'><span class='res L'>L</span> 0-1 @ Portugal</span><span class='fm' title='26 Mar World Cup Q.'><span class='res L'>L</span> 3-5 v Bosnia &amp; Herzegovina</span></div><p class='sub line'>Last 8: won 3, scored in 5, conceded in 7, BTTS 4, 3+ goals 4 (15-15)</p><p class='sub line'>xG 0.87 for, 1.73 against a game (last 5)</p><p class='sub line'>UEFA Nation.: 3 pts from 4, 3rd of 4</p><p class='sub line'>Missing: Jordan James (6/8 starts), Sorba Thomas (5/8 starts), Ben Cabango (4/8 starts)</p><p class='sub line'>Next: v Portugal (17 Nov)</p></div></div><div class='pane p2'><h3>Check a boost or bet builder</h3><div class='boost' data-g='{&quot;home&quot;: &quot;Norway&quot;, &quot;away&quot;: &quot;Wales&quot;, &quot;ph&quot;: 0.6875789002315094, &quot;pd&quot;: 0.16929019271795306, &quot;pa&quot;: 0.14313090705053758, &quot;lh&quot;: 2.5434834152604178, &quot;la&quot;: 1.0931827037997486, &quot;bucket&quot;: &quot;home_fav&quot;, &quot;src&quot;: &quot;team attack and defence ratings (backtested)&quot;}'><p class='sub'>Tick the legs of a boost or bet builder and type its price. Our model: Norway 69%, draw 17%, Wales 14%; goals 2.5&ndash;1.1; Norway favourites on recent xG.</p><label class='bl'><span>Result</span><select data-leg='Result'><option value=''>any</option><option value='H'>Norway win</option><option value='D'>draw</option><option value='A'>Wales win</option><option value='HD'>Norway or draw</option><option value='AD'>Wales or draw</option></select></label><label class='bl'><span>Most shots on target</span><select data-leg='Most shots on target'><option value=''>any</option><option value='H'>Norway</option><option value='A'>Wales</option></select></label><label class='bl'><span>Most corners</span><select data-leg='Most corners'><option value=''>any</option><option value='H'>Norway</option><option value='A'>Wales</option></select></label><label class='bl'><span>Goals</span><select data-leg='Goals'><option value=''>any</option><option value='o1.5'>over 1.5</option><option value='o2.5'>over 2.5</option><option value='o3.5'>over 3.5</option><option value='u2.5'>under 2.5</option><option value='u3.5'>under 3.5</option></select></label><label class='bl'><span>Both teams to score</span><select data-leg='Both teams to score'><option value=''>any</option><option value='y'>yes</option><option value='n'>no</option></select></label><label class='bl'><span>Price</span><input type='number' step='0.01' min='1.01' inputmode='decimal' placeholder='e.g. 2.25'></label><div class='bout'></div><p class='sub'>Shots-on-target and corners winners come from 5,000 matches: how often each side won them given the result and who was favourite. Ties lose, as they do on most boosts. A guide, not a price: player legs are not in here.</p></div><h3>Each player's own line</h3><p class='sub'>The highest line each has cleared in 7 of the last 10, with the average 10% clear of it. Back at our price or longer.</p><table><thead><tr><th>Selection</th><th class='n'>Last 10</th><th class='n'>Chance</th><th class='n'>Our price</th></tr></thead><tbody><tr><td>Antonio Nusa 1+ shots<br><span class='sub'>Norway &middot; avg 1.8 last 10 &middot; line-up not out yet</span></td><td class='n'>8/10<br><span class='sub'>9/11 all</span></td><td class='n'>65%</td><td class='n'>1.54</td></tr></tbody></table></div></div></details></div><div class='mpane player'><h2 class='first'>Where the evidence agrees</h2><p class='sub'>Only lines where several separate pieces of evidence agree the price is too long. <b>Strong</b>: Betfair or Pinnacle agree, plus 2 or more of our own. <b>On trial</b>: no sharp price, so 5+ of ours for NBA players, 4+ for team lines. If the sharp price disagrees, the line is never shown. Football player lines are left out: their margin is too wide.</p><p class='sub'>Live since 4 Nov: strong 44/105 won, <b class='neg'>-1%</b>; on trial 80/175 won, <b class='neg'>-11%</b>. Backtest (20 Oct to 3 Nov, chosen after looking): strong 116 bets +20%, on trial 282 bets +9%.</p><p class='none'>Nothing has enough agreement right now.</p><h2>Best selections</h2><div class='vbox'><p class='call'><b>The short list.</b> NBA and NFL player lines at Paddy Power where the model beats the price by 3%+, the price is 1.60 to 2.30, and he has cleared the line in 7+ of his last 10 and 3+ of his last 5. One per player, two per game, eight a day per sport.</p><p class='sub'>On Paddy's real prices since 13 Oct: 45 bets over 6 days, 58% won, +11% return (range -2% to +36%). Live since 26 Oct: 56/113 won, -15.48 units, -14%. Singles at level stakes; small samples, so judge it on weeks, not nights.</p><p class='sub'>Nothing qualifies yet. Lines arrive through the day; check after the next update.</p></div><h2>Paddy Power v the sharp price</h2><p class='sub'>Team lines are checked against Pinnacle where it prices them, else Betfair; player lines against Betfair.</p><h3>Team lines</h3><div class='vbox'><p class='none'>Value claims are switched off until these bets have a settled record that shows them making money.</p></div><h3>Player lines</h3><div class='vbox'><p class='none'>Value claims are switched off until these bets have a settled record that shows them making money.</p><p class='sub'>Record so far, team and player lines together: 446 settled, 180 won (Betfair said 171), +56.1 pts at level stakes.</p></div><h2>Value at Paddy Power, Bet365 or Sky Bet</h2><p class='none'>Nothing at Paddy Power, Bet365 or Sky Bet clears the bar in this window.</p><p class='sub'>Record so far: 1149 settled, 537 won (the model said 651), -4.2 pts at level stakes.</p><h2>Bet365 value</h2><p class='sub'>Model and market agree.</p><p class='sub'>No Bet365 line where the model and the market both say value in this window.</p><h2>Rules on trial</h2><div class='vbox'><p class='call meh'><b>On trial, not proven.</b> Fixed rules scored on every game since 23 Oct (RULES_TRACK.md). No bets are listed until a rule's live record shows it making money.</p><p><b>NBA under, main line, 1.60 to 2.20</b> <span class='sub'>(live 10036 bets, 153 games, -3%, beat close 4%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA under, main line, 1.60 to 2.20, model agrees</b> <span class='sub'>(live 3909 bets, 153 games, -1%, beat close 5%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NFL receiving over, 2.20 or shorter, model agrees</b> <span class='sub'>(live 56 bets, 25 games, +16%, beat close 7%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>Paddy pays 2%+ over Betfair&#x27;s fair price, 10.0 or shorter</b> <span class='sub'>(live 15 bets, 14 games, -70%, beat close 20%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>Learned value: the corrected chance (learn.py) 3 to 15% over Paddy&#x27;s price, 3.0 or shorter</b> <span class='sub'>(live 1095 bets, 155 games, -1%, beat close 4%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA alt over, cleared in all of his last 10, 1.25 to 2.00</b> <span class='sub'>(live 45 bets, 37 games, -5%, beat close 2%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA under, main line, underdog starter, projected 12+ blowout, 1.60 to 2.20</b> <span class='sub'>(live 364 bets, 24 games, -8%, beat close 1%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA alt over, 8+ of his last 10, missed it last game, price 5%+ longer, 1.15 to 3.00</b> <span class='sub'>(live 42 bets, 31 games, -15%, beat close 2%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA alt over, cleared in all of his last 10, 1.15 to 1.24</b> <span class='sub'>(live 48 bets, 29 games, -4%, beat close 0%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA main line, either side, price lengthened 8%+ on the day (at the last price)</b> <span class='sub'>(live 91 bets, 12 games, +0%, beat close 0%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA under, main line, 1.60 to 2.20, line 0.25+ sd above his long-run baseline (tracking)</b> <span class='sub'>(live 1058 bets, 65 games, -4%, beat close 4%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA under, main line, 1.60 to 2.20, line 0.75+ sd above his 20-game mean (tracking)</b> <span class='sub'>(live 155 bets, 36 games, -16%, beat close 2%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA/NFL player line, Paddy pays 3%+ over Pinnacle&#x27;s margin-free chance at the same line, 1.40 to 3.00</b> <span class='sub'>(live 15 bets, 12 games, +39%, beat close 20%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>Football fouls over, Super Sub game, starters only, our chance 5%+ over Paddy (at the last price)</b> <span class='sub'>(live 76 bets, 18 games, -4%, beat close 8%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>Football shots over, Super Sub game, starters only, our chance 5%+ over Paddy (at the last price)</b> <span class='sub'>(live 91 bets, 36 games, -22%, beat close 14%)</span></p><p class='sub'>6 qualify tonight, logged for the test.</p><p><b>NBA/NFL: the 5 lines our model rates most likely each day, first price 1.60 to 2.50</b> <span class='sub'>(live 43 bets, 28 games, +6%, beat close 7%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA alt over, 9+ of his last 10, 1.15 to 2.00, edge 3%+ at the first price</b> <span class='sub'>(no live results yet)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NFL receiving over, wide receivers only, 2.20 or shorter, model agrees</b> <span class='sub'>(no live results yet)</span></p><p class='sub'>Nothing qualifies tonight.</p></div><h2>Bookie value bets</h2><p class='sub'>Our model.</p><div class='vbox'><p class='none'>Value claims are switched off until a record these bets were not picked on shows them making money; the record below is the one they were picked on.</p><p class='sub'>Record of model-ahead bets at 8.0 or shorter: Shots on target: 235 bets, 73 won, +18.6 pts (+8%); Fouls: 194 bets, 91 won, +3.8 pts (+2%); Goals: 407 bets, 91 won, -38.0 pts (-9%); Shots: 448 bets, 198 won, -62.2 pts (-14%); Fouled: 175 bets, 83 won, -26.3 pts (-15%); Card: 382 bets, 55 won, -109.9 pts (-29%); Assists: 35 bets, 4 won, -14.1 pts (-40%).</p></div><h2>Multis</h2><details class='game'><summary><b>Team multi across the games</b></summary><p class='none'>Nothing to build a multi from.</p></details><details class='game'><summary><b>Player multi across the games</b></summary><p class='none'>Nothing to build a multi from.</p></details><details class='game'><summary><b>Last night's leads</b></summary><section class='results'><h2>Last night's leads</h2><p class='comp'>10 of 17 landed; the page expected 11.7.</p><table><thead><tr><th>Lead</th><th class='n'>Said</th></tr></thead><tbody><tr><td><span class='mark win'>&#10003;</span> Tyrese Maxey 4+ assists<br><span class='sub'>Philadelphia 76ers v Toronto Raptors</span></td><td class='n'>73%</td></tr><tr><td><span class='mark lose'>&#10007;</span> Daniss Jenkins 3+ assists<br><span class='sub'>Washington Wizards v Detroit Pistons</span></td><td class='n'>71%</td></tr><tr><td><span class='mark win'>&#10003;</span> Ayo Dosunmu 1+ three pointers made<br><span class='sub'>Minnesota Timberwolves v Dallas Mavericks</span></td><td class='n'>68%</td></tr><tr><td><span class='mark lose'>&#10007;</span> Devin Singletary 25+ rushing and receiving yards<br><span class='sub'>New York Giants v Washington Commanders</span></td><td class='n'>63%</td></tr><tr><td><span class='mark lose'>&#10007;</span> Collin Gillespie 2+ assists<br><span class='sub'>Phoenix Suns v Charlotte Hornets</span></td><td class='n'>68%</td></tr><tr><td><span class='mark win'>&#10003;</span> Florian Wirtz 2+ shots<br><span class='sub'>Serbia v Germany</span></td><td class='n'>68%</td></tr><tr><td><span class='mark win'>&#10003;</span> Tijjani Reijnders 2+ shots<br><span class='sub'>Netherlands v Greece</span></td><td class='n'>72%</td></tr><tr><td><span class='mark win'>&#10003;</span> John McGinn 1+ shots<br><span class='sub'>Scotland v North Macedonia</span></td><td class='n'>75%</td></tr><tr><td><span class='mark lose'>&#10007;</span> Jalen Brunson 2+ rebounds<br><span class='sub'>Indiana Pacers v New York Knicks</span></td><td class='n'>70%</td></tr><tr><td><span class='mark lose'>&#10007;</span> Kyle Kuzma 3+ assists<br><span class='sub'>Orlando Magic v Milwaukee Bucks</span></td><td class='n'>68%</td></tr><tr><td><span class='mark win'>&#10003;</span> Matas Buzelis 5+ rebounds<br><span class='sub'>Chicago Bulls v Atlanta Hawks</span></td><td class='n'>67%</td></tr><tr><td><span class='mark win'>&#10003;</span> Donovan Mitchell 2+ three pointers made<br><span class='sub'>Miami Heat v Cleveland Cavaliers</span></td><td class='n'>69%</td></tr><tr><td><span class='mark lose'>&#10007;</span> Jeremiah Fears 1+ three pointers made<br><span class='sub'>New Orleans Pelicans v Memphis Grizzlies</span></td><td class='n'>66%</td></tr><tr><td><span class='mark win'>&#10003;</span> Alperen Sengun 1+ blocks<br><span class='sub'>Houston Rockets v Utah Jazz</span></td><td class='n'>67%</td></tr><tr><td><span class='mark lose'>&#10007;</span> Draymond Green 6+ assists<br><span class='sub'>San Antonio Spurs v Golden State Warriors</span></td><td class='n'>69%</td></tr><tr><td><span class='mark win'>&#10003;</span> Robert Williams III 6+ rebounds<br><span class='sub'>Sacramento Kings v Portland Trail Blazers</span></td><td class='n'>71%</td></tr><tr><td><span class='mark win'>&#10003;</span> Brook Lopez 1+ three pointers made<br><span class='sub'>Los Angeles Clippers v Oklahoma City Thunder</span></td><td class='n'>68%</td></tr></tbody></table></section></details></div></div>
+<details class="warn"><summary>Why multiples are worse than their legs</summary>
+A multiple is worse than its legs at a bookmaker's price. The margin compounds
+with every leg, and the shop sells accumulators because they are the most
+profitable thing on the counter. Legs in the same game can move together, so
+the same-game builders above are priced from how often their legs landed
+together, not by multiplying. Legs in different games do not move together:
+in the site's own published legs the correlation between them is effectively
+nil, and replayed over past matches, multiplied prices landed about as often
+as they said (1.01 times). So multiplying is right for the cross-game prices,
+and they are not optimistic on that account. Any error in them comes from the
+legs themselves.
+</details>
+
+<script>
+(function(){
+var T={"table": {"away_fav|A": {"n": 712, "p": {"HH": 0.1221, "HA": 0.0384, "HT": 0.0216, "AH": 0.2463, "AA": 0.4027, "AT": 0.0719, "TH": 0.0579, "TA": 0.0272, "TT": 0.0119}}, "away_fav|D": {"n": 394, "p": {"HH": 0.3024, "HA": 0.0816, "HT": 0.0414, "AH": 0.1418, "AA": 0.2422, "AT": 0.0364, "TH": 0.064, "TA": 0.064, "TT": 0.0263}}, "away_fav|H": {"n": 537, "p": {"HH": 0.3389, "HA": 0.3001, "HT": 0.0637, "AH": 0.0452, "AA": 0.1339, "AT": 0.0139, "TH": 0.036, "TA": 0.0619, "TT": 0.0065}}, "even|A": {"n": 578, "p": {"HH": 0.2361, "HA": 0.0472, "HT": 0.0197, "AH": 0.3013, "AA": 0.2258, "AT": 0.0506, "TH": 0.0815, "TA": 0.0232, "TT": 0.0146}}, "even|D": {"n": 495, "p": {"HH": 0.3874, "HA": 0.1171, "HT": 0.035, "AH": 0.1491, "AA": 0.1532, "AT": 0.023, "TH": 0.0651, "TA": 0.047, "TT": 0.023}}, "even|H": {"n": 883, "p": {"HH": 0.4299, "HA": 0.2349, "HT": 0.0637, "AH": 0.0445, "AA": 0.1054, "AT": 0.0175, "TH": 0.0411, "TA": 0.0546, "TT": 0.0085}}, "home_fav|A": {"n": 260, "p": {"HH": 0.2817, "HA": 0.0284, "HT": 0.017, "AH": 0.2817, "AA": 0.1834, "AT": 0.0586, "TH": 0.1153, "TA": 0.0246, "TT": 0.0095}}, "home_fav|D": {"n": 290, "p": {"HH": 0.4737, "HA": 0.0764, "HT": 0.0357, "AH": 0.1341, "AA": 0.1307, "AT": 0.0323, "TH": 0.0696, "TA": 0.0323, "TT": 0.0153}}, "home_fav|H": {"n": 868, "p": {"HH": 0.5874, "HA": 0.1633, "HT": 0.0762, "AH": 0.0292, "AA": 0.0613, "AT": 0.0097, "TH": 0.0338, "TA": 0.0281, "TT": 0.0109}}}};
+function pois(l,k){var p=Math.exp(-l);for(var i=1;i<=k;i++)p*=l/i;return p;}
+function calc(box){
+  var g=JSON.parse(box.dataset.g), legs={};
+  box.querySelectorAll('select').forEach(function(s){legs[s.dataset.leg]=s.value;});
+  var price=parseFloat(box.querySelector('input').value), out=box.querySelector('.bout');
+  var any=Object.keys(legs).some(function(k){return legs[k];});
+  if(!any){out.innerHTML='';return;}
+  // goals grid, rescaled so each result carries the site's own chance
+  var grid=[],mass={H:0,D:0,A:0};
+  for(var i=0;i<=10;i++)for(var j=0;j<=10;j++){var r=i>j?'H':i<j?'A':'D',p=pois(g.lh,i)*pois(g.la,j);grid.push([i,j,r,p]);mass[r]+=p;}
+  var want={H:g.ph,D:g.pd,A:g.pa},tot=0;
+  grid.forEach(function(c){
+    var i=c[0],j=c[1],r=c[2],w=c[3]*want[r]/mass[r];
+    if(legs['Result']&&legs['Result'].indexOf(r)<0)return;
+    var gl=legs['Goals'];
+    if(gl){var L=parseFloat(gl.slice(1)),n=i+j;if(gl[0]=='o'&&!(n>L))return;if(gl[0]=='u'&&!(n<L))return;}
+    var bt=legs['Both teams to score'];
+    if(bt=='y'&&!(i>0&&j>0))return; if(bt=='n'&&(i>0&&j>0))return;
+    var cell=(T.table[g.bucket+'|'+r]||{}).p||{},ps=0;
+    for(var k in cell){var s=k[0],c=k[1];
+      if(legs['Most shots on target']&&s!=legs['Most shots on target'])continue;
+      if(legs['Most corners']&&c!=legs['Most corners'])continue;
+      ps+=cell[k];}
+    tot+=w*ps;
+  });
+  var fair=1/tot, h='<p class="call"><b>Our chance '+(tot*100).toFixed(0)+'%</b> &middot; fair price <b>'+fair.toFixed(2)+'</b></p>';
+  if(price>1){
+    var need=1/price, edge=tot*price-1, cls=edge>0.05?'ok':edge>-0.1?'meh':'bad',
+        word=edge>0.05?'Value':edge>-0.1?'About fair, the margin is in it':'Poor value';
+    h+='<p class="call '+cls+'"><b>'+word+'</b>: '+price.toFixed(2)+' needs '+(need*100).toFixed(0)+'%, we make it '+(tot*100).toFixed(0)+'% ('+(edge>0?'+':'')+(edge*100).toFixed(0)+'% per &pound;1)</p>';
+  }
+  out.innerHTML=h;
+}
+document.querySelectorAll('.boost').forEach(function(b){
+  b.addEventListener('input',function(){calc(b);});b.addEventListener('change',function(){calc(b);});});
+function stakes(){
+  var inp=document.getElementById('vbudget'); if(!inp)return;
+  var B=parseFloat(inp.value)||0, rows=[].slice.call(document.querySelectorAll('#vrows tr')),
+      K=rows.reduce(function(s,r){return s+parseFloat(r.dataset.k);},0);
+  var st=rows.map(function(r){return Math.max(0.5,Math.round(2*B*parseFloat(r.dataset.k)/K)/2);});
+  var over=st.reduce(function(a,b){return a+b;},0)-B;
+  for(var i=st.length-1;over>0&&i>=0;i--){var c=Math.min(over,st[i]-0.5);st[i]-=c;over-=c;}
+  rows.forEach(function(r,i){r.querySelector('.stake').innerHTML='&pound;'+st[i].toFixed(2);});
+}
+var vb=document.getElementById('vbudget'); if(vb){vb.addEventListener('input',stakes);stakes();}
+})();
+</script>
+<script>(function(){
+function go(inp){var box=inp.closest('.sbox'),B=parseFloat(inp.value)||0,
+ rows=[].slice.call(box.querySelectorAll('tbody tr')),K=rows.reduce(function(s,r){return s+parseFloat(r.dataset.k);},0);
+ rows.forEach(function(r){var v=K>0?Math.max(0.5,Math.round(2*B*parseFloat(r.dataset.k)/K)/2):0;
+  r.querySelector('.stake').innerHTML='&pound;'+v.toFixed(2);});}
+document.querySelectorAll('.sbudget').forEach(function(i){i.addEventListener('input',function(){go(i);});go(i);});
+})();</script><script>
+(function () {
+  var chips = document.querySelectorAll('.bchips button');
+  chips.forEach(function (b) {
+    b.addEventListener('click', function () {
+      chips.forEach(function (c) { c.classList.toggle('on', c === b); });
+      var f = b.getAttribute('data-f');
+      document.querySelectorAll('table.board tbody tr').forEach(function (r) {
+        var show = f === 'all' || (f === 'bet' ? r.getAttribute('data-b') === '1' : r.getAttribute('data-s') === f);
+        r.style.display = show ? '' : 'none';
+      });
+    });
+  });
+})();
+</script><footer class="hr-foot"><p>Hit Rates is a stats project shared with mates, not betting advice. Most lines on here lose money over time: the <a href="papertrade.html">track record</a> shows it honestly. Prices change, so check before you bet. 18+, and if it stops being fun, <a href="https://www.begambleaware.org" rel="noopener">BeGambleAware.org</a>.</p></footer><script>(function(){var a=document.querySelector('.hr-links [aria-current]');if(a){var l=a.parentNode;l.scrollLeft=a.offsetLeft-l.offsetLeft-40;}})();</script></body></html>

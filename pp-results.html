@@ -1,0 +1,182 @@
+<!doctype html><html class="hr-p-pp" lang="en-GB"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Paddy Power log · Hit Rates</title>
+<style>
+:root { --bg:#f9f9f7; --card:#fff; --tx:#0b0b0b; --mu:#6b6a66; --bd:rgba(0,0,0,.1); --pos:#0a8f3c; --neg:#c43a3a; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d0d0d; --card:#1a1a19; --tx:#fff; --mu:#a5a49d; --bd:rgba(255,255,255,.1); --pos:#3ccf73; --neg:#ff6b6b; } }
+body { margin:0; background:var(--bg); color:var(--tx); font:15px/1.45 -apple-system,system-ui,sans-serif; }
+main { max-width:1100px; margin:0 auto; padding:24px 16px 60px; }
+a { color:inherit; } h1 { font-size:28px; margin:8px 0; } h2 { font-size:18px; margin:28px 0 10px; }
+.lede, .muted, small { color:var(--mu); }
+.cards { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); }
+.card { background:var(--card); border:1px solid var(--bd); border-radius:12px; padding:14px; }
+.card h3 { margin:0 0 6px; font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--mu); }
+.card p { font-size:13px; color:var(--mu); margin:8px 0 0; }
+.big { font-size:30px; font-weight:750; } .sub { font-size:13px; }
+.pos { color:var(--pos); } .neg { color:var(--neg); }
+table { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--bd); border-radius:12px; overflow:hidden; font-size:13.5px; }
+th { text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--mu); padding:9px 10px; border-bottom:1px solid var(--bd); }
+td { padding:8px 10px; border-bottom:1px solid var(--bd); vertical-align:top; }
+.res.win { color:var(--pos); font-weight:700; } .res.lose { color:var(--neg); font-weight:700; } .res.open { color:var(--mu); }
+.tag { font-size:11px; border:1px solid var(--neg); color:var(--neg); border-radius:999px; padding:0 6px; }
+@media (max-width:700px) { table { display:block; overflow-x:auto; } }
+</style><style id="sitenav-css">
+.hr-nav,.hr-foot{--hn-bg:#fcfcfb;--hn-fg:#111;--hn-mu:#6b6963;--hn-bd:rgba(0,0,0,.1);--hn-on:#111;--hn-onfg:#fff;--hn-pos:#15803d;--hn-neg:#b91c1c;
+  font:14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:var(--hn-fg)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hr-nav,:root:not([data-theme="light"]) .hr-foot{
+  --hn-bg:#141413;--hn-fg:#f2f2f0;--hn-mu:#9a988f;--hn-bd:rgba(255,255,255,.12);--hn-on:#f2f2f0;--hn-onfg:#111;--hn-pos:#4ade80;--hn-neg:#f87171}}
+:root[data-theme="dark"] .hr-nav,:root[data-theme="dark"] .hr-foot{
+  --hn-bg:#141413;--hn-fg:#f2f2f0;--hn-mu:#9a988f;--hn-bd:rgba(255,255,255,.12);--hn-on:#f2f2f0;--hn-onfg:#111;--hn-pos:#4ade80;--hn-neg:#f87171}
+html{overflow-x:clip}
+.hr-nav,.hr-foot{width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);box-sizing:border-box}
+.hr-nav{background:var(--hn-bg);border-bottom:1px solid var(--hn-bd);position:relative;z-index:40;margin-bottom:16px}
+.hr-nav-in{max-width:1240px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px}
+.hr-brand{font-weight:700;font-size:16px;color:var(--hn-fg)!important;text-decoration:none;white-space:nowrap;letter-spacing:-.01em}
+.hr-brand i{display:inline-block;width:9px;height:9px;border-radius:3px;background:var(--hn-pos);margin-right:7px;vertical-align:1px}
+.hr-links{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1 1 auto;min-width:0}
+.hr-links::-webkit-scrollbar{display:none}
+.hr-links a{padding:6px 10px;border-radius:999px;color:var(--hn-mu)!important;text-decoration:none!important;white-space:nowrap;font-weight:550;font-size:13.5px}
+.hr-links a:hover{color:var(--hn-fg)!important;background:var(--hn-bd)}
+.hr-links a[aria-current]{background:var(--hn-on);color:var(--hn-onfg)!important}
+.hr-rec{white-space:nowrap;font-size:12.5px;color:var(--hn-mu)!important;text-decoration:none!important;border:1px solid var(--hn-bd);border-radius:999px;padding:4px 10px}
+.hr-rec b{font-variant-numeric:tabular-nums}.hr-rec .pos{color:var(--hn-pos)}.hr-rec .neg{color:var(--hn-neg)}
+.hr-foot{border-top:1px solid var(--hn-bd);margin-top:40px;background:var(--hn-bg)}
+.hr-foot p{max-width:1240px;margin:0 auto;padding:16px;color:var(--hn-mu);font-size:12.5px}
+.hr-foot a{color:var(--hn-mu)!important}
+@media (max-width:720px){.hr-nav-in{flex-wrap:wrap;gap:8px 10px;padding:8px 12px}.hr-links{order:3;flex-basis:100%}.hr-rec{margin-left:auto}}
+</style><style id="hr-theme">/* Hit Rates colour layer (3 Nov 2026). Navy and amber for the site itself;
+   green, red and amber only ever mean won, lost and open; blue and purple
+   are the two teams on match pages. Loaded after each page's own styles. */
+:root {
+  --hr-navy: #13265c; --hr-navy-2: #1f3f8f; --hr-head: #1d3a8a;
+  --hr-amber: #f5a524; --hr-ink: #241600;
+  --hr-tint: #eef2fb; --hr-tint-2: #f6f8fd;
+  --hr-win: #15803d; --hr-win-bg: #dcf5e4;
+  --hr-lose: #b91c1c; --hr-lose-bg: #fde3e3;
+  --hr-open: #9a6200; --hr-open-bg: #fdf0cf;
+  --hr-sel: #1f3f8f; --hr-sel-ink: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --hr-head: #9db8ff; --hr-amber: #fbbf24;
+    --hr-tint: rgba(110,140,255,.10); --hr-tint-2: rgba(110,140,255,.05);
+    --hr-win: #4ade80; --hr-win-bg: rgba(74,222,128,.14);
+    --hr-lose: #f87171; --hr-lose-bg: rgba(248,113,113,.14);
+    --hr-open: #facc15; --hr-open-bg: rgba(250,204,21,.13);
+    --hr-sel: #fbbf24; --hr-sel-ink: #241600;
+  }
+}
+:root[data-theme="dark"] {
+  --hr-head: #9db8ff; --hr-amber: #fbbf24;
+  --hr-tint: rgba(110,140,255,.10); --hr-tint-2: rgba(110,140,255,.05);
+  --hr-win: #4ade80; --hr-win-bg: rgba(74,222,128,.14);
+  --hr-lose: #f87171; --hr-lose-bg: rgba(248,113,113,.14);
+  --hr-open: #facc15; --hr-open-bg: rgba(250,204,21,.13);
+  --hr-sel: #fbbf24; --hr-sel-ink: #241600;
+}
+
+/* ---- the shared header and footer ---- */
+.hr-nav { background: linear-gradient(100deg, #10204f 0%, #1c3a86 70%, #2547a3 100%) !important;
+  border-bottom: 0 !important; box-shadow: 0 2px 10px rgba(16,32,79,.18); }
+.hr-brand { color: #fff !important; }
+.hr-brand i { background: var(--hr-amber) !important; border-radius: 50% !important; width: 10px !important; height: 10px !important;
+  box-shadow: 0 0 0 3px rgba(245,165,36,.25); }
+.hr-links a { color: rgba(255,255,255,.78) !important; }
+.hr-links a:hover { color: #fff !important; background: rgba(255,255,255,.12) !important; }
+.hr-links a[aria-current] { background: var(--hr-amber) !important; color: var(--hr-ink) !important; font-weight: 650; }
+.hr-rec { color: rgba(255,255,255,.85) !important; border-color: rgba(255,255,255,.28) !important; background: rgba(255,255,255,.06); }
+.hr-rec .pos { color: #6ee7a0 !important; } .hr-rec .neg { color: #ffb4b4 !important; }
+.hr-foot { border-top: 3px solid var(--hr-amber) !important; }
+
+/* ---- fixtures (home) ---- */
+html.hr-p-index { --accent: var(--hr-sel); --on-accent: var(--hr-sel-ink); --link: var(--hr-head); }
+html.hr-p-index .sports button[aria-pressed="true"] { color: var(--hr-head); border-bottom-color: var(--hr-amber); border-bottom-width: 3px; }
+html.hr-p-index .day { color: var(--hr-head); }
+html.hr-p-index .day.soon { color: #c2410c; }
+html.hr-p-index .day.soon::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: #f97316; margin-right: 8px; vertical-align: 1px; box-shadow: 0 0 0 3px rgba(249,115,22,.2); }
+html.hr-p-index .time { color: var(--hr-head); }
+html.hr-p-index li a:hover { background: var(--hr-tint-2); }
+html.hr-p-index ul { border-left: 3px solid var(--hr-navy-2); }
+html.hr-p-index .rail-title { color: var(--hr-head); }
+html.hr-p-index .rail a { border-left: 3px solid var(--hr-amber) !important; }
+html.hr-p-index .pick { border-top: 3px solid var(--hr-amber); }
+
+/* ---- tonight ---- */
+html.hr-p-tonight h1 { color: var(--hr-head); }
+html.hr-p-tonight .main > input:checked + label { background: var(--hr-sel); border-color: var(--hr-sel); color: var(--hr-sel-ink); }
+html.hr-p-tonight .warn { border-left-color: var(--hr-amber); background: var(--hr-tint-2); border-radius: 0 8px 8px 0; }
+html.hr-p-tonight details.game > summary .ko { color: var(--hr-head); }
+html.hr-p-tonight details.game[open] { background: var(--hr-tint-2); border-radius: 10px; padding: 0 12px 6px; margin: 0 -12px; }
+html.hr-p-tonight .pbar .ph { background: #2a78d6; } html.hr-p-tonight .pbar .pa { background: #7a4fd6; }
+html.hr-p-tonight .best .k { background: var(--hr-amber) !important; color: var(--hr-ink) !important; }
+html.hr-p-tonight .nobet { color: var(--hr-lose); }
+html.hr-p-tonight h3 { color: var(--hr-head); }
+html.hr-p-tonight .vbox { border-left: 3px solid var(--hr-navy-2); padding-left: 12px; }
+html.hr-p-tonight th { background: var(--hr-tint); }
+
+/* ---- match pages and the pick pages ---- */
+/* :root.x:not([data-x]) outranks the page's own :root:not([data-theme]) dark block. */
+:root.hr-p-report:not([data-x]), :root.hr-p-picker:not([data-x]) { --control-active: var(--hr-sel); --control-active-text: var(--hr-sel-ink); }
+html.hr-p-report h1, html.hr-p-picker h1 { color: var(--hr-head); }
+html.hr-p-report .n2-top[aria-selected="true"] { color: var(--hr-head); border-bottom-color: var(--hr-amber); }
+html.hr-p-report .n2-sub[aria-selected="true"] { background: var(--hr-sel); color: var(--hr-sel-ink); border-color: var(--hr-sel); }
+
+/* ---- best bets, track record, Paddy Power log, model v market ---- */
+html.hr-p-bets h1, html.hr-p-record h1, html.hr-p-pp h1, html.hr-p-market h1 { color: var(--hr-head); }
+html.hr-p-bets h2, html.hr-p-record h2, html.hr-p-pp h2, html.hr-p-market h2 { color: var(--hr-head); }
+html.hr-p-bets .stat, html.hr-p-pp .card, html.hr-p-market .kpi { border-top: 3px solid var(--hr-amber) !important; }
+html.hr-p-bets .stat:nth-child(1), html.hr-p-pp .cards > .card:nth-child(1), html.hr-p-market .kpi:nth-child(1) { border-top-color: var(--hr-navy-2) !important; }
+html.hr-p-bets .tabs button[aria-selected=true] { color: var(--hr-head); border-color: var(--hr-amber); }
+html.hr-p-bets .card { border-left: 3px solid var(--hr-navy-2); }
+html.hr-p-bets .pill.win, html.hr-p-bets .pill.open, html.hr-p-bets .pill.lose { border-color: transparent; }
+html.hr-p-bets .pill.win { background: var(--hr-win-bg); color: var(--hr-win); }
+html.hr-p-bets .pill.lose { background: var(--hr-lose-bg); color: var(--hr-lose); }
+html.hr-p-bets .pill.open { background: var(--hr-open-bg); color: var(--hr-open); }
+html.hr-p-record th, html.hr-p-pp th, html.hr-p-market th, html.hr-p-bets th { background: var(--hr-tint); }
+html.hr-p-record .big { color: var(--hr-head); }
+html.hr-p-record td .pos, html.hr-p-record td .neg { padding: 1px 7px; border-radius: 99px; font-weight: 600; }
+html.hr-p-record td .pos { background: var(--hr-win-bg); } html.hr-p-record td .neg { background: var(--hr-lose-bg); }
+html.hr-p-pp .res.win { background: var(--hr-win-bg); border-radius: 99px; }
+html.hr-p-pp .res.lose { background: var(--hr-lose-bg); border-radius: 99px; }
+html.hr-p-pp td.pos, html.hr-p-pp td.neg { font-weight: 600; }
+
+/* The header sits flush with the top on pages whose body has top padding. */
+html.hr-p-tonight body, html.hr-p-record body, html.hr-p-report body, html.hr-p-picker body { padding-top: 0 !important; }
+.hr-nav { margin-bottom: 22px !important; }
+html.hr-p-tonight .tabs > input:checked + label { background: var(--hr-sel); color: var(--hr-sel-ink); border-color: var(--hr-sel); }
+html.hr-p-tonight .argue { border-left-color: var(--hr-navy-2); }
+html.hr-p-tonight .tag.ok { color: var(--hr-win); border-color: var(--hr-win); background: var(--hr-win-bg); }
+</style></head><body><!--sitenav--><nav class="hr-nav" aria-label="Site"><div class="hr-nav-in"><a class="hr-brand" href="index.html"><i></i>Hit Rates</a><div class="hr-links"><a href="index.html">Fixtures</a><a href="tonight.html">Tonight</a><a href="best-bets-summary.html">Best bets</a><a href="papertrade.html">Track record</a><a href="pp-results.html" aria-current="page">Paddy Power log</a><a href="market-check.html">Model v market</a></div><a class="hr-rec" href="papertrade.html" title="Every pick the site has made, at Paddy Power prices, level stakes">Record <b class="neg">-14.4%</b> on 1,915 bets</a></div></nav><main>
+<h1>Paddy Power log</h1>
+<p class="lede">Every Paddy Power player line the site has seen, what we gave it, and how it landed.
+150,907 settled &middot; updated Sat 14 Nov 10:19.</p>
+<details class="lede"><summary>How this is counted</summary>
+Value bets are lines where our chance was 50%+ and beat Paddy Power's price by 5%+, at the price first seen, 1 unit each,
+and only each player's biggest gap in a game (lines on one player land together).
+180,583 logged &middot; 5,818 open &middot; 23,858 void (did not play).</details>
+<div class="cards">
+<div class="card"><h3>Value bets</h3>
+          <div class="big neg">-114u</div>
+          <div class="sub">2,078 bets &middot; 1,001 won &middot; hit 48%
+            (said 62%) &middot; ROI <b class="neg">-5%</b></div>
+          <p>The number that matters: would backing what the site flagged have made money?</p></div>
+<div class="card"><h3>Strong lines (ours 70%+)</h3>
+          <div class="big neg">-1,068u</div>
+          <div class="sub">12,456 bets &middot; 9,500 won &middot; hit 76%
+            (said 79%) &middot; ROI <b class="neg">-9%</b></div>
+          <p>Hit rate on the lines the site rates most likely, value or not.</p></div>
+<div class="card"><h3>Every line</h3>
+          <div class="big neg">-50,045u</div>
+          <div class="sub">150,907 bets &middot; 46,992 won &middot; hit 31%
+            (said 34%) &middot; ROI <b class="neg">-33%</b></div>
+          <p>Backing everything Paddy Power offers at their price. Should lose about their margin.</p></div>
+</div>
+<h2>Open value bets</h2>
+<p class="muted">None right now.</p>
+<h2>Value bets by market</h2>
+<table><thead><tr><th>Market</th><th>Bets</th><th>Hit</th><th>Said</th><th>Profit</th><th>ROI</th></tr></thead><tbody><tr><td>basketball · Points over</td><td>200</td><td>41%</td><td>58%</td><td class='neg'>-18.9u</td><td class='neg'>-9%</td></tr><tr><td>basketball · Rebounds under</td><td>181</td><td>56%</td><td>65%</td><td class='pos'>+12.8u</td><td class='pos'>+7%</td></tr><tr><td>football · Shots over</td><td>134</td><td>44%</td><td>60%</td><td class='neg'>-17.4u</td><td class='neg'>-13%</td></tr><tr><td>basketball · Rebounds and assists under</td><td>121</td><td>55%</td><td>63%</td><td class='pos'>+8.2u</td><td class='pos'>+7%</td></tr><tr><td>basketball · Assists under</td><td>116</td><td>50%</td><td>63%</td><td class='neg'>-3.2u</td><td class='neg'>-3%</td></tr><tr><td>basketball · Points and rebounds under</td><td>108</td><td>50%</td><td>64%</td><td class='neg'>-4.7u</td><td class='neg'>-4%</td></tr><tr><td>american-football · Receiving receptions under</td><td>107</td><td>65%</td><td>68%</td><td class='pos'>+20.1u</td><td class='pos'>+19%</td></tr><tr><td>basketball · Assists over</td><td>100</td><td>38%</td><td>60%</td><td class='neg'>-22.6u</td><td class='neg'>-23%</td></tr><tr><td>american-football · Receiving yards under</td><td>97</td><td>59%</td><td>67%</td><td class='pos'>+7.5u</td><td class='pos'>+8%</td></tr><tr><td>basketball · Points rebounds and assists under</td><td>87</td><td>47%</td><td>66%</td><td class='neg'>-7.5u</td><td class='neg'>-9%</td></tr><tr><td>basketball · Rebounds over</td><td>79</td><td>47%</td><td>58%</td><td class='pos'>+2.4u</td><td class='pos'>+3%</td></tr><tr><td>football · Fouls over</td><td>79</td><td>30%</td><td>58%</td><td class='neg'>-31.1u</td><td class='neg'>-39%</td></tr><tr><td>basketball · Points under</td><td>68</td><td>53%</td><td>63%</td><td class='pos'>+2.1u</td><td class='pos'>+3%</td></tr><tr><td>basketball · Three pointers made under</td><td>66</td><td>53%</td><td>61%</td><td class='pos'>+1.1u</td><td class='pos'>+2%</td></tr><tr><td>american-football · Receiving yards over</td><td>62</td><td>45%</td><td>63%</td><td class='neg'>-8.7u</td><td class='neg'>-14%</td></tr><tr><td>basketball · Points and assists under</td><td>59</td><td>59%</td><td>64%</td><td class='pos'>+8.2u</td><td class='pos'>+14%</td></tr><tr><td>football · Shots on target over</td><td>47</td><td>21%</td><td>56%</td><td class='neg'>-27.4u</td><td class='neg'>-58%</td></tr><tr><td>football · Fouled over</td><td>45</td><td>42%</td><td>60%</td><td class='neg'>-10.3u</td><td class='neg'>-23%</td></tr><tr><td>basketball · Three pointers made over</td><td>43</td><td>42%</td><td>56%</td><td class='neg'>-3.8u</td><td class='neg'>-9%</td></tr><tr><td>american-football · Rushing yards under</td><td>38</td><td>55%</td><td>67%</td><td class='pos'>+0.4u</td><td class='pos'>+1%</td></tr><tr><td>basketball · Points and rebounds over</td><td>37</td><td>49%</td><td>60%</td><td class='neg'>-1.8u</td><td class='neg'>-5%</td></tr><tr><td>american-football · Receiving receptions over</td><td>27</td><td>63%</td><td>63%</td><td class='pos'>+6.8u</td><td class='pos'>+25%</td></tr><tr><td>american-football · Rushing and receiving yards under</td><td>22</td><td>50%</td><td>70%</td><td class='neg'>-1.8u</td><td class='neg'>-8%</td></tr><tr><td>american-football · Rushing yards over</td><td>20</td><td>40%</td><td>66%</td><td class='neg'>-5.9u</td><td class='neg'>-29%</td></tr><tr><td>basketball · Steals under</td><td>19</td><td>47%</td><td>67%</td><td class='neg'>-4.5u</td><td class='neg'>-24%</td></tr><tr><td>basketball · Points and assists over</td><td>18</td><td>61%</td><td>58%</td><td class='pos'>+3.6u</td><td class='pos'>+20%</td></tr><tr><td>basketball · Rebounds and assists over</td><td>16</td><td>50%</td><td>60%</td><td class='pos'>+2.7u</td><td class='pos'>+17%</td></tr><tr><td>american-football · Passing and rushing yards over</td><td>14</td><td>14%</td><td>57%</td><td class='neg'>-9.7u</td><td class='neg'>-69%</td></tr><tr><td>american-football · Passing yards over</td><td>11</td><td>64%</td><td>57%</td><td class='pos'>+3.8u</td><td class='pos'>+34%</td></tr><tr><td>american-football · Passing touchdowns over</td><td>11</td><td>45%</td><td>63%</td><td class='neg'>-2.4u</td><td class='neg'>-22%</td></tr><tr><td>basketball · Points rebounds and assists over</td><td>9</td><td>22%</td><td>60%</td><td class='neg'>-5.0u</td><td class='neg'>-56%</td></tr><tr><td>american-football · Passing yards under</td><td>7</td><td>43%</td><td>70%</td><td class='neg'>-1.5u</td><td class='neg'>-21%</td></tr><tr><td>american-football · Rushing and receiving yards over</td><td>5</td><td>40%</td><td>54%</td><td class='neg'>-0.2u</td><td class='neg'>-4%</td></tr><tr><td>basketball · Blocks over</td><td>5</td><td>40%</td><td>60%</td><td class='neg'>-0.6u</td><td class='neg'>-12%</td></tr><tr><td>american-football · Anytime touchdown over</td><td>4</td><td>25%</td><td>62%</td><td class='neg'>-0.8u</td><td class='neg'>-19%</td></tr><tr><td>american-football · Passing and rushing yards under</td><td>4</td><td>25%</td><td>62%</td><td class='neg'>-2.2u</td><td class='neg'>-54%</td></tr><tr><td>football · Goals over</td><td>4</td><td>25%</td><td>51%</td><td class='neg'>-1.8u</td><td class='neg'>-45%</td></tr><tr><td>basketball · Steals over</td><td>3</td><td>33%</td><td>53%</td><td class='neg'>-0.9u</td><td class='neg'>-30%</td></tr><tr><td>basketball · Blocks under</td><td>2</td><td>100%</td><td>55%</td><td class='pos'>+2.4u</td><td class='pos'>+118%</td></tr><tr><td>american-football · Passing touchdowns under</td><td>2</td><td>50%</td><td>61%</td><td class='neg'>-0.3u</td><td class='neg'>-17%</td></tr><tr><td>football · Assists over</td><td>1</td><td>0%</td><td>52%</td><td class='neg'>-1.0u</td><td class='neg'>-100%</td></tr></tbody></table>
+<h2>Is the model honest? Every line</h2>
+<table><thead><tr><th>Ours said</th><th>Lines</th><th>Actually hit</th></tr></thead><tbody><tr><td>0-40%</td><td>90479</td><td>15%</td></tr><tr><td>40-50%</td><td>18249</td><td>42%</td></tr><tr><td>50-60%</td><td>17329</td><td>51%</td></tr><tr><td>60-70%</td><td>12394</td><td>60%</td></tr><tr><td>70-80%</td><td>7223</td><td>71%</td></tr><tr><td>80-90%</td><td>4063</td><td>82%</td></tr><tr><td>90-100%</td><td>1170</td><td>90%</td></tr></tbody></table>
+<h2>Recent value bets</h2>
+<table><thead><tr><th>Kick-off</th><th>Player</th><th>Line</th><th>Last 5 · 10</th><th>Our chance</th><th>Paddy Power</th><th>Gap</th><th>Result</th></tr></thead><tbody><tr><td>Fri 13 Nov 19:45</td><td><b>Christos Tzolis</b><br><small>Netherlands v Greece</small></td><td>Shots 3+</td><td>4/5 &middot; 4/6</td><td>63%</td><td>2.70</td><td class='pos'>+69%</td><td class='res win'>win (2)</td></tr><tr><td>Fri 13 Nov 19:45</td><td><b>Donyell Malen</b><br><small>Netherlands v Greece</small></td><td>Shots on target 2+</td><td>2/5 &middot; 3/6</td><td>66%</td><td>2.00</td><td class='pos'>+32%</td><td class='res lose'>lose (1)</td></tr><tr><td>Fri 13 Nov 19:45</td><td><b>Frenkie de Jong</b><br><small>Netherlands v Greece</small></td><td>Fouls 2+</td><td>2/5 &middot; 3/8</td><td>53%</td><td>2.30</td><td class='pos'>+22%</td><td class='res lose'>lose (0)</td></tr><tr><td>Fri 13 Nov 19:45</td><td><b>Ben Gannon-Doak</b><br><small>Scotland v North Macedonia</small></td><td>Fouled 1+</td><td>3/5 &middot; 5/7</td><td>81%</td><td>1.36</td><td class='pos'>+11%</td><td class='res win'>win (1)</td></tr><tr><td>Fri 13 Nov 19:45</td><td><b>Vangelis Pavlidis</b><br><small>Netherlands v Greece</small></td><td>Fouled 1+</td><td>4/5 &middot; 4/5</td><td>80%</td><td>1.36</td><td class='pos'>+9%</td><td class='res win'>win (1)</td></tr><tr><td>Fri 13 Nov 02:00</td><td><b>Ryan Kalkbrenner</b><br><small>Phoenix Suns v Charlotte Hornets</small></td><td>Rebounds Over 5.5</td><td>1/5 &middot; 2/10</td><td>55%</td><td>2.62</td><td class='pos'>+43%</td><td class='res win'>win (6)</td></tr><tr><td>Fri 13 Nov 02:00</td><td><b>Jalen Green</b><br><small>Phoenix Suns v Charlotte Hornets</small></td><td>Points Over 14.5</td><td>2/5 &middot; 6/10</td><td>67%</td><td>2.00</td><td class='pos'>+35%</td><td class='res lose'>lose (12)</td></tr><tr><td>Fri 13 Nov 02:00</td><td><b>Dillon Brooks</b><br><small>Phoenix Suns v Charlotte Hornets</small></td><td>Points and assists Over 17.5</td><td>4/5 &middot; 8/10</td><td>64%</td><td>2.00</td><td class='pos'>+28%</td><td class='res lose'>lose (16)</td></tr><tr><td>Fri 13 Nov 02:00</td><td><b>Devin Booker</b><br><small>Phoenix Suns v Charlotte Hornets</small></td><td>Three pointers made Under 1.5</td><td>1/5 &middot; 4/10</td><td>56%</td><td>2.25</td><td class='pos'>+26%</td><td class='res lose'>lose (4)</td></tr><tr><td>Fri 13 Nov 02:00</td><td><b>Sion James</b><br><small>Phoenix Suns v Charlotte Hornets</small></td><td>Points Over 8.5</td><td>2/5 &middot; 2/10</td><td>56%</td><td>2.10</td><td class='pos'>+18%</td><td class='res lose'>lose (3)</td></tr><tr><td>Fri 13 Nov 02:00</td><td><b>Royce O&#x27;Neale</b><br><small>Phoenix Suns v Charlotte Hornets</small></td><td>Rebounds Over 3.5</td><td>3/5 &middot; 4/7</td><td>61%</td><td>1.90</td><td class='pos'>+17%</td><td class='res win'>win (4)</td></tr><tr><td>Fri 13 Nov 02:00</td><td><b>Grayson Allen</b><br><small>Phoenix Suns v Charlotte Hornets</small></td><td>Points Under 17.5</td><td>3/5 &middot; 5/9</td><td>58%</td><td>2.00</td><td class='pos'>+15%</td><td class='res win'>win (14)</td></tr><tr><td>Fri 13 Nov 02:00</td><td><b>Collin Gillespie</b><br><small>Phoenix Suns v Charlotte Hornets</small></td><td>Points and rebounds Under 10.5</td><td>3/5 &middot; 5/10</td><td>57%</td><td>2.00</td><td class='pos'>+14%</td><td class='res lose'>lose (15)</td></tr><tr><td>Fri 13 Nov 02:00</td><td><b>Jordan Goodwin</b><br><small>Phoenix Suns v Charlotte Hornets</small></td><td>Points Over 7.5</td><td>4/5 &middot; 7/8</td><td>54%</td><td>2.10</td><td class='pos'>+13%</td><td class='res lose'>lose (6)</td></tr><tr><td>Fri 13 Nov 02:00</td><td><b>Miles Bridges</b><br><small>Phoenix Suns v Charlotte Hornets</small></td><td>Rebounds Under 6.5</td><td>1/5 &middot; 2/6</td><td>61%</td><td>1.83</td><td class='pos'>+12%</td><td class='res win'>win (6)</td></tr><tr><td>Fri 13 Nov 02:00</td><td><b>Naz Reid</b><br><small>Phoenix Suns v Charlotte Hornets</small></td><td>Three pointers made Under 2.5</td><td>5/5 &middot; 6/9</td><td>61%</td><td>1.83</td><td class='pos'>+12%</td><td class='res win'>win (1)</td></tr><tr><td>Fri 13 Nov 01:15</td><td><b>Cam Skattebo</b> <span class="tag">Out</span><br><small>New York Giants v Washington Commanders</small></td><td>Rushing and receiving yards 80+</td><td>2/5 &middot; 5/9</td><td>50%</td><td>2.80</td><td class='pos'>+41%</td><td class='res win'>win (122)</td></tr><tr><td>Fri 13 Nov 01:15</td><td><b>Jayden Daniels</b> <span class="tag">Active</span><br><small>New York Giants v Washington Commanders</small></td><td>Passing yards 225+</td><td>2/5 &middot; 2/10</td><td>56%</td><td>2.40</td><td class='pos'>+34%</td><td class='res win'>win (249)</td></tr><tr><td>Fri 13 Nov 01:15</td><td><b>Devin Singletary</b> <span class="tag">Active</span><br><small>New York Giants v Washington Commanders</small></td><td>Rushing yards 30+</td><td>2/5 &middot; 5/10</td><td>53%</td><td>2.38</td><td class='pos'>+26%</td><td class='res lose'>lose (3)</td></tr><tr><td>Fri 13 Nov 01:15</td><td><b>Darnell Mooney</b> <span class="tag">Active</span><br><small>New York Giants v Washington Commanders</small></td><td>Receiving yards Over 15.5</td><td>1/5 &middot; 4/8</td><td>66%</td><td>1.83</td><td class='pos'>+20%</td><td class='res lose'>lose (8)</td></tr><tr><td>Fri 13 Nov 01:15</td><td><b>Malachi Fields</b> <span class="tag">Active</span><br><small>New York Giants v Washington Commanders</small></td><td>Receiving yards 20+</td><td>4/5 &middot; 6/8</td><td>78%</td><td>1.53</td><td class='pos'>+19%</td><td class='res win'>win (62)</td></tr><tr><td>Fri 13 Nov 01:15</td><td><b>Antonio Williams</b> <span class="tag">Active</span><br><small>New York Giants v Washington Commanders</small></td><td>Receiving receptions Under 3.5</td><td>4/5 &middot; 6/8</td><td>59%</td><td>2.00</td><td class='pos'>+18%</td><td class='res win'>win (2)</td></tr><tr><td>Fri 13 Nov 01:15</td><td><b>Isaiah Likely</b> <span class="tag">Active</span><br><small>New York Giants v Washington Commanders</small></td><td>Receiving yards Under 48.5</td><td>1/5 &middot; 3/8</td><td>60%</td><td>1.83</td><td class='pos'>+11%</td><td class='res lose'>lose (127)</td></tr><tr><td>Fri 13 Nov 01:15</td><td><b>Rachaad White</b> <span class="tag">Active</span><br><small>New York Giants v Washington Commanders</small></td><td>Receiving yards Under 12.5</td><td>3/5 &middot; 4/7</td><td>59%</td><td>1.83</td><td class='pos'>+8%</td><td class='res win'>win (5)</td></tr><tr><td>Fri 13 Nov 01:00</td><td><b>Daniel Gafford</b><br><small>Minnesota Timberwolves v Dallas Mavericks</small></td><td>Rebounds Over 5.5</td><td>4/5 &middot; 6/10</td><td>71%</td><td>1.90</td><td class='pos'>+35%</td><td class='res lose'>lose (3)</td></tr><tr><td>Fri 13 Nov 01:00</td><td><b>Naji Marshall</b><br><small>Minnesota Timberwolves v Dallas Mavericks</small></td><td>Points Over 9.5</td><td>4/5 &middot; 6/9</td><td>73%</td><td>1.80</td><td class='pos'>+32%</td><td class='res win'>win (13)</td></tr><tr><td>Fri 13 Nov 01:00</td><td><b>Ayo Dosunmu</b><br><small>Minnesota Timberwolves v Dallas Mavericks</small></td><td>Rebounds Over 4.5</td><td>3/5 &middot; 5/10</td><td>59%</td><td>2.20</td><td class='pos'>+29%</td><td class='res lose'>lose (2)</td></tr><tr><td>Fri 13 Nov 01:00</td><td><b>Jaden McDaniels</b><br><small>Minnesota Timberwolves v Dallas Mavericks</small></td><td>Rebounds Over 5.5</td><td>4/5 &middot; 8/10</td><td>55%</td><td>2.25</td><td class='pos'>+24%</td><td class='res win'>win (9)</td></tr><tr><td>Fri 13 Nov 01:00</td><td><b>Kyrie Irving</b><br><small>Minnesota Timberwolves v Dallas Mavericks</small></td><td>Rebounds Over 3.5</td><td>3/5 &middot; 4/6</td><td>62%</td><td>2.00</td><td class='pos'>+23%</td><td class='res lose'>lose (3)</td></tr><tr><td>Fri 13 Nov 01:00</td><td><b>Cooper Flagg</b><br><small>Minnesota Timberwolves v Dallas Mavericks</small></td><td>Assists Under 6.5</td><td>3/5 &middot; 8/10</td><td>70%</td><td>1.73</td><td class='pos'>+21%</td><td class='res win'>win (3)</td></tr><tr><td>Fri 13 Nov 01:00</td><td><b>Jonathan Kuminga</b><br><small>Minnesota Timberwolves v Dallas Mavericks</small></td><td>Three pointers made Over 1.5</td><td>4/5 &middot; 7/9</td><td>52%</td><td>2.20</td><td class='pos'>+15%</td><td class='res lose'>lose (1)</td></tr><tr><td>Fri 13 Nov 01:00</td><td><b>Rudy Gobert</b><br><small>Minnesota Timberwolves v Dallas Mavericks</small></td><td>Points Under 9.5</td><td>4/5 &middot; 8/10</td><td>62%</td><td>1.83</td><td class='pos'>+14%</td><td class='res win'>win (9)</td></tr><tr><td>Fri 13 Nov 00:00</td><td><b>Daniss Jenkins</b><br><small>Washington Wizards v Detroit Pistons</small></td><td>Points and rebounds Under 18.5</td><td>5/5 &middot; 7/10</td><td>84%</td><td>1.91</td><td class='pos'>+60%</td><td class='res lose'>lose (27)</td></tr><tr><td>Fri 13 Nov 00:00</td><td><b>Kevin Huerter</b><br><small>Washington Wizards v Detroit Pistons</small></td><td>Points Under 10.5</td><td>5/5 &middot; 8/8</td><td>89%</td><td>1.73</td><td class='pos'>+53%</td><td class='res lose'>lose (11)</td></tr><tr><td>Fri 13 Nov 00:00</td><td><b>John Collins</b><br><small>Washington Wizards v Detroit Pistons</small></td><td>Three pointers made Under 0.5</td><td>5/5 &middot; 6/8</td><td>54%</td><td>2.75</td><td class='pos'>+48%</td><td class='res lose'>lose (2)</td></tr><tr><td>Fri 13 Nov 00:00</td><td><b>Jakob Poeltl</b><br><small>Philadelphia 76ers v Toronto Raptors</small></td><td>Assists Under 1.5</td><td>3/5 &middot; 6/10</td><td>56%</td><td>2.50</td><td class='pos'>+40%</td><td class='res lose'>lose (3)</td></tr><tr><td>Fri 13 Nov 00:00</td><td><b>Dean Wade</b><br><small>Philadelphia 76ers v Toronto Raptors</small></td><td>Points and rebounds Under 9.5</td><td>4/5 &middot; 5/7</td><td>69%</td><td>2.00</td><td class='pos'>+38%</td><td class='res lose'>lose (11)</td></tr><tr><td>Fri 13 Nov 00:00</td><td><b>Joel Embiid</b> <span class="tag">Day-To-Day</span><br><small>Philadelphia 76ers v Toronto Raptors</small></td><td>Points Over 19.5</td><td>3/5 &middot; 5/10</td><td>61%</td><td>2.10</td><td class='pos'>+29%</td><td class='res win'>win (20)</td></tr><tr><td>Fri 13 Nov 00:00</td><td><b>Ja&#x27;Kobe Walter</b><br><small>Philadelphia 76ers v Toronto Raptors</small></td><td>Assists Over 1.5</td><td>4/5 &middot; 8/10</td><td>71%</td><td>1.80</td><td class='pos'>+28%</td><td class='res lose'>lose (0)</td></tr><tr><td>Fri 13 Nov 00:00</td><td><b>Kyshawn George</b><br><small>Washington Wizards v Detroit Pistons</small></td><td>Points Over 14.5</td><td>3/5 &middot; 5/8</td><td>60%</td><td>2.10</td><td class='pos'>+27%</td><td class='res lose'>lose (14)</td></tr></tbody></table>
+</main><footer class="hr-foot"><p>Hit Rates is a stats project shared with mates, not betting advice. Most lines on here lose money over time: the <a href="papertrade.html">track record</a> shows it honestly. Prices change, so check before you bet. 18+, and if it stops being fun, <a href="https://www.begambleaware.org" rel="noopener">BeGambleAware.org</a>.</p></footer><script>(function(){var a=document.querySelector('.hr-links [aria-current]');if(a){var l=a.parentNode;l.scrollLeft=a.offsetLeft-l.offsetLeft-40;}})();</script></body></html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html><html class="hr-p-record" lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Track record · Hit Rates</title>
+<style>:root{--bg:#fcfcfb;--fg:#0b0b0b;--muted:#75736e;--line:rgba(11,11,11,.12)}
+@media (prefers-color-scheme:dark){:root{--bg:#141413;--fg:#fff;--muted:#908e88;--line:rgba(255,255,255,.14)}}
+body{margin:0 auto;max-width:760px;padding:20px 16px 60px;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,Segoe UI,Helvetica,Arial,sans-serif}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:16px;margin:26px 0 6px} .sub{color:var(--muted);font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:13.5px} th,td{text-align:left;padding:6px 4px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-size:11.5px;text-transform:uppercase} .n{text-align:right;font-variant-numeric:tabular-nums}
+.big{font-size:28px;font-weight:700} .pos{color:#15803d} .neg{color:#b91c1c}
+@media (prefers-color-scheme:dark){.pos{color:#4ade80} .neg{color:#f87171}}</style><style id="sitenav-css">
+.hr-nav,.hr-foot{--hn-bg:#fcfcfb;--hn-fg:#111;--hn-mu:#6b6963;--hn-bd:rgba(0,0,0,.1);--hn-on:#111;--hn-onfg:#fff;--hn-pos:#15803d;--hn-neg:#b91c1c;
+  font:14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:var(--hn-fg)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hr-nav,:root:not([data-theme="light"]) .hr-foot{
+  --hn-bg:#141413;--hn-fg:#f2f2f0;--hn-mu:#9a988f;--hn-bd:rgba(255,255,255,.12);--hn-on:#f2f2f0;--hn-onfg:#111;--hn-pos:#4ade80;--hn-neg:#f87171}}
+:root[data-theme="dark"] .hr-nav,:root[data-theme="dark"] .hr-foot{
+  --hn-bg:#141413;--hn-fg:#f2f2f0;--hn-mu:#9a988f;--hn-bd:rgba(255,255,255,.12);--hn-on:#f2f2f0;--hn-onfg:#111;--hn-pos:#4ade80;--hn-neg:#f87171}
+html{overflow-x:clip}
+.hr-nav,.hr-foot{width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);box-sizing:border-box}
+.hr-nav{background:var(--hn-bg);border-bottom:1px solid var(--hn-bd);position:relative;z-index:40;margin-bottom:16px}
+.hr-nav-in{max-width:1240px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px}
+.hr-brand{font-weight:700;font-size:16px;color:var(--hn-fg)!important;text-decoration:none;white-space:nowrap;letter-spacing:-.01em}
+.hr-brand i{display:inline-block;width:9px;height:9px;border-radius:3px;background:var(--hn-pos);margin-right:7px;vertical-align:1px}
+.hr-links{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1 1 auto;min-width:0}
+.hr-links::-webkit-scrollbar{display:none}
+.hr-links a{padding:6px 10px;border-radius:999px;color:var(--hn-mu)!important;text-decoration:none!important;white-space:nowrap;font-weight:550;font-size:13.5px}
+.hr-links a:hover{color:var(--hn-fg)!important;background:var(--hn-bd)}
+.hr-links a[aria-current]{background:var(--hn-on);color:var(--hn-onfg)!important}
+.hr-rec{white-space:nowrap;font-size:12.5px;color:var(--hn-mu)!important;text-decoration:none!important;border:1px solid var(--hn-bd);border-radius:999px;padding:4px 10px}
+.hr-rec b{font-variant-numeric:tabular-nums}.hr-rec .pos{color:var(--hn-pos)}.hr-rec .neg{color:var(--hn-neg)}
+.hr-foot{border-top:1px solid var(--hn-bd);margin-top:40px;background:var(--hn-bg)}
+.hr-foot p{max-width:1240px;margin:0 auto;padding:16px;color:var(--hn-mu);font-size:12.5px}
+.hr-foot a{color:var(--hn-mu)!important}
+@media (max-width:720px){.hr-nav-in{flex-wrap:wrap;gap:8px 10px;padding:8px 12px}.hr-links{order:3;flex-basis:100%}.hr-rec{margin-left:auto}}
+</style><style id="hr-theme">/* Hit Rates colour layer (3 Nov 2026). Navy and amber for the site itself;
+   green, red and amber only ever mean won, lost and open; blue and purple
+   are the two teams on match pages. Loaded after each page's own styles. */
+:root {
+  --hr-navy: #13265c; --hr-navy-2: #1f3f8f; --hr-head: #1d3a8a;
+  --hr-amber: #f5a524; --hr-ink: #241600;
+  --hr-tint: #eef2fb; --hr-tint-2: #f6f8fd;
+  --hr-win: #15803d; --hr-win-bg: #dcf5e4;
+  --hr-lose: #b91c1c; --hr-lose-bg: #fde3e3;
+  --hr-open: #9a6200; --hr-open-bg: #fdf0cf;
+  --hr-sel: #1f3f8f; --hr-sel-ink: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --hr-head: #9db8ff; --hr-amber: #fbbf24;
+    --hr-tint: rgba(110,140,255,.10); --hr-tint-2: rgba(110,140,255,.05);
+    --hr-win: #4ade80; --hr-win-bg: rgba(74,222,128,.14);
+    --hr-lose: #f87171; --hr-lose-bg: rgba(248,113,113,.14);
+    --hr-open: #facc15; --hr-open-bg: rgba(250,204,21,.13);
+    --hr-sel: #fbbf24; --hr-sel-ink: #241600;
+  }
+}
+:root[data-theme="dark"] {
+  --hr-head: #9db8ff; --hr-amber: #fbbf24;
+  --hr-tint: rgba(110,140,255,.10); --hr-tint-2: rgba(110,140,255,.05);
+  --hr-win: #4ade80; --hr-win-bg: rgba(74,222,128,.14);
+  --hr-lose: #f87171; --hr-lose-bg: rgba(248,113,113,.14);
+  --hr-open: #facc15; --hr-open-bg: rgba(250,204,21,.13);
+  --hr-sel: #fbbf24; --hr-sel-ink: #241600;
+}
+
+/* ---- the shared header and footer ---- */
+.hr-nav { background: linear-gradient(100deg, #10204f 0%, #1c3a86 70%, #2547a3 100%) !important;
+  border-bottom: 0 !important; box-shadow: 0 2px 10px rgba(16,32,79,.18); }
+.hr-brand { color: #fff !important; }
+.hr-brand i { background: var(--hr-amber) !important; border-radius: 50% !important; width: 10px !important; height: 10px !important;
+  box-shadow: 0 0 0 3px rgba(245,165,36,.25); }
+.hr-links a { color: rgba(255,255,255,.78) !important; }
+.hr-links a:hover { color: #fff !important; background: rgba(255,255,255,.12) !important; }
+.hr-links a[aria-current] { background: var(--hr-amber) !important; color: var(--hr-ink) !important; font-weight: 650; }
+.hr-rec { color: rgba(255,255,255,.85) !important; border-color: rgba(255,255,255,.28) !important; background: rgba(255,255,255,.06); }
+.hr-rec .pos { color: #6ee7a0 !important; } .hr-rec .neg { color: #ffb4b4 !important; }
+.hr-foot { border-top: 3px solid var(--hr-amber) !important; }
+
+/* ---- fixtures (home) ---- */
+html.hr-p-index { --accent: var(--hr-sel); --on-accent: var(--hr-sel-ink); --link: var(--hr-head); }
+html.hr-p-index .sports button[aria-pressed="true"] { color: var(--hr-head); border-bottom-color: var(--hr-amber); border-bottom-width: 3px; }
+html.hr-p-index .day { color: var(--hr-head); }
+html.hr-p-index .day.soon { color: #c2410c; }
+html.hr-p-index .day.soon::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: #f97316; margin-right: 8px; vertical-align: 1px; box-shadow: 0 0 0 3px rgba(249,115,22,.2); }
+html.hr-p-index .time { color: var(--hr-head); }
+html.hr-p-index li a:hover { background: var(--hr-tint-2); }
+html.hr-p-index ul { border-left: 3px solid var(--hr-navy-2); }
+html.hr-p-index .rail-title { color: var(--hr-head); }
+html.hr-p-index .rail a { border-left: 3px solid var(--hr-amber) !important; }
+html.hr-p-index .pick { border-top: 3px solid var(--hr-amber); }
+
+/* ---- tonight ---- */
+html.hr-p-tonight h1 { color: var(--hr-head); }
+html.hr-p-tonight .main > input:checked + label { background: var(--hr-sel); border-color: var(--hr-sel); color: var(--hr-sel-ink); }
+html.hr-p-tonight .warn { border-left-color: var(--hr-amber); background: var(--hr-tint-2); border-radius: 0 8px 8px 0; }
+html.hr-p-tonight details.game > summary .ko { color: var(--hr-head); }
+html.hr-p-tonight details.game[open] { background: var(--hr-tint-2); border-radius: 10px; padding: 0 12px 6px; margin: 0 -12px; }
+html.hr-p-tonight .pbar .ph { background: #2a78d6; } html.hr-p-tonight .pbar .pa { background: #7a4fd6; }
+html.hr-p-tonight .best .k { background: var(--hr-amber) !important; color: var(--hr-ink) !important; }
+html.hr-p-tonight .nobet { color: var(--hr-lose); }
+html.hr-p-tonight h3 { color: var(--hr-head); }
+html.hr-p-tonight .vbox { border-left: 3px solid var(--hr-navy-2); padding-left: 12px; }
+html.hr-p-tonight th { background: var(--hr-tint); }
+
+/* ---- match pages and the pick pages ---- */
+/* :root.x:not([data-x]) outranks the page's own :root:not([data-theme]) dark block. */
+:root.hr-p-report:not([data-x]), :root.hr-p-picker:not([data-x]) { --control-active: var(--hr-sel); --control-active-text: var(--hr-sel-ink); }
+html.hr-p-report h1, html.hr-p-picker h1 { color: var(--hr-head); }
+html.hr-p-report .n2-top[aria-selected="true"] { color: var(--hr-head); border-bottom-color: var(--hr-amber); }
+html.hr-p-report .n2-sub[aria-selected="true"] { background: var(--hr-sel); color: var(--hr-sel-ink); border-color: var(--hr-sel); }
+
+/* ---- best bets, track record, Paddy Power log, model v market ---- */
+html.hr-p-bets h1, html.hr-p-record h1, html.hr-p-pp h1, html.hr-p-market h1 { color: var(--hr-head); }
+html.hr-p-bets h2, html.hr-p-record h2, html.hr-p-pp h2, html.hr-p-market h2 { color: var(--hr-head); }
+html.hr-p-bets .stat, html.hr-p-pp .card, html.hr-p-market .kpi { border-top: 3px solid var(--hr-amber) !important; }
+html.hr-p-bets .stat:nth-child(1), html.hr-p-pp .cards > .card:nth-child(1), html.hr-p-market .kpi:nth-child(1) { border-top-color: var(--hr-navy-2) !important; }
+html.hr-p-bets .tabs button[aria-selected=true] { color: var(--hr-head); border-color: var(--hr-amber); }
+html.hr-p-bets .card { border-left: 3px solid var(--hr-navy-2); }
+html.hr-p-bets .pill.win, html.hr-p-bets .pill.open, html.hr-p-bets .pill.lose { border-color: transparent; }
+html.hr-p-bets .pill.win { background: var(--hr-win-bg); color: var(--hr-win); }
+html.hr-p-bets .pill.lose { background: var(--hr-lose-bg); color: var(--hr-lose); }
+html.hr-p-bets .pill.open { background: var(--hr-open-bg); color: var(--hr-open); }
+html.hr-p-record th, html.hr-p-pp th, html.hr-p-market th, html.hr-p-bets th { background: var(--hr-tint); }
+html.hr-p-record .big { color: var(--hr-head); }
+html.hr-p-record td .pos, html.hr-p-record td .neg { padding: 1px 7px; border-radius: 99px; font-weight: 600; }
+html.hr-p-record td .pos { background: var(--hr-win-bg); } html.hr-p-record td .neg { background: var(--hr-lose-bg); }
+html.hr-p-pp .res.win { background: var(--hr-win-bg); border-radius: 99px; }
+html.hr-p-pp .res.lose { background: var(--hr-lose-bg); border-radius: 99px; }
+html.hr-p-pp td.pos, html.hr-p-pp td.neg { font-weight: 600; }
+
+/* The header sits flush with the top on pages whose body has top padding. */
+html.hr-p-tonight body, html.hr-p-record body, html.hr-p-report body, html.hr-p-picker body { padding-top: 0 !important; }
+.hr-nav { margin-bottom: 22px !important; }
+html.hr-p-tonight .tabs > input:checked + label { background: var(--hr-sel); color: var(--hr-sel-ink); border-color: var(--hr-sel); }
+html.hr-p-tonight .argue { border-left-color: var(--hr-navy-2); }
+html.hr-p-tonight .tag.ok { color: var(--hr-win); border-color: var(--hr-win); background: var(--hr-win-bg); }
+</style></head><body><!--sitenav--><nav class="hr-nav" aria-label="Site"><div class="hr-nav-in"><a class="hr-brand" href="index.html"><i></i>Hit Rates</a><div class="hr-links"><a href="index.html">Fixtures</a><a href="tonight.html">Tonight</a><a href="best-bets-summary.html">Best bets</a><a href="papertrade.html" aria-current="page">Track record</a><a href="pp-results.html">Paddy Power log</a><a href="market-check.html">Model v market</a></div><a class="hr-rec" href="papertrade.html" title="Every pick the site has made, at Paddy Power prices, level stakes">Record <b class="neg">-14.4%</b> on 1,915 bets</a></div></nav>
+<h1>Paper trade: the site's picks at Paddy Power prices</h1>
+<p class="sub">Every player bet the site put forward (best bets, picks, singles), matched to the Paddy Power price logged
+for the same line before kick-off. Updated with every publish. Made Fri 13 Nov, 23:39.</p>
+<p><span class="big">£61</span> <span class="sub">from £1,000 at 1% of the bank a bet</span></p>
+<p>1,915 settled, 1,317 won (69%; the site said 68%),
+level-stakes return <b><span class='neg'>-14.4%</span></b>; 168 still to play.</p>
+<h2>By type</h2><table><thead><tr><th>Type</th><th class=n>Bets</th><th class=n>Won</th><th class=n>Site said</th><th class=n>Return</th></tr></thead><tbody><tr><td>Football, fixture single</td><td class=n>517</td><td class=n>66%</td><td class=n>66%</td><td class=n><span class='neg'>-20.3%</span></td></tr><tr><td>NBA, fixture single</td><td class=n>356</td><td class=n>74%</td><td class=n>67%</td><td class=n><span class='neg'>-5.2%</span></td></tr><tr><td>Football, player line</td><td class=n>342</td><td class=n>75%</td><td class=n>73%</td><td class=n><span class='neg'>-15.1%</span></td></tr><tr><td>Football, lead</td><td class=n>160</td><td class=n>68%</td><td class=n>70%</td><td class=n><span class='neg'>-23.6%</span></td></tr><tr><td>NBA, player line</td><td class=n>108</td><td class=n>81%</td><td class=n>74%</td><td class=n><span class='neg'>-9.8%</span></td></tr><tr><td>NBA, acca legs (as singles)</td><td class=n>92</td><td class=n>70%</td><td class=n>66%</td><td class=n><span class='pos'>+3.6%</span></td></tr><tr><td>NFL, fixture single</td><td class=n>90</td><td class=n>64%</td><td class=n>64%</td><td class=n><span class='neg'>-12.9%</span></td></tr><tr><td>Football, acca legs (as singles)</td><td class=n>64</td><td class=n>64%</td><td class=n>62%</td><td class=n><span class='neg'>-12.9%</span></td></tr><tr><td>NFL, acca legs (as singles)</td><td class=n>54</td><td class=n>54%</td><td class=n>60%</td><td class=n><span class='neg'>-21.4%</span></td></tr><tr><td>NBA, evens double legs (as singles)</td><td class=n>27</td><td class=n>52%</td><td class=n>67%</td><td class=n><span class='neg'>-25.7%</span></td></tr><tr><td>NBA, singles from picks</td><td class=n>20</td><td class=n>40%</td><td class=n>63%</td><td class=n><span class='neg'>-18.5%</span></td></tr><tr><td>NFL, singles from picks</td><td class=n>16</td><td class=n>38%</td><td class=n>58%</td><td class=n><span class='neg'>-36.9%</span></td></tr><tr><td>NFL, evens double legs (as singles)</td><td class=n>16</td><td class=n>75%</td><td class=n>65%</td><td class=n><span class='pos'>+2.3%</span></td></tr><tr><td>NBA, lead</td><td class=n>14</td><td class=n>71%</td><td class=n>67%</td><td class=n><span class='neg'>-11.4%</span></td></tr><tr><td>NFL, player line</td><td class=n>11</td><td class=n>91%</td><td class=n>74%</td><td class=n><span class='pos'>+12.3%</span></td></tr><tr><td>Football, singles from picks</td><td class=n>9</td><td class=n>22%</td><td class=n>56%</td><td class=n><span class='neg'>-62.7%</span></td></tr><tr><td>Football, evens double legs (as singles)</td><td class=n>6</td><td class=n>67%</td><td class=n>67%</td><td class=n><span class='pos'>+19.9%</span></td></tr><tr><td>NFL, lead</td><td class=n>6</td><td class=n>50%</td><td class=n>66%</td><td class=n><span class='neg'>-35.7%</span></td></tr><tr><td>NBA, banker legs (as singles)</td><td class=n>4</td><td class=n>50%</td><td class=n>61%</td><td class=n><span class='neg'>-18.5%</span></td></tr><tr><td>NFL, banker legs (as singles)</td><td class=n>2</td><td class=n>50%</td><td class=n>64%</td><td class=n><span class='neg'>-37.5%</span></td></tr><tr><td>Football, banker legs (as singles)</td><td class=n>1</td><td class=n>100%</td><td class=n>67%</td><td class=n><span class='pos'>+30.0%</span></td></tr></tbody></table>
+<h2>By price</h2><table><thead><tr><th></th><th class=n>Bets</th><th class=n>Won</th><th class=n>Site said</th><th class=n>Return</th></tr></thead><tbody><tr><td>1 to 1.5</td><td class=n>1604</td><td class=n>73%</td><td class=n>69%</td><td class=n><span class='neg'>-14.5%</span></td></tr><tr><td>1.5 to 2</td><td class=n>230</td><td class=n>55%</td><td class=n>64%</td><td class=n><span class='neg'>-10.0%</span></td></tr><tr><td>2 to 3</td><td class=n>67</td><td class=n>34%</td><td class=n>59%</td><td class=n><span class='neg'>-25.1%</span></td></tr><tr><td>3 to 5</td><td class=n>12</td><td class=n>25%</td><td class=n>55%</td><td class=n><span class='neg'>-9.6%</span></td></tr><tr><td>5+</td><td class=n>2</td><td class=n>0%</td><td class=n>61%</td><td class=n><span class='neg'>-100.0%</span></td></tr></tbody></table><h2>By the edge the site claimed</h2><table><thead><tr><th></th><th class=n>Bets</th><th class=n>Won</th><th class=n>Site said</th><th class=n>Return</th></tr></thead><tbody><tr><td>-99 to 0</td><td class=n>1524</td><td class=n>72%</td><td class=n>69%</td><td class=n><span class='neg'>-15.0%</span></td></tr><tr><td>0 to 5</td><td class=n>62</td><td class=n>69%</td><td class=n>67%</td><td class=n><span class='pos'>+5.5%</span></td></tr><tr><td>5 to 10</td><td class=n>38</td><td class=n>55%</td><td class=n>64%</td><td class=n><span class='neg'>-7.2%</span></td></tr><tr><td>10 to 20</td><td class=n>50</td><td class=n>40%</td><td class=n>65%</td><td class=n><span class='neg'>-29.3%</span></td></tr><tr><td>20+</td><td class=n>71</td><td class=n>35%</td><td class=n>62%</td><td class=n><span class='neg'>-20.2%</span></td></tr></tbody></table><p class='sub'>Where it goes wrong: a row where Won sits well under Site said is where the model is overconfident. If the bigger claimed edges do not return more, staking bigger on them would only lose faster.</p><h2>Soft v sharp: Paddy Power longer than Pinnacle or Betfair</h2><table><thead><tr><th>Bets that beat Betfair</th><th class=n>Bets</th><th class=n>Won</th><th class=n>Betfair said</th><th class=n>Return</th></tr></thead><tbody><tr><td>all</td><td class=n>446</td><td class=n>180</td><td class=n>171.0</td><td class=n>+12.6%</td></tr><tr><td>1+ signals</td><td class=n>118</td><td class=n>39</td><td class=n>43.2</td><td class=n>-4.3%</td></tr><tr><td>2+ signals</td><td class=n>218</td><td class=n>82</td><td class=n>81.5</td><td class=n>+9.9%</td></tr><tr><td>3+ signals</td><td class=n>110</td><td class=n>59</td><td class=n>46.3</td><td class=n>+35.9%</td></tr><tr><td>model agrees</td><td class=n>217</td><td class=n>98</td><td class=n>83.2</td><td class=n>+23.2%</td></tr><tr><td>beats lay</td><td class=n>25</td><td class=n>12</td><td class=n>8.3</td><td class=n>+66.5%</td></tr></tbody></table><table><thead><tr><th>By source and market</th><th class=n>Bets</th><th class=n>Won</th><th class=n>Sharp said</th><th class=n>Return</th></tr></thead><tbody><tr><td>Corner kicks</td><td class=n>116</td><td class=n>48</td><td class=n>49.4</td><td class=n>+5.4%</td></tr><tr><td>Goals</td><td class=n>118</td><td class=n>40</td><td class=n>35.9</td><td class=n>+21.5%</td></tr><tr><td>Yellow cards</td><td class=n>199</td><td class=n>88</td><td class=n>82.1</td><td class=n>+12.4%</td></tr><tr><td>player lines</td><td class=n>13</td><td class=n>4</td><td class=n>3.6</td><td class=n>-1.3%</td></tr><tr><td>v Betfair</td><td class=n>65</td><td class=n>21</td><td class=n>18.8</td><td class=n>+16.9%</td></tr><tr><td>v Pinnacle</td><td class=n>381</td><td class=n>159</td><td class=n>152.2</td><td class=n>+11.8%</td></tr></tbody></table><p class='sub'>Every Paddy Power line Pinnacle or Betfair also prices (team lines: Pinnacle first; to score, shots on target, cards, match corners and cards), bet at level stakes when Paddy Power paid at least 2% more than Betfair's fair price. Signals counted: beats Betfair's lay, our model agrees, confirmed starter, Betfair's price moving our way. If this pays and the 3+ row pays most, that is where to stake bigger.</p><h2>Latest</h2><table><thead><tr><th>Date</th><th>Bet</th><th class=n>PP price</th><th class=n>Site said</th><th class=n></th></tr></thead><tbody><tr><td>15 Nov</td><td>Amon-Ra St. Brown 50+ receiving yards (Detroit Lions v New England Patriots)</td><td class=n>1.17</td><td class=n>64%</td><td class=n>&middot;</td></tr><tr><td>15 Nov</td><td>Jahmyr Gibbs 20+ receiving yards (Detroit Lions v New England Patriots)</td><td class=n>1.30</td><td class=n>64%</td><td class=n>&middot;</td></tr><tr><td>15 Nov</td><td>Hunter Henry 3+ receiving receptions (Detroit Lions v New England Patriots)</td><td class=n>1.44</td><td class=n>67%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Tchê Tchê 1+ shots (Chapecoense v Vasco da Gama)</td><td class=n>1.14</td><td class=n>61%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Marcinho 1+ shots (Chapecoense v Vasco da Gama)</td><td class=n>1.17</td><td class=n>61%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Andrés Gómez 2+ shots (Chapecoense v Vasco da Gama)</td><td class=n>1.01</td><td class=n>68%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Reinaldo 1+ shots (Mirassol v Atlético Mineiro)</td><td class=n>1.07</td><td class=n>67%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Renan Lodi 1+ shots (Mirassol v Atlético Mineiro)</td><td class=n>1.20</td><td class=n>68%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Viktor Gyökeres to score goals (Sweden v Bosnia &amp; Herzegovina)</td><td class=n>1.91</td><td class=n>54%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Stefan Posch 1+ shots (Austria v Ireland)</td><td class=n>1.22</td><td class=n>58%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Vitinha 2+ shots (Portugal v Denmark)</td><td class=n>1.91</td><td class=n>50%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Pedro Neto 1+ shots (Portugal v Denmark)</td><td class=n>1.14</td><td class=n>54%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Bruno Fernandes 2+ shots (Portugal v Denmark)</td><td class=n>1.14</td><td class=n>56%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Piotr Zieliński 2+ shots (Romania v Poland)</td><td class=n>1.17</td><td class=n>60%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Romano Schmid 1+ shots (Austria v Ireland)</td><td class=n>1.06</td><td class=n>59%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Isaac Price 1+ shots (Northern Ireland v Ukraine)</td><td class=n>1.06</td><td class=n>64%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Bruno Fernandes 1+ shots (Portugal v Denmark)</td><td class=n>1.06</td><td class=n>68%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Vitinha 1+ shots (Portugal v Denmark)</td><td class=n>1.25</td><td class=n>69%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Bruno Fernandes 1+ shots on target (Portugal v Denmark)</td><td class=n>1.36</td><td class=n>59%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Erling Haaland 2+ shots on target (Norway v Wales)</td><td class=n>1.07</td><td class=n>61%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Antonio Nusa 1+ shots (Norway v Wales)</td><td class=n>1.06</td><td class=n>65%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Antonio Nusa 2+ shots (Norway v Wales)</td><td class=n>1.12</td><td class=n>56%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Patrick Berg 1+ shots (Norway v Wales)</td><td class=n>1.14</td><td class=n>56%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Erling Haaland 3+ shots (Norway v Wales)</td><td class=n>1.01</td><td class=n>61%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Amen Thompson Over 9.5 points (Houston Rockets v Utah Jazz)</td><td class=n>1.11</td><td class=n>72%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Ace Bailey Over 0.5 three pointers made (Houston Rockets v Utah Jazz)</td><td class=n>1.11</td><td class=n>74%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Saddiq Bey Over 0.5 three pointers made (New Orleans Pelicans v Memphis Grizzlies)</td><td class=n>1.10</td><td class=n>73%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Jeremiah Fears Over 0.5 three pointers made (New Orleans Pelicans v Memphis Grizzlies)</td><td class=n>1.14</td><td class=n>66%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Donovan Mitchell Over 1.5 three pointers made (Miami Heat v Cleveland Cavaliers)</td><td class=n>1.22</td><td class=n>69%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Kyle Kuzma Over 2.5 assists (Orlando Magic v Milwaukee Bucks)</td><td class=n>2.00</td><td class=n>68%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>OG Anunoby Over 0.5 three pointers made (Indiana Pacers v New York Knicks)</td><td class=n>1.10</td><td class=n>76%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Josh Hart Over 2.5 assists (Indiana Pacers v New York Knicks)</td><td class=n>1.29</td><td class=n>69%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>OG Anunoby Over 3.5 rebounds (Indiana Pacers v New York Knicks)</td><td class=n>1.29</td><td class=n>70%</td><td class=n>&middot;</td></tr><tr><td>14 Nov</td><td>Jalen Brunson Over 1.5 rebounds (Indiana Pacers v New York Knicks)</td><td class=n>1.14</td><td class=n>70%</td><td class=n>&middot;</td></tr><tr><td>13 Nov</td><td>Joshua Kimmich 1+ fouled (Serbia v Germany)</td><td class=n>1.33</td><td class=n>60%</td><td class=n>&#10003;</td></tr><tr><td>13 Nov</td><td>Tijjani Reijnders 1+ shots on target (Netherlands v Greece)</td><td class=n>1.53</td><td class=n>58%</td><td class=n>&#10003;</td></tr><tr><td>13 Nov</td><td>Aleksandar Pavlović 1+ shots (Serbia v Germany)</td><td class=n>1.17</td><td class=n>54%</td><td class=n>&#10007;</td></tr><tr><td>13 Nov</td><td>Lewis Ferguson 2+ fouls (Scotland v North Macedonia)</td><td class=n>1.25</td><td class=n>62%</td><td class=n>&#10003;</td></tr><tr><td>13 Nov</td><td>John McGinn 1+ shots (Scotland v North Macedonia)</td><td class=n>1.03</td><td class=n>63%</td><td class=n>&#10003;</td></tr><tr><td>13 Nov</td><td>Cody Gakpo 1+ shots (Netherlands v Greece)</td><td class=n>1.04</td><td class=n>66%</td><td class=n>&#10003;</td></tr></tbody></table>
+<p class="sub">Only lines Paddy Power priced count, and only player lines (team lines are in the team log). A few hundred settled bets are needed
+before the return means much; under 100 it is mostly noise.</p><footer class="hr-foot"><p>Hit Rates is a stats project shared with mates, not betting advice. Most lines on here lose money over time: the <a href="papertrade.html">track record</a> shows it honestly. Prices change, so check before you bet. 18+, and if it stops being fun, <a href="https://www.begambleaware.org" rel="noopener">BeGambleAware.org</a>.</p></footer><script>(function(){var a=document.querySelector('.hr-links [aria-current]');if(a){var l=a.parentNode;l.scrollLeft=a.offsetLeft-l.offsetLeft-40;}})();</script></body></html>
