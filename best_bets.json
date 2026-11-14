@@ -419899,11 +419899,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 22.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -419942,11 +419942,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win",
+    "started": true,
+    "minutes": 81.0
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -419988,11 +419990,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -420031,11 +420033,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win",
+    "started": true,
+    "minutes": 81.0
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -420074,11 +420078,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win",
+    "started": true,
+    "minutes": 90.0
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -420117,11 +420123,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win",
+    "started": true,
+    "minutes": 63.0
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -420160,11 +420168,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win",
+    "started": true,
+    "minutes": 63.0
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -420203,11 +420213,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win",
+    "started": true,
+    "minutes": 62.0
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -420246,11 +420258,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win",
+    "started": true,
+    "minutes": 87.0
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -420289,11 +420303,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win",
+    "started": true,
+    "minutes": 90.0
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -420332,11 +420348,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 59.0
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -420375,11 +420393,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win",
+    "started": true,
+    "minutes": 87.0
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -420418,11 +420438,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win",
+    "started": true,
+    "minutes": 90.0
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -420461,11 +420483,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win",
+    "started": true,
+    "minutes": 90.0
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -420507,11 +420531,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -420550,11 +420574,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 58.0
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -420596,11 +420622,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -421042,11 +421068,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 74.0
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -421175,11 +421203,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win",
+    "started": true,
+    "minutes": 63.0
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -422304,11 +422334,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win",
+    "started": true,
+    "minutes": 90.0
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -424242,11 +424274,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 36.0
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Lead",
@@ -424285,11 +424319,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "win",
+    "started": true,
+    "minutes": 30.1
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Lead",
@@ -424328,11 +424364,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 9.0,
+    "result": "win",
+    "started": true,
+    "minutes": 41.3
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Lead",
@@ -424371,11 +424409,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win",
+    "started": true,
+    "minutes": 38.1
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Lead",
@@ -424414,11 +424454,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 34.9
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Lead",
@@ -424457,11 +424499,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 24.1
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Lead",
@@ -424500,11 +424544,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 15.7
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Lead",
@@ -424543,11 +424589,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win",
+    "started": false,
+    "minutes": 16.6
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Lead",
@@ -424586,11 +424634,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win",
+    "started": true,
+    "minutes": 30.7
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -425059,11 +425109,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 9.0,
+    "result": "win",
+    "started": true,
+    "minutes": 41.3
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -425102,11 +425154,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 30.0,
+    "result": "win",
+    "started": false,
+    "minutes": 31.9
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -425145,11 +425199,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win",
+    "started": true,
+    "minutes": 34.8
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -425189,10 +425245,10 @@
     "book_price": null,
     "book_used": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Fixture single",
@@ -425231,11 +425287,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 36.0
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -425274,11 +425332,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 33.3
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -425317,11 +425377,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win",
+    "started": true,
+    "minutes": 23.2
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -425360,11 +425422,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "win",
+    "started": true,
+    "minutes": 33.3
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -425403,11 +425467,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win",
+    "started": true,
+    "minutes": 38.1
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -425446,11 +425512,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win",
+    "started": true,
+    "minutes": 32.9
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -425489,11 +425557,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 22.0,
+    "result": "win",
+    "started": true,
+    "minutes": 38.9
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -425532,11 +425602,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 27.0,
+    "result": "win",
+    "started": true,
+    "minutes": 38.9
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -425575,11 +425647,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 14.0,
+    "result": "win",
+    "started": true,
+    "minutes": 38.1
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -425618,11 +425692,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "win",
+    "started": true,
+    "minutes": 30.1
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -425661,11 +425737,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 2.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 30.6
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -425704,11 +425782,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 8.0,
+    "result": "lose",
+    "started": false,
+    "minutes": 28.9
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -425747,11 +425827,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose",
+    "started": false,
+    "minutes": 8.2
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -425919,11 +426001,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 15.7
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -425962,11 +426046,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win",
+    "started": true,
+    "minutes": 20.9
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -426005,11 +426091,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win",
+    "started": true,
+    "minutes": 25.1
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -426263,11 +426351,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 125.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -426306,11 +426394,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 24.1
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -426349,11 +426439,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 34.5
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -426392,11 +426484,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win",
+    "started": true,
+    "minutes": 34.5
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -426435,11 +426529,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win",
+    "started": false,
+    "minutes": 27.0
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -426478,11 +426574,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 12.0,
+    "result": "win",
+    "started": true,
+    "minutes": 40.9
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -426521,11 +426619,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win",
+    "started": false,
+    "minutes": 16.6
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -426564,11 +426664,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 1.0,
+    "result": "win",
+    "started": true,
+    "minutes": 35.6
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -426607,11 +426709,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 5.0,
+    "result": "win",
+    "started": false,
+    "minutes": 26.6
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -426650,11 +426754,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 11.0,
+    "result": "win",
+    "started": false,
+    "minutes": 26.6
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -426694,10 +426800,10 @@
     "book_price": null,
     "book_used": null,
     "value": null,
-    "result": null
+    "result": "void"
    }
   ],
-  "result": null
+  "result": "void"
  },
  {
   "category": "Player line",
@@ -426736,11 +426842,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 7.0,
+    "result": "win",
+    "started": false,
+    "minutes": 16.6
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -426779,11 +426887,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 113.0,
+    "result": "win"
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -426822,11 +426930,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win",
+    "started": true,
+    "minutes": 30.7
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -426865,11 +426975,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 29.2
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -426908,11 +427020,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 3.0,
+    "result": "win",
+    "started": true,
+    "minutes": 37.0
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Player line",
@@ -426951,11 +427065,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 4.0,
+    "result": "win",
+    "started": true,
+    "minutes": 30.6
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -426994,11 +427110,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 34.9
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -427037,11 +427155,11 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 111.0,
+    "result": "lose"
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Fixture single",
@@ -427080,11 +427198,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 0.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 33.7
    }
   ],
-  "result": null
+  "result": "lose"
  },
  {
   "category": "Player line",
@@ -427123,11 +427243,13 @@
     "book_name": null,
     "book_price": null,
     "book_used": null,
-    "value": null,
-    "result": null
+    "value": 6.0,
+    "result": "win",
+    "started": true,
+    "minutes": 34.9
    }
   ],
-  "result": null
+  "result": "win"
  },
  {
   "category": "Fixture single",
@@ -428305,6 +428427,4175 @@
      1502,
      1651
     ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Lead",
+  "sport": "basketball",
+  "snapshot_at": 1794613186,
+  "fair": 1.4954502680388415,
+  "legs": [
+   {
+    "event_id": 16814839,
+    "fixture": "Chicago Bulls v Atlanta Hawks",
+    "competition": "NBA",
+    "kickoff": 1794618000,
+    "sport": "basketball",
+    "team": "Chicago Bulls",
+    "player": "Matas Buzelis",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": null,
+    "total": null,
+    "fair": 1.4954502680388415,
+    "venue": null,
+    "chance": 0.6686949217719,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 6.0,
+    "result": "win",
+    "started": true,
+    "minutes": 28.6
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Lead",
+  "sport": "basketball",
+  "snapshot_at": 1794613186,
+  "fair": 1.4954502680388415,
+  "legs": [
+   {
+    "event_id": 16814841,
+    "fixture": "Houston Rockets v Utah Jazz",
+    "competition": "NBA",
+    "kickoff": 1794619800,
+    "sport": "basketball",
+    "team": "Houston Rockets",
+    "player": "Alperen Sengun",
+    "stat": "Blocks",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": null,
+    "total": null,
+    "fair": 1.4954502680388415,
+    "venue": null,
+    "chance": 0.6686949217719,
+    "chance_base": null,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 1.0,
+    "result": "win",
+    "started": true,
+    "minutes": 37.1
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794613212,
+  "fair": 1.4954502680388415,
+  "legs": [
+   {
+    "event_id": 16814839,
+    "fixture": "Chicago Bulls v Atlanta Hawks",
+    "competition": "NBA",
+    "kickoff": 1794618000,
+    "sport": "basketball",
+    "team": "Chicago Bulls",
+    "player": "Matas Buzelis",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": true,
+    "threshold": 5.0,
+    "hits": 12,
+    "total": 14,
+    "fair": 1.4954502680388415,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1666666666666667,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 6.0,
+    "result": "win",
+    "started": true,
+    "minutes": 28.6
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794613212,
+  "fair": 1.5731748593678339,
+  "legs": [
+   {
+    "event_id": 16814839,
+    "fixture": "Chicago Bulls v Atlanta Hawks",
+    "competition": "NBA",
+    "kickoff": 1794618000,
+    "sport": "basketball",
+    "team": "Atlanta Hawks",
+    "player": "Jalen Johnson",
+    "stat": "Assists",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": true,
+    "threshold": 4.0,
+    "hits": 11,
+    "total": 14,
+    "fair": 1.5731748593678339,
+    "venue": null,
+    "chance": 0.6333333333333333,
+    "chance_base": 0.6333333333333333,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2727272727272727,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 10.0,
+    "result": "win",
+    "started": true,
+    "minutes": 40.4
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794613212,
+  "fair": 1.6401798267298573,
+  "legs": [
+   {
+    "event_id": 16814839,
+    "fixture": "Chicago Bulls v Atlanta Hawks",
+    "competition": "NBA",
+    "kickoff": 1794618000,
+    "sport": "basketball",
+    "team": "Chicago Bulls",
+    "player": "Josh Giddey",
+    "stat": "Assists",
+    "period": "ALL",
+    "line": 5.5,
+    "over": true,
+    "alt": true,
+    "threshold": 6.0,
+    "hits": 9,
+    "total": 12,
+    "fair": 1.6401798267298573,
+    "venue": null,
+    "chance": 0.6071428571428571,
+    "chance_base": 0.6071428571428571,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3333333333333333,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 14.0,
+    "result": "win",
+    "started": true,
+    "minutes": 39.0
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794613212,
+  "fair": 1.4506669798103693,
+  "legs": [
+   {
+    "event_id": 16814836,
+    "fixture": "Indiana Pacers v New York Knicks",
+    "competition": "NBA",
+    "kickoff": 1794614400,
+    "sport": "basketball",
+    "team": "New York Knicks",
+    "player": "Josh Hart",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 5.5,
+    "over": true,
+    "alt": true,
+    "threshold": 6.0,
+    "hits": 14,
+    "total": 16,
+    "fair": 1.4506669798103693,
+    "venue": null,
+    "chance": 0.6875,
+    "chance_base": 0.6875,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1428571428571428,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 5.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 23.2
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794613212,
+  "fair": 1.4506669798103693,
+  "legs": [
+   {
+    "event_id": 16814838,
+    "fixture": "Miami Heat v Cleveland Cavaliers",
+    "competition": "NBA",
+    "kickoff": 1794618000,
+    "sport": "basketball",
+    "team": "Cleveland Cavaliers",
+    "player": "James Harden",
+    "stat": "Rebounds and assists",
+    "period": "ALL",
+    "line": 7.5,
+    "over": true,
+    "alt": true,
+    "threshold": 8.0,
+    "hits": 14,
+    "total": 16,
+    "fair": 1.4506669798103693,
+    "venue": null,
+    "chance": 0.6875,
+    "chance_base": 0.6875,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1428571428571428,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 14.0,
+    "result": "win",
+    "started": true,
+    "minutes": 34.8
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794613212,
+  "fair": 1.5188982827930304,
+  "legs": [
+   {
+    "event_id": 16814837,
+    "fixture": "Orlando Magic v Milwaukee Bucks",
+    "competition": "NBA",
+    "kickoff": 1794614400,
+    "sport": "basketball",
+    "team": "Orlando Magic",
+    "player": "Desmond Bane",
+    "stat": "Rebounds and assists",
+    "period": "ALL",
+    "line": 5.5,
+    "over": true,
+    "alt": true,
+    "threshold": 6.0,
+    "hits": 13,
+    "total": 16,
+    "fair": 1.5188982827930304,
+    "venue": null,
+    "chance": 0.65625,
+    "chance_base": 0.65625,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2307692307692308,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 8.0,
+    "result": "win",
+    "started": true,
+    "minutes": 34.7
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794613212,
+  "fair": 1.5501524018245358,
+  "legs": [
+   {
+    "event_id": 16814837,
+    "fixture": "Orlando Magic v Milwaukee Bucks",
+    "competition": "NBA",
+    "kickoff": 1794614400,
+    "sport": "basketball",
+    "team": "Milwaukee Bucks",
+    "player": "Myles Turner",
+    "stat": "Blocks",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 10,
+    "total": 12,
+    "fair": 1.5501524018245358,
+    "venue": null,
+    "chance": 0.6428571428571429,
+    "chance_base": 0.6428571428571429,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 0.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 30.7
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794613212,
+  "fair": 1.5213661177276514,
+  "legs": [
+   {
+    "event_id": 16824870,
+    "fixture": "Memphis Grizzlies v Brooklyn Nets",
+    "competition": "NBA",
+    "kickoff": 1794704400,
+    "sport": "basketball",
+    "team": "Memphis Grizzlies",
+    "player": "Cedric Coward",
+    "stat": "Assists",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 11,
+    "total": 13,
+    "fair": 1.5213661177276514,
+    "venue": null,
+    "chance": 0.6551724137931034,
+    "chance_base": 0.6551724137931034,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1818181818181819,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794613212,
+  "fair": 1.4461872151892363,
+  "legs": [
+   {
+    "event_id": 16814842,
+    "fixture": "San Antonio Spurs v Golden State Warriors",
+    "competition": "NBA",
+    "kickoff": 1794623400,
+    "sport": "basketball",
+    "team": "Golden State Warriors",
+    "player": "Draymond Green",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": true,
+    "threshold": 4.0,
+    "hits": 12,
+    "total": 13,
+    "fair": 1.4461872151892363,
+    "venue": null,
+    "chance": 0.6896551724137931,
+    "chance_base": 0.6896551724137931,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.0833333333333333,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 3.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 15.7
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794613212,
+  "fair": 1.4954502680388415,
+  "legs": [
+   {
+    "event_id": 16814841,
+    "fixture": "Houston Rockets v Utah Jazz",
+    "competition": "NBA",
+    "kickoff": 1794619800,
+    "sport": "basketball",
+    "team": "Houston Rockets",
+    "player": "Alperen Sengun",
+    "stat": "Blocks",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 12,
+    "total": 14,
+    "fair": 1.4954502680388415,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1666666666666667,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 1.0,
+    "result": "win",
+    "started": true,
+    "minutes": 37.1
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794613212,
+  "fair": 1.4954502680388415,
+  "legs": [
+   {
+    "event_id": 16814841,
+    "fixture": "Houston Rockets v Utah Jazz",
+    "competition": "NBA",
+    "kickoff": 1794619800,
+    "sport": "basketball",
+    "team": "Houston Rockets",
+    "player": "Kevin Durant",
+    "stat": "Assists",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 10,
+    "total": 11,
+    "fair": 1.4954502680388415,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 6.0,
+    "result": "win",
+    "started": true,
+    "minutes": 33.4
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794613212,
+  "fair": 1.5188982827930304,
+  "legs": [
+   {
+    "event_id": 16814841,
+    "fixture": "Houston Rockets v Utah Jazz",
+    "competition": "NBA",
+    "kickoff": 1794619800,
+    "sport": "basketball",
+    "team": "Houston Rockets",
+    "player": "Amen Thompson",
+    "stat": "Steals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 13,
+    "total": 16,
+    "fair": 1.5188982827930304,
+    "venue": null,
+    "chance": 0.65625,
+    "chance_base": 0.65625,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2307692307692308,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 0.0,
+    "result": "lose",
+    "started": true,
+    "minutes": 40.9
+   }
+  ],
+  "result": "lose"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794613212,
+  "fair": 1.4506669798103693,
+  "legs": [
+   {
+    "event_id": 16814843,
+    "fixture": "Sacramento Kings v Portland Trail Blazers",
+    "competition": "NBA",
+    "kickoff": 1794625200,
+    "sport": "basketball",
+    "team": "Portland Trail Blazers",
+    "player": "Jrue Holiday",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": true,
+    "threshold": 4.0,
+    "hits": 14,
+    "total": 16,
+    "fair": 1.4506669798103693,
+    "venue": null,
+    "chance": 0.6875,
+    "chance_base": 0.6875,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1428571428571428,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 5.0,
+    "result": "win",
+    "started": false,
+    "minutes": 26.6
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794613212,
+  "fair": 1.5188982827930304,
+  "legs": [
+   {
+    "event_id": 16814840,
+    "fixture": "New Orleans Pelicans v Memphis Grizzlies",
+    "competition": "NBA",
+    "kickoff": 1794618000,
+    "sport": "basketball",
+    "team": "New Orleans Pelicans",
+    "player": "Derik Queen",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 5.5,
+    "over": true,
+    "alt": true,
+    "threshold": 6.0,
+    "hits": 13,
+    "total": 16,
+    "fair": 1.5188982827930304,
+    "venue": null,
+    "chance": 0.65625,
+    "chance_base": 0.65625,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2307692307692308,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 6.0,
+    "result": "win",
+    "started": false,
+    "minutes": 22.6
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794613212,
+  "fair": 1.5213661177276514,
+  "legs": [
+   {
+    "event_id": 16814840,
+    "fixture": "New Orleans Pelicans v Memphis Grizzlies",
+    "competition": "NBA",
+    "kickoff": 1794618000,
+    "sport": "basketball",
+    "team": "New Orleans Pelicans",
+    "player": "Zion Williamson",
+    "stat": "Rebounds and assists",
+    "period": "ALL",
+    "line": 5.5,
+    "over": true,
+    "alt": true,
+    "threshold": 6.0,
+    "hits": 11,
+    "total": 13,
+    "fair": 1.5213661177276514,
+    "venue": null,
+    "chance": 0.6551724137931034,
+    "chance_base": 0.6551724137931034,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1818181818181819,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": 9.0,
+    "result": "win",
+    "started": true,
+    "minutes": 33.4
+   }
+  ],
+  "result": "win"
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1794613212,
+  "fair": 1.8597072760853541,
+  "legs": [
+   {
+    "event_id": 15534160,
+    "fixture": "Austria v Ireland",
+    "competition": "UEFA Nations League",
+    "kickoff": 1794685500,
+    "sport": "football",
+    "team": "Austria",
+    "player": "Nicolas Seiwald",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 6,
+    "total": 11,
+    "fair": 1.8597072760853541,
+    "venue": null,
+    "chance": 0.5185185185185185,
+    "chance_base": 0.5185185185185185,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.8333333333333335,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1794613212,
+  "fair": 1.4646418907676622,
+  "legs": [
+   {
+    "event_id": 15534093,
+    "fixture": "Portugal v Denmark",
+    "competition": "UEFA Nations League",
+    "kickoff": 1794685500,
+    "sport": "football",
+    "team": "Denmark",
+    "player": "Gustav Isaksen",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2,
+    "hits": 8,
+    "total": 8,
+    "fair": 1.4646418907676622,
+    "venue": null,
+    "chance": 0.6827607528526105,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.443658718410914,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1794613212,
+  "fair": 1.6799105736937285,
+  "legs": [
+   {
+    "event_id": 15537776,
+    "fixture": "Latvia v Armenia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1794751200,
+    "sport": "football",
+    "team": "Latvia",
+    "player": "L\u016bkass Vapne",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 7,
+    "total": 10,
+    "fair": 1.6799105736937285,
+    "venue": null,
+    "chance": 0.5769230769230769,
+    "chance_base": 0.5769230769230769,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4285714285714286,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1794613212,
+  "fair": 1.5837465982198888,
+  "legs": [
+   {
+    "event_id": 15537776,
+    "fixture": "Latvia v Armenia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1794751200,
+    "sport": "football",
+    "team": "Latvia",
+    "player": "Antonijs \u010cernomordijs",
+    "stat": "Fouls",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 8,
+    "total": 8,
+    "fair": 1.5837465982198888,
+    "venue": null,
+    "chance": 0.6314141423406923,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.443658718410914,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1794613212,
+  "fair": 1.546104744683893,
+  "legs": [
+   {
+    "event_id": 15534036,
+    "fixture": "Belgium v Italy",
+    "competition": "UEFA Nations League",
+    "kickoff": 1794771900,
+    "sport": "football",
+    "team": "Belgium",
+    "player": "Kevin De Bruyne",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": true,
+    "threshold": 3.0,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.546104744683893,
+    "venue": null,
+    "chance": 0.6296296296296297,
+    "chance_base": 0.6296296296296297,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.222222222222222,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1794613212,
+  "fair": 1.3856016234027826,
+  "legs": [
+   {
+    "event_id": 15534089,
+    "fixture": "Croatia v Czechia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1794771900,
+    "sport": "football",
+    "team": "Czechia",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 3.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 12,
+    "fair": 1.3856016234027826,
+    "venue": null,
+    "chance": 0.6856098707001117,
+    "chance_base": 0.6856098707001117,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.7423850836864392,
+    "elo": [
+     1505,
+     1653
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1794613212,
+  "fair": 1.4272208119949137,
+  "legs": [
+   {
+    "event_id": 15534089,
+    "fixture": "Croatia v Czechia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1794771900,
+    "sport": "football",
+    "team": "Croatia",
+    "player": null,
+    "stat": "Shots on target",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 9,
+    "total": 12,
+    "fair": 1.4272208119949137,
+    "venue": null,
+    "chance": 0.6659129209039093,
+    "chance_base": 0.6659129209039093,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.7423850836864392,
+    "elo": [
+     1653,
+     1505
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1794613212,
+  "fair": 1.4736668843998944,
+  "legs": [
+   {
+    "event_id": 15534089,
+    "fixture": "Croatia v Czechia",
+    "competition": "UEFA Nations League",
+    "kickoff": 1794771900,
+    "sport": "football",
+    "team": "Croatia",
+    "player": null,
+    "stat": "Total shots",
+    "period": "ALL",
+    "line": 11.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 7,
+    "total": 12,
+    "fair": 1.4736668843998944,
+    "venue": null,
+    "chance": 0.6238604048970307,
+    "chance_base": 0.6238604048970307,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.9005681177326348,
+    "elo": [
+     1653,
+     1505
+    ],
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1794613212,
+  "fair": 1.5375333662677133,
+  "legs": [
+   {
+    "event_id": 15534029,
+    "fixture": "France v T\u00fcrkiye",
+    "competition": "UEFA Nations League",
+    "kickoff": 1794771900,
+    "sport": "football",
+    "team": "France",
+    "player": "Michael Olise",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 11,
+    "total": 14,
+    "fair": 1.5375333662677133,
+    "venue": null,
+    "chance": 0.6333333333333333,
+    "chance_base": 0.6333333333333333,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2727272727272727,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1794613212,
+  "fair": 1.5192526904005699,
+  "legs": [
+   {
+    "event_id": 15534029,
+    "fixture": "France v T\u00fcrkiye",
+    "competition": "UEFA Nations League",
+    "kickoff": 1794771900,
+    "sport": "football",
+    "team": "T\u00fcrkiye",
+    "player": "\u0130smail Y\u00fcksek",
+    "stat": "Fouls",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 10,
+    "total": 10,
+    "fair": 1.5192526904005699,
+    "venue": null,
+    "chance": 0.6582183505867859,
+    "chance_base": 0.6923076923076923,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.4181174119674838,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1794613212,
+  "fair": 1.5375333662677133,
+  "legs": [
+   {
+    "event_id": 15534029,
+    "fixture": "France v T\u00fcrkiye",
+    "competition": "UEFA Nations League",
+    "kickoff": 1794771900,
+    "sport": "football",
+    "team": "France",
+    "player": "Michael Olise",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2,
+    "hits": 11,
+    "total": 14,
+    "fair": 1.5375333662677133,
+    "venue": null,
+    "chance": 0.6503923894851471,
+    "chance_base": 0.6333333333333333,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.7036337573945712,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "football",
+  "snapshot_at": 1794613212,
+  "fair": 1.5108138817265426,
+  "legs": [
+   {
+    "event_id": 15534083,
+    "fixture": "Spain v England",
+    "competition": "UEFA Nations League",
+    "kickoff": 1794771900,
+    "sport": "football",
+    "team": "England",
+    "player": "Harry Kane",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 12,
+    "total": 15,
+    "fair": 1.5108138817265426,
+    "venue": null,
+    "chance": 0.6451612903225806,
+    "chance_base": 0.6451612903225806,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.25,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1794613212,
+  "fair": 1.4646418907676622,
+  "legs": [
+   {
+    "event_id": 15534083,
+    "fixture": "Spain v England",
+    "competition": "UEFA Nations League",
+    "kickoff": 1794771900,
+    "sport": "football",
+    "team": "Spain",
+    "player": "Ferran Torres",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2,
+    "hits": 8,
+    "total": 8,
+    "fair": 1.4646418907676622,
+    "venue": null,
+    "chance": 0.6827607528526105,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.443658718410914,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794613212,
+  "fair": 1.5583892446411702,
+  "legs": [
+   {
+    "event_id": 16184644,
+    "fixture": "Tennessee Titans v Jacksonville Jaguars",
+    "competition": "NFL",
+    "kickoff": 1794765600,
+    "sport": "american-football",
+    "team": "Jacksonville Jaguars",
+    "player": "Jakobi Meyers",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 34.5,
+    "over": true,
+    "alt": true,
+    "threshold": 35.0,
+    "hits": 14,
+    "total": 18,
+    "fair": 1.5583892446411702,
+    "venue": null,
+    "chance": 0.6470588235294118,
+    "chance_base": 0.6470588235294118,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2857142857142856,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794613212,
+  "fair": 1.6332464210837772,
+  "legs": [
+   {
+    "event_id": 16184644,
+    "fixture": "Tennessee Titans v Jacksonville Jaguars",
+    "competition": "NFL",
+    "kickoff": 1794765600,
+    "sport": "american-football",
+    "team": "Tennessee Titans",
+    "player": "Cam Ward",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": true,
+    "threshold": 5.0,
+    "hits": 13,
+    "total": 18,
+    "fair": 1.6332464210837772,
+    "venue": null,
+    "chance": 0.6176470588235294,
+    "chance_base": 0.6176470588235294,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3846153846153846,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794613212,
+  "fair": 1.5784971902506033,
+  "legs": [
+   {
+    "event_id": 16184636,
+    "fixture": "Atlanta Falcons v Kansas City Chiefs",
+    "competition": "NFL",
+    "kickoff": 1794765600,
+    "sport": "american-football",
+    "team": "Kansas City Chiefs",
+    "player": "Travis Kelce",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 39.5,
+    "over": true,
+    "alt": true,
+    "threshold": 40.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.5784971902506033,
+    "venue": null,
+    "chance": 0.6388888888888888,
+    "chance_base": 0.6388888888888888,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3333333333333333,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794613212,
+  "fair": 1.465833681040271,
+  "legs": [
+   {
+    "event_id": 16184634,
+    "fixture": "Cleveland Browns v Houston Texans",
+    "competition": "NFL",
+    "kickoff": 1794765600,
+    "sport": "american-football",
+    "team": "Houston Texans",
+    "player": "Nico Collins",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 49.5,
+    "over": true,
+    "alt": true,
+    "threshold": 50.0,
+    "hits": 14,
+    "total": 16,
+    "fair": 1.465833681040271,
+    "venue": null,
+    "chance": 0.6875,
+    "chance_base": 0.6875,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1428571428571428,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794613212,
+  "fair": 1.5121241015484133,
+  "legs": [
+   {
+    "event_id": 16184643,
+    "fixture": "Las Vegas Raiders v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1794776700,
+    "sport": "american-football",
+    "team": "Las Vegas Raiders",
+    "player": "Tre Tucker",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 24.5,
+    "over": true,
+    "alt": true,
+    "threshold": 25.0,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.5121241015484133,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.25,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794613212,
+  "fair": 1.5121241015484133,
+  "legs": [
+   {
+    "event_id": 16184643,
+    "fixture": "Las Vegas Raiders v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1794776700,
+    "sport": "american-football",
+    "team": "Seattle Seahawks",
+    "player": "Cooper Kupp",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 19.5,
+    "over": true,
+    "alt": true,
+    "threshold": 20.0,
+    "hits": 16,
+    "total": 20,
+    "fair": 1.5121241015484133,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.25,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794613212,
+  "fair": 1.5420631160098162,
+  "legs": [
+   {
+    "event_id": 16184643,
+    "fixture": "Las Vegas Raiders v Seattle Seahawks",
+    "competition": "NFL",
+    "kickoff": 1794776700,
+    "sport": "american-football",
+    "team": "Las Vegas Raiders",
+    "player": "Ian Thomas",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 9,
+    "total": 10,
+    "fair": 1.5420631160098162,
+    "venue": null,
+    "chance": 0.6538461538461539,
+    "chance_base": 0.6538461538461539,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1111111111111112,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794613212,
+  "fair": 1.5121241015484133,
+  "legs": [
+   {
+    "event_id": 16184640,
+    "fixture": "Indianapolis Colts v Miami Dolphins",
+    "competition": "NFL",
+    "kickoff": 1794765600,
+    "sport": "american-football",
+    "team": "Miami Dolphins",
+    "player": "De'Von Achane",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 89.5,
+    "over": true,
+    "alt": true,
+    "threshold": 90.0,
+    "hits": 12,
+    "total": 14,
+    "fair": 1.5121241015484133,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1666666666666667,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794613212,
+  "fair": 1.439369702572064,
+  "legs": [
+   {
+    "event_id": 16184649,
+    "fixture": "Dallas Cowboys v San Francisco 49ers",
+    "competition": "NFL",
+    "kickoff": 1794777900,
+    "sport": "american-football",
+    "team": "Dallas Cowboys",
+    "player": "KaVontae Turpin",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 13,
+    "total": 14,
+    "fair": 1.439369702572064,
+    "venue": null,
+    "chance": 0.7,
+    "chance_base": 0.7,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.0769230769230769,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794613212,
+  "fair": 1.5596623691460512,
+  "legs": [
+   {
+    "event_id": 16184649,
+    "fixture": "Dallas Cowboys v San Francisco 49ers",
+    "competition": "NFL",
+    "kickoff": 1794777900,
+    "sport": "american-football",
+    "team": "San Francisco 49ers",
+    "player": "Christian McCaffrey",
+    "stat": "Anytime touchdown",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 15,
+    "total": 20,
+    "fair": 1.5596623691460512,
+    "venue": null,
+    "chance": 0.6388888888888888,
+    "chance_base": 0.6388888888888888,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.3333333333333333,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794613212,
+  "fair": 1.5630144535729618,
+  "legs": [
+   {
+    "event_id": 16184649,
+    "fixture": "Dallas Cowboys v San Francisco 49ers",
+    "competition": "NFL",
+    "kickoff": 1794777900,
+    "sport": "american-football",
+    "team": "Dallas Cowboys",
+    "player": "Brevyn Spann-Ford",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 12,
+    "total": 15,
+    "fair": 1.5630144535729618,
+    "venue": null,
+    "chance": 0.6451612903225806,
+    "chance_base": 0.6451612903225806,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.25,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794613212,
+  "fair": 1.5121241015484133,
+  "legs": [
+   {
+    "event_id": 16184638,
+    "fixture": "Green Bay Packers v Minnesota Vikings",
+    "competition": "NFL",
+    "kickoff": 1794765600,
+    "sport": "american-football",
+    "team": "Green Bay Packers",
+    "player": "Chris Brooks",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 10,
+    "total": 11,
+    "fair": 1.5121241015484133,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794613212,
+  "fair": 1.5342539235670176,
+  "legs": [
+   {
+    "event_id": 16184638,
+    "fixture": "Green Bay Packers v Minnesota Vikings",
+    "competition": "NFL",
+    "kickoff": 1794765600,
+    "sport": "american-football",
+    "team": "Green Bay Packers",
+    "player": "Christian Watson",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 44.5,
+    "over": true,
+    "alt": true,
+    "threshold": 45.0,
+    "hits": 15,
+    "total": 19,
+    "fair": 1.5342539235670176,
+    "venue": null,
+    "chance": 0.6571428571428571,
+    "chance_base": 0.6571428571428571,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2666666666666666,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794613212,
+  "fair": 1.4510150053452615,
+  "legs": [
+   {
+    "event_id": 16184645,
+    "fixture": "Arizona Cardinals v Los Angeles Rams",
+    "competition": "NFL",
+    "kickoff": 1794776700,
+    "sport": "american-football",
+    "team": "Arizona Cardinals",
+    "player": "Trey McBride",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 49.5,
+    "over": true,
+    "alt": true,
+    "threshold": 50.0,
+    "hits": 17,
+    "total": 20,
+    "fair": 1.4510150053452615,
+    "venue": null,
+    "chance": 0.6944444444444444,
+    "chance_base": 0.6944444444444444,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1764705882352942,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794613212,
+  "fair": 1.4899885039535388,
+  "legs": [
+   {
+    "event_id": 16184645,
+    "fixture": "Arizona Cardinals v Los Angeles Rams",
+    "competition": "NFL",
+    "kickoff": 1794776700,
+    "sport": "american-football",
+    "team": "Los Angeles Rams",
+    "player": "Puka Nacua",
+    "stat": "Receiving yards",
+    "period": "ALL",
+    "line": 69.5,
+    "over": true,
+    "alt": true,
+    "threshold": 70.0,
+    "hits": 15,
+    "total": 18,
+    "fair": 1.4899885039535388,
+    "venue": null,
+    "chance": 0.6764705882352942,
+    "chance_base": 0.6764705882352942,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794613212,
+  "fair": 1.5121241015484133,
+  "legs": [
+   {
+    "event_id": 16184645,
+    "fixture": "Arizona Cardinals v Los Angeles Rams",
+    "competition": "NFL",
+    "kickoff": 1794776700,
+    "sport": "american-football",
+    "team": "Los Angeles Rams",
+    "player": "Blake Corum",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 12,
+    "total": 14,
+    "fair": 1.5121241015484133,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1666666666666667,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794652953,
+  "fair": 1.424321497402155,
+  "legs": [
+   {
+    "event_id": 16184646,
+    "fixture": "Cincinnati Bengals v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1794792000,
+    "sport": "american-football",
+    "team": "Pittsburgh Steelers",
+    "player": "Jaylen Warren",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 16,
+    "total": 18,
+    "fair": 1.424321497402155,
+    "venue": null,
+    "chance": 0.7058823529411765,
+    "chance_base": 0.7058823529411765,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.125,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794652953,
+  "fair": 1.4363171190957469,
+  "legs": [
+   {
+    "event_id": 16184646,
+    "fixture": "Cincinnati Bengals v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1794792000,
+    "sport": "american-football",
+    "team": "Cincinnati Bengals",
+    "player": "Samaje Perine",
+    "stat": "Receiving receptions",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 13,
+    "total": 14,
+    "fair": 1.4363171190957469,
+    "venue": null,
+    "chance": 0.7,
+    "chance_base": 0.7,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.0769230769230769,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794652953,
+  "fair": 1.5346844037082001,
+  "legs": [
+   {
+    "event_id": 16184646,
+    "fixture": "Cincinnati Bengals v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1794792000,
+    "sport": "american-football",
+    "team": "Cincinnati Bengals",
+    "player": "Joe Burrow",
+    "stat": "Rushing and receiving yards",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": true,
+    "threshold": 5.0,
+    "hits": 11,
+    "total": 13,
+    "fair": 1.5346844037082001,
+    "venue": null,
+    "chance": 0.6551724137931034,
+    "chance_base": 0.6551724137931034,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1818181818181819,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "american-football",
+  "snapshot_at": 1794652953,
+  "fair": 1.3143346851698343,
+  "legs": [
+   {
+    "event_id": 16184646,
+    "fixture": "Cincinnati Bengals v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1794792000,
+    "sport": "american-football",
+    "team": "Cincinnati Bengals",
+    "player": "Samaje Perine",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": true,
+    "threshold": 5,
+    "hits": 18,
+    "total": 18,
+    "fair": 1.3143346851698343,
+    "venue": null,
+    "chance": 0.7608412159272682,
+    "chance_base": 0.7647058823529411,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1475446460676209,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4445898015598055,
+  "legs": [
+   {
+    "event_id": 16824877,
+    "fixture": "Boston Celtics v Dallas Mavericks",
+    "competition": "NBA",
+    "kickoff": 1794783600,
+    "sport": "basketball",
+    "team": "Boston Celtics",
+    "player": "Baylor Scheierman",
+    "stat": "Points rebounds and assists",
+    "period": "ALL",
+    "line": 7.5,
+    "over": true,
+    "alt": true,
+    "threshold": 8.0,
+    "hits": 12,
+    "total": 13,
+    "fair": 1.4445898015598055,
+    "venue": null,
+    "chance": 0.6896551724137931,
+    "chance_base": 0.6896551724137931,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.0833333333333333,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4701886901953558,
+  "legs": [
+   {
+    "event_id": 16824877,
+    "fixture": "Boston Celtics v Dallas Mavericks",
+    "competition": "NBA",
+    "kickoff": 1794783600,
+    "sport": "basketball",
+    "team": "Boston Celtics",
+    "player": "Payton Pritchard",
+    "stat": "Assists",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": true,
+    "threshold": 3.0,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.4701886901953558,
+    "venue": null,
+    "chance": 0.6774193548387096,
+    "chance_base": 0.6774193548387096,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1538461538461537,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4701886901953558,
+  "legs": [
+   {
+    "event_id": 16824877,
+    "fixture": "Boston Celtics v Dallas Mavericks",
+    "competition": "NBA",
+    "kickoff": 1794783600,
+    "sport": "basketball",
+    "team": "Boston Celtics",
+    "player": "Neemias Queta",
+    "stat": "Rebounds and assists",
+    "period": "ALL",
+    "line": 5.5,
+    "over": true,
+    "alt": true,
+    "threshold": 6.0,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.4701886901953558,
+    "venue": null,
+    "chance": 0.6774193548387096,
+    "chance_base": 0.6774193548387096,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1538461538461537,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4153582678605026,
+  "legs": [
+   {
+    "event_id": 16824872,
+    "fixture": "Philadelphia 76ers v Indiana Pacers",
+    "competition": "NBA",
+    "kickoff": 1794765600,
+    "sport": "basketball",
+    "team": "Philadelphia 76ers",
+    "player": null,
+    "stat": "Points",
+    "period": "ALL",
+    "line": 107.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 5,
+    "total": 10,
+    "fair": 1.4153582678605026,
+    "venue": "home",
+    "chance": null,
+    "chance_base": 0.6754623628913826,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.3445659650051511,
+  "legs": [
+   {
+    "event_id": 16824869,
+    "fixture": "Miami Heat v Detroit Pistons",
+    "competition": "NBA",
+    "kickoff": 1794704400,
+    "sport": "basketball",
+    "team": "Miami Heat",
+    "player": "Bam Adebayo",
+    "stat": "Steals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 15,
+    "total": 15,
+    "fair": 1.3445659650051511,
+    "venue": null,
+    "chance": 0.7437344288245232,
+    "chance_base": 0.7419354838709677,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.032258064516129,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.3188790940212651,
+  "legs": [
+   {
+    "event_id": 16824881,
+    "fixture": "Milwaukee Bucks v Atlanta Hawks",
+    "competition": "NBA",
+    "kickoff": 1794790800,
+    "sport": "basketball",
+    "team": "Atlanta Hawks",
+    "player": null,
+    "stat": "Points",
+    "period": "ALL",
+    "line": 109.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 6,
+    "total": 11,
+    "fair": 1.3188790940212651,
+    "venue": "away",
+    "chance": null,
+    "chance_base": 0.723912398104427,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4445898015598055,
+  "legs": [
+   {
+    "event_id": 16824881,
+    "fixture": "Milwaukee Bucks v Atlanta Hawks",
+    "competition": "NBA",
+    "kickoff": 1794790800,
+    "sport": "basketball",
+    "team": "Atlanta Hawks",
+    "player": "Jalen Johnson",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 6.5,
+    "over": true,
+    "alt": true,
+    "threshold": 7.0,
+    "hits": 12,
+    "total": 13,
+    "fair": 1.4445898015598055,
+    "venue": null,
+    "chance": 0.6896551724137931,
+    "chance_base": 0.6896551724137931,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.0833333333333333,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.466047287657559,
+  "legs": [
+   {
+    "event_id": 16824881,
+    "fixture": "Milwaukee Bucks v Atlanta Hawks",
+    "competition": "NBA",
+    "kickoff": 1794790800,
+    "sport": "basketball",
+    "team": "Milwaukee Bucks",
+    "player": null,
+    "stat": "Points",
+    "period": "ALL",
+    "line": 109.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 6,
+    "total": 10,
+    "fair": 1.466047287657559,
+    "venue": "home",
+    "chance": null,
+    "chance_base": 0.6530307580325782,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.3445659650051511,
+  "legs": [
+   {
+    "event_id": 16824881,
+    "fixture": "Milwaukee Bucks v Atlanta Hawks",
+    "competition": "NBA",
+    "kickoff": 1794790800,
+    "sport": "basketball",
+    "team": "Atlanta Hawks",
+    "player": "Onyeka Okongwu",
+    "stat": "Points and rebounds",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10,
+    "hits": 15,
+    "total": 15,
+    "fair": 1.3445659650051511,
+    "venue": null,
+    "chance": 0.7437344288245232,
+    "chance_base": 0.7419354838709677,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.032258064516129,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4647142512940305,
+  "legs": [
+   {
+    "event_id": 16824881,
+    "fixture": "Milwaukee Bucks v Atlanta Hawks",
+    "competition": "NBA",
+    "kickoff": 1794790800,
+    "sport": "basketball",
+    "team": "Atlanta Hawks",
+    "player": "Luguentz Dort",
+    "stat": "Points and rebounds",
+    "period": "ALL",
+    "line": 8.5,
+    "over": true,
+    "alt": true,
+    "threshold": 9,
+    "hits": 9,
+    "total": 9,
+    "fair": 1.4647142512940305,
+    "venue": null,
+    "chance": 0.6827270227735753,
+    "chance_base": 0.68,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.0526315789473684,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4490336706155278,
+  "legs": [
+   {
+    "event_id": 16824880,
+    "fixture": "Toronto Raptors v New York Knicks",
+    "competition": "NBA",
+    "kickoff": 1794783600,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "Jamal Shead",
+    "stat": "Points and assists",
+    "period": "ALL",
+    "line": 6.5,
+    "over": true,
+    "alt": true,
+    "threshold": 7.0,
+    "hits": 14,
+    "total": 16,
+    "fair": 1.4490336706155278,
+    "venue": null,
+    "chance": 0.6875,
+    "chance_base": 0.6875,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1428571428571428,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4490336706155278,
+  "legs": [
+   {
+    "event_id": 16824880,
+    "fixture": "Toronto Raptors v New York Knicks",
+    "competition": "NBA",
+    "kickoff": 1794783600,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "Collin Murray-Boyles",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": true,
+    "threshold": 3.0,
+    "hits": 14,
+    "total": 16,
+    "fair": 1.4490336706155278,
+    "venue": null,
+    "chance": 0.6875,
+    "chance_base": 0.6875,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1428571428571428,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4490336706155278,
+  "legs": [
+   {
+    "event_id": 16824880,
+    "fixture": "Toronto Raptors v New York Knicks",
+    "competition": "NBA",
+    "kickoff": 1794783600,
+    "sport": "basketball",
+    "team": "New York Knicks",
+    "player": "Mikal Bridges",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 14,
+    "total": 16,
+    "fair": 1.4490336706155278,
+    "venue": null,
+    "chance": 0.6875,
+    "chance_base": 0.6875,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1428571428571428,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.3303552392737132,
+  "legs": [
+   {
+    "event_id": 16824880,
+    "fixture": "Toronto Raptors v New York Knicks",
+    "competition": "NBA",
+    "kickoff": 1794783600,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "Jamal Shead",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 16,
+    "total": 16,
+    "fair": 1.3303552392737132,
+    "venue": null,
+    "chance": 0.7516789279124683,
+    "chance_base": 0.75,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.0303030303030303,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.3303552392737132,
+  "legs": [
+   {
+    "event_id": 16824880,
+    "fixture": "Toronto Raptors v New York Knicks",
+    "competition": "NBA",
+    "kickoff": 1794783600,
+    "sport": "basketball",
+    "team": "New York Knicks",
+    "player": "OG Anunoby",
+    "stat": "Three pointers made",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 16,
+    "total": 16,
+    "fair": 1.3303552392737132,
+    "venue": null,
+    "chance": 0.7516789279124683,
+    "chance_base": 0.75,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.0303030303030303,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.3871621682374555,
+  "legs": [
+   {
+    "event_id": 16824880,
+    "fixture": "Toronto Raptors v New York Knicks",
+    "competition": "NBA",
+    "kickoff": 1794783600,
+    "sport": "basketball",
+    "team": "Toronto Raptors",
+    "player": "RJ Barrett",
+    "stat": "Points",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15,
+    "hits": 15,
+    "total": 16,
+    "fair": 1.3871621682374555,
+    "venue": null,
+    "chance": 0.7208962462338572,
+    "chance_base": 0.71875,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.096774193548387,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4701886901953558,
+  "legs": [
+   {
+    "event_id": 16824865,
+    "fixture": "Cleveland Cavaliers v Dallas Mavericks",
+    "competition": "NBA",
+    "kickoff": 1794702600,
+    "sport": "basketball",
+    "team": "Cleveland Cavaliers",
+    "player": "James Harden",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 3.5,
+    "over": true,
+    "alt": true,
+    "threshold": 4.0,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.4701886901953558,
+    "venue": null,
+    "chance": 0.6774193548387096,
+    "chance_base": 0.6774193548387096,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1538461538461537,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4934476770807101,
+  "legs": [
+   {
+    "event_id": 16824865,
+    "fixture": "Cleveland Cavaliers v Dallas Mavericks",
+    "competition": "NBA",
+    "kickoff": 1794702600,
+    "sport": "basketball",
+    "team": "Cleveland Cavaliers",
+    "player": "Jarrett Allen",
+    "stat": "Points rebounds and assists",
+    "period": "ALL",
+    "line": 20.5,
+    "over": true,
+    "alt": true,
+    "threshold": 21.0,
+    "hits": 12,
+    "total": 14,
+    "fair": 1.4934476770807101,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1666666666666667,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4490336706155278,
+  "legs": [
+   {
+    "event_id": 16824875,
+    "fixture": "Los Angeles Clippers v Charlotte Hornets",
+    "competition": "NBA",
+    "kickoff": 1794778200,
+    "sport": "basketball",
+    "team": "Los Angeles Clippers",
+    "player": "Darius Garland",
+    "stat": "Points",
+    "period": "ALL",
+    "line": 14.5,
+    "over": true,
+    "alt": true,
+    "threshold": 15.0,
+    "hits": 14,
+    "total": 16,
+    "fair": 1.4490336706155278,
+    "venue": null,
+    "chance": 0.6875,
+    "chance_base": 0.6875,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1428571428571428,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4934476770807101,
+  "legs": [
+   {
+    "event_id": 16824875,
+    "fixture": "Los Angeles Clippers v Charlotte Hornets",
+    "competition": "NBA",
+    "kickoff": 1794778200,
+    "sport": "basketball",
+    "team": "Los Angeles Clippers",
+    "player": "Brook Lopez",
+    "stat": "Three pointers made",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1.0,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.4934476770807101,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2142857142857144,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4934476770807101,
+  "legs": [
+   {
+    "event_id": 16824875,
+    "fixture": "Los Angeles Clippers v Charlotte Hornets",
+    "competition": "NBA",
+    "kickoff": 1794778200,
+    "sport": "basketball",
+    "team": "Los Angeles Clippers",
+    "player": "Kris Dunn",
+    "stat": "Assists",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": true,
+    "threshold": 3.0,
+    "hits": 14,
+    "total": 17,
+    "fair": 1.4934476770807101,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.2142857142857144,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.3172757001133362,
+  "legs": [
+   {
+    "event_id": 16824875,
+    "fixture": "Los Angeles Clippers v Charlotte Hornets",
+    "competition": "NBA",
+    "kickoff": 1794778200,
+    "sport": "basketball",
+    "team": "Charlotte Hornets",
+    "player": "Sion James",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2,
+    "hits": 17,
+    "total": 17,
+    "fair": 1.3172757001133362,
+    "venue": null,
+    "chance": 0.7591425241610102,
+    "chance_base": 0.7575757575757576,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.0285714285714287,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.3303552392737132,
+  "legs": [
+   {
+    "event_id": 16824875,
+    "fixture": "Los Angeles Clippers v Charlotte Hornets",
+    "competition": "NBA",
+    "kickoff": 1794778200,
+    "sport": "basketball",
+    "team": "Los Angeles Clippers",
+    "player": "Darius Garland",
+    "stat": "Three pointers made",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 16,
+    "total": 16,
+    "fair": 1.3303552392737132,
+    "venue": null,
+    "chance": 0.7516789279124683,
+    "chance_base": 0.75,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.0303030303030303,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.3711946730545548,
+  "legs": [
+   {
+    "event_id": 16824875,
+    "fixture": "Los Angeles Clippers v Charlotte Hornets",
+    "competition": "NBA",
+    "kickoff": 1794778200,
+    "sport": "basketball",
+    "team": "Charlotte Hornets",
+    "player": "Ryan Kalkbrenner",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": true,
+    "threshold": 3,
+    "hits": 16,
+    "total": 17,
+    "fair": 1.3711946730545548,
+    "venue": null,
+    "chance": 0.7292910479095871,
+    "chance_base": 0.7272727272727273,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.090909090909091,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4677396823798698,
+  "legs": [
+   {
+    "event_id": 16824879,
+    "fixture": "Washington Wizards v Houston Rockets",
+    "competition": "NBA",
+    "kickoff": 1794787200,
+    "sport": "basketball",
+    "team": "Washington Wizards",
+    "player": "Bilal Coulibaly",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 11,
+    "total": 12,
+    "fair": 1.4677396823798698,
+    "venue": null,
+    "chance": 0.6785714285714286,
+    "chance_base": 0.6785714285714286,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.090909090909091,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4701886901953558,
+  "legs": [
+   {
+    "event_id": 16824879,
+    "fixture": "Washington Wizards v Houston Rockets",
+    "competition": "NBA",
+    "kickoff": 1794787200,
+    "sport": "basketball",
+    "team": "Houston Rockets",
+    "player": "Tari Eason",
+    "stat": "Rebounds and assists",
+    "period": "ALL",
+    "line": 5.5,
+    "over": true,
+    "alt": true,
+    "threshold": 6.0,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.4701886901953558,
+    "venue": null,
+    "chance": 0.6774193548387096,
+    "chance_base": 0.6774193548387096,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1538461538461537,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4701886901953558,
+  "legs": [
+   {
+    "event_id": 16824879,
+    "fixture": "Washington Wizards v Houston Rockets",
+    "competition": "NBA",
+    "kickoff": 1794787200,
+    "sport": "basketball",
+    "team": "Houston Rockets",
+    "player": "Jabari Smith Jr.",
+    "stat": "Three pointers made",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.4701886901953558,
+    "venue": null,
+    "chance": 0.6774193548387096,
+    "chance_base": 0.6774193548387096,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1538461538461537,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4045733717781297,
+  "legs": [
+   {
+    "event_id": 16824879,
+    "fixture": "Washington Wizards v Houston Rockets",
+    "competition": "NBA",
+    "kickoff": 1794787200,
+    "sport": "basketball",
+    "team": "Houston Rockets",
+    "player": "Amen Thompson",
+    "stat": "Points",
+    "period": "ALL",
+    "line": 9.5,
+    "over": true,
+    "alt": true,
+    "threshold": 10,
+    "hits": 14,
+    "total": 15,
+    "fair": 1.4045733717781297,
+    "venue": null,
+    "chance": 0.7119599588692493,
+    "chance_base": 0.7096774193548387,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.103448275862069,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4236337633735112,
+  "legs": [
+   {
+    "event_id": 16824873,
+    "fixture": "Phoenix Suns v Los Angeles Lakers",
+    "competition": "NBA",
+    "kickoff": 1794776400,
+    "sport": "basketball",
+    "team": "Phoenix Suns",
+    "player": "Collin Gillespie",
+    "stat": "Assists",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 13,
+    "total": 14,
+    "fair": 1.4236337633735112,
+    "venue": null,
+    "chance": 0.7,
+    "chance_base": 0.7,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.0769230769230769,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4445898015598055,
+  "legs": [
+   {
+    "event_id": 16824873,
+    "fixture": "Phoenix Suns v Los Angeles Lakers",
+    "competition": "NBA",
+    "kickoff": 1794776400,
+    "sport": "basketball",
+    "team": "Phoenix Suns",
+    "player": "Devin Booker",
+    "stat": "Points rebounds and assists",
+    "period": "ALL",
+    "line": 26.5,
+    "over": true,
+    "alt": true,
+    "threshold": 27.0,
+    "hits": 12,
+    "total": 13,
+    "fair": 1.4445898015598055,
+    "venue": null,
+    "chance": 0.6896551724137931,
+    "chance_base": 0.6896551724137931,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.0833333333333333,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.5191415973534617,
+  "legs": [
+   {
+    "event_id": 16824873,
+    "fixture": "Phoenix Suns v Los Angeles Lakers",
+    "competition": "NBA",
+    "kickoff": 1794776400,
+    "sport": "basketball",
+    "team": "Phoenix Suns",
+    "player": "Oso Ighodaro",
+    "stat": "Points and assists",
+    "period": "ALL",
+    "line": 6.5,
+    "over": true,
+    "alt": true,
+    "threshold": 7.0,
+    "hits": 11,
+    "total": 13,
+    "fair": 1.5191415973534617,
+    "venue": null,
+    "chance": 0.6551724137931034,
+    "chance_base": 0.6551724137931034,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1818181818181819,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.3956753179250403,
+  "legs": [
+   {
+    "event_id": 16824873,
+    "fixture": "Phoenix Suns v Los Angeles Lakers",
+    "competition": "NBA",
+    "kickoff": 1794776400,
+    "sport": "basketball",
+    "team": "Phoenix Suns",
+    "player": "Jalen Green",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2,
+    "hits": 12,
+    "total": 12,
+    "fair": 1.3956753179250403,
+    "venue": null,
+    "chance": 0.7164990217686923,
+    "chance_base": 0.7142857142857143,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.04,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4236337633735112,
+  "legs": [
+   {
+    "event_id": 16824873,
+    "fixture": "Phoenix Suns v Los Angeles Lakers",
+    "competition": "NBA",
+    "kickoff": 1794776400,
+    "sport": "basketball",
+    "team": "Phoenix Suns",
+    "player": "Collin Gillespie",
+    "stat": "Steals",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 13,
+    "total": 14,
+    "fair": 1.4236337633735112,
+    "venue": null,
+    "chance": 0.7024278474755696,
+    "chance_base": 0.7,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1111111111111112,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.370787201612416,
+  "legs": [
+   {
+    "event_id": 16824876,
+    "fixture": "Utah Jazz v San Antonio Spurs",
+    "competition": "NBA",
+    "kickoff": 1794780000,
+    "sport": "basketball",
+    "team": "Utah Jazz",
+    "player": null,
+    "stat": "Points",
+    "period": "ALL",
+    "line": 111.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 5,
+    "total": 10,
+    "fair": 1.370787201612416,
+    "venue": "home",
+    "chance": null,
+    "chance_base": 0.696815119226417,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4045733717781297,
+  "legs": [
+   {
+    "event_id": 16824876,
+    "fixture": "Utah Jazz v San Antonio Spurs",
+    "competition": "NBA",
+    "kickoff": 1794780000,
+    "sport": "basketball",
+    "team": "San Antonio Spurs",
+    "player": "Victor Wembanyama",
+    "stat": "Assists",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 14,
+    "total": 15,
+    "fair": 1.4045733717781297,
+    "venue": null,
+    "chance": 0.7096774193548387,
+    "chance_base": 0.7096774193548387,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.0714285714285714,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4701886901953558,
+  "legs": [
+   {
+    "event_id": 16824876,
+    "fixture": "Utah Jazz v San Antonio Spurs",
+    "competition": "NBA",
+    "kickoff": 1794780000,
+    "sport": "basketball",
+    "team": "San Antonio Spurs",
+    "player": "Stephon Castle",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": true,
+    "threshold": 5.0,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.4701886901953558,
+    "venue": null,
+    "chance": 0.6774193548387096,
+    "chance_base": 0.6774193548387096,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1538461538461537,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.360061559983362,
+  "legs": [
+   {
+    "event_id": 16824876,
+    "fixture": "Utah Jazz v San Antonio Spurs",
+    "competition": "NBA",
+    "kickoff": 1794780000,
+    "sport": "basketball",
+    "team": "Utah Jazz",
+    "player": "Ace Bailey",
+    "stat": "Three pointers made",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 14,
+    "total": 14,
+    "fair": 1.360061559983362,
+    "venue": null,
+    "chance": 0.7352608362905523,
+    "chance_base": 0.7333333333333333,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.0344827586206897,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.3956753179250403,
+  "legs": [
+   {
+    "event_id": 16824876,
+    "fixture": "Utah Jazz v San Antonio Spurs",
+    "competition": "NBA",
+    "kickoff": 1794780000,
+    "sport": "basketball",
+    "team": "Utah Jazz",
+    "player": "Brice Sensabaugh",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2,
+    "hits": 12,
+    "total": 12,
+    "fair": 1.3956753179250403,
+    "venue": null,
+    "chance": 0.7164990217686923,
+    "chance_base": 0.7142857142857143,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.04,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.30234135220245,
+  "legs": [
+   {
+    "event_id": 16824883,
+    "fixture": "Sacramento Kings v Oklahoma City Thunder",
+    "competition": "NBA",
+    "kickoff": 1794794400,
+    "sport": "basketball",
+    "team": "Sacramento Kings",
+    "player": null,
+    "stat": "Points",
+    "period": "ALL",
+    "line": 109.5,
+    "over": false,
+    "alt": false,
+    "threshold": null,
+    "hits": 6,
+    "total": 10,
+    "fair": 1.30234135220245,
+    "venue": "home",
+    "chance": null,
+    "chance_base": 0.7331147994316509,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4890781391291297,
+  "legs": [
+   {
+    "event_id": 16824883,
+    "fixture": "Sacramento Kings v Oklahoma City Thunder",
+    "competition": "NBA",
+    "kickoff": 1794794400,
+    "sport": "basketball",
+    "team": "Oklahoma City Thunder",
+    "player": null,
+    "stat": "Points",
+    "period": "ALL",
+    "line": 109.5,
+    "over": true,
+    "alt": false,
+    "threshold": null,
+    "hits": 5,
+    "total": 11,
+    "fair": 1.4890781391291297,
+    "venue": "away",
+    "chance": null,
+    "chance_base": 0.643420878197429,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": null,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4934476770807101,
+  "legs": [
+   {
+    "event_id": 16824883,
+    "fixture": "Sacramento Kings v Oklahoma City Thunder",
+    "competition": "NBA",
+    "kickoff": 1794794400,
+    "sport": "basketball",
+    "team": "Oklahoma City Thunder",
+    "player": "Alex Caruso",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 1.5,
+    "over": true,
+    "alt": true,
+    "threshold": 2.0,
+    "hits": 10,
+    "total": 11,
+    "fair": 1.4934476770807101,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "basketball",
+  "snapshot_at": 1794652953,
+  "fair": 1.4045733717781297,
+  "legs": [
+   {
+    "event_id": 16824883,
+    "fixture": "Sacramento Kings v Oklahoma City Thunder",
+    "competition": "NBA",
+    "kickoff": 1794794400,
+    "sport": "basketball",
+    "team": "Oklahoma City Thunder",
+    "player": "Jared McCain",
+    "stat": "Rebounds",
+    "period": "ALL",
+    "line": 0.5,
+    "over": true,
+    "alt": true,
+    "threshold": 1,
+    "hits": 14,
+    "total": 15,
+    "fair": 1.4045733717781297,
+    "venue": null,
+    "chance": 0.7119599588692493,
+    "chance_base": 0.7096774193548387,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.103448275862069,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Player line",
+  "sport": "football",
+  "snapshot_at": 1794652953,
+  "fair": 1.538531268982776,
+  "legs": [
+   {
+    "event_id": 15534036,
+    "fixture": "Belgium v Italy",
+    "competition": "UEFA Nations League",
+    "kickoff": 1794771900,
+    "sport": "football",
+    "team": "Belgium",
+    "player": "Kevin De Bruyne",
+    "stat": "Shots",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": true,
+    "threshold": 3,
+    "hits": 9,
+    "total": 11,
+    "fair": 1.538531268982776,
+    "venue": null,
+    "chance": 0.6499705401900383,
+    "chance_base": 0.6296296296296297,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.6755005554346891,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794661275,
+  "fair": 1.5346309379411622,
+  "legs": [
+   {
+    "event_id": 16184646,
+    "fixture": "Cincinnati Bengals v Pittsburgh Steelers",
+    "competition": "NFL",
+    "kickoff": 1794792000,
+    "sport": "american-football",
+    "team": "Cincinnati Bengals",
+    "player": "Joe Burrow",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 4.5,
+    "over": true,
+    "alt": true,
+    "threshold": 5.0,
+    "hits": 11,
+    "total": 13,
+    "fair": 1.5346309379411622,
+    "venue": null,
+    "chance": 0.6551724137931034,
+    "chance_base": 0.6551724137931034,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1818181818181819,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "american-football",
+  "snapshot_at": 1794661275,
+  "fair": 1.5081704023862477,
+  "legs": [
+   {
+    "event_id": 16184640,
+    "fixture": "Indianapolis Colts v Miami Dolphins",
+    "competition": "NFL",
+    "kickoff": 1794765600,
+    "sport": "american-football",
+    "team": "Miami Dolphins",
+    "player": "De'Von Achane",
+    "stat": "Rushing yards",
+    "period": "ALL",
+    "line": 59.5,
+    "over": true,
+    "alt": true,
+    "threshold": 60.0,
+    "hits": 12,
+    "total": 14,
+    "fair": 1.5081704023862477,
+    "venue": null,
+    "chance": 0.6666666666666666,
+    "chance_base": 0.6666666666666666,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1666666666666667,
+    "elo": null,
+    "book_name": null,
+    "book_price": null,
+    "book_used": null,
+    "value": null,
+    "result": null
+   }
+  ],
+  "result": null
+ },
+ {
+  "category": "Fixture single",
+  "sport": "basketball",
+  "snapshot_at": 1794661275,
+  "fair": 1.4701886901953558,
+  "legs": [
+   {
+    "event_id": 16824865,
+    "fixture": "Cleveland Cavaliers v Dallas Mavericks",
+    "competition": "NBA",
+    "kickoff": 1794702600,
+    "sport": "basketball",
+    "team": "Cleveland Cavaliers",
+    "player": "Donovan Mitchell",
+    "stat": "Assists",
+    "period": "ALL",
+    "line": 2.5,
+    "over": true,
+    "alt": true,
+    "threshold": 3.0,
+    "hits": 13,
+    "total": 15,
+    "fair": 1.4701886901953558,
+    "venue": null,
+    "chance": 0.6774193548387096,
+    "chance_base": 0.6774193548387096,
+    "exchange_p": null,
+    "exchange_back": null,
+    "chance_model": null,
+    "chance_anchored": null,
+    "exchange_kind": null,
+    "value_at_pick": null,
+    "fair_record": 1.1538461538461537,
+    "elo": null,
     "book_name": null,
     "book_price": null,
     "book_used": null,

@@ -1,118 +1,118 @@
 {
  "groups": {
   "football|team": {
-   "a": 0.0571,
-   "b": 1.1399,
+   "a": 0.058,
+   "b": 1.144,
    "c": {
     "cards": -0.0603,
-    "corners": -0.0525,
-    "fouls": 0.0074,
-    "goals": 0.0645,
-    "other": -0.0182,
-    "shots": 0.1135,
-    "shots on target": 0.0071,
-    "tackles": -0.0043
+    "corners": -0.0528,
+    "fouls": 0.0065,
+    "goals": 0.0616,
+    "other": -0.018,
+    "shots": 0.1144,
+    "shots on target": 0.0109,
+    "tackles": -0.0042
    },
-   "legs": 2398,
-   "said": 0.6863,
+   "legs": 2402,
+   "said": 0.6861,
    "landed": 0.7269
   },
   "football|player": {
-   "a": -0.0198,
-   "b": 0.994,
+   "a": -0.009,
+   "b": 0.9896,
    "c": {
-    "fouls": -0.1309,
-    "goals": -0.107,
-    "other": 0.0331,
-    "saves": 0.0543,
-    "shots": 0.0974,
-    "shots on target": 0.0116,
-    "tackles": 0.0217
+    "fouls": -0.1209,
+    "goals": -0.1045,
+    "other": 0.0294,
+    "saves": 0.052,
+    "shots": 0.1027,
+    "shots on target": 0.0137,
+    "tackles": 0.0187
    },
-   "legs": 2647,
-   "said": 0.6922,
-   "landed": 0.6925
+   "legs": 2662,
+   "said": 0.6917,
+   "landed": 0.6931
   },
   "american-football|player": {
-   "a": -0.0296,
-   "b": 1.0043,
+   "a": -0.0291,
+   "b": 1.0038,
    "c": {
-    "other": -0.0102,
-    "passing": -0.0751,
-    "receiving": 0.0091,
-    "rushing": -0.0347,
-    "tackles": 0.0813
+    "other": -0.0099,
+    "passing": -0.0728,
+    "receiving": 0.0088,
+    "rushing": -0.0336,
+    "tackles": 0.0783
    },
    "legs": 622,
    "said": 0.6836,
    "landed": 0.6865
   },
   "american-football|team": {
-   "a": -0.0256,
-   "b": 0.9809,
+   "a": -0.0247,
+   "b": 0.9816,
    "c": {
-    "goals": 0.0121,
-    "other": -0.0119,
+    "goals": 0.0116,
+    "other": -0.0114,
     "passing": -0.0013,
-    "rushing": -0.0245
+    "rushing": -0.0236
    },
    "legs": 109,
    "said": 0.6636,
    "landed": 0.6514
   },
   "darts|team": {
-   "a": -0.0021,
-   "b": 0.9599,
+   "a": -0.0022,
+   "b": 0.9613,
    "c": {
-    "180s": -0.0024,
-    "other": 0.0003
+    "180s": -0.0023,
+    "other": 0.0001
    },
    "legs": 258,
    "said": 0.6263,
    "landed": 0.6395
   },
   "baseball|player": {
-   "a": 0.0208,
-   "b": 0.9949,
+   "a": 0.0202,
+   "b": 0.9952,
    "c": {
-    "other": 0.0208
+    "other": 0.0202
    },
    "legs": 156,
    "said": 0.6694,
    "landed": 0.6859
   },
   "basketball|team": {
-   "a": 0.0295,
-   "b": 1.0037,
+   "a": 0.0263,
+   "b": 1.0088,
    "c": {
-    "goals": -0.0043,
-    "other": 0.0338
+    "goals": -0.0041,
+    "other": 0.0304
    },
-   "legs": 139,
-   "said": 0.6561,
-   "landed": 0.6691
+   "legs": 142,
+   "said": 0.6566,
+   "landed": 0.669
   },
   "basketball|player": {
-   "a": 0.034,
-   "b": 1.1434,
+   "a": 0.0242,
+   "b": 1.1546,
    "c": {
-    "other": 0.034
+    "other": 0.0242
    },
-   "legs": 1556,
-   "said": 0.701,
-   "landed": 0.7249
+   "legs": 1605,
+   "said": 0.7007,
+   "landed": 0.724
   }
  },
- "legs": 7900,
- "updated": "13 Nov 2026 23:23",
+ "legs": 7971,
+ "updated": "14 Nov 2026 13:26",
  "check": {
   "ok": true,
-  "test": 1580,
-  "uncorrected": 0.5947,
-  "corrected": 0.5932,
-  "said": 0.6691,
-  "corrected_said": 0.6763,
-  "landed": 0.7013
+  "test": 1595,
+  "uncorrected": 0.5961,
+  "corrected": 0.5941,
+  "said": 0.6681,
+  "corrected_said": 0.6765,
+  "landed": 0.6991
  },
  "active": true
 }
