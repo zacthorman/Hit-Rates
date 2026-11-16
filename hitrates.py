@@ -99,6 +99,16 @@ def extract_match_stats(
                 if home is None or away is None:
                     continue
                 bucket[name] = (home, away)
+                # Darts sends "Checkouts accuracy" as "6/26 (23%)": 6 doubles
+                # hit from 26 darts at a double. _as_number keeps the 6. The
+                # 26 is the half that makes it a checkout percentage, and it
+                # is only in homeTotal/awayTotal, so it is kept beside it
+                # (14 Nov 2026). Not a market: markets.DARTS_STATS leaves it
+                # out, so it is shown as form and never scanned for bets.
+                if name == "Checkouts accuracy":
+                    ht, at = item.get("homeTotal"), item.get("awayTotal")
+                    if isinstance(ht, (int, float)) and isinstance(at, (int, float)):
+                        bucket["Darts at double"] = (float(ht), float(at))
 
         _derive_basketball_points(bucket)
 

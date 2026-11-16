@@ -138,7 +138,7 @@
     "x_central"
    ],
    "alpha_gbm": 0.013537065354851661,
-   "trees": 271
+   "trees": 311
   },
   "Corner kicks": {
    "use": "gbm",
@@ -256,7 +256,7 @@
     "x_central"
    ],
    "alpha_gbm": 0.06380874006844643,
-   "trees": 233
+   "trees": 273
   },
   "Fouls": {
    "use": "gbm",
@@ -374,7 +374,7 @@
     "x_central"
    ],
    "alpha_gbm": 0.0,
-   "trees": 310
+   "trees": 350
   },
   "Total tackles": {
    "use": "gbm",
@@ -492,7 +492,7 @@
     "x_central"
    ],
    "alpha_gbm": 0.01281860796940489,
-   "trees": 344
+   "trees": 384
   },
   "Yellow cards": {
    "use": "gbm",
@@ -610,7 +610,7 @@
     "x_central"
    ],
    "alpha_gbm": 0.0,
-   "trees": 256
+   "trees": 296
   },
   "Clearances": {
    "use": "linear",
@@ -748,7 +748,7 @@
     "x_central"
    ],
    "alpha_gbm": 0.012831432211148474,
-   "trees": 269
+   "trees": 309
   },
   "Offsides": {
    "use": "linear",
@@ -886,8 +886,8 @@
     "x_central"
    ],
    "alpha_gbm": 0.01751255631145833,
-   "trees": 307
+   "trees": 347
   }
  },
- "weekly": "2026-11-02T05:36:20+00:00"
+ "weekly": "2026-11-16T05:36:43+00:00"
 }

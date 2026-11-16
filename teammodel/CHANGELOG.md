@@ -41,3 +41,13 @@
 - Yellow cards: updated, 40 trees added (latest 21 days: 0.6484 before, 0.6482 after)
 - Big chances: updated, 40 trees added (latest 21 days: 0.6447 before, 0.6437 after)
 - Goalkeeper saves: updated, 40 trees added (latest 21 days: 0.6397 before, 0.6392 after)
+
+## 2026-11-16: weekly update
+
+- Shots on target: updated, 40 trees added (latest 21 days: 0.6464 before, 0.6464 after)
+- Corner kicks: updated, 40 trees added (latest 21 days: 0.6261 before, 0.6258 after)
+- Fouls: updated, 40 trees added (latest 21 days: 0.6538 before, 0.6534 after)
+- Total tackles: updated, 40 trees added (latest 21 days: 0.6811 before, 0.6775 after)
+- Yellow cards: updated, 40 trees added (latest 21 days: 0.6437 before, 0.6434 after)
+- Big chances: updated, 40 trees added (latest 21 days: 0.6388 before, 0.6378 after)
+- Goalkeeper saves: updated, 40 trees added (latest 21 days: 0.6547 before, 0.6541 after)

@@ -1444,6 +1444,79 @@ header { position: relative; }
 .pp-price { display: inline-block; margin-left: 8px; font-size: 12px; font-weight: 650; padding: 2px 8px; border-radius: 999px;
   background: rgba(11, 138, 74, 0.12); color: #0b8a4a; vertical-align: 2px; white-space: nowrap; }
 
+
+/* Darts matchday board (14 Nov 2026). Darts pages only. */
+#darts-board { margin: 4px 0 22px; }
+.db-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 10px 18px; margin-bottom: 10px; }
+.db-head h2 { margin: 0; font-size: 21px; letter-spacing: -0.01em; }
+.db-head p { margin: 3px 0 0; color: var(--muted); font-size: 13.5px; }
+.db-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+#db-q { font: inherit; font-size: 14px; padding: 7px 11px; border-radius: 9px; border: 1px solid var(--border);
+  background: var(--control-bg); color: var(--text-primary); width: 170px; }
+#db-q:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 1px; }
+.db-group { margin-bottom: 14px; }
+.db-group h3 { margin: 0 0 4px; font-size: 13px; font-weight: 650; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);
+  position: sticky; top: 0; z-index: 2; background: var(--page); padding: 8px 2px 6px; }
+.db-group h3 small { font-weight: 500; color: var(--muted); margin-left: 4px; }
+.db-cols { display: grid; grid-template-columns: 74px minmax(0, 1fr) 168px; column-gap: 14px; align-items: center;
+  padding: 0 15px 4px; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.db-colset, .db-side { display: grid; grid-template-columns: minmax(0, 1fr) 46px 46px 50px 62px 66px 54px; column-gap: 8px; align-items: baseline; }
+.db-colset > span, .db-side > span { text-align: right; white-space: nowrap; }
+.db-colset > .db-name, .db-side > .db-name { text-align: left; }
+.db-row { all: unset; box-sizing: border-box; display: grid; grid-template-columns: 74px minmax(0, 1fr) 168px; column-gap: 14px;
+  align-items: center; width: 100%; cursor: pointer; padding: 10px 14px; margin-bottom: 6px;
+  background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; }
+.db-row:hover { border-color: var(--baseline); background: var(--control-bg); }
+.db-row:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 2px; }
+.db-row.db-on { border-color: var(--text-primary); box-shadow: inset 3px 0 0 var(--text-primary); }
+.db-row[hidden] { display: none; }
+.db-row.db-started { opacity: 0.6; }
+.db-when { display: flex; flex-direction: column; gap: 1px; }
+.db-when b { font-size: 16px; font-variant-numeric: tabular-nums; }
+.db-when small { font-size: 11.5px; color: var(--muted); }
+.db-when .db-live { color: var(--miss); font-weight: 650; }
+.db-sides { display: block; min-width: 0; }
+.db-side { padding: 2px 0; font-size: 14px; font-variant-numeric: tabular-nums; color: var(--text-secondary); }
+.db-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-primary); }
+.db-fav .db-name, .db-fav .db-win { font-weight: 680; }
+.db-win { color: var(--text-primary); }
+.db-dot { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 7px; vertical-align: 1px; }
+.db-dot0 { background: var(--team-1); } .db-dot1 { background: var(--team-2); }
+.db-tr .db-dot { margin: 0 0 0 7px; }
+.db-bar { display: block; height: 5px; margin-top: 6px; border-radius: 99px; background: var(--team-2); overflow: hidden; }
+.db-bar em { display: block; height: 100%; background: var(--team-1); border-right: 2px solid var(--surface-1); }
+.db-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.db-meta small { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.db-meta .db-go { color: var(--text-secondary); font-weight: 600; }
+.db-chip { display: inline-block; font-size: 11.5px; font-weight: 620; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--border); white-space: nowrap; }
+.db-chip-mkt { color: var(--hit); border-color: color-mix(in srgb, var(--hit) 45%, transparent); }
+.db-chip-model, .db-chip-off { color: var(--text-secondary); background: var(--tint); }
+.db-chip-warn { color: #a05a00; border-color: rgba(200,120,0,0.5); background: rgba(240,160,0,0.10); margin-left: 4px; }
+:root[data-theme="dark"] .db-chip-warn { color: #f0b040; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .db-chip-warn { color: #f0b040; } }
+.db-foot { margin-top: 4px; }
+.db-tape { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+.db-tape th { font-weight: 500; color: var(--text-secondary); text-align: center; padding: 7px 8px; width: 40%; }
+.db-tape th small { display: block; font-size: 11px; color: var(--muted); }
+.db-tape td { padding: 7px 4px; width: 30%; }
+.db-tape td small { color: var(--muted); font-size: 12px; }
+.db-tape tbody tr { border-top: 1px solid var(--grid); }
+.db-tl { text-align: left; } .db-tr { text-align: right; }
+.db-best { font-weight: 700; color: var(--text-primary); }
+.db-up { color: var(--hit); } .db-down { color: var(--muted); }
+@media (max-width: 760px) {
+  .db-cols { grid-template-columns: 54px minmax(0, 1fr); padding: 0 12px 3px; }
+  .db-cols > span:last-child { display: none; }
+  .db-colset { grid-template-columns: minmax(0, 1fr) 40px 42px 44px; }
+  .db-colset > span:nth-child(5), .db-colset > span:nth-child(6), .db-colset > .db-wl { display: none; }
+  .db-row { grid-template-columns: 54px minmax(0, 1fr); row-gap: 6px; padding: 10px 11px; }
+  .db-meta { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 6px 10px; }
+  .db-side { grid-template-columns: minmax(0, 1fr) 40px 42px 44px; font-size: 13.5px; }
+  .db-side > .db-st:nth-of-type(5), .db-side > .db-st:nth-of-type(6), .db-side > .db-wl { display: none; }
+  .db-when b { font-size: 15px; }
+  #db-q { flex: 1; min-width: 130px; }
+  .db-head h2 { font-size: 18px; }
+}
 """
 
 JS = """
@@ -7782,10 +7855,18 @@ function jChart(points, line, colorVar, unit) {
   const n = points.length;
   if (!n) return "";
   const pw = W - L - R, ph = H - T - B;
-  const lo = Math.min(0, ...points.map(p => p.v));
+  let lo = Math.min(0, ...points.map(p => p.v));
   const max = Math.max(...points.map(p => p.v), line, 0.5);
-  const tick = jStep((max - lo) * 1.1 / 4);
-  const top = Math.ceil((max * 1.1) / tick) * tick;
+  let tick = jStep((max - lo) * 1.1 / 4);
+  let top = Math.ceil((max * 1.1) / tick) * tick;
+  // Darts averages sit at 80 to 105: from a zero baseline every line is flat.
+  // Where everything is well clear of zero, start the axis just under the lowest.
+  const jLow = Math.min(...points.map(p => p.v), line);
+  if (SPORT === "darts" && jLow > 0.6 * max) {
+    tick = jStep(Math.max(max - jLow, 1) * 1.3 / 4);
+    lo = Math.max(0, Math.floor((jLow - tick * 0.5) / tick) * tick);
+    top = Math.ceil((max + tick * 0.5) / tick) * tick;
+  }
   const x = i => L + (n > 1 ? (i * pw) / (n - 1) : pw / 2);
   const y = v => T + ph - ((v - lo) / ((top - lo) || 1)) * ph;
   let s = `<svg class="jchart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${
@@ -7868,10 +7949,17 @@ function jChart2(series, line, unit, labels) {
   if (!n) return "";
   const pw = W - L - R, ph = H - T - B;
   const all = series.flatMap(s => s.pts.map(p => p.v));
-  const lo = Math.min(0, ...all);
+  let lo = Math.min(0, ...all);
   const max = Math.max(...all, line, 0.5);
-  const tick = jStep((max - lo) * 1.1 / 5);
-  const top = Math.ceil((max * 1.1) / tick) * tick;
+  let tick = jStep((max - lo) * 1.1 / 5);
+  let top = Math.ceil((max * 1.1) / tick) * tick;
+  // Same floating baseline as jChart, darts only.
+  const jLow = Math.min(...all, line);
+  if (SPORT === "darts" && jLow > 0.6 * max) {
+    tick = jStep(Math.max(max - jLow, 1) * 1.3 / 5);
+    lo = Math.max(0, Math.floor((jLow - tick * 0.5) / tick) * tick);
+    top = Math.ceil((max + tick * 0.5) / tick) * tick;
+  }
   const x = i => L + (n > 1 ? (i * pw) / (n - 1) : pw / 2);
   const y = v => T + ph - ((v - lo) / ((top - lo) || 1)) * ph;
   let s = `<svg class="jchart jbig" viewBox="0 0 ${W} ${H}" role="img" aria-label="${escapeHtml(unit)} against the ${jNum(line)} line">`;
@@ -9434,7 +9522,7 @@ function dartsMatchView(el) {
   const T = DATA.teams;
   if (!m) {
     el.innerHTML = `<div class="lu-card lu-empty">No match model for this one: one of the players has no
-      results on record, or the format is not known yet.</div>`;
+      results on record, or the format is not known yet.</div>` + dbTapeHtml() + dbBooksHtml();
     return;
   }
   const pct = x => `${Math.round(x * 100)}%`;
@@ -9449,7 +9537,14 @@ function dartsMatchView(el) {
     ? `<div class="gs-vols">
         <div class="gs-vol"><span>Model</span><b>${fav(m.modelWinA)} ${side(m.modelWinA)}%</b></div>
         <div class="gs-vol"><span>Exchange</span><b>${fav(m.marketWinA)} ${side(m.marketWinA)}%</b></div>
-        <div class="gs-vol"><span>Used</span><b>${fav(pa)} ${side(pa)}%</b></div></div>`
+        <div class="gs-vol"><span>Used</span><b>${fav(pa)} ${side(pa)}%</b></div></div>
+      <div class="def-sub">Betfair Exchange match odds${m.priced ? ", read " + new Date(m.priced * 1000).toLocaleString("en-GB",
+        { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Europe/London" }) : ""}.
+        Prices move through the day, so the nearer the start the more this can be out.</div>`
+    : "";
+  const assumedNote = m.formatAssumed
+    ? `<p class="gs-script">The feed gives no format for this match, so it is priced as ${fmt}, the same as the
+        rest of this event's matches here. Check the format before using the legs and 180s lines.</p>`
     : "";
   const flag = hasMkt && m.flag
     ? `<p class="gs-script"><b>The model and the exchange disagree by ${Math.round(Math.abs(m.modelWinA - m.marketWinA) * 100)} points.</b>
@@ -9474,7 +9569,7 @@ function dartsMatchView(el) {
       ${m.expLegs != null ? `<div class="gs-vol"><span>Legs</span><b>${m.expLegs.toFixed(1)}</b></div>` : ""}
       ${m.exp180 != null ? `<div class="gs-vol"><span>180s</span><b>${m.exp180.toFixed(1)}</b></div>` : ""}
     </div>
-    ${mktLine}${flag}${noMkt}
+    ${mktLine}${flag}${noMkt}${assumedNote}
     ${thin ? `<p class="gs-script">Fewer than 10 matches on record for one player, so the rating is still settling: treat the price as rough.</p>` : ""}
   </div>`;
 
@@ -9495,7 +9590,7 @@ function dartsMatchView(el) {
       <div class="gs-vol"><span>Tie</span><b>${pct(m.most180[1])} &middot; ${fair(m.most180[1])}</b></div>
       <div class="gs-vol"><span>${escapeHtml(T[1].name)}</span><b>${pct(m.most180[2])} &middot; ${fair(m.most180[2])}</b></div></div>` : "";
 
-  el.innerHTML = head
+  el.innerHTML = head + dbTapeHtml() + dbBooksHtml()
     + (totals ? `<h3 class="lu-h">Total legs</h3><div class="lu-card">${totals}</div>` : "")
     + (hcp ? `<h3 class="lu-h">Handicap (legs)</h3><div class="lu-card">${hcp}</div>` : "")
     + (scores ? `<h3 class="lu-h">Most likely scores</h3><div class="lu-card"><div class="gs-vols">${scores}</div></div>` : "")
@@ -10501,6 +10596,303 @@ loadMarkets();
 loadFModel();
 loadGameState();
 loadUSModel();
+
+/* ------------------------------------------------------------------ darts
+   Matchday board (14 Nov 2026). A darts report is one event, 15 to 40
+   matches, and the page used to open on a single match's average chart with
+   the rest behind a dropdown. This puts every match on one screen first:
+   when, the format, who is favoured and on what evidence (exchange blend or
+   the model alone), and each player's last ten on the numbers that decide a
+   leg. Pick a row and the page below becomes that match, on the Match tab.
+   Darts only; nothing here runs for any other sport. */
+let dbShowStarted = false;
+let dbSort = "time";
+
+function dbForm(f, i, n) {
+  const rows = ((f.records || [])[i] || []).filter(r => r.stats && r.stats.ALL).slice(-n);
+  const out = { n: rows.length, w: 0, avg: null, r180: null, r140: null, co: null, coHit: 0, coAtt: 0,
+                c100: 0, best: null, legPct: null, modus: 0 };
+  if (!rows.length) return out;
+  let a = 0, an = 0, legs = 0, won = 0, s180 = 0, s140 = 0;
+  rows.forEach(r => {
+    const s = r.stats.ALL;
+    if (r.result === "W") out.w++;
+    if ((r.competition || "").toLowerCase().includes("modus")) out.modus++;
+    if (s["Average 3 darts"] != null) { a += s["Average 3 darts"]; an++; }
+    // Per-leg rates only from matches scored in legs. A sets match comes
+    // through as 3-1, which is sets, and would read as four legs.
+    const gf = r.goals_for || 0, ga = r.goals_against || 0;
+    if (Math.max(gf, ga) >= 4) {
+      legs += gf + ga; won += gf;
+      s180 += s["Thrown 180"] || 0; s140 += s["Thrown over 140"] || 0;
+    }
+    if (s["Darts at double"] > 0 && s["Checkouts accuracy"] != null) {
+      out.coHit += s["Checkouts accuracy"]; out.coAtt += s["Darts at double"];
+    }
+    if ((s["Checkouts over 100"] || 0) > 0) out.c100++;
+    if (s["Highest checkout"] != null && (out.best == null || s["Highest checkout"] > out.best)) out.best = s["Highest checkout"];
+  });
+  if (an) out.avg = a / an;
+  if (legs) { out.r180 = s180 / legs; out.r140 = s140 / legs; out.legPct = won / legs; }
+  if (out.coAtt >= 20) out.co = out.coHit / out.coAtt;
+  return out;
+}
+
+function dbNum(v, dp) { return v == null ? "&ndash;" : v.toFixed(dp); }
+function dbPct(v) { return v == null ? "&ndash;" : Math.round(v * 100) + "%"; }
+function dbTime(k) {
+  return new Date(k * 1000).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/London" });
+}
+function dbDay(k) {
+  return new Date(k * 1000).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", timeZone: "Europe/London" });
+}
+function dbHour(k) { return parseInt(dbTime(k).slice(0, 2), 10); }
+function dbFormat(m) {
+  if (!m || !m.format) return "";
+  return m.format[0] === "legs" ? "First to " + m.format[1] : "First to " + m.format[1] + " sets";
+}
+function dbPrice(p) { return p > 0.005 ? (1 / p).toFixed(2) : "&ndash;"; }
+function dbGap(f) {
+  const m = f.dartsModel;
+  return m && m.marketWinA != null ? Math.abs(m.modelWinA - m.marketWinA) : -1;
+}
+
+function dbRow(f, idx, now) {
+  const fx = f.fixture, m = f.dartsModel, T = f.teams;
+  const F = [dbForm(f, 0, 10), dbForm(f, 1, 10)];
+  const started = (fx.kickoff || 0) <= now;
+  const pa = m ? m.winA : null;
+  const hasMkt = !!m && m.marketWinA != null;
+  const gap = hasMkt ? Math.round(Math.abs(m.modelWinA - m.marketWinA) * 100) : 0;
+  const src = !m ? `<span class="db-chip db-chip-off" title="No rating or format for this match yet">No price</span>`
+    : hasMkt ? `<span class="db-chip db-chip-mkt" title="Winner chance leans ${Math.round((m.marketWeight || 0.75) * 100)}% on the Betfair Exchange price, the rest on the model">Exchange blend</span>`
+      + (m.flag ? `<span class="db-chip db-chip-warn" title="The model alone says ${Math.round(m.modelWinA * 100)}% for ${escapeHtml(T[0].name)}; the exchange says ${Math.round(m.marketWinA * 100)}%. A warning about the model, not an edge.">Model ${gap} pts off</span>` : "")
+    : `<span class="db-chip db-chip-model" title="No exchange price on file, so this is the results-only model. Check a bookmaker before trusting it.">Model only</span>`;
+  const side = i => {
+    const p = pa == null ? null : (i === 0 ? pa : 1 - pa);
+    const fav = p != null && p >= 0.5;
+    return `<div class="db-side${fav ? " db-fav" : ""}">
+      <span class="db-name"><i class="db-dot db-dot${i}"></i>${escapeHtml(T[i].name)}</span>
+      <span class="db-win">${p == null ? "&ndash;" : Math.round(p * 100) + "%"}</span>
+      <span class="db-fair">${p == null ? "&ndash;" : dbPrice(p)}</span>
+      <span class="db-st">${dbNum(F[i].avg, 1)}</span>
+      <span class="db-st">${dbNum(F[i].r180, 2)}</span>
+      <span class="db-st">${dbPct(F[i].co)}</span>
+      <span class="db-st db-wl">${F[i].n ? F[i].w + "-" + (F[i].n - F[i].w) : "&ndash;"}</span>
+    </div>`;
+  };
+  const names = (T[0].name + " " + T[1].name).toLowerCase();
+  return `<button type="button" class="db-row${started ? " db-started" : ""}" data-dbfix="${idx}" data-dbnames="${escapeHtml(names)}">
+    <span class="db-when"><b>${dbTime(fx.kickoff)}</b><small>${dbFormat(m)}</small>${started ? `<small class="db-live">started</small>` : ""}</span>
+    <span class="db-sides">${side(0)}${side(1)}${pa == null ? "" : `<i class="db-bar"><em style="width:${Math.round(pa * 100)}%"></em></i>`}</span>
+    <span class="db-meta">${src}${m && m.expLegs != null && m.exp180 != null ? `<small>${m.expLegs.toFixed(1)} legs &middot; ${m.exp180.toFixed(1)} 180s</small>` : ""}<small class="db-go">All markets &rsaquo;</small></span>
+  </button>`;
+}
+
+function dartsBoard() {
+  if (SPORT !== "darts" || ALL.fixtures.length < 2) return;
+  let el = document.getElementById("darts-board");
+  if (!el) {
+    const head = document.querySelector(".wrap > header");
+    if (!head) return;
+    el = document.createElement("section");
+    el.id = "darts-board";
+    head.parentNode.insertBefore(el, head);
+  }
+  const now = Date.now() / 1000;
+  const all = ALL.fixtures.map((f, i) => i);
+  const upcoming = all.filter(i => (ALL.fixtures[i].fixture.kickoff || 0) > now);
+  const startedN = all.length - upcoming.length;
+  const shown = (dbShowStarted || !upcoming.length) ? all : upcoming;
+  const kick = i => ALL.fixtures[i].fixture.kickoff || 0;
+  shown.sort((a, b) => dbSort === "gap"
+    ? (dbGap(ALL.fixtures[b]) - dbGap(ALL.fixtures[a])) || (kick(a) - kick(b))
+    : kick(a) - kick(b));
+
+  const groups = [];
+  if (dbSort === "gap") {
+    groups.push({ title: "Biggest gap between the model and the exchange first", rows: shown });
+  } else {
+    shown.forEach(i => {
+      const k = kick(i);
+      const title = dbDay(k) + " · " + (dbHour(k) < 17 ? "afternoon session" : "evening session");
+      const g = groups[groups.length - 1];
+      if (g && g.title === title) g.rows.push(i); else groups.push({ title, rows: [i] });
+    });
+  }
+  const priced = all.filter(i => dbGap(ALL.fixtures[i]) >= 0).length;
+  const comp = (ALL.fixtures[0].fixture.competition || "Darts").split(",")[0];
+  const cols = `<div class="db-cols" aria-hidden="true"><span></span><span class="db-colset">
+      <span class="db-name"></span><span title="Chance of winning the match">Win</span><span title="Fair price, one over the chance">Fair</span>
+      <span title="3-dart average, last 10 matches">Avg</span><span title="180s per leg, last 10 matches played in legs">180s/leg</span>
+      <span title="Checkout percentage: doubles hit over darts at a double, last 10">Checkout</span><span class="db-wl" title="Won and lost, last 10">Last 10</span></span><span></span></div>`;
+  const cur = ALL.fixtures.indexOf(DATA);
+  el.innerHTML = `<div class="db-head">
+      <div><h2>${escapeHtml(comp)}: matchday board</h2>
+        <p>${all.length} matches &middot; ${priced} priced off the exchange &middot; pick a match for every market on it</p></div>
+      <div class="db-tools">
+        <input type="search" id="db-q" placeholder="Find a player" aria-label="Find a player" autocomplete="off">
+        <div class="seg"><button type="button" data-dbsort="time" aria-pressed="${dbSort === "time"}">By time</button><button type="button" data-dbsort="gap" aria-pressed="${dbSort === "gap"}">Model v exchange</button></div>
+        ${startedN && upcoming.length ? `<div class="seg"><button type="button" id="db-started" aria-pressed="${dbShowStarted}">${dbShowStarted ? "Hide" : "Show"} ${startedN} started</button></div>` : ""}
+      </div></div>`
+    + groups.map(g => `<div class="db-group"><h3>${escapeHtml(g.title)} <small>${g.rows.length}</small></h3>${cols}
+        ${g.rows.map(i => dbRow(ALL.fixtures[i], i, now)).join("")}</div>`).join("")
+    + `<p class="note db-foot">Win is the chance used on the Match tab: the exchange price blended with the model where
+        Betfair has one, the model alone where it does not. Avg, 180s a leg, checkout and the won-lost run are each
+        player's last 10 matches across every event, so a floor match and a major sit side by side. Times are UK.</p>`;
+  dbMark();
+}
+
+function dbMark() {
+  const cur = String(ALL.fixtures.indexOf(DATA));
+  document.querySelectorAll("#darts-board .db-row").forEach(b =>
+    b.classList.toggle("db-on", b.dataset.dbfix === cur));
+}
+
+function dbOpen(i) {
+  const f = ALL.fixtures[i];
+  if (!f) return;
+  DATA = f;
+  if ((f.fixture.kickoff || 0) <= Date.now() / 1000 && !showPast) { showPast = true; fillFixtures(); }
+  fixtureSelect.value = String(i);
+  applyFixture();
+  if (typeof switchTab === "function" && tab !== "lineups") switchTab("lineups");
+  try { history.replaceState(null, "", "#e" + f.fixture.id); } catch (e) { /* file:// in some browsers */ }
+  dbMark();
+  const head = document.querySelector(".wrap > header");
+  if (head) head.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+/* The last ten, side by side, on the Match tab. The numbers a commentator
+   would quote: scoring (average, 180s and 140s a leg), finishing (checkout
+   percentage, big finishes) and results. */
+function dbTapeHtml() {
+  const f = DATA, T = f.teams;
+  if (!f.records || f.records.length !== 2) return "";
+  const A = dbForm(f, 0, 10), B = dbForm(f, 1, 10);
+  if (!A.n && !B.n) return "";
+  const A2 = dbForm(f, 0, 20), B2 = dbForm(f, 1, 20);
+  const line = (label, hint, a, b, av, bv) => {
+    const cmp = av != null && bv != null && av !== bv;
+    return `<tr><td class="db-tl${cmp && av > bv ? " db-best" : ""}">${a}</td>
+      <th>${label}${hint ? `<small>${hint}</small>` : ""}</th>
+      <td class="db-tr${cmp && bv > av ? " db-best" : ""}">${b}</td></tr>`;
+  };
+  const co = F => F.co == null ? "&ndash;" : `${Math.round(F.co * 100)}% <small>${F.coHit}/${F.coAtt}</small>`;
+  const rows = [
+    line("Won, lost", "last 10", `${A.w}-${A.n - A.w}`, `${B.w}-${B.n - B.w}`, A.n ? A.w / A.n : null, B.n ? B.w / B.n : null),
+    line("3-dart average", "last 10 (last 20)", `${dbNum(A.avg, 1)} <small>(${dbNum(A2.avg, 1)})</small>`,
+         `${dbNum(B.avg, 1)} <small>(${dbNum(B2.avg, 1)})</small>`, A.avg, B.avg),
+    line("180s a leg", "", dbNum(A.r180, 2), dbNum(B.r180, 2), A.r180, B.r180),
+    line("140+ a leg", "", dbNum(A.r140, 2), dbNum(B.r140, 2), A.r140, B.r140),
+    line("Checkout", "doubles hit / darts at double", co(A), co(B), A.co, B.co),
+    line("Matches with a 100+ finish", "", `${A.c100} of ${A.n}`, `${B.c100} of ${B.n}`, A.n ? A.c100 / A.n : null, B.n ? B.c100 / B.n : null),
+    line("Best checkout", "", A.best == null ? "&ndash;" : String(A.best), B.best == null ? "&ndash;" : String(B.best), A.best, B.best),
+    line("Legs won", "", dbPct(A.legPct), dbPct(B.legPct), A.legPct, B.legPct),
+  ].join("");
+  const modus = [0, 1].map(i => [T[i].name, [A2, B2][i].modus]).filter(x => x[1] > 0)
+    .map(x => `${x[1]} of ${escapeHtml(x[0])}'s last 20 are Modus Super Series matches (short format, weaker field)`);
+  const noCo = A.co == null && B.co == null
+    ? " Checkout percentage needs a rebuild after 14 Nov 2026 to fill in." : "";
+  return `<h3 class="lu-h">Form, last 10 matches</h3><div class="lu-card"><table class="db-tape">
+      <thead><tr><td class="db-tl"><b><i class="db-dot db-dot0"></i>${escapeHtml(T[0].name)}</b></td><th></th>
+        <td class="db-tr"><b>${escapeHtml(T[1].name)}<i class="db-dot db-dot1"></i></b></td></tr></thead>
+      <tbody>${rows}</tbody></table>
+      <div class="def-sub">Every PDC event each has played, newest ten. Per-leg figures use matches scored in legs.${noCo}
+        ${modus.length ? " " + modus.join("; ") + "." : ""}</div></div>`;
+}
+
+/* Bookmaker prices for this match, if darts_books.py has run (it writes
+   reports/darts_books.json and the build attaches it). Best price per
+   selection across the books, and for the match winner what that price is
+   worth against the chance used above. */
+function dbBooksHtml() {
+  const b = DATA.dartsBooks, m = DATA.dartsModel, T = DATA.teams;
+  if (!b || !b.markets || !b.markets.length) return "";
+  const last = s => { const w = normName(s).split(" ").filter(x => x.length > 1); return w[w.length - 1] || ""; };
+  const sideOf = sel => last(sel) === last(T[0].name) ? 0 : last(sel) === last(T[1].name) ? 1 : -1;
+  const blocks = b.markets.map(mk => {
+    const isWin = mk.kind === "winner";
+    const rows = mk.rows.map(r => {
+      let edge = "";
+      if (isWin && m && m.winA != null) {
+        const i = sideOf(r.selection);
+        if (i >= 0) {
+          const p = i === 0 ? m.winA : 1 - m.winA;
+          const ev = Math.round((p * r.best - 1) * 100);
+          edge = `<small class="${ev > 0 ? "db-up" : "db-down"}">fair ${dbPrice(p)} &middot; ${ev > 0 ? "+" : ""}${ev}%</small>`;
+        }
+      }
+      return `<div class="def-row"><div class="def-row-top"><span>${escapeHtml(r.selection)}${r.line != null ? " " + r.line : ""}</span>
+        <b>${r.best.toFixed(2)} <small>${escapeHtml(r.bookName || r.book || "")}${r.n > 1 ? " &middot; " + r.n + " books" : ""}</small></b></div>
+        ${edge ? `<div class="def-sub">${edge}</div>` : ""}</div>`;
+    }).join("");
+    return `<h3 class="lu-h">${escapeHtml(mk.name)} <small class="lu-muted">bookmakers</small></h3><div class="lu-card">${rows}</div>`;
+  }).join("");
+  const when = b.fetched ? new Date(b.fetched * 1000).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Europe/London" }) : "";
+  return blocks + `<p class="note">Best bookmaker price per selection from Oddschecker${when ? ", read " + when : ""}. Prices move: check before you bet.</p>`;
+}
+
+if (SPORT === "darts") {
+  document.addEventListener("click", e => {
+    const row = e.target.closest("[data-dbfix]");
+    if (row) { dbOpen(parseInt(row.dataset.dbfix, 10)); return; }
+    const s = e.target.closest("[data-dbsort]");
+    if (s) { dbSort = s.dataset.dbsort; dartsBoard(); return; }
+    if (e.target.closest("#db-started")) { dbShowStarted = !dbShowStarted; dartsBoard(); }
+  });
+  document.addEventListener("input", e => {
+    if (!e.target || e.target.id !== "db-q") return;
+    const q = e.target.value.trim().toLowerCase();
+    document.querySelectorAll("#darts-board .db-group").forEach(g => {
+      let any = false;
+      g.querySelectorAll(".db-row").forEach(r => {
+        const hit = !q || r.dataset.dbnames.includes(q);
+        r.hidden = !hit;
+        if (hit) any = true;
+      });
+      g.hidden = !any;
+    });
+  });
+  fixtureSelect.addEventListener("change", dbMark);
+  window.addEventListener("hashchange", () => setTimeout(dbMark, 0));
+
+  /* The feed's stat names ("Thrown 180", "Checkouts over 100") are the keys
+     every lookup on this page uses, so they stay as they are in the data and
+     are reworded only where they are shown: text nodes, never attributes or
+     form values. Cheap, and it cannot change what a control selects. */
+  const DB_TEXT = [["Thrown 180", "180s"], ["thrown 180", "180s"],
+    ["Checkouts over 100", "100+ checkouts"], ["checkouts over 100", "100+ checkouts"],
+    ["Average 3 darts", "3-dart average"], ["average 3 darts", "3-dart average"]];
+  const dbRelabel = () => {
+    const root = document.querySelector(".wrap");
+    if (!root) return;
+    const walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walk.nextNode())) {
+      const tag = node.parentNode && node.parentNode.nodeName;
+      if (tag === "SCRIPT" || tag === "STYLE" || tag === "OPTION" || tag === "TEXTAREA") continue;
+      let t = node.nodeValue;
+      if (t.indexOf("180") < 0 && t.indexOf("heckouts over") < 0 && t.indexOf("verage 3") < 0) continue;
+      DB_TEXT.forEach(pair => { if (t.indexOf(pair[0]) >= 0) t = t.split(pair[0]).join(pair[1]); });
+      if (t !== node.nodeValue) node.nodeValue = t;
+    }
+  };
+  let dbQueued = false;
+  const dbWrap = document.querySelector(".wrap");
+  if (dbWrap && typeof MutationObserver === "function") {
+    new MutationObserver(() => {
+      if (dbQueued) return;
+      dbQueued = true;
+      requestAnimationFrame(() => { dbQueued = false; dbRelabel(); });
+    }).observe(dbWrap, { childList: true, subtree: true });
+  }
+  dartsBoard();
+  dbRelabel();
+  // Keep "started" honest on a page left open through a session.
+  setInterval(() => { if (!document.hidden && !(document.activeElement && document.activeElement.id === "db-q")) dartsBoard(); }, 300000);
+}
+
 """
 
 
@@ -10941,6 +11333,64 @@ def build_html(payload: dict) -> str:
 """
 
 
+def _darts_doubles(darts: list, cache_dir) -> None:
+    """Darts at a double for every form match, read from the cached match
+    statistics, so the page can show a checkout percentage. New builds carry
+    it already (hitrates.extract_match_stats); this fills it into pages built
+    before 14 Nov 2026 on a rerender, with no requests. The side is told by
+    which half of the feed's row matches the doubles hit already on record."""
+    seen: dict = {}
+    for f in darts:
+        for recs in f.get("records") or []:
+            for r in recs:
+                mine = ((r.get("stats") or {}).get("ALL")) or {}
+                if "Darts at double" in mine or "Checkouts accuracy" not in mine:
+                    continue
+                eid = r.get("id")
+                if eid not in seen:
+                    seen[eid] = None
+                    try:
+                        raw = json.loads((Path(cache_dir) / f"event_{eid}_statistics.json").read_text(encoding="utf-8"))
+                    except (OSError, ValueError):
+                        raw = None
+                    for period in (raw or {}).get("statistics") or []:
+                        if period.get("period") != "ALL":
+                            continue
+                        for g in period.get("groups") or []:
+                            for it in g.get("statisticsItems") or []:
+                                if it.get("name") == "Checkouts accuracy" and isinstance(it.get("homeTotal"), (int, float)) \
+                                        and isinstance(it.get("awayTotal"), (int, float)):
+                                    seen[eid] = (it.get("homeValue"), it["homeTotal"], it.get("awayValue"), it["awayTotal"])
+                row = seen[eid]
+                if not row:
+                    continue
+                hv, ht, av, at = row
+                hit = mine["Checkouts accuracy"]
+                if hit == hv and hit != av:
+                    home = True
+                elif hit == av and hit != hv:
+                    home = False
+                else:
+                    home = r.get("venue") != "away"
+                mine["Darts at double"] = float(ht if home else at)
+                theirs = ((r.get("against") or {}).get("ALL"))
+                if isinstance(theirs, dict) and "Checkouts accuracy" in theirs:
+                    theirs["Darts at double"] = float(at if home else ht)
+
+
+def _darts_books() -> dict | None:
+    """Bookmaker prices for darts, if darts_books.py has written any that are
+    still fresh. Optional: no file, no card on the page."""
+    try:
+        import time as _time
+        data = json.loads((Path(__file__).resolve().parent / "reports" / "darts_books.json").read_text(encoding="utf-8"))
+        if _time.time() - (data.get("updated") or 0) > 18 * 3600:
+            return None
+        return data if data.get("events") else None
+    except (OSError, ValueError):
+        return None
+
+
 def _attach_darts(payload: dict) -> None:
     """Match markets for every darts fixture (darts_model.py): who wins, total
     legs, handicap, correct score and 180s. Worked out at build time from the
@@ -10957,22 +11407,45 @@ def _attach_darts(payload: dict) -> None:
     except Exception as exc:
         print(f"  darts match markets skipped: {type(exc).__name__}: {exc}")
         return
-    # Exchange prices, if a fresh darts_prices.json is on disk (darts_market.py).
+    # Exchange prices: a fresh darts_prices.json, else the darts match odds the
+    # nightly Betfair run left in market_prices.json (darts_market.load).
     try:
         import darts_market
         prices = darts_market.load()
         weight = darts_market.fit_weight() or darts_market.MARKET_WEIGHT
     except Exception:
         darts_market, prices, weight = None, None, None
+    try:
+        _darts_doubles(darts, darts_model.CACHE)
+    except Exception as exc:
+        print(f"  darts checkout totals skipped: {type(exc).__name__}: {exc}")
+    books = _darts_books()
+    # SofaScore leaves bestOfLegs off some fixtures (Aspinall v Kuivenhoven,
+    # 14 Nov 2026), which used to leave the Match tab empty. Every match in
+    # one round of one event is the same length, so borrow the commonest
+    # format among that event's other fixtures here and say it was assumed.
+    from collections import Counter
+    by_event: dict = {}
+    for f in darts:
+        fx = f.get("fixture") or {}
+        got_fmt = formats.get(fx.get("id"))
+        if got_fmt:
+            by_event.setdefault(fx.get("tournamentId") or fx.get("competition"), Counter())[tuple(got_fmt)] += 1
     snapshots = []
     for f in darts:
         fx = f.get("fixture") or {}
         teams = f.get("teams") or []
         if len(teams) != 2:
             continue
+        if books and str(fx.get("id")) in books.get("events", {}):
+            f["dartsBooks"] = dict(books["events"][str(fx.get("id"))], fetched=books.get("updated"))
         fmt = formats.get(fx.get("id"))
+        assumed = False
         if fmt is None:
-            continue
+            seen = by_event.get(fx.get("tournamentId") or fx.get("competition"))
+            if not seen:
+                continue
+            fmt, assumed = seen.most_common(1)[0][0], True
         market = (darts_market.market_chance(prices, teams[0].get("name"), teams[1].get("name"))
                   if darts_market and prices else None)
         try:
@@ -10983,12 +11456,15 @@ def _attach_darts(payload: dict) -> None:
                                           ts=fx.get("kickoff"), win_override=blended)
                 got.update({"marketWinA": round(market, 4), "marketWeight": weight,
                             "priced": prices.get("fetched"),
+                            "pricedFrom": prices.get("source") or "darts_prices.json",
                             "flag": abs(got["modelWinA"] - market) > darts_market.FLAG})
                 snapshots.append({"id": fx.get("id"), "fetched": prices.get("fetched"),
                                   "model": got["modelWinA"], "market": market})
         except Exception:
             got = None
         if got:
+            if assumed:
+                got["formatAssumed"] = True
             f["dartsModel"] = got
     if snapshots and darts_market:
         try:

@@ -42,6 +42,15 @@ DARTS = 3503            # Betfair event type id for darts
 MARKET_WEIGHT = 0.75    # share of the market in the blend, on the log-odds scale
 FLAG = 0.12             # model and market further apart than this get flagged
 FRESH_HOURS = 12
+# The nightly build fetches Betfair for every sport into market_prices.json
+# (market_prices.py), darts match odds included. Until 14 Nov 2026 the darts
+# page read only darts_prices.json, which is written by darts.sh alone, so a
+# page built by update.py showed the model alone while fresh exchange prices
+# sat unused next door. Those are now the fallback. They are allowed to be
+# older than a direct fetch because the page prints when they were read.
+MARKET_PRICES = HERE / "market_prices.json"
+FALLBACK_HOURS = 30
+OVERROUND_OK = (0.96, 1.06)   # a two-way book outside this is a stale or one-sided ladder
 
 
 # Letters NFKD does not break down, so "Białecki" folds to bialecki and
@@ -99,7 +108,7 @@ def fetch(hours: int = 48) -> dict:
     return out
 
 
-def load() -> dict | None:
+def _own() -> dict | None:
     try:
         data = json.loads(PRICES.read_text())
     except (OSError, ValueError):
@@ -107,6 +116,51 @@ def load() -> dict | None:
     if time.time() - data.get("fetched", 0) > FRESH_HOURS * 3600:
         return None
     return data
+
+
+def from_market_prices(path: Path | None = None, now: float | None = None) -> dict | None:
+    """Darts match odds out of market_prices.json, in darts_prices.json's
+    shape, or None if the file is missing, too old or holds no usable darts
+    book. Runners are put back in Betfair's own order (market_prices swaps
+    them to the site's when the two disagree, and says so in "swapped"), which
+    does not matter to market_chance(): it matches on surnames either way."""
+    try:
+        data = json.loads((path or MARKET_PRICES).read_text())
+    except (OSError, ValueError):
+        return None
+    fetched = data.get("fetched") or 0
+    now = time.time() if now is None else now
+    if now - fetched > FALLBACK_HOURS * 3600:
+        return None
+    matches = []
+    for e in (data.get("events") or {}).values():
+        if not isinstance(e, dict) or e.get("sport") != "darts":
+            continue
+        for m in e.get("markets") or []:
+            if m.get("type") != "MATCH_ODDS":
+                continue
+            runners = m.get("runners") or []
+            over = m.get("overround")
+            if len(runners) != 2 or not all(r.get("p") and r.get("name") for r in runners):
+                continue
+            if over is None or not OVERROUND_OK[0] <= over <= OVERROUND_OK[1]:
+                continue
+            matches.append({"event": e.get("betfair"), "start": e.get("start"),
+                            "runners": [{"name": r["name"], "price": r.get("price"), "p": r["p"]} for r in runners],
+                            "overround": over, "matched": m.get("matched")})
+    if not matches:
+        return None
+    return {"fetched": fetched, "matches": matches, "source": "market_prices.json"}
+
+
+def load() -> dict | None:
+    """The freshest darts match odds on disk: darts_prices.json from a direct
+    fetch (darts.sh), else the darts rows the nightly Betfair run left in
+    market_prices.json. Whichever was read last wins when both are usable."""
+    own, shared = _own(), from_market_prices()
+    if own and shared:
+        return own if own.get("fetched", 0) >= shared.get("fetched", 0) else shared
+    return own or shared
 
 
 def market_chance(prices: dict | None, home: str, away: str) -> float | None:
