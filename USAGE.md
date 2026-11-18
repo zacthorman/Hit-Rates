@@ -84,6 +84,22 @@ python run.py --darts 3 --games 20 --h2h    # the same thing by hand
 
 `darts.sh` routes every request through FlareSolverr (`SOFA_FLARESOLVERR=1`, the same as the nightly job) and refuses to start if the container is not answering on port 8191, so start Docker Desktop first.
 
+### FlareSolverr (Docker)
+
+SofaScore and Oddschecker requests go through a FlareSolverr container on port 8191, so Docker Desktop has to be running. It is set to start at sign-in, and Docker's disk is capped at 40 GB (Settings > Resources).
+
+You should never need to make the container by hand. When FlareSolverr does not answer, `update.py` and `lineups_auto.py` (through `ensure_flaresolverr()`) and `sofascore_api.py` call `flaresolverr_docker.recreate()`. It opens Docker Desktop if the engine is down, removes the old container and runs a fresh one. That clears Chrome's temp files and the log every time. It also works when the container is missing altogether, after a Docker "Clean up data" or on a new Mac. `docker restart` was used before, which kept the same container growing: by 16 Nov 2026 Docker's disk had reached 238 GB and the Mac had 10 GB free.
+
+The command, if you ever do want it by hand:
+
+```
+docker rm -f flaresolverr
+docker run -d --name flaresolverr --restart unless-stopped -p 8191:8191 --log-opt max-size=10m --log-opt max-file=3 ghcr.io/flaresolverr/flaresolverr:latest
+curl localhost:8191   # should say "FlareSolverr is ready!"
+```
+
+`FLARESOLVERR_CONTAINER` and `FLARESOLVERR_IMAGE` override the name and image.
+
 Markets are 180s, 3-dart average, highest checkout and 100+ checkouts (`DARTS_STATS` in markets.py). Form is drawn from every competition a player has played in, because one darts event is at most a few matches a year. Modus, WDF, Challenge and Development Tour and the Women's Series are skipped by name (`DARTS_SKIP` in run.py, override with `--darts-skip`). One caveat the numbers do not show: a best-of-11-legs floor match and a sets-format major produce very different 180 counts, and the last 20 mixes both.
 
 `--league` reads the team list off the league table, so you don't have to know twenty ids, then collapses each team's next fixture into a round. Known names: `premier_league`, `championship`, `la_liga`, `serie_a`, `bundesliga`, `ligue_1`, `champions_league`, `europa_league`. Any other competition works by passing its uniqueTournament id.

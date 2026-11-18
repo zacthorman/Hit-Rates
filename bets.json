@@ -2109,6 +2109,66 @@
         "model_p": 0.7,
         "source": "nba.html",
         "value": null,
+        "result": "void"
+      }
+    ],
+    "result": "void",
+    "profit": null,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-11-17-1",
+    "kind": "single",
+    "logged_at": "2026-11-17T07:30:40+00:00",
+    "price": 2.26,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16824894,
+        "fixture": "Los Angeles Clippers v Utah Jazz",
+        "kickoff": 1794972600,
+        "player": "Kris Dunn",
+        "player_id": 846933,
+        "team": "Los Angeles Clippers",
+        "stat": "Points",
+        "line": 5.0,
+        "model_k": 9,
+        "model_n": 10,
+        "model_p": 0.7,
+        "source": "nba.html",
+        "value": null,
+        "result": "void"
+      }
+    ],
+    "result": "void",
+    "profit": null,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-11-18-1",
+    "kind": "single",
+    "logged_at": "2026-11-18T07:30:33+00:00",
+    "price": 2.37,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16824896,
+        "fixture": "Cleveland Cavaliers v Memphis Grizzlies",
+        "kickoff": 1795046400,
+        "player": "James Harden",
+        "player_id": 817133,
+        "team": "Cleveland Cavaliers",
+        "stat": "Points and assists",
+        "line": 20.0,
+        "model_k": 8,
+        "model_n": 10,
+        "model_p": 0.65,
+        "source": "nba.html",
+        "value": null,
         "result": null
       }
     ],

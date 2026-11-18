@@ -36,6 +36,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
 import threading
@@ -146,16 +147,9 @@ def ensure_flaresolverr() -> bool:
         return True
     if _flare_healthy(url):
         return True
-    say("FlareSolverr is not healthy, restarting the container")
-    name = os.environ.get("FLARESOLVERR_CONTAINER", "flaresolverr")
-    docker = next((d for d in ("/usr/local/bin/docker", "/opt/homebrew/bin/docker",
-                               "/Applications/Docker.app/Contents/Resources/bin/docker")
-                   if Path(d).exists()), "docker")
-    try:
-        subprocess.run([docker, "restart", name], check=True, timeout=120,
-                       capture_output=True, text=True)
-    except Exception as exc:
-        say(f"  could not restart it ({type(exc).__name__}). Is Docker Desktop running?")
+    say("FlareSolverr is not healthy, recreating the container")
+    import flaresolverr_docker
+    if not flaresolverr_docker.recreate(log=say):
         return False
     # A fresh container takes ten to thirty seconds before it will take a
     # request. Starting the build in the same second is what the 11:11 run
@@ -504,6 +498,22 @@ def main() -> None:
         #    network, so LESSONS.md and calibration.json are current by the time
         #    anyone reads today's picks. Never fatal: a settle problem must not
         #    cost the league build.
+        # 16 Nov 2026: the bet record (pplog/, linelog/) is gitignored and
+        #    lived only on this Mac. Copy it to iCloud Drive before anything
+        #    settles or rewrites it, and warn while the disk still has room:
+        #    a full disk is what took Docker and the 07:00 run down on 12 Nov.
+        if not args.dry:
+            if Path("backup_record.py").exists():
+                run([python, "backup_record.py"], args.dry, allow_fail=True)
+            try:
+                free_gb = shutil.disk_usage(ROOT).free / 1e9
+                if free_gb < 30:
+                    say(f"WARNING: only {free_gb:.0f} GB free on this Mac")
+                    notify("Mac disk nearly full",
+                           f"Only {free_gb:.0f} GB free. Check Docker first (Settings > Resources).")
+            except OSError:
+                pass
+
         if not args.dry and Path("bettrack.py").exists():
             say("settling tracked bets")
             run([python, "bettrack.py", "settle"], args.dry, allow_fail=True)

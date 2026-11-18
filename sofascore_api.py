@@ -301,26 +301,17 @@ class _FlareSession:
 
 
 def _restart_flaresolverr(wait: float = 60) -> bool:
-    """docker restart flaresolverr (opening Docker Desktop first if needed),
+    """Recreate the flaresolverr container (opening Docker Desktop first if needed),
     then wait until it answers. True if it came back. Never raises."""
     import shutil
     import subprocess
     import time as _t
     import urllib.request
-    docker = shutil.which("docker") or next(
-        (p for p in ("/usr/local/bin/docker", "/opt/homebrew/bin/docker",
-                     "/Applications/Docker.app/Contents/Resources/bin/docker") if os.path.exists(p)), None)
-    if not docker:
-        return False
     try:
-        if subprocess.run([docker, "info"], capture_output=True, timeout=20).returncode != 0:
-            subprocess.run(["open", "-a", "Docker"], capture_output=True, timeout=20)
-            for _ in range(24):
-                _t.sleep(5)
-                if subprocess.run([docker, "info"], capture_output=True, timeout=20).returncode == 0:
-                    break
-        print("  FlareSolverr not answering: restarting the container")
-        subprocess.run([docker, "restart", "flaresolverr"], capture_output=True, timeout=60)
+        import flaresolverr_docker
+        print("  FlareSolverr not answering: recreating the container")
+        if not flaresolverr_docker.recreate():
+            return False
         base = FLARESOLVERR.rsplit("/v1", 1)[0]
         end = _t.time() + wait
         while _t.time() < end:
