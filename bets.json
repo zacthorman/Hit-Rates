@@ -2169,6 +2169,36 @@
         "model_p": 0.65,
         "source": "nba.html",
         "value": null,
+        "result": "void"
+      }
+    ],
+    "result": "void",
+    "profit": null,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-11-19-1",
+    "kind": "single",
+    "logged_at": "2026-11-19T07:37:15+00:00",
+    "price": 2.4,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16824906,
+        "fixture": "Minnesota Timberwolves v New York Knicks",
+        "kickoff": 1795136400,
+        "player": "Jaden McDaniels",
+        "player_id": 1092930,
+        "team": "Minnesota Timberwolves",
+        "stat": "Rebounds and assists",
+        "line": 9.0,
+        "model_k": 9,
+        "model_n": 10,
+        "model_p": 0.7,
+        "source": "nba.html",
+        "value": null,
         "result": null
       }
     ],
