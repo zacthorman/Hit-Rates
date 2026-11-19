@@ -62,6 +62,111 @@ table.form td { padding:3px 4px; font-size:13px; }
 .tabs > input:nth-of-type(3):checked ~ .boostp { display:block; }
 .warn { border-left:3px solid var(--accent); padding:10px 14px; margin:16px 0;
   font-size:13.5px; color:var(--muted); }
+
+.vbox { margin:8px 0 4px; }
+.budget input, .boost input, .boost select { font:inherit; font-size:15px; padding:4px 6px;
+  border:1px solid var(--line); border-radius:6px; background:var(--bg); color:var(--fg); }
+.budget input { width:80px; }
+.boost .bl { display:flex; justify-content:space-between; align-items:center; gap:10px; margin:6px 0; font-size:14px; }
+.boost .bl select, .boost .bl input { max-width:58%; }
+.ok { border-left:3px solid #2e8b57; padding-left:8px; }
+.meh { border-left:3px solid #c9a227; padding-left:8px; }
+.bad { border-left:3px solid #c0392b; padding-left:8px; }
+
+.main > input { position:absolute; opacity:0; pointer-events:none; }
+.main > label { display:inline-block; width:calc(33.33% - 4px); text-align:center; padding:12px 0; margin:14px 0 6px;
+  font-size:17px; font-weight:700; border:1px solid var(--line); border-radius:10px; cursor:pointer; color:var(--muted); }
+.main > label + input + label { margin-left:4px; }
+.main > input:checked + label { background:var(--fg); color:var(--bg); border-color:var(--fg); }
+.main > input:focus-visible + label { outline:2px solid var(--accent); outline-offset:2px; }
+.main .mpane { display:none; }
+.main > input:nth-of-type(1):checked ~ .board, .main > input:nth-of-type(2):checked ~ .team,
+.main > input:nth-of-type(3):checked ~ .player { display:block; }
+.bchips { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+.bchips button { font:inherit; font-size:13px; padding:5px 12px; border:1px solid var(--line); border-radius:999px;
+  background:none; color:var(--muted); cursor:pointer; }
+.bchips button.on { background:var(--fg); color:var(--bg); border-color:var(--fg); }
+.bwrap { overflow-x:auto; }
+table.board { width:100%; border-collapse:collapse; font-size:14px; }
+table.board th { font-size:12px; color:var(--muted); font-weight:600; text-align:left; padding:6px 6px 6px 0;
+  border-bottom:1px solid var(--line); }
+table.board td { padding:7px 6px 7px 0; border-bottom:1px solid var(--line); vertical-align:top; }
+table.board .n { text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
+table.board td .sub { font-size:12px; }
+.bv { font-size:12px; color:var(--muted); }
+.bv.yes { font-weight:700; color:var(--hit, #2e9d5b); }
+details.game { border-top:1px solid var(--line); }
+details.game > summary { list-style:none; cursor:pointer; padding:10px 22px 10px 0; position:relative; font-size:15px; }
+details.game > summary::-webkit-details-marker { display:none; }
+details.game > summary::after { content:'+'; position:absolute; right:2px; top:10px; color:var(--muted); font-size:18px; }
+details.game[open] > summary::after { content:'\2212'; }
+details.game > summary .ko { font-weight:700; margin-right:4px; font-variant-numeric:tabular-nums; }
+details.game > summary .fx { font-weight:600; }
+details.game > summary .comp { display:block; font-size:12px; margin-top:1px; }
+details.game > summary .comp .tag { margin-left:6px; }
+details.game > summary .lead { display:block; }
+ul.gsl { list-style:none; padding:0; margin:4px 0 10px; font-size:14px; }
+ul.gsl li { display:flex; justify-content:space-between; gap:10px; padding:4px 0; border-bottom:1px solid var(--line); }
+ul.gsl li .n { white-space:nowrap; }
+.out { margin:4px 0 0; }
+.verdict .out b { color:var(--fg); font-weight:600; }
+details.game > summary .lead { font-size:13px; color:var(--muted); }
+details.game > summary .lead b { color:var(--fg); }
+details.game[open] > summary { padding-bottom:4px; }
+.main .cnt { font-weight:500; opacity:.6; margin-left:2px; }
+.verdict { margin:12px 0 4px; }
+.verdict .score { font-size:19px; margin:0 0 6px; }
+.verdict .score b { font-variant-numeric:tabular-nums; padding:0 4px; }
+.pbar { display:flex; height:6px; border-radius:3px; overflow:hidden; margin:0 0 4px; background:var(--line); }
+.pbar .ph { background:var(--fg); } .pbar .pd { background:var(--muted); opacity:.5; } .pbar .pa { background:var(--accent); }
+.best { margin:10px 0 4px; font-size:15px; }
+.nobet { color:var(--muted); font-weight:600; }
+.best .k, .rate b { font-weight:700; }
+.best .k { display:inline-block; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--bg);
+  background:var(--fg); border-radius:4px; padding:1px 6px; margin-right:4px; vertical-align:1px; }
+.verdict .argue { font-size:14px; color:var(--fg); }
+.rate { margin:8px 0 0; }
+.bet { padding:10px 0; border-bottom:1px solid var(--line); }
+.bet .top { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+.bet .sel { font-size:15px; font-weight:600; min-width:0; }
+.bet .sel .sub { font-weight:400; }
+.bet .nums { text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; font-size:12px; color:var(--muted); }
+.bet .nums b { display:block; font-size:17px; color:var(--fg); }
+.bet .nums span { display:block; }
+.bet .nums .pp { margin-top:2px; color:var(--fg); }
+.bet .nums .pp b { display:inline; font-size:13px; }
+.bet .nums .pp.none { color:var(--muted); font-style:italic; }
+.bet .reason { margin:4px 0 0; font-size:13px; }
+details.more > summary, details.rest > summary { cursor:pointer; color:var(--muted); font-size:13px; margin-top:4px; }
+details.more ul { margin:4px 0 0; padding-left:18px; font-size:13px; color:var(--muted); }
+details.more li { margin:2px 0; }
+details.rest > summary { padding:8px 0; font-weight:600; }
+.chips { display:flex; flex-wrap:wrap; gap:4px 10px; margin:4px 0 6px; font-size:12.5px; }
+.chips .fm { white-space:nowrap; color:var(--muted); }
+.tabs > label { margin:12px 4px 4px 0; }
+.pane-one { margin-top:4px; }
+details.game[open] { padding-bottom:10px; }
+.tag { display:inline-block; font-size:11px; padding:1px 7px; border-radius:999px; border:1px solid var(--line);
+  color:var(--muted); margin-left:4px; vertical-align:1px; }
+.tag.ok { border-color:#2e8b57; color:#2e8b57; }
+h2.first { margin-top:12px; }
+.tabs .p0, .tabs .p1, .tabs .p2 { display:none; }
+.tabs > input:nth-of-type(1):checked ~ .p0, .tabs > input:nth-of-type(2):checked ~ .p1,
+.tabs > input:nth-of-type(3):checked ~ .p2 { display:block; }
+
+.cf-row { display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); }
+.cf-row:last-child { border-bottom:0; }
+.cf-sel { font-weight:600; }
+.cf-sub { font-size:12.5px; color:var(--muted); margin-top:2px; }
+.cf-chips { display:flex; flex-wrap:wrap; gap:4px; margin-top:6px; }
+.cf-chip { font-size:11px; font-weight:600; padding:1px 7px; border-radius:99px; background:rgba(21,128,61,.12); color:#15803d; }
+.cf-chip.sh { background:rgba(31,63,143,.12); color:#1f3f8f; }
+@media (prefers-color-scheme:dark) { .cf-chip { color:#4ade80; background:rgba(74,222,128,.14); } .cf-chip.sh { color:#9db8ff; background:rgba(110,140,255,.16); } }
+.cf-tier { display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+           padding:1px 7px; border-radius:5px; margin-right:6px; vertical-align:1px; }
+.cf-tier.strong { background:#f5a524; color:#241600; } .cf-tier.trial { background:rgba(127,127,127,.18); }
+.cf-price { text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.cf-price b { font-size:17px; }
 </style><style id="sitenav-css">
 .hr-nav,.hr-foot{--hn-bg:#fcfcfb;--hn-fg:#111;--hn-mu:#6b6963;--hn-bd:rgba(0,0,0,.1);--hn-on:#111;--hn-onfg:#fff;--hn-pos:#15803d;--hn-neg:#b91c1c;
   font:14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:var(--hn-fg)}
@@ -191,7 +296,7 @@ html.hr-p-tonight .argue { border-left-color: var(--hr-navy-2); }
 html.hr-p-tonight .tag.ok { color: var(--hr-win); border-color: var(--hr-win); background: var(--hr-win-bg); }
 </style></head><body><!--sitenav--><nav class="hr-nav" aria-label="Site"><div class="hr-nav-in"><a class="hr-brand" href="index.html"><i></i>Hit Rates</a><div class="hr-links"><a href="index.html">Fixtures</a><a href="tonight.html" aria-current="page">Tonight</a><a href="best-bets-summary.html">Best bets</a><a href="papertrade.html">Track record</a><a href="pp-results.html">Paddy Power log</a><a href="market-check.html">Model v market</a></div><a class="hr-rec" href="papertrade.html" title="Every pick the site has made, at Paddy Power prices, level stakes">Record <b class="neg">-13.4%</b> on 2,161 bets</a></div></nav>
 <h1>Tonight</h1>
-<p class="stamp">the next 8 hours &middot; page made Thu 19 Nov, 10:54 GMT &middot; numbers from reports built Thu 19 Nov, 10:48 GMT</p>
+<p class="stamp">the next 8 hours &middot; page made Thu 19 Nov, 11:53 GMT &middot; numbers from reports built Thu 19 Nov, 11:49 GMT</p>
 <details class="warn"><summary>How to read the prices</summary>
 <b>Our price</b> is what the line should be priced at on the record. <b>Worth it at</b>
 is the lowest bookmaker price worth taking once small samples are allowed for: take the
@@ -199,7 +304,7 @@ bet only if the bookie offers this or longer. Bookies take a 5&ndash;8% margin a
 and it stacks with every leg in a multiple. <b>No bet</b> means nothing in the game is
 worth backing at the prices on offer.
 </details>
-<section class='results'><h2>Last night's leads</h2><p class='comp'>19 of 21 landed; the page expected 14.4.</p><table><thead><tr><th>Lead</th><th class='n'>Said</th></tr></thead><tbody><tr><td><span class='mark win'>&#10003;</span> RJ Barrett 3+ assists<br><span class='sub'>Toronto Raptors v New York Knicks</span></td><td class='n'>68%</td></tr><tr><td><span class='mark win'>&#10003;</span> Victor Wembanyama 2+ assists<br><span class='sub'>San Antonio Spurs v Detroit Pistons</span></td><td class='n'>70%</td></tr><tr><td><span class='mark win'>&#10003;</span> Brook Lopez 1+ three pointers made<br><span class='sub'>Los Angeles Clippers v Utah Jazz</span></td><td class='n'>69%</td></tr><tr><td><span class='mark win'>&#10003;</span> Brandon Miller 2+ three pointers made<br><span class='sub'>Los Angeles Lakers v Charlotte Hornets</span></td><td class='n'>66%</td></tr><tr><td><span class='mark win'>&#10003;</span> Gabriel Barbosa 1+ shots on target<br><span class='sub'>Coritiba v Santos</span></td><td class='n'>74%</td></tr><tr><td><span class='mark win'>&#10003;</span> Gabriel Taliari 1+ shots on target<br><span class='sub'>Remo v Chapecoense</span></td><td class='n'>66%</td></tr><tr><td><span class='mark lose'>&#10007;</span> Samuel Lino 1+ shots on target<br><span class='sub'>Flamengo v Athletico</span></td><td class='n'>74%</td></tr><tr><td><span class='mark win'>&#10003;</span> Ramón Sosa 1+ shots<br><span class='sub'>Cruzeiro v Palmeiras</span></td><td class='n'>75%</td></tr><tr><td><span class='mark '>&middot;</span> Tyrese Maxey 4+ assists<br><span class='sub'>Orlando Magic v Philadelphia 76ers</span></td><td class='n'>71%</td></tr><tr><td><span class='mark win'>&#10003;</span> Andrew Wiggins 3+ rebounds and assists<br><span class='sub'>Vice City Heat v Milwaukee Bucks</span></td><td class='n'>67%</td></tr><tr><td><span class='mark win'>&#10003;</span> Donovan Mitchell 2+ three pointers made<br><span class='sub'>Cleveland Cavaliers v Memphis Grizzlies</span></td><td class='n'>70%</td></tr><tr><td><span class='mark win'>&#10003;</span> Kevin Durant 2+ assists<br><span class='sub'>Indiana Pacers v Houston Rockets</span></td><td class='n'>66%</td></tr><tr><td><span class='mark win'>&#10003;</span> Francis Amuzu 2+ shots<br><span class='sub'>Grêmio v Bahia</span></td><td class='n'>70%</td></tr><tr><td><span class='mark win'>&#10003;</span> Matheus Bidu 1+ shots<br><span class='sub'>Corinthians v Botafogo</span></td><td class='n'>72%</td></tr><tr><td><span class='mark win'>&#10003;</span> Ja&#x27;Kobe Walter 2+ assists<br><span class='sub'>Toronto Raptors v Washington Wizards</span></td><td class='n'>61%</td></tr><tr><td><span class='mark win'>&#10003;</span> Nolan Traore 4+ rebounds and assists<br><span class='sub'>Brooklyn Nets v Chicago Bulls</span></td><td class='n'>67%</td></tr><tr><td><span class='mark win'>&#10003;</span> Zion Williamson 6+ rebounds and assists<br><span class='sub'>New Orleans Pelicans v Detroit Pistons</span></td><td class='n'>66%</td></tr><tr><td><span class='mark win'>&#10003;</span> Jalen Johnson 7+ rebounds<br><span class='sub'>Oklahoma City Thunder v Atlanta Hawks</span></td><td class='n'>70%</td></tr><tr><td><span class='mark win'>&#10003;</span> Cooper Flagg 5+ rebounds<br><span class='sub'>Dallas Mavericks v Golden State Warriors</span></td><td class='n'>68%</td></tr><tr><td><span class='mark win'>&#10003;</span> Christian Braun 1+ three pointers made<br><span class='sub'>Denver Nuggets v Boston Celtics</span></td><td class='n'>66%</td></tr><tr><td><span class='mark win'>&#10003;</span> Ace Bailey 6+ rebounds and assists<br><span class='sub'>Los Angeles Lakers v Utah Jazz</span></td><td class='n'>68%</td></tr><tr><td><span class='mark lose'>&#10007;</span> Collin Gillespie 2+ assists<br><span class='sub'>Sacramento Kings v Phoenix Suns</span></td><td class='n'>68%</td></tr></tbody></table></section><p class='none'>Nothing kicks off in the next 8 hours. The reports were built Thu 19 Nov, 10:48 GMT.</p>
+<div class='main'><input type='radio' name='main' id='mb' checked><label for='mb'>Board</label><input type='radio' name='main' id='mt'><label for='mt'>Games <span class='cnt'>3</span></label><input type='radio' name='main' id='mp'><label for='mp'>Picks</label><div class='mpane board'><p class='none'>Nothing rated tonight yet.</p></div><div class='mpane team'><p class='sub'>Tap a game for its bets, how it should go, and the builder.</p><details class='game' data-sport='darts'><summary><span class='ko'>19:15</span> <span class='fx'>Luke Humphries v Tom Sykes</span><span class='comp'>Grand Slam of Darts</span><span class='lead none'>no bet</span></summary><div class='pane-one'><div class='verdict'><p class='none'>No bet in this game.</p></div><h3>Team bets</h3><p class='none'>No bet.</p><h3>Player bets</h3><p class='none'>No bet.</p></div></details><details class='game' data-sport='darts'><summary><span class='ko'>19:15</span> <span class='fx'>Gabriel Clemens v Nathan Aspinall</span><span class='comp'>Grand Slam of Darts</span><span class='lead none'>no bet</span></summary><div class='pane-one'><div class='verdict'><p class='none'>No bet in this game.</p></div><h3>Team bets</h3><p class='none'>No bet.</p><h3>Player bets</h3><p class='none'>No bet.</p></div></details><details class='game' data-sport='darts'><summary><span class='ko'>19:15</span> <span class='fx'>Gian Van Veen v Martin Schindler</span><span class='comp'>Grand Slam of Darts</span><span class='lead none'>no bet</span></summary><div class='pane-one'><div class='verdict'><p class='none'>No bet in this game.</p></div><h3>Team bets</h3><p class='none'>No bet.</p><h3>Player bets</h3><p class='none'>No bet.</p></div></details></div><div class='mpane player'><h2 class='first'>Where the evidence agrees</h2><p class='sub'>Only lines where several separate pieces of evidence agree the price is too long. <b>Strong</b>: Betfair or Pinnacle agree, plus 2 or more of our own. <b>On trial</b>: no sharp price, so 5+ of ours for NBA players, 4+ for team lines. If the sharp price disagrees, the line is never shown. Football player lines are left out: their margin is too wide.</p><p class='sub'>Live since 4 Nov: strong 46/109 won, <b class='pos'>+0%</b>; on trial 122/273 won, <b class='neg'>-12%</b>. Backtest (20 Oct to 3 Nov, chosen after looking): strong 116 bets +20%, on trial 282 bets +9%.</p><p class='none'>Nothing has enough agreement right now.</p><h2>Best selections</h2><div class='vbox'><p class='call'><b>The short list.</b> NBA and NFL player lines at Paddy Power where the model beats the price by 3%+, the price is 1.60 to 2.30, and he has cleared the line in 7+ of his last 10 and 3+ of his last 5. One per player, two per game, eight a day per sport.</p><p class='sub'>On Paddy's real prices since 13 Oct: 45 bets over 6 days, 58% won, +11% return (range -2% to +36%). Live since 26 Oct: 66/132 won, -20.93 units, -16%. Singles at level stakes; small samples, so judge it on weeks, not nights.</p><p class='sub'>Nothing qualifies yet. Lines arrive through the day; check after the next update.</p></div><h2>Paddy Power v the sharp price</h2><p class='sub'>Team lines are checked against Pinnacle where it prices them, else Betfair; player lines against Betfair.</p><h3>Team lines</h3><div class='vbox'><p class='none'>Value claims are switched off until these bets have a settled record that shows them making money.</p></div><h3>Player lines</h3><div class='vbox'><p class='none'>Value claims are switched off until these bets have a settled record that shows them making money.</p><p class='sub'>Record so far, team and player lines together: 477 settled, 195 won (Betfair said 181), +75.8 pts at level stakes.</p></div><h2>Value at Paddy Power, Bet365 or Sky Bet</h2><p class='none'>Nothing at Paddy Power, Bet365 or Sky Bet clears the bar in this window.</p><p class='sub'>Record so far: 1151 settled, 538 won (the model said 652), -4.1 pts at level stakes.</p><h2>Bet365 value</h2><p class='sub'>Model and market agree.</p><p class='sub'>No Bet365 line where the model and the market both say value in this window.</p><h2>Rules on trial</h2><div class='vbox'><p class='call meh'><b>On trial, not proven.</b> Fixed rules scored on every game since 23 Oct (RULES_TRACK.md). No bets are listed until a rule's live record shows it making money.</p><p><b>NBA under, main line, 1.60 to 2.20</b> <span class='sub'>(live 12318 bets, 185 games, -4%, beat close 5%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA under, main line, 1.60 to 2.20, model agrees</b> <span class='sub'>(live 4534 bets, 185 games, -3%, beat close 6%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NFL receiving over, 2.20 or shorter, model agrees</b> <span class='sub'>(live 73 bets, 32 games, +5%, beat close 7%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>Paddy pays 2%+ over Betfair&#x27;s fair price, 10.0 or shorter</b> <span class='sub'>(live 16 bets, 15 games, -72%, beat close 25%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>Learned value: the corrected chance (learn.py) 3 to 15% over Paddy&#x27;s price, 3.0 or shorter</b> <span class='sub'>(live 1280 bets, 198 games, -3%, beat close 5%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA alt over, cleared in all of his last 10, 1.25 to 2.00</b> <span class='sub'>(live 57 bets, 46 games, -5%, beat close 7%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA under, main line, underdog starter, projected 12+ blowout, 1.60 to 2.20</b> <span class='sub'>(live 534 bets, 37 games, -11%, beat close 5%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA alt over, 8+ of his last 10, missed it last game, price 5%+ longer, 1.15 to 3.00</b> <span class='sub'>(live 66 bets, 44 games, -19%, beat close 5%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA alt over, cleared in all of his last 10, 1.15 to 1.24</b> <span class='sub'>(live 72 bets, 45 games, +2%, beat close 4%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA main line, either side, price lengthened 8%+ on the day (at the last price)</b> <span class='sub'>(live 231 bets, 29 games, -5%, beat close 0%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA under, main line, 1.60 to 2.20, line 0.25+ sd above his long-run baseline (tracking)</b> <span class='sub'>(live 1698 bets, 97 games, -10%, beat close 6%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA under, main line, 1.60 to 2.20, line 0.75+ sd above his 20-game mean (tracking)</b> <span class='sub'>(live 258 bets, 61 games, -11%, beat close 6%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA/NFL player line, Paddy pays 3%+ over Pinnacle&#x27;s margin-free chance at the same line, 1.40 to 3.00</b> <span class='sub'>(live 21 bets, 18 games, +19%, beat close 24%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>Football fouls over, Super Sub game, starters only, our chance 5%+ over Paddy (at the last price)</b> <span class='sub'>(live 142 bets, 29 games, -21%, beat close 5%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>Football shots over, Super Sub game, starters only, our chance 5%+ over Paddy (at the last price)</b> <span class='sub'>(live 116 bets, 48 games, -20%, beat close 13%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA/NFL: the 5 lines our model rates most likely each day, first price 1.60 to 2.50</b> <span class='sub'>(live 65 bets, 45 games, +0%, beat close 6%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NBA alt over, 9+ of his last 10, 1.15 to 2.00, edge 3%+ at the first price</b> <span class='sub'>(live 37 bets, 15 games, -11%, beat close 8%)</span></p><p class='sub'>Nothing qualifies tonight.</p><p><b>NFL receiving over, wide receivers only, 2.20 or shorter, model agrees</b> <span class='sub'>(live 11 bets, 5 games, -22%, beat close 0%)</span></p><p class='sub'>Nothing qualifies tonight.</p></div><h2>Bookie value bets</h2><p class='sub'>Our model.</p><div class='vbox'><p class='none'>Value claims are switched off until a record these bets were not picked on shows them making money; the record below is the one they were picked on.</p><p class='sub'>Record of model-ahead bets at 8.0 or shorter: Shots on target: 270 bets, 83 won, +18.7 pts (+7%); Fouls: 205 bets, 94 won, +0.1 pts (+0%); Goals: 442 bets, 99 won, -31.1 pts (-7%); Shots: 483 bets, 215 won, -59.7 pts (-12%); Fouled: 199 bets, 98 won, -24.8 pts (-12%); Assists: 41 bets, 6 won, -8.8 pts (-21%); Card: 417 bets, 64 won, -97.2 pts (-23%).</p></div><h2>Multis</h2><details class='game'><summary><b>Team multi across the games</b></summary><p class='none'>Nothing to build a multi from.</p></details><details class='game'><summary><b>Player multi across the games</b></summary><p class='none'>Nothing to build a multi from.</p></details><details class='game'><summary><b>Last night's leads</b></summary><section class='results'><h2>Last night's leads</h2><p class='comp'>19 of 21 landed; the page expected 14.4.</p><table><thead><tr><th>Lead</th><th class='n'>Said</th></tr></thead><tbody><tr><td><span class='mark win'>&#10003;</span> RJ Barrett 3+ assists<br><span class='sub'>Toronto Raptors v New York Knicks</span></td><td class='n'>68%</td></tr><tr><td><span class='mark win'>&#10003;</span> Victor Wembanyama 2+ assists<br><span class='sub'>San Antonio Spurs v Detroit Pistons</span></td><td class='n'>70%</td></tr><tr><td><span class='mark win'>&#10003;</span> Brook Lopez 1+ three pointers made<br><span class='sub'>Los Angeles Clippers v Utah Jazz</span></td><td class='n'>69%</td></tr><tr><td><span class='mark win'>&#10003;</span> Brandon Miller 2+ three pointers made<br><span class='sub'>Los Angeles Lakers v Charlotte Hornets</span></td><td class='n'>66%</td></tr><tr><td><span class='mark win'>&#10003;</span> Gabriel Barbosa 1+ shots on target<br><span class='sub'>Coritiba v Santos</span></td><td class='n'>74%</td></tr><tr><td><span class='mark win'>&#10003;</span> Gabriel Taliari 1+ shots on target<br><span class='sub'>Remo v Chapecoense</span></td><td class='n'>66%</td></tr><tr><td><span class='mark lose'>&#10007;</span> Samuel Lino 1+ shots on target<br><span class='sub'>Flamengo v Athletico</span></td><td class='n'>74%</td></tr><tr><td><span class='mark win'>&#10003;</span> Ramón Sosa 1+ shots<br><span class='sub'>Cruzeiro v Palmeiras</span></td><td class='n'>75%</td></tr><tr><td><span class='mark '>&middot;</span> Tyrese Maxey 4+ assists<br><span class='sub'>Orlando Magic v Philadelphia 76ers</span></td><td class='n'>71%</td></tr><tr><td><span class='mark win'>&#10003;</span> Andrew Wiggins 3+ rebounds and assists<br><span class='sub'>Vice City Heat v Milwaukee Bucks</span></td><td class='n'>67%</td></tr><tr><td><span class='mark win'>&#10003;</span> Donovan Mitchell 2+ three pointers made<br><span class='sub'>Cleveland Cavaliers v Memphis Grizzlies</span></td><td class='n'>70%</td></tr><tr><td><span class='mark win'>&#10003;</span> Kevin Durant 2+ assists<br><span class='sub'>Indiana Pacers v Houston Rockets</span></td><td class='n'>66%</td></tr><tr><td><span class='mark win'>&#10003;</span> Francis Amuzu 2+ shots<br><span class='sub'>Grêmio v Bahia</span></td><td class='n'>70%</td></tr><tr><td><span class='mark win'>&#10003;</span> Matheus Bidu 1+ shots<br><span class='sub'>Corinthians v Botafogo</span></td><td class='n'>72%</td></tr><tr><td><span class='mark win'>&#10003;</span> Ja&#x27;Kobe Walter 2+ assists<br><span class='sub'>Toronto Raptors v Washington Wizards</span></td><td class='n'>61%</td></tr><tr><td><span class='mark win'>&#10003;</span> Nolan Traore 4+ rebounds and assists<br><span class='sub'>Brooklyn Nets v Chicago Bulls</span></td><td class='n'>67%</td></tr><tr><td><span class='mark win'>&#10003;</span> Zion Williamson 6+ rebounds and assists<br><span class='sub'>New Orleans Pelicans v Detroit Pistons</span></td><td class='n'>66%</td></tr><tr><td><span class='mark win'>&#10003;</span> Jalen Johnson 7+ rebounds<br><span class='sub'>Oklahoma City Thunder v Atlanta Hawks</span></td><td class='n'>70%</td></tr><tr><td><span class='mark win'>&#10003;</span> Cooper Flagg 5+ rebounds<br><span class='sub'>Dallas Mavericks v Golden State Warriors</span></td><td class='n'>68%</td></tr><tr><td><span class='mark win'>&#10003;</span> Christian Braun 1+ three pointers made<br><span class='sub'>Denver Nuggets v Boston Celtics</span></td><td class='n'>66%</td></tr><tr><td><span class='mark win'>&#10003;</span> Ace Bailey 6+ rebounds and assists<br><span class='sub'>Los Angeles Lakers v Utah Jazz</span></td><td class='n'>68%</td></tr><tr><td><span class='mark lose'>&#10007;</span> Collin Gillespie 2+ assists<br><span class='sub'>Sacramento Kings v Phoenix Suns</span></td><td class='n'>68%</td></tr></tbody></table></section></details></div></div>
 <details class="warn"><summary>Why multiples are worse than their legs</summary>
 A multiple is worse than its legs at a bookmaker's price. The margin compounds
 with every leg, and the shop sells accumulators because they are the most
@@ -212,4 +317,75 @@ as they said (1.01 times). So multiplying is right for the cross-game prices,
 and they are not optimistic on that account. Any error in them comes from the
 legs themselves.
 </details>
-<footer class="hr-foot"><p>Hit Rates is a stats project shared with mates, not betting advice. Most lines on here lose money over time: the <a href="papertrade.html">track record</a> shows it honestly. Prices change, so check before you bet. 18+, and if it stops being fun, <a href="https://www.begambleaware.org" rel="noopener">BeGambleAware.org</a>.</p></footer><script>(function(){var a=document.querySelector('.hr-links [aria-current]');if(a){var l=a.parentNode;l.scrollLeft=a.offsetLeft-l.offsetLeft-40;}})();</script></body></html>
+
+<script>
+(function(){
+var T={"table": {"away_fav|A": {"n": 712, "p": {"HH": 0.1221, "HA": 0.0384, "HT": 0.0216, "AH": 0.2463, "AA": 0.4027, "AT": 0.0719, "TH": 0.0579, "TA": 0.0272, "TT": 0.0119}}, "away_fav|D": {"n": 394, "p": {"HH": 0.3024, "HA": 0.0816, "HT": 0.0414, "AH": 0.1418, "AA": 0.2422, "AT": 0.0364, "TH": 0.064, "TA": 0.064, "TT": 0.0263}}, "away_fav|H": {"n": 537, "p": {"HH": 0.3389, "HA": 0.3001, "HT": 0.0637, "AH": 0.0452, "AA": 0.1339, "AT": 0.0139, "TH": 0.036, "TA": 0.0619, "TT": 0.0065}}, "even|A": {"n": 578, "p": {"HH": 0.2361, "HA": 0.0472, "HT": 0.0197, "AH": 0.3013, "AA": 0.2258, "AT": 0.0506, "TH": 0.0815, "TA": 0.0232, "TT": 0.0146}}, "even|D": {"n": 495, "p": {"HH": 0.3874, "HA": 0.1171, "HT": 0.035, "AH": 0.1491, "AA": 0.1532, "AT": 0.023, "TH": 0.0651, "TA": 0.047, "TT": 0.023}}, "even|H": {"n": 883, "p": {"HH": 0.4299, "HA": 0.2349, "HT": 0.0637, "AH": 0.0445, "AA": 0.1054, "AT": 0.0175, "TH": 0.0411, "TA": 0.0546, "TT": 0.0085}}, "home_fav|A": {"n": 260, "p": {"HH": 0.2817, "HA": 0.0284, "HT": 0.017, "AH": 0.2817, "AA": 0.1834, "AT": 0.0586, "TH": 0.1153, "TA": 0.0246, "TT": 0.0095}}, "home_fav|D": {"n": 290, "p": {"HH": 0.4737, "HA": 0.0764, "HT": 0.0357, "AH": 0.1341, "AA": 0.1307, "AT": 0.0323, "TH": 0.0696, "TA": 0.0323, "TT": 0.0153}}, "home_fav|H": {"n": 868, "p": {"HH": 0.5874, "HA": 0.1633, "HT": 0.0762, "AH": 0.0292, "AA": 0.0613, "AT": 0.0097, "TH": 0.0338, "TA": 0.0281, "TT": 0.0109}}}};
+function pois(l,k){var p=Math.exp(-l);for(var i=1;i<=k;i++)p*=l/i;return p;}
+function calc(box){
+  var g=JSON.parse(box.dataset.g), legs={};
+  box.querySelectorAll('select').forEach(function(s){legs[s.dataset.leg]=s.value;});
+  var price=parseFloat(box.querySelector('input').value), out=box.querySelector('.bout');
+  var any=Object.keys(legs).some(function(k){return legs[k];});
+  if(!any){out.innerHTML='';return;}
+  // goals grid, rescaled so each result carries the site's own chance
+  var grid=[],mass={H:0,D:0,A:0};
+  for(var i=0;i<=10;i++)for(var j=0;j<=10;j++){var r=i>j?'H':i<j?'A':'D',p=pois(g.lh,i)*pois(g.la,j);grid.push([i,j,r,p]);mass[r]+=p;}
+  var want={H:g.ph,D:g.pd,A:g.pa},tot=0;
+  grid.forEach(function(c){
+    var i=c[0],j=c[1],r=c[2],w=c[3]*want[r]/mass[r];
+    if(legs['Result']&&legs['Result'].indexOf(r)<0)return;
+    var gl=legs['Goals'];
+    if(gl){var L=parseFloat(gl.slice(1)),n=i+j;if(gl[0]=='o'&&!(n>L))return;if(gl[0]=='u'&&!(n<L))return;}
+    var bt=legs['Both teams to score'];
+    if(bt=='y'&&!(i>0&&j>0))return; if(bt=='n'&&(i>0&&j>0))return;
+    var cell=(T.table[g.bucket+'|'+r]||{}).p||{},ps=0;
+    for(var k in cell){var s=k[0],c=k[1];
+      if(legs['Most shots on target']&&s!=legs['Most shots on target'])continue;
+      if(legs['Most corners']&&c!=legs['Most corners'])continue;
+      ps+=cell[k];}
+    tot+=w*ps;
+  });
+  var fair=1/tot, h='<p class="call"><b>Our chance '+(tot*100).toFixed(0)+'%</b> &middot; fair price <b>'+fair.toFixed(2)+'</b></p>';
+  if(price>1){
+    var need=1/price, edge=tot*price-1, cls=edge>0.05?'ok':edge>-0.1?'meh':'bad',
+        word=edge>0.05?'Value':edge>-0.1?'About fair, the margin is in it':'Poor value';
+    h+='<p class="call '+cls+'"><b>'+word+'</b>: '+price.toFixed(2)+' needs '+(need*100).toFixed(0)+'%, we make it '+(tot*100).toFixed(0)+'% ('+(edge>0?'+':'')+(edge*100).toFixed(0)+'% per &pound;1)</p>';
+  }
+  out.innerHTML=h;
+}
+document.querySelectorAll('.boost').forEach(function(b){
+  b.addEventListener('input',function(){calc(b);});b.addEventListener('change',function(){calc(b);});});
+function stakes(){
+  var inp=document.getElementById('vbudget'); if(!inp)return;
+  var B=parseFloat(inp.value)||0, rows=[].slice.call(document.querySelectorAll('#vrows tr')),
+      K=rows.reduce(function(s,r){return s+parseFloat(r.dataset.k);},0);
+  var st=rows.map(function(r){return Math.max(0.5,Math.round(2*B*parseFloat(r.dataset.k)/K)/2);});
+  var over=st.reduce(function(a,b){return a+b;},0)-B;
+  for(var i=st.length-1;over>0&&i>=0;i--){var c=Math.min(over,st[i]-0.5);st[i]-=c;over-=c;}
+  rows.forEach(function(r,i){r.querySelector('.stake').innerHTML='&pound;'+st[i].toFixed(2);});
+}
+var vb=document.getElementById('vbudget'); if(vb){vb.addEventListener('input',stakes);stakes();}
+})();
+</script>
+<script>(function(){
+function go(inp){var box=inp.closest('.sbox'),B=parseFloat(inp.value)||0,
+ rows=[].slice.call(box.querySelectorAll('tbody tr')),K=rows.reduce(function(s,r){return s+parseFloat(r.dataset.k);},0);
+ rows.forEach(function(r){var v=K>0?Math.max(0.5,Math.round(2*B*parseFloat(r.dataset.k)/K)/2):0;
+  r.querySelector('.stake').innerHTML='&pound;'+v.toFixed(2);});}
+document.querySelectorAll('.sbudget').forEach(function(i){i.addEventListener('input',function(){go(i);});go(i);});
+})();</script><script>
+(function () {
+  var chips = document.querySelectorAll('.bchips button');
+  chips.forEach(function (b) {
+    b.addEventListener('click', function () {
+      chips.forEach(function (c) { c.classList.toggle('on', c === b); });
+      var f = b.getAttribute('data-f');
+      document.querySelectorAll('table.board tbody tr').forEach(function (r) {
+        var show = f === 'all' || (f === 'bet' ? r.getAttribute('data-b') === '1' : r.getAttribute('data-s') === f);
+        r.style.display = show ? '' : 'none';
+      });
+    });
+  });
+})();
+</script><footer class="hr-foot"><p>Hit Rates is a stats project shared with mates, not betting advice. Most lines on here lose money over time: the <a href="papertrade.html">track record</a> shows it honestly. Prices change, so check before you bet. 18+, and if it stops being fun, <a href="https://www.begambleaware.org" rel="noopener">BeGambleAware.org</a>.</p></footer><script>(function(){var a=document.querySelector('.hr-links [aria-current]');if(a){var l=a.parentNode;l.scrollLeft=a.offsetLeft-l.offsetLeft-40;}})();</script></body></html>

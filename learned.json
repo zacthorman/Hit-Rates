@@ -2,14 +2,14 @@
  "groups": {
   "football|team": {
    "a": 0.0395,
-   "b": 1.1474,
+   "b": 1.1473,
    "c": {
     "cards": -0.0433,
-    "corners": -0.0519,
+    "corners": -0.0518,
     "fouls": 0.007,
-    "goals": 0.0501,
+    "goals": 0.05,
     "other": -0.012,
-    "shots": 0.0674,
+    "shots": 0.0673,
     "shots on target": 0.0251,
     "tackles": -0.0029
    },
@@ -19,13 +19,13 @@
   },
   "football|player": {
    "a": 0.0334,
-   "b": 0.9799,
+   "b": 0.98,
    "c": {
     "fouls": -0.1103,
-    "goals": -0.0995,
-    "other": 0.0119,
-    "saves": 0.0363,
-    "shots": 0.1346,
+    "goals": -0.0994,
+    "other": 0.0118,
+    "saves": 0.0362,
+    "shots": 0.1345,
     "shots on target": 0.0554,
     "tackles": 0.0051
    },
@@ -35,20 +35,20 @@
   },
   "american-football|player": {
    "a": -0.0182,
-   "b": 1.0102,
+   "b": 1.0101,
    "c": {
     "other": 0.0027,
     "passing": -0.0538,
     "receiving": 0.0044,
     "rushing": -0.0275,
-    "tackles": 0.056
+    "tackles": 0.0559
    },
    "legs": 686,
    "said": 0.6818,
    "landed": 0.6851
   },
   "american-football|team": {
-   "a": -0.0186,
+   "a": -0.0185,
    "b": 0.9862,
    "c": {
     "goals": 0.0081,
@@ -93,10 +93,10 @@
    "landed": 0.6485
   },
   "basketball|player": {
-   "a": 0.0547,
-   "b": 1.1795,
+   "a": 0.0548,
+   "b": 1.1794,
    "c": {
-    "other": 0.0547
+    "other": 0.0548
    },
    "legs": 1862,
    "said": 0.6965,
@@ -104,7 +104,7 @@
   }
  },
  "legs": 8488,
- "updated": "19 Nov 2026 11:42",
+ "updated": "19 Nov 2026 12:11",
  "check": {
   "ok": true,
   "test": 1698,
