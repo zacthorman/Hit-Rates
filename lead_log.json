@@ -12720,5 +12720,22 @@
   "line": 1.5,
   "over": true,
   "written": 1795384533.5706592
+ },
+ "16285093": {
+  "event_id": 16285093,
+  "fixture": "Monza v Fiorentina",
+  "competition": "Serie A",
+  "sport": "football",
+  "kickoff": 1795463100,
+  "selection": "Gustavo Varela 2+ shots",
+  "chance": 0.7446562352855787,
+  "fair": 1.5326554790832965,
+  "team": "Monza",
+  "player": "Gustavo Varela",
+  "stat": "Shots",
+  "period": "ALL",
+  "line": 1.5,
+  "over": true,
+  "written": 1795434849.3152819
  }
 }
