@@ -1,25 +1,25 @@
 {
- "updated": "2026-11-21 13:54 UTC",
+ "updated": "2026-11-23 08:48 UTC",
  "weights": {
-  "team|Goals|derived": 0.985,
+  "team|Goals|derived": 0.987,
   "team|Goals|exchange": 0.844,
-  "team|Both teams to score|exchange": 0.138,
-  "team|Match goals|exchange": 0.355,
-  "team|Match corners|exchange": 0.864,
-  "player|Shots on target|back": 0.128,
-  "player|Goals|back": 0.409,
-  "player|Anytime touchdown|back": 0.675,
-  "team|Match cards|exchange": 0.5
+  "team|Both teams to score|exchange": 0.193,
+  "team|Match goals|exchange": 0.307,
+  "team|Match corners|exchange": 0.886,
+  "player|Shots on target|back": 0.17,
+  "player|Goals|back": 0.475,
+  "player|Anytime touchdown|back": 0.648,
+  "team|Match cards|exchange": 0.132
  },
  "backMargin": {
-  "SHOTS_ON_TARGET_P1": 0.35,
-  "TO_SCORE": 0.27,
-  "TO_SCORE_A_TOUCHDOWN": 0.165,
-  "SHOTS_ON_TARGET_P2": 0.215
+  "SHOTS_ON_TARGET_P1": 0.354,
+  "TO_SCORE": 0.286,
+  "TO_SCORE_A_TOUCHDOWN": 0.16,
+  "SHOTS_ON_TARGET_P2": 0.224
  },
  "fit": {
   "team|Goals|derived": {
-   "n": 1648,
+   "n": 1876,
    "raw": 1.0,
    "default": 0.5
   },
@@ -29,60 +29,60 @@
    "default": 0.5
   },
   "team|Both teams to score|exchange": {
-   "n": 131,
-   "raw": 0.0,
+   "n": 166,
+   "raw": 0.1,
    "default": 0.5
   },
   "team|Match goals|exchange": {
-   "n": 132,
-   "raw": 0.3,
+   "n": 168,
+   "raw": 0.25,
    "default": 0.5
   },
   "team|Match corners|exchange": {
-   "n": 134,
+   "n": 170,
    "raw": 1.0,
    "default": 0.5
   },
   "player|Shots on target|back": {
-   "n": 398,
-   "raw": 0.1,
+   "n": 447,
+   "raw": 0.15,
    "default": 0.35
   },
   "player|Goals|back": {
-   "n": 73,
-   "raw": 0.45,
+   "n": 84,
+   "raw": 0.55,
    "default": 0.35
   },
   "player|Anytime touchdown|back": {
-   "n": 72,
-   "raw": 0.9,
+   "n": 74,
+   "raw": 0.85,
    "default": 0.35
   },
   "team|Match cards|exchange": {
-   "n": 117,
-   "raw": 0.5,
+   "n": 140,
+   "raw": 0.0,
    "default": 0.5
   },
   "SHOTS_ON_TARGET_P1": {
-   "n": 367,
+   "n": 412,
    "raw": 0.39,
    "default": 0.06
   },
   "TO_SCORE": {
-   "n": 71,
-   "raw": 0.39,
+   "n": 82,
+   "raw": 0.4,
    "default": 0.1
   },
   "TO_SCORE_A_TOUCHDOWN": {
-   "n": 72,
-   "raw": 0.21,
+   "n": 74,
+   "raw": 0.2,
    "default": 0.1
   },
   "SHOTS_ON_TARGET_P2": {
-   "n": 31,
+   "n": 35,
    "raw": 0.4,
    "default": 0.1
   }
  },
- "settled": 2843
+ "settled": 3265
 }
