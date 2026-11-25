@@ -2265,5 +2265,35 @@
     "result": "void",
     "profit": null,
     "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-11-25-1",
+    "kind": "single",
+    "logged_at": "2026-11-25T07:59:32+00:00",
+    "price": 2.37,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16814858,
+        "fixture": "Charlotte Hornets v Chicago Bulls",
+        "kickoff": 1795651200,
+        "player": "Sion James",
+        "player_id": 1179853,
+        "team": "Charlotte Hornets",
+        "stat": "Points rebounds and assists",
+        "line": 10.0,
+        "model_k": 8,
+        "model_n": 10,
+        "model_p": 0.65,
+        "source": "nba.html",
+        "value": null,
+        "result": null
+      }
+    ],
+    "result": null,
+    "profit": null,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
   }
 ]
