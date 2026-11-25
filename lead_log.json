@@ -13357,15 +13357,15 @@
   "sport": "football",
   "kickoff": 1795628700,
   "selection": "Ferm\u00edn L\u00f3pez 2+ shots",
-  "chance": 0.7047636982532187,
-  "fair": 1.634689463861838,
+  "chance": 0.7047574072438254,
+  "fair": 1.6348575901113507,
   "team": "FC Barcelona",
   "player": "Ferm\u00edn L\u00f3pez",
   "stat": "Shots",
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1795614575.110857
+  "written": 1795620860.489604
  },
  "16939011": {
   "event_id": 16939011,
@@ -13374,15 +13374,15 @@
   "sport": "football",
   "kickoff": 1795628700,
   "selection": "Villarreal under 14.5 total shots",
-  "chance": 0.7799006636348218,
-  "fair": 1.3608957126678765,
+  "chance": 0.7798599082498361,
+  "fair": 1.36104669038884,
   "team": "Villarreal",
   "player": null,
   "stat": "Total shots",
   "period": "ALL",
   "line": 14.5,
   "over": false,
-  "written": 1795614575.110857
+  "written": 1795620860.489604
  },
  "16391203": {
   "event_id": 16391203,
@@ -13391,15 +13391,15 @@
   "sport": "football",
   "kickoff": 1795636800,
   "selection": "Sam Gallagher 1+ shots",
-  "chance": 0.7085935273837418,
-  "fair": 1.6597866992941903,
+  "chance": 0.708561316084907,
+  "fair": 1.6599641955651405,
   "team": "Stoke City",
   "player": "Sam Gallagher",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1795614575.110857
+  "written": 1795620860.489604
  },
  "16938794": {
   "event_id": 16938794,
@@ -13408,15 +13408,15 @@
   "sport": "football",
   "kickoff": 1795636800,
   "selection": "Ousmane Demb\u00e9l\u00e9 2+ shots",
-  "chance": 0.74002918615178,
-  "fair": 1.5463315057854234,
+  "chance": 0.740023498641238,
+  "fair": 1.5464675141506612,
   "team": "Paris Saint-Germain",
   "player": "Ousmane Demb\u00e9l\u00e9",
   "stat": "Shots",
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1795614575.110857
+  "written": 1795620860.489604
  },
  "16938840": {
   "event_id": 16938840,
@@ -13425,15 +13425,15 @@
   "sport": "football",
   "kickoff": 1795636800,
   "selection": "Carlos Forbs 2+ shots",
-  "chance": 0.6840701364004863,
-  "fair": 1.81916958094205,
+  "chance": 0.6840629085319438,
+  "fair": 1.8194088098864176,
   "team": "Club Brugge KV",
   "player": "Carlos Forbs",
   "stat": "Shots",
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1795614575.110857
+  "written": 1795620860.489604
  },
  "16938887": {
   "event_id": 16938887,
@@ -13443,14 +13443,14 @@
   "kickoff": 1795636800,
   "selection": "Luis Javier Su\u00e1rez 1+ shots on target",
   "chance": 0.7776,
-  "fair": 1.3763336814417015,
+  "fair": 1.376294490065461,
   "team": "Sporting CP",
   "player": "Luis Javier Su\u00e1rez",
   "stat": "Shots on target",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1795614575.110857
+  "written": 1795620860.489604
  },
  "16938990": {
   "event_id": 16938990,
@@ -13459,15 +13459,15 @@
   "sport": "football",
   "kickoff": 1795636800,
   "selection": "Ethan Mbapp\u00e9 1+ shots",
-  "chance": 0.7181172847011331,
-  "fair": 1.5362527157196,
+  "chance": 0.7180892292767969,
+  "fair": 1.5363851528013956,
   "team": "LOSC Lille",
   "player": "Ethan Mbapp\u00e9",
   "stat": "Shots",
   "period": "ALL",
   "line": 0.5,
   "over": true,
-  "written": 1795614575.110857
+  "written": 1795620860.489604
  },
  "16938779": {
   "event_id": 16938779,
@@ -13476,15 +13476,15 @@
   "sport": "football",
   "kickoff": 1795636800,
   "selection": "Marcus Thuram 2+ shots",
-  "chance": 0.8227324070736954,
-  "fair": 1.3411584191637318,
+  "chance": 0.8227286355164998,
+  "fair": 1.3412262618173856,
   "team": "Inter",
   "player": "Marcus Thuram",
   "stat": "Shots",
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1795614575.110857
+  "written": 1795620860.489604
  },
  "16938917": {
   "event_id": 16938917,
@@ -13493,15 +13493,15 @@
   "sport": "football",
   "kickoff": 1795636800,
   "selection": "Alisson Santana 2+ shots",
-  "chance": 0.7685871800471604,
-  "fair": 1.5265502182815267,
+  "chance": 0.7685816440995176,
+  "fair": 1.5266792364489152,
   "team": "Shakhtar Donetsk",
   "player": "Alisson Santana",
   "stat": "Shots",
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1795614575.110857
+  "written": 1795620860.489604
  },
  "16938791": {
   "event_id": 16938791,
@@ -13510,14 +13510,48 @@
   "sport": "football",
   "kickoff": 1795636800,
   "selection": "Juli\u00e1n Alvarez 2+ shots",
-  "chance": 0.7896510107479705,
-  "fair": 1.4602588207704512,
+  "chance": 0.7896460313040646,
+  "fair": 1.4603650079537271,
   "team": "Atl\u00e9tico Madrid",
   "player": "Juli\u00e1n Alvarez",
   "stat": "Shots",
   "period": "ALL",
   "line": 1.5,
   "over": true,
-  "written": 1795614575.110857
+  "written": 1795620860.489604
+ },
+ "16814857": {
+  "event_id": 16814857,
+  "fixture": "Philadelphia 76ers v Miami Heat",
+  "competition": "NBA",
+  "sport": "basketball",
+  "kickoff": 1795644000,
+  "selection": "VJ Edgecombe 2+ assists",
+  "chance": 0.6538903028672748,
+  "fair": 1.5293085026877633,
+  "team": "Philadelphia 76ers",
+  "player": "VJ Edgecombe",
+  "stat": "Assists",
+  "period": "ALL",
+  "line": 1.5,
+  "over": true,
+  "written": 1795620860.489604
+ },
+ "15235664": {
+  "event_id": 15235664,
+  "fixture": "Atl\u00e9tico Mineiro v Corinthians",
+  "competition": "Campeonato Brasileiro S\u00e9rie A",
+  "sport": "football",
+  "kickoff": 1795647600,
+  "selection": "Bernard 1+ shots",
+  "chance": 0.6950850587294515,
+  "fair": 1.7162369753251197,
+  "team": "Atl\u00e9tico Mineiro",
+  "player": "Bernard",
+  "stat": "Shots",
+  "period": "ALL",
+  "line": 0.5,
+  "over": true,
+  "written": 1795620860.489604
  }
 }
