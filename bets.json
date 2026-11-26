@@ -2289,6 +2289,36 @@
         "model_p": 0.65,
         "source": "nba.html",
         "value": null,
+        "result": "void"
+      }
+    ],
+    "result": "void",
+    "profit": null,
+    "note": "Jarvis pick. Price is the need price she said to take it at or better."
+  },
+  {
+    "group": "jarvis-2026-11-26-1",
+    "kind": "single",
+    "logged_at": "2026-11-26T07:30:36+00:00",
+    "price": 2.32,
+    "stake": 10.0,
+    "backfilled": false,
+    "placed": false,
+    "legs": [
+      {
+        "event_id": 16166701,
+        "fixture": "Dallas Cowboys v Philadelphia Eagles",
+        "kickoff": 1795728600,
+        "player": "CeeDee Lamb",
+        "player_id": 1026963,
+        "team": "Dallas Cowboys",
+        "stat": "Rushing and receiving yards",
+        "line": 70.0,
+        "model_k": 8,
+        "model_n": 10,
+        "model_p": 0.65,
+        "source": "nfl.html",
+        "value": null,
         "result": null
       }
     ],
